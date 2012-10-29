@@ -88,6 +88,10 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 */
 	@Override
 	public VCPENetworkModel buildVCPENetwork(VCPENetworkModel desiredScenario) throws CapabilityException {
+
+		if (((VCPENetworkModel) resource.getModel()).isCreated())
+			throw new CapabilityException("VCPE already created");
+
 		try {
 			return buildDesiredScenario(resource, desiredScenario);
 		} catch (ResourceException e) {
@@ -102,6 +106,10 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 */
 	@Override
 	public void destroyVCPENetwork() throws CapabilityException {
+
+		if (!((VCPENetworkModel) resource.getModel()).isCreated())
+			throw new CapabilityException("VCPE has not been created");
+
 		try {
 			unbuildScenario(resource, (VCPENetworkModel) resource.getModel());
 		} catch (ResourceException e) {
@@ -116,6 +124,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 */
 	@Override
 	public void updateIps(VCPENetworkModel updatedModel) throws CapabilityException {
+
+		if (!((VCPENetworkModel) resource.getModel()).isCreated())
+			throw new CapabilityException("VCPE has not been created");
 
 		VCPENetworkModel currentModel = (VCPENetworkModel) resource.getModel();
 
@@ -181,6 +192,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// TODO return created model, not the desired one
 		resource.setModel(desiredScenario);
+		((VCPENetworkModel) resource.getModel()).setCreated(true);
 		return (VCPENetworkModel) resource.getModel();
 	}
 
@@ -211,6 +223,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		VCPENetworkModel model = new VCPENetworkModel();
 		model.setVcpeNetworkId(currentScenario.getVcpeNetworkId());
 		model.setVcpeNetworkName(currentScenario.getVcpeNetworkName());
+		model.setCreated(false);
 		resource.setModel(model);
 
 		return (VCPENetworkModel) resource.getModel();
