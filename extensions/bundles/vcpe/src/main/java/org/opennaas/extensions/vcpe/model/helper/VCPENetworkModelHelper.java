@@ -18,7 +18,7 @@ public class VCPENetworkModelHelper {
 	}
 
 	public static VCPENetworkElement getElementByNameInTemplate(List<VCPENetworkElement> elements, String nameInTemplate) {
-		if (nameInTemplate == null)
+		if (nameInTemplate == null || elements == null)
 			return null;
 
 		for (VCPENetworkElement element : elements) {
@@ -30,6 +30,9 @@ public class VCPENetworkModelHelper {
 
 	public static List<Link> getLinks(List<VCPENetworkElement> elements) {
 		List<Link> links = new ArrayList<Link>();
+		if (elements == null)
+			return links;
+
 		for (VCPENetworkElement element : elements) {
 			if (element instanceof Link) {
 				links.add((Link) element);
