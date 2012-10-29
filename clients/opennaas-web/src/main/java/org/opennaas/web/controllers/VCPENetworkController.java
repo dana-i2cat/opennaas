@@ -43,9 +43,10 @@ public class VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String getCreateForm(Model model) {
+	public String createForm(Model model) {
 		LOGGER.debug("form to create a VCPENetwork");
 		model.addAttribute(templateUtils.getDefaultVCPENetwork());
+		model.addAttribute("action", new String("create"));
 		return "createVCPENetwork";
 	}
 
@@ -78,6 +79,43 @@ public class VCPENetworkController {
 	}
 
 	/**
+	 * Edit a VCPE Network
+	 * 
+	 * @param vcpeNetwork
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/edit")
+	public String edit(String vcpeNetworkId, Model model, Locale locale) {
+		LOGGER.debug("edit entity with id: " + vcpeNetworkId);
+		try {
+			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
+			model.addAttribute("action", new String("update"));
+			model.addAttribute("noticeMsg", "Not implemented");
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.edit.message.error", null, locale));
+		}
+		return "createVCPENetwork";
+	}
+
+	/**
+	 * Create a VCPE Network
+	 * 
+	 * @param vcpeNetwork
+	 * @param result
+	 * @return
+	 * @throws RestServiceException
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/update")
+	public String update(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
+		LOGGER.debug("update entity: " + vcpeNetwork);
+		// TODO
+		model.addAttribute("noticeMsg", "Not implemented");
+		return "createVCPENetwork";
+	}
+
+	/**
 	 * Create a VCPE Network
 	 * 
 	 * @param vcpeNetwork
@@ -98,25 +136,6 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.delete.message.error", null, locale));
 		}
 		return "listVCPENetwork";
-	}
-
-	/**
-	 * Edit a VCPE Network
-	 * 
-	 * @param vcpeNetwork
-	 * @param result
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/edit")
-	public String edit(String vcpeNetworkId, Model model, Locale locale) {
-		LOGGER.debug("edit entity with id: " + vcpeNetworkId);
-		try {
-			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.edit.message.error", null, locale));
-		}
-		return "createVCPENetwork";
 	}
 
 	/**

@@ -182,23 +182,25 @@ public class VCPENetworkBO {
 	 */
 	private LogicalRouter getLRGUI(Router lrIn) {
 		LogicalRouter lrOut = new LogicalRouter();
-		lrOut.setName(lrIn.getName());
-		lrOut.setTemplateName(lrIn.getNameInTemplate());
-		// Interfaces
-		List<org.opennaas.web.entities.Interface> interfaces = new ArrayList<org.opennaas.web.entities.Interface>();
-		lrOut.setInterfaces(interfaces);
-		// Interface Inter
-		Interface inter = getInterfaceGUI(lrIn.getInterfaces().get(0));
-		inter.setLabelName(Interface.Types.INTER.toString());
-		interfaces.add(inter);
-		// Interface Down
-		Interface down = getInterfaceGUI(lrIn.getInterfaces().get(1));
-		down.setLabelName(Interface.Types.DOWN.toString());
-		interfaces.add(down);
-		// Interface Up
-		Interface up = getInterfaceGUI(lrIn.getInterfaces().get(2));
-		up.setLabelName(Interface.Types.UP.toString());
-		interfaces.add(up);
+		if (lrIn != null) {
+			lrOut.setName(lrIn.getName());
+			lrOut.setTemplateName(lrIn.getNameInTemplate());
+			// Interfaces
+			List<org.opennaas.web.entities.Interface> interfaces = new ArrayList<org.opennaas.web.entities.Interface>();
+			lrOut.setInterfaces(interfaces);
+			// Interface Inter
+			Interface inter = getInterfaceGUI(lrIn.getInterfaces().get(0));
+			inter.setLabelName(Interface.Types.INTER.toString());
+			interfaces.add(inter);
+			// Interface Down
+			Interface down = getInterfaceGUI(lrIn.getInterfaces().get(1));
+			down.setLabelName(Interface.Types.DOWN.toString());
+			interfaces.add(down);
+			// Interface Up
+			Interface up = getInterfaceGUI(lrIn.getInterfaces().get(2));
+			up.setLabelName(Interface.Types.UP.toString());
+			interfaces.add(up);
+		}
 		return lrOut;
 	}
 

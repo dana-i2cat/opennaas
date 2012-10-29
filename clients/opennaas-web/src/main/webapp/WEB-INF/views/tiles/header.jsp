@@ -42,3 +42,12 @@
 		</span>
 	</div>
 </c:if>
+
+<c:if test="${not empty noticeMsg}" >
+	<div class="notice">
+		<span>
+			<spring:message text="${noticeMsg}" />
+		</span>
+	</div>
+</c:if>
+
