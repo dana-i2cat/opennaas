@@ -125,7 +125,7 @@ public class ResourceService extends GenericRestService {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling delete resource service");
-			String url = getURL("resources/delete/" + id);
+			String url = getURL("resources/remove/" + id);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class);
