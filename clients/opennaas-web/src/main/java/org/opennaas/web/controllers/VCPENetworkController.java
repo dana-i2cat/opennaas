@@ -179,9 +179,11 @@ public class VCPENetworkController {
 		LOGGER.debug("updateIps of VCPENetwork" + vcpeNetwork);
 		try {
 			model.addAttribute(vcpeNetworkBO.updateIps(vcpeNetwork));
+			model.addAttribute("infoMsg", messageSource
+					.getMessage("vcpenetwork.updateIps.message.info", null, locale));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.edit.message.error", null, locale));
+					.getMessage("vcpenetwork.updateIps.message.error", null, locale));
 		}
 		return "updateIpsVCPENetwork";
 	}
