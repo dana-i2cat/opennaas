@@ -49,7 +49,7 @@
 	<util:properties id="templateProperties" location="classpath:template.properties"/>
 
 	<!-- OpenNaas Beans-->
-	<bean id="templateUtils" class="org.opennaas.web.utils.TemplateUtils" />	
+	<bean id="templateUtils" class="org.opennaas.web.utils.model.TemplateUtils" />	
 	<bean id="vcpeNetworkBO" class="org.opennaas.web.bos.VCPENetworkBO" />
 	<bean id="resourceService" class="org.opennaas.web.services.rest.resource.ResourceService" />	
 	<bean id="vcpeNetworkService" class="org.opennaas.web.services.rest.vcpe.VCPENetworkService" />	
