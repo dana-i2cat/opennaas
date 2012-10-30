@@ -30,7 +30,12 @@
 							<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}" varStatus="vs" var="item">
 								<div class="field">
 									<label>${item.labelName} Interface</label>
-									<div class="input">								
+									<div class="input">					
+										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName"/>
+										<form:hidden path="logicalRouter1.interfaces[${vs.index}].name" />
+										<form:hidden path="logicalRouter1.interfaces[${vs.index}].port" />
+										<form:hidden path="logicalRouter1.interfaces[${vs.index}].vlan" />
+										
 										<spring:message code="interface.ipAddress" />
 										<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13"/>
@@ -45,6 +50,11 @@
 								<div class="field">
 									<label>${item.labelName} Interface</label>
 									<div class="input">
+										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName"/>
+										<form:hidden path="logicalRouter2.interfaces[${vs.index}].name" />
+										<form:hidden path="logicalRouter2.interfaces[${vs.index}].port" />
+										<form:hidden path="logicalRouter2.interfaces[${vs.index}].vlan" />
+										
 										<spring:message code="interface.ipAddress" />
 										<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" />
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13"/>
