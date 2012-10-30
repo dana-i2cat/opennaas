@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.web.utils;
+package org.opennaas.web.utils.model;
 
 import java.util.ArrayList;
 import java.util.List;
