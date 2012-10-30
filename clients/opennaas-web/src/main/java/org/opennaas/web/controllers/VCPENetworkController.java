@@ -165,12 +165,9 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/view")
 	public String view(String vcpeNetworkId, Model model, Locale locale) {
-		// TODO
 		LOGGER.debug("view entity with id: " + vcpeNetworkId);
 		try {
 			model.addAttribute("vcpenetwork", vcpeNetworkBO.getById(vcpeNetworkId));
-			model.addAttribute("noticeMsg", messageSource
-					.getMessage("message.info.notimplemented", null, locale));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.view.message.error", null, locale));

@@ -165,6 +165,7 @@ public class VCPENetworkBO {
 		modelOut.setId(modelIn.getVcpeNetworkId());
 		modelOut.setName(modelIn.getVcpeNetworkName());
 		modelOut.setClientIpRange(modelIn.getClientIpAddressRange());
+		modelOut.setTemplate(modelIn.getTemplateName());
 
 		// Logical Routers
 		Router logicalRouter1 = (Router) VCPENetworkModelHelper
