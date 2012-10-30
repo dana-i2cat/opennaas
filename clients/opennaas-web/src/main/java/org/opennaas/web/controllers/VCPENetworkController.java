@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.opennaas.web.bos.VCPENetworkBO;
 import org.opennaas.web.entities.VCPENetwork;
 import org.opennaas.web.services.rest.RestServiceException;
-import org.opennaas.web.utils.TemplateUtils;
+import org.opennaas.web.utils.model.TemplateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -64,6 +64,7 @@ public class VCPENetworkController {
 		try {
 			if (!result.hasErrors()) {
 				vcpeNetwork.setId(vcpeNetworkBO.create(vcpeNetwork));
+				model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 				model.addAttribute("infoMsg", messageSource
 						.getMessage("vcpenetwork.create.message.info", null, locale));
 			} else {
@@ -75,7 +76,7 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getResponse());
 		}
 
-		return "createVCPENetwork";
+		return "listVCPENetwork";
 	}
 
 	/**

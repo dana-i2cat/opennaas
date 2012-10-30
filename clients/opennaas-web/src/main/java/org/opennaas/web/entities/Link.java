@@ -5,8 +5,6 @@ package org.opennaas.web.entities;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlIDREF;
-
 import org.opennaas.extensions.vcpe.model.Interface;
 
 /**
@@ -15,20 +13,11 @@ import org.opennaas.extensions.vcpe.model.Interface;
 public class Link {
 
 	private String		name;
-
 	private String		templateName;
-
 	private String		type;
-
 	private String		id;
-
-	@XmlIDREF
 	private List<Link>	implementedBy;
-
-	@XmlIDREF
 	private Interface	source;
-
-	@XmlIDREF
 	private Interface	destination;
 
 	/**
