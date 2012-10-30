@@ -426,21 +426,50 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void unconfigureStaticRoutes(IResource resource, VCPENetworkModel model) throws ResourceException {
-		// TODO uncomment when unconfiguring static routes is available
-		// unconfigureStaticRoutesInProvider(resource, model);
+
+		unconfigureStaticRoutesInProvider(resource, model);
 
 		// not necessary because logical routers will be dropped anyway
 		// unconfigureStaticRoutesInClient(resource, model);
 	}
 
-	private void unconfigureStaticRoutesInClient(IResource resource, VCPENetworkModel model) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	private void unconfigureStaticRoutesInClient(IResource resource, VCPENetworkModel model) throws ResourceException {
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_PEER);
+
+		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
+
+		String ipRange = "0.0.0.0/0";
+		String nextHopIpAddress = addressAndMask1[0];
+
+		deleteStaticRoute(lr1, model, ipRange, nextHopIpAddress);
+
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_PEER);
+		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
+		String nextHopIpAddress2 = addressAndMask2[0];
+
+		deleteStaticRoute(lr2, model, ipRange, nextHopIpAddress2);
 	}
 
-	private void unconfigureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	private void unconfigureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) throws ResourceException {
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_LOCAL);
+
+		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
+
+		String ipRange = model.getClientIpAddressRange();
+		String nextHopIpAddress1 = addressAndMask1[0];
+
+		deleteStaticRoute(phy1, model, ipRange, nextHopIpAddress1);
+
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_LOCAL);
+
+		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
+		String nextHopIpAddress2 = addressAndMask2[0];
+
+		deleteStaticRoute(phy2, model, ipRange, nextHopIpAddress2);
 	}
 
 	private void configureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) throws ResourceException {
@@ -495,6 +524,20 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		IStaticRouteCapability capability = (IStaticRouteCapability) routerResource.getCapabilityByInterface(IStaticRouteCapability.class);
 		capability.createStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress);
+	}
+
+	private void deleteStaticRoute(Router router, VCPENetworkModel model, String ipRange, String nextHopIpAddress) throws ResourceException {
+		IResource routerResource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
+
+		String[] ipRangeAddressAndMask = IPUtilsHelper.composedIPAddressToIPAddressAndMask(ipRange);
+
+		if (ipRangeAddressAndMask.length < 1) {
+			throw new ResourceException("Invalid IP address range (missing mask): " + ipRange);
+		}
+
+		IStaticRouteCapability capability = (IStaticRouteCapability) routerResource.getCapabilityByInterface(IStaticRouteCapability.class);
+		capability.deleteStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress);
 	}
 
 	private void startLogicalRouters(IResource resource, VCPENetworkModel model) throws ResourceException {
