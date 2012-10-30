@@ -1,5 +1,7 @@
 package org.opennaas.extensions.vcpe.capability.builder;
 
+import static com.google.common.collect.Iterables.filter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +94,10 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 */
 	@Override
 	public VCPENetworkModel buildVCPENetwork(VCPENetworkModel desiredScenario) throws CapabilityException {
+
+		if (((VCPENetworkModel) resource.getModel()).isCreated())
+			throw new CapabilityException("VCPE already created");
+
 		try {
 			return buildDesiredScenario(resource, desiredScenario);
 		} catch (ResourceException e) {
@@ -106,6 +112,10 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 */
 	@Override
 	public void destroyVCPENetwork() throws CapabilityException {
+
+		if (!((VCPENetworkModel) resource.getModel()).isCreated())
+			throw new CapabilityException("VCPE has not been created");
+
 		try {
 			unbuildScenario(resource, (VCPENetworkModel) resource.getModel());
 		} catch (ResourceException e) {
@@ -119,8 +129,44 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#updateIps(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
-	public void updateIps(VCPENetworkModel vcpeNetworkModel) throws CapabilityException {
-		// TODO Auto-generated method stub
+	public void updateIps(VCPENetworkModel updatedModel) throws CapabilityException {
+
+		if (!((VCPENetworkModel) resource.getModel()).isCreated())
+			throw new CapabilityException("VCPE has not been created");
+
+		VCPENetworkModel currentModel = (VCPENetworkModel) resource.getModel();
+
+		// launch commands
+		try {
+			for (Router router : filter(updatedModel.getElements(), Router.class)) {
+				for (Interface iface : router.getInterfaces()) {
+					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getNameInTemplate());
+					if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
+						setIP(router, outDatedIface, iface.getIpAddress(), currentModel);
+					}
+				}
+			}
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		// execute queues
+		try {
+			executeLogicalRouters(currentModel);
+			executePhysicalRouters(currentModel);
+		} catch (Exception e) {
+			throw new CapabilityException(e);
+		}
+
+		// update IP addresses in model
+		for (Router router : filter(updatedModel.getElements(), Router.class)) {
+			for (Interface iface : router.getInterfaces()) {
+				Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getNameInTemplate());
+				if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
+					outDatedIface.setIpAddress(iface.getIpAddress());
+				}
+			}
+		}
 	}
 
 	private VCPENetworkModel buildDesiredScenario(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
@@ -157,7 +203,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 
 		// TODO return created model, not the desired one
-		return desiredScenario;
+		resource.setModel(desiredScenario);
+		((VCPENetworkModel) resource.getModel()).setCreated(true);
+		return (VCPENetworkModel) resource.getModel();
 	}
 
 	private VCPENetworkModel unbuildScenario(IResource resource, VCPENetworkModel currentScenario) throws ResourceException {
@@ -189,8 +237,14 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		removeResources(currentScenario);
 
-		// TODO return the model after deleting all LR and subInterfaces from it
-		return currentScenario;
+		// return the model after deleting all LR and subInterfaces from it
+		VCPENetworkModel model = new VCPENetworkModel();
+		model.setVcpeNetworkId(currentScenario.getVcpeNetworkId());
+		model.setVcpeNetworkName(currentScenario.getVcpeNetworkName());
+		model.setCreated(false);
+		resource.setModel(model);
+
+		return (VCPENetworkModel) resource.getModel();
 	}
 
 	private void createLogicalRouters(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
@@ -362,6 +416,17 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 	}
 
+	private void setIP(Router router, Interface iface, String ipAddress, VCPENetworkModel model) throws ResourceException {
+		IResource routerResource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
+
+		IIPCapability capability = (IIPCapability) routerResource.getCapabilityByInterface(IIPCapability.class);
+
+		LogicalPort port = VCPEToRouterModelTranslator.vCPEInterfaceToLogicalPort(iface, model);
+		IPProtocolEndpoint ipPEP = VCPEToRouterModelTranslator.ipAddressToProtocolEndpoint(ipAddress);
+		capability.setIPv4(port, ipPEP);
+	}
+
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
 		// only static routes by now
 		configureStaticRoutes(resource, model);
@@ -379,21 +444,50 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void unconfigureStaticRoutes(IResource resource, VCPENetworkModel model) throws ResourceException {
-		// TODO uncomment when unconfiguring static routes is available
-		// unconfigureStaticRoutesInProvider(resource, model);
+
+		unconfigureStaticRoutesInProvider(resource, model);
 
 		// not necessary because logical routers will be dropped anyway
 		// unconfigureStaticRoutesInClient(resource, model);
 	}
 
-	private void unconfigureStaticRoutesInClient(IResource resource, VCPENetworkModel model) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	private void unconfigureStaticRoutesInClient(IResource resource, VCPENetworkModel model) throws ResourceException {
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_PEER);
+
+		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
+
+		String ipRange = "0.0.0.0/0";
+		String nextHopIpAddress = addressAndMask1[0];
+
+		deleteStaticRoute(lr1, model, ipRange, nextHopIpAddress);
+
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_PEER);
+		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
+		String nextHopIpAddress2 = addressAndMask2[0];
+
+		deleteStaticRoute(lr2, model, ipRange, nextHopIpAddress2);
 	}
 
-	private void unconfigureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	private void unconfigureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) throws ResourceException {
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_LOCAL);
+
+		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
+
+		String ipRange = model.getClientIpAddressRange();
+		String nextHopIpAddress1 = addressAndMask1[0];
+
+		deleteStaticRoute(phy1, model, ipRange, nextHopIpAddress1);
+
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_LOCAL);
+
+		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
+		String nextHopIpAddress2 = addressAndMask2[0];
+
+		deleteStaticRoute(phy2, model, ipRange, nextHopIpAddress2);
 	}
 
 	private void configureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) throws ResourceException {
@@ -448,6 +542,20 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		IStaticRouteCapability capability = (IStaticRouteCapability) routerResource.getCapabilityByInterface(IStaticRouteCapability.class);
 		capability.createStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress);
+	}
+
+	private void deleteStaticRoute(Router router, VCPENetworkModel model, String ipRange, String nextHopIpAddress) throws ResourceException {
+		IResource routerResource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
+
+		String[] ipRangeAddressAndMask = IPUtilsHelper.composedIPAddressToIPAddressAndMask(ipRange);
+
+		if (ipRangeAddressAndMask.length < 1) {
+			throw new ResourceException("Invalid IP address range (missing mask): " + ipRange);
+		}
+
+		IStaticRouteCapability capability = (IStaticRouteCapability) routerResource.getCapabilityByInterface(IStaticRouteCapability.class);
+		capability.deleteStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress);
 	}
 
 	private void startLogicalRouters(IResource resource, VCPENetworkModel model) throws ResourceException {

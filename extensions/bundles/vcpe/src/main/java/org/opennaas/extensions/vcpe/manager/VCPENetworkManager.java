@@ -28,8 +28,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			VCPENetworkModel model = template.buildModel(vcpeNetworkModel);
 			IResource resource = Activator.getResourceManagerService()
 					.getResourceById(vcpeNetworkModel.getVcpeNetworkId());
-			resource.setModel(model);
-			// Execute the capability and generate the real enviroment
+			// Execute the capability and generate the real environment
 			IVCPENetworkBuilder vcpeNetworkBuilder = (IVCPENetworkBuilder) resource
 					.getCapabilityByInterface(IVCPENetworkBuilder.class);
 			vcpeNetworkBuilder.buildVCPENetwork(model);
@@ -97,12 +96,13 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		try {
 			listModel = Activator.getResourceManagerService().listResourcesByType(VCPENetworkDescriptor.RESOURCE_TYPE);
 			for (int i = 0; i < listModel.size(); i++) {
-				result.add((VCPENetworkModel) listModel.get(i).getModel());
+				if (listModel.get(i).getModel() != null) {
+					result.add((VCPENetworkModel) listModel.get(i).getModel());
+				}
 			}
 		} catch (ActivatorException e) {
 			throw new VCPENetworkManagerException(e);
 		}
 		return result;
 	}
-
 }

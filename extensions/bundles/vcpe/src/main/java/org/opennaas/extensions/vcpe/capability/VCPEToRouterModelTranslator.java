@@ -85,15 +85,19 @@ public class VCPEToRouterModelTranslator {
 			target.addProtocolEndpoint(vlanEP);
 		}
 		if (source.getIpAddress() != null) {
-			String[] addressAndMask = IPUtilsHelper.composedIPAddressToIPAddressAndMask(source.getIpAddress());
-
-			IPProtocolEndpoint ipEP = new IPProtocolEndpoint();
-			ipEP.setIPv4Address(addressAndMask[0]);
-			if (addressAndMask.length > 1)
-				ipEP.setSubnetMask(addressAndMask[1]);
-			target.addProtocolEndpoint(ipEP);
+			target.addProtocolEndpoint(ipAddressToProtocolEndpoint(source.getIpAddress()));
 		}
 		return target;
+	}
+
+	public static IPProtocolEndpoint ipAddressToProtocolEndpoint(String ipAddress) {
+		String[] addressAndMask = IPUtilsHelper.composedIPAddressToIPAddressAndMask(ipAddress);
+
+		IPProtocolEndpoint ipEP = new IPProtocolEndpoint();
+		ipEP.setIPv4Address(addressAndMask[0]);
+		if (addressAndMask.length > 1)
+			ipEP.setSubnetMask(addressAndMask[1]);
+		return ipEP;
 	}
 
 	private static Interface findPeerInterface(Interface iface, VCPENetworkModel model) {

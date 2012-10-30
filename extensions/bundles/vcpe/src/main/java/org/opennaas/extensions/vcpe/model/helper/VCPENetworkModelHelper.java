@@ -3,6 +3,7 @@ package org.opennaas.extensions.vcpe.model.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
@@ -18,7 +19,7 @@ public class VCPENetworkModelHelper {
 	}
 
 	public static VCPENetworkElement getElementByNameInTemplate(List<? extends VCPENetworkElement> elements, String nameInTemplate) {
-		if (nameInTemplate == null)
+		if (nameInTemplate == null || elements == null)
 			return null;
 
 		for (VCPENetworkElement element : elements) {
@@ -30,6 +31,9 @@ public class VCPENetworkModelHelper {
 
 	public static List<Link> getLinks(List<? extends VCPENetworkElement> elements) {
 		List<Link> links = new ArrayList<Link>();
+		if (elements == null)
+			return links;
+
 		for (VCPENetworkElement element : elements) {
 			if (element instanceof Link) {
 				links.add((Link) element);
@@ -52,6 +56,8 @@ public class VCPENetworkModelHelper {
 		model.setElements(all);
 
 		model.setClientIpAddressRange("192.0.2.0/24");
+		model.setTemplateName(TemplateSelector.BASIC_TEMPLATE);
+		model.setVcpeNetworkName("vcpeNet1");
 
 		return model;
 	}
