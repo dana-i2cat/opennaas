@@ -16,6 +16,7 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.opennaas.web.entities.Interface;
+import org.opennaas.web.entities.Link;
 import org.opennaas.web.entities.LogicalRouter;
 import org.opennaas.web.entities.VCPENetwork;
 import org.opennaas.web.services.rest.RestServiceException;
@@ -160,10 +161,12 @@ public class VCPENetworkBO {
 	 */
 	private VCPENetwork getVCPENetworkGUI(VCPENetworkModel modelIn) {
 		VCPENetwork modelOut = new VCPENetwork();
+		// Network dates
 		modelOut.setId(modelIn.getVcpeNetworkId());
 		modelOut.setName(modelIn.getVcpeNetworkName());
 		modelOut.setClientIpRange(modelIn.getClientIpAddressRange());
 
+		// Logical Routers
 		Router logicalRouter1 = (Router) VCPENetworkModelHelper
 				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
 		Router logicalRouter2 = (Router) VCPENetworkModelHelper
@@ -171,7 +174,37 @@ public class VCPENetworkBO {
 
 		modelOut.setLogicalRouter1(getLRGUI(logicalRouter1));
 		modelOut.setLogicalRouter2(getLRGUI(logicalRouter2));
+
+		// Links
+		List<Link> links = getLinksGUI(VCPENetworkModelHelper.getLinks(modelIn.getElements()));
+		modelOut.setLinks(links);
 		return modelOut;
+	}
+
+	/**
+	 * Convert the OpenNaaS list links in GUI links
+	 * 
+	 * @param links
+	 * @return list of links
+	 */
+	private List<Link> getLinksGUI(List<org.opennaas.extensions.vcpe.model.Link> inLinks) {
+		List<Link> outLinks = new ArrayList<Link>();
+		for (int i = 0; i < inLinks.size(); i++) {
+			outLinks.add(getLink(inLinks.get(i)));
+		}
+		return outLinks;
+	}
+
+	/**
+	 * Convert a OpenNaaS link in a GUI link
+	 * 
+	 * @param link
+	 * @return a link
+	 */
+	private Link getLink(org.opennaas.extensions.vcpe.model.Link inLink) {
+		// TODO
+		Link outlink = new Link();
+		return outlink;
 	}
 
 	/**

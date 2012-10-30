@@ -29,7 +29,7 @@ public class TemplateUtils {
 
 		// Logical Router1
 		LogicalRouter logicalRouter1 = new LogicalRouter();
-		logicalRouter1.setName(templateProperties.getProperty("vcpenetwork.router1.name"));
+		logicalRouter1.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.name"));
 		logicalRouter1.setTemplateName(VCPETemplate.VCPE1_ROUTER);
 
 		// Interfaces router1
@@ -66,7 +66,7 @@ public class TemplateUtils {
 		// Logical Router2
 		LogicalRouter logicalRouter2 = new LogicalRouter();
 		logicalRouter2.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.name"));
-		logicalRouter1.setTemplateName(VCPETemplate.VCPE2_ROUTER);
+		logicalRouter2.setTemplateName(VCPETemplate.VCPE2_ROUTER);
 
 		// Interfaces router2
 		interfaces = new ArrayList<Interface>();

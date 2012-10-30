@@ -31,8 +31,8 @@
 								<div class="field">
 									<label>${item.labelName} Interface</label>
 									<div class="input">
-										<spring:message code="logicalrouter.physicalinterface" />
-										<spring:message code="logicalrouter.ipAddress" />
+										<spring:message code="interface.name" />
+										<spring:message code="interface.ipAddress" />
 										<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13"/>
 									</div>
