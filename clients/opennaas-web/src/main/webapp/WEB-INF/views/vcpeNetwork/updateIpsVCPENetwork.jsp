@@ -17,6 +17,8 @@
 			<form:hidden path="id" />
 			<form:hidden path="name" />
 			<form:hidden path="template" />
+			<form:hidden path="clientIpRange"/>
+			
 			
 			<div class="demo">
 				<div id="tabs">
@@ -26,6 +28,8 @@
 					</ul>
 
 					<div id="tabs-1">
+						<form:hidden path="logicalRouter1.name"/>
+						<form:hidden path="logicalRouter1.templateName"/>
 						<div>
 							<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}" varStatus="vs" var="item">
 								<div class="field">
@@ -46,6 +50,8 @@
 					</div>
 					<div id="tabs-2">
 						<div>
+							<form:hidden path="logicalRouter2.name"/>
+							<form:hidden path="logicalRouter2.templateName"/>
 							<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
 								<div class="field">
 									<label>${item.labelName} Interface</label>
