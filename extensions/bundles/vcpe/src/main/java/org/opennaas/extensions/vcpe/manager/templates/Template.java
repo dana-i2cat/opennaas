@@ -261,7 +261,7 @@ public class Template implements ITemplate {
 
 		Domain autobahn = new Domain();
 		autobahn.setNameInTemplate(VCPETemplate.AUTOBAHN);
-		autobahn.setName("autobahn");
+		autobahn.setName(props.getProperty("vcpenetwork.bod.name"));
 
 		List<Interface> autobahnInterfaces = new ArrayList<Interface>();
 		autobahnInterfaces.add(inter1other);
