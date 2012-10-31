@@ -7,6 +7,18 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<script type="text/javascript">
+<!--
+	function setLRNames () {
+		var networName = document.getElementById('name').value;
+		var lr1 = document.getElementById('logicalRouter1.name');
+		var lr2 = document.getElementById('logicalRouter2.name');
+		lr1.value = lr1.value + '-' + networName;
+		lr2.value = lr2.value + '-' + networName;
+	}
+//-->
+</script>
+
 <div class="span-15 last">
 		
 	<form:form modelAttribute="VCPENetwork" action="${action}" method="post">
@@ -31,7 +43,7 @@
 									<spring:message code="vcpenetwork.name" />
 								</form:label>
 								<br />
-								<form:input path="name" />
+								<form:input path="name" onchange="setLRNames();"/>
 								<form:errors path="name" />
 							</div>
 							
@@ -58,7 +70,7 @@
 					</div>
 					<div id="tabs-2">
 						<div>
-							<form:hidden path="logicalRouter1.name"/>
+							<form:hidden path="logicalRouter1.name" />
 							<form:hidden path="logicalRouter1.templateName"/>
 							<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}" varStatus="vs" var="item">
 								<div class="field">

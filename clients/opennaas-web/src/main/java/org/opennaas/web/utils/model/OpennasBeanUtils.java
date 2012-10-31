@@ -63,7 +63,7 @@ public class OpennasBeanUtils {
 	 */
 	public static org.opennaas.extensions.vcpe.model.LogicalRouter getLROpennaas(String networkName, String templateName, LogicalRouter lrIn) {
 		org.opennaas.extensions.vcpe.model.LogicalRouter lrOut = new org.opennaas.extensions.vcpe.model.LogicalRouter();
-		lrOut.setName(lrIn.getName() + "-" + networkName);
+		lrOut.setName(lrIn.getName());
 		lrOut.setNameInTemplate(templateName);
 		// Interfaces
 		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
