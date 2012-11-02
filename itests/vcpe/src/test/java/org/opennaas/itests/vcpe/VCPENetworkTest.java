@@ -3,6 +3,7 @@ package org.opennaas.itests.vcpe;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -12,7 +13,6 @@ import javax.inject.Inject;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
@@ -56,11 +56,11 @@ public class VCPENetworkTest {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-vcpe"),
 				noConsole(),
-				keepRuntimeFolder());
+				keepRuntimeFolder(),
+				openDebugSocket());
 	}
 
 	@Test
-	@Ignore
 	public void resourceWorkflow() throws ResourceException {
 		try {
 			IResource resource = createResource();
@@ -73,7 +73,6 @@ public class VCPENetworkTest {
 	}
 
 	@Test
-	@Ignore
 	public void modelPersistence() throws SerializationException, ResourceException {
 
 		VCPENetworkModel model = VCPENetworkModelHelper.generateSampleModel();
