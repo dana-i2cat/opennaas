@@ -3,7 +3,6 @@ package org.opennaas.itests.vcpe;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -56,8 +55,7 @@ public class VCPENetworkTest {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-vcpe"),
 				noConsole(),
-				keepRuntimeFolder(),
-				openDebugSocket());
+				keepRuntimeFolder());
 	}
 
 	@Test
