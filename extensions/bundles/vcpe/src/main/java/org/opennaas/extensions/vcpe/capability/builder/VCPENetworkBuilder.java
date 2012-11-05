@@ -5,6 +5,8 @@ import static com.google.common.collect.Iterables.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -23,6 +25,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
+import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
@@ -46,6 +49,8 @@ import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetworkBuilder {
+
+	Log							log				= LogFactory.getLog(VCPENetworkBuilder.class);
 
 	public static final String	CAPABILITY_TYPE	= "vcpenet_builder";
 	private String				resourceId;
@@ -170,6 +175,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private VCPENetworkModel buildDesiredScenario(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
+
+		log.debug("building scenario in resource" + resource.getResourceDescriptor().getInformation().getName());
 
 		createExternalLinks(resource, desiredScenario);
 
@@ -296,6 +303,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void createSubInterfaces(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
+
+		log.debug("Configuring subinterfaces");
+
 		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
 		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.VCPE1_ROUTER);
 
@@ -318,6 +328,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	private void removeSubInterfaces(IResource resource, VCPENetworkModel currentScenario) throws ResourceException {
 		// SubInterfaces assigned to logical routers will be destroyed with them.
 		// There is only need to remove other interfaces
+
+		log.debug("Removing subinterfaces");
 
 		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(currentScenario, VCPETemplate.CPE1_PHY_ROUTER);
 		List<Interface> ifaces = new ArrayList<Interface>();
@@ -381,6 +393,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void assignIPAddresses(IResource resource, VCPENetworkModel model) throws ResourceException {
 
+		log.debug("Assigning IP addresses");
+
 		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
 		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
 		Interface up1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_PEER);
@@ -428,6 +442,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		log.debug("Configuring EGPs");
+
 		// only static routes by now
 		configureStaticRoutes(resource, model);
 	}
@@ -438,12 +455,17 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void configureStaticRoutes(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		log.debug("Configuring static routes");
+
 		configureStaticRoutesInProvider(resource, model);
 		// Notice this requires logical routers to be started
 		configureStaticRoutesInClient(resource, model);
 	}
 
 	private void unconfigureStaticRoutes(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		log.debug("Removing static routes");
 
 		unconfigureStaticRoutesInProvider(resource, model);
 
@@ -559,6 +581,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void startLogicalRouters(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		log.debug("Starting logical routers");
+
 		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
 		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
 		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
@@ -599,6 +624,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void createExternalLinks(IResource resource, VCPENetworkModel model) throws ResourceException {
 
+		log.debug("Creating bod links");
+
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 
 		// inter link
@@ -606,8 +633,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		long interSrcVlan = inter.getSource().getVlanId();
 		long interDstVlan = inter.getSink().getVlanId();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
 
 		createAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
 
@@ -616,8 +643,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		long down1SrcVlan = down1.getSource().getVlanId();
 		long down1DstVlan = down1.getSink().getVlanId();
 
-		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
-		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 
 		createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
@@ -626,13 +653,15 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		long down2SrcVlan = down2.getSource().getVlanId();
 		long down2DstVlan = down2.getSink().getVlanId();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
 		createAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
 	}
 
 	private void destroyExternalLinks(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		log.debug("Removing bod links");
 
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 
@@ -641,8 +670,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		long interSrcVlan = inter.getSource().getVlanId();
 		long interDstVlan = inter.getSink().getVlanId();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
 
 		destroyAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
 
@@ -651,8 +680,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		long down1SrcVlan = down1.getSource().getVlanId();
 		long down1DstVlan = down1.getSink().getVlanId();
 
-		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
-		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 
 		destroyAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
@@ -661,20 +690,20 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		long down2SrcVlan = down2.getSource().getVlanId();
 		long down2DstVlan = down2.getSink().getVlanId();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
 		destroyAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
 	}
 
 	private void createAutobahnLink(VCPENetworkModel model, Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
 
-		RequestConnectionParameters requestParams = createL2BoDCreateConnectionRequest(src, dst, srcVlan, dstVlan);
-
 		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
 
 		IResource autobahn = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
+
+		RequestConnectionParameters requestParams = createL2BoDCreateConnectionRequest(src, dst, srcVlan, dstVlan, autobahn);
 
 		IL2BoDCapability capability = (IL2BoDCapability) autobahn.getCapabilityByInterface(IL2BoDCapability.class);
 		capability.requestConnection(requestParams);
@@ -682,18 +711,19 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void destroyAutobahnLink(VCPENetworkModel model, Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
 
-		RequestConnectionParameters requestParams = createL2BoDCreateConnectionRequest(src, dst, srcVlan, dstVlan);
-
 		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
 
 		IResource autobahn = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
 
+		RequestConnectionParameters requestParams = createL2BoDCreateConnectionRequest(src, dst, srcVlan, dstVlan, autobahn);
+
 		IL2BoDCapability capability = (IL2BoDCapability) autobahn.getCapabilityByInterface(IL2BoDCapability.class);
 		capability.shutDownConnection(requestParams);
 	}
 
-	private RequestConnectionParameters createL2BoDCreateConnectionRequest(Interface src, Interface dst, long srcVlan, long dstVlan) {
+	private RequestConnectionParameters createL2BoDCreateConnectionRequest(Interface src, Interface dst, long srcVlan, long dstVlan,
+			IResource autobahn) {
 
 		// TODO hardcoded! Read from config file or from NOC input
 		// set link capacity to 100 MB/s
@@ -702,9 +732,11 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		// set link endTime to 31/12/2012 12:00h
 		DateTime endTime = new DateTime(2012, 12, 31, 12, 0);
 
+		NetworkModel model = (NetworkModel) autobahn.getModel();
+
 		RequestConnectionParameters parameters = new RequestConnectionParameters(
-				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(src),
-				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(dst),
+				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(src, model),
+				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(dst, model),
 				capacity,
 				Integer.parseInt(Long.toString(srcVlan)), Integer.parseInt(Long.toString(dstVlan)),
 				DateTime.now(), endTime);
@@ -752,7 +784,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		IQueueManagerCapability qCapability = (IQueueManagerCapability) resource.getCapabilityByInterface(IQueueManagerCapability.class);
 		QueueResponse response = qCapability.execute();
 		if (!response.isOk()) {
-			throw new ResourceException("Failed to execute queue for resource " + resource.getResourceDescriptor().getInformation().getName());
+			String commitMsg = response.getConfirmResponse().getInformation();
+			throw new ResourceException(
+					"Failed to execute queue for resource " + resource.getResourceDescriptor().getInformation().getName() + ": " + commitMsg);
 		}
 	}
 
