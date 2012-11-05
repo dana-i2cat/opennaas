@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.opennaas.gui.vcpe</artifactId>
 	<packaging>war</packaging>
-	<name>OpenNaas :: GUI :: Virtual CPE</name>
+	<name>OpenNaaS :: GUI :: Virtual CPE</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
