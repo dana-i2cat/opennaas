@@ -10,18 +10,17 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
  * @author Elisabeth Rigol
  * 
  */
-public class sampleResourceRepository extends ResourceRepository {
+public class SampleResourceRepository extends ResourceRepository {
 
 	/**
 	 * Logger
 	 */
-	Log	log	= LogFactory.getLog(sampleResourceRepository.class);
+	Log	log	= LogFactory.getLog(SampleResourceRepository.class);
 
 	/**
 	 * @param resourceType
 	 */
-	public sampleResourceRepository(String resourceType) {
-
+	public SampleResourceRepository(String resourceType) {
 		super(resourceType);
 	}
 

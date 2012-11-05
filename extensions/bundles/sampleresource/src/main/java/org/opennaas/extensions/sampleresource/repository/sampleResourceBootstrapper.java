@@ -13,9 +13,9 @@ import org.opennaas.extensions.sampleresource.model.SampleModel;
  * @author Elisabeth Rigol
  * 
  */
-public class sampleResourceBootstrapper implements IResourceBootstrapper {
+public class SampleResourceBootstrapper implements IResourceBootstrapper {
 
-	Log				log	= LogFactory.getLog(sampleResourceBootstrapper.class);
+	Log				log	= LogFactory.getLog(SampleResourceBootstrapper.class);
 
 	private IModel	oldModel;
 
