@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
+import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
@@ -17,7 +18,7 @@ public class VCPENetworkModelHelper {
 		return getElementByNameInTemplate(model.getElements(), nameInTemplate);
 	}
 
-	public static VCPENetworkElement getElementByNameInTemplate(List<VCPENetworkElement> elements, String nameInTemplate) {
+	public static VCPENetworkElement getElementByNameInTemplate(List<? extends VCPENetworkElement> elements, String nameInTemplate) {
 		if (nameInTemplate == null || elements == null)
 			return null;
 
@@ -28,7 +29,7 @@ public class VCPENetworkModelHelper {
 		return null;
 	}
 
-	public static List<Link> getLinks(List<VCPENetworkElement> elements) {
+	public static List<Link> getLinks(List<? extends VCPENetworkElement> elements) {
 		List<Link> links = new ArrayList<Link>();
 		if (elements == null)
 			return links;
@@ -351,23 +352,27 @@ public class VCPENetworkModelHelper {
 		r2Interfaces.add(up2);
 		r2.setInterfaces(r2Interfaces);
 
+		Domain autobahn = new Domain();
+		autobahn.setNameInTemplate(VCPETemplate.AUTOBAHN);
+		autobahn.setName("autobahn");
+
+		List<Interface> autobahnInterfaces = new ArrayList<Interface>();
+		autobahnInterfaces.add(inter1other);
+		autobahnInterfaces.add(inter2other);
+		autobahnInterfaces.add(down1other);
+		autobahnInterfaces.add(down2other);
+		autobahnInterfaces.add(client1);
+		autobahnInterfaces.add(client2);
+		autobahn.setInterfaces(autobahnInterfaces);
+
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		elements.add(r1);
-		elements.add(inter1);
-		elements.add(inter1other);
-		elements.add(down1);
-		elements.add(down1other);
-		elements.add(up1);
-		elements.add(client1);
+		elements.addAll(r1.getInterfaces());
 		elements.add(r2);
-		elements.add(inter2);
-		elements.add(inter2other);
-		elements.add(down2);
-		elements.add(down2other);
-		elements.add(up2);
-		elements.add(client2);
+		elements.addAll(r2.getInterfaces());
+		elements.add(autobahn);
+		elements.addAll(autobahn.getInterfaces());
 
 		return elements;
 	}
-
 }

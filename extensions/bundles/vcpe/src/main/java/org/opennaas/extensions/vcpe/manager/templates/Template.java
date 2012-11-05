@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
+import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
@@ -258,21 +259,26 @@ public class Template implements ITemplate {
 		r2Interfaces.add(up2);
 		r2.setInterfaces(r2Interfaces);
 
+		Domain autobahn = new Domain();
+		autobahn.setNameInTemplate(VCPETemplate.AUTOBAHN);
+		autobahn.setName(props.getProperty("vcpenetwork.bod.name"));
+
+		List<Interface> autobahnInterfaces = new ArrayList<Interface>();
+		autobahnInterfaces.add(inter1other);
+		autobahnInterfaces.add(inter2other);
+		autobahnInterfaces.add(down1other);
+		autobahnInterfaces.add(down2other);
+		autobahnInterfaces.add(client1);
+		autobahnInterfaces.add(client2);
+		autobahn.setInterfaces(autobahnInterfaces);
+
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		elements.add(r1);
-		elements.add(inter1);
-		elements.add(inter1other);
-		elements.add(down1);
-		elements.add(down1other);
-		elements.add(up1);
-		elements.add(client1);
+		elements.addAll(r1.getInterfaces());
 		elements.add(r2);
-		elements.add(inter2);
-		elements.add(inter2other);
-		elements.add(down2);
-		elements.add(down2other);
-		elements.add(up2);
-		elements.add(client2);
+		elements.addAll(r2.getInterfaces());
+		elements.add(autobahn);
+		elements.addAll(autobahn.getInterfaces());
 
 		return elements;
 	}
