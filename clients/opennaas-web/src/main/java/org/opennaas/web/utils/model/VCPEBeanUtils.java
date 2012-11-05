@@ -93,6 +93,15 @@ public class VCPEBeanUtils {
 		outIface.setPort(org.opennaas.web.entities.Interface.getPortFromCompleteName(interfaceIn.getName()));
 		outIface.setIpAddress(interfaceIn.getIpAddress());
 		outIface.setVlan((int) interfaceIn.getVlanId());
+		if (interfaceIn.getNameInTemplate().equals(VCPETemplate.DOWN1_INTERFACE_LOCAL)
+				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.DOWN2_INTERFACE_LOCAL)) {
+			outIface.setLabelName(Interface.Types.DOWN.toString());
+		} else if (interfaceIn.getNameInTemplate().equals(VCPETemplate.UP1_INTERFACE_LOCAL)
+				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.UP2_INTERFACE_LOCAL)) {
+			outIface.setLabelName(Interface.Types.UP.toString());
+		} else {
+			outIface.setLabelName(Interface.Types.INTER.toString());
+		}
 		return outIface;
 	}
 
