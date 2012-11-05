@@ -38,18 +38,33 @@ public class VCPENetworkBO {
 	private BuilderCapabilityService	builderService;
 
 	/**
-	 * Create a VCPE Network, start the resource and build the enviroment
+	 * Create a VCPE Network, start the resource and build the environment
 	 * 
 	 * @param vcpeNetwork
 	 * @throws RestServiceException
 	 */
 	public String create(VCPENetwork vcpeNetwork) throws RestServiceException {
-		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
-		String vcpeNetworkId = resourceService.createResource(getResourceDescriptor(vcpeNetwork));
-		LOGGER.debug("start the VCPENetwork with id: " + vcpeNetworkId);
-		resourceService.startResource(vcpeNetworkId);
-		LOGGER.debug("create the VCPENetwork enviroment");
-		vcpeNetworkService.buildVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetworkId, vcpeNetwork));
+		String vcpeNetworkId = null;
+		Boolean isStarted = false;
+		try {
+			LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
+			vcpeNetworkId = resourceService.createResource(getResourceDescriptor(vcpeNetwork));
+			LOGGER.debug("start the VCPENetwork with id: " + vcpeNetworkId);
+			isStarted = resourceService.startResource(vcpeNetworkId);
+			LOGGER.debug("create the VCPENetwork enviroment");
+			vcpeNetworkService.buildVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetworkId, vcpeNetwork));
+		} catch (RestServiceException e) {
+			// Rollback if the environment has not been created.
+			if (vcpeNetworkId != null) {
+				if (isStarted) {
+					LOGGER.debug("stop the VCPENetwork with id: " + vcpeNetworkId);
+					resourceService.stopResource(vcpeNetworkId);
+				}
+				LOGGER.debug("remove the VCPENetwork with id: " + vcpeNetworkId);
+				resourceService.deleteResource(vcpeNetworkId);
+			}
+			throw e;
+		}
 		return vcpeNetworkId;
 	}
 
