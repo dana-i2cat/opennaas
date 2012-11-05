@@ -14,7 +14,6 @@
 
 	<modules>
         <module>opennaas-gui-vcpe</module>
-<!-- <module>rest-client</module>  -->
         <module>tnc-demo-web</module>
  	</modules>
 </project>
