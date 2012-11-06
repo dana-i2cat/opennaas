@@ -25,19 +25,17 @@
 			<spring:message code="vcpenetwork.logicalrouter1" />:&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.name" />
 		</legend>
 		<c:forEach items="${vcpenetwork.logicalRouter1.interfaces}" varStatus="vs" var="item">
-			<c:if test="${item.labelName != 'Down'}">
-				<div class="field">			
-					<h6>${item.labelName} Interface</h6>
-					<hr>
-					<div style="margin-left: 20px;" class="input">
-						<b><spring:message code="interface.name" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].name" /><br/>
-						<b><spring:message code="interface.port" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].port" /><br/>
-						<b><spring:message code="interface.ipAddress" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].ipAddress" /><br/>
-						<b><spring:message code="interface.vlan" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].vlan" /><br/>
-					</div>
-					<br/>
+			<div class="field">			
+				<h6>${item.labelName} Interface</h6>
+				<hr>
+				<div style="margin-left: 20px;" class="input">
+					<b><spring:message code="interface.name" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].name" /><br/>
+					<b><spring:message code="interface.port" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].port" /><br/>
+					<b><spring:message code="interface.ipAddress" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].ipAddress" /><br/>
+					<b><spring:message code="interface.vlan" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter1.interfaces[${vs.index}].vlan" /><br/>
 				</div>
-			</c:if>
+				<br/>
+			</div>
 		</c:forEach>
 	</fieldset>
 </div>
@@ -48,17 +46,19 @@
 			<spring:message code="vcpenetwork.logicalrouter2" />:&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.name" />
 		</legend>
 		<c:forEach items="${vcpenetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
-			<div class="field">	
-				<h6>${item.labelName} Interface</h6>
-				<hr>
-				<div style="margin-left: 20px;" class="input">
-					<b><spring:message code="interface.name" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].name" /><br/>
-					<b><spring:message code="interface.port" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].port" /><br/>
-					<b><spring:message code="interface.ipAddress" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].ipAddress" /><br/>
-					<b><spring:message code="interface.vlan" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].vlan" /><br/>
+			<c:if test="${item.labelName != 'Down'}">
+				<div class="field">	
+					<h6>${item.labelName} Interface</h6>
+					<hr>
+					<div style="margin-left: 20px;" class="input">
+						<b><spring:message code="interface.name" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].name" /><br/>
+						<b><spring:message code="interface.port" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].port" /><br/>
+						<b><spring:message code="interface.ipAddress" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].ipAddress" /><br/>
+						<b><spring:message code="interface.vlan" />:</b>&nbsp;<spring:eval expression="vcpenetwork.logicalRouter2.interfaces[${vs.index}].vlan" /><br/>
+					</div>
+					<br/>
 				</div>
-				<br/>
-			</div>
+			</c:if>
 		</c:forEach>
 	</fieldset>
 </div>
