@@ -11,6 +11,7 @@ import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 public class TemplateSelector {
 
 	public static final String	BASIC_TEMPLATE	= "basic.template";
+	public static final String	DEMO_TEMPLATE	= "demo.template";
 
 	/**
 	 * Return the correct ITemplate from the templateId
@@ -23,6 +24,8 @@ public class TemplateSelector {
 		ITemplate iTemplate = new Template();
 		if (templateId.equals(BASIC_TEMPLATE)) {
 			iTemplate = new Template();
+		} else if (templateId.equals(DEMO_TEMPLATE)) {
+			iTemplate = new DemoTemplate();
 		}
 		return iTemplate;
 	}

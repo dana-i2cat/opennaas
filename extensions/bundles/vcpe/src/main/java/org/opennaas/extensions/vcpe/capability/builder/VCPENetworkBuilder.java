@@ -630,33 +630,39 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// inter link
 		Link inter = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.INTER_LINK);
-		long interSrcVlan = inter.getSource().getVlanId();
-		long interDstVlan = inter.getSink().getVlanId();
+		if (inter != null) {
+			long interSrcVlan = inter.getSource().getVlanId();
+			long interDstVlan = inter.getSink().getVlanId();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+			Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+			Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
 
-		createAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
+			createAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
+		}
 
 		// down1 link
 		Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
-		long down1SrcVlan = down1.getSource().getVlanId();
-		long down1DstVlan = down1.getSink().getVlanId();
+		if (down1 != null) {
+			long down1SrcVlan = down1.getSource().getVlanId();
+			long down1DstVlan = down1.getSink().getVlanId();
 
-		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
-		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+			Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+			Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 
-		createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
+			createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
+		}
 
 		// down 2 link
 		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
-		long down2SrcVlan = down2.getSource().getVlanId();
-		long down2DstVlan = down2.getSink().getVlanId();
+		if (down2 != null) {
+			long down2SrcVlan = down2.getSource().getVlanId();
+			long down2DstVlan = down2.getSink().getVlanId();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+			Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+			Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
-		createAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
+			createAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
+		}
 	}
 
 	private void destroyExternalLinks(IResource resource, VCPENetworkModel model) throws ResourceException {
@@ -667,33 +673,39 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// inter link
 		Link inter = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.INTER_LINK);
-		long interSrcVlan = inter.getSource().getVlanId();
-		long interDstVlan = inter.getSink().getVlanId();
+		if (inter != null) {
+			long interSrcVlan = inter.getSource().getVlanId();
+			long interDstVlan = inter.getSink().getVlanId();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+			Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+			Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
 
-		destroyAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
+			destroyAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
+		}
 
 		// down1 link
 		Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
-		long down1SrcVlan = down1.getSource().getVlanId();
-		long down1DstVlan = down1.getSink().getVlanId();
+		if (down1 != null) {
+			long down1SrcVlan = down1.getSource().getVlanId();
+			long down1DstVlan = down1.getSink().getVlanId();
 
-		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
-		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+			Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+			Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 
-		destroyAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
+			destroyAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
+		}
 
 		// down 2 link
 		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
-		long down2SrcVlan = down2.getSource().getVlanId();
-		long down2DstVlan = down2.getSink().getVlanId();
+		if (down2 != null) {
+			long down2SrcVlan = down2.getSource().getVlanId();
+			long down2DstVlan = down2.getSink().getVlanId();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+			Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+			Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
-		destroyAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
+			destroyAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
+		}
 	}
 
 	private void createAutobahnLink(VCPENetworkModel model, Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
@@ -727,7 +739,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// TODO hardcoded! Read from config file or from NOC input
 		// set link capacity to 100 MB/s
-		long capacity = 100 * 1000000L;
+		long capacity = 10 * 1000000L;
 		// TODO hardcoded! Read from config file or from NOC input
 		// set link endTime to 31/12/2012 12:00h
 		DateTime endTime = new DateTime(2012, 12, 31, 12, 0);

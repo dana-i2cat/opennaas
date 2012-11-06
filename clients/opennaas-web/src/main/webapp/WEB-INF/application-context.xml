@@ -47,7 +47,8 @@
 
 	<!--Template for VCPENetwork  -->
 	<util:properties id="templateProperties" location="classpath:template.properties"/>
-
+	<util:properties id="demoTemplateProperties" location="classpath:demotemplate.properties"/>
+	
 	<!-- OpenNaas Beans-->
 	<bean id="templateUtils" class="org.opennaas.web.utils.model.TemplateUtils" />	
 	<bean id="vcpeNetworkBO" class="org.opennaas.web.bos.VCPENetworkBO" />

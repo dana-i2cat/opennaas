@@ -63,6 +63,7 @@
 								<br />
 								<form:select path="template">
 										<form:option value="basic.template">Basic Template </form:option>
+										<form:option value="demo.template" selected="true">Demo Template </form:option>
 								</form:select>
 								<form:errors path="template" />
 							</div>
@@ -82,28 +83,28 @@
 												<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName"/>
 												<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8"/>.
-												<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="1" />
-												<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="1" />
+												<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
+												<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
 												<spring:message code="interface.ipAddress" />
 												<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13"/>
 												<spring:message code="interface.vlan" />
-												<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="1" />
-												<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="1" />
+												<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
+												<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
 											</c:when>
 											<c:otherwise>
 												<spring:message code="interface.name" />
 												<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName"/>
 												<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" readonly="true" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8"/>.
-												<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="1" readonly="true" />
-												<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="1" />
+												<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" readonly="true" />
+												<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
 												<spring:message code="interface.ipAddress" />
 												<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" readonly="true" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13"/>
 												<spring:message code="interface.vlan" />
-												<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="1" readonly="true" />
-												<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="1" />
+												<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" readonly="true" />
+												<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
 											</c:otherwise>
 										</c:choose>
 									</div>
@@ -127,28 +128,28 @@
 														<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName"/>
 														<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" />
 														<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8"/>.
-														<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="1" />
-														<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="1" />
+														<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
+														<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
 														<spring:message code="interface.ipAddress" />
 														<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" />
 														<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13"/>
 														<spring:message code="interface.vlan" />
-														<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="1" />
-														<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="1" />
+														<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+														<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
 													</c:when>
 													<c:otherwise>
 														<spring:message code="interface.name" />
 														<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName"/>
 														<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" readonly="true" />
 														<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8" />.
-														<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="1" readonly="true" />
-														<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="1" />
+														<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" readonly="true" />
+														<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
 														<spring:message code="interface.ipAddress" />
 														<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" readonly="true" />
 														<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13"/>
 														<spring:message code="interface.vlan" />
-														<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="1" readonly="true" />
-														<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="1" />
+														<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" readonly="true" />
+														<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
 													</c:otherwise>
 												</c:choose>
 											</div>
