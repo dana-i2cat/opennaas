@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({ Interface.class, Link.class, Router.class })
+@XmlSeeAlso({ Domain.class, Interface.class, Link.class, Router.class })
 public abstract class VCPENetworkElement {
 
 	@XmlID
