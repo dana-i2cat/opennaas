@@ -206,7 +206,7 @@ public class GetTopologyAction extends AutobahnAction
 			ifaces.add(sink);
 			link.setRequestParameters(ParameterTranslator.createRequestParameters(reservation, ifaces));
 			log.info("Discovered reservation " + service.getBodID() +
-					" from " + source.getName() + " to " + sink.getName());
+					" from " + source.getName() + " to " + sink.getName() + " with parameters: " + link.getRequestParameters().toString());
 			return link;
 		} else {
 			return null;

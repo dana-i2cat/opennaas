@@ -65,18 +65,11 @@ public class VCPEBeanUtils {
 			// Interfaces
 			List<org.opennaas.web.entities.Interface> interfaces = new ArrayList<org.opennaas.web.entities.Interface>();
 			lrOut.setInterfaces(interfaces);
-			// Interface Inter
-			Interface inter = getInterface(lrIn.getInterfaces().get(0));
-			inter.setLabelName(Interface.Types.INTER.toString());
-			interfaces.add(inter);
-			// Interface Down
-			Interface down = getInterface(lrIn.getInterfaces().get(1));
-			down.setLabelName(Interface.Types.DOWN.toString());
-			interfaces.add(down);
-			// Interface Up
-			Interface up = getInterface(lrIn.getInterfaces().get(2));
-			up.setLabelName(Interface.Types.UP.toString());
-			interfaces.add(up);
+
+			for (org.opennaas.extensions.vcpe.model.Interface iface : lrIn.getInterfaces()) {
+				interfaces.add(getInterface(iface));
+			}
+
 		}
 		return lrOut;
 	}

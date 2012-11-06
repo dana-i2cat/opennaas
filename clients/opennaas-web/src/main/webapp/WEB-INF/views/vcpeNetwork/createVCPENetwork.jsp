@@ -63,6 +63,7 @@
 								<br />
 								<form:select path="template">
 										<form:option value="basic.template">Basic Template </form:option>
+										<form:option value="demo.template" selected="true">Demo Template </form:option>
 								</form:select>
 								<form:errors path="template" />
 							</div>
