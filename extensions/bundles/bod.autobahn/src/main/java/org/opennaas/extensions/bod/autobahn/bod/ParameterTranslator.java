@@ -57,12 +57,18 @@ public class ParameterTranslator {
 
 		Interface interface1 = ParameterTranslator.getAutobahnInterfaceFromPortType(reservationRequest.getStartPort(), interfaces);
 		Interface interface2 = ParameterTranslator.getAutobahnInterfaceFromPortType(reservationRequest.getEndPort(), interfaces);
-		int vlanId = ParameterTranslator.getVlan(reservationRequest.getStartPort());
+		int srcVlanId = -1;
+		if (reservationRequest.getUserStartVlan() != 0)
+			srcVlanId = reservationRequest.getUserStartVlan();
+		int dstVlanId = -1;
+		if (reservationRequest.getUserEndVlan() != 0)
+			dstVlanId = reservationRequest.getUserEndVlan();
 		long capacity = reservationRequest.getCapacity();
 		DateTime startTime = ParameterTranslator.toDateTime(reservationRequest.getStartTime());
 		DateTime endTime = ParameterTranslator.toDateTime(reservationRequest.getEndTime());
 
-		RequestConnectionParameters parameters = new RequestConnectionParameters(interface1, interface2, capacity, vlanId, startTime, endTime);
+		RequestConnectionParameters parameters = new RequestConnectionParameters(interface1, interface2, capacity, srcVlanId, dstVlanId, startTime,
+				endTime);
 		return parameters;
 	}
 
