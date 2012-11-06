@@ -159,8 +159,8 @@ public class GetTopologyAction extends AutobahnAction
 			ReservationType reservation)
 	{
 
-		AutobahnInterface sourceClientIface = createClientInterface(source, reservation.getStartPort());
-		AutobahnInterface sinkClientIface = createClientInterface(sink, reservation.getEndPort());
+		AutobahnInterface sourceClientIface = createClientInterface(source, reservation.getStartPort(), reservation.getUserStartVlan());
+		AutobahnInterface sinkClientIface = createClientInterface(sink, reservation.getEndPort(), reservation.getUserEndVlan());
 
 		AutobahnLink link = new AutobahnLink();
 		link.setName(service.getBodID());
@@ -177,9 +177,9 @@ public class GetTopologyAction extends AutobahnAction
 		return link;
 	}
 
-	private AutobahnInterface createClientInterface(AutobahnInterface iface, PortType port) {
+	private AutobahnInterface createClientInterface(AutobahnInterface iface, PortType port, int vlan) {
 		AutobahnInterface clientInterface;
-		if (port.getVlan() >= 0) {
+		if (vlan >= 0) {
 			clientInterface = ParameterTranslator.createInterface(port, iface.isLocal());
 			// there may be two interfaces with same name if generated name is a valid autobahn id
 			clientInterface.setName(port.getAddress() + "." + port.getVlan());
