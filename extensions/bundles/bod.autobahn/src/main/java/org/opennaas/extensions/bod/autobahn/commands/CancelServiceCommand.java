@@ -137,6 +137,7 @@ public class CancelServiceCommand extends AutobahnCommand
 	private void waitUntilOrFailure(State state)
 			throws ActionException, UserAccessPointException_Exception
 		{
+			log.debug("Waiting for Service " + serviceId + " to be " + state);
 			State lastState = State.ACCEPTED;
 			while (true) {
 				ReservationResponse reservation = getReservation();
