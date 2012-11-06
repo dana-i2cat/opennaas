@@ -60,22 +60,30 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 		if (eth.getName() == null || eth.getName().isEmpty())
 			throw new ActionException(UNVALID_NAME);
 
-		/**
-		 * FIXME. Function should check encapsulation of the physical interface when OpenNaaS support it. For the moment, it's enough to check if the
-		 * params does not contain a vlanEndpoint (which means that the vlanID was not set and the portNumber must be 0)
-		 */
-		if ((eth.getPortNumber() != 0) && (eth.getProtocolEndpoint().isEmpty()))
-			throw new ActionException(UNTAGGED_INTERFACE_ERROR);
-
 		if (eth.getName().startsWith("gr-"))
 			setTemplate("/VM_files/configureGRELogicalInterface.vm");
 
-		else if (eth.getProtocolEndpoint().isEmpty())
-			setTemplate("/VM_files/configureEthWithoutVLAN.vm");
+		else {
 
-		else
-			setTemplate("/VM_files/configureEthVLAN.vm");
+			if (isEthernetInterface(eth)) {
+				/**
+				 * FIXME. Function should check encapsulation of the physical interface when OpenNaaS support it. For the moment, it's enough to check
+				 * if the params does not contain a vlanEndpoint (which means that the vlanID was not set and the portNumber must be 0)
+				 */
+				if ((eth.getPortNumber() != 0) && (eth.getProtocolEndpoint().isEmpty()))
+					throw new ActionException(UNTAGGED_INTERFACE_ERROR);
+			}
 
+			if (eth.getProtocolEndpoint().isEmpty())
+				setTemplate("/VM_files/configureEthWithoutVLAN.vm");
+			else
+				setTemplate("/VM_files/configureEthVLAN.vm");
+		}
+
+	}
+
+	private boolean isEthernetInterface(EthernetPort eth) {
+		return (eth.getName().startsWith("fe") || eth.getName().startsWith("ge"));
 	}
 
 	@Override

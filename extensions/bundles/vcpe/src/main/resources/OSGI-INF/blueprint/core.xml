@@ -12,6 +12,7 @@
           init-method="initializeEntityManager" destroy-method="close">
          <property name="persistenceUnit" value="ResourceCore"/>
     </bean>
+   
     <!-- Build the repository -->
 	<bean id="vCPENetRepository" class="org.opennaas.extensions.vcpe.repository.VCPENetRepository"
           init-method="init">
@@ -19,10 +20,21 @@
 		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 		<property name="resourceBootstrapperFactory" ref="vCPENetBootstrapperFactory"/>
 	</bean>
-	
-	<!-- Build VCPENetFactory -->		
-	<bean id="vCPENetFactory" class="org.opennaas.extensions.vcpe.factory.VCPENetFactory"/>
-	
+
+	<!--
+	    Register VCPENetworkManager as OSGi Service
+	  -->		
+	<bean id="vcpeNetworkManager" class="org.opennaas.extensions.vcpe.manager.VCPENetworkManager"/>
+	<service ref="vcpeNetworkManager" interface="org.opennaas.extensions.vcpe.manager.IVCPENetworkManager">
+		<service-properties>
+			<!-- Rest -->	
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="service.exported.intents" value="HTTP"/>		
+			<entry key="org.apache.cxf.ws.address" value="http://localhost:8888/opennaas/vcpenetwork"/>  
+		</service-properties>
+	</service>
+
 	<!-- Publish capability factories as an OSGi Service -->
 	<service ref="vcpeBuilderCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -43,10 +55,7 @@
 			<entry key="version" value="1.0.0"/>
 		</service-properties>
 	</service>
-	
-	<!-- Publish VCPENetFactory -->
-	<service ref="vCPENetFactory" interface="org.opennaas.extensions.vcpe.factory.IVCPENetFactory"/>
-	
+		
 	<!-- Command completers -->
 	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	

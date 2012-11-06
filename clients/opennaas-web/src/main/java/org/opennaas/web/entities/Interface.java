@@ -11,7 +11,29 @@ import javax.validation.constraints.Size;
  */
 public class Interface {
 
-	private String	labelName;
+	public enum Types {
+		INTER("Inter"), UP("Up"), DOWN("Down");
+
+		private final String	text;
+
+		/**
+		 * @param text
+		 */
+		private Types(final String text) {
+			this.text = text;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString() {
+			return text;
+		}
+
+	}
 
 	@NotNull
 	@Size(min = 1, max = 25)
@@ -28,6 +50,10 @@ public class Interface {
 	@NotNull
 	@Size(min = 1, max = 25)
 	private Integer	vlan;
+
+	private String	templateName;
+
+	private String	labelName;
 
 	/**
 	 * @return the name
@@ -104,4 +130,41 @@ public class Interface {
 		this.labelName = labelName;
 	}
 
+	/**
+	 * @return the templateName
+	 */
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	/**
+	 * @param templateName
+	 *            the templateName to set
+	 */
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getCompleteName() {
+		return getName() + "." + getPort();
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getNameFromCompleteName(String completeName) {
+		String aCompleteName[] = completeName.split("\\.");
+		return aCompleteName[0];
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getPortFromCompleteName(String completeName) {
+		String aCompleteName[] = completeName.split("\\.");
+		return aCompleteName[1];
+	}
 }

@@ -120,6 +120,14 @@
 		
 	</feature>
 
+	<feature name="opennaas-vcpe" version="${project.version}">
+		<feature version="${opennaas.version}">org.opennaas.core</feature>
+		<feature version="${project.version}">opennaas-router</feature>
+		<feature version="${project.version}">opennaas-bod</feature>
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.vcpe/${project.version}</bundle>
+	</feature>
+
 	<feature name="opennaas-bod" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
@@ -173,12 +181,6 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.model/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.capability.vlanawarebridge/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.ios.resource/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-vcpe" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
-		<feature version="${project.version}">opennaas-router</feature>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.vcpe/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">

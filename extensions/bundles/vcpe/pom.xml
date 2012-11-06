@@ -28,11 +28,31 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+		</dependency>
+		<dependency>
+		  <groupId>joda-time</groupId>
+		  <artifactId>joda-time</artifactId>
+	  	</dependency>
+		<dependency>
+			<groupId>com.googlecode.guava-osgi</groupId>
+			<artifactId>guava-osgi</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -52,10 +72,6 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.vcpe.Activator</Bundle-Activator>
-						<Import-Package>org.slf4j,*</Import-Package>
-						<!--<Export-Package>
-						org.opennaas.extensions.router.repository.*;version="${project.version}"
-						</Export-Package>-->
 					</instructions>
 				</configuration>
 			</plugin>

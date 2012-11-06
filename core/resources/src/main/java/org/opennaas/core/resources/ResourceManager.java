@@ -93,7 +93,7 @@ public class ResourceManager implements IResourceManager {
 			// return resources of a given type
 			IResourceRepository repo = resourceRepositories.get(type);
 			if (repo != null) {
-				return new ArrayList(repo.listResources());
+				return new ArrayList<IResource>(repo.listResources());
 			} else {
 				return null;
 			}
@@ -246,7 +246,7 @@ public class ResourceManager implements IResourceManager {
 	 */
 	@Override
 	public synchronized List<String> getResourceTypes() {
-		return new ArrayList(resourceRepositories.keySet());
+		return new ArrayList<String>(resourceRepositories.keySet());
 	}
 
 	/**
@@ -386,43 +386,6 @@ public class ResourceManager implements IResourceManager {
 	@Override
 	public String createResourceWS(ResourceDescriptor resourceDescriptor) throws ResourceException {
 		return createResource(resourceDescriptor).getResourceIdentifier().getId();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.IResourceManager#getAllResourceDescriptorByType(java.lang.String)
-	 */
-	@Override
-	public List<ResourceDescriptor> getResourceDescriptorsByType(String type) throws ResourceException {
-		List<IResource> listResources = listResourcesByType(type);
-		List<ResourceDescriptor> listDescriptors = new ArrayList<ResourceDescriptor>();
-		for (int i = 0; i < listResources.size(); i++) {
-			listDescriptors.add(listResources.get(i).getResourceDescriptor());
-		}
-		return listDescriptors;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.IResourceManager#getModelsByType(java.lang.String)
-	 */
-	@Override
-	public List<IModel> getModelsByType(String type) throws ResourceException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.IResourceManager#getModel(java.lang.String)
-	 */
-	@Override
-	public String getModel(String resourceId) throws ResourceException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -22,11 +22,6 @@
 		Error page
 	</h1>
 
-	<div>
-		<div style='float: right'>
-			<a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a>
-		</div>
-	</div>
 	<h2>Your application has generated an error</h2>
     <h3>Please check for the error given below</h3>
 	<b>Exception message:</b><br> 	    

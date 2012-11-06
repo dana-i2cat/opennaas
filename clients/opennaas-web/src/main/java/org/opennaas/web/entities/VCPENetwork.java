@@ -3,7 +3,6 @@ package org.opennaas.web.entities;
 /**
  * @author Jordi
  */
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -25,71 +24,26 @@ public class VCPENetwork {
 
 	private LogicalRouter	logicalRouter2;
 
+	private List<Link>		links;
+
+	private String			clientIpRange;
+
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public VCPENetwork() {
-		logicalRouter1 = new LogicalRouter();
-		List<Interface> interfaces = new ArrayList<Interface>();
+	}
 
-		Interface interface1 = new Interface();
-		Interface interface2 = new Interface();
-		Interface interface3 = new Interface();
-
-		interfaces.add(interface1);
-		interfaces.add(interface2);
-		interfaces.add(interface3);
-
-		interface1.setName("fe-0/3/2");
-		interface1.setPort("1");
-		interface1.setVlan(1);
-		interface1.setIpAddress("192.168.0.1/30");
-		interface1.setLabelName("Inter Interface");
-
-		interface2.setName("ge-0/2/0");
-		interface2.setPort("1");
-		interface2.setVlan(1);
-		interface2.setIpAddress("192.0.2.2/25");
-		interface2.setLabelName("Down Interface");
-
-		interface3.setName("lt-0/1/2");
-		interface3.setPort("1");
-		interface3.setVlan(0);
-		interface3.setIpAddress("192.168.0.5/30");
-		interface3.setLabelName("Up Interface");
-
-		logicalRouter1.setInterfaces(interfaces);
-
-		logicalRouter2 = new LogicalRouter();
-		interfaces = new ArrayList<Interface>();
-
-		interface1 = new Interface();
-		interface2 = new Interface();
-		interface3 = new Interface();
-
-		interfaces.add(interface1);
-		interfaces.add(interface2);
-		interfaces.add(interface3);
-
-		interface1.setName("fe-0/3/3");
-		interface1.setPort("1");
-		interface1.setVlan(1);
-		interface1.setIpAddress("192.168.0.2/30");
-		interface1.setLabelName("Inter Interface");
-
-		interface2.setName("ge-0/2/0");
-		interface2.setPort("2");
-		interface2.setVlan(2);
-		interface2.setIpAddress("192.0.2.3/25");
-		interface2.setLabelName("Down Interface");
-
-		interface3.setName("lt-0/1/2");
-		interface3.setPort("2");
-		interface3.setVlan(0);
-		interface3.setIpAddress("192.168.0.9/30");
-		interface3.setLabelName("Up Interface");
-
-		logicalRouter2.setInterfaces(interfaces);
+	/**
+	 * @param vcpeNetwork
+	 */
+	public VCPENetwork(VCPENetwork vcpeNetwork) {
+		this.id = vcpeNetwork.getId();
+		this.name = vcpeNetwork.getName();
+		this.template = vcpeNetwork.getName();
+		this.logicalRouter1 = vcpeNetwork.getLogicalRouter1();
+		this.logicalRouter2 = vcpeNetwork.getLogicalRouter2();
+		this.clientIpRange = vcpeNetwork.getClientIpRange();
 	}
 
 	/**
@@ -167,6 +121,36 @@ public class VCPENetwork {
 		this.logicalRouter2 = logicalRouter2;
 	}
 
+	/**
+	 * @return the clientIpRange
+	 */
+	public String getClientIpRange() {
+		return clientIpRange;
+	}
+
+	/**
+	 * @param clientIpRange
+	 *            the clientIpRange to set
+	 */
+	public void setClientIpRange(String clientIpRange) {
+		this.clientIpRange = clientIpRange;
+	}
+
+	/**
+	 * @return the links
+	 */
+	public List<Link> getLinks() {
+		return links;
+	}
+
+	/**
+	 * @param links
+	 *            the links to set
+	 */
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -174,7 +158,7 @@ public class VCPENetwork {
 	 */
 	@Override
 	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + "]";
+		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", clientIpRange=" + clientIpRange + "]";
 	}
 
 }

@@ -59,4 +59,6 @@ public class VCPETemplate {
 	public static final String	LINK_TYPE_ETH					= "eth";
 	public static final String	LINK_TYPE_VIRTUAL				= "virtual";
 
+	public static final String	AUTOBAHN						= TEMPLATE_NS + ".autobahn";
+
 }
