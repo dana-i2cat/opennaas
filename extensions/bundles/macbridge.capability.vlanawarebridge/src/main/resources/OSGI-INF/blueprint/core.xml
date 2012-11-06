@@ -74,14 +74,14 @@
 			</completers>
 		</command>
 		<command name="vlanawarebridge/addstaticvlanconfiguration">
-			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.AddStaticVLANConfigurationEntryToFilteringDatabaseCommand"/>
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.AddStaticVLANConfigurationCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="vlanawarebridge/deletestaticvlanconfiguration">
-			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.DeleteStaticVLANConfigurationEntryFromFilteringDatabaseCommand"/>
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.DeleteStaticVLANConfigurationCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

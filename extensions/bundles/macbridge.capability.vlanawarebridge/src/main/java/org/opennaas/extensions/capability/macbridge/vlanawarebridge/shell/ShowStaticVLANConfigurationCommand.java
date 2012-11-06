@@ -14,7 +14,7 @@ import org.opennaas.extensions.capability.macbridge.model.StaticVLANRegistration
  * @author Eduard Grasa
  */
 @Command(scope = "vlanawarebridge", name = "showstaticvlanconfiguration", description = "Show the existing static VLAN Configurations in the filtering database")
-public class ShowStaticVLANConfigurationEntriesInFilteringDatabaseCommand extends GenericKarafCommand {
+public class ShowStaticVLANConfigurationCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to show the VLAN configurations", required = true, multiValued = false)
 	private String	resourceId;

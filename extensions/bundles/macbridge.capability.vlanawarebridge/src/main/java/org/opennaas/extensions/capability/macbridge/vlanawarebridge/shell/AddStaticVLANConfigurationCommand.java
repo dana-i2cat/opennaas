@@ -13,7 +13,7 @@ import org.opennaas.extensions.capability.macbridge.vlanawarebridge.IVLANAwareBr
  * @author Eduard Grasa
  */
 @Command(scope = "vlanawarebridge", name = "addstaticvlanconfiguration", description = "Add a static VLAN configuration entry to the filtering database")
-public class AddStaticVLANConfigurationEntryToFilteringDatabaseCommand extends GenericKarafCommand {
+public class AddStaticVLANConfigurationCommand extends GenericKarafCommand {
 
 	private static final String TAGGED = "tagged";
 	
