@@ -179,7 +179,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		log.debug("building scenario in resource" + resource.getResourceDescriptor().getInformation().getName());
 
 		// createExternalLinks(resource, desiredScenario);
-
+		//
 		// try {
 		// executeAutobahn(desiredScenario);
 		// } catch (ProtocolException e) {
