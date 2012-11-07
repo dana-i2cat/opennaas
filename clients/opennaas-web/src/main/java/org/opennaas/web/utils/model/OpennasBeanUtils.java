@@ -68,12 +68,12 @@ public class OpennasBeanUtils {
 		// Interfaces
 		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
 		lrOut.setInterfaces(interfaces);
-		// Interface Inter
-		interfaces.add(getInterface(lrIn.getName() + "-inter", lrIn.getInterfaces().get(0)));
-		// Interface Down
-		interfaces.add(getInterface(lrIn.getName() + "-down", lrIn.getInterfaces().get(1)));
-		// Interface Up
-		interfaces.add(getInterface(lrIn.getName() + "-up", lrIn.getInterfaces().get(2)));
+		for (int i = 0; i < lrIn.getInterfaces().size(); i++) {
+			Interface inIface = lrIn.getInterfaces().get(i);
+			if (inIface != null && inIface.getIpAddress() != null) {
+				interfaces.add(getInterface(inIface));
+			}
+		}
 		return lrOut;
 	}
 
@@ -83,8 +83,9 @@ public class OpennasBeanUtils {
 	 * @param interface1
 	 * @return Interface
 	 */
-	public static org.opennaas.extensions.vcpe.model.Interface getInterface(String name, Interface inIface) {
-		org.opennaas.extensions.vcpe.model.Interface outIface = new org.opennaas.extensions.vcpe.model.Interface();
+	public static org.opennaas.extensions.vcpe.model.Interface getInterface(Interface inIface) {
+		org.opennaas.extensions.vcpe.model.Interface outIface = null;
+		outIface = new org.opennaas.extensions.vcpe.model.Interface();
 		outIface.setName(inIface.getCompleteName());
 		outIface.setIpAddress(inIface.getIpAddress());
 		outIface.setVlanId(inIface.getVlan());
