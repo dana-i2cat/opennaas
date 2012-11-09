@@ -15,6 +15,5 @@
 	<modules>
         <module>opennaas-web</module>
 <!-- <module>rest-client</module>  -->
-        <module>tnc-demo-web</module>
  	</modules>
 </project>
