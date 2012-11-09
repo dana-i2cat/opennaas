@@ -63,9 +63,6 @@
 		<module>macbridge.ios.resource</module>
 		
 		<module>vcpe</module>
-		
-		<module>webservice</module>
-
 		<module>sampleresource</module>
 	</modules>
 </project>
