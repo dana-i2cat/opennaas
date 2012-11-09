@@ -72,9 +72,16 @@ public class ParameterTranslator {
 		return parameters;
 	}
 
-	public static PortType getPortType(AutobahnInterface i, int vlan)
+	private static PortType getPortType(AutobahnInterface i, int vlan)
 	{
-		PortType port = i.getPortType();
+		PortType originalPort = i.getPortType();
+
+		PortType port = new PortType();
+		port.setAddress(originalPort.getAddress());
+		port.setDescription(originalPort.getDescription());
+		port.setIsClient(originalPort.isIsClient());
+		port.setIsIdcp(originalPort.isIsIdcp());
+
 		if (vlan == -1) {
 			port.setMode(Mode.UNTAGGED);
 		} else {
