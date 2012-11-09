@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.SerializationException;
 
 /**
  * 
@@ -20,6 +21,11 @@ public class SampleModel implements IModel {
 	@Override
 	public List<String> getChildren() {
 		return new ArrayList<String>();
+	}
+
+	@Override
+	public String toXml() throws SerializationException {
+		throw new UnsupportedOperationException();
 	}
 
 }

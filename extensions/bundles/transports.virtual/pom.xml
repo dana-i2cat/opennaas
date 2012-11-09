@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.13</version>
+		<version>0.16</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.transports.virtual</artifactId>
@@ -45,7 +45,7 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!org.opennaas.extensions.transports.virtual.*,org.slf4j,*</Import-Package>
+							org.slf4j,*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.transports.virtual.*;version="${project.version}"
 						</Export-Package>

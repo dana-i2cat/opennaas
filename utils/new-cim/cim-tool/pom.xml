@@ -3,14 +3,14 @@
 
 	<parent>
 		<groupId>org.opennaas</groupId>
-		<artifactId>opennaas</artifactId>
-		<version>0.13-SNAPSHOT</version>
+		<artifactId>org.opennaas.cim</artifactId>
+		<version>0.15-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.opennaas.cim.tool</artifactId>
 	<packaging>jar</packaging>
-	<name>cim-tool</name>
+	<name>OpenNaaS :: Tool to auto-generate CIM Model</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
@@ -83,9 +83,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
 			</plugin>
 			<!-- the following causes a 2nd jar file to be created, named TranslateCIM-1.0-SNAPSHOT-jar-with-dependencies.jar -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<archive>

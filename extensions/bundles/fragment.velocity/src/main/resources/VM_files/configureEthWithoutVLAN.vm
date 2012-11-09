@@ -4,7 +4,7 @@
 
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
+	#if(!$param.ElementName.equals("") )
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
@@ -15,11 +15,11 @@
 		<interface>
 			<name>$param.Name</name>
 			<unit>
-				<name>0</name>
+				<name>$param.getPortNumber()</name>
 			</unit>
 		</interface>	
 	</interfaces>
-	#if($logicalRouter.equals("true"))	
+	#if($logicalRouter.equals("true"))
 		</logical-systems>
 	#end
 </configuration>

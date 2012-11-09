@@ -362,6 +362,7 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	private void initVirtualResources() throws CapabilityException {
 		String typeResource = resource.getResourceIdentifier().getType();
+		String parentId = resource.getResourceIdentifier().getId();
 		List<String> nameLogicalRouters = resource.getModel().getChildren();
 
 		IResourceManager manager;
@@ -384,7 +385,7 @@ public class QueueManager extends AbstractCapability implements
 					log.error(e.getMessage());
 					log.info("Since this resource didn't exist, it has to be created.");
 					ResourceDescriptor newResourceDescriptor = newResourceDescriptor(
-							resource.getResourceDescriptor(), nameResource);
+							resource.getResourceDescriptor(), nameResource, parentId);
 					// create new resources
 					manager.createResource(newResourceDescriptor);
 
@@ -405,11 +406,12 @@ public class QueueManager extends AbstractCapability implements
 	 * 
 	 * @param resourceDescriptor
 	 * @param nameResource
+	 * @param parentId
 	 * @return the resourceDescriptor
 	 * @throws ResourceException
 	 */
 	private ResourceDescriptor newResourceDescriptor(
-			ResourceDescriptor resourceDescriptor, String nameResource)
+			ResourceDescriptor resourceDescriptor, String nameResource, String parentId)
 			throws ResourceException {
 		try {
 			ResourceDescriptor newResourceDescriptor = (ResourceDescriptor) resourceDescriptor
@@ -417,15 +419,14 @@ public class QueueManager extends AbstractCapability implements
 
 			// the profiles will not be cloned
 			newResourceDescriptor.setProfileId("");
-			// we delete chassis capability, a logical resource can't create new
-			// logical devices or new interfaces
-			newResourceDescriptor.removeCapabilityDescriptor("chassis");
+
 			// Wet set the resource name
 			newResourceDescriptor.getInformation().setName(nameResource);
 
 			/* added virtual description */
 			Map<String, String> properties = new HashMap<String, String>();
 			properties.put(ResourceDescriptor.VIRTUAL, "true");
+			properties.put(ResourceDescriptor.HOSTED_BY, parentId);
 			newResourceDescriptor.setProperties(properties);
 
 			return newResourceDescriptor;

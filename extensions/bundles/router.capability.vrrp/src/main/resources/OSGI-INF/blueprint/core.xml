@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Factory that creates protocol capabilities -->
+	<bean id="vrrpCapabilityFactory" class="org.opennaas.extensions.router.capability.vrrp.VRRPCapabilityFactory">
+		<property name="type" value="vrrp"/>
+	</bean>
+	<!-- Command completers -->
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="vrrpCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="vrrp"/>
+			<entry key="capability.model" value="junos"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="vrrp/configure">
+			<action class="org.opennaas.extensions.router.capability.vrrp.shell.ConfigureVRRPCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="vrrp/unconfigure">
+			<action class="org.opennaas.extensions.router.capability.vrrp.shell.UnconfigureVRRPCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="vrrp/updateVirtualIPAddress">
+			<action class="org.opennaas.extensions.router.capability.vrrp.shell.UpdateVRRPVirtualIPAddressCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="vrrp/updatePriority">
+			<action class="org.opennaas.extensions.router.capability.vrrp.shell.UpdateVRRPPriorityCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+	</command-bundle>
+</blueprint>

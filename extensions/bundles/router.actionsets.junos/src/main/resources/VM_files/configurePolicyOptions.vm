@@ -1,0 +1,121 @@
+#** 
+@param param: a System with policy sets hold by PolicySetInSystem association
+@param isLR: a boolean telling weather param is a logical router or not
+@param lrName: a String with the logical router name (only used if isLR is true)
+@param bgpUtils: a utility class with static methods for managing BGP and policies model objects.
+##instances used to resolve types
+@param packetFilterCondition: PacketFilterCondition instance 
+@param filterEntry: FilterEntry instance
+@param routeFilterEntry: RouteFilterEntry instance
+@param prefixListFilterEntry: PrefixListFilterEntry instance
+@param basicAction: BasicAction instance
+@param bgpAction: BGPAction instance
+*#
+<configuration>
+	#if($isLR)
+		<logical-systems>
+			<name>$lrName</name>
+	#end
+	#if(!$bgpUtils.getPolicySetInSystem($param).isEmpty())
+	<policy-options>
+		#foreach($policy in $bgpUtils.getPolicySetInSystem($param))
+		<policy-statement>
+			<name>$policy.getElementName()</name>
+			#foreach($rule in $bgpUtils.getPolicySetComponents($policy))
+				##FIXME: assuming components are rules (they can actually be any subclass of PolicytSet)
+				<term>
+					<name>$rule.getElementName()</name>
+					#if(!$bgpUtils.getPolicyConditionInPolicyRule($rule).isEmpty())
+					## SET CONDITIONS
+					<from>
+						#foreach($condition in $bgpUtils.getPolicyConditionInPolicyRule($rule))
+							## PACKET FILTER CONDITION
+							#if($condition.getClass().getName().equals($packetFilterCondition.getClass().getName()))
+								#foreach($filterList in $bgpUtils.getFilterOfPacketCondition($condition))
+									#foreach($entry in $bgpUtils.getEntriesInFilterList($filterList))
+										## DETERMINE RUNTIME CLASS  of $entry
+										#if($entry.getClass().getName().equals($filterEntry.getClass().getName()))
+											## Check ($entry.getTrafficType() != null)
+											#set($hasTrafficType = true)
+											#if( ! $entry.getTrafficType() )
+												#set($hasTrafficType = false)
+											#end
+											#if($hasTrafficType)
+												#if($entry.getTrafficType().name().equals("IPV4"))
+													<family>inet</family>
+												#elseif($entry.getTrafficType().name().equals("IPV6"))
+													<family>inet6</family>
+												#end
+											#end
+											
+											## Check ($entry.getMatchConditionType() != null)
+											#set($hasMatchCondition = true)
+											#if( ! $entry.getMatchConditionType() )
+												#set($hasMatchCondition = false)
+											#end
+											#if($hasMatchCondition)
+												#if($entry.getMatchConditionType().name().equals("PROTOCOL_TYPE"))
+													<protocol>$entry.getMatchConditionValue()</protocol>
+												#else
+													## FIXME ADD OTHER POSSIBLE MatchConditionType VALUES
+												#end
+											#end
+										#elseif($entry.getClass().getName().equals($routeFilterEntry.getClass().getName()))
+											<route-filter>
+												<address>$entry.getAddress()</address>
+												<$entry.getMatchOption()/>
+											</route-filter>
+										#elseif($entry.getClass().getName().equals($prefixListFilterEntry.getClass().getName()))
+											<prefix-list>
+												<name>$entry.getPrefixList().getElementName()</name>
+											</prefix-list>
+										#end
+									#end
+								#end
+							#else
+								## FIXME PROCESS OTHER POSSIBLE TYPES OF CONDITIONS
+							#end
+						#end
+					</from>
+					#end
+					#if(!$bgpUtils.getPolicyActionInPolicyRule($rule).isEmpty())
+					## SET ACTIONS
+					<then>
+						#foreach($action in $bgpUtils.getPolicyActionInPolicyRule($rule))
+							#if($action.getClass().getName().equals($bgpAction.getClass().getName()))
+								#if($action.getBGPAction().name().equals("NEXT_HOP"))
+									<next-hop>
+										<$action.getBGPValue()/>
+									</next-hop>
+								#else
+									## FIXME ADD OTHER POSSIBLE VALUES
+								#end
+							#elseif($action.getClass().getName().equals($basicAction.getClass().getName()))
+								#if($action.getAction().name().equals("PERMIT"))
+									<accept/>
+								#elseif($action.getAction().name().equals("DENY"))
+									<reject/>
+								#end
+							#end
+						#end
+					</then>
+					#end
+				</term>
+			#end
+		</policy-statement>
+		#end
+		## PREFIX LISTS
+		#foreach($prefixList in $bgpUtils.getPrefixListsFromPoliciesInSystem($param))
+			<prefix-list>
+				<name>$prefixList.getElementName()</name>
+				#foreach($prefix in $prefixList.getPrefixes())
+					<prefix-list-item>$prefix</prefix-list-item>
+				#end
+			</prefix-list>
+		#end
+	</policy-options>
+	#end
+	#if($isLR)
+		</logical-systems>
+	#end
+</configuration>

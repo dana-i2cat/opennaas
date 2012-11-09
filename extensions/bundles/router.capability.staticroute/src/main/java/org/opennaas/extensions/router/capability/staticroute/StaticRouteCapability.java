@@ -109,15 +109,30 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 */
 
 	@Override
-	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
+	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress, String isDiscard) throws CapabilityException {
 		log.info("Start of createStaticRoute call");
+		String[] aParams = new String[4];
+		aParams[0] = netIdIpAdress;
+		aParams[1] = maskIpAdress;
+		aParams[2] = nextHopIpAddress;
+		aParams[3] = isDiscard;
+
+		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
+		queueAction(action);
+		log.info("End of createStaticRoute call");
+	}
+
+	@Override
+	public void deleteStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
+		log.info("Start of deleteStaticRoute call");
 		String[] aParams = new String[3];
 		aParams[0] = netIdIpAdress;
 		aParams[1] = maskIpAdress;
 		aParams[2] = nextHopIpAddress;
 
-		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
+		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_DELETE, aParams);
 		queueAction(action);
-		log.info("End of createStaticRoute call");
+		log.info("End of deleteStaticRoute call");
+
 	}
 }

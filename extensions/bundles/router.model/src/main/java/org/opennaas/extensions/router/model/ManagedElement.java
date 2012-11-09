@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.SerializationException;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ManagedElement as well as methods comparable to the
@@ -626,6 +627,12 @@ public class ManagedElement implements IModel, Serializable {
 		String localID = this.getClass().getName() + "/" + this.toString();
 
 		return orgID + ":" + localID;
+	}
+
+	@Override
+	public String toXml() throws SerializationException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
 } // Class ManagedElement

@@ -2,7 +2,7 @@
   <parent>
     <artifactId>org.opennaas.extensions.bundles</artifactId>
     <groupId>org.opennaas</groupId>
-    <version>0.13</version>
+    <version>0.16</version>
   </parent>
 
   <artifactId>org.opennaas.extensions.bod.autobahn</artifactId>
@@ -19,7 +19,6 @@
       <dependency>
           <groupId>com.googlecode.guava-osgi</groupId>
           <artifactId>guava-osgi</artifactId>
-          <version>${guava.version}</version>
       </dependency>
 	  <dependency>
 		  <groupId>joda-time</groupId>

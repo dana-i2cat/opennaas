@@ -1,8 +1,14 @@
-package org.opennaas.extensions.router.junos.action.test;
+package org.opennaas.extensions.router.junos.actionssets.actions.test.gretunnel;
 
 import java.io.IOException;
 
 import junit.framework.Assert;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.gretunnel.CreateTunnelAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
@@ -10,12 +16,6 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
 
 public class CreateTunnelActionTest {
 	private static CreateTunnelAction		action;

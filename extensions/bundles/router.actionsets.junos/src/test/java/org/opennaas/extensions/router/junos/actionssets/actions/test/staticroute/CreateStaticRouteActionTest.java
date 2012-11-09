@@ -3,10 +3,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.staticrout
 import java.io.IOException;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.CreateStaticRouteAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.model.ComputerSystem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +11,10 @@ import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.CreateStaticRouteAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class CreateStaticRouteActionTest {
 	Log										log	= LogFactory.getLog(CreateStaticRouteActionTest.class);
@@ -75,10 +75,11 @@ public class CreateStaticRouteActionTest {
 	 * @return
 	 */
 	private String[] getParams() {
-		String[] params = new String[3];
+		String[] params = new String[4];
 		params[0] = "0.0.0.0";
 		params[1] = "0.0.0.0";
 		params[2] = "192.168.1.1";
+		params[3] = "false";
 		return params;
 	}
 }

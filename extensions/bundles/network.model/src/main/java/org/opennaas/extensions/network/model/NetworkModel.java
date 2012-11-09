@@ -3,9 +3,9 @@ package org.opennaas.extensions.network.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.network.model.topology.NetworkElement;
-
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.SerializationException;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
 
 public class NetworkModel implements IModel {
 
@@ -13,7 +13,7 @@ public class NetworkModel implements IModel {
 
 	List<NetworkElement>		networkElements		= new ArrayList<NetworkElement>();
 
-	ResourcesReferences resourceReferences = new ResourcesReferences();
+	ResourcesReferences			resourceReferences	= new ResourcesReferences();
 
 	@Override
 	public List<String> getChildren() {
@@ -28,15 +28,15 @@ public class NetworkModel implements IModel {
 		this.networkElements = networkElements;
 	}
 
-	public String addResourceRef(String resourceName, String mantychoreResourceId){
+	public String addResourceRef(String resourceName, String mantychoreResourceId) {
 		return resourceReferences.put(resourceName, mantychoreResourceId);
 	}
 
-	public String removeResourceRef(String resourceName){
+	public String removeResourceRef(String resourceName) {
 		return resourceReferences.remove(resourceName);
 	}
 
-	public String getResourceRef(String resourceName){
+	public String getResourceRef(String resourceName) {
 		return resourceReferences.get(resourceName);
 	}
 
@@ -46,5 +46,11 @@ public class NetworkModel implements IModel {
 
 	public void setResourceReferences(ResourcesReferences resourceReferences) {
 		this.resourceReferences = resourceReferences;
+	}
+
+	@Override
+	public String toXml() throws SerializationException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 }

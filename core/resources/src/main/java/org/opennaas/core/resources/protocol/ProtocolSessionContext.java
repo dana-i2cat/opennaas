@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  */
 @XmlRootElement
-public class ProtocolSessionContext {
+public class ProtocolSessionContext implements Cloneable {
 
 	public static final String	PROTOCOL			= "protocol";
 	public static final String	AUTH_TYPE			= "protocol.authType";
@@ -109,6 +109,13 @@ public class ProtocolSessionContext {
 		}
 
 		return result;
+	}
+
+	@Override
+	public ProtocolSessionContext clone() {
+		ProtocolSessionContext clone = new ProtocolSessionContext();
+		clone.getSessionParameters().putAll(sessionParameters);
+		return clone;
 	}
 
 }

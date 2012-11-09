@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.13</version>
+		<version>0.16</version>
 	</parent>
 	<!--  POM id -->
 	<groupId>com.wonesys</groupId>
@@ -71,7 +71,6 @@
 							*</Import-Package>
 						<Export-Package>
 							com.wonesys.emsModule.*;version="${project.version}",
-							!uk.co.westhawk.tablelayout,
 							uk.co.westhawk.*
 						</Export-Package>
 						<!-- put snmp library in /lib and import its packages-->

@@ -36,10 +36,7 @@
 
 	<feature name="opennaas-cim" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
-
-		<!-- The core model unfortunately depends on the network model
-		     - it should be the other way around. -->
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.model/${project.version}</bundle>
 
 		<!-- QueueManager should probably be part of org.opennaas.core,
@@ -103,23 +100,34 @@
 
 	<feature name="opennaas-router" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
-
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.chassis/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ip/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.gretunnel/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.staticroute/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.bgp/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.vrrp/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-network" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.basic/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.queue/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.ospf/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
+		<bundle dependency="true">mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
+		
+	</feature>
+
+	<feature name="opennaas-vcpe" version="${project.version}">
+		<feature version="${opennaas.version}">org.opennaas.core</feature>
+		<feature version="${project.version}">opennaas-router</feature>
+		<feature version="${project.version}">opennaas-bod</feature>
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.vcpe/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-bod" version="${project.version}">
@@ -127,6 +135,7 @@
 
 		<bundle dependency="true">mvn:joda-time/joda-time/${jodatime.version}</bundle>
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		<bundle dependency="true">mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
@@ -186,6 +195,7 @@
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
 		<feature version="${project.version}">opennaas-sampleresource</feature>
 		<feature version="${project.version}">opennaas-cisco</feature>
+		<feature version="${project.version}">opennaas-vcpe</feature>
 		<feature version="${project.version}">opennaas-ws-rest</feature>
 <!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 	</feature>
