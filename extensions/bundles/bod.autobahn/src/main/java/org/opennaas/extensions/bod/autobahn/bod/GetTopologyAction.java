@@ -3,6 +3,7 @@ package org.opennaas.extensions.bod.autobahn.bod;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.size;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -121,22 +122,30 @@ public class GetTopologyAction extends AutobahnAction
 	{
 		Map<String, AutobahnInterface> interfaces = Maps.newHashMap();
 		for (PortType port : allPorts) {
-			interfaces.put(port.getAddress(), createInterface(port, false));
+			interfaces.put(port.getAddress(), ParameterTranslator.createInterface(port, false));
 		}
 		for (PortType port : localPorts) {
 			// Note that this will replace interfaces created above
-			interfaces.put(port.getAddress(), createInterface(port, true));
+			interfaces.put(port.getAddress(), ParameterTranslator.createInterface(port, true));
 		}
 
+		List<AutobahnLink> links = new ArrayList<AutobahnLink>();
 		for (ServiceType service : services) {
 			for (ReservationType reservation : service.getReservations()) {
 				if (!isFinalState(reservation.getState())) {
-					updateLinkTo(interfaces, service, reservation);
+					AutobahnLink link = updateLinkTo(interfaces, service, reservation);
+					if (link != null) {
+						// ".link" suffix is added in the key to avoid replacing potentially existing interfaces with same name
+						interfaces.put(link.getSource().getName() + ".link", (AutobahnInterface) link.getSource());
+						interfaces.put(link.getSink().getName() + ".link", (AutobahnInterface) link.getSink());
+						links.add(link);
+					}
 				}
 			}
 		}
 
 		model.getNetworkElements().addAll(interfaces.values());
+		model.getNetworkElements().addAll(links);
 	}
 
 	private boolean isFinalState(int state)
@@ -144,30 +153,44 @@ public class GetTopologyAction extends AutobahnAction
 		return state >= 20;
 	}
 
-	private AutobahnInterface createInterface(PortType port, boolean isLocal)
-	{
-		AutobahnInterface i = new AutobahnInterface();
-		i.setPortType(port);
-		i.setName(port.getAddress());
-		i.setLocal(isLocal);
-		return i;
-	}
-
 	private AutobahnLink createLink(AutobahnInterface source,
 			AutobahnInterface sink,
 			ServiceType service,
 			ReservationType reservation)
 	{
+
+		AutobahnInterface sourceClientIface = createClientInterface(source, reservation.getStartPort(), reservation.getUserStartVlan());
+		AutobahnInterface sinkClientIface = createClientInterface(sink, reservation.getEndPort(), reservation.getUserEndVlan());
+
 		AutobahnLink link = new AutobahnLink();
-		link.setSource(source);
-		link.setSink(sink);
+		link.setName(service.getBodID());
+		link.setSource(sourceClientIface);
+		link.setSink(sinkClientIface);
 		link.setBidirectional(reservation.isBidirectional());
 		link.setReservation(reservation);
 		link.setService(service);
+
+		sourceClientIface.setLinkTo(link);
+		if (link.isBidirectional())
+			sinkClientIface.setLinkTo(link);
+
 		return link;
 	}
 
-	private void updateLinkTo(Map<String, AutobahnInterface> interfaces,
+	private AutobahnInterface createClientInterface(AutobahnInterface iface, PortType port, int vlan) {
+		AutobahnInterface clientInterface;
+		if (vlan >= 0) {
+			clientInterface = ParameterTranslator.createInterface(port, iface.isLocal());
+			// there may be two interfaces with same name if generated name is a valid autobahn id
+			clientInterface.setName(port.getAddress() + "." + port.getVlan());
+			clientInterface.setServerInterface(iface);
+		} else {
+			clientInterface = iface;
+		}
+		return clientInterface;
+	}
+
+	private AutobahnLink updateLinkTo(Map<String, AutobahnInterface> interfaces,
 			ServiceType service,
 			ReservationType reservation)
 	{
@@ -177,9 +200,16 @@ public class GetTopologyAction extends AutobahnAction
 				interfaces.get(reservation.getEndPort().getAddress());
 
 		if (source != null && sink != null) {
-			source.setLinkTo(createLink(source, sink, service, reservation));
+			AutobahnLink link = createLink(source, sink, service, reservation);
+			List<AutobahnInterface> ifaces = new ArrayList<AutobahnInterface>(2);
+			ifaces.add(source);
+			ifaces.add(sink);
+			link.setRequestParameters(ParameterTranslator.createRequestParameters(reservation, ifaces));
 			log.info("Discovered reservation " + service.getBodID() +
 					" from " + source.getName() + " to " + sink.getName());
+			return link;
+		} else {
+			return null;
 		}
 	}
 }

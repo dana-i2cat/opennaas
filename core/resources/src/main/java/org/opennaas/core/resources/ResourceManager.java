@@ -93,7 +93,7 @@ public class ResourceManager implements IResourceManager {
 			// return resources of a given type
 			IResourceRepository repo = resourceRepositories.get(type);
 			if (repo != null) {
-				return new ArrayList(repo.listResources());
+				return new ArrayList<IResource>(repo.listResources());
 			} else {
 				return null;
 			}
@@ -246,7 +246,7 @@ public class ResourceManager implements IResourceManager {
 	 */
 	@Override
 	public synchronized List<String> getResourceTypes() {
-		return new ArrayList(resourceRepositories.keySet());
+		return new ArrayList<String>(resourceRepositories.keySet());
 	}
 
 	/**
@@ -297,17 +297,28 @@ public class ResourceManager implements IResourceManager {
 	}
 
 	@Override
-	public synchronized IResource getResourceById(String resourceId)
-			throws ResourceException
-	{
-		// FIXME: resourceIds are supposed to be GUIDs, however nobody ever verifies that there aren't collisions.
+	public synchronized Resource getResourceById(String resourceId) throws ResourceException {
 		for (IResourceRepository repo : resourceRepositories.values()) {
 			try {
-				return repo.getResource(resourceId);
+				return (Resource) repo.getResource(resourceId);
 			} catch (ResourceException e) {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public ResourceDescriptor getResourceDescriptor(String resourceId) throws ResourceException {
+		ResourceDescriptor descriptor = null;
+		try {
+			for (IResourceRepository repo : resourceRepositories.values()) {
+				IResource resource = repo.getResource(resourceId);
+				descriptor = resource.getResourceDescriptor();
+			}
+		} catch (ResourceException e) {
+			throw e;
+		}
+		return descriptor;
 	}
 
 	@Override
@@ -326,29 +337,55 @@ public class ResourceManager implements IResourceManager {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IResourceManager#modifyResource(java.lang.String, org.opennaas.core.resources.descriptor.ResourceDescriptor)
+	 */
 	@Override
 	public String modifyResource(String resourceId, ResourceDescriptor resourceDescriptor) throws ResourceException {
 		return modifyResource(getResourceById(resourceId).getResourceIdentifier(), resourceDescriptor).getResourceIdentifier().getId();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IResourceManager#removeResource(java.lang.String)
+	 */
 	@Override
 	public void removeResource(String resourceId) throws ResourceException {
 		removeResource(getResourceById(resourceId).getResourceIdentifier());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IResourceManager#startResource(java.lang.String)
+	 */
 	@Override
 	public void startResource(String resourceId) throws ResourceException {
 		startResource(getResourceById(resourceId).getResourceIdentifier());
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IResourceManager#stopResource(java.lang.String)
+	 */
 	@Override
 	public void stopResource(String resourceId) throws ResourceException {
 		stopResource(getResourceById(resourceId).getResourceIdentifier());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IResourceManager#createResourceWS(org.opennaas.core.resources.descriptor.ResourceDescriptor)
+	 */
 	@Override
 	public String createResourceWS(ResourceDescriptor resourceDescriptor) throws ResourceException {
 		return createResource(resourceDescriptor).getResourceIdentifier().getId();
 	}
+
 }

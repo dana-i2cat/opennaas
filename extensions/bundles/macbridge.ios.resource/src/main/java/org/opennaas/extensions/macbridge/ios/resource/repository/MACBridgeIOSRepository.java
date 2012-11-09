@@ -50,8 +50,10 @@ public class MACBridgeIOSRepository extends ResourceRepository {
 	}
 
 	public void capabilityFactoryDeleted(ICapabilityFactory capabilityFactory) {
-		log.info("Deleting factory: " + capabilityFactory.getType());
-		this.capabilityFactories.remove(capabilityFactory.getType());
+		if (capabilityFactory != null) {
+			log.info("Deleting factory: " + capabilityFactory.getType());
+			this.capabilityFactories.remove(capabilityFactory.getType());
+		}
 	}
 
 	private IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {

@@ -61,4 +61,5 @@ public class ActionConstants {
 
 	// Static Route actionset
 	public static final String	STATIC_ROUTE_CREATE					= StaticRouteActionSet.STATIC_ROUTE_CREATE;
+	public static final String	STATIC_ROUTE_DELETE					= StaticRouteActionSet.STATIC_ROUTE_DELETE;
 }

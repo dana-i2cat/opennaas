@@ -6,29 +6,17 @@
 	  -->		
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
 	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
-<!-- 		<service-properties> -->
-<!-- 			<entry key="service.exported.interfaces" value="*"/> -->
-<!-- 			<entry key="service.exported.configs" value="org.apache.cxf.ws"/> -->
-<!-- 			<entry key="org.apache.cxf.ws.address" value="http://localhost:9000/opennaas/resourceManager"/> -->
-<!-- 		</service-properties> -->
-
 		<service-properties>
 			<!-- Rest -->	
 			<entry key="service.exported.interfaces" value="*"/>
 			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
 			<entry key="service.exported.intents" value="HTTP"/>		
-			<entry key="org.apache.cxf.ws.address" value="http://localhost:8888/opennaas"/>  
+			<entry key="org.apache.cxf.ws.address" value="http://localhost:8888/opennaas/resources"/>  
 		</service-properties>
 	</service>
 	
 	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.ProtocolManager"/>
 	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager">
-<!-- 		<service-properties> -->
-			<!-- 	Rest	 -->
-<!-- 			<entry key="service.exported.interfaces" value="*"/> -->
-<!-- 			<entry key="service.exported.configs" value="org.apache.cxf.rs"/> -->
-<!-- 			<entry key="org.apache.cxf.ws.address" value="http://localhost:8888/opennaas/protocolManager"/> -->
-<!-- 		</service-properties> -->
 	</service>
 		
 	<bean id="profileManager" class="org.opennaas.core.resources.profile.ProfileManager"/>

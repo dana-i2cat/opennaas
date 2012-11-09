@@ -19,8 +19,10 @@ public class NetworkRepository extends ResourceRepository {
 	}
 
 	public void capabilityFactoryDeleted(ICapabilityFactory capabilityFactory) {
-		log.info("Deleting factory: " + capabilityFactory.getType());
-		this.capabilityFactories.remove(capabilityFactory.getType());
+		if (capabilityFactory != null) {
+			log.info("Deleting factory: " + capabilityFactory.getType());
+			this.capabilityFactories.remove(capabilityFactory.getType());
+		}
 	}
 
 }

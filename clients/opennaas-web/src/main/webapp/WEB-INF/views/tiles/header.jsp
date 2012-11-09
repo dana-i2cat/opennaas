@@ -6,6 +6,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<div style='float: right'>
+	User: <sec:authentication property="principal.username" /> | <a href="<c:url value="/auth/logout" />">Logout</a>
+</div>
 
 <h1>
 	<spring:message code="index.title"/>
@@ -16,8 +21,9 @@
 		<a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a>
 	</div>
 	<div style='float: left'>
-		<a href="/opennaas">Home</a>
+		<a href="<c:url value="/secure/home" />">Home</a>
 	</div>
+
 </div>
 <hr>
 
@@ -36,3 +42,12 @@
 		</span>
 	</div>
 </c:if>
+
+<c:if test="${not empty noticeMsg}" >
+	<div class="notice">
+		<span>
+			<spring:message text="${noticeMsg}" />
+		</span>
+	</div>
+</c:if>
+
