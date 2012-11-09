@@ -1,0 +1,22 @@
+<configuration>
+	#set($logicalRouter = "false")
+	#if(!$elementName.equals(""))
+		#set($logicalRouter = "true")
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	<routing-options>
+		<static>
+			<route>
+				<name>$param[0]/$ipUtilsHelper.parseLongToShortIpv4NetMask($param[1])</name>
+				<next-hop operation="delete">$param[2]</next-hop>
+				##Notice that if there is an empty route, junOS removes it automatically
+			</route>
+		</static>
+	</routing-options>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

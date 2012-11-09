@@ -1,7 +1,5 @@
 package org.opennaas.extensions.ws.services;
 
-import java.util.List;
-
 import javax.jws.WebService;
 
 import org.opennaas.core.resources.ResourceException;
@@ -33,6 +31,7 @@ public interface IL2BoDCapabilityService {
 	 * @throws CapabilityException
 	 * @throws ResourceException
 	 */
-	public void shutDownConnection(String resourceId, List<String> listInterfaces) throws CapabilityException, ResourceException;
+	public void shutDownConnection(String resourceId, String interfaceName1, String interfaceName2, String vlanid, String capacity,
+			String endTime) throws CapabilityException, ResourceException;
 
 }

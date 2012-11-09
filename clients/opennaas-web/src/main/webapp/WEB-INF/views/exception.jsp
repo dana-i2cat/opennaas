@@ -10,11 +10,10 @@
 <head>
 	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title><fmt:message key="index.title"/></title>
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/print.css" />" type="text/css" media="print">
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/custom.css" />" type="text/css" media="print">
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css">
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/print.css" />" type="text/css">
 	<!--[if lt IE 8]>
-		<link rel="stylesheet" href="<c:url value="/resources/blueprint/ie.css" />" type="text/css" media="screen, projection">
+		<link rel="stylesheet" href="<c:url value="/resources/blueprint/ie.css" />" type="text/css">
 	<![endif]-->
 </head>
 <body>
@@ -23,11 +22,6 @@
 		Error page
 	</h1>
 
-	<div>
-		<div style='float: right'>
-			<a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a>
-		</div>
-	</div>
 	<h2>Your application has generated an error</h2>
     <h3>Please check for the error given below</h3>
 	<b>Exception message:</b><br> 	    

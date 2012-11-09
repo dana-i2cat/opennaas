@@ -21,8 +21,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
+//TODO avoid these imports, they refer to plugin-related data 
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 
 /**
  * Resource Descriptor with JPA and JAXB annotations to provide both persistence and XML marshaling capabilities.
@@ -31,11 +34,16 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
  * 
  */
 @XmlRootElement
+// need to tell JAXB this relationship :S
+// TODO find a way to add these classes to JAXB context dynamically (when their bundles load)
+// and move them out of core.
+@XmlSeeAlso({ VCPENetworkDescriptor.class })
 @Entity
 @NamedQueries({ @NamedQuery(name = "resourceDescriptor.findByType", query = "select r from ResourceDescriptor r where r.information.type = :type") })
 public class ResourceDescriptor {
 
 	public static final String			VIRTUAL				= "virtual";
+	public static final String			HOSTED_BY			= "hostedBy";
 
 	private static final long			serialVersionUID	= -8571009012048021984L;
 

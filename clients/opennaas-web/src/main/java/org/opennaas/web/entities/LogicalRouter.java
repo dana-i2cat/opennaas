@@ -1,42 +1,38 @@
+/**
+ * 
+ */
 package org.opennaas.web.entities;
 
-/**
- * @author Jordi
- */
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * @author Jordi
+ */
 public class LogicalRouter {
 
-	private Long	id;
-
 	@NotNull
 	@Size(min = 1, max = 25)
-	private String	name;
+	private String			name;
 
-	@NotNull
-	@Size(min = 1, max = 25)
-	private String	router;
+	private String			templateName;
 
-	@NotNull
-	@Size(min = 1, max = 25)
-	private String	iface;
+	private List<Interface>	interfaces;
 
 	/**
-	 * @return the id
+	 * 
 	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
+	public LogicalRouter() {
+		interfaces = new ArrayList<Interface>();
+		Interface interface1 = new Interface();
+		interfaces.add(interface1);
+		Interface interface2 = new Interface();
+		interfaces.add(interface2);
+		Interface interface3 = new Interface();
+		interfaces.add(interface3);
 	}
 
 	/**
@@ -55,53 +51,33 @@ public class LogicalRouter {
 	}
 
 	/**
-	 * @return the router
+	 * @return the interfaces
 	 */
-	public String getRouter() {
-		return router;
+	public List<Interface> getInterfaces() {
+		return interfaces;
 	}
 
 	/**
-	 * @param router
-	 *            the router to set
+	 * @param interfaces
+	 *            the interfaces to set
 	 */
-	public void setRouter(String router) {
-		this.router = router;
+	public void setInterfaces(List<Interface> interfaces) {
+		this.interfaces = interfaces;
 	}
 
 	/**
-	 * @return the iface
+	 * @return the templateName
 	 */
-	public String getIface() {
-		return iface;
+	public String getTemplateName() {
+		return templateName;
 	}
 
 	/**
-	 * @param iface
-	 *            the iface to set
+	 * @param templateName
+	 *            the templateName to set
 	 */
-	public void setIface(String iface) {
-		this.iface = iface;
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
 	}
-
-	/**
-	 * @return the idsequence
-	 */
-	public static AtomicLong getIdsequence() {
-		return idSequence;
-	}
-
-	/**
-	 * @return the assignId
-	 */
-	public Long assignId() {
-		this.id = idSequence.incrementAndGet();
-		return id;
-	}
-
-	/**
-	 * 
-	 */
-	private static final AtomicLong	idSequence	= new AtomicLong();
 
 }

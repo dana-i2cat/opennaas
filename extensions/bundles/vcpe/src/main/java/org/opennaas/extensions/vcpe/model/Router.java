@@ -1,0 +1,60 @@
+package org.opennaas.extensions.vcpe.model;
+
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso(LogicalRouter.class)
+public class Router extends VCPENetworkElement {
+
+	@XmlIDREF
+	private List<Interface>	interfaces;
+
+	public List<Interface> getInterfaces() {
+		return interfaces;
+	}
+
+	public void setInterfaces(List<Interface> interfaces) {
+		this.interfaces = interfaces;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((interfaces == null) ? 0 : interfaces.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Router other = (Router) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (nameInTemplate == null) {
+			if (other.nameInTemplate != null)
+				return false;
+		} else if (!nameInTemplate.equals(other.nameInTemplate))
+			return false;
+		if (interfaces == null) {
+			if (other.interfaces != null)
+				return false;
+		} else if (!interfaces.equals(other.interfaces))
+			return false;
+		return true;
+	}
+
+}

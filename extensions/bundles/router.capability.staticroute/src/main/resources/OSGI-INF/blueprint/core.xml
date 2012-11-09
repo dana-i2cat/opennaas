@@ -39,5 +39,12 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="staticroute/delete">
+			<action class="org.opennaas.extensions.router.capability.staticroute.shell.DeleteStaticRouteCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>
