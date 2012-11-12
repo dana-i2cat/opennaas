@@ -25,7 +25,6 @@ public class SampleModel implements IModel {
 
 	@Override
 	public String toXml() throws SerializationException {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
