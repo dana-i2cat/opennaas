@@ -13,7 +13,7 @@
 	<artifactId>org.opennaas.clients</artifactId>
 
 	<modules>
-        <module>opennaas-web</module>
-        <module>tnc-demo-web</module>
+        <module>opennaas-gui-vcpe</module>
+<!-- <module>rest-client</module>  -->
  	</modules>
 </project>
