@@ -1,5 +1,6 @@
 package org.opennaas.core.protocols.sessionmanager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.alarms.SessionAlarm;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSession.Status;
@@ -491,6 +493,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 			Dictionary<String, String> props = new Hashtable<String, String>();
 			props.put("resourceId", resourceID);
 			props = addWSRegistrationProperties(props);
+
 			registration = Activator.getBundleContext().registerService(IProtocolSessionManager.class.getName(), this, props);
 		}
 	}
@@ -503,24 +506,25 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	private Dictionary<String, String> addWSRegistrationProperties(Dictionary<String, String> props) throws ProtocolException {
-
 		IResource resource;
 		try {
 			resource = getResource(resourceID);
+			String resourceType = resource.getResourceDescriptor().getInformation().getType();
+			String resourceName = resource.getResourceDescriptor().getInformation().getName();
+
+			ConfigurationAdminUtil configurationAdmin = new ConfigurationAdminUtil(Activator.getBundleContext());
+			String url = configurationAdmin.getProperty("org.opennaas", "ws.rest.url");
+
+			if (props != null) {
+				props.put("service.exported.interfaces", "*");
+				props.put("service.exported.configs", "org.apache.cxf.rs");
+				props.put("org.apache.cxf.ws.address", url + "/" + resourceType + "/" + resourceName + "/protocolSessionManager" + "/");
+			}
 		} catch (ResourceException e) {
-			throw new ProtocolException("Fail to load WS registration properties", e);
+			throw new ProtocolException(e);
+		} catch (IOException e) {
+			throw new ProtocolException(e);
 		}
-
-		String resourceType = resource.getResourceDescriptor().getInformation().getType();
-		String resourceName = resource.getResourceDescriptor().getInformation().getName();
-
-		if (props != null) {
-			props.put("service.exported.interfaces", "*");
-			props.put("service.exported.configs", "org.apache.cxf.rs");
-			props.put("org.apache.cxf.ws.address",
-					"http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/protocolSessionManager" + "/");
-		}
-
 		return props;
 	}
 
