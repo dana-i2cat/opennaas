@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Jordi
@@ -212,6 +213,26 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.updateIps.message.error", null, locale));
 		}
 		return "updateIpsVCPENetwork";
+	}
+
+	/**
+	 * Sample AJAX method
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/getAjax")
+	public @ResponseBody
+	String getAjax(String vcpeNetworkId, Model model, Locale locale) {
+		LOGGER.debug("Sample ajax method");
+		try {
+			model.addAttribute("vcpenetwork", vcpeNetworkBO.getById(vcpeNetworkId));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.list.message.error", null, locale));
+		}
+		String returnedTextValue = "<h2>Updated virtual CPE Network view</h2>";
+		return returnedTextValue;
 	}
 
 	/**
