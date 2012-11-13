@@ -115,8 +115,40 @@ public class VCPENetworkBO {
 	 */
 	public Boolean updateIps(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update Ip's of VCPENetwork");
-		builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork.getId(), vcpeNetwork));
+		builderService
+				.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork.getId(), vcpeNetwork));
 		return true;
+	}
+
+	/**
+	 * @param vlan
+	 * @return true if is free
+	 * @throws RestServiceException
+	 */
+	public Boolean isVLANFree(String vlan) throws RestServiceException {
+		LOGGER.debug("check if the vlan " + vlan + " is free");
+		return vcpeNetworkService.isVLANFree(vlan);
+	}
+
+	/**
+	 * @param ip
+	 * @return true if is free
+	 * @throws RestServiceException
+	 */
+	public Boolean isIPFree(String ip) throws RestServiceException {
+		LOGGER.debug("check if the IP " + ip + " is free");
+		return vcpeNetworkService.isIPFree(ip);
+	}
+
+	/**
+	 * @param iface
+	 * @param port
+	 * @return true if is free
+	 * @throws RestServiceException
+	 */
+	public Boolean isInterfaceFree(String iface, String port) throws RestServiceException {
+		LOGGER.debug("check if the Interface " + iface + "." + port);
+		return vcpeNetworkService.isInterfaceFree(iface, port);
 	}
 
 	/**

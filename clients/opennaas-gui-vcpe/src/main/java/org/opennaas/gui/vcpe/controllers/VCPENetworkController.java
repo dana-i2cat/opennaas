@@ -216,23 +216,63 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * Sample AJAX method
+	 * Check if the VLAN is free in the environment
 	 * 
-	 * @param model
+	 * @param vlan
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/getAjax")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isVLANFree")
 	public @ResponseBody
-	String getAjax(String vcpeNetworkId, Model model, Locale locale) {
-		LOGGER.debug("Sample ajax method");
+	String isVLANFree(String vlan, Model model, Locale locale) {
+		LOGGER.debug("Check if the VLAN " + vlan + " is free");
+		Boolean isFree = false;
 		try {
-			model.addAttribute("vcpenetwork", vcpeNetworkBO.getById(vcpeNetworkId));
+			isFree = vcpeNetworkBO.isVLANFree(vlan);
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.list.message.error", null, locale));
+					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
 		}
-		String returnedTextValue = "<h2>Updated virtual CPE Network view</h2>";
-		return returnedTextValue;
+		return isFree.toString();
+	}
+
+	/**
+	 * Check if the VLAN is free in the environment
+	 * 
+	 * @param vlan
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isIPFree")
+	public @ResponseBody
+	String isIPFree(String ip, Model model, Locale locale) {
+		LOGGER.debug("Check if the IP " + ip + " is free");
+		Boolean isFree = false;
+		try {
+			isFree = vcpeNetworkBO.isIPFree(ip);
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
+		}
+		return isFree.toString();
+	}
+
+	/**
+	 * Check if the interface is free in the environment
+	 * 
+	 * @param vlan
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isInterfaceFree")
+	public @ResponseBody
+	String isInterfaceFree(String iface, String port, Model model, Locale locale) {
+		LOGGER.debug("Check if the interface " + iface + "." + port + " is free");
+		Boolean isFree = false;
+		try {
+			isFree = vcpeNetworkBO.isInterfaceFree(iface, port);
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.check.interface.message.error", null, locale));
+		}
+		return isFree.toString();
 	}
 
 	/**
