@@ -12,36 +12,44 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
+//TODO avoid these imports, they refer to plugin-related data 
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 
 /**
  * Resource Descriptor with JPA and JAXB annotations to provide both persistence and XML marshaling capabilities.
- *
+ * 
  * @author Mathieu Lemay (ITI)
- *
+ * 
  */
 @XmlRootElement
+// need to tell JAXB this relationship :S
+// TODO find a way to add these classes to JAXB context dynamically (when their bundles load)
+// and move them out of core.
+@XmlSeeAlso({ VCPENetworkDescriptor.class })
 @Entity
 @NamedQueries({ @NamedQuery(name = "resourceDescriptor.findByType", query = "select r from ResourceDescriptor r where r.information.type = :type") })
 public class ResourceDescriptor {
 
 	public static final String			VIRTUAL				= "virtual";
+	public static final String			HOSTED_BY			= "hostedBy";
 
 	private static final long			serialVersionUID	= -8571009012048021984L;
 
+	// id is already stored in ResourceIdentifier.id
+	// this id will be re-set by ResourceRepository.initResource() with value in ResourceIdentifier.id
+	// ResourceRepository.loadResource() uses this id to set ResourceIdentifier.id.
 	@Id
 	private String						id;
 
@@ -57,25 +65,24 @@ public class ResourceDescriptor {
 	private String						fileTopology;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="NETWORK_TOPOLOGY")
-	private NetworkTopology							networkTopology;
+	@JoinColumn(name = "NETWORK_TOPOLOGY")
+	private NetworkTopology				networkTopology;
 
 	@ElementCollection
-	@MapKeyColumn(name="name")
-	@Column(name="resourceId")
-	@CollectionTable(name="RESOURCE_REFERENCES")
-	private Map<String, String> resourceReferences;
+	@MapKeyColumn(name = "name")
+	@Column(name = "resourceId")
+	@CollectionTable(name = "RESOURCE_REFERENCES")
+	private Map<String, String>			resourceReferences;
 
 	/**
 	 * necessary parameter to configure a ssh connection
 	 */
 
-    @ElementCollection
-    @MapKeyColumn(name="name")
-    @Column(name="value")
-    @CollectionTable(name="RESOURCEDESCRIPTOR_PROPERTIES", joinColumns=@JoinColumn(name="resourcedescriptor_id"))
-	Map<String,String> properties = new HashMap<String, String>();
-
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "RESOURCEDESCRIPTOR_PROPERTIES", joinColumns = @JoinColumn(name = "resourcedescriptor_id"))
+	Map<String, String>					properties			= new HashMap<String, String>();
 
 	@XmlElement(name = "capabilityDescriptors")
 	public List<CapabilityDescriptor> getCapabilityDescriptors() {
@@ -95,9 +102,6 @@ public class ResourceDescriptor {
 	public void setInformation(Information information) {
 		this.information = information;
 	}
-
-
-
 
 	public String getId() {
 		return this.id;
@@ -143,7 +147,6 @@ public class ResourceDescriptor {
 		this.fileTopology = networkFileDescriptor;
 	}
 
-
 	public boolean removeCapabilityDescriptor(String capabilityType) {
 		for (int i = 0; i < capabilityDescriptors.size(); i++) {
 			if (capabilityDescriptors.get(i).getCapabilityInformation()
@@ -185,10 +188,9 @@ public class ResourceDescriptor {
 		resourceDescriptor.setCapabilityDescriptors(newCapabilityDescriptors);
 		resourceDescriptor.setProperties(new HashMap<String, String>(properties));
 
-		//TODO THE NETWORK DESCRIPTOR IS NOT CLONED. A NETWORK RESOURCE HAVE NOT TO BE CLONED
+		// TODO THE NETWORK DESCRIPTOR IS NOT CLONED. A NETWORK RESOURCE HAVE NOT TO BE CLONED
 
 		return resourceDescriptor;
 	}
-
 
 }

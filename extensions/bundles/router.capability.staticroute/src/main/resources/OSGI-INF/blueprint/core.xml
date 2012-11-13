@@ -20,7 +20,7 @@
 		<property name="type" value="staticroute"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.staticroute.shell.completers.ResourceNameCompleter"/>
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="staticrouteCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -34,6 +34,13 @@
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="staticroute/create">
 			<action class="org.opennaas.extensions.router.capability.staticroute.shell.CreateStaticRouteCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="staticroute/delete">
+			<action class="org.opennaas.extensions.router.capability.staticroute.shell.DeleteStaticRouteCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

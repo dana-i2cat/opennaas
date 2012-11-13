@@ -1,0 +1,664 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="UserAccessPointService" targetNamespace="http://useraccesspoint.autobahn.geant.net/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://useraccesspoint.autobahn.geant.net/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="useraccesspoint.autobahn.geant.net" xmlns:ns1="http://useraccesspoint.autobahn.geant.net/" xmlns:ns2="aai.autobahn.geant.net" xmlns:tns="useraccesspoint.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://useraccesspoint.autobahn.geant.net/" />
+<xs:import namespace="aai.autobahn.geant.net" />
+<xs:complexType name="ServiceRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="userName" type="xs:string" />
+<xs:element minOccurs="0" name="userHomeDomain" type="xs:string" />
+<xs:element minOccurs="0" name="userEmail" type="xs:string" />
+<xs:element minOccurs="0" name="justification" type="xs:string" />
+<xs:element maxOccurs="unbounded" name="reservations" nillable="true" type="tns:ReservationRequest" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ReservationRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="startPort" type="tns:PortType" />
+<xs:element minOccurs="0" name="endPort" type="tns:PortType" />
+<xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="priority" type="ns1:priority" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element name="capacity" type="xs:long" />
+<xs:element minOccurs="0" name="userInclude" type="tns:PathInfo" />
+<xs:element minOccurs="0" name="userExclude" type="tns:PathInfo" />
+<xs:element name="mtu" type="xs:int" />
+<xs:element name="maxDelay" type="xs:int" />
+<xs:element minOccurs="0" name="resiliency" type="ns1:resiliency" />
+<xs:element name="bidirectional" type="xs:boolean" />
+<xs:element name="processNow" type="xs:boolean" />
+<xs:element minOccurs="0" name="authParameters" type="ns2:UserAuthParameters" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="PortType">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" type="xs:string" />
+<xs:element minOccurs="0" name="mode" type="ns1:mode" />
+<xs:element name="vlan" type="xs:int" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element name="isIdcp" type="xs:boolean" />
+<xs:element name="isClient" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="PathInfo">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="domains" nillable="true" type="xs:string" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="links" nillable="true" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ModifyRequest">
+<xs:sequence>
+<xs:element minOccurs="0" name="resId" type="xs:string" />
+<xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="userName" type="xs:string" />
+<xs:element minOccurs="0" name="userHomeDomain" type="xs:string" />
+<xs:element minOccurs="0" name="userEmail" type="xs:string" />
+<xs:element maxOccurs="unbounded" name="reservations" nillable="true" type="tns:ReservationResponse" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ReservationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="state" type="ns1:state" />
+<xs:element minOccurs="0" name="message" type="xs:string" />
+<xs:element minOccurs="0" name="startPort" type="xs:string" />
+<xs:element minOccurs="0" name="endPort" type="xs:string" />
+<xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="priority" type="ns1:priority" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element name="capacity" type="xs:long" />
+<xs:element minOccurs="0" name="userInclude" type="tns:PathInfo" />
+<xs:element minOccurs="0" name="userExclude" type="tns:PathInfo" />
+<xs:element name="userStartVlan" type="xs:int" />
+<xs:element name="userEndVlan" type="xs:int" />
+<xs:element name="abahnStartVlan" type="xs:int" />
+<xs:element name="abahnEndVlan" type="xs:int" />
+<xs:element name="mtu" type="xs:int" />
+<xs:element name="maxDelay" type="xs:int" />
+<xs:element minOccurs="0" name="resiliency" type="ns1:resiliency" />
+<xs:element name="bidirectional" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://useraccesspoint.autobahn.geant.net/" xmlns:ns1="useraccesspoint.autobahn.geant.net" xmlns:tns="http://useraccesspoint.autobahn.geant.net/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="useraccesspoint.autobahn.geant.net" />
+<xs:element name="cancelService" type="tns:cancelService" />
+<xs:element name="cancelServiceResponse" type="tns:cancelServiceResponse" />
+<xs:element name="checkReservationPossibility" type="tns:checkReservationPossibility" />
+<xs:element name="checkReservationPossibilityResponse" type="tns:checkReservationPossibilityResponse" />
+<xs:element name="getAllClientPorts" type="tns:getAllClientPorts" />
+<xs:element name="getAllClientPortsResponse" type="tns:getAllClientPortsResponse" />
+<xs:element name="getAllDomains" type="tns:getAllDomains" />
+<xs:element name="getAllDomainsResponse" type="tns:getAllDomainsResponse" />
+<xs:element name="getAllDomains_NonClient" type="tns:getAllDomains_NonClient" />
+<xs:element name="getAllDomains_NonClientResponse" type="tns:getAllDomains_NonClientResponse" />
+<xs:element name="getAllLinks" type="tns:getAllLinks" />
+<xs:element name="getAllLinksResponse" type="tns:getAllLinksResponse" />
+<xs:element name="getAllLinks_NonClient" type="tns:getAllLinks_NonClient" />
+<xs:element name="getAllLinks_NonClientResponse" type="tns:getAllLinks_NonClientResponse" />
+<xs:element name="getDomainClientPorts" type="tns:getDomainClientPorts" />
+<xs:element name="getDomainClientPortsResponse" type="tns:getDomainClientPortsResponse" />
+<xs:element name="getIdcpPorts" type="tns:getIdcpPorts" />
+<xs:element name="getIdcpPortsResponse" type="tns:getIdcpPortsResponse" />
+<xs:element name="modifyReservation" type="tns:modifyReservation" />
+<xs:element name="modifyReservationResponse" type="tns:modifyReservationResponse" />
+<xs:element name="queryService" type="tns:queryService" />
+<xs:element name="queryServiceResponse" type="tns:queryServiceResponse" />
+<xs:element name="registerCallback" type="tns:registerCallback" />
+<xs:element name="registerCallbackResponse" type="tns:registerCallbackResponse" />
+<xs:element name="submitService" type="tns:submitService" />
+<xs:element name="submitServiceAndRegister" type="tns:submitServiceAndRegister" />
+<xs:element name="submitServiceAndRegisterResponse" type="tns:submitServiceAndRegisterResponse" />
+<xs:element name="submitServiceResponse" type="tns:submitServiceResponse" />
+<xs:complexType name="registerCallback">
+<xs:sequence>
+<xs:element minOccurs="0" name="serviceID" type="xs:string" />
+<xs:element minOccurs="0" name="url" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="registerCallbackResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="submitServiceAndRegister">
+<xs:sequence>
+<xs:element minOccurs="0" name="request" type="ns1:ServiceRequest" />
+<xs:element minOccurs="0" name="url" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="submitServiceAndRegisterResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="serviceID" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getAllClientPorts">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAllClientPortsResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="PortTypes" type="ns1:PortType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getAllLinks">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAllLinksResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Links" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="checkReservationPossibility">
+<xs:sequence>
+<xs:element minOccurs="0" name="request" type="ns1:ReservationRequest" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="checkReservationPossibilityResponse">
+<xs:sequence>
+<xs:element name="Possibility" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cancelService">
+<xs:sequence>
+<xs:element minOccurs="0" name="serviceID" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cancelServiceResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAllLinks_NonClient">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAllLinks_NonClientResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Links" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="submitService">
+<xs:sequence>
+<xs:element minOccurs="0" name="request" type="ns1:ServiceRequest" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="submitServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="serviceID" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="modifyReservation">
+<xs:sequence>
+<xs:element minOccurs="0" name="request" type="ns1:ModifyRequest" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="modifyReservationResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="queryService">
+<xs:sequence>
+<xs:element minOccurs="0" name="serviceID" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="queryServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="ServiceResponse" type="ns1:ServiceResponse" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getIdcpPorts">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getIdcpPortsResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="PortTypes" type="ns1:PortType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getAllDomains">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAllDomainsResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Domains" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getDomainClientPorts">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getDomainClientPortsResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="PortTypes" type="ns1:PortType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getAllDomains_NonClient">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAllDomains_NonClientResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Domains" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="mode">
+<xs:restriction base="xs:string">
+<xs:enumeration value="VLAN" />
+<xs:enumeration value="UNTAGGED" />
+<xs:enumeration value="TRANSPARENT" />
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="priority">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NORMAL" />
+<xs:enumeration value="HIGH" />
+<xs:enumeration value="HIGHEST" />
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="resiliency">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NONE" />
+<xs:enumeration value="ONE_TO_ONE" />
+<xs:enumeration value="ONE_PLUS_ONE" />
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="state">
+<xs:restriction base="xs:string">
+<xs:enumeration value="ACCEPTED" />
+<xs:enumeration value="PATHFINDING" />
+<xs:enumeration value="LOCAL_CHECK" />
+<xs:enumeration value="SCHEDULING" />
+<xs:enumeration value="SCHEDULED" />
+<xs:enumeration value="CANCELLING" />
+<xs:enumeration value="WITHDRAWING" />
+<xs:enumeration value="DEFERRED_CANCEL" />
+<xs:enumeration value="ACTIVATING" />
+<xs:enumeration value="ACTIVE" />
+<xs:enumeration value="FINISHING" />
+<xs:enumeration value="FINISHED" />
+<xs:enumeration value="CANCELLED" />
+<xs:enumeration value="FAILED" />
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="UserAccessPointException" type="tns:UserAccessPointException" />
+<xs:complexType name="UserAccessPointException">
+<xs:sequence />
+</xs:complexType>
+</xs:schema>
+<xs:schema targetNamespace="aai.autobahn.geant.net" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="UserAuthParameters">
+<xs:sequence>
+<xs:element minOccurs="0" name="identifier" type="xs:string" />
+<xs:element minOccurs="0" name="organization" type="xs:string" />
+<xs:element minOccurs="0" name="projectMembership" type="xs:string" />
+<xs:element minOccurs="0" name="projectRole" type="xs:string" />
+<xs:element minOccurs="0" name="email" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="cancelService">
+    <wsdl:part element="tns:cancelService" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryServiceResponse">
+    <wsdl:part element="tns:queryServiceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllClientPortsResponse">
+    <wsdl:part element="tns:getAllClientPortsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modifyReservation">
+    <wsdl:part element="tns:modifyReservation" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllLinks_NonClientResponse">
+    <wsdl:part element="tns:getAllLinks_NonClientResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UserAccessPointException">
+    <wsdl:part element="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submitServiceResponse">
+    <wsdl:part element="tns:submitServiceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllDomains_NonClientResponse">
+    <wsdl:part element="tns:getAllDomains_NonClientResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllLinks_NonClient">
+    <wsdl:part element="tns:getAllLinks_NonClient" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIdcpPortsResponse">
+    <wsdl:part element="tns:getIdcpPortsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkReservationPossibility">
+    <wsdl:part element="tns:checkReservationPossibility" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllDomains_NonClient">
+    <wsdl:part element="tns:getAllDomains_NonClient" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllLinksResponse">
+    <wsdl:part element="tns:getAllLinksResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelServiceResponse">
+    <wsdl:part element="tns:cancelServiceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryService">
+    <wsdl:part element="tns:queryService" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submitServiceAndRegister">
+    <wsdl:part element="tns:submitServiceAndRegister" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIdcpPorts">
+    <wsdl:part element="tns:getIdcpPorts" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllClientPorts">
+    <wsdl:part element="tns:getAllClientPorts" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submitService">
+    <wsdl:part element="tns:submitService" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerCallbackResponse">
+    <wsdl:part element="tns:registerCallbackResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerCallback">
+    <wsdl:part element="tns:registerCallback" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDomainClientPortsResponse">
+    <wsdl:part element="tns:getDomainClientPortsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkReservationPossibilityResponse">
+    <wsdl:part element="tns:checkReservationPossibilityResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submitServiceAndRegisterResponse">
+    <wsdl:part element="tns:submitServiceAndRegisterResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="modifyReservationResponse">
+    <wsdl:part element="tns:modifyReservationResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllDomains">
+    <wsdl:part element="tns:getAllDomains" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllDomainsResponse">
+    <wsdl:part element="tns:getAllDomainsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDomainClientPorts">
+    <wsdl:part element="tns:getDomainClientPorts" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllLinks">
+    <wsdl:part element="tns:getAllLinks" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UserAccessPoint">
+    <wsdl:operation name="registerCallback">
+      <wsdl:input message="tns:registerCallback" name="registerCallback">
+    </wsdl:input>
+      <wsdl:output message="tns:registerCallbackResponse" name="registerCallbackResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="submitServiceAndRegister">
+      <wsdl:input message="tns:submitServiceAndRegister" name="submitServiceAndRegister">
+    </wsdl:input>
+      <wsdl:output message="tns:submitServiceAndRegisterResponse" name="submitServiceAndRegisterResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllClientPorts">
+      <wsdl:input message="tns:getAllClientPorts" name="getAllClientPorts">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllClientPortsResponse" name="getAllClientPortsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllLinks">
+      <wsdl:input message="tns:getAllLinks" name="getAllLinks">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllLinksResponse" name="getAllLinksResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkReservationPossibility">
+      <wsdl:input message="tns:checkReservationPossibility" name="checkReservationPossibility">
+    </wsdl:input>
+      <wsdl:output message="tns:checkReservationPossibilityResponse" name="checkReservationPossibilityResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancelService">
+      <wsdl:input message="tns:cancelService" name="cancelService">
+    </wsdl:input>
+      <wsdl:output message="tns:cancelServiceResponse" name="cancelServiceResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllLinks_NonClient">
+      <wsdl:input message="tns:getAllLinks_NonClient" name="getAllLinks_NonClient">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllLinks_NonClientResponse" name="getAllLinks_NonClientResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="submitService">
+      <wsdl:input message="tns:submitService" name="submitService">
+    </wsdl:input>
+      <wsdl:output message="tns:submitServiceResponse" name="submitServiceResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="modifyReservation">
+      <wsdl:input message="tns:modifyReservation" name="modifyReservation">
+    </wsdl:input>
+      <wsdl:output message="tns:modifyReservationResponse" name="modifyReservationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryService">
+      <wsdl:input message="tns:queryService" name="queryService">
+    </wsdl:input>
+      <wsdl:output message="tns:queryServiceResponse" name="queryServiceResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIdcpPorts">
+      <wsdl:input message="tns:getIdcpPorts" name="getIdcpPorts">
+    </wsdl:input>
+      <wsdl:output message="tns:getIdcpPortsResponse" name="getIdcpPortsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDomains">
+      <wsdl:input message="tns:getAllDomains" name="getAllDomains">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllDomainsResponse" name="getAllDomainsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDomainClientPorts">
+      <wsdl:input message="tns:getDomainClientPorts" name="getDomainClientPorts">
+    </wsdl:input>
+      <wsdl:output message="tns:getDomainClientPortsResponse" name="getDomainClientPortsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDomains_NonClient">
+      <wsdl:input message="tns:getAllDomains_NonClient" name="getAllDomains_NonClient">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllDomains_NonClientResponse" name="getAllDomains_NonClientResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UserAccessPointServiceSoapBinding" type="tns:UserAccessPoint">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="registerCallback">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="registerCallback">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="registerCallbackResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllClientPorts">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAllClientPorts">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllClientPortsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UserAccessPointException">
+        <soap:fault name="UserAccessPointException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="submitServiceAndRegister">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="submitServiceAndRegister">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="submitServiceAndRegisterResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UserAccessPointException">
+        <soap:fault name="UserAccessPointException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllLinks">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAllLinks">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllLinksResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelService">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="cancelService">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="cancelServiceResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UserAccessPointException">
+        <soap:fault name="UserAccessPointException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="checkReservationPossibility">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="checkReservationPossibility">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="checkReservationPossibilityResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UserAccessPointException">
+        <soap:fault name="UserAccessPointException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllLinks_NonClient">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAllLinks_NonClient">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllLinks_NonClientResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="submitService">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="submitService">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="submitServiceResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UserAccessPointException">
+        <soap:fault name="UserAccessPointException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="modifyReservation">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="modifyReservation">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="modifyReservationResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getIdcpPorts">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getIdcpPorts">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getIdcpPortsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryService">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="queryService">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="queryServiceResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UserAccessPointException">
+        <soap:fault name="UserAccessPointException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDomains">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAllDomains">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllDomainsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDomainClientPorts">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getDomainClientPorts">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getDomainClientPortsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDomains_NonClient">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAllDomains_NonClient">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllDomains_NonClientResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UserAccessPointService">
+    <wsdl:port binding="tns:UserAccessPointServiceSoapBinding" name="UserAccessPointPort">
+      <soap:address location="http://193.1.219.80:8080/autobahn/uap2" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

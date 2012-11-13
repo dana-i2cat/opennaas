@@ -8,6 +8,9 @@ package org.opennaas.extensions.router.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalPort as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the LogicalPortBean Interface. The CIM class LogicalPort is described as follows:
@@ -15,7 +18,14 @@ import java.util.List;
  * The abstraction of a port or connection point of a Device. This object should be instantiated when the Port has independent management
  * characteristics from the Device that includes it. Examples are a Fibre Channel Port and a USB Port.
  */
+@XmlRootElement
+@XmlSeeAlso({ NetworkPort.class })
 public class LogicalPort extends LogicalDevice implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 5621013572754510029L;
 
 	/**
 	 * Add a new PortImplementsEndpoint association between protocolEndpoint and this element

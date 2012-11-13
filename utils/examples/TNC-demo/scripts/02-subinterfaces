@@ -1,0 +1,24 @@
+shell:echo "CONFIGURE SUBINTERFACES"
+##Create interfaces
+
+chassis:createsubinterface --vlanid 2048 router:myre ge-2/0/1.2048
+chassis:createsubinterface --vlanid 2017 router:myre ge-2/0/1.2017
+##toCamera2
+chassis:createsubinterface --vlanid 14 router:myre ge-2/0/0.14
+chassis:createsubinterface router:myre gr-1/1/0.1
+queue:listactions router:myre
+queue:execute router:myre
+
+chassis:createsubinterface --vlanid 2048 router:gsn ge-1/0/7.2048
+chassis:createsubinterface --vlanid 2016 router:gsn ge-1/0/7.2016
+chassis:createsubinterface --vlanid 25 router:gsn ge-1/0/7.25
+queue:listactions router:gsn
+queue:execute router:gsn
+
+chassis:createsubinterface --vlanid 2017 router:unic ge-1/1/1.2017
+chassis:createsubinterface --vlanid 2016 router:unic ge-1/1/1.2016
+##toCamera1
+chassis:createsubinterface --vlanid 2101 router:unic ge-1/1/2.2101
+
+queue:listactions router:unic
+queue:execute router:unic

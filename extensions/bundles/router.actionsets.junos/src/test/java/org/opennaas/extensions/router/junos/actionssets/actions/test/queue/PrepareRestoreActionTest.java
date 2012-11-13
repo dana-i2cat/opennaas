@@ -3,22 +3,22 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.queue;
 import java.util.HashMap;
 
 import junit.framework.Assert;
-import mock.MockEventManager;
-import org.opennaas.extensions.router.junos.actionssets.actions.queue.PrepareAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.queue.RestoreAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
-import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.mock.MockEventManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
+import org.opennaas.extensions.router.junos.actionssets.actions.queue.PrepareAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.queue.RestoreAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
 
 public class PrepareRestoreActionTest {
 	private RestoreAction	restoreAction;
@@ -43,6 +43,7 @@ public class PrepareRestoreActionTest {
 			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{
 					put(ProtocolSessionContext.PROTOCOL, "netconf");
+
 				}
 			});
 			protocolSessionManager.registerContext(netconfContext);
@@ -99,6 +100,8 @@ public class PrepareRestoreActionTest {
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE,
+				"password");
 		// ADDED
 		return protocolSessionContext;
 

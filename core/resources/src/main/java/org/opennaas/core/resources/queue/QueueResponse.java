@@ -3,11 +3,16 @@ package org.opennaas.core.resources.queue;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.action.IAction;
 
-
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class QueueResponse {
 
 	public ActionResponse	prepareResponse	= new ActionResponse();
@@ -16,7 +21,7 @@ public class QueueResponse {
 
 	public ActionResponse	restoreResponse	= new ActionResponse();
 
-	public ActionResponse 	refreshResponse = new ActionResponse();
+	public ActionResponse	refreshResponse	= new ActionResponse();
 
 	Vector<ActionResponse>	responses		= new Vector<ActionResponse>();
 
@@ -73,7 +78,6 @@ public class QueueResponse {
 		queueResponse.setRestoreResponse(ActionResponse.newPendingAction(QueueConstants.RESTORE));
 		queueResponse.setRefreshResponse(ActionResponse.newPendingAction(QueueConstants.REFRESH));
 
-
 		Vector<ActionResponse> responses = new Vector<ActionResponse>();
 		for (IAction action : actions)
 			responses.add(ActionResponse.newPendingAction(action.getActionID()));
@@ -91,11 +95,11 @@ public class QueueResponse {
 		this.restoreResponse = restoreResponse;
 	}
 
-	public ActionResponse getRefreshResponse(){
+	public ActionResponse getRefreshResponse() {
 		return refreshResponse;
 	}
 
-	public void setRefreshResponse(ActionResponse refreshResponse){
+	public void setRefreshResponse(ActionResponse refreshResponse) {
 		this.refreshResponse = refreshResponse;
 	}
 
@@ -108,6 +112,11 @@ public class QueueResponse {
 	}
 
 	public boolean isOk() {
+		for (ActionResponse action : responses)
+		{
+			if (action.getStatus() == STATUS.ERROR)
+				return false;
+		}
 		return getConfirmResponse().getStatus().equals(STATUS.OK) && getRefreshResponse().getStatus().equals(STATUS.OK);
 	}
 	/* status connection */

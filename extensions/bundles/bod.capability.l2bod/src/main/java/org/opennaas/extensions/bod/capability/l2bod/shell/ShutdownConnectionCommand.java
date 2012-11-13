@@ -1,19 +1,15 @@
 package org.opennaas.extensions.bod.capability.l2bod.shell;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Interface;
+import java.util.NoSuchElementException;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
-import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
-import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
+import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
 
 @Command(scope = "l2bod", name = "shutdownConnection", description = "Shutdown L2 connectivity between specified interfaces.")
 public class ShutdownConnectionCommand extends GenericKarafCommand {
@@ -21,30 +17,22 @@ public class ShutdownConnectionCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to shutdown the connectivity.", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Argument(index = 1, name = "interface1", description = "The name of interface 1 connected", required = true, multiValued = false)
-	private String	interfaceName1;
-
-	@Argument(index = 2, name = "interface2", description = "The name of interface 2 connected", required = true, multiValued = false)
-	private String	interfaceName2;
+	@Argument(index = 1, name = "connectionName", description = "The name of the link to be connection", required = true, multiValued = false)
+	private String	connectionName;
 
 	@Override
 	protected Object doExecute() throws Exception {
-
-		printInitCommand("shutdown connectivity of resource: " + resourceId + " and interfaces: " + interfaceName1 + " - " + interfaceName2);
+		printInitCommand("shutdown connectivity of resource: " + resourceId + " and link: " + connectionName);
 
 		try {
-
 			IResource resource = getResourceFromFriendlyName(resourceId);
-
-			ICapability ipCapability = getCapability(resource.getCapabilities(), L2BoDCapability.CAPABILITY_NAME);
-
-			ipCapability.sendMessage(ActionConstants.SHUTDOWNCONNECTION, getInterfaces((NetworkModel) resource.getModel()));
-
+			IL2BoDCapability ipCapability = (IL2BoDCapability) resource.getCapabilityByInterface(IL2BoDCapability.class);
+			ipCapability.shutDownConnection(getLink((NetworkModel) resource.getModel()));
 		} catch (Exception e) {
-			printError("Error requesting connectivity for resource: " + resourceId);
+			printError("Error shutting down connection in resource: " + resourceId);
 			printError(e);
 			printEndCommand();
-			return "";
+			return -1;
 		}
 		printEndCommand();
 		return null;
@@ -52,25 +40,24 @@ public class ShutdownConnectionCommand extends GenericKarafCommand {
 	}
 
 	/**
-	 * Get the interfaces from the model
-	 *
-	 * @param networkModel
-	 *
-	 * @return list of interfaces
+	 * Get the link from the model. Uses connectionName argument to find it.
+	 * 
+	 * @param model
+	 * @return Link representing the connection with given name in given model.
+	 * @throws NoSuchElementException
+	 *             if there is no Link in model named <code>connectionName</code>.
+	 * 
 	 */
-	private List<Interface> getInterfaces(NetworkModel networkModel) {
+	private BoDLink getLink(NetworkModel model) {
+		int linkIndex = NetworkModelHelper.getNetworkElementByName(connectionName, model.getNetworkElements());
+		if (linkIndex == -1) {
+			throw new NoSuchElementException("No such link " + connectionName);
+		}
 
-		List<Interface> listInterfaces = new ArrayList<Interface>();
+		if (!(model.getNetworkElements().get(linkIndex) instanceof BoDLink)) {
+			throw new NoSuchElementException("No such link " + connectionName);
+		}
 
-		// Add Interface 1
-		Interface interface1 = NetworkModelHelper.getInterfaceByName(networkModel.getNetworkElements(), interfaceName1);
-		listInterfaces.add(interface1);
-
-		// Add Interface 2
-		Interface interface2 = NetworkModelHelper.getInterfaceByName(networkModel.getNetworkElements(), interfaceName2);
-		listInterfaces.add(interface2);
-
-		return listInterfaces;
+		return (BoDLink) model.getNetworkElements().get(linkIndex);
 	}
-
 }

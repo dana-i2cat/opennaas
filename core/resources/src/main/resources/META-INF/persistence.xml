@@ -10,12 +10,15 @@
 		<class>org.opennaas.core.resources.descriptor.ResourceDescriptor</class>
 		<class>org.opennaas.core.resources.descriptor.ResourceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.InterfaceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.LayerId</class>
 		<class>org.opennaas.core.resources.descriptor.network.Link</class>
 		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
+		<class>org.opennaas.core.resources.descriptor.network.Layer</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
 		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
+		<class>org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor</class>
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -32,12 +35,16 @@
 		<class>org.opennaas.core.resources.descriptor.ResourceDescriptor</class>
 		<class>org.opennaas.core.resources.descriptor.ResourceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.InterfaceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.LayerId</class>
 		<class>org.opennaas.core.resources.descriptor.network.Link</class>
 		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
+		<class>org.opennaas.core.resources.descriptor.network.Layer</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
 		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
+		<class>org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor</class>
+		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="openjpa.ConnectionURL" value="jdbc:hsqldb:mem:unit-testing-jpa"/>

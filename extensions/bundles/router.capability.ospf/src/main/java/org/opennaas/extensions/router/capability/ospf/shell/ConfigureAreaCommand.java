@@ -1,20 +1,16 @@
 package org.opennaas.extensions.router.capability.ospf.shell;
 
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFArea.AreaType;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.utils.ModelHelper;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFArea.AreaType;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * @author Isart Canyameres
@@ -59,15 +55,13 @@ public class ConfigureAreaCommand extends GenericKarafCommand {
 			OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
 			areaConfig.setOSPFArea(area);
 
-			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), OSPFCapability.CAPABILITY_NAME);
+			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
 
-			Response response;
 			if (delete) {
-				response = ospfCapability.removeOSPFArea(areaConfig);
+				ospfCapability.removeOSPFArea(areaConfig);
 			} else {
-				response = ospfCapability.configureOSPFArea(areaConfig);
+				ospfCapability.configureOSPFArea(areaConfig);
 			}
-			return printResponseStatus(response);
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -78,29 +72,8 @@ public class ConfigureAreaCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		}
+		printEndCommand();
+		return null;
 	}
 
-	private NetworkPort createInterface(String interfaceName) throws Exception {
-		String argsInterface[] = new String[2];
-		try {
-			argsInterface = splitInterfaces(interfaceName);
-		} catch (Exception e) {
-			return null;
-		}
-
-		String name = argsInterface[0];
-		int port = Integer.parseInt(argsInterface[1]);
-
-		if (name.startsWith("lo")) {
-			printError("Configuration for Loopback interface not allowed");
-			return null;
-		}
-
-		NetworkPort networkPort = new NetworkPort();
-		networkPort.setName(name);
-		networkPort.setPortNumber(port);
-		networkPort.setLinkTechnology(LinkTechnology.OTHER);
-
-		return networkPort;
-	}
 }

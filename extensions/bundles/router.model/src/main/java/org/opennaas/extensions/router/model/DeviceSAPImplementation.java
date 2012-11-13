@@ -5,7 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class DeviceSAPImplementation as well as methods comparable
@@ -18,8 +20,16 @@ import java.io.*;
  * implementations of a SAP exist, each of these implementations would result in individual instantiations of the ServiceAccessPoint object. These
  * individual instantiations would then have associations to the unique implementations.
  */
+@XmlSeeAlso({
+		PortImplementsEndpoint.class
+})
 public class DeviceSAPImplementation extends Dependency implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 2097068667095111972L;
 
 	/**
 	 * This constructor creates a DeviceSAPImplementationBeanImpl Class which implements the DeviceSAPImplementationBean Interface, and encapsulates

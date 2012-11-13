@@ -32,7 +32,7 @@
 	</service>
 	<!-- Provide commands to the Karaf shell -->
 		<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.extensions.roadm.capability.monitoring.shell.completers.ResourceNameCompleter"/>
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="alarm/list">

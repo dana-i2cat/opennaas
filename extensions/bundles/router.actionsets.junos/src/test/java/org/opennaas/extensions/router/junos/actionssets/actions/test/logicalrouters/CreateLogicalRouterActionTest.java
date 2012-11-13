@@ -3,22 +3,22 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.logicalrou
 import java.util.HashMap;
 
 import junit.framework.Assert;
-import mock.MockEventManager;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.CreateLogicalRouterAction;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.mock.MockEventManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.CreateLogicalRouterAction;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class CreateLogicalRouterActionTest {
 	static CreateLogicalRouterAction	action;
@@ -42,6 +42,7 @@ public class CreateLogicalRouterActionTest {
 			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{
 					put(ProtocolSessionContext.PROTOCOL, "netconf");
+
 				}
 			});
 			protocolSessionManager.registerContext(netconfContext);
@@ -56,21 +57,20 @@ public class CreateLogicalRouterActionTest {
 	}
 
 	@Test
-	public void checkParamsTest() {
+	public void checkParamsTest() throws ActionException {
 
-		// only accept EthernetPort and LogicalTunnelPort type
-		try {
-			Assert.assertTrue(action.checkParams(new String("L1")));
-		} catch (ActionException a) {
-			a.printStackTrace();
-			Assert.fail(a.getMessage());
-		}
+		ComputerSystem lrModel = new ComputerSystem();
+		lrModel.setName("L1");
 
+		Assert.assertTrue(action.checkParams(lrModel));
 	}
 
 	public void checkTemplate() {
 		try {
-			Assert.assertTrue(action.checkParams(new String("L1")));
+			ComputerSystem lrModel = new ComputerSystem();
+			lrModel.setName("L1");
+
+			Assert.assertTrue(action.checkParams(lrModel));
 
 			action.prepareMessage();
 
@@ -88,8 +88,10 @@ public class CreateLogicalRouterActionTest {
 	public void createLRTest() {
 
 		try {
+			ComputerSystem lrModel = new ComputerSystem();
+			lrModel.setName("L1");
 
-			action.setParams(new String("L1"));
+			action.setParams(lrModel);
 			ActionResponse response = action.execute(protocolSessionManager);
 			System.out.println(action.getVelocityMessage());
 		} catch (ActionException e) {
@@ -114,6 +116,8 @@ public class CreateLogicalRouterActionTest {
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE,
+				"password");
 		// ADDED
 		return protocolSessionContext;
 

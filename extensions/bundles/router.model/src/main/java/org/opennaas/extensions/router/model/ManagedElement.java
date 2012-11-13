@@ -6,12 +6,15 @@
 package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
+
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.SerializationException;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ManagedElement as well as methods comparable to the
@@ -22,10 +25,12 @@ import org.opennaas.core.resources.IModel;
  */
 public class ManagedElement implements IModel, Serializable {
 
+	private static final long	serialVersionUID	= 3787493356525574746L;
+
 	/**
 	 * These are the associations where I am the "from" element
 	 */
-	Vector<Association>	toAssociations	= new Vector<Association>();
+	protected List<Association>	toAssociations		= new LinkedList<Association>();
 
 	/**
 	 * Returns the list of Associations where I am the "from" element
@@ -34,6 +39,15 @@ public class ManagedElement implements IModel, Serializable {
 	 */
 	public List<Association> getToAssociations() {
 		return toAssociations;
+	}
+
+	/**
+	 * Sets the list of Associations where I am the "from" element
+	 * 
+	 * @param toAssociations
+	 */
+	public void setToAssociations(List<Association> toAssociations) {
+		this.toAssociations = toAssociations;
 	}
 
 	/**
@@ -226,15 +240,25 @@ public class ManagedElement implements IModel, Serializable {
 	/**
 	 * These are the associations where I am the "to" element
 	 */
-	Vector<Association>	fromAssociations	= new Vector<Association>();
+	protected List<Association>	fromAssociations	= new LinkedList<Association>();
 
 	/**
 	 * Returns the list of Associations where I am the "to" element
 	 * 
 	 * @return vector of fromAssociations
 	 */
+	@XmlTransient
 	public List<Association> getFromAssociations() {
 		return fromAssociations;
+	}
+
+	/**
+	 * Sets the list of Associations where I am the "to" element
+	 * 
+	 * @param fromAssociations
+	 */
+	public void setFromAssociations(List<Association> fromAssociations) {
+		this.fromAssociations = fromAssociations;
 	}
 
 	/**
@@ -420,7 +444,10 @@ public class ManagedElement implements IModel, Serializable {
 	 * @return String current instanceID property value
 	 * @exception Exception
 	 */
+	@XmlID
 	public String getInstanceID() {
+		if (this.instanceID == null)
+			this.instanceID = generateInstanceID();
 
 		return this.instanceID;
 	} // getInstanceID
@@ -560,7 +587,52 @@ public class ManagedElement implements IModel, Serializable {
 	public List<String> getChildren() {
 
 		/* ManagedElement do not include these relations */
-		return new ArrayList<String>();
+		return new LinkedList<String>();
+	}
+
+	/**
+	 * This method is invoked by the JAXB implementation on each instance when the unmarshalling of a ManagedElement object completes.
+	 * 
+	 * It is required in order to make Associations bidirectional, as they are marshalled as unidirectional using XmlTransient annotation, to break
+	 * cyclic references.
+	 * 
+	 * @param u
+	 * @param parent
+	 */
+	public void afterUnmarshal(Unmarshaller u, Object parent) {
+		for (Association assoc : toAssociations) {
+			assoc.setFrom(this);
+			assoc.getTo().getFromAssociations().add(assoc);
+		}
+	}
+
+	/**
+	 * Generates an instanceId according to the preferred algorithm:
+	 * 
+	 * InstanceID should be constructed using the following "preferred" algorithm: <OrgID>:<LocalID> Where <OrgID> and <LocalID> are separated by a
+	 * colon (:), and where <OrgID> must include a copyrighted, trademarked, or otherwise unique name that is owned by the business entity that is
+	 * creating or defining the InstanceID or that is a registered ID assigned to the business entity by a recognized global authority. (This
+	 * requirement is similar to the <Schema Name>_<Class Name> structure of Schema class names.) In addition, to ensure uniqueness, <OrgID> must not
+	 * contain a colon (:). When using this algorithm, the first colon to appear in InstanceID must appear between <OrgID> and <LocalID>. <LocalID> is
+	 * chosen by the business entity and should not be reused to identify different underlying (real-world) elements. If not null and the above
+	 * "preferred" algorithm is not used, the defining entity must assure that the resulting InstanceID is not reused across any InstanceIDs produced
+	 * by this or other providers for the NameSpace of this instance. If not set to null for DMTF-defined instances, the "preferred" algorithm must be
+	 * used with the <OrgID> set to CIM.
+	 * 
+	 * @return generated instanceId
+	 */
+	protected String generateInstanceID() {
+		String orgID = "opennaas.org";
+		// String localID = this.getClass().getName() + "/" + getElementName();
+		String localID = this.getClass().getName() + "/" + this.toString();
+
+		return orgID + ":" + localID;
+	}
+
+	@Override
+	public String toXml() throws SerializationException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
 } // Class ManagedElement

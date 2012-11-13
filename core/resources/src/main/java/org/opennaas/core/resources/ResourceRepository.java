@@ -16,12 +16,16 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorRepository;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 /**
  * Base class for all the resource repository implementations.
- *
+ * 
  * @author Mathieu Leman (ITI)
- *
+ * 
  */
 public class ResourceRepository implements IResourceRepository {
 	/** logger */
@@ -31,7 +35,7 @@ public class ResourceRepository implements IResourceRepository {
 	protected Map<String, IResource>						resourceRepository		= null;
 
 	/** The resource descriptor repository **/
-	protected GenericRepository<ResourceDescriptor, String> descriptorRepository	= null;
+	protected GenericRepository<ResourceDescriptor, String>	descriptorRepository	= null;
 
 	/** The capability factories by capability id **/
 	protected Map<String, ICapabilityFactory>				capabilityFactories		= null;
@@ -41,9 +45,12 @@ public class ResourceRepository implements IResourceRepository {
 
 	private IResourceBootstrapperFactory					bootstrapperFactory		= null;
 
+	// @Inject
+	// private IProtocolManager;
+
 	/**
 	 * Construct a new resource repository for resources of the given type
-	 *
+	 * 
 	 * @throws ResourceException
 	 */
 	public ResourceRepository(String resourceType) {
@@ -78,9 +85,8 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Specialized setter for resourceDescriptorRepository.
-	 *
-     * The only purpose of this setter is to work around issues with
-     * Blueprint not being able to cast to the generic type of the real setter.
+	 * 
+	 * The only purpose of this setter is to work around issues with Blueprint not being able to cast to the generic type of the real setter.
 	 */
 	public void setResourceDescriptorRepository(ResourceDescriptorRepository descriptorRepository) {
 		setResourceDescriptorRepository((GenericRepository<ResourceDescriptor, String>) descriptorRepository);
@@ -90,7 +96,7 @@ public class ResourceRepository implements IResourceRepository {
 		this.bootstrapperFactory = bootstrapperFactory;
 	}
 
-	public Map<String, ICapabilityFactory> getCapabilityFactories() {
+	@Override	public Map<String, ICapabilityFactory> getCapabilityFactories() {
 		return capabilityFactories;
 	}
 
@@ -103,13 +109,13 @@ public class ResourceRepository implements IResourceRepository {
 	/**
 	 * @return the resourceType
 	 */
-	public String getResourceType() {
+	@Override	public String getResourceType() {
 		return resourceType;
 	}
 
 	/**
 	 * Set the type of resource for the repository
-	 *
+	 * 
 	 * @param resourceType
 	 *            the resourceType to set
 	 */
@@ -117,7 +123,7 @@ public class ResourceRepository implements IResourceRepository {
 	// this.resourceType = resourceType;
 	// }
 
-	public List<IResource> listResources() {
+	@Override	public List<IResource> listResources() {
 		Iterator<String> ids = resourceRepository.keySet().iterator();
 		List<IResource> result = new ArrayList<IResource>();
 
@@ -127,7 +133,7 @@ public class ResourceRepository implements IResourceRepository {
 		return result;
 	}
 
-	public IResource getResource(String identifier) throws ResourceException {
+	@Override	public IResource getResource(String identifier) throws ResourceException {
 		IResource result = resourceRepository.get(identifier);
 		if (result == null) {
 			throw new ResourceException("No resource with ID " + identifier
@@ -165,7 +171,7 @@ public class ResourceRepository implements IResourceRepository {
 	/**
 	 * Uses a new resourceIdentifier to identify the resource
 	 */
-	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException {
+	@Override	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException {
 
 		logger.debug("Creating resource from configuration");
 
@@ -182,6 +188,15 @@ public class ResourceRepository implements IResourceRepository {
 			throw new ResourceException(e);
 		}
 
+		if (protocolManagerIsAvailable()) {
+			try {
+				createProtocolSessionManagerForResource(resource.getResourceIdentifier().getId());
+			} catch (ActivatorException e) {
+				// ignored, protocolManager availability is already checked in protocolManagerIsAvailable()
+				logger.warn("Ignoring fail to retrieve protocolManager during createProtocolSessionManagerForResource");
+			}
+		}
+
 		logger.debug("Resource Initialized");
 		resourceDescriptor = persistResourceDescriptor(resourceDescriptor);
 
@@ -190,20 +205,28 @@ public class ResourceRepository implements IResourceRepository {
 		return resource;
 	}
 
-	public void removeResource(String identifier) throws ResourceException {
+	@Override	public void removeResource(String identifier) throws ResourceException {
 		logger.info("Removing resource with ID #" + identifier);
 
 		IResource resource = getResource(identifier);
 		shutdownResource(identifier);
+		if (protocolManagerIsAvailable()) {
+			try {
+				removeProtocolSessionManagerForResource(identifier);
+			} catch (ActivatorException e) {
+				// ignored, protocolManager availability is already checked in protocolManagerIsAvailable()
+				logger.warn("Ignoring fail to retrieve protocolManager during removeProtocolSessionManagerForResource");
+			}
+		}
 		unpersistResourceDescriptor(resource.getResourceDescriptor());
 	}
 
-	public IResource modifyResource(String identifier, ResourceDescriptor descriptor) throws ResourceException {
+	@Override	public IResource modifyResource(String identifier, ResourceDescriptor descriptor) throws ResourceException {
 
 		try {
 
 			// Get the old resource
-			IResource resource = getResource(identifier);
+			Resource resource = (Resource) getResource(identifier);
 			ResourceDescriptor oldConfig = resource.getResourceDescriptor();
 
 			IResourceIdentifier resourceIdentifier = resource.getResourceIdentifier();
@@ -226,7 +249,7 @@ public class ResourceRepository implements IResourceRepository {
 					persistResourceDescriptor(oldConfig);
 				} catch (ResourceException e1) {
 					logger.error("Impossible to restore old configuration for resource ID #"
-								+ resource.getResourceDescriptor().getId());
+							+ resource.getResourceDescriptor().getId());
 					throw e1;
 				}
 				throw e;
@@ -239,7 +262,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 	}
 
-	public void startResource(String identifier) throws ResourceException {
+	@Override	public void startResource(String identifier) throws ResourceException {
 		logger.debug("Starting resource runtime object for ID #"
 				+ identifier);
 		try {
@@ -250,7 +273,7 @@ public class ResourceRepository implements IResourceRepository {
 		logger.info("Started resource with ID #" + identifier);
 	}
 
-	public void stopResource(String identifier) throws ResourceException {
+	@Override	public void stopResource(String identifier) throws ResourceException {
 		logger.debug("Stopping resource runtime object for ID #"
 				+ identifier);
 		try {
@@ -261,7 +284,7 @@ public class ResourceRepository implements IResourceRepository {
 		logger.info("Stopped resource with ID #" + identifier);
 	}
 
-	public void forceStopResource(String identifier) throws ResourceException {
+	@Override	public void forceStopResource(String identifier) throws ResourceException {
 		logger.debug("Stopping resource runtime object for ID #"
 				+ identifier);
 		forceDeactivateResource(identifier);
@@ -285,7 +308,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Loads and starts a resource into memory. Uses resourceDescriptor id to identify the resource
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -301,7 +324,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 	}
 
-	private IResource initResource(IResource resource, ResourceDescriptor resourceDescriptor, IResourceIdentifier resourceIdentifier)
+	private IResource initResource(Resource resource, ResourceDescriptor resourceDescriptor, IResourceIdentifier resourceIdentifier)
 			throws ResourceException, CorruptStateException {
 
 		logger.debug("Initializing resource " + resourceIdentifier.getId() + " ...");
@@ -338,14 +361,27 @@ public class ResourceRepository implements IResourceRepository {
 	private void activateResource(String resourceId) throws ResourceException, CorruptStateException {
 		logger.debug("Activating resource " + resourceId + " ...");
 
-		IResource resource = getResource(resourceId);
+		Resource resource = (Resource) getResource(resourceId);
 
 		// Each repository can override this method to add new conditions to start a resource
 		checkResourceCanBeStarted(resource);
 
+		if (protocolManagerIsAvailable()) {
+			try {
+				createProtocolSessions(resourceId);
+			} catch (Exception e) {
+				try {
+					destroyProtocolSessions(resourceId);
+				} catch (Exception e1) {
+					logger.warn("Error destroying protocol sessions", e1);
+				}
+				throw new ResourceException(e);
+			}
+		}
+
 		/* prepare capabilities */
 		logger.debug("  Obtaining capabilities...");
-		List<ICapability> oldCapabilities = resource.getCapabilities();
+		List<? extends ICapability> oldCapabilities = resource.getCapabilities();
 		List<ICapability> capabilities = createCapabilities(resource);
 		resource.setCapabilities(capabilities);
 		logger.debug("  Capabilities obtained. Loading bootstrapper...");
@@ -385,6 +421,14 @@ public class ResourceRepository implements IResourceRepository {
 			resource.setBootstrapper(oldBootstrapper);
 			resource.setProfile(oldProfile);
 
+			if (protocolManagerIsAvailable()) {
+				try {
+					destroyProtocolSessions(resourceId);
+				} catch (Exception e) {
+					logger.warn("Error destroying protocol sessions", e);
+				}
+			}
+
 			logger.debug("Rolling back done");
 			throw re;
 		}
@@ -393,7 +437,7 @@ public class ResourceRepository implements IResourceRepository {
 	private void deactivateResource(String resourceId) throws ResourceException, CorruptStateException {
 		logger.debug("Deactivating resource " + resourceId + " ...");
 
-		IResource resource = getResource(resourceId);
+		Resource resource = (Resource) getResource(resourceId);
 
 		try {
 
@@ -405,10 +449,28 @@ public class ResourceRepository implements IResourceRepository {
 		}
 
 		try {
+
 			if (resource.getResourceDescriptor().getProfileId() != null && !resource.getResourceDescriptor().getProfileId().isEmpty()) {
 				unregisterProfileInResource(resource);
 				logger.debug("  Profile removed from resource");
 			}
+
+			resource.setBootstrapper(null);
+			logger.debug("  Bootstrapper removed from resource");
+
+			resource.setCapabilities(new ArrayList<ICapability>());
+			logger.debug("  Capabilities removed from resource");
+
+			if (protocolManagerIsAvailable()) {
+				try {
+					destroyProtocolSessions(resourceId);
+				} catch (Exception e) {
+					logger.warn("Error destorying protocolSessions", e);
+				}
+			}
+
+			logger.debug("Resource deactivated");
+
 		} catch (ResourceException e) {
 			// roll back
 			try {
@@ -419,14 +481,6 @@ public class ResourceRepository implements IResourceRepository {
 				throw new CorruptStateException("Failed to roll back deactivateResource.", e1);
 			}
 		}
-
-		resource.setBootstrapper(null);
-		logger.debug("  Bootstrapper removed from resource");
-
-		resource.setCapabilities(new ArrayList<ICapability>());
-		logger.debug("  Capabilities removed from resource");
-
-		logger.debug("Resource deactivated");
 	}
 
 	private void shutdownResource(String resourceId) throws ResourceException {
@@ -447,7 +501,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Checks if the resource is valid to be started
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -459,7 +513,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Checks if the resource type is valid so it can be created.
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -526,7 +580,7 @@ public class ResourceRepository implements IResourceRepository {
 		return capabilities;
 	}
 
-	private void loadProfileInResource(IResource resource, String profileId) throws ResourceException {
+	private void loadProfileInResource(Resource resource, String profileId) throws ResourceException {
 
 		try {
 			IProfileManager profileManager = Activator.getProfileManagerService();
@@ -541,7 +595,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 	}
 
-	private void unregisterProfileInResource(IResource resource) throws ResourceException {
+	private void unregisterProfileInResource(Resource resource) throws ResourceException {
 		try {
 
 			String profileId = resource.getResourceDescriptor().getProfileId();
@@ -591,7 +645,7 @@ public class ResourceRepository implements IResourceRepository {
 		logger.debug("Resource deactivated");
 	}
 
-	private void forceUnregisterProfileInResource(IResource resource) throws ResourceException {
+	private void forceUnregisterProfileInResource(Resource resource) throws ResourceException {
 		try {
 
 			String profileId = resource.getResourceDescriptor().getProfileId();
@@ -621,6 +675,67 @@ public class ResourceRepository implements IResourceRepository {
 		}
 
 		descriptorRepository.delete(descriptor);
+	}
+
+	private void createProtocolSessionManagerForResource(String resourceId) throws ActivatorException {
+		try {
+			getProtocolManager().getProtocolSessionManager(resourceId);
+		} catch (ProtocolException e) {
+			// ignored:
+			// it can only fail for resourceId already associated to a protocolSession (nothing wrong then)
+			logger.debug("Could not destroy protocolSessionManager. Given resourceId has none associated.");
+		}
+	}
+
+	private void removeProtocolSessionManagerForResource(String resourceId) throws ActivatorException {
+		try {
+			getProtocolManager().destroyProtocolSessionManager(resourceId);
+		} catch (ProtocolException e) {
+			// ignored:
+			// cannot happen
+			logger.debug("Could not destroy protocolSessionManager for an unknown reason.", e);
+		}
+	}
+
+	/**
+	 * Destroys all sessions for given resourceId
+	 * 
+	 * @param resourceId
+	 * @throws ProtocolException
+	 * @throws Exception
+	 */
+	private void destroyProtocolSessions(String resourceId) throws ProtocolException, ActivatorException {
+		IProtocolSessionManager sessionManager = getProtocolManager().getProtocolSessionManager(resourceId);
+		for (String sessionId : sessionManager.getAllProtocolSessionIds()) {
+			sessionManager.destroyProtocolSession(sessionId);
+		}
+	}
+
+	/**
+	 * Create one session per registered context
+	 * 
+	 * @param resourceId
+	 * @throws Exception
+	 */
+	private void createProtocolSessions(String resourceId) throws ProtocolException, ActivatorException {
+		IProtocolSessionManager sessionManager = getProtocolManager().getProtocolSessionManager(resourceId);
+		for (ProtocolSessionContext context : sessionManager.getRegisteredContexts()) {
+			sessionManager.obtainSession(context, false); // create session but do not lock it
+		}
+	}
+
+	private IProtocolManager getProtocolManager() throws ActivatorException {
+		return Activator.getProtocolManagerService();
+	}
+
+	private boolean protocolManagerIsAvailable() {
+		IProtocolManager protocolManager = null;
+		try {
+			protocolManager = Activator.getProtocolManagerService();
+		} catch (ActivatorException e) {
+		}
+
+		return protocolManager != null;
 	}
 
 }

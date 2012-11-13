@@ -22,4 +22,6 @@
 			<entry key="version" value="1.0.0"/>
 		</service-properties>
 	</service>
+	<!-- Forces this bundle to wait for dataSourceResources being published -->
+	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>
 </blueprint>

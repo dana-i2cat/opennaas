@@ -10,12 +10,12 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
@@ -33,9 +33,9 @@ import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
-public class NetOSPFCapability extends AbstractCapability implements INetOSPFService {
+public class NetOSPFCapability extends AbstractCapability implements INetOSPFCapability {
 
-	public static String	CAPABILITY_NAME	= "netospf";
+	public static String	CAPABILITY_TYPE	= "netospf";
 
 	Log						log				= LogFactory.getLog(NetOSPFCapability.class);
 
@@ -53,49 +53,96 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 		log.debug("Built new netospf capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
 	@Override
-	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), INetOSPFCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		registration.unregister();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
 		throw new UnsupportedOperationException();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		throw new UnsupportedOperationException();
 	}
 
-	public Response deactivateOSPF() throws CapabilityException, ActivatorException {
-
-		long backboneAreaId = 0l; // 0.0.0.0
-
-		Response response = new Response();
-		response.setCommandName(CAPABILITY_NAME + " deactivateOSPF");
-
-		Response tmpResponse;
-		for (IResource router : getRouterResources()) {
-
-			// get router ospf capability
-			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), "ospf");
-
-			OSPFService ospfService = new OSPFService();
-
-			tmpResponse = ospfCapability.clearOSPFconfiguration(ospfService);
-			if (tmpResponse.getStatus().equals(Status.ERROR))
-				return tmpResponse;
-		}
-		return Response.queuedResponse(CAPABILITY_NAME + " deactivateOSPF");
-
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.network.capability.ospf.INetOSPFCapability#deactivateOSPF()
+	 */
 	@Override
-	public Response activateOSPF() throws CapabilityException {
-
-		long backboneAreaId = 0l; // 0.0.0.0
-
+	public void deactivateOSPF() throws CapabilityException {
+		log.info("Start of deactivateOSPF call");
 		Response response = new Response();
-		response.setCommandName(CAPABILITY_NAME + " activateOSPF");
+		response.setCommandName(CAPABILITY_TYPE + " deactivateOSPF");
 
 		try {
-			Response tmpResponse;
+			for (IResource router : getRouterResources()) {
+				// get router ospf capability
+				OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), "ospf");
+				OSPFService ospfService = new OSPFService();
+				ospfCapability.clearOSPFconfiguration(ospfService);
+			}
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
+		log.info("End of deactivateOSPF call");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.network.capability.ospf.INetOSPFCapability#activateOSPF()
+	 */
+	@Override
+	public void activateOSPF() throws CapabilityException {
+		log.info("Start of activateOSPF call ");
+		long backboneAreaId = 0l; // 0.0.0.0
+
+		Response response = new Response();
+		response.setCommandName(CAPABILITY_TYPE + " activateOSPF");
+
+		try {
 			for (IResource router : getRouterResources()) {
 
 				// get router ospf capability
@@ -104,9 +151,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 
 				// configure OSPF
 				OSPFService serviceConfig = new OSPFService();
-				tmpResponse = ospfCapability.configureOSPF(serviceConfig);
-				if (tmpResponse.getStatus().equals(Status.ERROR))
-					return tmpResponse;
+				ospfCapability.configureOSPF(serviceConfig);
 
 				// configure backbone area
 				OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
@@ -114,32 +159,28 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 				ospfArea.setAreaID(backboneAreaId);
 				ospfArea.setAreaType(AreaType.PLAIN);
 				areaConfig.setOSPFArea(ospfArea);
-				tmpResponse = ospfCapability.configureOSPFArea(areaConfig);
-				if (tmpResponse.getStatus().equals(Status.ERROR))
-					return tmpResponse;
+				ospfCapability.configureOSPFArea(areaConfig);
 
 				// addInterfaces to backbone area
 				List<LogicalPort> interfaces = (List<LogicalPort>) getAllInterfaces(router);
-				tmpResponse = ospfCapability.addInterfacesInOSPFArea(interfaces, ospfArea);
-
-				if (tmpResponse.getStatus().equals(Status.ERROR))
-					return tmpResponse;
+				ospfCapability.addInterfacesInOSPFArea(interfaces, ospfArea);
 
 				// activate OSPF
-				tmpResponse = ospfCapability.activateOSPF();
-				if (tmpResponse.getStatus().equals(Status.ERROR))
-					return tmpResponse;
-
+				ospfCapability.activateOSPF();
 			}
-
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
-
-		return Response.queuedResponse(CAPABILITY_NAME + " activateOSPF");
+		log.info("End of activateOSPF call ");
 	}
 
-	private ICapability getCapability(List<ICapability> capabilities, String type) throws CapabilityException {
+	/**
+	 * @param capabilities
+	 * @param type
+	 * @return
+	 * @throws CapabilityException
+	 */
+	private ICapability getCapability(List<? extends ICapability> capabilities, String type) throws CapabilityException {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;
@@ -148,30 +189,10 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 		throw new CapabilityException("Error getting capability " + type);
 	}
 
-	@Override
-	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * @return
+	 * @throws ActivatorException
+	 */
 	private List<IResource> getRouterResources() throws ActivatorException {
 
 		NetworkModel netModel = (NetworkModel) this.resource.getModel();
@@ -225,6 +246,10 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 		return name.split(":");
 	}
 
+	/**
+	 * @param router
+	 * @return
+	 */
 	private List<? extends LogicalPort> getAllInterfaces(IResource router) {
 		List<LogicalPort> interfaces = new ArrayList<LogicalPort>();
 		interfaces.addAll(ModelHelper.getInterfaces((System) router.getModel()));
@@ -232,6 +257,10 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 		return interfaces;
 	}
 
+	/**
+	 * @param router
+	 * @return
+	 */
 	private List<NetworkPort> getAllGREInterfaces(IResource router) {
 		// TODO Auto-generated method stub
 		List<NetworkPort> endpointList = new ArrayList<NetworkPort>();

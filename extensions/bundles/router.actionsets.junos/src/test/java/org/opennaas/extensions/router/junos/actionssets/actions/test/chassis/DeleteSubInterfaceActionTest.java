@@ -1,20 +1,21 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.test.chassis;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.actions.chassis.DeleteSubInterfaceAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.chassis.DeleteSubInterfaceAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
 
 public class DeleteSubInterfaceActionTest {
 	private static DeleteSubInterfaceAction	action;
@@ -50,7 +51,7 @@ public class DeleteSubInterfaceActionTest {
 		action.setParams(eth);
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
-			Assert.assertTrue(response.getActionID().equals("deletesubinterface"));
+			Assert.assertTrue(response.getActionID().equals(ActionConstants.DELETESUBINTERFACE));
 
 		} catch (ActionException e) {
 

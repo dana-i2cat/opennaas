@@ -7,34 +7,38 @@ import org.opennaas.core.resources.IModel;
 public abstract class Action implements IAction {
 
 	protected Log		log				= LogFactory.getLog(Action.class);
-
-	// FIXME what model is the entire model or the one for change from the command
 	protected IModel	modelToUpdate;
 	protected Object	params			= null;
 	protected String	actionID		= null;
 
 	protected Object	behaviorParams	= null;
 
+	@Override
 	public IModel getModelToUpdate() {
 		return modelToUpdate;
 	}
 
+	@Override
 	public void setModelToUpdate(IModel modelToUpdate) {
 		this.modelToUpdate = modelToUpdate;
 	}
 
+	@Override
 	public Object getParams() {
 		return params;
 	}
 
+	@Override
 	public void setParams(Object params) {
 		this.params = params;
 	}
 
+	@Override
 	public String getActionID() {
 		return actionID;
 	}
 
+	@Override
 	public void setActionID(String actionID) {
 		this.actionID = actionID;
 	}

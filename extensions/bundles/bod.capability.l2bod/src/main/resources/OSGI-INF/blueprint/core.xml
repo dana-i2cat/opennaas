@@ -20,7 +20,7 @@
 		<property name="type" value="l2bod"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.extensions.bod.capability.l2bod.shell.completers.ResourceNameCompleter"/>
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="l2bodCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -41,6 +41,20 @@
 		</command>
 		<command name="l2bod/shutdownConnection">
 			<action class="org.opennaas.extensions.bod.capability.l2bod.shell.ShutdownConnectionCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="l2bod/interfaces">
+			<action class="org.opennaas.extensions.bod.capability.l2bod.shell.InterfacesCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="l2bod/links">
+			<action class="org.opennaas.extensions.bod.capability.l2bod.shell.LinksCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

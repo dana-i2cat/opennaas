@@ -1,0 +1,38 @@
+## DEACTIVATE OSPF
+netospf:deactivate network:networkdemo
+netqueue:execute network:networkdemo 
+
+
+resource:stop router:dub
+resource:remove router:dub
+resource:stop router:cph
+resource:remove router:cph
+resource:stop router:pw
+resource:remove router:pw
+chassis:deletelogicalrouter router:myre dub
+chassis:deletelogicalrouter router:unic cph
+chassis:deletelogicalrouter router:gsn pw
+queue:execute router:myre
+queue:execute router:unic
+queue:execute router:gsn
+
+shell:echo "REMOVE RESOURCES AND STOP"
+##Deleting demo network resource
+resource:stop network:networkdemo
+resource:remove network:networkdemo
+
+resource:stop router:myre
+resource:remove router:myre
+
+resource:stop router:unic
+resource:remove router:unic
+
+resource:stop router:gsn
+resource:remove router:gsn
+
+protocol.url.myre=""
+protocol.url.gsn=""
+protocol.url.unic=""
+protocol.url.dub=""
+protocol.url.pw=""
+protocol.url.cph=""

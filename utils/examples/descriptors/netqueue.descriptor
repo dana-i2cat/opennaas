@@ -1,0 +1,19 @@
+<resourceDescriptor>
+    <!--  Netqueue capability information. -->
+    <capabilityDescriptors>
+        <capabilityProperty value="network" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information><type>basicNetwork</type></information>
+    </capabilityDescriptors>
+    <capabilityDescriptors>
+        <capabilityProperty value="network" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information><type>netqueue</type></information>
+    </capabilityDescriptors>
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>network</type>
+        <name>network1</name>
+    </information>
+    <properties/>
+</resourceDescriptor>

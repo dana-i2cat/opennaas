@@ -1,41 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-	<!-- BEANs -->
+<blueprint 
+	xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" 
+    xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+ 						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 
+    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+	
+	<!--
+	    Register OpenNaaS OSGi Services & Beans
+	  -->		
+	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
+	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
+		<service-properties>
+			<!-- Rest -->	
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="service.exported.intents" value="HTTP"/>		
+			<entry key="org.apache.cxf.ws.address" value="${ws.rest.url}/resources"/>  
+		</service-properties>
+	</service>
+	
+	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.ProtocolManager"/>
+	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager">
+	</service>
+		
+	<bean id="profileManager" class="org.opennaas.core.resources.profile.ProfileManager"/>
+	<service ref="profileManager" interface="org.opennaas.core.resources.profile.IProfileManager"/>
+	
+	<bean id="eventManager" class="org.opennaas.core.events.EventManager"/>
+	<service ref="eventManager" interface="org.opennaas.core.events.IEventManager"/>
+	
+	<bean id="alarmsRepository" class="org.opennaas.core.resources.alarms.AlarmsRepository"/>
+	<service ref="alarmsRepository" interface="org.opennaas.core.resources.alarms.IAlarmsRepository"/>
+		
+	<bean id="resourceNameCompleter" class="org.opennaas.core.resources.shell.completers.ResourceNameCompleter"/>
+	<service ref="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer">
+		<service-properties>
+			<entry key="completer.name" value="resourceNameCompleter"/>
+		</service-properties>
+	</service>
+	
+	<bean id="profileNameCompleter" class="org.opennaas.core.resources.shell.completers.ProfileNameCompleter"/>
+	<service ref="profileNameCompleter" interface="org.apache.karaf.shell.console.Completer">
+		<service-properties>
+			<entry key="completer.name" value="profileNameCompleter"/>
+		</service-properties>
+	</service>
+	
 	<bean id="dataSourceResources" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
 		<property name="url" value="jdbc:hsqldb:file:databases/iaas/resources;hsqldb.default_table_type=cached;shutdown=true" />
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 	</bean>
-
 	<service ref="dataSourceResources" interface="javax.sql.DataSource">
 		<service-properties>
 			<entry key="osgi.jndi.service.name" value="jdbc/opennaas-resources"/>
 		</service-properties>
 	</service>
-
-	<!-- Single point of entry to create/modify/update/get resources -->
-	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
-	<!-- Single point of entry to get profiles -->
-	<bean id="profileManager" class="org.opennaas.core.resources.profile.ProfileManager"/>
-	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.core.resources.shell.completers.ResourceNameCompleter"/>
-	<bean id="profileNameCompleter" class="org.opennaas.core.resources.shell.completers.ProfileNameCompleter"/>
-	<!-- Listen for Resource Repositories -->
-	<reference-list interface="org.opennaas.core.resources.IResourceRepository" availability="optional">
-		<reference-listener ref="resourceManager" bind-method="resourceRepositoryAdded" unbind-method="resourceRepositoryRemoved"/>
-	</reference-list>
-	<!-- Register a ResourceManager as an OSGi Service -->
-	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
-	<!-- Listen for IProfiles -->
+	
+	<!--
+	    Register OpenNaaS OSGi Service Listeners
+	  -->
+	
 	<reference-list interface="org.opennaas.core.resources.profile.IProfile" availability="optional">
 		<reference-listener ref="profileManager" bind-method="profileAdded" unbind-method="profileRemoved"/>
 	</reference-list>
-	<!-- Register a ProfileManager as an OSGi Service -->
-	<service ref="profileManager" interface="org.opennaas.core.resources.profile.IProfileManager"/>
-	<!-- Provide commands to the Karaf shell -->
+	<reference-list interface="org.opennaas.core.resources.IResourceRepository" availability="optional">
+		<reference-listener ref="resourceManager" bind-method="resourceRepositoryAdded" unbind-method="resourceRepositoryRemoved"/>
+	</reference-list>
+	<reference-list interface="org.opennaas.core.events.IEventManager" availability="optional">
+		<reference-listener ref="protocolManager" bind-method="setEventManager"/>
+	</reference-list>
+	<reference-list interface="org.opennaas.core.events.IEventManager" availability="optional">
+		<reference-listener ref="alarmsRepository" bind-method="setEventManager"/>
+	</reference-list>
+	<reference-list interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory" availability="optional">
+		<reference-listener ref="protocolManager" bind-method="sessionFactoryAdded" unbind-method="sessionFactoryRemoved"/>
+	</reference-list>
+
+
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<!--
+	  	    Resources Karaf Commands
+	  	  -->
 		<command name="resource/create">
 			<action class="org.opennaas.core.resources.shell.CreateResourceCommand"/>
 		</command>
@@ -85,6 +136,9 @@
 			</completers>
 		</command>
 		<!--
+		    Profiles Karaf Commands
+		  -->
+		<!--
 			<command name="profile/check"> <action
 			class="org.opennaas.core.resources.shell.profile.CheckProfileCommand"
 			/> </command> <command name="profile/create"> <action
@@ -107,6 +161,51 @@
 			<action class="org.opennaas.core.resources.shell.profile.RemoveProfileCommand"/>
 			<completers>
 				<ref component-id="profileNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<!--
+		    Protocol Session Manager Karaf Commands
+		  -->
+		<command name="protocols/info">
+			<action class="org.opennaas.core.protocols.sessionmanager.shell.InfoCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="protocols/list">
+			<action class="org.opennaas.core.protocols.sessionmanager.shell.ListCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="protocols/remove">
+			<action class="org.opennaas.core.protocols.sessionmanager.shell.RemoveCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="protocols/add">
+			<action class="org.opennaas.core.protocols.sessionmanager.shell.AddCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="protocols/purge">
+			<action class="org.opennaas.core.protocols.sessionmanager.shell.PurgeCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="protocols/context">
+			<action class="org.opennaas.core.protocols.sessionmanager.shell.ContextCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>

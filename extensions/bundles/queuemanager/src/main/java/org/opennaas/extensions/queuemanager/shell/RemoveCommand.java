@@ -1,16 +1,14 @@
 package org.opennaas.extensions.queuemanager.shell;
 
-import org.opennaas.extensions.queuemanager.QueueManager;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.queue.ModifyParams;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.queuemanager.QueueManager;
 
 @Command(scope = "queue", name = "remove", description = "Remove an action from the queue")
 public class RemoveCommand extends GenericKarafCommand {
@@ -50,11 +48,10 @@ public class RemoveCommand extends GenericKarafCommand {
 
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
-			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
+			IQueueManagerCapability queue = (IQueueManagerCapability) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			// printSymbol("Removing action " + posQueue + "...");
 			ModifyParams params = ModifyParams.newRemoveOperation(posQueue);
-			queue.sendMessage(QueueConstants.MODIFY, params);
-			printSymbol("Action " + posQueue + " removed from queue");
+			queue.modify(params);
 
 		} catch (Exception e) {
 			printError("Error removing action from queue.");

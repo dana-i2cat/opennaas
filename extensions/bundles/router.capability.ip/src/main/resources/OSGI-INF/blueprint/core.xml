@@ -15,9 +15,19 @@
 		the specific language governing permissions and limitations under the
 		License.
 	-->
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+<blueprint 
+	xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" 
+    xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+ 						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+
+	<cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+	
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="ipCapabilityFactory" class="org.opennaas.extensions.router.capability.ip.IPCapabilityFactory">
+	<bean id="ipCapabilityFactory" class="org.opennaas.extensions.router.capability.ip.IPCapabilityFactory">	
 		<property name="type" value="ipv4"/>
 	</bean>
 	<!-- Register the Service as an OSGi Service -->
@@ -30,7 +40,7 @@
 		</service-properties>
 	</service>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.ip.shell.completers.ResourceNameCompleter"/>
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="ipv4/list">

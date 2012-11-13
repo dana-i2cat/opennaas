@@ -7,57 +7,64 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.profile.IProfiled;
 
 /**
  * Main resource class
- *
+ * 
  * @author Mathieu Lemay
- *
+ * @author Isart Canyameres Giménez (i2cat)
+ * 
  */
-public class Resource implements IResource {
+public class Resource implements IResource, ILifecycle, IProfiled {
 
 	/** The logger **/
-	Log								logger				= LogFactory.getLog(Resource.class);
+	Log									logger				= LogFactory.getLog(Resource.class);
 
 	/** The resource identifier **/
-	private IResourceIdentifier		resourceIdentifier	= null;
+	private IResourceIdentifier			resourceIdentifier	= null;
 
 	/** The resource current state **/
-	private State					state				= null;
+	private State						state				= null;
 
 	/** The resource descriptor **/
-	private ResourceDescriptor		resourceDescriptor	= null;
+	private ResourceDescriptor			resourceDescriptor	= null;
 
 	/** The resource capabilities **/
-	private List<ICapability>		capabilities		= null;
+	private List<ICapabilityLifecycle>	capabilities		= null;
 
 	/** The resource specific bootstapper class */
-	private IResourceBootstrapper	bootstrapper		= null;
+	private IResourceBootstrapper		bootstrapper		= null;
 
-	private IModel			model;
+	private IModel						model;
 
-	private IProfile				profile				= null;
+	private IProfile					profile				= null;
 
 	public Resource() {
-		capabilities = new ArrayList<ICapability>();
+		capabilities = new ArrayList<ICapabilityLifecycle>();
 		setState(State.INSTANTIATED);
 	}
 
+	@Override
 	public State getState() {
 		return state;
 	}
 
+	@Override
 	public void setState(State state) {
 		this.state = state;
 	}
 
+	@Override
 	public IResourceIdentifier getResourceIdentifier() {
 		return resourceIdentifier;
 	}
 
+	@Override
 	public void initialize() throws IncorrectLifecycleStateException, ResourceException {
 		if (!(getState().equals(State.INSTANTIATED) || getState().equals(State.SHUTDOWN)))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (initialize) in state " + getState(), getState());
@@ -68,6 +75,7 @@ public class Resource implements IResource {
 		setState(State.INITIALIZED);
 	}
 
+	@Override
 	public void activate() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		if (!getState().equals(State.INITIALIZED))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (activate) in state " + getState(), getState());
@@ -92,6 +100,7 @@ public class Resource implements IResource {
 		setState(State.ACTIVE);
 	}
 
+	@Override
 	public void deactivate() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		if (!getState().equals(State.ACTIVE))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (deactivate) in state " + getState(), getState());
@@ -125,13 +134,12 @@ public class Resource implements IResource {
 			problemMessages = e.getMessage() + '\n';
 		}
 
-		for (ICapability capability : capabilities) {
+		for (ICapabilityLifecycle capability : capabilities) {
 			try {
 				capability.deactivate();
 			} catch (Exception e) {
 				problemMessages = e.getMessage() + '\n' + problemMessages;
 			}
-
 		}
 
 		if (!problemMessages.isEmpty())
@@ -140,6 +148,7 @@ public class Resource implements IResource {
 		setState(State.INITIALIZED);
 	}
 
+	@Override
 	public void shutdown() throws IncorrectLifecycleStateException, ResourceException {
 		if (!getState().equals(State.INITIALIZED))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (shutdown) in state " + getState(), getState());
@@ -150,24 +159,42 @@ public class Resource implements IResource {
 		setState(State.SHUTDOWN);
 	}
 
+	@Override
 	public ResourceDescriptor getResourceDescriptor() {
 		return resourceDescriptor;
 	}
 
+	// @Override
 	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor) {
 		this.resourceDescriptor = resourceDescriptor;
 	}
 
+	// @Override
 	public void setResourceIdentifier(IResourceIdentifier resourceIdentifier) {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
+	// @Override
 	public void addCapability(ICapability capability) {
-		capabilities.add(capability);
+		if (!(capability instanceof ICapabilityLifecycle))
+			throw new IllegalArgumentException("Given capability must be of type " + ICapabilityLifecycle.class.getName());
+
+		capabilities.add((ICapabilityLifecycle) capability);
 	}
 
+	@Override
+	public ICapability getCapabilityByType(String type) throws ResourceException {
+		for (ICapability capability : getCapabilities()) {
+			if (capability.getCapabilityInformation().getType().equals(type)) {
+				return capability;
+			}
+		}
+		throw new ResourceException("Error getting capability " + type);
+	}
+
+	@Override
 	public ICapability getCapability(Information information) {
-		Iterator<ICapability> capabilityIterator = capabilities.iterator();
+		Iterator<? extends ICapability> capabilityIterator = getCapabilities().iterator();
 		while (capabilityIterator.hasNext()) {
 			ICapability capability = capabilityIterator.next();
 			if (capability.getCapabilityInformation().equals(information)) {
@@ -177,20 +204,50 @@ public class Resource implements IResource {
 		return null;
 	}
 
+	// @Override
 	public ICapability removeCapability(Information information) {
 		ICapability capability = getCapability(information);
 		capabilities.remove(capability);
 		return capability;
 	}
 
-	public List<ICapability> getCapabilities() {
+	@Override
+	public List<? extends ICapability> getCapabilities() {
 		return capabilities;
 	}
 
-	public void setCapabilities(List<ICapability> capabilities) {
-		this.capabilities = capabilities;
+	@SuppressWarnings("unchecked")
+	// @Override
+	public void setCapabilities(List<? extends ICapability> capabilities) {
+		for (ICapability capability : capabilities) {
+			if (!(capability instanceof ICapabilityLifecycle))
+				throw new IllegalArgumentException("Given capability must be of type " + ICapabilityLifecycle.class.getName());
+		}
+		this.capabilities = (List<ICapabilityLifecycle>) capabilities;
 	}
 
+	@Override
+	public List<ICapability> getCapabilitiesByInterface(Class<? extends ICapability> interfaze) {
+		List<ICapability> filteredCapabilities = new ArrayList<ICapability>();
+		for (ICapability capability : getCapabilities()) {
+			if (interfaze.isInstance(capability)) {
+				filteredCapabilities.add(capability);
+			}
+		}
+		return filteredCapabilities;
+	}
+
+	@Override
+	public ICapability getCapabilityByInterface(Class<? extends ICapability> interfaze) throws ResourceException {
+		for (ICapability capability : getCapabilities()) {
+			if (interfaze.isInstance(capability)) {
+				return capability;
+			}
+		}
+		throw new ResourceException("Cannot find capability with interface " + interfaze);
+	}
+
+	// @Override
 	public void start() throws ResourceException, CorruptStateException {
 		logger.info("Resource is in " + this.getState()
 				+ " state. Trying to start it");
@@ -203,6 +260,7 @@ public class Resource implements IResource {
 		}
 	}
 
+	// @Override
 	public void stop() throws ResourceException, CorruptStateException {
 		logger.info("Resource is in " + this.getState()
 				+ " state. Trying to stop it");
@@ -218,6 +276,7 @@ public class Resource implements IResource {
 	/**
 	 * @return the bootstrapper
 	 */
+	// @Override
 	public IResourceBootstrapper getBootstrapper() {
 		return bootstrapper;
 	}
@@ -226,6 +285,7 @@ public class Resource implements IResource {
 	 * @param bootstrapper
 	 *            the bootstrapper to set
 	 */
+	// @Override
 	public void setBootstrapper(IResourceBootstrapper bootstrapper) {
 		this.bootstrapper = bootstrapper;
 	}
@@ -234,6 +294,7 @@ public class Resource implements IResource {
 	 * @param model
 	 *            the model to set
 	 */
+	// @Override
 	public void setModel(IModel model) {
 		this.model = model;
 	}
@@ -241,14 +302,22 @@ public class Resource implements IResource {
 	/**
 	 * @return the model
 	 */
+	@Override
 	public IModel getModel() {
 		return model;
 	}
 
+	@Override
+	public boolean hasProfile() {
+		return (profile != null);
+	}
+
+	@Override
 	public IProfile getProfile() {
 		return profile;
 	}
 
+	@Override
 	public void setProfile(IProfile profile) {
 		this.profile = profile;
 	}
@@ -256,7 +325,7 @@ public class Resource implements IResource {
 	/**
 	 * Tries to initialize and activate all capabilities in capabilities [0,lastCapabilityIndex]. If specified, on fail it performs a rollback
 	 * operation to leave capabilities in same state as they were
-	 *
+	 * 
 	 * @param lastCapabilityIndex
 	 * @param rollback
 	 *            flag to activate rollback in case of failure
@@ -285,7 +354,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).shutdown();
 						}
 						if (i > 0)
@@ -303,7 +372,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).shutdown();
 						}
 						if (i > 0)
@@ -324,7 +393,7 @@ public class Resource implements IResource {
 	/**
 	 * Tries to deactivate and shutdown all capabilities in capabilities [0,lastCapabilityIndex]. If specified, on fail it performs a rollback
 	 * operation to leave capabilities in same state as they were
-	 *
+	 * 
 	 * @param lastCapabilityIndex
 	 * @param rollback
 	 *            flag to activate rollback in case of failure
@@ -353,7 +422,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).activate();
 						}
 						if (i > 0)
@@ -371,7 +440,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).activate();
 						}
 						if (i > 0)
@@ -390,6 +459,11 @@ public class Resource implements IResource {
 
 	}
 
+	/**
+	 * @param errorMessage
+	 * @param cause
+	 * @throws CorruptStateException
+	 */
 	private void markAsCorrupt(String errorMessage, Throwable cause) throws CorruptStateException {
 		setState(State.ERROR);
 		throw new CorruptStateException(errorMessage + " Resource is in a corrupt state.", cause);

@@ -2,17 +2,18 @@ package org.opennaas.extensions.network.repository.tests;
 
 import java.util.List;
 
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.domain.NetworkDomain;
-import org.opennaas.extensions.network.model.topology.Device;
-import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
-import org.opennaas.core.resources.helpers.MockNetworkDescriptor;
+import org.opennaas.extensions.network.mock.MockNetworkDescriptor;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.domain.NetworkDomain;
+import org.opennaas.extensions.network.model.topology.ConnectionPoint;
+import org.opennaas.extensions.network.model.topology.Device;
+import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
 
 public class NetworkMapperModelToDescriptorTest {
 
@@ -59,6 +60,11 @@ public class NetworkMapperModelToDescriptorTest {
 			Assert.assertEquals(devices.get(0).getInterfaces().get(0).getName(), "router:R-AS2-1:lt-1/2/0.51");
 			Assert.assertEquals(devices.get(0).getInterfaces().get(1).getName(), "router:R-AS2-1:lt-1/2/0.100");
 			Assert.assertEquals(devices.get(0).getInterfaces().get(2).getName(), "router:R-AS2-1:lo0.1");
+			for (ConnectionPoint iface : devices.get(0).getInterfaces()) {
+				Assert.assertTrue(iface instanceof Interface);
+				Assert.assertNotNull(((Interface) iface).getDevice());
+				Assert.assertEquals(((Interface) iface).getDevice(), devices.get(0));
+			}
 
 			Assert.assertEquals(devices.get(1).getName(), "router:R-AS2-2");
 			Assert.assertNotNull(devices.get(1).getInterfaces());
@@ -66,12 +72,22 @@ public class NetworkMapperModelToDescriptorTest {
 			Assert.assertEquals(devices.get(1).getInterfaces().get(0).getName(), "router:R-AS2-2:lt-1/2/0.102");
 			Assert.assertEquals(devices.get(1).getInterfaces().get(1).getName(), "router:R-AS2-2:lt-1/2/0.101");
 			Assert.assertEquals(devices.get(1).getInterfaces().get(2).getName(), "router:R-AS2-2:lo0.3");
+			for (ConnectionPoint iface : devices.get(1).getInterfaces()) {
+				Assert.assertTrue(iface instanceof Interface);
+				Assert.assertNotNull(((Interface) iface).getDevice());
+				Assert.assertEquals(((Interface) iface).getDevice(), devices.get(1));
+			}
 
 			Assert.assertEquals(devices.get(2).getName(), "router:R-AS2-3");
 			Assert.assertNotNull(devices.get(2).getInterfaces());
 			Assert.assertEquals(devices.get(2).getInterfaces().size(), 2);
 			Assert.assertEquals(devices.get(2).getInterfaces().get(0).getName(), "router:R-AS2-3:lt-1/2/0.103");
 			Assert.assertEquals(devices.get(2).getInterfaces().get(1).getName(), "router:R-AS2-3:lo0.4");
+			for (ConnectionPoint iface : devices.get(2).getInterfaces()) {
+				Assert.assertTrue(iface instanceof Interface);
+				Assert.assertNotNull(((Interface) iface).getDevice());
+				Assert.assertEquals(((Interface) iface).getDevice(), devices.get(2));
+			}
 
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());

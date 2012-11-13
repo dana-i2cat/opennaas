@@ -8,6 +8,10 @@ package org.opennaas.extensions.router.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalDevice as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the LogicalDeviceBean Interface. The CIM class LogicalDevice is described as follows:
@@ -18,6 +22,8 @@ import java.util.List;
  * threshold settings. Various configurations could exist for a LogicalDevice. These configurations could be contained in Setting objects and
  * associated with the LogicalDevice.
  */
+@XmlRootElement
+@XmlSeeAlso({ LogicalModule.class, LogicalPort.class })
 public class LogicalDevice extends EnabledLogicalElement implements
 		Serializable {
 
@@ -53,6 +59,11 @@ public class LogicalDevice extends EnabledLogicalElement implements
 	// public List<System> getSystem() {
 	// return (List<System>) this.getToAssociatedElementsByType(SystemDevice.class);
 	// }
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 2805660470936210908L;
 
 	/**
 	 * MANUALLY ADDED TO CIM (14/04/2011) <br>
@@ -341,6 +352,7 @@ public class LogicalDevice extends EnabledLogicalElement implements
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property PowerManagementCapabilities.
 	 */
+	@XmlType(name = "LogicalDevicePowerManagementEnum")
 	@Deprecated
 	public enum PowerManagementCapabilities {
 		UNKNOWN,

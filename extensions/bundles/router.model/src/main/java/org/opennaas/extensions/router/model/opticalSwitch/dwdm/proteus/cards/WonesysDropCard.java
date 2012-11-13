@@ -10,6 +10,10 @@ import org.opennaas.extensions.router.model.opticalSwitch.FiberChannel;
 public class WonesysDropCard extends ProteusOpticalSwitchCard {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8837660093155598972L;
+	/**
 	 * Used in order to interlink several modules in a single rack. It is often used to link with a passive add card.
 	 */
 	private FCPort	expressPort;

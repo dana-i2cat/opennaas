@@ -3,14 +3,6 @@ package org.opennaas.extensions.router.capability.chassis.shell;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-import org.opennaas.extensions.router.model.VLANEndpoint;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -18,8 +10,13 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
+import org.opennaas.extensions.router.model.VLANEndpoint;
 
 @Command(scope = "chassis", name = "createSubInterface", description = "Create a subinterface on a given resource.")
 public class CreateSubInterfaceCommand extends GenericKarafCommand {
@@ -69,11 +66,10 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			checkParams();
+			checkParams(resource);
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, prepareParams());
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.createSubInterface(prepareParams());
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -89,7 +85,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	public void checkParams() throws Exception {
+	public void checkParams(IResource resource) throws Exception {
 
 		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
 		Matcher ltmatcher = ltPattern.matcher(subinterface);
@@ -107,8 +103,8 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 		/* check ethernet ports */
 		if (ethmatcher.find() || lomatcher.find()) {
-			if (vlanid == -1)
-				throw new Exception("vlan must be specified in ethernet interfaces");
+			if ((vlanid == -1) && (Integer.parseInt(args[1]) != 0))
+				throw new Exception("Only unit 0 is valid for non tagged-ethernet encapsulation.");
 		}
 
 	}

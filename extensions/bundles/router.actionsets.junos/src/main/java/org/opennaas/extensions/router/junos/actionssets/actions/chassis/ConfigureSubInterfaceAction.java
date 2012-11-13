@@ -19,6 +19,9 @@ import org.opennaas.extensions.router.model.ManagedElement;
  */
 public class ConfigureSubInterfaceAction extends JunosAction {
 
+	public final static String	UNTAGGED_INTERFACE_ERROR	= "Only unit 0 is valid for non tagged-ethernet encapsulation.";
+	public final static String	UNVALID_NAME				= "Not valid name for the interface";
+
 	public ConfigureSubInterfaceAction() {
 		super();
 		initialize();
@@ -36,19 +39,13 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 
 			EthernetPort eth = (EthernetPort) params;
 
-			if (eth.getName() == null || eth.getName().isEmpty())
-				throw new ActionException("Not valid name for the interface");
-
-			if (eth.getName().startsWith("gr-"))
-				setTemplate("/VM_files/configureGRELogicalInterface.vm");
-			else
-				setTemplate("/VM_files/configureEthVLAN.vm");
+			checkEthernetParams(eth);
 
 		} else if (params instanceof LogicalTunnelPort) {
 			LogicalTunnelPort lt = (LogicalTunnelPort) params;
 
 			if (lt.getName() == null || lt.getName().isEmpty() || !lt.getName().startsWith("lt"))
-				throw new ActionException("Not valid name for the interface");
+				throw new ActionException(UNVALID_NAME);
 
 			setTemplate("/VM_files/configureLogicalTunnelVLAN.vm");
 
@@ -56,6 +53,37 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
 
 		return true;
+	}
+
+	private void checkEthernetParams(EthernetPort eth) throws ActionException {
+
+		if (eth.getName() == null || eth.getName().isEmpty())
+			throw new ActionException(UNVALID_NAME);
+
+		if (eth.getName().startsWith("gr-"))
+			setTemplate("/VM_files/configureGRELogicalInterface.vm");
+
+		else {
+
+			if (isEthernetInterface(eth)) {
+				/**
+				 * FIXME. Function should check encapsulation of the physical interface when OpenNaaS support it. For the moment, it's enough to check
+				 * if the params does not contain a vlanEndpoint (which means that the vlanID was not set and the portNumber must be 0)
+				 */
+				if ((eth.getPortNumber() != 0) && (eth.getProtocolEndpoint().isEmpty()))
+					throw new ActionException(UNTAGGED_INTERFACE_ERROR);
+			}
+
+			if (eth.getProtocolEndpoint().isEmpty())
+				setTemplate("/VM_files/configureEthWithoutVLAN.vm");
+			else
+				setTemplate("/VM_files/configureEthVLAN.vm");
+		}
+
+	}
+
+	private boolean isEthernetInterface(EthernetPort eth) {
+		return (eth.getName().startsWith("fe") || eth.getName().startsWith("ge"));
 	}
 
 	@Override

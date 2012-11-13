@@ -14,9 +14,14 @@ import java.io.Serializable;
 public class GRETunnelConfiguration extends LogicalElement implements
 		Serializable {
 
-	private String	destinationAddress;
-	private String	sourceAddress;
-	private int		key;
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 7763709289184386426L;
+
+	private String				destinationAddress;
+	private String				sourceAddress;
+	private int					key;
 
 	/**
 	 * This constructor creates a GRETunnelConfigurationBeanImpl Class which implements the GRETunnelConfigurationInterface, and encapsulates the

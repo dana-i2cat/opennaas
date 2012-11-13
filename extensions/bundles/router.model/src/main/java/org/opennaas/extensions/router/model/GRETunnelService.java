@@ -2,13 +2,24 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * This Class contains accessor and mutator methods for all properties of the IPConfigurationService class as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the GRETunnelServiceBean Interface.
  * 
  * @author adrian
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GRETunnelService extends Service implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -3996193388905927248L;
 
 	public GRETunnelService() {
 	};

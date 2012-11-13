@@ -8,6 +8,8 @@ package org.opennaas.extensions.router.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFService as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the OSPFServiceBean Interface. The CIM class OSPFService is described as follows:
@@ -15,8 +17,14 @@ import java.util.List;
  * This class is used to represent the basic operation of OSPF. It is derived from the RouteCalculationService, the superclass of all routing
  * protocols.
  */
+@XmlRootElement
 public class OSPFService extends RouteCalculationService implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8149792005737519557L;
 
 	/* OSPFServiceConfiguration */
 	/**

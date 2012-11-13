@@ -4,9 +4,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
 
 /**
  * @author Isart Canyameres
@@ -19,13 +18,11 @@ public class ActivateCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-
 		printInitCommand("Activate OSPF ");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), OSPFCapability.CAPABILITY_NAME);
-			Response response = ospfCapability.activateOSPF();
-			return printResponseStatus(response);
+			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
+			ospfCapability.activateOSPF();
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -36,5 +33,7 @@ public class ActivateCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		}
+		printEndCommand();
+		return null;
 	}
 }

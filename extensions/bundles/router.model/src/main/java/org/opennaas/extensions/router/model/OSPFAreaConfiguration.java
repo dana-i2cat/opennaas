@@ -7,6 +7,8 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFAreaConfiguration as well as methods comparable to
  * the invokeMethods defined for this class. This Class implements the OSPFAreaConfigurationBean Interface. The CIM class OSPFAreaConfiguration is
@@ -26,8 +28,14 @@ import java.io.Serializable;
  * OSPFArea, satisfying this semantic. - This class is inherited from LogicalElement, because a suitable subclass 'lower' in the inheritance hiearchy
  * does not exist.
  */
+@XmlRootElement
 public class OSPFAreaConfiguration extends LogicalElement implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -4060113646984016576L;
 
 	/* OSPFServiceConfiguration */
 	/**

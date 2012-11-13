@@ -1,17 +1,17 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.EthernetPort;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
 @Command(scope = "chassis", name = "deleteSubInterface", description = "Delete a subinterface on a given resource.")
 public class DeleteSubInterfaceCommand extends GenericKarafCommand {
@@ -52,9 +52,8 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, prepareParams());
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.deleteSubInterface(prepareParams());
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -70,12 +69,20 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private EthernetPort prepareParams() {
+	private NetworkPort prepareParams() {
 		String[] args = subinterface.split("\\.");
-		EthernetPort eth = new EthernetPort();
-		eth.setName(args[0]);
-		eth.setPortNumber(Integer.parseInt(args[1]));
-		return eth;
+		NetworkPort port;
+		if (args[0].startsWith("lt")) {
+			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
+			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
+			port = logicalTunnel;
+		} else {
+			port = new EthernetPort();
+		}
+
+		port.setName(args[0]);
+		port.setPortNumber(Integer.parseInt(args[1]));
+		return port;
 	}
 
 }

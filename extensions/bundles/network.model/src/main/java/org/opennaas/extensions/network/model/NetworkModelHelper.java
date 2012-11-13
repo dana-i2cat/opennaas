@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.opennaas.extensions.network.model.domain.NetworkDomain;
 import org.opennaas.extensions.network.model.layer.Layer;
+import org.opennaas.extensions.network.model.technology.ethernet.EthernetInterface;
+import org.opennaas.extensions.network.model.technology.ethernet.EthernetLink;
 import org.opennaas.extensions.network.model.topology.ConnectionPoint;
 import org.opennaas.extensions.network.model.topology.CrossConnect;
 import org.opennaas.extensions.network.model.topology.Device;
@@ -148,7 +150,7 @@ public class NetworkModelHelper {
 	 * @param networkElements
 	 * @return lowest current position of networkElements containing an element named with given name.
 	 */
-	public static int getNetworkElementByName(String name, List<NetworkElement> networkElements) {
+	public static int getNetworkElementByName(String name, List<? extends NetworkElement> networkElements) {
 		int pos = 0;
 		for (NetworkElement networkElement : networkElements) {
 			if (networkElement.getName() != null
@@ -177,6 +179,11 @@ public class NetworkModelHelper {
 
 	public static Link linkInterfaces(Interface src, Interface dst, boolean bidiLink) {
 		Link link = new Link();
+
+		if (src instanceof EthernetInterface && dst instanceof EthernetInterface) {
+			link = new EthernetLink();
+		}
+
 		link.setSource(src);
 		link.setSink(dst);
 		link.setBidirectional(bidiLink);
@@ -329,5 +336,19 @@ public class NetworkModelHelper {
 		toRemove.getInAdminDomains().clear();
 
 		return networkModel;
+	}
+
+	public static List<Link> getClientLinks(Link link) {
+		List<Link> clientLinks = new ArrayList<Link>();
+		List<ConnectionPoint> clientInterfaces = link.getSource().getClientInterfaces();
+		for (ConnectionPoint iface : clientInterfaces) {
+			if (iface instanceof Interface) {
+				Link subLink = ((Interface) iface).getLinkTo();
+				if (subLink != null) {
+					clientLinks.add(subLink);
+				}
+			}
+		}
+		return clientLinks;
 	}
 }

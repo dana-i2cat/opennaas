@@ -1,10 +1,15 @@
 package org.opennaas.core.resources.shell;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.util.List;
 
+import jline.console.ConsoleReader;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandSession;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.IResource;
@@ -18,27 +23,35 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 
 public abstract class GenericKarafCommand extends OsgiCommandSupport {
-	Log						log					= LogFactory.getLog(GenericKarafCommand.class);
+	Log							log					= LogFactory.getLog(GenericKarafCommand.class);
 
-	protected PrintStream	out					= System.out;
-	protected PrintStream	err					= System.err;
-	protected int			totalFiles			= 0;
-	protected String[]		argsInterface		= null;
+	protected PrintStream		out					= System.out;
+	protected PrintStream		err					= System.err;
+	protected int				totalFiles			= 0;
+	protected String[]			argsInterface		= null;
 	// Messages
-	protected String		error				= "[ERROR] ";
-	protected String		info				= "[INFO] ";
+	protected String			error				= "[ERROR] ";
+	protected String			info				= "[INFO] ";
 	// Symbols
-	protected String		simpleTab			= " ";
-	protected String		doubleTab			= "     ";
-	protected String		indexArrowRigth		= ">>>>";
-	protected String		indexArrowLeft		= "<<<<";
-	protected String		bullet				= "o";
+	protected String			simpleTab			= " ";
+	protected String			doubleTab			= "     ";
+	protected String			indexArrowRigth		= ">>>>";
+	protected String			indexArrowLeft		= "<<<<";
+	protected String			bullet				= "o";
 
 	// Separators
-	protected String		doubleLine			= "===========================================================================";
-	protected String		underLine			= "___________________________________________________________________";
-	protected String		horizontalSeparator	= "|------------------------------------------------------------------|";
-	protected String		titleFrame			= "=";
+	protected String			doubleLine			= "===========================================================================";
+	protected String			underLine			= "___________________________________________________________________";
+	protected String			horizontalSeparator	= "|------------------------------------------------------------------|";
+	protected String			titleFrame			= "=";
+
+	protected CommandSession	commandSession;
+
+	@Override
+	public Object execute(CommandSession session) throws Exception {
+		this.commandSession = session;
+		return super.execute(session);
+	}
 
 	public void printInitCommand(String commandName) {
 
@@ -236,7 +249,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return resource;
 	}
 
-	protected ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
+	protected ICapability getCapability(List<? extends ICapability> capabilities, String type) throws Exception {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;
@@ -269,16 +282,32 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return true;
 	}
 
-	protected Object printResponseStatus(Response response) {
+	protected Object printResponseStatus(Response response, String resourceId) {
 		if (response.getStatus().equals(Response.Status.OK)) {
 			return null;
 		} else if (response.getStatus().equals(Response.Status.ERROR)) {
+			printError("Error in " + response.getSentMessage());
 			for (String error : response.getErrors())
 				printError(error);
 			return -1;
+		} else if (response.getStatus().equals(Response.Status.QUEUED)) {
+			printSymbol("Queued " + response.getSentMessage() + " for " + resourceId);
+			return null;
 		} else {
 			printSymbol(response.getStatus().toString());
 			return null;
 		}
+	}
+
+	protected String askPasswordInteractively(String displayMessage) throws IOException {
+
+		commandSession.getConsole().append(displayMessage + "\n");
+		commandSession.getConsole().flush();
+
+		ConsoleReader consoleReader = new ConsoleReader(commandSession.getKeyboard(), new OutputStreamWriter(
+				commandSession.getConsole()));
+		String password = consoleReader.readLine(new Character((char) 0));
+
+		return password;
 	}
 }

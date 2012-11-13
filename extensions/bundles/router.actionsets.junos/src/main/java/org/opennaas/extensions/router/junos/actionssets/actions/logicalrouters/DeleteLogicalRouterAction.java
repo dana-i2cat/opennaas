@@ -1,12 +1,12 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
-
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class DeleteLogicalRouterAction extends JunosAction {
 	public DeleteLogicalRouterAction() {
@@ -22,8 +22,16 @@ public class DeleteLogicalRouterAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		if (!(params instanceof String))
+
+		if (!(params instanceof ComputerSystem))
 			return false;
+
+		if (((ComputerSystem) params).getName() == null)
+			return false;
+
+		if (((ComputerSystem) params).getName().isEmpty())
+			return false;
+
 		return true;
 	}
 
@@ -50,7 +58,7 @@ public class DeleteLogicalRouterAction extends JunosAction {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		try {
-			setVelocityMessage(prepareVelocityCommand(params, template));
+			setVelocityMessage(prepareVelocityCommand(((ComputerSystem) params).getName(), template));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
