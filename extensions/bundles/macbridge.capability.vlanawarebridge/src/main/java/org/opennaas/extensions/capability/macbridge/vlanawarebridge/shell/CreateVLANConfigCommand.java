@@ -12,7 +12,7 @@ import org.opennaas.extensions.capability.macbridge.vlanawarebridge.IVLANAwareBr
  * @author Eduard Grasa
  */
 @Command(scope = "vlanawarebridge", name = "createvlanconfig", description = "Create a VLAN Configuration")
-public class CreateVLANConfigurationCommand extends GenericKarafCommand {
+public class CreateVLANConfigCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to create the VLAN configuration on", required = true, multiValued = false)
 	private String	resourceId;

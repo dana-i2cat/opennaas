@@ -19,12 +19,11 @@ public class SampleResourceBootstrapper implements IResourceBootstrapper {
 
 	private IModel	oldModel;
 
+	@Override
 	public void bootstrap(Resource resource) throws ResourceException {
-
 		log.info("Loading bootstrap to start resource...");
 		resource.setModel(new SampleModel());
 		// Add here all the necessary methods to populate resource model
-
 	}
 
 	@Override

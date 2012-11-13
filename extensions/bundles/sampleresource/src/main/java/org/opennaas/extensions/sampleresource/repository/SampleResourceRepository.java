@@ -21,7 +21,6 @@ public class SampleResourceRepository extends ResourceRepository {
 	 * @param resourceType
 	 */
 	public SampleResourceRepository(String resourceType) {
-
 		super(resourceType);
 	}
 

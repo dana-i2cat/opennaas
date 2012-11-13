@@ -7,7 +7,6 @@ public class MACBridgeIOSBootstrapperFactory implements IResourceBootstrapperFac
 
 	@Override
 	public IResourceBootstrapper createResourceBootstrapper() {
-		// TODO Auto-generated method stub
 		return new MACBridgeIOSBootstrapper();
 	}
 

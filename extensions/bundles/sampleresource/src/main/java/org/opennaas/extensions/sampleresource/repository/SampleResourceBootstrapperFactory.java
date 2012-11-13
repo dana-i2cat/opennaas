@@ -12,7 +12,6 @@ public class SampleResourceBootstrapperFactory implements IResourceBootstrapperF
 
 	@Override
 	public IResourceBootstrapper createResourceBootstrapper() {
-
 		return new SampleResourceBootstrapper();
 	}
 
