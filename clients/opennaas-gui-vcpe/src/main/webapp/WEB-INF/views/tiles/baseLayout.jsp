@@ -23,6 +23,7 @@
 	<script src="<c:url value="/resources/blueprint/jquery/ui/jquery.ui.core.js" />"></script>
 	<script src="<c:url value="/resources/blueprint/jquery/ui/jquery.ui.widget.js" />"></script>
 	<script src="<c:url value="/resources/blueprint/jquery/ui/jquery.ui.tabs.js" />"></script>	
+	<script src="<c:url value="/resources/js/script.js" />"></script>	
 	<script>
 		$(function() {
 			$( "#tabs" ).tabs();
