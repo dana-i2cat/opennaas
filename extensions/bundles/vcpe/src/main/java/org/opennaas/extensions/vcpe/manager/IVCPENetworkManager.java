@@ -8,6 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
@@ -66,4 +67,39 @@ public interface IVCPENetworkManager {
 	@Produces(MediaType.APPLICATION_XML)
 	public List<VCPENetworkModel> getAllVCPENetworks() throws VCPENetworkManagerException;
 
+	/**
+	 * Check if a VLAN is busy or not in the environment
+	 * 
+	 * @return true if isn't busy
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/isVLANFree")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public Boolean isVLANFree(@QueryParam("vlan") String vlan) throws VCPENetworkManagerException;
+
+	/**
+	 * Check if an IP is busy or not in the environment
+	 * 
+	 * @return true if isn't busy
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/isIPFree")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public Boolean isIPFree(@QueryParam("ip") String ip) throws VCPENetworkManagerException;
+
+	/**
+	 * Check if an interface is busy or not in the environment
+	 * 
+	 * @return true if isn't busy
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/isInterfaceFree")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public Boolean isInterfaaceFree(@QueryParam("iface") String iface) throws VCPENetworkManagerException;
 }
