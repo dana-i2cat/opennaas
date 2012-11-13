@@ -105,4 +105,37 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		}
 		return result;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isVLANFree(java.lang.String)
+	 */
+	@Override
+	public Boolean isVLANFree(String vlan) throws VCPENetworkManagerException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isIPFree(java.lang.String)
+	 */
+	@Override
+	public Boolean isIPFree(String ip) throws VCPENetworkManagerException {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isInterfaaceFree(java.lang.String)
+	 */
+	@Override
+	public Boolean isInterfaaceFree(String iface) throws VCPENetworkManagerException {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

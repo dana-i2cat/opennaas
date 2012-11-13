@@ -6,10 +6,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<div id="ajaxUpdate">
-	<h2>Virtual CPE Network view</h2>
-</div>
-<button type="button" onclick="updateHeader()">Change header</button>
 <div>
 	<fieldset class="box">
 		<legend>
