@@ -10,22 +10,22 @@ import org.opennaas.extensions.capability.macbridge.vlanawarebridge.IVLANAwareBr
 /**
  * @author Eduard Grasa
  */
-@Command(scope = "vlanawarebridge", name = "deletestaticvlanconfiguration", description = "Delete a static VLAN configuration entry to the filtering database")
-public class DeleteStaticVLANConfigurationCommand extends GenericKarafCommand {
-	
+@Command(scope = "vlanawarebridge", name = "deletestaticvlanconfig", description = "Delete a static VLAN configuration entry to the filtering database")
+public class DeleteStaticVLANConfigCommand extends GenericKarafCommand {
+
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to delete the static VLAN configuration on", required = true, multiValued = false)
 	private String	resourceId;
-	
+
 	@Argument(index = 1, name = "vlanID", description = "ID of the VLAN", required = true, multiValued = false)
-	private int	vlanID;
-	
+	private int		vlanID;
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Delete a static VLAN configuration entry to the filtering database");
 		try {
 			IResource macBridge = getResourceFromFriendlyName(resourceId);
-			IVLANAwareBridgeCapability vlanAwareBridgeCapability = 
-				(IVLANAwareBridgeCapability) macBridge.getCapabilityByInterface(IVLANAwareBridgeCapability.class);
+			IVLANAwareBridgeCapability vlanAwareBridgeCapability =
+					(IVLANAwareBridgeCapability) macBridge.getCapabilityByInterface(IVLANAwareBridgeCapability.class);
 			vlanAwareBridgeCapability.deleteStaticVLANRegistrationEntryFromFilteringDatabase(vlanID);
 		} catch (ResourceException e) {
 			printError(e);

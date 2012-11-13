@@ -11,7 +11,7 @@ import org.opennaas.extensions.capability.macbridge.vlanawarebridge.IVLANAwareBr
  * @author Eduard Grasa
  */
 @Command(scope = "vlanawarebridge", name = "deletevlanconfig", description = "Delete a VLAN Configuration")
-public class DeleteVLANConfigurationCommand extends GenericKarafCommand {
+public class DeleteVLANConfigCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to delete the VLAN configuration on", required = true, multiValued = false)
 	private String	resourceId;
