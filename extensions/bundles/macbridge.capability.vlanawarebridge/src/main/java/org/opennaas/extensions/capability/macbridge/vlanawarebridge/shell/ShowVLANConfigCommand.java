@@ -14,7 +14,7 @@ import org.opennaas.extensions.capability.macbridge.model.VLANConfiguration;
  * @author Eduard Grasa
  */
 @Command(scope = "vlanawarebridge", name = "showvlanconfig", description = "Show the existing VLAN Configurations in the VLAN database")
-public class ShowVLANConfigurationCommand extends GenericKarafCommand {
+public class ShowVLANConfigCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to show the VLAN configurations", required = true, multiValued = false)
 	private String	resourceId;
