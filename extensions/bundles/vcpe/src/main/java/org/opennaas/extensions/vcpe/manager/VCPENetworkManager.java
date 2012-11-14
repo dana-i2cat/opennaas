@@ -3,6 +3,8 @@ package org.opennaas.extensions.vcpe.manager;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
@@ -33,9 +35,11 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 					.getCapabilityByInterface(IVCPENetworkBuilder.class);
 			vcpeNetworkBuilder.buildVCPENetwork(model);
 		} catch (ResourceException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		}
 		return true;
 	}
@@ -54,11 +58,14 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 					.getCapabilityByInterface(IVCPENetworkBuilder.class);
 			vcpeNetworkBuilder.destroyVCPENetwork();
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		} catch (CapabilityException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		} catch (ResourceException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		}
 		return true;
 	}
@@ -77,9 +84,11 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 				throw new VCPENetworkManagerException("don't find a VCPENetwork with id = " + vcpeNetworkId);
 			}
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		} catch (ResourceException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		}
 		return (VCPENetworkModel) resource.getModel();
 	}
@@ -101,7 +110,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 				}
 			}
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(Response.serverError()
+					.entity(e.getMessage()).build());
 		}
 		return result;
 	}

@@ -74,7 +74,7 @@ public class VCPENetworkController {
 			}
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getResponse());
+					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 		}
 
 		return "listVCPENetwork";
