@@ -4,7 +4,6 @@
 package org.opennaas.extensions.vcpe.manager;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -28,8 +27,7 @@ public class VCPENetworkManagerException extends WebApplicationException {
 	 * @param message
 	 */
 	public VCPENetworkManagerException(String message) {
-		super(Response.status(Response.Status.BAD_REQUEST)
-				.entity(message).type(MediaType.TEXT_PLAIN).build());
+		super(Response.serverError().entity(message).build());
 	}
 
 	/**
