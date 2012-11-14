@@ -8,6 +8,7 @@ import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -47,6 +48,22 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, actionsetName);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, actionsetVersion);
 		return createServiceFilter(IActionSet.class.getName(), properties);
+	}
+
+	public static IQueueManagerCapability getQueueManagerService(String resourceId) throws ActivatorException {
+		try {
+			log.debug("Calling QueueManagerService");
+			return (IQueueManagerCapability) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
+		} catch (InvalidSyntaxException e) {
+			throw new ActivatorException(e);
+		}
+	}
+
+	protected static Filter createFilterQueueManager(String resourceId) throws InvalidSyntaxException {
+		Properties properties = new Properties();
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
+		return createServiceFilter(IQueueManagerCapability.class.getName(), properties);
 	}
 
 }
