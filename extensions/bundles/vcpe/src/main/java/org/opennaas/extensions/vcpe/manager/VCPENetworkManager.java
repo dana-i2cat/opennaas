@@ -33,9 +33,9 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 					.getCapabilityByInterface(IVCPENetworkBuilder.class);
 			vcpeNetworkBuilder.buildVCPENetwork(model);
 		} catch (ResourceException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		}
 		return true;
 	}
@@ -54,11 +54,11 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 					.getCapabilityByInterface(IVCPENetworkBuilder.class);
 			vcpeNetworkBuilder.destroyVCPENetwork();
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		} catch (CapabilityException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		} catch (ResourceException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		}
 		return true;
 	}
@@ -74,12 +74,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		try {
 			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
 			if (resource == null) {
-				throw new VCPENetworkManagerException("don't find a VCPENetwork with id = " + vcpeNetworkId);
+				throw new VCPENetworkManagerException("Don't find a VCPENetwork with id = " + vcpeNetworkId);
 			}
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		} catch (ResourceException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		}
 		return (VCPENetworkModel) resource.getModel();
 	}
@@ -101,7 +101,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 				}
 			}
 		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e);
+			throw new VCPENetworkManagerException(e.getMessage());
 		}
 		return result;
 	}
@@ -138,4 +138,5 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
 }
