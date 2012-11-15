@@ -43,7 +43,9 @@ public abstract class GenericRestService {
 		LOGGER.info("Response: " + response);
 		Family family = ClientResponse.Status.fromStatusCode(response.getStatus()).getFamily();
 		if (!family.equals(Family.SUCCESSFUL)) {
-			throw new RestServiceException(response);
+			String message = response.getEntity(String.class);
+			throw new RestServiceException((message != null && !message.equals("")) ?
+					message : messageSource.getMessage("message.error.notdetailmessage", null, null));
 		}
 		return true;
 	}
