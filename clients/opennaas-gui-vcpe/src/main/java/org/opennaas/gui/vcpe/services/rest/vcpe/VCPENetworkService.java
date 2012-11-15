@@ -27,17 +27,17 @@ public class VCPENetworkService extends GenericRestService {
 	private static final Logger	LOGGER	= Logger.getLogger(VCPENetworkService.class);
 
 	/**
-	 * Call a rest url to build a VCPENetwork environment
+	 * Call a rest service to create a VCPENetwork resource
 	 * 
 	 * @param request
 	 * @return true if the environment has been created
 	 * @throws RestServiceException
 	 */
-	public Boolean buildVCPENetwork(VCPENetworkModel request) throws RestServiceException {
+	public String createVCPENetwork(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling create VCPENetworkManager service");
-			String url = getURL("vcpenetwork/build");
+			String url = getURL("vcpenetwork/create");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
@@ -47,11 +47,11 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
-		return checkResponse(response);
+		return checkResponse(response) ? response.getEntity(String.class) : null;
 	}
 
 	/**
-	 * Call a rest url to destroy a VCPENetwork environment
+	 * Call a rest service to destroy a VCPENetwork resource
 	 * 
 	 * @param vcpeNetworkId
 	 * @throws RestServiceException
@@ -60,7 +60,7 @@ public class VCPENetworkService extends GenericRestService {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling remove VCPENetworkManager service");
-			String url = getURL("vcpenetwork/destroy/" + vcpeNetworkId);
+			String url = getURL("vcpenetwork/remove/" + vcpeNetworkId);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
@@ -74,7 +74,7 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
-	 * Call a rest url to get a VCPENetworkModel by id = id
+	 * Call a rest service to get a VCPENetworkModel by id = id
 	 * 
 	 * @param id
 	 * @return VCPENetwork
@@ -97,7 +97,7 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
-	 * Call a rest url to get all VCPE Network
+	 * Call a rest service to get all VCPE Network
 	 * 
 	 * @return List<VCPENetwork>
 	 * @throws RestServiceException
@@ -122,7 +122,7 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
-	 * Call a URL rest to check if the VLAN is free in the environment
+	 * Call a rest service to check if the VLAN is free in the environment
 	 * 
 	 * @param vlan
 	 * @return true if is free
@@ -145,7 +145,7 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
-	 * Call a URL res to check if the IP is free in the environment
+	 * Call a rest service to check if the IP is free in the environment
 	 * 
 	 * @param ip
 	 * @return true if is free
@@ -168,7 +168,7 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
-	 * Call a URL res to check if the IP is free in the environment
+	 * Call a rest service to check if the IP is free in the environment
 	 * 
 	 * @param iface
 	 * @param port

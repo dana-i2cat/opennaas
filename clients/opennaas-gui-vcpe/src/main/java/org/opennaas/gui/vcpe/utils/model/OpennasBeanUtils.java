@@ -28,10 +28,10 @@ public class OpennasBeanUtils {
 	 * @param vcpeNetwork
 	 * @return CreateVCPENetRequest
 	 */
-	public static VCPENetworkModel getVCPENetwork(String vcpeNetworkId, VCPENetwork vcpeNetwork) {
+	public static VCPENetworkModel getVCPENetwork(VCPENetwork vcpeNetwork) {
 		VCPENetworkModel request = new VCPENetworkModel();
 		// Id
-		request.setVcpeNetworkId(vcpeNetworkId);
+		request.setVcpeNetworkId(vcpeNetwork.getId());
 		// Name
 		request.setVcpeNetworkName(vcpeNetwork.getName());
 		// Template
