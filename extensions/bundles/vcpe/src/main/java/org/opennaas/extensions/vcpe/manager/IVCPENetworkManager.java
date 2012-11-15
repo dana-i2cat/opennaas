@@ -17,19 +17,16 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 public interface IVCPENetworkManager {
 
 	/**
-	 * Create a VCPE infrastructure of the resource with id = vcpeNetworkId
+	 * Create a VCPE infrastructure of VCPEResource from model
 	 * 
-	 * @param vcpeNetworkId
-	 * @param router1
-	 * @param router2
-	 * @return true if the VCPE has been created, false otherwise
+	 * @return the id if the VCPE has been created
 	 * @throws VCPENetworkManagerException
 	 */
-	@Path("/build")
+	@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean build(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException;
+	public String create(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException;
 
 	/**
 	 * Remove a VCPE infrastructure of the resource with id = vcpeNetworkId
@@ -38,11 +35,11 @@ public interface IVCPENetworkManager {
 	 * @return true if the VCPE has been removed, false otherwise
 	 * @throws VCPENetworkManagerException
 	 */
-	@Path("/destroy/{id}")
+	@Path("/remove/{id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean destroy(@PathParam("id") String vcpeNetworkId) throws VCPENetworkManagerException;
+	public Boolean remove(@PathParam("id") String vcpeNetworkId) throws VCPENetworkManagerException;
 
 	/**
 	 * Get the VCPENetwork with id = vcpeNetworkId
@@ -101,5 +98,5 @@ public interface IVCPENetworkManager {
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isInterfaaceFree(@QueryParam("iface") String iface) throws VCPENetworkManagerException;
+	public Boolean isInterfaceFree(@QueryParam("iface") String iface) throws VCPENetworkManagerException;
 }
