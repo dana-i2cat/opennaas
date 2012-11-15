@@ -1,0 +1,123 @@
+/* -----------------------------------------------------------------------
+OpenNaaS Custom CSS
+----------------------------------------------------------------------- */
+.container #header {
+	
+}
+
+.container #menu {
+	float: left;
+	width: 200px;
+	margin-top: 10px;
+}
+
+.container #body {
+	float: left;
+	width: 750px;
+	min-height: 300px;
+}
+
+.container #footer {
+	margin: 0px auto 0px auto;
+	width: 500px;
+}
+
+#login {
+	width: 260px;
+	height: 50px;
+	margin: 50px auto 0px auto;
+}
+
+/**
+ * GUI view
+ */
+#vcpe {
+	clear: both;
+	margin-bottom: 20px;
+}
+
+#customer {
+	clear: both;
+}
+
+.button {
+	width: 100px;
+}
+
+/**
+ * Interfaces
+ */
+#up_backup,#up_master {
+	width: 150px;
+	padding: 10px 0 0 10px;
+	float: left;
+	font-size: 10px;
+	margin-left: 5px;
+}
+
+
+#id_customer_backup,#id_customer_master {
+	width: 150px;
+	padding: 10px 0 0 10px;
+	float: left;
+	font-size: 10px;
+	margin-left: 10px;
+}
+
+#customer_master {
+	float: left;
+	width: 150px;
+	padding: 10px 0 0 10px;
+	clear: both;
+	font-size: 10px;
+	margin-left: 5px;
+}
+
+#customer_backup,#inter_master,#inter_backup {
+	float: left;
+	width: 150px;
+	padding: 10px 0 0 10px;
+	font-size: 10px;
+	margin-left: 5px;
+}
+
+/**
+ * Routers
+ */
+#lr_master {
+	clear: both;
+	float: left;
+	width: 280px;
+}
+
+#lr_backup {
+	float: left;
+	width: 280px;
+}
+
+/**
+ * Protocols
+ */
+#bod_master,#bod_inter,#bod_backup {
+	float: left;
+	margin: 5px;
+}
+
+#config {
+	width: 200px;
+	height: 50px;
+	padding: 5px;
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+/**
+ * Customer configuration
+ */
+#customer_network, #customer_ip, #customer_template {
+		
+}
+
+#submitButton {
+	float: right;		
+}
