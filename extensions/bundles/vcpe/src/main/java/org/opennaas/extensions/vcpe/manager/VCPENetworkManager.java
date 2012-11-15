@@ -47,12 +47,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	@Override
 	public Boolean remove(String vcpeNetworkId) throws VCPENetworkManagerException {
 		boolean isRemoved = true;
+		// Destroy environment
+		destroy(vcpeNetworkId);
 		// Stop the resource
 		stopResource(vcpeNetworkId);
 		// Remove the resource
 		removeResource(vcpeNetworkId);
-		// Destroy environment
-		destroy(vcpeNetworkId);
 		return isRemoved;
 	}
 
