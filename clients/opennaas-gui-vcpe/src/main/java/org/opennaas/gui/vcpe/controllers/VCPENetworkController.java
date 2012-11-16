@@ -223,11 +223,11 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isVLANFree")
 	public @ResponseBody
-	String isVLANFree(String vlan, Model model, Locale locale) {
-		LOGGER.debug("Check if the VLAN " + vlan + " is free");
+	String isVLANFree(String vcpeId, String vlan, Model model, Locale locale) {
+		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the vcpeId: " + vcpeId);
 		Boolean isFree = false;
 		try {
-			isFree = vcpeNetworkBO.isVLANFree(vlan);
+			isFree = vcpeNetworkBO.isVLANFree(vcpeId, vlan);
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
@@ -243,11 +243,11 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isIPFree")
 	public @ResponseBody
-	String isIPFree(String ip, Model model, Locale locale) {
-		LOGGER.debug("Check if the IP " + ip + " is free");
+	String isIPFree(String vcpeId, String ip, Model model, Locale locale) {
+		LOGGER.debug("Check if the IP: " + ip + " is free in the vcpeId: " + vcpeId);
 		Boolean isFree = false;
 		try {
-			isFree = vcpeNetworkBO.isIPFree(ip);
+			isFree = vcpeNetworkBO.isIPFree(vcpeId, ip);
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
@@ -263,11 +263,11 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isInterfaceFree")
 	public @ResponseBody
-	String isInterfaceFree(String iface, String port, Model model, Locale locale) {
-		LOGGER.debug("Check if the interface " + iface + "." + port + " is free");
+	String isInterfaceFree(String vcpeId, String iface, String port, Model model, Locale locale) {
+		LOGGER.debug("Check if the Interface: " + iface + "." + port + " is free in the vcpeId: " + vcpeId);
 		Boolean isFree = false;
 		try {
-			isFree = vcpeNetworkBO.isInterfaceFree(iface, port);
+			isFree = vcpeNetworkBO.isInterfaceFree(vcpeId, iface, port);
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.check.interface.message.error", null, locale));

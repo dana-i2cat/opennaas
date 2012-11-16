@@ -81,16 +81,16 @@
 												<spring:message code="interface.name" />
 												<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName"/>
 												<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" 
-													onchange="isInterfaceFree(this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />
+													onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8"/>.
 												<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" 
-													onchange="isInterfaceFree(document.getElementById('logicalRouter1.interfaces${vs.index}.name').value, this.value);" />
+													onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name').value, this.value);" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
 												<spring:message code="interface.ipAddress" />
-												<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree(this.value);" />
+												<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this.value);" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13"/>
 												<spring:message code="interface.vlan" />
-												<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree(this.value);" />
+												<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 												<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
 											</c:when>
 											<c:otherwise>
@@ -126,16 +126,16 @@
 												<spring:message code="interface.name" />
 												<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName"/>
 												<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" 
-													onchange="isInterfaceFree(this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />
+													onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />
 												<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8"/>.
 												<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" 
-													onchange="isInterfaceFree(document.getElementById('logicalRouter2.interfaces${vs.index}.name').value, this.value);" />
+													onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter2.interfaces${vs.index}.name').value, this.value);" />
 												<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
 												<spring:message code="interface.ipAddress" />
-												<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree(this.value);" />
+												<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this.value);" />
 												<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13"/>
 												<spring:message code="interface.vlan" />
-												<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree(this.value);" />
+												<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 												<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
 											</c:when>
 											<c:otherwise>
