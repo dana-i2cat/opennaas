@@ -74,8 +74,9 @@ public class Template implements ITemplate {
 	 */
 	private List<VCPENetworkElement> generateLogicalElements(VCPENetworkModel initialModel) {
 		// ----------------------------- VCPE-router1 -----------------------------
-		Router vcpe1 = (Router) VCPENetworkModelHelper
-				.getElementByNameInTemplate(initialModel, VCPETemplate.VCPE1_ROUTER);
+		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.VCPE1_ROUTER);
+		vcpe1.setName(props.getProperty("vcpenetwork.logicalrouter1.name") + "-" + initialModel.getVcpeNetworkName());
+
 		// Interfaces VCPE-router1
 		Interface inter1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.INTER1_INTERFACE_LOCAL);
 		Interface down1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.DOWN1_INTERFACE_LOCAL);
@@ -100,6 +101,8 @@ public class Template implements ITemplate {
 
 		// ----------------------------- VCPE-router2 -----------------------------
 		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.VCPE2_ROUTER);
+		vcpe2.setName(props.getProperty("vcpenetwork.logicalrouter2.name") + "-" + initialModel.getVcpeNetworkName());
+
 		// Interfaces VCPE-router2
 		Interface inter2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.INTER2_INTERFACE_LOCAL);
 		Interface down2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.DOWN2_INTERFACE_LOCAL);
