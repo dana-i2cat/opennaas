@@ -24,7 +24,7 @@ function updateHeader() {
 function isVLANFree(vcpeId, vlan) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "vlan=" +  vlan,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan,
 		success: function(data) {
 		    $('#ajaxUpdate').html(data);			    
 		}
