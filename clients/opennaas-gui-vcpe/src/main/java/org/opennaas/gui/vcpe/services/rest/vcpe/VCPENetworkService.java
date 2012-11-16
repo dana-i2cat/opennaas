@@ -124,15 +124,16 @@ public class VCPENetworkService extends GenericRestService {
 	/**
 	 * Call a rest service to check if the VLAN is free in the environment
 	 * 
+	 * @param vcpeId
 	 * @param vlan
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isVLANFree(String vlan) throws RestServiceException {
+	public Boolean isVLANFree(String vcpeId, String vlan) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling isVLANFree VCPENetworkManager service");
-			String url = getURL("vcpenetwork/isVLANFree?vlan=" + vlan);
+			String url = getURL("vcpenetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" + vlan);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
@@ -147,15 +148,16 @@ public class VCPENetworkService extends GenericRestService {
 	/**
 	 * Call a rest service to check if the IP is free in the environment
 	 * 
+	 * @param vcpeId
 	 * @param ip
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isIPFree(String ip) throws RestServiceException {
+	public Boolean isIPFree(String vcpeId, String ip) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling isIPFree VCPENetworkManager service");
-			String url = getURL("vcpenetwork/isIPFree?ip=" + ip);
+			String url = getURL("vcpenetwork/isIPFree?vcpeId=" + vcpeId + "&ip=" + ip);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
@@ -170,16 +172,17 @@ public class VCPENetworkService extends GenericRestService {
 	/**
 	 * Call a rest service to check if the IP is free in the environment
 	 * 
+	 * @param vcpeId
 	 * @param iface
 	 * @param port
 	 * @return true if the iface is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isInterfaceFree(String iface, String port) throws RestServiceException {
+	public Boolean isInterfaceFree(String vcpeId, String iface, String port) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling isVLANFree VCPENetworkManager service");
-			String url = getURL("vcpenetwork/isInterfaceFree?iface=" + iface + "." + port);
+			String url = getURL("vcpenetwork/isInterfaceFree?vcpeId=" + vcpeId + "&iface=" + iface + "." + port);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);

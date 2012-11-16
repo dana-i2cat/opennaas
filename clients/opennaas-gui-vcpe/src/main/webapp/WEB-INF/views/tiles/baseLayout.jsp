@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/opennaas.css" />" type="text/css">
 <!-- Javascript -->
 <script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
-<script	src="<c:url value="/resources/js/jquery-ui-1.9.1.custom.min.js" />"></script>
+<script	src="<c:url value="/resources/js/jquery-ui-1.9.1.custom.js" />"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
 <script>
 	$(function() {
