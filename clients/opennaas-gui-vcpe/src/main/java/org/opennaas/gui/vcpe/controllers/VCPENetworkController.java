@@ -62,6 +62,7 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("add entity: " + vcpeNetwork);
+		String view = "listVCPENetwork";
 		try {
 			if (!result.hasErrors()) {
 				vcpeNetwork.setId(vcpeNetworkBO.create(vcpeNetwork));
@@ -69,15 +70,16 @@ public class VCPENetworkController {
 				model.addAttribute("infoMsg", messageSource
 						.getMessage("vcpenetwork.create.message.info", null, locale));
 			} else {
+				view = "createVCPENetwork";
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.create.message.error", null, locale));
 			}
 		} catch (RestServiceException e) {
+			view = "createVCPENetwork";
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 		}
-
-		return "listVCPENetwork";
+		return view;
 	}
 
 	/**
