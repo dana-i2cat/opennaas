@@ -42,8 +42,12 @@ public abstract class GenericRestService {
 	protected Boolean checkResponse(ClientResponse response) throws RestServiceException {
 		LOGGER.info("Response: " + response);
 		Family family = ClientResponse.Status.fromStatusCode(response.getStatus()).getFamily();
-		if (!family.equals(Family.SUCCESSFUL)) {
-			throw new RestServiceException(response);
+		if (family.equals(Family.SERVER_ERROR)) {
+			String message = response.getEntity(String.class);
+			throw new RestServiceException((message != null && !message.equals("")) ?
+					message : messageSource.getMessage("message.error.notdetailmessage", null, null));
+		} else if (!family.equals(Family.SUCCESSFUL)) {
+			throw new RestServiceException(response.toString());
 		}
 		return true;
 	}

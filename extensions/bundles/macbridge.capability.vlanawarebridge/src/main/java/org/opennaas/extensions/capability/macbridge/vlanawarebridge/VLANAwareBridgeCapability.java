@@ -96,7 +96,7 @@ public class VLANAwareBridgeCapability extends AbstractCapability implements IVL
 	@Override
 	public void addStaticVLANRegistrationEntryToFilteringDatabase(StaticVLANRegistrationEntry entry) throws CapabilityException {
 		queueAction(createActionAndCheckParams(
-				VLANAwareBridgeActionSet.ADD_STATIC_VLAN_REGISTRATION_ENTRY_TO_FILTERING_DATABASE, entry));
+				VLANAwareBridgeActionSet.ADD_STATIC_VLAN_REGISTRATION, entry));
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class VLANAwareBridgeCapability extends AbstractCapability implements IVL
 	@Override
 	public void deleteStaticVLANRegistrationEntryFromFilteringDatabase(int vlanID) throws CapabilityException {
 		queueAction(createActionAndCheckParams(
-				VLANAwareBridgeActionSet.DELETE_STATIC_VLAN_REGISTRATION_ENTRY_FROM_FILTERING_DATABASE, vlanID));
+				VLANAwareBridgeActionSet.DELETE_STATIC_VLAN_REGISTRATION, vlanID));
 	}
 
 	/*

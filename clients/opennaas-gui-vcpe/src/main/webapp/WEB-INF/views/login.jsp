@@ -8,11 +8,11 @@
 <html>
 <head>
 	<title><fmt:message key="login.title"/></title>
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css">
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/print.css" />" type="text/css">
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/opennaas.css" />" type="text/css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/screen.css" />" type="text/css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/print.css" />" type="text/css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/opennaas.css" />" type="text/css">
 	<!--[if lt IE 8]>
-		<link rel="stylesheet" href="<c:url value="/resources/blueprint/ie.css" />" type="text/css">
+		<link rel="stylesheet" href="<c:url value="/resources/css/ie.css" />" type="text/css">
 	<![endif]-->
 </head>
 <body>

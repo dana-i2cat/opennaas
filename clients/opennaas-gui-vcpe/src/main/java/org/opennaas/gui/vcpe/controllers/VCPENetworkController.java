@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Jordi
@@ -61,6 +62,7 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("add entity: " + vcpeNetwork);
+		String view = "listVCPENetwork";
 		try {
 			if (!result.hasErrors()) {
 				vcpeNetwork.setId(vcpeNetworkBO.create(vcpeNetwork));
@@ -68,15 +70,16 @@ public class VCPENetworkController {
 				model.addAttribute("infoMsg", messageSource
 						.getMessage("vcpenetwork.create.message.info", null, locale));
 			} else {
+				view = "createVCPENetwork";
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.create.message.error", null, locale));
 			}
 		} catch (RestServiceException e) {
+			view = "createVCPENetwork";
 			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getResponse());
+					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 		}
-
-		return "listVCPENetwork";
+		return view;
 	}
 
 	/**
@@ -92,7 +95,6 @@ public class VCPENetworkController {
 		try {
 			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
 			model.addAttribute("action", new String("update"));
-			model.addAttribute("noticeMsg", "Not implemented");
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.edit.message.error", null, locale));
@@ -111,10 +113,26 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/update")
 	public String update(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("update entity: " + vcpeNetwork);
-		// TODO
-		model.addAttribute("noticeMsg", messageSource
-				.getMessage("message.info.notimplemented", null, locale));
-		return "createVCPENetwork";
+		String view = "listVCPENetwork";
+		try {
+			if (!result.hasErrors()) {
+				LOGGER.debug("removing the old environment");
+				vcpeNetworkBO.delete(vcpeNetwork.getId());
+				LOGGER.debug("create the new environment");
+				vcpeNetworkBO.create(vcpeNetwork);
+				model.addAttribute("infoMsg", messageSource.getMessage("vcpenetwork.update.message.info", null, locale));
+				model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			} else {
+				view = "createVCPENetwork";
+				model.addAttribute("errorMsg", messageSource
+						.getMessage("vcpenetwork.create.message.error", null, locale));
+			}
+		} catch (RestServiceException e) {
+			view = "createVCPENetwork";
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.update.message.error", null, locale) + ": " + e.getMessage());
+		}
+		return view;
 	}
 
 	/**
@@ -212,6 +230,66 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.updateIps.message.error", null, locale));
 		}
 		return "updateIpsVCPENetwork";
+	}
+
+	/**
+	 * Check if the VLAN is free in the environment
+	 * 
+	 * @param vlan
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isVLANFree")
+	public @ResponseBody
+	String isVLANFree(String vcpeId, String vlan, Model model, Locale locale) {
+		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the vcpeId: " + vcpeId);
+		Boolean isFree = false;
+		try {
+			isFree = vcpeNetworkBO.isVLANFree(vcpeId, vlan);
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
+		}
+		return isFree.toString();
+	}
+
+	/**
+	 * Check if the VLAN is free in the environment
+	 * 
+	 * @param vlan
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isIPFree")
+	public @ResponseBody
+	String isIPFree(String vcpeId, String ip, Model model, Locale locale) {
+		LOGGER.debug("Check if the IP: " + ip + " is free in the vcpeId: " + vcpeId);
+		Boolean isFree = false;
+		try {
+			isFree = vcpeNetworkBO.isIPFree(vcpeId, ip);
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
+		}
+		return isFree.toString();
+	}
+
+	/**
+	 * Check if the interface is free in the environment
+	 * 
+	 * @param vlan
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isInterfaceFree")
+	public @ResponseBody
+	String isInterfaceFree(String vcpeId, String iface, String port, Model model, Locale locale) {
+		LOGGER.debug("Check if the Interface: " + iface + "." + port + " is free in the vcpeId: " + vcpeId);
+		Boolean isFree = false;
+		try {
+			isFree = vcpeNetworkBO.isInterfaceFree(vcpeId, iface, port);
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.check.interface.message.error", null, locale));
+		}
+		return isFree.toString();
 	}
 
 	/**
