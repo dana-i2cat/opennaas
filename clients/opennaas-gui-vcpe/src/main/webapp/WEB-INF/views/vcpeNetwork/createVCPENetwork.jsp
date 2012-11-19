@@ -16,30 +16,30 @@
 	<!-- Graphical view -->
 	<!-- Start vCPE -->
 	<div id="vcpe">
-		<h3>vCPE Customer A</h3>
+		<h3><spring:message code="vcpenetwork.create.vcpe"/> ${VCPENetwork.name}</h3>
 		<div id="acc_body">
 			<!-- BGP -->
 			<div id="bgp">
-				<h2>BGP</h2>
+				<h2><spring:message code="vcpenetwork.bgp"/></h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button" class="button">de-activate</button>
+					<button id="button" class="button"><spring:message code="buttons.deactivate"/></button>
 					<br>
-					<button id="button2" class="button">re-apply</button>
+					<button id="button2" class="button"><spring:message code="buttons.reapply"/></button>
 				</div>
 			</div>
 			<!-- VRRP -->
 			<div id="vrrp">
-				<h2>VRRP</h2>
+				<h2><spring:message code="vcpenetwork.vrrp"/></h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button3" class="button">de-activate</button>
+					<button id="button3" class="button"><spring:message code="buttons.deactivate"/></button>
 					<br>
-					<button id="button4" class="button">re-apply</button>
+					<button id="button4" class="button"><spring:message code="buttons.reapply"/></button>
 				</div>
 			</div>
 			<!-- Interfaces -->
@@ -92,21 +92,21 @@
 
 			<!-- Routers -->
 			<div id="lr_master">
-				<h2>LR MASTER</h2>
+				<h2><spring:message code="vcpenetwork.lrmaster"/></h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button5" class="button">Activate</button>
+					<button id="button5" class="button"><spring:message code="buttons.activate"/></button>
 				</div>
 			</div>
 			<div id="lr_backup">
-				<h2>LR BACKUP</h2>
+				<h2><spring:message code="vcpenetwork.lrbackup"/></h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button6" class="button">Backup</button>
+					<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
 				</div>
 			</div>
 			<!-- Interfaces -->
@@ -212,36 +212,36 @@
 	<!-- End vCPE -->
 	<!-- Start BoD -->
 	<div id="bod">
-		<h3>BoD</h3>
+		<h3><spring:message code="vcpenetwork.bod"/></h3>
 		<div>
 			<div id="bod_master">
-				<h2>MASTER</h2>
+				<h2><spring:message code="vcpenetwork.bod.master"/></h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button7" class="button">Cancel</button>
-					<button id="button8" class="button">Renew</button>
+					<button id="button7" class="button"><spring:message code="buttons.cancel"/></button>
+					<button id="button8" class="button"><spring:message code="buttons.renew"/></button>
 				</div>
 			</div>
 			<div id="bod_inter">
-				<h2>INTER</h2>
+				<h2><spring:message code="vcpenetwork.bod.inter"/></h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button9" class="button">Cancel</button>
-					<button id="button10" class="button">Renew</button>
+					<button id="button9" class="button"><spring:message code="buttons.cancel"/></button>
+					<button id="button10" class="button"><spring:message code="buttons.renew"/></button>
 				</div>
 			</div>
 			<div id="bod_backup">
-				<h2>BACKUP</h2>
+				<h2><spring:message code="vcpenetwork.bod.backup"/></h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button11" class="button">Cancel</button>
-					<button id="button12" class="button">Renew</button>
+					<button id="button11" class="button"><spring:message code="buttons.activate"/></button>
+					<button id="button12" class="button"><spring:message code="buttons.renew"/></button>
 				</div>
 			</div>
 		</div>
@@ -263,7 +263,7 @@
 	<!-- End Down Interface -->
 	<!-- Start customer -->
 	<div id="customer">
-		<h3>Customer</h3>
+		<h3><spring:message code="vcpenetwork.customer" /></h3>
 		<div id="customer_data" class="ui-widget-content">
 			<div id="customer_network">
 				<form:label for="name" path="name" cssErrorClass="error">
