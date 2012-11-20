@@ -22,6 +22,6 @@ public class HomeController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String redirect(HttpServletRequest request) {
 		LOGGER.debug("redirect to home page");
-		return "redirect:/secure/vcpeNetwork/list";
+		return "redirect:/secure/vcpeNetwork/home";
 	}
 }
