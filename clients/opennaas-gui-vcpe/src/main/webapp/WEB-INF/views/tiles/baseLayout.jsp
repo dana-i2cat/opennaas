@@ -22,6 +22,7 @@
 <script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 <script	src="<c:url value="/resources/js/jquery-ui-1.9.1.custom.min.js" />"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.jsPlumb-1.3.16-all.js" />"></script>
 <script>
 	$(function() {
 		$("#tabs").tabs();

@@ -47,14 +47,21 @@ OpenNaaS Custom CSS
 /**
  * Interfaces
  */
+#up_interfaces {
+	text-align: center;
+	width: 100%;
+}
+
 #up_backup,#up_master {
 	width: 150px;
 	padding: 10px 0 0 10px;
-	float: left;
+	display: inline-block; 
 	font-size: 10px;
-	margin-left: 5px;
+	margin-left: 70px;
+	margin-right: 70px;
+	margin-top: 15px;
+	margin-bottom: 15px;
 }
-
 
 #id_customer_backup,#id_customer_master {
 	width: 150px;
@@ -64,8 +71,13 @@ OpenNaaS Custom CSS
 	margin-left: 10px;
 }
 
+#vcpe_interfaces {
+	text-align: center;
+	width: 100%;
+}
+
 #customer_master {
-	float: left;
+	display: inline-block; 
 	width: 150px;
 	padding: 10px 0 0 10px;
 	clear: both;
@@ -74,25 +86,30 @@ OpenNaaS Custom CSS
 }
 
 #customer_backup,#inter_master,#inter_backup {
-	float: left;
+	display: inline-block; 
 	width: 150px;
 	padding: 10px 0 0 10px;
 	font-size: 10px;
 	margin-left: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
 }
 
 /**
  * Routers
  */
-#lr_master {
-	clear: both;
-	float: left;
-	width: 280px;
+#vcpe_routers {
+	text-align: center;
+	width: 100%;
 }
 
-#lr_backup {
-	float: left;
+#lr_master, #lr_backup {
+	display: inline-block; 
 	width: 280px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
 }
 
 /**
