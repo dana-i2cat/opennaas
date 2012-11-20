@@ -22,12 +22,20 @@
 			<div id="bgp">
 				<h2><spring:message code="vcpenetwork.bgp"/></h2>
 				<div>
-					<div id="config" class="ui-widget-content">
-						<p>Global configuration parameters</p>
-					</div>
-					<button id="button" class="button"><spring:message code="buttons.deactivate"/></button>
+					<spring:message code="bgp.clientASNumber" />
+					<form:input path="bgp.clientASNumber" size="10" />
+					<form:errors path="bgp.clientASNumber" size="10" />
+					
+					<spring:message code="bgp.nocASNumber" />
+					<form:input path="bgp.nocASNumber" size="10" />
+					<form:errors path="bgp.nocASNumber" size="10" />
+
+					<spring:message code="bgp.customerPrefixes" />
+					<form:input path="bgp.customerPrefixes" size="16" />
+					<form:errors path="bgp.customerPrefixes" size="16" />
 					<br>
-					<button id="button2" class="button"><spring:message code="buttons.reapply"/></button>
+					<button id="button" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
+					<button id="button2" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
 				</div>
 			</div>
 			<!-- VRRP -->
@@ -48,9 +56,9 @@
 					<div class="input">
 						<c:choose>
 							<c:when test="${item.labelName == 'Up'}">
-								<label>${item.labelName} Master</label>
-								<br><spring:message code="interface.name" />
+								<label>${item.labelName} Master</label><br>
 								<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
+								<spring:message code="interface.name" />
 								<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />.
 								<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
 								<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name').value, this.value);" />
