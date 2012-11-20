@@ -1,14 +1,10 @@
 /* -----------------------------------------------------------------------
 OpenNaaS Custom CSS
 ----------------------------------------------------------------------- */
-.container #header {
-	
-}
-
 .container #menu {
 	float: left;
 	width: 200px;
-	margin-top: 10px;
+	margin-top: 0px;
 }
 
 .container #body {
@@ -22,6 +18,15 @@ OpenNaaS Custom CSS
 	width: 500px;
 }
 
+#_menu {
+	width: 175px;
+	min-height: 300px;
+}
+
+.ui-menu {
+	width: 150px;
+}
+
 #login {
 	width: 260px;
 	height: 50px;
@@ -33,15 +38,14 @@ OpenNaaS Custom CSS
  */
 #vcpe {
 	clear: both;
-	margin-bottom: 20px;
 }
 
 #customer {
 	clear: both;
 }
 
-.button {
-	width: 100px;
+#submitButton {
+	float: right;
 }
 
 /**
@@ -54,7 +58,6 @@ OpenNaaS Custom CSS
 	font-size: 10px;
 	margin-left: 5px;
 }
-
 
 #id_customer_backup,#id_customer_master {
 	width: 150px;
@@ -109,15 +112,4 @@ OpenNaaS Custom CSS
 	padding: 5px;
 	float: left;
 	margin: 0 10px 10px 0;
-}
-
-/**
- * Customer configuration
- */
-#customer_network, #customer_ip, #customer_template {
-		
-}
-
-#submitButton {
-	float: right;		
 }
