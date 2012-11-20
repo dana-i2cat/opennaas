@@ -225,45 +225,31 @@
 				</div>
 			</div>
 			<div id="bod_inter">
-				<h2><spring:message code="vcpenetwork.bod.inter"/></h2>
+				<h2>INTER</h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button9" class="button"><spring:message code="buttons.cancel"/></button>
-					<button id="button10" class="button"><spring:message code="buttons.renew"/></button>
+					<button id="button9" class="button">Cancel</button>
+					<button id="button10" class="button">Renew</button>
 				</div>
 			</div>
 			<div id="bod_backup">
-				<h2><spring:message code="vcpenetwork.bod.backup"/></h2>
+				<h2>BACKUP</h2>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<p>Global configuration parameters</p>
 					</div>
-					<button id="button11" class="button"><spring:message code="buttons.activate"/></button>
-					<button id="button12" class="button"><spring:message code="buttons.renew"/></button>
+					<button id="button11" class="button">Cancel</button>
+					<button id="button12" class="button">Renew</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- End BoD  -->
-	<!-- Start Down Interface -->
-	<!-- div id="inter_down">
-		<div id="id_customer_master" class="ui-widget-content">
-			<h4>Customer master</h4>
-			<p>Interface</p>
-			<p>Id</p>
-		</div>
-		<div id="id_customer_backup" class="ui-widget-content">
-			<h4>Customer backup</h4>
-			<p>Interface</p>
-			<p>Id</p>
-		</div>
-	</div-->
-	<!-- End Down Interface -->
 	<!-- Start customer -->
 	<div id="customer">
-		<h3><spring:message code="vcpenetwork.customer" /></h3>
+		<h3>Customer</h3>
 		<div id="customer_data" class="ui-widget-content">
 			<div id="customer_network">
 				<form:label for="name" path="name" cssErrorClass="error">
@@ -294,7 +280,6 @@
 				<form:errors path="template" />
 			</div>
 			<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.create"/>" />
-		
 		</div>
 	</div>
 	<!-- End customer -->
