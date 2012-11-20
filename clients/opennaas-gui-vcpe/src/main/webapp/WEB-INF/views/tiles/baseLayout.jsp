@@ -24,6 +24,10 @@
 <script src="<c:url value="/resources/js/script.js" />"></script>
 <script>
 	$(function() {
+	    $( "#_menu" ).menu();
+	});
+	
+	$(function() {
 		$("#tabs").tabs();
 	});
 </script>
