@@ -7,10 +7,10 @@
  */
 function updateHeader() {
 	$.ajax({
-		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/getAjax",
-		success : function(data) {
-			$('#ajaxUpdate').html(data);
+		type: "GET",
+		url: "/opennaas-vcpe/secure/vcpeNetwork/getAjax",
+		success: function(data) {
+		    $('#ajaxUpdate').html(data);			    
 		}
 	});
 }
@@ -18,14 +18,15 @@ function updateHeader() {
 /**
  * Ajax call to check if the VLAN is free in the environment
  * 
+ * @param vcpeId
  * @param vlan
  */
-function isVLANFree(vlan) {
+function isVLANFree(vcpeId, vlan) {
 	$.ajax({
-		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vlan=" + vlan,
-		success : function(data) {
-			$('#ajaxUpdate').html(data);
+		type: "GET",
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan,
+		success: function(data) {
+		    $('#ajaxUpdate').html(data);			    
 		}
 	});
 }
@@ -33,14 +34,15 @@ function isVLANFree(vlan) {
 /**
  * Ajax call to check if the IP is free in the environment
  * 
+ * @param vcpeId
  * @param ip
  */
-function isIPFree(ip) {
+function isIPFree(vcpeId, ip) {
 	$.ajax({
-		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?ip=" + ip,
-		success : function(data) {
-			$('#ajaxUpdate').html(data);
+		type: "GET",
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId=" + vcpeId + "&ip=" + ip,
+		success: function(data) {
+		    $('#ajaxUpdate').html(data);			    
 		}
 	});
 }
@@ -48,16 +50,16 @@ function isIPFree(ip) {
 /**
  * Ajax call to check if the interface is free in the environment
  * 
+ * @param vcpeId
  * @param iface
  * @param port
  */
-function isInterfaceFree(iface, port) {
+function isInterfaceFree(vcpeId, iface, port) {
 	$.ajax({
-		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?iface="
-				+ iface + "&port=" + port,
-		success : function(data) {
-			$('#ajaxUpdate').html(data);
+		type: "GET",
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId=" + vcpeId + "&iface=" + iface +"&port=" + port,
+		success: function(data) {
+		    $('#ajaxUpdate').html(data);			    
 		}
 	});
 }
@@ -170,10 +172,6 @@ $(function() {
  */
 // set jsPlumb stuff
 function setJSPlumbStuff() {
-	// falten els div's de WAN, WAN master i WAN backup a dalt de tot
-	// addConnection("bgp", "vrrp", "acc_body", 0.20, 1, 0.20, 0);
-	// addConnection("bgp", "vrrp", "acc_body", 0.80, 1, 0.80, 0);
-	
 	// WAN master & backup -- lola & myre
 	addConnection("up_master", "lr_master", "acc_body", 0.5, 1, 0.5, 0);
 	addConnection("up_backup", "lr_backup", "acc_body", 0.5, 1, 0.5, 0);
@@ -183,6 +181,17 @@ function setJSPlumbStuff() {
 	addConnection("lr_master", "inter_master", "acc_body", 0.75, 1, 0.5, 0);
 	addConnection("lr_backup", "inter_backup", "acc_body", 0.275, 1, 0.5, 0);
 	addConnection("lr_backup", "customer_backup", "acc_body", 0.71, 1, 0.2, 0);
+	
+	// inter master -- inter backup
+	addConnection("inter_master", "inter_backup", "acc_body", 1, 0.5, 0, 0.5);
+	
+	// customer master & customer backup -- customer down master & customer down backup
+	addConnection("customer_master", "customer_down_master", "body", 0.5, 1, 0.5, 0);
+	addConnection("customer_backup", "customer_down_backup", "body", 0.5, 1, 0.5, 0);
+	
+	// customer down master & customer down backup -- customer
+	addConnection("customer_down_master", "customer", "body", 0.5, 1, 0.16, 0);
+	addConnection("customer_down_backup", "customer", "body", 0.5, 1, 0.845, 0);	
 }
 
 // add a connection and its endpoints
@@ -244,7 +253,7 @@ $(function() {
 		PaintStyle : {
 			lineWidth : 1,
 			strokeStyle : "#567567",
-			outlineColor : "black",
+			outlineColor : "#6E6E6E",
 			outlineWidth : 1
 		},
 		Connector : "Straight",

@@ -1,14 +1,10 @@
 /* -----------------------------------------------------------------------
 OpenNaaS Custom CSS
 ----------------------------------------------------------------------- */
-.container #header {
-	
-}
-
 .container #menu {
 	float: left;
 	width: 200px;
-	margin-top: 10px;
+	margin-top: 0px;
 }
 
 .container #body {
@@ -22,6 +18,15 @@ OpenNaaS Custom CSS
 	width: 500px;
 }
 
+#_menu {
+	width: 175px;
+	min-height: 300px;
+}
+
+.ui-menu {
+	width: 150px;
+}
+
 #login {
 	width: 260px;
 	height: 50px;
@@ -33,15 +38,14 @@ OpenNaaS Custom CSS
  */
 #vcpe {
 	clear: both;
-	margin-bottom: 20px;
 }
 
 #customer {
 	clear: both;
 }
 
-.button {
-	width: 100px;
+#submitButton {
+	float: right;
 }
 
 /**
@@ -95,6 +99,32 @@ OpenNaaS Custom CSS
 	margin-bottom: 15px;
 }
 
+#customer_interfaces {
+/*	text-align: center; */
+	width: 100%;
+}
+
+#customer_down_master {
+	display: inline-block;
+	width: 150px;
+	padding: 10px 0 0 10px;
+	font-size: 10px;
+/*	margin-right: 170px;*/
+	margin-left: 40px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#customer_down_backup {
+	display: inline-block;
+	width: 150px;
+	padding: 10px 0 0 10px;
+	font-size: 10px;
+	margin-left: 347px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
 /**
  * Routers
  */
@@ -118,6 +148,7 @@ OpenNaaS Custom CSS
 #bod_master,#bod_inter,#bod_backup {
 	float: left;
 	margin: 5px;
+	z-index: 10;
 }
 
 #config {
@@ -126,15 +157,5 @@ OpenNaaS Custom CSS
 	padding: 5px;
 	float: left;
 	margin: 0 10px 10px 0;
-}
-
-/**
- * Customer configuration
- */
-#customer_network, #customer_ip, #customer_template {
-		
-}
-
-#submitButton {
-	float: right;		
+	z-index: inherit;
 }

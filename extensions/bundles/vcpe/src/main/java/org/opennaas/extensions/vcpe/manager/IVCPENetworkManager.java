@@ -67,6 +67,8 @@ public interface IVCPENetworkManager {
 	/**
 	 * Check if a VLAN is busy or not in the environment
 	 * 
+	 * @param vcpeId
+	 * @param iface
 	 * @return true if isn't busy
 	 * @throws VCPENetworkManagerException
 	 */
@@ -74,11 +76,13 @@ public interface IVCPENetworkManager {
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isVLANFree(@QueryParam("vlan") String vlan) throws VCPENetworkManagerException;
+	public Boolean isVLANFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("vlan") String vlan) throws VCPENetworkManagerException;
 
 	/**
 	 * Check if an IP is busy or not in the environment
 	 * 
+	 * @param vcpeId
+	 * @param iface
 	 * @return true if isn't busy
 	 * @throws VCPENetworkManagerException
 	 */
@@ -86,11 +90,13 @@ public interface IVCPENetworkManager {
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isIPFree(@QueryParam("ip") String ip) throws VCPENetworkManagerException;
+	public Boolean isIPFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("ip") String ip) throws VCPENetworkManagerException;
 
 	/**
 	 * Check if an interface is busy or not in the environment
 	 * 
+	 * @param vcpeId
+	 * @param iface
 	 * @return true if isn't busy
 	 * @throws VCPENetworkManagerException
 	 */
@@ -98,5 +104,5 @@ public interface IVCPENetworkManager {
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isInterfaceFree(@QueryParam("iface") String iface) throws VCPENetworkManagerException;
+	public Boolean isInterfaceFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("iface") String iface) throws VCPENetworkManagerException;
 }
