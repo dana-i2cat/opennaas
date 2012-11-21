@@ -10,6 +10,7 @@ import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
@@ -41,14 +42,35 @@ public class VCPEBeanUtils {
 				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
 		Router logicalRouter2 = (Router) VCPENetworkModelHelper
 				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE2_ROUTER);
-
 		modelOut.setLogicalRouter1(getLogicalRouter(logicalRouter1));
 		modelOut.setLogicalRouter2(getLogicalRouter(logicalRouter2));
+
+		// BGP
+		BGP bgp = getBGP(modelIn.getBgp());
+		modelOut.setBgp(bgp);
 
 		// Links
 		List<Link> links = getLinks(VCPENetworkModelHelper.getLinks(modelIn.getElements()));
 		modelOut.setLinks(links);
 		return modelOut;
+	}
+
+	/**
+	 * Get the values of the BGP
+	 * 
+	 * @param bgp
+	 * @return bgp entity
+	 */
+	private static BGP getBGP(org.opennaas.extensions.vcpe.model.BGP bgpIn) {
+		BGP bgpOut = new BGP();
+		if (bgpIn != null) {
+			bgpOut.setClientASNumber(bgpIn.getClientASNumber());
+			bgpOut.setNocASNumber(bgpIn.getNocASNumber());
+			List<String> customerPrefixes = new ArrayList<String>();
+			customerPrefixes.addAll(bgpIn.getCustomerPrefixes());
+			bgpOut.setCustomerPrefixes(customerPrefixes);
+		}
+		return bgpOut;
 	}
 
 	/**

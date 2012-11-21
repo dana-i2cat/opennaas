@@ -28,6 +28,8 @@ public class VCPENetwork {
 
 	private String			clientIpRange;
 
+	private BGP				bgp;
+
 	/**
 	 * Default constructor
 	 */
@@ -151,6 +153,21 @@ public class VCPENetwork {
 		this.links = links;
 	}
 
+	/**
+	 * @return the bgp
+	 */
+	public BGP getBgp() {
+		return bgp;
+	}
+
+	/**
+	 * @param bgp
+	 *            the bgp to set
+	 */
+	public void setBgp(BGP bgp) {
+		this.bgp = bgp;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -158,7 +175,7 @@ public class VCPENetwork {
 	 */
 	@Override
 	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", clientIpRange=" + clientIpRange + "]";
+		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + "]";
 	}
 
 }
