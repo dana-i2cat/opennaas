@@ -69,89 +69,95 @@ function isInterfaceFree(vcpeId, iface, port) {
  * 
  */
 $(function() {
-	/* vCPE customer block */
-	$("#vcpe").accordion({
-		collapsible : true,
-		icons : false,
-		autoHeight : true,
-		heightStyle : "content",
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function(event, ui) {
-			var active = $("#vcpe").accordion("option", "active");
-			vCPEvisible = !(typeof active == 'boolean' && active == false);
-			setJSPlumbStuff(vCPEvisible);
-		}
-	});
-	
-	/* BoD block */
-	$("#bod").accordion({
-		collapsible : true,
-		icons : false,
-		autoHeight : true,
-		heightStyle : "content",
-		active: false,
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
-	});
-	
-	
-	/* Customer block */
-	$("#customer").accordion({
-		collapsible : true,
-		icons : false,
-		heightStyle : "content",
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
-	});
-	
-	
-	/* Protocols */
-	$( "#bgp" ).accordion({
-		collapsible: true,
-		icons: false,
-		heightStyle : "content",
-		active: false,
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
+	// only apply accordion styles when createVCPENetwork.jsp is loaded
+	if($("#vcpe").length && $("#bod").length && $("#customer").length
+			&& $("#bgp").length	&& $("#vrrp").length
+			&& $( "#lr_master" ).length && $( "#lr_backup").length) {
+		jsPlumbNecessary = true;
+		/* vCPE customer block */
+		$("#vcpe").accordion({
+			collapsible : true,
+			icons : false,
+			autoHeight : true,
+			heightStyle : "content",
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe").accordion("option", "active");
+				vCPEvisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(vCPEvisible);
+			}
 		});
-	$( "#vrrp" ).accordion({
-		collapsible: true,
-		icons: false,
-		heightStyle : "content",
-		active: false,
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
+		
+		/* BoD block */
+		$("#bod").accordion({
+			collapsible : true,
+			icons : false,
+			autoHeight : true,
+			heightStyle : "content",
+			active: false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
 		});
-	
-	/* Routers */
-	$( "#lr_master" ).accordion({
-		collapsible: false,
-		icons: false,
-		heightStyle: "content"
+		
+		
+		/* Customer block */
+		$("#customer").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
 		});
-	$( "#lr_backup" ).accordion({
-		collapsible: false,
-		icons: false,
-		heightStyle: "content"
-		});
+		
+		
+		/* Protocols */
+		$( "#bgp" ).accordion({
+			collapsible: true,
+			icons: false,
+			heightStyle : "content",
+			active: false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
+			});
+		$( "#vrrp" ).accordion({
+			collapsible: true,
+			icons: false,
+			heightStyle : "content",
+			active: false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
+			});
+		
+		/* Routers */
+		$( "#lr_master" ).accordion({
+			collapsible: false,
+			icons: false,
+			heightStyle: "content"
+			});
+		$( "#lr_backup" ).accordion({
+			collapsible: false,
+			icons: false,
+			heightStyle: "content"
+			});
+	}
 	
 	/* Buttons */
 	$( "#button" ).button();
@@ -267,6 +273,9 @@ function clearJSPlumbStuff() {
 	}
 }
 
+// jsPlumb instance necessary
+var jsPlumbNecessary = false;
+
 // jsPlumb instance
 var jsP;
 //jsPlumb intra accordion endpoints
@@ -283,29 +292,31 @@ var extra_connections = new Array();
 var vCPEvisible = true;
 
 $(function() {
-	// initialize jsPlumb instance
-	jsP = jsPlumb.getInstance({
-		PaintStyle : {
-			lineWidth : 1,
-			strokeStyle : "#567567",
-			outlineColor : "#6E6E6E",
-			outlineWidth : 1
-		},
-		Connector : "Straight",
-		Endpoint : "Blank"
-	});
-
-	// initialize endpoints and connections arrays
-	intra_endpoints = new Array();
-	intra_connections = new Array();
-	extra_endpoints = new Array();
-	extra_connections = new Array();
-
-	// draw jsPlumb stuff when view stuff is ready
-	jsPlumb.ready(function() {
-		jsPlumb.importDefaults({
-			ConnectorZIndex : 5
+	if(jsPlumbNecessary){
+		// initialize jsPlumb instance
+		jsP = jsPlumb.getInstance({
+			PaintStyle : {
+				lineWidth : 1,
+				strokeStyle : "#567567",
+				outlineColor : "#6E6E6E",
+				outlineWidth : 1
+			},
+			Connector : "Straight",
+			Endpoint : "Blank"
 		});
-		setJSPlumbStuff(vCPEvisible);
-	});
+	
+		// initialize endpoints and connections arrays
+		intra_endpoints = new Array();
+		intra_connections = new Array();
+		extra_endpoints = new Array();
+		extra_connections = new Array();
+	
+		// draw jsPlumb stuff when view stuff is ready
+		jsPlumb.ready(function() {
+			jsPlumb.importDefaults({
+				ConnectorZIndex : 5
+			});
+			setJSPlumbStuff(vCPEvisible);
+		});
+	}
 });
