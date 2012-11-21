@@ -9,6 +9,7 @@ import java.util.List;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
+import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
@@ -38,6 +39,8 @@ public class OpennasBeanUtils {
 		request.setTemplateName(vcpeNetwork.getTemplate());
 		// IP Range
 		request.setClientIpAddressRange(vcpeNetwork.getClientIpRange());
+		// BGP
+		request.setBgp(getBGP(vcpeNetwork.getBgp()));
 		// Elements
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		request.setElements(elements);
@@ -87,5 +90,21 @@ public class OpennasBeanUtils {
 		outIface.setVlanId(inIface.getVlan());
 		outIface.setNameInTemplate(inIface.getTemplateName());
 		return outIface;
+	}
+
+	/**
+	 * Get the values of OpenNaaS BGP from GUI BGP
+	 * 
+	 * @param bgp
+	 * @return bgp entity
+	 */
+	private static org.opennaas.extensions.vcpe.model.BGP getBGP(BGP bgpIn) {
+		org.opennaas.extensions.vcpe.model.BGP bgpOut = new org.opennaas.extensions.vcpe.model.BGP();
+		bgpOut.setClientASNumber(bgpIn.getClientASNumber());
+		bgpOut.setNocASNumber(bgpIn.getNocASNumber());
+		List<String> customerPrefixes = new ArrayList<String>();
+		customerPrefixes.addAll(bgpIn.getCustomerPrefixes());
+		bgpOut.setCustomerPrefixes(customerPrefixes);
+		return bgpOut;
 	}
 }

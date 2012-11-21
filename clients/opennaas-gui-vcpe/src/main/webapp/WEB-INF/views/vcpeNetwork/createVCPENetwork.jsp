@@ -22,12 +22,20 @@
 			<div id="bgp">
 				<h2><spring:message code="vcpenetwork.bgp"/></h2>
 				<div>
-					<div id="config" class="ui-widget-content">
-						<p>Global configuration parameters</p>
-					</div>
-					<button id="button" class="button"><spring:message code="buttons.deactivate"/></button>
+					<spring:message code="bgp.clientASNumber" />
+					<form:input path="bgp.clientASNumber" size="10" />
+					<form:errors path="bgp.clientASNumber" size="10" />
+					
+					<spring:message code="bgp.nocASNumber" />
+					<form:input path="bgp.nocASNumber" size="10" />
+					<form:errors path="bgp.nocASNumber" size="10" />
+
+					<spring:message code="bgp.customerPrefixes" />
+					<form:input path="bgp.customerPrefixes" size="16" />
+					<form:errors path="bgp.customerPrefixes" size="16" />
 					<br>
-					<button id="button2" class="button"><spring:message code="buttons.reapply"/></button>
+					<button id="button" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
+					<button id="button2" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
 				</div>
 			</div>
 			<!-- VRRP -->
@@ -41,8 +49,7 @@
 					<br>
 					<button id="button4" class="button"><spring:message code="buttons.reapply"/></button>
 				</div>
-			</div>
-			
+			</div>			
 			<!-- Up Interfaces -->
 			<div id="up_interfaces">
 				<div id="up_master" class="ui-widget-content">

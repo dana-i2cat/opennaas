@@ -24,7 +24,7 @@ public class VCPENetworkModel implements IModel {
 	private String						templateName;
 	private List<VCPENetworkElement>	elements;
 	private boolean						created;
-
+	private BGP							bgp;
 	private String						clientIpAddressRange;
 
 	/**
@@ -100,12 +100,33 @@ public class VCPENetworkModel implements IModel {
 		this.clientIpAddressRange = clientIpAddressRange;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isCreated() {
 		return created;
 	}
 
+	/**
+	 * @param created
+	 */
 	public void setCreated(boolean created) {
 		this.created = created;
+	}
+
+	/**
+	 * @return the bgp
+	 */
+	public BGP getBgp() {
+		return bgp;
+	}
+
+	/**
+	 * @param bgp
+	 *            the bgp to set
+	 */
+	public void setBgp(BGP bgp) {
+		this.bgp = bgp;
 	}
 
 	/*
