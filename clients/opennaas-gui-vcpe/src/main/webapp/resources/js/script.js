@@ -70,9 +70,7 @@ function isInterfaceFree(vcpeId, iface, port) {
  */
 $(function() {
 	// only apply accordion styles when createVCPENetwork.jsp is loaded
-	if($("#vcpe").length && $("#bod").length && $("#customer").length
-			&& $("#bgp").length	&& $("#vrrp").length
-			&& $( "#lr_master" ).length && $( "#lr_backup").length) {
+	if($("#VCPENetwork").length) {
 		jsPlumbNecessary = true;
 		/* vCPE customer block */
 		$("#vcpe").accordion({
