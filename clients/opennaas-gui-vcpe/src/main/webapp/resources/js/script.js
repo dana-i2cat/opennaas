@@ -74,7 +74,13 @@ $(function() {
 		collapsible : true,
 		icons : false,
 		autoHeight : true,
-		heightStyle : "content"
+		heightStyle : "content",
+		changestart : function() {
+			clearJSPlumbStuff();
+		},
+		change : function() {
+			setJSPlumbStuff();
+		}
 	});
 	
 	/* BoD block */
@@ -83,7 +89,13 @@ $(function() {
 		icons : false,
 		autoHeight : true,
 		heightStyle : "content",
-		active: false
+		active: false,
+		changestart : function() {
+			clearJSPlumbStuff();
+		},
+		change : function() {
+			setJSPlumbStuff();
+		}
 	});
 	
 	
@@ -91,7 +103,13 @@ $(function() {
 	$("#customer").accordion({
 		collapsible : true,
 		icons : false,
-		heightStyle : "content"
+		heightStyle : "content",
+		changestart : function() {
+			clearJSPlumbStuff();
+		},
+		change : function() {
+			setJSPlumbStuff();
+		}
 	});
 	
 	
@@ -100,13 +118,25 @@ $(function() {
 		collapsible: true,
 		icons: false,
 		heightStyle : "content",
-		active: false
+		active: false,
+		changestart : function() {
+			clearJSPlumbStuff();
+		},
+		change : function() {
+			setJSPlumbStuff();
+		}
 		});
 	$( "#vrrp" ).accordion({
 		collapsible: true,
 		icons: false,
 		heightStyle : "content",
-		active: false
+		active: false,
+		changestart : function() {
+			clearJSPlumbStuff();
+		},
+		change : function() {
+			setJSPlumbStuff();
+		}
 		});
 	
 	/* Routers */
@@ -135,4 +165,110 @@ $(function() {
 	$( "#button11" ).button();
 	$( "#submitButton" ).button();
 
+});
+
+/**
+ * jsPlumb stuff
+ */
+// set jsPlumb stuff
+function setJSPlumbStuff() {
+	// WAN master & backup -- lola & myre
+	addConnection("up_master", "lr_master", "acc_body", 0.5, 1, 0.5, 0);
+	addConnection("up_backup", "lr_backup", "acc_body", 0.5, 1, 0.5, 0);
+	
+	// lola & myre -- down & inter, master & backup
+	addConnection("lr_master", "customer_master", "acc_body", 0.25, 1, 0.7, 0);
+	addConnection("lr_master", "inter_master", "acc_body", 0.75, 1, 0.5, 0);
+	addConnection("lr_backup", "inter_backup", "acc_body", 0.275, 1, 0.5, 0);
+	addConnection("lr_backup", "customer_backup", "acc_body", 0.71, 1, 0.2, 0);
+	
+	// inter master -- inter backup
+	addConnection("inter_master", "inter_backup", "acc_body", 1, 0.5, 0, 0.5);
+	
+	// customer master & customer backup -- customer down master & customer down backup
+	addConnection("customer_master", "customer_down_master", "body", 0.5, 1, 0.5, 0);
+	addConnection("customer_backup", "customer_down_backup", "body", 0.5, 1, 0.5, 0);
+	
+	// customer down master & customer down backup -- customer
+	addConnection("customer_down_master", "customer", "body", 0.5, 1, 0.16, 0);
+	addConnection("customer_down_backup", "customer", "body", 0.5, 1, 0.845, 0);	
+}
+
+// add a connection and its endpoints
+function addConnection(origin, destination, parent, originAnchorX,
+		originAnchorY, destinationAnchorX, destinationAnchorY) {
+	var originEndpoint = jsP.addEndpoint(origin, {
+		anchor : [ originAnchorX, originAnchorY ],
+		container : parent
+	});
+	var destinationEndpoint = jsP.addEndpoint(destination, {
+		anchor : [ destinationAnchorX, destinationAnchorY ],
+		container : parent
+	});
+
+	endpoints.push(originEndpoint);
+	endpoints.push(destinationEndpoint);
+
+	var connection = jsP.connect({
+		source : originEndpoint,
+		target : destinationEndpoint,
+		container : $("#" + parent)
+	});
+
+	connections.push(connection);
+}
+
+// clear all jsPlumb stuff
+function clearJSPlumbStuff() {
+	jsPlumb.deleteEveryEndpoint();
+	jsPlumb.detachAllConnections();
+
+	// remove all overlays of each connection
+	if (connections != null) {
+		var connection = null;
+		while ((connection = connections.pop()) != null) {
+			connection.removeAllOverlays();
+		}
+	}
+
+	// detach all endpoints
+	if (endpoints != null) {
+		var endpoint = null;
+		while ((endpoint = endpoints.pop()) != null) {
+			endpoint.detachAll();
+		}
+	}
+}
+
+// jsPlumb instance
+var jsP;
+//jsPlumb endpoints
+var endpoints = new Array();
+// jsPlumb connections
+var connections = new Array();
+
+$(function() {
+	// initialize jsPlumb instance
+	jsP = jsPlumb.getInstance({
+		PaintStyle : {
+			lineWidth : 1,
+			strokeStyle : "#567567",
+			outlineColor : "#6E6E6E",
+			outlineWidth : 1
+		},
+		Connector : "Straight",
+		Endpoint : "Blank"
+	});
+
+	// initialize endpoints and connections arrays
+	endpoints = new Array();
+	connections = new Array();
+
+	// draw jsPlumb stuff when view stuff is ready
+	jsPlumb.ready(function() {
+		jsPlumb.importDefaults({
+			ConnectorZIndex : 5
+		});
+		setJSPlumbStuff();
+	});
 });
