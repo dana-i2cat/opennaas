@@ -1,0 +1,160 @@
+/* -----------------------------------------------------------------------
+OpenNaaS Custom CSS
+----------------------------------------------------------------------- */
+.container #menu {
+	float: left;
+	width: 200px;
+	margin-top: 0px;
+}
+
+.container #body {
+	float: left;
+	width: 750px;
+	min-height: 300px;
+}
+
+.container #footer {
+	margin: 0px auto 0px auto;
+	width: 500px;
+}
+
+#_menu {
+	width: 175px;
+	min-height: 300px;
+}
+
+.ui-menu {
+	width: 150px;
+}
+
+#login {
+	width: 260px;
+	height: 50px;
+	margin: 50px auto 0px auto;
+}
+
+/**
+ * GUI view
+ */
+#vcpe {
+	clear: both;
+}
+
+#customer {
+	clear: both;
+}
+
+#submitButton {
+	float: right;
+}
+
+/**
+ * Interfaces
+ */
+#up_interfaces {
+	text-align: center;
+	width: 100%;
+}
+
+#up_backup,#up_master {
+	width: 150px;
+	padding: 10px 0 0 10px;
+	display: inline-block; 
+	font-size: 10px;
+	margin-left: 70px;
+	margin-right: 70px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+#id_customer_backup,#id_customer_master {
+	width: 150px;
+	padding: 10px 0 0 10px;
+	float: left;
+	font-size: 10px;
+	margin-left: 10px;
+}
+
+#vcpe_interfaces {
+	text-align: center;
+	width: 100%;
+}
+
+#customer_master {
+	display: inline-block; 
+	width: 150px;
+	padding: 10px 0 0 10px;
+	clear: both;
+	font-size: 10px;
+	margin-left: 5px;
+}
+
+#customer_backup,#inter_master,#inter_backup {
+	display: inline-block; 
+	width: 150px;
+	padding: 10px 0 0 10px;
+	font-size: 10px;
+	margin-left: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#customer_interfaces {
+/*	text-align: center; */
+	width: 100%;
+}
+
+#customer_down_master {
+	display: inline-block;
+	width: 150px;
+	padding: 10px 0 0 10px;
+	font-size: 10px;
+/*	margin-right: 170px;*/
+	margin-left: 40px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#customer_down_backup {
+	display: inline-block;
+	width: 150px;
+	padding: 10px 0 0 10px;
+	font-size: 10px;
+	margin-left: 347px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+/**
+ * Routers
+ */
+#vcpe_routers {
+	text-align: center;
+	width: 100%;
+}
+
+#lr_master, #lr_backup {
+	display: inline-block; 
+	width: 280px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+/**
+ * Protocols
+ */
+#bod_master,#bod_inter,#bod_backup {
+	float: left;
+	margin: 5px;
+	z-index: 10;
+}
+
+#config {
+	width: 200px;
+	height: 50px;
+	padding: 5px;
+	float: left;
+	margin: 0 10px 10px 0;
+	z-index: inherit;
+}

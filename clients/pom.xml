@@ -6,15 +6,13 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.14</version>
+        <version>0.15-SNAPSHOT</version>
 	</parent>
 	
 	<name>OpenNaaS :: Clients</name>
 	<artifactId>org.opennaas.clients</artifactId>
 
 	<modules>
-        <module>opennaas-web</module>
-<!-- <module>rest-client</module>  -->
-        <module>tnc-demo-web</module>
+        <module>opennaas-gui-vcpe</module>
  	</modules>
 </project>
