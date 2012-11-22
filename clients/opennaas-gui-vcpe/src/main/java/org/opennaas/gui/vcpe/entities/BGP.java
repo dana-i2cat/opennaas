@@ -12,7 +12,7 @@ public class BGP {
 
 	private String			clientASNumber;
 	private String			nocASNumber;
-	private List<String>	customerPrefixes;
+	private List<String>	clientPrefixes;
 
 	/**
 	 * @return the clientASNumber
@@ -45,18 +45,28 @@ public class BGP {
 	}
 
 	/**
-	 * @return the customerPrefixes
+	 * @return the clientPrefixes
 	 */
-	public List<String> getCustomerPrefixes() {
-		return customerPrefixes;
+	public List<String> getClientPrefixes() {
+		return clientPrefixes;
 	}
 
 	/**
-	 * @param customerPrefixes
-	 *            the customerPrefixes to set
+	 * @param clientPrefixes
+	 *            the clientPrefixes to set
 	 */
-	public void setCustomerPrefixes(List<String> customerPrefixes) {
-		this.customerPrefixes = customerPrefixes;
+	public void setClientPrefixes(List<String> clientPrefixes) {
+		this.clientPrefixes = clientPrefixes;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BGP [clientASNumber=" + clientASNumber + ", nocASNumber=" + nocASNumber + ", clientPrefixes=" + clientPrefixes + "]";
 	}
 
 }

@@ -30,6 +30,8 @@ public class VCPENetwork {
 
 	private BGP				bgp;
 
+	private BoD				bod;
+
 	/**
 	 * Default constructor
 	 */
@@ -168,6 +170,21 @@ public class VCPENetwork {
 		this.bgp = bgp;
 	}
 
+	/**
+	 * @return the bod
+	 */
+	public BoD getBod() {
+		return bod;
+	}
+
+	/**
+	 * @param bod
+	 *            the bod to set
+	 */
+	public void setBod(BoD bod) {
+		this.bod = bod;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -175,7 +192,7 @@ public class VCPENetwork {
 	 */
 	@Override
 	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + "]";
+		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + ", bod=" + bod + "]";
 	}
 
 }

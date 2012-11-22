@@ -126,8 +126,8 @@ public class Template implements ITemplate {
 		Interface up2other = getInterface(up2OtherName + "." + up2OtherPort, VCPETemplate.UP2_INTERFACE_PEER, up2OtherVlan, up2OtherIp);
 
 		// Client interfaces
-		Interface client1other = getInterface(null, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN, 2, null);
-		Interface client2other = getInterface(null, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN, 2, null);
+		Interface client1other = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+		Interface client2other = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
 		// ----------------------------- Links ------------------------------------
 		// Inter links
