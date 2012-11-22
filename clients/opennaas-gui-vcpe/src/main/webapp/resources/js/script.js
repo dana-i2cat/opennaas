@@ -70,9 +70,9 @@ function isInterfaceFree(vcpeId, iface, port) {
  */
 $(function() {
 	// only apply accordion styles when createVCPENetwork.jsp is loaded
-	if($("#VCPENetwork").length) {
+	if($("#createVCPENetwork").length) {
 		jsPlumbNecessary = true;
-		/* vCPE customer block */
+		/* vCPE client block */
 		$("#vcpe").accordion({
 			collapsible : true,
 			icons : false,
@@ -104,8 +104,8 @@ $(function() {
 		});
 		
 		
-		/* Customer block */
-		$("#customer").accordion({
+		/* Client block */
+		$("#client").accordion({
 			collapsible : true,
 			icons : false,
 			heightStyle : "content",
@@ -183,23 +183,23 @@ function setJSPlumbStuff(setExtra) {
 	addConnection("up_backup", "lr_backup", "acc_body", 0.5, 1, 0.5, 0, false);
 	
 	// lola & myre -- down & inter, master & backup
-	addConnection("lr_master", "customer_master", "acc_body", 0.25, 1, 0.7, 0, false);
+	addConnection("lr_master", "client_master", "acc_body", 0.25, 1, 0.7, 0, false);
 	addConnection("lr_master", "inter_master", "acc_body", 0.75, 1, 0.5, 0, false);
 	addConnection("lr_backup", "inter_backup", "acc_body", 0.275, 1, 0.5, 0, false);
-	addConnection("lr_backup", "customer_backup", "acc_body", 0.71, 1, 0.2, 0, false);
+	addConnection("lr_backup", "client_backup", "acc_body", 0.71, 1, 0.2, 0, false);
 	
 	// inter master -- inter backup
 	addConnection("inter_master", "inter_backup", "acc_body", 1, 0.5, 0, 0.5, false);
 	
-	// customer master & customer backup -- customer down master & customer down backup
+	// client master & client backup -- client down master & client down backup
 	if(setExtra) {
-		addConnection("customer_master", "customer_down_master", "body", 0.5, 1, 0.5, 0, true);
-		addConnection("customer_backup", "customer_down_backup", "body", 0.5, 1, 0.5, 0, true);
+		addConnection("client_master", "client_down_master", "body", 0.5, 1, 0.5, 0, true);
+		addConnection("client_backup", "client_down_backup", "body", 0.5, 1, 0.5, 0, true);
 	}
 	
-	// customer down master & customer down backup -- customer
-	addConnection("customer_down_master", "customer", "body", 0.5, 1, 0.16, 0, false);
-	addConnection("customer_down_backup", "customer", "body", 0.5, 1, 0.845, 0, false);	
+	// client down master & client down backup -- client
+	addConnection("client_down_master", "client", "body", 0.5, 1, 0.16, 0, false);
+	addConnection("client_down_backup", "client", "body", 0.5, 1, 0.845, 0, false);	
 }
 
 // add a connection and its endpoints

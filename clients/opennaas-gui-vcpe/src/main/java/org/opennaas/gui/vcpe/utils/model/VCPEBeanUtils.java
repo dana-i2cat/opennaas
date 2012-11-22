@@ -11,6 +11,7 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.opennaas.gui.vcpe.entities.BGP;
+import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
@@ -49,6 +50,16 @@ public class VCPEBeanUtils {
 		BGP bgp = getBGP(modelIn.getBgp());
 		modelOut.setBgp(bgp);
 
+		// BoD
+		BoD bod = new BoD();
+		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+		Interface ifaceClientBackup = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+		bod.setIfaceClient(ifaceClient);
+		bod.setIfaceClientBackup(ifaceClientBackup);
+		modelOut.setBod(bod);
+
 		// Links
 		List<Link> links = getLinks(VCPENetworkModelHelper.getLinks(modelIn.getElements()));
 		modelOut.setLinks(links);
@@ -66,9 +77,9 @@ public class VCPEBeanUtils {
 		if (bgpIn != null) {
 			bgpOut.setClientASNumber(bgpIn.getClientASNumber());
 			bgpOut.setNocASNumber(bgpIn.getNocASNumber());
-			List<String> customerPrefixes = new ArrayList<String>();
-			customerPrefixes.addAll(bgpIn.getCustomerPrefixes());
-			bgpOut.setCustomerPrefixes(customerPrefixes);
+			List<String> clientPrefixes = new ArrayList<String>();
+			clientPrefixes.addAll(bgpIn.getCustomerPrefixes());
+			bgpOut.setClientPrefixes(clientPrefixes);
 		}
 		return bgpOut;
 	}
@@ -121,8 +132,11 @@ public class VCPEBeanUtils {
 		} else if (interfaceIn.getNameInTemplate().equals(VCPETemplate.UP1_INTERFACE_LOCAL)
 				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.UP2_INTERFACE_LOCAL)) {
 			outIface.setLabelName(Interface.Types.UP.toString());
-		} else {
+		} else if (interfaceIn.getNameInTemplate().equals(VCPETemplate.INTER1_INTERFACE_LOCAL)
+				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.INTER2_INTERFACE_LOCAL)) {
 			outIface.setLabelName(Interface.Types.INTER.toString());
+		} else {
+			outIface.setLabelName(Interface.Types.CLIENT.toString());
 		}
 		return outIface;
 	}
