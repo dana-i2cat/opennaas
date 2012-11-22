@@ -17,7 +17,7 @@
 		<!-- Graphical view -->
 		<!-- Start vCPE -->
 		<div id="vcpe">
-			<h3><spring:message code="vcpenetwork.create.vcpe"/> ${VCPENetwork.name}</h3>
+			<h2><spring:message code="vcpenetwork.create.vcpe"/> ${VCPENetwork.name}</h2>
 			<div id="acc_body">
 				<!-- BGP -->
 				<div id="bgp">
@@ -103,7 +103,7 @@
 				<!-- Routers -->
 				<div id="vcpe_routers">
 					<div id="lr_master">
-					<h2><spring:message code="vcpenetwork.lrmaster"/></h2>
+					<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
 						<div>
 							<div id="config" class="ui-widget-content">
 								<p>Global configuration parameters</p>
@@ -112,7 +112,7 @@
 						</div>
 					</div>
 					<div id="lr_backup">
-					<h2><spring:message code="vcpenetwork.lrbackup"/></h2>
+					<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
 						<div>
 							<div id="config" class="ui-widget-content">
 								<p>Global configuration parameters</p>
@@ -224,10 +224,10 @@
 		<!-- End vCPE -->
 		<!-- Start BoD -->
 		<div id="bod">
-			<h3><spring:message code="bod"/></h3>
+			<h2><spring:message code="bod"/></h2>
 			<div>
 				<div id="bod_master">
-					<h2><spring:message code="vcpenetwork.bod.master"/></h2>
+					<h3><spring:message code="vcpenetwork.bod.master"/></h3>
 					<div>
 						<div id="config" class="ui-widget-content">
 							<p>Global configuration parameters</p>
@@ -237,23 +237,23 @@
 					</div>
 				</div>
 				<div id="bod_inter">
-					<h2>INTER</h2>
+					<h3>Inter</h3>
 					<div>
 						<div id="config" class="ui-widget-content">
 							<p>Global configuration parameters</p>
 						</div>
-						<button id="button9" class="button">Cancel</button>
-						<button id="button10" class="button">Renew</button>
+						<button id="button9" class="button"><spring:message code="buttons.cancel"/></button>
+						<button id="button10" class="button"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
 				<div id="bod_backup">
-					<h2>BACKUP</h2>
+					<h3>Backup</h3>
 					<div>
 						<div id="config" class="ui-widget-content">
 							<p>Global configuration parameters</p>
 						</div>
-						<button id="button11" class="button">Cancel</button>
-						<button id="button12" class="button">Renew</button>
+						<button id="button11" class="button"><spring:message code="buttons.cancel"/></button>
+						<button id="button23" class="button"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
 			</div>
@@ -262,34 +262,38 @@
 		<!-- Start Client interfaces -->
 		<div id="client_interfaces">
 			<div id="client_down_master" class="ui-widget-content">
-				<label><spring:message code="bod.ifaceClient"/></label><br>
-				<form:hidden path="bod.ifaceClient.templateName" />
-				<spring:message code="interface.name" />
-				<form:input path="bod.ifaceClient.name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('bod.ifaceClient.port').value);" />.
-				<form:errors path="bod.ifaceClient.name" size="8" />
-				<form:input path="bod.ifaceClient.port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('bod.ifaceClient.name').value, this.value);" />
-				<form:errors path="bod.ifaceClient.port" size="3" />
-				<br><spring:message code="interface.vlan" />
-				<form:input path="bod.ifaceClient.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
-				<form:errors path="bod.ifaceClient.vlan" size="3" />
+				<div class="input">
+					<label><spring:message code="bod.ifaceClient"/></label><br>
+					<form:hidden path="bod.ifaceClient.templateName" />
+					<spring:message code="interface.name" />
+					<form:input path="bod.ifaceClient.name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('bod.ifaceClient.port').value);" />.
+					<form:errors path="bod.ifaceClient.name" size="8" />
+					<form:input path="bod.ifaceClient.port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('bod.ifaceClient.name').value, this.value);" />
+					<form:errors path="bod.ifaceClient.port" size="3" />
+					<br><spring:message code="interface.vlan" />
+					<form:input path="bod.ifaceClient.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
+					<form:errors path="bod.ifaceClient.vlan" size="3" />
+				</div>
 			</div>
 			<div id="client_down_backup" class="ui-widget-content">
-				<label><spring:message code="bod.ifaceClientBackup"/></label><br>
-				<form:hidden path="bod.ifaceClientBackup.templateName" />
-				<spring:message code="interface.name" />
-				<form:input path="bod.ifaceClientBackup.name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('bod.ifaceClientBackup.port').value);" />.
-				<form:errors path="bod.ifaceClientBackup.name" size="8" />
-				<form:input path="bod.ifaceClientBackup.port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('bod.ifaceClientBackup.name').value, this.value);" />
-				<form:errors path="bod.ifaceClientBackup.port" size="3" />
-				<br><spring:message code="interface.vlan" />
-				<form:input path="bod.ifaceClientBackup.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
-				<form:errors path="bod.ifaceClientBackup.vlan" size="3" />
+				<div class="input">
+					<label><spring:message code="bod.ifaceClientBackup"/></label><br>
+					<form:hidden path="bod.ifaceClientBackup.templateName" />
+					<spring:message code="interface.name" />
+					<form:input path="bod.ifaceClientBackup.name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('bod.ifaceClientBackup.port').value);" />.
+					<form:errors path="bod.ifaceClientBackup.name" size="8" />
+					<form:input path="bod.ifaceClientBackup.port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('bod.ifaceClientBackup.name').value, this.value);" />
+					<form:errors path="bod.ifaceClientBackup.port" size="3" />
+					<br><spring:message code="interface.vlan" />
+					<form:input path="bod.ifaceClientBackup.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
+					<form:errors path="bod.ifaceClientBackup.vlan" size="3" />
+				</div>
 			</div>
 		</div>
 		<!-- End Client interfaces -->
 		<!-- Start client -->
 		<div id="client">
-			<h3>Client</h3>
+			<h2>Client</h2>
 			<div id="client_data" class="ui-widget-content">
 				<div id="client_network">
 					<form:label for="name" path="name" cssErrorClass="error">
