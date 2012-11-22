@@ -262,7 +262,7 @@
 		<!-- Start Client interfaces -->
 		<div id="client_interfaces">
 			<div id="client_down_master" class="ui-widget-content">
-				<label>${VCPENetwork.bod.ifaceClient.labelName} Master</label><br>
+				<label><spring:message code="bod.ifaceClient"/></label><br>
 				<form:hidden path="bod.ifaceClient.templateName" />
 				<spring:message code="interface.name" />
 				<form:input path="bod.ifaceClient.name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('bod.ifaceClient.port').value);" />.
@@ -274,7 +274,7 @@
 				<form:errors path="bod.ifaceClient.vlan" size="3" />
 			</div>
 			<div id="client_down_backup" class="ui-widget-content">
-				<label>${VCPENetwork.bod.ifaceClientBackup.labelName} Backup</label><br>
+				<label><spring:message code="bod.ifaceClientBackup"/></label><br>
 				<form:hidden path="bod.ifaceClientBackup.templateName" />
 				<spring:message code="interface.name" />
 				<form:input path="bod.ifaceClientBackup.name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('bod.ifaceClientBackup.port').value);" />.
