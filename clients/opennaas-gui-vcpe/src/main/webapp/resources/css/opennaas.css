@@ -42,6 +42,22 @@ OpenNaaS Custom CSS
 
 /* Create and Edit styles
 ----------------------------------*/
+#createVCPENetwork h2 {
+	font-size: 16px;
+}
+
+#createVCPENetwork h3 {
+	font-size: 13px;
+}
+
+#createVCPENetwork label {
+	font-size: 11px;
+}
+
+#createVCPENetwork {
+	font-size: 10px;
+}
+
 #vcpe {
 	clear: both;
 }
@@ -98,16 +114,10 @@ OpenNaaS Custom CSS
 	margin-bottom: 15px;
 }
 
-#client_interfaces {
-/*	text-align: center; */
-	width: 100%;
-}
-
 #client_down_master {
 	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
-/*	margin-right: 170px;*/
 	margin-left: 40px;
 	margin-top: 15px;
 	margin-bottom: 15px;
