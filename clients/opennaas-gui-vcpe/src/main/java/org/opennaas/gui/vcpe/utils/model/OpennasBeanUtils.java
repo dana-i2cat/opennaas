@@ -54,6 +54,9 @@ public class OpennasBeanUtils {
 		// Add interfaces to elements
 		elements.addAll(logicalRouter1.getInterfaces());
 		elements.addAll(logicalRouter2.getInterfaces());
+		// Add interfaces BoD
+		elements.add(getInterface(vcpeNetwork.getBod().getIfaceClient()));
+		elements.add(getInterface(vcpeNetwork.getBod().getIfaceClientBackup()));
 		return request;
 	}
 
@@ -102,9 +105,9 @@ public class OpennasBeanUtils {
 		org.opennaas.extensions.vcpe.model.BGP bgpOut = new org.opennaas.extensions.vcpe.model.BGP();
 		bgpOut.setClientASNumber(bgpIn.getClientASNumber());
 		bgpOut.setNocASNumber(bgpIn.getNocASNumber());
-		List<String> customerPrefixes = new ArrayList<String>();
-		customerPrefixes.addAll(bgpIn.getCustomerPrefixes());
-		bgpOut.setCustomerPrefixes(customerPrefixes);
+		List<String> clientPrefixes = new ArrayList<String>();
+		clientPrefixes.addAll(bgpIn.getClientPrefixes());
+		bgpOut.setCustomerPrefixes(clientPrefixes);
 		return bgpOut;
 	}
 }
