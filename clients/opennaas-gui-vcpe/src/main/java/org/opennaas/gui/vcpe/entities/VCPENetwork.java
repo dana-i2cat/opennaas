@@ -11,26 +11,19 @@ import javax.validation.constraints.Size;
 public class VCPENetwork {
 
 	private String			id;
-
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String			name;
-
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String			template;
-
 	private LogicalRouter	logicalRouter1;
-
 	private LogicalRouter	logicalRouter2;
-
 	private List<Link>		links;
-
 	private String			clientIpRange;
-
 	private BGP				bgp;
-
 	private BoD				bod;
+	private VRRP			vrrp;
 
 	/**
 	 * Default constructor
@@ -183,6 +176,21 @@ public class VCPENetwork {
 	 */
 	public void setBod(BoD bod) {
 		this.bod = bod;
+	}
+
+	/**
+	 * @return the vrrp
+	 */
+	public VRRP getVrrp() {
+		return vrrp;
+	}
+
+	/**
+	 * @param vrrp
+	 *            the vrrp to set
+	 */
+	public void setVrrp(VRRP vrrp) {
+		this.vrrp = vrrp;
 	}
 
 	/*
