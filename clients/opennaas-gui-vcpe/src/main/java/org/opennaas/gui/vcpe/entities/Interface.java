@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 public class Interface {
 
 	public enum Types {
-		INTER("Inter"), UP("Up"), DOWN("Down");
+		INTER("Inter"), UP("Up"), DOWN("Down"), CLIENT("Client");
 
 		private final String	text;
 
