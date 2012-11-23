@@ -28,8 +28,22 @@ OpenNaaS Custom CSS
 	min-height: 300px;
 }
 
-/* Login styles
+/* Home styles
 ----------------------------------*/
+.button {
+	width: 100px;
+}
+
+.ui-widget-overlay {
+	opacity: .80 !important;
+	/* Make sure to change both of these, as IE only sees the second one */
+	filter: alpha(opacity =     80) !important;
+	background-color: rgb(50, 50, 50) !important;
+	/* This will make it darker */
+}
+
+​ /* Login styles
+----------------------------------*/  
 .ui-menu {
 	width: 150px;
 }
@@ -78,7 +92,7 @@ OpenNaaS Custom CSS
 #up_backup,#up_master {
 	width: 150px;
 	padding: 10px 0 0 10px;
-	display: inline-block; 
+	display: inline-block;
 	margin-left: 70px;
 	margin-right: 70px;
 	margin-top: 15px;
@@ -98,7 +112,7 @@ OpenNaaS Custom CSS
 }
 
 #client_master {
-	display: inline-block; 
+	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
 	clear: both;
@@ -106,7 +120,7 @@ OpenNaaS Custom CSS
 }
 
 #client_backup,#inter_master,#inter_backup {
-	display: inline-block; 
+	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
 	margin-left: 5px;
@@ -137,8 +151,8 @@ OpenNaaS Custom CSS
 	width: 100%;
 }
 
-#lr_master, #lr_backup {
-	display: inline-block; 
+#lr_master,#lr_backup {
+	display: inline-block;
 	width: 280px;
 	margin-left: 10px;
 	margin-right: 10px;
