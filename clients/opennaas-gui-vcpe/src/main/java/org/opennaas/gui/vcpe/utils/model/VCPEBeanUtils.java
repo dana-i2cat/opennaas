@@ -94,9 +94,9 @@ public class VCPEBeanUtils {
 	 */
 	public static Interface getInterface(org.opennaas.extensions.vcpe.model.Interface interfaceIn) {
 		org.opennaas.gui.vcpe.entities.Interface outIface = new org.opennaas.gui.vcpe.entities.Interface();
-		outIface.setName(org.opennaas.gui.vcpe.entities.Interface.getNameFromCompleteName(interfaceIn.getName()));
+		outIface.setName(interfaceIn.getName());
 		outIface.setTemplateName(interfaceIn.getNameInTemplate());
-		outIface.setPort(org.opennaas.gui.vcpe.entities.Interface.getPortFromCompleteName(interfaceIn.getName()));
+		outIface.setPort(String.valueOf(interfaceIn.getPortNumber()));
 		outIface.setIpAddress(interfaceIn.getIpAddress());
 		outIface.setVlan((int) interfaceIn.getVlanId());
 		if (interfaceIn.getNameInTemplate().equals(VCPETemplate.DOWN1_INTERFACE_LOCAL)
