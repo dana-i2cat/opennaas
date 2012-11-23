@@ -115,6 +115,8 @@ OpenNaaS Custom CSS
 }
 
 #client_down_master {
+	font-size: 10px !important;
+	text-align: center;
 	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
@@ -123,13 +125,23 @@ OpenNaaS Custom CSS
 	margin-bottom: 15px;
 }
 
+#client_down_master input {
+	font-size: 10px !important;
+}
+
 #client_down_backup {
+	font-size: 10px !important;
+	text-align: center;
 	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
 	margin-left: 347px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+}
+
+#client_down_backup input {
+	font-size: 10px !important;
 }
 
 #vcpe_routers {

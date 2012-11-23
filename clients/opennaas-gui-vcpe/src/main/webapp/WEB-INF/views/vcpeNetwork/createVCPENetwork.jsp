@@ -64,7 +64,7 @@
 										<label>${item.labelName} Master</label><br>
 										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
 										<spring:message code="interface.name" />
-										<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />.
+										<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />.
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
 										<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name').value, this.value);" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
@@ -87,7 +87,7 @@
 										<label>${item.labelName} Backup</label><br>
 										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
 										<spring:message code="interface.name" />
-										<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />.
+										<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />.
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8" />
 										<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter2.interfaces${vs.index}.name').value, this.value);" />
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
@@ -134,7 +134,7 @@
 									<label>${item.labelName} Master</label><br>
 									<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
 									<spring:message code="interface.name" />
-									<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />.
+									<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />.
 									<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
 									<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name').value, this.value);" />
 									<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
@@ -158,7 +158,7 @@
 									<label>${item.labelName} Master</label><br>
 									<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
 									<spring:message code="interface.name" />
-									<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />.
+									<form:input path="logicalRouter1.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter1.interfaces${vs.index}.port').value);" />.
 									<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
 									<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name').value, this.value);" />
 									<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
@@ -182,7 +182,7 @@
 									<label>${item.labelName} Backup</label><br>
 									<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
 									<spring:message code="interface.name" />
-									<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />.
+									<form:input path="logicalRouter2.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />.
 									<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8" />
 									<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter2.interfaces${vs.index}.name').value, this.value);" />
 									<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
@@ -205,7 +205,7 @@
 									<label>${item.labelName} Backup</label><br>
 									<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
 									<spring:message code="interface.name" />
-									<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />.
+									<form:input path="logicalRouter2.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this.value, document.getElementById('logicalRouter2.interfaces${vs.index}.port').value);" />.
 									<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8" />
 									<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter2.interfaces${vs.index}.name').value, this.value);" />
 									<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
@@ -229,7 +229,7 @@
 		<div id="bod">
 			<h2><spring:message code="bod"/></h2>
 			<div>
-				<div id="bod_master">
+				<div id="bod_master" class="ui-widget">
 					<h3><spring:message code="vcpenetwork.bod.master"/></h3>
 					<div>
 						<div id="config" class="ui-widget-content">
@@ -241,7 +241,7 @@
 				</div>
 				<div id="bod_inter">
 					<h3>Inter</h3>
-					<div>
+					<div class="ui-widget">
 						<div id="config" class="ui-widget-content">
 							<p>Global configuration parameters</p>
 						</div>
@@ -251,7 +251,7 @@
 				</div>
 				<div id="bod_backup">
 					<h3>Backup</h3>
-					<div>
+					<div class="ui-widget">
 						<div id="config" class="ui-widget-content">
 							<p>Global configuration parameters</p>
 						</div>
