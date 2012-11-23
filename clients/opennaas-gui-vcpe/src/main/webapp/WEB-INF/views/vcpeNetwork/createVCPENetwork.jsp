@@ -43,14 +43,17 @@
 				<div id="vrrp">
 					<h2><spring:message code="vrrp"/></h2>
 					<div>
-						<div id="config" class="ui-widget-content">
-							<p>Global configuration parameters</p>
-						</div>
-						<button id="button3" class="button"><spring:message code="buttons.deactivate"/></button>
+						<spring:message code="vrrp.virtualIPAddress" />
+						<form:input path="vrrp.virtualIPAddress" size="8" />
+						<form:errors path="vrrp.virtualIPAddress" size="8" />
+						<form:hidden path="vrrp.priorityMaster" />	
+						<form:hidden path="vrrp.priorityBackup" />	
 						<br>
-						<button id="button4" class="button"><spring:message code="buttons.reapply"/></button>
+						<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
+						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
 					</div>
-				</div>			
+				</div>	
+
 				<!-- Up Interfaces -->
 				<div id="up_interfaces">
 					<div id="up_master" class="ui-widget-content">
