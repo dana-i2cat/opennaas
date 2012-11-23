@@ -92,6 +92,8 @@ public class OpennasBeanUtils {
 		outIface.setIpAddress(inIface.getIpAddress());
 		outIface.setVlanId(inIface.getVlan());
 		outIface.setNameInTemplate(inIface.getTemplateName());
+		outIface.setPhysicalInterfaceName(inIface.getName());
+		outIface.setPortNumber(Integer.parseInt(inIface.getPort()));
 		return outIface;
 	}
 
