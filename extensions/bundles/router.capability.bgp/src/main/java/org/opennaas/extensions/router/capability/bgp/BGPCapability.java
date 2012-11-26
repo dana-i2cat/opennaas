@@ -8,6 +8,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.model.BGPService;
 
 public class BGPCapability extends AbstractCapability implements IBGPCapability {
 
@@ -79,6 +80,18 @@ public class BGPCapability extends AbstractCapability implements IBGPCapability 
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
+	}
+
+	@Override
+	public void configureBGP(BGPService serviceConfiguration) throws CapabilityException {
+		IAction action = createActionAndCheckParams(BGPActionSet.CONFIGURE_BGP, serviceConfiguration);
+		queueAction(action);
+	}
+
+	@Override
+	public void unconfigureBGP(BGPService serviceConfiguration) throws CapabilityException {
+		IAction action = createActionAndCheckParams(BGPActionSet.UNCONFIGURE_BGP, serviceConfiguration);
+		queueAction(action);
 	}
 
 }

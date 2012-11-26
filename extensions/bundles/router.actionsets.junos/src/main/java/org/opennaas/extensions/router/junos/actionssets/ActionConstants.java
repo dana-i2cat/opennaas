@@ -5,6 +5,7 @@ import org.opennaas.extensions.router.capability.gretunnel.GRETunnelActionSet;
 import org.opennaas.extensions.router.capability.ip.IPActionSet;
 import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteActionSet;
+import org.opennaas.extensions.router.capability.bgp.BGPActionSet;
 
 public class ActionConstants {
 
@@ -62,4 +63,8 @@ public class ActionConstants {
 	// Static Route actionset
 	public static final String	STATIC_ROUTE_CREATE					= StaticRouteActionSet.STATIC_ROUTE_CREATE;
 	public static final String	STATIC_ROUTE_DELETE					= StaticRouteActionSet.STATIC_ROUTE_DELETE;
+	
+	// BGP actionset
+	public static final String	CONFIGURE_BGP					= BGPActionSet.CONFIGURE_BGP;
+	public static final String	UNCONFIGURE_BGP					= BGPActionSet.UNCONFIGURE_BGP;
 }
