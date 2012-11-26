@@ -24,8 +24,9 @@ public class VCPENetworkModel implements IModel {
 	private String						templateName;
 	private List<VCPENetworkElement>	elements;
 	private boolean						created;
-	private BGP							bgp;
 	private String						clientIpAddressRange;
+	private BGP							bgp;
+	private VRRP						vrrp;
 
 	/**
 	 * @return
@@ -149,65 +150,19 @@ public class VCPENetworkModel implements IModel {
 		return ObjectSerializer.toXml(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * @return the vrrp
 	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((clientIpAddressRange == null) ? 0 : clientIpAddressRange.hashCode());
-		result = prime * result + (created ? 1231 : 1237);
-		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
-		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
-		result = prime * result + ((vcpeNetworkId == null) ? 0 : vcpeNetworkId.hashCode());
-		result = prime * result + ((vcpeNetworkName == null) ? 0 : vcpeNetworkName.hashCode());
-		return result;
+	public VRRP getVrrp() {
+		return vrrp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * @param vrrp
+	 *            the vrrp to set
 	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		VCPENetworkModel other = (VCPENetworkModel) obj;
-		if (clientIpAddressRange == null) {
-			if (other.clientIpAddressRange != null)
-				return false;
-		} else if (!clientIpAddressRange.equals(other.clientIpAddressRange))
-			return false;
-		if (created != other.created)
-			return false;
-		if (elements == null) {
-			if (other.elements != null)
-				return false;
-		} else if (!elements.equals(other.elements))
-			return false;
-		if (templateName == null) {
-			if (other.templateName != null)
-				return false;
-		} else if (!templateName.equals(other.templateName))
-			return false;
-		if (vcpeNetworkId == null) {
-			if (other.vcpeNetworkId != null)
-				return false;
-		} else if (!vcpeNetworkId.equals(other.vcpeNetworkId))
-			return false;
-		if (vcpeNetworkName == null) {
-			if (other.vcpeNetworkName != null)
-				return false;
-		} else if (!vcpeNetworkName.equals(other.vcpeNetworkName))
-			return false;
-		return true;
+	public void setVrrp(VRRP vrrp) {
+		this.vrrp = vrrp;
 	}
+
 }

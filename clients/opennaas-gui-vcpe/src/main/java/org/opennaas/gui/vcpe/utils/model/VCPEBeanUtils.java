@@ -11,10 +11,12 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.opennaas.gui.vcpe.entities.BGP;
+import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
+import org.opennaas.gui.vcpe.entities.VRRP;
 
 /**
  * This class provides the methods to convert VCPE GUI beans to OpenNaaS beans
@@ -36,41 +38,23 @@ public class VCPEBeanUtils {
 		modelOut.setName(modelIn.getVcpeNetworkName());
 		modelOut.setClientIpRange(modelIn.getClientIpAddressRange());
 		modelOut.setTemplate(modelIn.getTemplateName());
-
 		// Logical Routers
-		Router logicalRouter1 = (Router) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
-		Router logicalRouter2 = (Router) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE2_ROUTER);
+		Router logicalRouter1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
+		Router logicalRouter2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE2_ROUTER);
 		modelOut.setLogicalRouter1(getLogicalRouter(logicalRouter1));
 		modelOut.setLogicalRouter2(getLogicalRouter(logicalRouter2));
-
 		// BGP
 		BGP bgp = getBGP(modelIn.getBgp());
 		modelOut.setBgp(bgp);
-
+		// BoD
+		BoD bod = getBoD(modelIn);
+		modelOut.setBod(bod);
+		// VRRP
+		modelOut.setVrrp(getVRRP(modelIn.getVrrp()));
 		// Links
 		List<Link> links = getLinks(VCPENetworkModelHelper.getLinks(modelIn.getElements()));
 		modelOut.setLinks(links);
 		return modelOut;
-	}
-
-	/**
-	 * Get the values of the BGP
-	 * 
-	 * @param bgp
-	 * @return bgp entity
-	 */
-	private static BGP getBGP(org.opennaas.extensions.vcpe.model.BGP bgpIn) {
-		BGP bgpOut = new BGP();
-		if (bgpIn != null) {
-			bgpOut.setClientASNumber(bgpIn.getClientASNumber());
-			bgpOut.setNocASNumber(bgpIn.getNocASNumber());
-			List<String> customerPrefixes = new ArrayList<String>();
-			customerPrefixes.addAll(bgpIn.getCustomerPrefixes());
-			bgpOut.setCustomerPrefixes(customerPrefixes);
-		}
-		return bgpOut;
 	}
 
 	/**
@@ -110,9 +94,9 @@ public class VCPEBeanUtils {
 	 */
 	public static Interface getInterface(org.opennaas.extensions.vcpe.model.Interface interfaceIn) {
 		org.opennaas.gui.vcpe.entities.Interface outIface = new org.opennaas.gui.vcpe.entities.Interface();
-		outIface.setName(org.opennaas.gui.vcpe.entities.Interface.getNameFromCompleteName(interfaceIn.getName()));
+		outIface.setName(interfaceIn.getName());
 		outIface.setTemplateName(interfaceIn.getNameInTemplate());
-		outIface.setPort(org.opennaas.gui.vcpe.entities.Interface.getPortFromCompleteName(interfaceIn.getName()));
+		outIface.setPort(String.valueOf(interfaceIn.getPortNumber()));
 		outIface.setIpAddress(interfaceIn.getIpAddress());
 		outIface.setVlan((int) interfaceIn.getVlanId());
 		if (interfaceIn.getNameInTemplate().equals(VCPETemplate.DOWN1_INTERFACE_LOCAL)
@@ -121,8 +105,11 @@ public class VCPEBeanUtils {
 		} else if (interfaceIn.getNameInTemplate().equals(VCPETemplate.UP1_INTERFACE_LOCAL)
 				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.UP2_INTERFACE_LOCAL)) {
 			outIface.setLabelName(Interface.Types.UP.toString());
-		} else {
+		} else if (interfaceIn.getNameInTemplate().equals(VCPETemplate.INTER1_INTERFACE_LOCAL)
+				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.INTER2_INTERFACE_LOCAL)) {
 			outIface.setLabelName(Interface.Types.INTER.toString());
+		} else {
+			outIface.setLabelName(Interface.Types.CLIENT.toString());
 		}
 		return outIface;
 	}
@@ -151,5 +138,58 @@ public class VCPEBeanUtils {
 		// TODO
 		Link outlink = new Link();
 		return outlink;
+	}
+
+	/**
+	 * Get the values of the BGP
+	 * 
+	 * @param modelIn
+	 * 
+	 * @return BoD
+	 */
+	private static BoD getBoD(VCPENetworkModel modelIn) {
+		BoD bod = new BoD();
+		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+		Interface ifaceClientBackup = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+		bod.setIfaceClient(ifaceClient);
+		bod.setIfaceClientBackup(ifaceClientBackup);
+		return bod;
+	}
+
+	/**
+	 * Get the values of the BGP
+	 * 
+	 * @param bgp
+	 * @return bgp entity
+	 */
+	private static BGP getBGP(org.opennaas.extensions.vcpe.model.BGP bgpIn) {
+		BGP bgpOut = new BGP();
+		if (bgpIn != null) {
+			bgpOut.setClientASNumber(bgpIn.getClientASNumber());
+			bgpOut.setNocASNumber(bgpIn.getNocASNumber());
+			List<String> clientPrefixes = new ArrayList<String>();
+			clientPrefixes.addAll(bgpIn.getCustomerPrefixes());
+			bgpOut.setClientPrefixes(clientPrefixes);
+		}
+		return bgpOut;
+	}
+
+	/**
+	 * Get the values of the VRRP
+	 * 
+	 * @param vrrp
+	 * @return
+	 */
+	private static VRRP getVRRP(org.opennaas.extensions.vcpe.model.VRRP vrrpIn) {
+		VRRP vrrpOut = new VRRP();
+		if (vrrpIn != null) {
+			vrrpOut.setVirtualIPAddress(vrrpIn.getVirtualIPAddress());
+			vrrpOut.setPriorityMaster(vrrpIn.getPriorityMaster());
+			vrrpOut.setPriorityBackup(vrrpIn.getPriorityBackup());
+			vrrpOut.setGroup(vrrpIn.getGroup());
+		}
+		return vrrpOut;
 	}
 }

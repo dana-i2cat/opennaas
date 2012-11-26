@@ -1,6 +1,9 @@
 /* -----------------------------------------------------------------------
 OpenNaaS Custom CSS
 ----------------------------------------------------------------------- */
+
+/* Layout styles
+----------------------------------*/
 .container #menu {
 	float: left;
 	width: 200px;
@@ -18,11 +21,15 @@ OpenNaaS Custom CSS
 	width: 500px;
 }
 
+/* Menu styles
+----------------------------------*/
 #_menu {
 	width: 175px;
 	min-height: 300px;
 }
 
+/* Login styles
+----------------------------------*/
 .ui-menu {
 	width: 150px;
 }
@@ -33,14 +40,29 @@ OpenNaaS Custom CSS
 	margin: 50px auto 0px auto;
 }
 
-/**
- * GUI view
- */
+/* Create and Edit styles
+----------------------------------*/
+#createVCPENetwork h2 {
+	font-size: 16px;
+}
+
+#createVCPENetwork h3 {
+	font-size: 13px;
+}
+
+#createVCPENetwork label {
+	font-size: 11px;
+}
+
+#createVCPENetwork {
+	font-size: 10px;
+}
+
 #vcpe {
 	clear: both;
 }
 
-#customer {
+#client {
 	clear: both;
 }
 
@@ -48,9 +70,6 @@ OpenNaaS Custom CSS
 	float: right;
 }
 
-/**
- * Interfaces
- */
 #up_interfaces {
 	text-align: center;
 	width: 100%;
@@ -60,14 +79,13 @@ OpenNaaS Custom CSS
 	width: 150px;
 	padding: 10px 0 0 10px;
 	display: inline-block; 
-	font-size: 10px;
 	margin-left: 70px;
 	margin-right: 70px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
 
-#id_customer_backup,#id_customer_master {
+#id_client_backup,#id_client_master {
 	width: 150px;
 	padding: 10px 0 0 10px;
 	float: left;
@@ -79,7 +97,7 @@ OpenNaaS Custom CSS
 	width: 100%;
 }
 
-#customer_master {
+#client_master {
 	display: inline-block; 
 	width: 150px;
 	padding: 10px 0 0 10px;
@@ -87,7 +105,7 @@ OpenNaaS Custom CSS
 	margin-left: 5px;
 }
 
-#customer_backup,#inter_master,#inter_backup {
+#client_backup,#inter_master,#inter_backup {
 	display: inline-block; 
 	width: 150px;
 	padding: 10px 0 0 10px;
@@ -96,35 +114,24 @@ OpenNaaS Custom CSS
 	margin-bottom: 15px;
 }
 
-#customer_interfaces {
-/*	text-align: center; */
-	width: 100%;
-}
-
-#customer_down_master {
+#client_down_master {
 	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
-	font-size: 10px;
-/*	margin-right: 170px;*/
 	margin-left: 40px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
 
-#customer_down_backup {
+#client_down_backup {
 	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
-	font-size: 10px;
 	margin-left: 347px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
 
-/**
- * Routers
- */
 #vcpe_routers {
 	text-align: center;
 	width: 100%;
@@ -139,9 +146,6 @@ OpenNaaS Custom CSS
 	margin-bottom: 15px;
 }
 
-/**
- * Protocols
- */
 #bod_master,#bod_inter,#bod_backup {
 	float: left;
 	margin: 5px;
@@ -156,3 +160,6 @@ OpenNaaS Custom CSS
 	margin: 0 10px 10px 0;
 	z-index: inherit;
 }
+
+/* Other styles
+----------------------------------*/

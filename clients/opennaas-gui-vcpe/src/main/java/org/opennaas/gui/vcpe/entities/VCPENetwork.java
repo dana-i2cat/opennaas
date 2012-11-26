@@ -11,24 +11,19 @@ import javax.validation.constraints.Size;
 public class VCPENetwork {
 
 	private String			id;
-
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String			name;
-
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String			template;
-
 	private LogicalRouter	logicalRouter1;
-
 	private LogicalRouter	logicalRouter2;
-
 	private List<Link>		links;
-
 	private String			clientIpRange;
-
 	private BGP				bgp;
+	private BoD				bod;
+	private VRRP			vrrp;
 
 	/**
 	 * Default constructor
@@ -168,6 +163,36 @@ public class VCPENetwork {
 		this.bgp = bgp;
 	}
 
+	/**
+	 * @return the bod
+	 */
+	public BoD getBod() {
+		return bod;
+	}
+
+	/**
+	 * @param bod
+	 *            the bod to set
+	 */
+	public void setBod(BoD bod) {
+		this.bod = bod;
+	}
+
+	/**
+	 * @return the vrrp
+	 */
+	public VRRP getVrrp() {
+		return vrrp;
+	}
+
+	/**
+	 * @param vrrp
+	 *            the vrrp to set
+	 */
+	public void setVrrp(VRRP vrrp) {
+		this.vrrp = vrrp;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -175,7 +200,7 @@ public class VCPENetwork {
 	 */
 	@Override
 	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + "]";
+		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + ", bod=" + bod + "]";
 	}
 
 }

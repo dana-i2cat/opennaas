@@ -13,6 +13,7 @@ import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
+import org.opennaas.gui.vcpe.entities.VRRP;
 
 /**
  * This class provides the methods to convert OpenNaaS beans to VCPE GUI beans
@@ -29,32 +30,37 @@ public class OpennasBeanUtils {
 	 * @param vcpeNetwork
 	 * @return CreateVCPENetRequest
 	 */
-	public static VCPENetworkModel getVCPENetwork(VCPENetwork vcpeNetwork) {
-		VCPENetworkModel request = new VCPENetworkModel();
+	public static VCPENetworkModel getVCPENetwork(VCPENetwork modelIn) {
+		VCPENetworkModel modelOut = new VCPENetworkModel();
 		// Id
-		request.setVcpeNetworkId(vcpeNetwork.getId());
+		modelOut.setVcpeNetworkId(modelIn.getId());
 		// Name
-		request.setVcpeNetworkName(vcpeNetwork.getName());
+		modelOut.setVcpeNetworkName(modelIn.getName());
 		// Template
-		request.setTemplateName(vcpeNetwork.getTemplate());
+		modelOut.setTemplateName(modelIn.getTemplate());
 		// IP Range
-		request.setClientIpAddressRange(vcpeNetwork.getClientIpRange());
+		modelOut.setClientIpAddressRange(modelIn.getClientIpRange());
 		// BGP
-		request.setBgp(getBGP(vcpeNetwork.getBgp()));
+		modelOut.setBgp(getBGP(modelIn.getBgp()));
+		// VRRP
+		modelOut.setVrrp(getVRRP(modelIn.getVrrp()));
 		// Elements
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
-		request.setElements(elements);
+		modelOut.setElements(elements);
 		// LogicalRouters
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter1 = getLROpennaas(vcpeNetwork.getName(), VCPETemplate.VCPE1_ROUTER,
-				vcpeNetwork.getLogicalRouter1());
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter2 = getLROpennaas(vcpeNetwork.getName(), VCPETemplate.VCPE2_ROUTER,
-				vcpeNetwork.getLogicalRouter2());
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter1 = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
+				modelIn.getLogicalRouter1());
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter2 = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
+				modelIn.getLogicalRouter2());
 		elements.add(logicalRouter1);
 		elements.add(logicalRouter2);
 		// Add interfaces to elements
 		elements.addAll(logicalRouter1.getInterfaces());
 		elements.addAll(logicalRouter2.getInterfaces());
-		return request;
+		// Add interfaces BoD
+		elements.add(getInterface(modelIn.getBod().getIfaceClient()));
+		elements.add(getInterface(modelIn.getBod().getIfaceClientBackup()));
+		return modelOut;
 	}
 
 	/**
@@ -89,6 +95,8 @@ public class OpennasBeanUtils {
 		outIface.setIpAddress(inIface.getIpAddress());
 		outIface.setVlanId(inIface.getVlan());
 		outIface.setNameInTemplate(inIface.getTemplateName());
+		outIface.setPhysicalInterfaceName(inIface.getName());
+		outIface.setPortNumber(Integer.parseInt(inIface.getPort()));
 		return outIface;
 	}
 
@@ -102,9 +110,24 @@ public class OpennasBeanUtils {
 		org.opennaas.extensions.vcpe.model.BGP bgpOut = new org.opennaas.extensions.vcpe.model.BGP();
 		bgpOut.setClientASNumber(bgpIn.getClientASNumber());
 		bgpOut.setNocASNumber(bgpIn.getNocASNumber());
-		List<String> customerPrefixes = new ArrayList<String>();
-		customerPrefixes.addAll(bgpIn.getCustomerPrefixes());
-		bgpOut.setCustomerPrefixes(customerPrefixes);
+		List<String> clientPrefixes = new ArrayList<String>();
+		clientPrefixes.addAll(bgpIn.getClientPrefixes());
+		bgpOut.setCustomerPrefixes(clientPrefixes);
 		return bgpOut;
+	}
+
+	/**
+	 * Get the values of OpenNaaS VRRP from GUI VRRP
+	 * 
+	 * @param vrrp
+	 * @return vrrp entity
+	 */
+	private static org.opennaas.extensions.vcpe.model.VRRP getVRRP(VRRP vrrpIn) {
+		org.opennaas.extensions.vcpe.model.VRRP vrrpOut = new org.opennaas.extensions.vcpe.model.VRRP();
+		vrrpOut.setVirtualIPAddress(vrrpIn.getVirtualIPAddress());
+		vrrpOut.setPriorityMaster(vrrpIn.getPriorityMaster());
+		vrrpOut.setPriorityBackup(vrrpIn.getPriorityBackup());
+		vrrpOut.setGroup(vrrpIn.getGroup());
+		return vrrpOut;
 	}
 }
