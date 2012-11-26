@@ -1,10 +1,9 @@
 package org.opennaas.extensions.router.model;
 
-import java.util.List;
 
 public class PrefixListFilterEntry extends FilterEntryBase {
 
-	private List<String>	prefixList;
+	private IPAddressPrefixList	prefixList;
 
 	public enum Action {
 		PERMIT,
@@ -36,5 +35,13 @@ public class PrefixListFilterEntry extends FilterEntryBase {
 
 		this.action = action;
 	} // setAction
+
+	public IPAddressPrefixList getPrefixList() {
+		return prefixList;
+	}
+
+	public void setPrefixList(IPAddressPrefixList prefixList) {
+		this.prefixList = prefixList;
+	}
 
 }

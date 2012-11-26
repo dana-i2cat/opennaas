@@ -53,4 +53,14 @@ public class PolicyActionInPolicyRule extends PolicyActionStructure {
 	public void setPartComponent(PolicyAction partComponent) {
 		this.partComponent = partComponent;
 	}
+
+	public static PolicyActionInPolicyRule link(PolicyRule groupComponent, PolicyAction partComponent) {
+		PolicyActionInPolicyRule assoc = (PolicyActionInPolicyRule) Association.link(PolicyActionInPolicyRule.class, groupComponent,
+				partComponent);
+
+		assoc.setGroupComponent(groupComponent);
+		assoc.setPartComponent(partComponent);
+
+		return assoc;
+	}
 }

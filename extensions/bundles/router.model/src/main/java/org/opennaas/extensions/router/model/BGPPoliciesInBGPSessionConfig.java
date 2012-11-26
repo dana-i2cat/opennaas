@@ -17,9 +17,11 @@ public class BGPPoliciesInBGPSessionConfig extends Association implements Serial
 	 * This method create an Association of the type BGPPoliciesInBGPPeerFiltering between one BGPPeerFiltering object and BGPPolicy object
 	 */
 	public static BGPPoliciesInBGPSessionConfig link(BGPSessionConfig config, Policy
-			policy) {
+			policy, Direction direction) {
 
-		return (BGPPoliciesInBGPSessionConfig) Association.link(BGPPoliciesInBGPSessionConfig.class, config, policy);
+		BGPPoliciesInBGPSessionConfig assoc = (BGPPoliciesInBGPSessionConfig) Association.link(BGPPoliciesInBGPSessionConfig.class, config, policy);
+		assoc.setDirection(direction);
+		return assoc;
 	}// link
 
 	public enum Direction {

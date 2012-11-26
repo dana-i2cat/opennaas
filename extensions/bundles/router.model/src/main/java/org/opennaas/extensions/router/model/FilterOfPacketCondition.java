@@ -42,4 +42,15 @@ public class FilterOfPacketCondition extends Dependency {
 	public void setDependent(PacketFilterCondition dependent) {
 		this.dependent = dependent;
 	}
+
+	public static FilterOfPacketCondition link(FilterList antecedent, PacketFilterCondition dependent) {
+		FilterOfPacketCondition assoc = (FilterOfPacketCondition) Association.link(FilterOfPacketCondition.class, antecedent,
+				dependent);
+
+		assoc.setAntecedent(antecedent);
+		assoc.setDependent(dependent);
+
+		return assoc;
+	}
+
 }
