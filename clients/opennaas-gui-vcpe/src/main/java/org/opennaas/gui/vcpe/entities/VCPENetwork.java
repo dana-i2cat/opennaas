@@ -5,25 +5,31 @@ package org.opennaas.gui.vcpe.entities;
  */
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 public class VCPENetwork {
 
 	private String			id;
-	@NotNull
-	@Size(min = 1, max = 25)
+	@NotBlank(message = "{error.field.mandatory}")
 	private String			name;
-	@NotNull
-	@Size(min = 1, max = 25)
+	@NotBlank(message = "{error.field.mandatory}")
 	private String			template;
+	@Valid
 	private LogicalRouter	logicalRouter1;
+	@Valid
 	private LogicalRouter	logicalRouter2;
-	private List<Link>		links;
+	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{error.field.format.ipandmask}")
 	private String			clientIpRange;
+	@Valid
 	private BGP				bgp;
+	@Valid
 	private BoD				bod;
+	@Valid
 	private VRRP			vrrp;
+	private List<Link>		links;
 
 	/**
 	 * Default constructor

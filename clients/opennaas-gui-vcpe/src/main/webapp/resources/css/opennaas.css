@@ -42,6 +42,14 @@ OpenNaaS Custom CSS
 
 /* Create and Edit styles
 ----------------------------------*/
+#createVCPENetwork {
+	font-size: 10px;
+}
+
+#createVCPENetwork {
+	font-size: 10px;
+}
+
 #createVCPENetwork h2 {
 	font-size: 16px;
 }
@@ -54,10 +62,6 @@ OpenNaaS Custom CSS
 	font-size: 11px;
 }
 
-#createVCPENetwork {
-	font-size: 10px;
-}
-
 #vcpe {
 	clear: both;
 }
@@ -67,6 +71,7 @@ OpenNaaS Custom CSS
 }
 
 #submitButton {
+	margin-top: 15px;
 	float: right;
 }
 
@@ -115,6 +120,8 @@ OpenNaaS Custom CSS
 }
 
 #client_down_master {
+	font-size: 10px !important;
+	text-align: center;
 	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
@@ -123,13 +130,23 @@ OpenNaaS Custom CSS
 	margin-bottom: 15px;
 }
 
+#client_down_master input {
+	font-size: 10px !important;
+}
+
 #client_down_backup {
+	font-size: 10px !important;
+	text-align: center;
 	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
 	margin-left: 347px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+}
+
+#client_down_backup input {
+	font-size: 10px !important;
 }
 
 #vcpe_routers {
@@ -159,6 +176,37 @@ OpenNaaS Custom CSS
 	float: left;
 	margin: 0 10px 10px 0;
 	z-index: inherit;
+}
+
+.fields {
+	display: inline-block; 
+	padding-top: 15px; 
+	text-align: center;
+}
+
+.field {
+	width: 100%; 
+	display: inline-block; 
+	width: 150px;
+}
+
+.field {
+	width: 100%; 
+	display: inline-table; 
+	width: 150px;
+}
+
+#bgp_data {
+	width: 650px; 	
+}
+
+#vrrp_data {
+	width: 650px; 	
+}
+
+
+#client_data {
+	width: 700px;
 }
 
 /* Other styles

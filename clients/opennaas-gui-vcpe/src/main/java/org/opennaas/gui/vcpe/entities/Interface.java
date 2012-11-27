@@ -3,7 +3,10 @@
  */
 package org.opennaas.gui.vcpe.entities;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -35,24 +38,18 @@ public class Interface {
 
 	}
 
-	@NotNull
-	@Size(min = 1, max = 25)
+	@Size(min = 1, max = 25, message = "{error.field.mandatory}")
 	private String	name;
-
-	@NotNull
-	@Size(min = 1, max = 25)
+	@Size(min = 1, max = 25, message = "{error.field.mandatory}")
 	private String	port;
-
-	@NotNull
+	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{error.field.format.ipandmask}")
 	@Size(min = 1, max = 25)
 	private String	ipAddress;
-
-	@NotNull
-	@Size(min = 1, max = 25)
+	@NotNull(message = "{error.field.mandatory}")
+	@DecimalMin(value = "0")
+	@DecimalMax(value = "4094")
 	private Integer	vlan;
-
 	private String	templateName;
-
 	private String	labelName;
 
 	/**

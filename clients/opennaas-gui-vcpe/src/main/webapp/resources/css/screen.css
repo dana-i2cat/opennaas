@@ -354,25 +354,35 @@ form.inline p {
 	margin-bottom: 0;
 }
 
-.error,.notice,.success {
-	padding: .8em;
+.error,.error_field,.notice,.success {
 	margin-bottom: 1em;
 	border: 2px solid #ddd;
 }
 
 .error {
+	padding: .8em;
 	background: #FBE3E4;
 	color: #8a1f11;
 	border-color: #FBC2C4;
 }
 
+.error_field {
+	padding: .3em .6em;
+	background: #FBE3E4;
+	color: #8a1f11;
+	border-color: #FBC2C4;
+}
+
+
 .notice {
+	padding: .8em;
 	background: #FFF6BF;
 	color: #514721;
 	border-color: #FFD324;
 }
 
 .success {
+	padding: .8em;
 	background: #E6EFC2;
 	color: #264409;
 	border-color: #C6D880;
@@ -609,6 +619,10 @@ input.span-23,textarea.span-23 {
 
 input.span-24,textarea.span-24 {
 	width: 938px !important;
+}
+
+input[readonly="readonly"] {
+	background: #eeeeee;
 }
 
 .append-1 {
