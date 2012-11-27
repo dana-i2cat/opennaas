@@ -263,7 +263,7 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * Check if the VLAN is free in the environment
+	 * Check if the IP is free in the environment
 	 * 
 	 * @param vlan
 	 * @return
@@ -283,7 +283,7 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * Check if the interface is free in the environment
+	 * Check if the Interface is free in the environment
 	 * 
 	 * @param vlan
 	 * @return
