@@ -42,6 +42,14 @@ OpenNaaS Custom CSS
 
 /* Create and Edit styles
 ----------------------------------*/
+#createVCPENetwork {
+	font-size: 10px;
+}
+
+#createVCPENetwork {
+	font-size: 10px;
+}
+
 #createVCPENetwork h2 {
 	font-size: 16px;
 }
@@ -54,10 +62,6 @@ OpenNaaS Custom CSS
 	font-size: 11px;
 }
 
-#createVCPENetwork {
-	font-size: 10px;
-}
-
 #vcpe {
 	clear: both;
 }
@@ -67,6 +71,7 @@ OpenNaaS Custom CSS
 }
 
 #submitButton {
+	margin-top: 15px;
 	float: right;
 }
 
@@ -171,6 +176,37 @@ OpenNaaS Custom CSS
 	float: left;
 	margin: 0 10px 10px 0;
 	z-index: inherit;
+}
+
+.fields {
+	display: inline-block; 
+	padding-top: 15px; 
+	text-align: center;
+}
+
+.field {
+	width: 100%; 
+	display: inline-block; 
+	width: 150px;
+}
+
+.field {
+	width: 100%; 
+	display: inline-table; 
+	width: 150px;
+}
+
+#bgp_data {
+	width: 650px; 	
+}
+
+#vrrp_data {
+	width: 650px; 	
+}
+
+
+#client_data {
+	width: 700px;
 }
 
 /* Other styles
