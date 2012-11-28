@@ -8,29 +8,42 @@
 <html>
 <head>
 	<title><fmt:message key="login.title"/></title>
-	<link rel="stylesheet" href="<c:url value="/resources/css/screen.css" />" type="text/css">
-	<link rel="stylesheet" href="<c:url value="/resources/css/print.css" />" type="text/css">
-	<link rel="stylesheet" href="<c:url value="/resources/css/opennaas.css" />" type="text/css">
+	<!-- CSS -->
+	<link rel="stylesheet" 	href="<c:url value="/resources/css/screen.css" />" type="text/css">
 	<!--[if lt IE 8]>
-		<link rel="stylesheet" href="<c:url value="/resources/css/ie.css" />" type="text/css">
-	<![endif]-->
+			<link rel="stylesheet" href="opennaas/resources/css/ie.css" type="text/css" >
+		<![endif]-->
+	<link rel="stylesheet" href="<c:url value="/resources/css/ui-lightness/jquery-ui-1.9.1.custom.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/opennaas.css" />" type="text/css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/login.css" />" type="text/css">
+	<!-- Javascript -->
+	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery-ui-1.9.1.custom.js" />"></script>
+	<script src="<c:url value="/resources/js/script.js" />"></script>
 </head>
 <body>
-	<div id="login">
-		<fieldset>
-			<h4>Login</h4>
-			<div id="login-error">${error}</div>
-		
-			<form action="../j_spring_security_check" method="post">
-				<p>
-					<label for="j_username">Username</label> <input id="j_username" name="j_username" type="text" />
-				</p>
-				<p>
-					<label for="j_password">Password</label> <input id="j_password" name="j_password" type="password" />
-				</p>
-				<input type="submit" value="Login" />
-			</form>
-		</fieldset>
-	</div>
+
+	
+<div class="container">
+	<div id="login_logo">
+		<img src="<c:url value="/resources/images/opennaas-orange-400.png" />" height= "264px" width= "400px" alt="OpenNaaS Logo">
+	</div>	
+	<section id="content">	
+		<form action="../j_spring_security_check" method="post">
+			<h1><spring:message code="login.welcome"/></h1>
+			<div>
+				<input type="text" placeholder=<spring:message code="login.username"/> required="required" id="j_username" name="j_username" />
+			</div>
+			<div>
+				<input type="password" placeholder=<spring:message code="login.password"/> required="required" id="j_password" name="j_password"/>
+			</div>
+			<div>
+				<input type="submit" value="Login"  id="submitLogin"/>
+			</div>
+		</form><!-- form -->
+		<div id="login-error">${error}</div>
+	</section><!-- content -->
+</div><!-- container -->
+
 </body>
 </html>

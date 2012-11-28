@@ -8,7 +8,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
 <div id="header_logo">
 	<img src="<c:url value="/resources/images/opennaas-orange-150.png" />" height= "99px" width= "150px" alt="OpenNaaS Logo">
 </div>
@@ -22,7 +21,6 @@
 	</span>
 	<div><a href="<c:url value="/auth/logout" />"><button id="logoutButton" class="button"><spring:message code="home.logout"/></button></a></div>
 </div>	
-
 <div id="header_menu" class="ui-widget-content ui-corner-all">
 	<div id="home">
 		<a href="/opennaas-vcpe/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="home.home"/></button></a>
@@ -31,8 +29,6 @@
 		<input type="radio" id="english" name="radio"><label for="english">EN</label>
 		<input type="radio" id="spanish" name="radio"><label for="spanish">ES</label>
 	</div>
-
-	
 </div>
 
 <br>

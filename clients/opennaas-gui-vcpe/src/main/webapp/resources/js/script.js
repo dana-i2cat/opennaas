@@ -244,6 +244,11 @@ $(function() {
 			secondary : 'ui-icon-power'
 		}
 	});
+	$("#submitLogin").button({		
+		icons : {
+			primary : 'ui-icon-triangle-1-e'
+		}
+	});
 
 	/**
 	 * Waiting dialog
