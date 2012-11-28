@@ -140,16 +140,26 @@ OpenNaaS Custom CSS
 #up_interfaces {
 	text-align: center;
 	width: 100%;
+	clear: both;
 }
 
-#up_backup,#up_master {
+#up_backup, #up_master {
 	width: 150px;
 	padding: 10px 0 0 10px;
-	display: inline-block;
-	margin-left: 70px;
+	margin-left: 120px;
 	margin-right: 70px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+	float: left;
+	font-size: 10px !important;
+}
+
+#up_master input {
+	font-size: 10px !important;
+}
+
+#up_backup input {
+	font-size: 10px !important;
 }
 
 #id_client_backup,#id_client_master {
@@ -166,54 +176,54 @@ OpenNaaS Custom CSS
 
 #client_master {
 	display: inline-block;
-	width: 150px;
+	width: 148px;
 	padding: 10px 0 0 10px;
 	clear: both;
-	margin-left: 5px;
 }
 
 #client_backup,#inter_master,#inter_backup {
 	display: inline-block;
-	width: 150px;
+	width: 148px;
 	padding: 10px 0 0 10px;
-	margin-left: 5px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
 
 #client_down_master {
-	font-size: 10px !important;
-	text-align: center;
-	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
-	margin-left: 40px;
+	margin-left: 50px;
+	margin-right: 70px;
 	margin-top: 15px;
 	margin-bottom: 15px;
-}
-
-#client_down_master input {
-	font-size: 10px !important;
+	float: left;
 }
 
 #client_down_backup {
-	font-size: 10px !important;
-	text-align: center;
-	display: inline-block;
 	width: 150px;
 	padding: 10px 0 0 10px;
-	margin-left: 347px;
+	margin-left: 256px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+	float: left;
+}
+
+
+#client_down_master input {
+	font-size: 10px !important;
 }
 
 #client_down_backup input {
 	font-size: 10px !important;
 }
 
-#vcpe_routers {
+#client_interfaces {
 	text-align: center;
 	width: 100%;
+	clear: both;
+}
+#vcpe_routers {
+	text-align: center;
 }
 
 #lr_master,#lr_backup {
@@ -240,6 +250,22 @@ OpenNaaS Custom CSS
 	z-index: inherit;
 }
 
+#client_config {
+	width: 210px;
+	height: 110px;
+	padding: 5px;
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+#client_config_firewall {
+	width: 673px;
+	padding: 5px;
+	clear: both;
+	margin: 0 10px 10px 0;
+}
+
+
 .fields {
 	display: inline-block; 
 	padding-top: 15px; 
@@ -258,16 +284,47 @@ OpenNaaS Custom CSS
 	width: 150px;
 }
 
+#bod {
+	position: relative;
+	z-index: 100;
+}
+
+#bgp {
+	position: relative;
+	z-index: 100;
+}
 #bgp_data {
 	width: 650px; 	
 }
 
+#vrrp {
+	position: relative;
+	z-index: 100;
+}
 #vrrp_data {
 	width: 650px; 	
 }
 
 #client_data {
 	width: 700px;
+}
+
+#ospf_info {
+	margin-top: 5px;
+}
+
+#firewallTable {
+	margin-top: 5px;
+	width: 650px;	
+}
+
+#firewallTable th, #firewallTable td {
+	width: 50px; 
+	padding-left: 5px;	
+}
+
+.fwButton {
+	text-align: center;
 }
 
 /* Home styles
