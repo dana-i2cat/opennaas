@@ -26,6 +26,11 @@ OpenNaaS Custom CSS
 #_menu {
 	width: 175px;
 	min-height: 300px;
+	z-index: 1000;
+}
+
+#_menu ul {
+	min-width: 115px;
 }
 
 /* Home styles
