@@ -40,11 +40,6 @@
 
 				<sec:authorize access="hasRole('ROLE_CLIENT')">
 					<li>
-						<a href="<c:url value="/secure/vcpeNetwork/view?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="index.menu.view" />
-						</a>
-					</li>
-					<li>
 						<a href="<c:url value="/secure/vcpeNetwork/updateIpsForm?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
 							<spring:message code="index.menu.update" />
 						</a>

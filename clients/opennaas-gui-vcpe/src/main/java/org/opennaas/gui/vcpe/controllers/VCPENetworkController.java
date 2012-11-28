@@ -184,25 +184,6 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * View a VCPENetwork
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/view")
-	public String view(String vcpeNetworkId, Model model, Locale locale) {
-		LOGGER.debug("view entity with id: " + vcpeNetworkId);
-		try {
-			model.addAttribute("vcpenetwork", vcpeNetworkBO.getById(vcpeNetworkId));
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.view.message.error", null, locale));
-		}
-		return "viewVCPENetwork";
-	}
-
-	/**
 	 * Redirect to the form to modify the ip's
 	 * 
 	 * @param model
