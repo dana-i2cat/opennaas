@@ -85,6 +85,7 @@
 									<c:when test="${item.labelName == 'Up'}">
 										<label>${item.labelName} Master</label><br>
 										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
+										<form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -118,6 +119,7 @@
 									<c:when test="${item.labelName == 'Up'}">
 										<label>${item.labelName} Backup</label><br>
 										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
+										<form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouter2.interfaces[${vs.index}].port" path="logicalRouter2.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -175,6 +177,7 @@
 									<c:when test="${item.labelName == 'Down'}">
 										<label>${item.labelName} Master</label><br>
 										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
+										<form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouter1.interfaces[${vs.index}].port" path="logicalRouter1.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -209,6 +212,7 @@
 									<c:when test="${item.labelName == 'Inter'}">
 										<label>${item.labelName} Master</label><br>
 										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
+										<form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouter1.interfaces[${vs.index}].port" path="logicalRouter1.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -242,6 +246,7 @@
 									<c:when test="${item.labelName == 'Inter'}">
 										<label>${item.labelName} Backup</label><br>
 										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
+										<form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouter2.interfaces[${vs.index}].port" path="logicalRouter2.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -275,6 +280,7 @@
 									<c:when test="${item.labelName == 'Down'}">
 										<label>${item.labelName} Backup</label><br>
 										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
+										<form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouter2.interfaces[${vs.index}].port" path="logicalRouter2.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />

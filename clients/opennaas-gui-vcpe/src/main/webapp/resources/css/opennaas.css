@@ -225,6 +225,12 @@ OpenNaaS Custom CSS
 	margin-bottom: 15px;
 }
 
+#bod {
+	z-index: 1000;
+	position: relative;
+	margin-top: 15px;
+}
+
 #bod_master,#bod_inter,#bod_backup {
 	float: left;
 	margin: 5px;

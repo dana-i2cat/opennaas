@@ -52,7 +52,6 @@ public class VCPENetworkController {
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
-
 		}
 		return "createVCPENetwork";
 	}
@@ -77,9 +76,11 @@ public class VCPENetworkController {
 						.getMessage("vcpenetwork.create.message.info", null, locale));
 			} else {
 				view = "createVCPENetwork";
+				model.addAttribute(vcpeNetwork);
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.create.message.error", null, locale));
 			}
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			view = "createVCPENetwork";
 			model.addAttribute("errorMsg", messageSource
