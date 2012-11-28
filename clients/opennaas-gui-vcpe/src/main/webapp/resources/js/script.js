@@ -92,13 +92,14 @@ function isIPFree(vcpeId, ip) {
 /**
  * Ajax call to check if the VLAN is free in the environment
  * 
+ * @param ifaceName
  * @param vcpeId
  * @param vlan
  */
-function isVLANFree(vcpeId, vlan) {
+function isVLANFree(vcpeId, vlan, ifaceName) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan.value,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan.value + "&ifaceName=" + ifaceName.value,
 		success: function(data) {
 			if (data == 'false') {
 				// Case not available
