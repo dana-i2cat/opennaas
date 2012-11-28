@@ -108,7 +108,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isVLANFree(java.lang.String)
 	 */
 	@Override
-	public Boolean isVLANFree(String vcpeId, String vlan) throws VCPENetworkManagerException {
+	public Boolean isVLANFree(String vcpeId, String vlan, String ifaceName) throws VCPENetworkManagerException {
 		boolean isFree = true;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();
@@ -116,7 +116,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			for (IResource vcpe : vcpes) {
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					for (Interface iface : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Interface.class)) {
-						if (vlan.equals(String.valueOf(iface.getVlanId()))) {
+						if (ifaceName.equals(iface.getName()) && vlan.equals(String.valueOf(iface.getVlanId()))) {
 							isFree = false;
 						}
 					}

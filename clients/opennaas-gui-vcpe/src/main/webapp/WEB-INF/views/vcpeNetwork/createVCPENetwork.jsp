@@ -104,7 +104,7 @@
 										<form:label for="logicalRouter1.interfaces[${vs.index}].vlan" path="logicalRouter1.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.name'));" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
 									</c:when>
 								</c:choose>
@@ -137,7 +137,7 @@
 										<form:label for="logicalRouter2.interfaces[${vs.index}].vlan" path="logicalRouter2.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.name'));" />
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
 									</c:when>
 								</c:choose>
@@ -194,7 +194,7 @@
 										<form:label for="logicalRouter1.interfaces[${vs.index}].vlan" path="logicalRouter1.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.name'));" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
 									</c:when>
 								</c:choose>
@@ -228,7 +228,7 @@
 										<form:label for="logicalRouter1.interfaces[${vs.index}].vlan" path="logicalRouter1.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.name'));" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
 									</c:when>
 								</c:choose>
@@ -261,7 +261,7 @@
 										<form:label for="logicalRouter2.interfaces[${vs.index}].vlan" path="logicalRouter2.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.name'));" />
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
 									</c:when>
 								</c:choose>
@@ -294,7 +294,7 @@
 										<form:label for="logicalRouter2.interfaces[${vs.index}].vlan" path="logicalRouter2.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.name'));" />
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
 									</c:when>
 								</c:choose>
@@ -362,7 +362,7 @@
 					<form:label for="bod.ifaceClient.vlan" path="bod.ifaceClient.vlan" cssErrorClass="error">
 						<spring:message code="interface.vlan" />
 					</form:label>
-					<form:input path="bod.ifaceClient.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+					<form:input path="bod.ifaceClient.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('bod.ifaceClient.name'));" />
 					<br>
 					<form:errors path="bod.ifaceClient.vlan" size="3" />
 				</div>
@@ -385,7 +385,7 @@
 					<form:label for="bod.ifaceClientBackup.vlan.label" path="bod.ifaceClientBackup.vlan" cssErrorClass="error">
 						<spring:message code="interface.vlan" />
 					</form:label>
-					<form:input path="bod.ifaceClientBackup.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this);" />
+					<form:input path="bod.ifaceClientBackup.vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('bod.ifaceClientBackup.name'));" />
 					<br>
 					<form:errors path="bod.ifaceClientBackup.vlan" size="3" />
 				</div>

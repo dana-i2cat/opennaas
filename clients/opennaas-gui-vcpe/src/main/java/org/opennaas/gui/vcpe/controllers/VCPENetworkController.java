@@ -228,17 +228,18 @@ public class VCPENetworkController {
 	 * 
 	 * @param vcpeId
 	 * @param vlan
+	 * @param ifaceName
 	 * @param model
 	 * @param locale
 	 * @return true if is free
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isVLANFree")
 	public @ResponseBody
-	String isVLANFree(String vcpeId, String vlan, Model model, Locale locale) {
-		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the vcpeId: " + vcpeId);
+	String isVLANFree(String vcpeId, String vlan, String ifaceName, Model model, Locale locale) {
+		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the ifaceName: " + ifaceName + ". The vcpeID: " + vcpeId);
 		Boolean isFree = false;
 		try {
-			isFree = vcpeNetworkBO.isVLANFree(vcpeId, vlan);
+			isFree = vcpeNetworkBO.isVLANFree(vcpeId, vlan, ifaceName);
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
@@ -258,7 +259,7 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isIPFree")
 	public @ResponseBody
 	String isIPFree(String vcpeId, String ip, Model model, Locale locale) {
-		LOGGER.debug("Check if the IP: " + ip + " is free in the vcpeId: " + vcpeId);
+		LOGGER.debug("Check if the IP: " + ip + " is free. The vcpeID: " + vcpeId);
 		Boolean isFree = false;
 		try {
 			isFree = vcpeNetworkBO.isIPFree(vcpeId, ip);
@@ -282,7 +283,7 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isInterfaceFree")
 	public @ResponseBody
 	String isInterfaceFree(String vcpeId, String iface, String port, Model model, Locale locale) {
-		LOGGER.debug("Check if the Interface: " + iface + "." + port + " is free in the vcpeId: " + vcpeId);
+		LOGGER.debug("Check if the Interface: " + iface + "." + port + " is free. The vcpeID: " + vcpeId);
 		Boolean isFree = false;
 		try {
 			isFree = vcpeNetworkBO.isInterfaceFree(vcpeId, iface, port);
