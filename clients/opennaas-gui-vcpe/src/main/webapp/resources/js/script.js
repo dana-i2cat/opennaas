@@ -16,17 +16,39 @@ function updateHeader() {
 }
 
 /**
- * Ajax call to check if the VLAN is free in the environment
+ * Ajax call to check if the interface is free in the environment
  * 
  * @param vcpeId
- * @param vlan
+ * @param iface
+ * @param port
  */
-function isVLANFree(vcpeId, vlan) {
+function isInterfaceFree(vcpeId, iface, port) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId=" + vcpeId + "&iface=" + iface.value +"&port=" + port.value,
 		success: function(data) {
-		    $('#ajaxUpdate').html(data);			    
+			if (data == 'false') {
+				// Case not available
+				// First delete the tooltip
+		    	$("#tooltip").remove();
+		    	// Add the new tooltip, error classes and disable inputs
+				$(iface).after("<div id='tooltip'>The Interface is not available</div>");
+				iface.className = 'error';
+				port.className = 'error';	
+		    	// Show the tooltip
+				$("#tooltip").show("fade", {}, 400);
+			    $("#tooltip").click(function() {
+			    	// On click hide tooltip 
+			    	$(this).hide("fade", {}, 400); 
+			    	$(this).remove();
+			    });
+			} else {
+				// Case available, revert changes
+		    	iface.className = ''; 
+		    	port.className = ''; 
+				$("#tooltip").hide("fade", {}, 400);
+		    	$("#tooltip").remove();
+			}
 		}
 	});
 }
@@ -40,26 +62,64 @@ function isVLANFree(vcpeId, vlan) {
 function isIPFree(vcpeId, ip) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId=" + vcpeId + "&ip=" + ip,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId=" + vcpeId + "&ip=" + ip.value,
 		success: function(data) {
-		    $('#ajaxUpdate').html(data);			    
+			if (data == 'false') {
+				// Case not available
+				// First delete the tooltip
+		    	$("#tooltip").remove();
+		    	// Add the new tooltip, error classes and disable inputs
+				$(ip).after("<div id='tooltip'>The IP Address is not available</div>");
+				ip.className = 'error';	
+				// Show the tooltip
+				$("#tooltip").show("fade", {}, 400);
+			    $("#tooltip").click(function() {
+			    	// On click hide tooltip 
+			    	$(this).hide("fade", {}, 400); 
+			    	$(this).remove();
+			    });
+			} else {
+				// Case available, revert changes
+				ip.className = '';
+				$("#tooltip").hide("fade", {}, 400);
+		    	$("#tooltip").remove();
+
+			}
 		}
 	});
 }
 
 /**
- * Ajax call to check if the interface is free in the environment
+ * Ajax call to check if the VLAN is free in the environment
  * 
  * @param vcpeId
- * @param iface
- * @param port
+ * @param vlan
  */
-function isInterfaceFree(vcpeId, iface, port) {
+function isVLANFree(vcpeId, vlan) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId=" + vcpeId + "&iface=" + iface +"&port=" + port,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan.value,
 		success: function(data) {
-		    $('#ajaxUpdate').html(data);			    
+			if (data == 'false') {
+				// Case not available
+				// First delete the tooltip
+		    	$("#tooltip").remove();
+		    	// Add the new tooltip, error classes and disable inputs
+				$(vlan).after("<div id='tooltip'>The VLAN is not available</div>");
+				vlan.className = 'error';	
+				// Show the tooltip
+				$("#tooltip").show("fade", {}, 400);
+			    $("#tooltip").click(function() {
+			    	// On click hide tooltip 
+			    	$(this).hide("fade", {}, 400); 
+			    	$(this).remove();
+			    });
+			} else {
+				// Case available, revert changes
+				vlan.className = '';
+				$("#tooltip").hide("fade", {}, 400);
+		    	$("#tooltip").remove();
+			}
 		}
 	});
 }

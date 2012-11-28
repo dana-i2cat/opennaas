@@ -245,8 +245,11 @@ public class VCPENetworkController {
 	/**
 	 * Check if the VLAN is free in the environment
 	 * 
+	 * @param vcpeId
 	 * @param vlan
-	 * @return
+	 * @param model
+	 * @param locale
+	 * @return true if is free
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isVLANFree")
 	public @ResponseBody
@@ -265,8 +268,11 @@ public class VCPENetworkController {
 	/**
 	 * Check if the IP is free in the environment
 	 * 
-	 * @param vlan
-	 * @return
+	 * @param vcpeId
+	 * @param ip
+	 * @param model
+	 * @param locale
+	 * @return true if is free
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isIPFree")
 	public @ResponseBody
@@ -285,8 +291,12 @@ public class VCPENetworkController {
 	/**
 	 * Check if the Interface is free in the environment
 	 * 
-	 * @param vlan
-	 * @return
+	 * @param vcpeId
+	 * @param iface
+	 * @param port
+	 * @param model
+	 * @param locale
+	 * @return true if is free
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isInterfaceFree")
 	public @ResponseBody
