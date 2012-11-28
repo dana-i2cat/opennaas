@@ -30,7 +30,7 @@
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.router.capability.vrrp.Activator</Bundle-Activator>	
 						<Export-Package>
-							org.opennaas.extensions.router.capability.chassis;version="${project.version}"
+							org.opennaas.extensions.router.capability.vrrp;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

@@ -8,13 +8,17 @@ import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
 
+/**
+ * @author Julio Carlos Barrera
+ */
 public class Activator extends AbstractActivator implements BundleActivator {
-	
+
 	private static BundleContext	context;
 	static Log						log	= LogFactory.getLog(Activator.class);
 
@@ -32,16 +36,16 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		return context;
 	}
 
-	public static IActionSet getActionSetService(String capabilityName, String actionsetName, String actionsetVersion) throws ActivatorException {
+	public static IActionSet getVRRPActionSetService(String capabilityName, String actionsetName, String actionsetVersion) throws ActivatorException {
 		try {
 			log.debug("Calling ActionSetService for capability " + capabilityName);
-			return (IActionSet) getServiceFromRegistry(context, createActionSetFilter(capabilityName, actionsetName, actionsetVersion));
+			return (IActionSet) getServiceFromRegistry(context, createFilterVRRPActionSet(capabilityName, actionsetName, actionsetVersion));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
 		}
 	}
 
-	private static Filter createActionSetFilter(String capabilityName, String actionsetName, String actionsetVersion) throws InvalidSyntaxException {
+	private static Filter createFilterVRRPActionSet(String capabilityName, String actionsetName, String actionsetVersion) throws InvalidSyntaxException {
 		Properties properties = new Properties();
 		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, capabilityName);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, actionsetName);
@@ -49,4 +53,19 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		return createServiceFilter(IActionSet.class.getName(), properties);
 	}
 
+	public static IQueueManagerCapability getQueueManagerService(String resourceId) throws ActivatorException {
+		try {
+			log.debug("Calling QueueManagerService");
+			return (IQueueManagerCapability) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
+		} catch (InvalidSyntaxException e) {
+			throw new ActivatorException(e);
+		}
+	}
+
+	protected static Filter createFilterQueueManager(String resourceId) throws InvalidSyntaxException {
+		Properties properties = new Properties();
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
+		return createServiceFilter(IQueueManagerCapability.class.getName(), properties);
+	}
 }
