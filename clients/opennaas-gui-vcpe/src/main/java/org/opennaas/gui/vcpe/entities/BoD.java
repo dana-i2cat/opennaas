@@ -3,13 +3,17 @@
  */
 package org.opennaas.gui.vcpe.entities;
 
+import javax.validation.Valid;
+
 /**
  * @author Jordi
  * 
  */
 public class BoD {
 
+	@Valid
 	private Interface	ifaceClient;
+	@Valid
 	private Interface	ifaceClientBackup;
 	private Link		linkMaster;
 	private Link		linkInter;

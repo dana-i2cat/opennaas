@@ -5,13 +5,22 @@ package org.opennaas.gui.vcpe.entities;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * @author Jordi
  */
 public class BGP {
 
+	@NotBlank(message = "{error.field.mandatory}")
 	private String			clientASNumber;
+	@NotBlank(message = "{error.field.mandatory}")
 	private String			nocASNumber;
+	@NotNull
+	@Size(min = 1, message = "{error.field.mandatory}")
 	private List<String>	clientPrefixes;
 
 	/**
