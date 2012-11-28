@@ -184,25 +184,6 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * View a VCPENetwork
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/view")
-	public String view(String vcpeNetworkId, Model model, Locale locale) {
-		LOGGER.debug("view entity with id: " + vcpeNetworkId);
-		try {
-			model.addAttribute("vcpenetwork", vcpeNetworkBO.getById(vcpeNetworkId));
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.view.message.error", null, locale));
-		}
-		return "viewVCPENetwork";
-	}
-
-	/**
 	 * Redirect to the form to modify the ip's
 	 * 
 	 * @param model
@@ -245,8 +226,11 @@ public class VCPENetworkController {
 	/**
 	 * Check if the VLAN is free in the environment
 	 * 
+	 * @param vcpeId
 	 * @param vlan
-	 * @return
+	 * @param model
+	 * @param locale
+	 * @return true if is free
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isVLANFree")
 	public @ResponseBody
@@ -265,8 +249,11 @@ public class VCPENetworkController {
 	/**
 	 * Check if the IP is free in the environment
 	 * 
-	 * @param vlan
-	 * @return
+	 * @param vcpeId
+	 * @param ip
+	 * @param model
+	 * @param locale
+	 * @return true if is free
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isIPFree")
 	public @ResponseBody
@@ -285,8 +272,12 @@ public class VCPENetworkController {
 	/**
 	 * Check if the Interface is free in the environment
 	 * 
-	 * @param vlan
-	 * @return
+	 * @param vcpeId
+	 * @param iface
+	 * @param port
+	 * @param model
+	 * @param locale
+	 * @return true if is free
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isInterfaceFree")
 	public @ResponseBody

@@ -69,6 +69,11 @@ OpenNaaS Custom CSS
 #_menu {
 	width: 175px;
 	min-height: 300px;
+	z-index: 1000;
+}
+
+#_menu ul {
+	min-width: 115px;
 }
 
 /* Home styles
@@ -261,7 +266,6 @@ OpenNaaS Custom CSS
 	width: 650px; 	
 }
 
-
 #client_data {
 	width: 700px;
 }
@@ -326,3 +330,18 @@ OpenNaaS Custom CSS
 
 /* Other styles
 ----------------------------------*/
+
+#tooltip {
+	display: none;
+	position: absolute;
+	cursor: pointer;
+	display: none;
+	border: solid 1px #eee;
+	padding: 10px;
+	margin-left: 5px;
+	margin-top: -4px;
+	background: #FBE3E4;
+	color: #8a1f11;
+	border-color: #FBC2C4;
+	z-index: 1000;
+}
