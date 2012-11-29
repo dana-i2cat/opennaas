@@ -67,20 +67,23 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("add entity: " + vcpeNetwork);
-		String view = "createVCPENetwork";
+		String view = "edit";
 		try {
 			if (!result.hasErrors()) {
 				vcpeNetwork.setId(vcpeNetworkBO.create(vcpeNetwork));
+				model.addAttribute("action", new String("update"));
 				model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 				model.addAttribute("infoMsg", messageSource
 						.getMessage("vcpenetwork.create.message.info", null, locale));
 			} else {
+				view = "createVCPENetwork";
 				model.addAttribute(vcpeNetwork);
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.create.message.error", null, locale));
 			}
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
+			view = "createVCPENetwork";
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 		}
@@ -305,4 +308,5 @@ public class VCPENetworkController {
 		request.setAttribute("exception", ex.getMessage());
 		return "exception";
 	}
+
 }

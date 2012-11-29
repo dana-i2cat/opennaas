@@ -12,7 +12,7 @@
 	<img src="<c:url value="/resources/images/opennaas-orange-150.png" />" height= "99px" width= "150px" alt="OpenNaaS Logo">
 </div>
 <div id="header_title">
-	<h1><spring:message code="index.title"/></h1>
+	<h1><spring:message code="header.title"/></h1>
 </div>	
 <div id="header_user" class="ui-state-default">
 	<span id="user_icon" class="ui-icon ui-icon-person"></span>
@@ -26,8 +26,8 @@
 		<a href="/opennaas-vcpe/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="home.home"/></button></a>
 	</div>
 	<div id="languages">
-		<input type="radio" id="english" name="radio"><label for="english">EN</label>
-		<input type="radio" id="spanish" name="radio"><label for="spanish">ES</label>
+		<input type="radio" id="english" name="radio"><label for="english"><spring:message code="header.language.english"/></label>
+		<input type="radio" id="spanish" name="radio"><label for="spanish"><spring:message code="header.language.spanish"/></label>
 	</div>
 </div>
 
