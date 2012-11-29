@@ -38,7 +38,7 @@
 				<input type="password" placeholder=<spring:message code="login.password"/> required="required" id="j_password" name="j_password"/>
 			</div>
 			<div>
-				<input type="submit" value="Login"  id="submitLogin"/>
+				<input type="submit" value="<spring:message code="buttons.login"/>"  id="submitLogin"/>
 			</div>
 		</form><!-- form -->
 		<div id="login-error">${error}</div>
