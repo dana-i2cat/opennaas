@@ -13,14 +13,14 @@
 	<div id="wan">
 		<h2><spring:message code="home.wan"/></h2>
 		<div id="cpe_core">
-		<h3><spring:message code="home.routerCore"/></h3>
-		<div>
-			<div id="config" class="ui-widget-content">
-				<p><b>Interface:</b> lo0.100</p>
-				<p><b>IP:</b> 193.1.190.141/30</p>
+			<h3><spring:message code="home.routerCore"/></h3>
+			<div>
+				<div id="config" class="ui-widget-content">
+					<p><b>Interface:</b> lo0.100</p>
+					<p><b>IP:</b> 193.1.190.141/30</p>
+				</div>
 			</div>
 		</div>
-	</div>
 	</div>	
 	<!-- WAN Interfaces -->
 	<div id="wan_master" class="ui-widget-content">	
