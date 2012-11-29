@@ -356,6 +356,11 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		return registration;
 	}
 
+	protected void unregisterService() {
+		if (registration != null)
+			registration.unregister();
+	}
+
 	/**
 	 * 
 	 * @return Action for this capability with given id stored in profile, or null if there is no such action in profile.

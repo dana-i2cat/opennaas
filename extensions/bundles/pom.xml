@@ -29,6 +29,7 @@
 		<module>router.capability.gretunnel</module>
 		<module>router.capability.ospf</module>
 		<module>router.capability.staticroute</module>
+		<module>router.capability.vrrp</module>
 		<module>router.model</module>
 
 		<module>fragment.velocity</module>

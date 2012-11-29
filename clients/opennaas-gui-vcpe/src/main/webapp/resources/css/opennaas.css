@@ -21,6 +21,49 @@ OpenNaaS Custom CSS
 	width: 500px;
 }
 
+/* Header styles
+----------------------------------*/
+#header_logo {
+	float: left;
+	width: 150px;
+}
+
+#header_title {
+	margin-left: 150px;
+	margin-top: 30px;
+	float: left;
+}
+
+#header_user {
+	margin-top: 10px;
+	float: right;
+	border: 0;
+	background: white none;
+}
+
+#header_menu {
+	clear: both;
+	height: 31px;
+}
+
+#languages {
+	float: right;
+	margin-right: 3px;
+}
+
+#home {
+	float: left;
+}
+
+#username {
+	float: left;
+}
+
+#user_icon {
+	float: left;
+}
+
+
 /* Menu styles
 ----------------------------------*/
 #_menu {
@@ -256,6 +299,64 @@ OpenNaaS Custom CSS
 
 #client_data {
 	width: 700px;
+}
+
+/* Home styles
+----------------------------------*/
+#cpe_master, #cpe_backup {
+	display: inline-block;
+	width: 280px;
+	margin-left: 60px;
+	margin-right: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	clear: both;
+}
+
+#wan_backup {
+	width: 150px;
+	padding: 5px;
+	float: left;
+	margin-left: 135px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#wan_master {
+	width: 150px;
+	padding: 5px;
+	float: left;
+	margin-left: 146px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#cpe_interfaces {
+	text-align: center;
+	width: 100%;
+}
+
+#cpe_client_master {
+	display: inline-block;
+	width: 150px;
+	padding: 5px;
+	clear: both;
+	margin-left: 5px;
+}
+
+#cpe_client_backup,#cpe_inter_master,#cpe_inter_backup {
+	display: inline-block;
+	width: 150px;
+	padding: 5px;
+	margin-left: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.config_content {
+	padding-top: 10px;
 }
 
 /* Other styles
