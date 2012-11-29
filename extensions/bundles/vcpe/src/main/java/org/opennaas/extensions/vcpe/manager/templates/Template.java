@@ -16,6 +16,7 @@ import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
+import org.opennaas.extensions.vcpe.model.VRRP;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 /**
@@ -61,6 +62,10 @@ public class Template implements ITemplate {
 
 		// Generate the logical model
 		List<VCPENetworkElement> logicalElements = generateLogicalElements(initialModel);
+
+		// set VRRP configuration
+		model.setVrrp(initialModel.getVrrp());
+		configureVRRP(model);
 
 		// Add all elements
 		elements.addAll(physicalElements);
@@ -301,6 +306,33 @@ public class Template implements ITemplate {
 		elements.addAll(autobahn.getInterfaces());
 
 		return elements;
+	}
+
+	private void configureVRRP(VCPENetworkModel model) {
+		// VRRP group
+		int vrrpGoup = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.group"));
+		// configuration VCPE-router1
+		int masterVRRPPriority = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.master.priority"));
+		// configuration VCPE-router2
+		int backupVRRPPriority = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.backup.priority"));
+
+		// get master router and interface
+		Router masterRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Interface masterInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_LOCAL);
+
+		// get backup router and interface
+		Router backupRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Interface backupInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_LOCAL);
+
+		// set values
+		VRRP vrrp = model.getVrrp();
+		vrrp.setGroup(vrrpGoup);
+		vrrp.setPriorityMaster(masterVRRPPriority);
+		vrrp.setPriorityBackup(backupVRRPPriority);
+		vrrp.setMasterRouter(masterRouter);
+		vrrp.setMasterInterface(masterInterface);
+		vrrp.setBackupRouter(backupRouter);
+		vrrp.setBackupInterface(backupInterface);
 	}
 
 	/**
