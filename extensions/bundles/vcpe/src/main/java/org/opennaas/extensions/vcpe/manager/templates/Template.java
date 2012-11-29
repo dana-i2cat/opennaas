@@ -64,8 +64,7 @@ public class Template implements ITemplate {
 		List<VCPENetworkElement> logicalElements = generateLogicalElements(initialModel);
 
 		// set VRRP configuration
-		model.setVrrp(initialModel.getVrrp());
-		configureVRRP(model);
+		model.setVrrp(configureVRRP(initialModel));
 
 		// Add all elements
 		elements.addAll(physicalElements);
@@ -308,7 +307,7 @@ public class Template implements ITemplate {
 		return elements;
 	}
 
-	private void configureVRRP(VCPENetworkModel model) {
+	private VRRP configureVRRP(VCPENetworkModel model) {
 		// VRRP group
 		int vrrpGoup = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.group"));
 		// configuration VCPE-router1
@@ -319,13 +318,14 @@ public class Template implements ITemplate {
 		// get master router and interface
 		Router masterRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
 		Interface masterInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_LOCAL);
-
+		masterRouter.getName();
 		// get backup router and interface
 		Router backupRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
 		Interface backupInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_LOCAL);
 
 		// set values
-		VRRP vrrp = model.getVrrp();
+		VRRP vrrp = new VRRP();
+		vrrp.setVirtualIPAddress(model.getVrrp().getVirtualIPAddress());
 		vrrp.setGroup(vrrpGoup);
 		vrrp.setPriorityMaster(masterVRRPPriority);
 		vrrp.setPriorityBackup(backupVRRPPriority);
@@ -333,6 +333,7 @@ public class Template implements ITemplate {
 		vrrp.setMasterInterface(masterInterface);
 		vrrp.setBackupRouter(backupRouter);
 		vrrp.setBackupInterface(backupInterface);
+		return vrrp;
 	}
 
 	/**

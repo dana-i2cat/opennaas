@@ -767,7 +767,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// obtain CIM model NetworkPort's (router interfaces)
 		NetworkPort masterNetworkPort = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(vrrp.getMasterInterface(), model);
-		NetworkPort backupNetworkPort = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(vrrp.getMasterInterface(), model);
+		NetworkPort backupNetworkPort = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(vrrp.getBackupInterface(), model);
 
 		// configure both VRRPProtocolEndpoint's
 		configureVRRPProtocolEndpoint(vrrp.getPriorityMaster(), vrrp.getMasterInterface(), vrrp.getMasterRouter(), vrrpGroup, masterNetworkPort);
@@ -787,13 +787,14 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// link VRRP CIM model elements to CIM model elements
 		// obtain router interface
-		if (networkPort.getName().equals(iface.getName()) &&
+		if (networkPort.getName().equals(iface.getPhysicalInterfaceName()) &&
 				networkPort.getPortNumber() == (iface.getPortNumber())) {
 			// obtain master interface IP address
 			List<ProtocolEndpoint> ipAddresses = networkPort.getProtocolEndpoint();
 			for (ProtocolEndpoint protocolEndpoint : ipAddresses) {
 				if (protocolEndpoint instanceof IPProtocolEndpoint &&
-						((IPProtocolEndpoint) protocolEndpoint).getIPv4Address().equals(iface.getIpAddress())) {
+						(((IPProtocolEndpoint) protocolEndpoint).getIPv4Address() + "/" + IPUtilsHelper
+								.parseLongToShortIpv4NetMask(((IPProtocolEndpoint) protocolEndpoint).getSubnetMask())).equals(iface.getIpAddress())) {
 					// link VRRPProtocolEndpoint with IPProtocolEndpoint
 					vrrpProtocolEndpoint.bindServiceAccessPoint(protocolEndpoint);
 				}
