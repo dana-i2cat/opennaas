@@ -194,18 +194,11 @@ $(function() {
 		jsPlumbNecessary = true;
 		/* vCPE client block */
 		$("#vcpe").accordion({
-			collapsible : true,
+			collapsible : false,
 			icons : false,
 			autoHeight : true,
 			heightStyle : "content",
-			beforeActivate : function() {
-				clearJSPlumbStuff();
-			},
-			activate : function(event, ui) {
-				var active = $("#vcpe").accordion("option", "active");
-				vCPEvisible = !(typeof active == 'boolean' && active == false);
-				setJSPlumbStuff(vCPEvisible);
-			}
+			
 		});
 		
 		/* BoD block */
@@ -219,7 +212,7 @@ $(function() {
 				clearJSPlumbStuff();
 			},
 			activate : function() {
-				setJSPlumbStuff(vCPEvisible);
+				setJSPlumbStuff(topologyVisible);
 			}
 		});
 		
@@ -229,11 +222,12 @@ $(function() {
 			collapsible : true,
 			icons : false,
 			heightStyle : "content",
+			active: false,
 			beforeActivate : function() {
 				clearJSPlumbStuff();
 			},
 			activate : function() {
-				setJSPlumbStuff(vCPEvisible);
+				setJSPlumbStuff(topologyVisible);
 			}
 		});
 		
@@ -248,7 +242,7 @@ $(function() {
 				clearJSPlumbStuff();
 			},
 			activate : function() {
-				setJSPlumbStuff(vCPEvisible);
+				setJSPlumbStuff(topologyVisible);
 			}
 			});
 		$( "#vrrp" ).accordion({
@@ -260,9 +254,32 @@ $(function() {
 				clearJSPlumbStuff();
 			},
 			activate : function() {
-				setJSPlumbStuff(vCPEvisible);
+				setJSPlumbStuff(topologyVisible);
 			}
 			});
+		
+		$( "#vcpe_topology" ).accordion({
+			collapsible: true,
+			icons: false,
+			heightStyle : "content",
+			active: false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe_topology").accordion("option", "active");
+				topologyVisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(topologyVisible);
+			}
+			});
+		
+		$( "#wan_logical" ).accordion({
+			collapsible: true,
+			icons: false,
+			heightStyle: "content",
+			active: false
+			});
+		
 		
 		/* Routers */
 		$( "#lr_master" ).accordion({
@@ -289,6 +306,7 @@ $(function() {
 	$( "#button9" ).button();
 	$( "#button10" ).button();
 	$( "#button11" ).button();
+	$( "#button23" ).button();
 	$( "#submitButton" ).button();
 	$("#waitingButton").button({
 		icons : {
@@ -309,6 +327,26 @@ $(function() {
 		icons : {
 			primary : 'ui-icon-triangle-1-e'
 		}
+	});
+	
+	/**
+	 * Firewall table
+	 */
+	$("#fwRemove1").button();
+	$("#fwRemove1").click(function( event ) {
+        event.preventDefault();
+	});
+	$("#fwRemove2").button();
+	$("#fwRemove2").click(function( event ) {
+        event.preventDefault();
+	});
+	$("#fwRemove3").button();
+	$("#fwRemove3").click(function( event ) {
+        event.preventDefault();
+	});
+	$("#fwAdd").button();
+	$("#fwAdd").click(function( event ) {
+        event.preventDefault();
 	});
 
 	/**
@@ -362,6 +400,7 @@ $(function() {
 		$("#english").attr("checked", "checked").button("refresh");
 	}
 	
+	 $( "#radioset" ).buttonset();
 });
 
 //Read a page's GET URL variables and return them as an associative array.
@@ -420,28 +459,27 @@ function setJSPlumbHome() {
  */
 // set jsPlumb stuff
 function setJSPlumbStuff(setExtra) {
-	// WAN master & backup -- lola & myre
-	addConnection("up_master", "lr_master", "acc_body", 0.5, 1, 0.5, 0, false);
-	addConnection("up_backup", "lr_backup", "acc_body", 0.5, 1, 0.5, 0, false);
+	// WAN  -- UP master & backup
+	addConnection("wan_logical", "up_master", "createVCPENetwork", 0.268, 1, 0.5, 0, false);
+	addConnection("wan_logical", "up_backup", "createVCPENetwork", 0.738, 1, 0.5, 0, false);
 	
-	// lola & myre -- down & inter, master & backup
-	addConnection("lr_master", "client_master", "acc_body", 0.25, 1, 0.7, 0, false);
-	addConnection("lr_master", "inter_master", "acc_body", 0.75, 1, 0.5, 0, false);
-	addConnection("lr_backup", "inter_backup", "acc_body", 0.275, 1, 0.5, 0, false);
-	addConnection("lr_backup", "client_backup", "acc_body", 0.71, 1, 0.2, 0, false);
-	
-	// inter master -- inter backup
-	addConnection("inter_master", "inter_backup", "acc_body", 1, 0.5, 0, 0.5, false);
-	
-	// client master & client backup -- client down master & client down backup
 	if(setExtra) {
-		addConnection("client_master", "client_down_master", "body", 0.5, 1, 0.5, 0, true);
-		addConnection("client_backup", "client_down_backup", "body", 0.5, 1, 0.5, 0, true);
+		// UP master & backup -- LR master & backup
+		addConnection("up_master", "lr_master", "createVCPENetwork", 0.5, 1, 0.425, 0, true);
+		addConnection("up_backup", "lr_backup", "createVCPENetwork", 0.5, 1, 0.6, 0, true);	
+		
+		// CLIENT DOWN master & backup -- CLIENT master & backup
+		addConnection("client_master", "client_down_master", "createVCPENetwork", 0.5, 1, 0.5, 0, true);
+		addConnection("client_backup", "client_down_backup", "createVCPENetwork", 0.5, 1, 0.5, 0, true);			
 	}
 	
-	// client down master & client down backup -- client
-	addConnection("client_down_master", "client", "body", 0.5, 1, 0.16, 0, false);
-	addConnection("client_down_backup", "client", "body", 0.5, 1, 0.845, 0, false);	
+	// LR master & backup -- CLIENT DOWN master & backup
+	addConnection("lr_master", "client_master", "vcpe_routers", 0.172, 1, 0.5, 0, false);
+	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.828, 1, 0.5, 0, false);
+	
+	// CLIENT DOWN master & backup -- CLIENT
+	addConnection("client_down_master", "client", "createVCPENetwork", 0.5, 1, 0.175, 0, false);
+	addConnection("client_down_backup", "client", "createVCPENetwork", 0.5, 1, 0.825, 0, false);
 }
 
 // add a connection and its endpoints
@@ -558,7 +596,7 @@ var extra_endpoints = new Array();
 var extra_connections = new Array();
 
 // state of vCPE accordion
-var vCPEvisible = true;
+var topologyVisible = false;
 
 $(function() {
 	if(jsPlumbNecessary){
@@ -586,10 +624,43 @@ $(function() {
 				ConnectorZIndex : 5
 			});
 			if($("#createVCPENetwork").length){
-				setJSPlumbStuff(vCPEvisible);
+				setJSPlumbStuff(topologyVisible);
 			} else if($("#home_body").length){
 				setJSPlumbHome();
 			}
 		});
 	}
+	
+	$.fn.styleTable = function (options) {
+        var defaults = {
+            css: 'styleTable'
+        };
+        options = $.extend(defaults, options);
+
+        return this.each(function () {
+
+            input = $(this);
+            input.addClass(options.css);
+
+            input.find("tr").live('mouseover mouseout', function (event) {
+                if (event.type == 'mouseover') {
+                    $(this).children("td").addClass("ui-state-hover");
+                } else {
+                    $(this).children("td").removeClass("ui-state-hover");
+                }
+            });
+
+            input.find("th").addClass("ui-state-default");
+            input.find("td").addClass("ui-widget-content");
+
+            input.find("tr").each(function () {
+                $(this).children("td:not(:first)").addClass("first");
+                $(this).children("th:not(:first)").addClass("first");
+            });
+        });
+    };
+});
+
+$(document).ready(function () {
+    $("#firewallTable").styleTable();
 });
