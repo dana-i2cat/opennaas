@@ -295,19 +295,19 @@ $(function() {
 	}
 	
 	/* Buttons */
-	$( "#button" ).button();
-	$( "#button2" ).button();
-	$( "#button3" ).button();
-	$( "#button4" ).button();
-	$( "#button5" ).button();
-	$( "#button6" ).button();
-	$( "#button7" ).button();
-	$( "#button8" ).button();
-	$( "#button9" ).button();
-	$( "#button10" ).button();
-	$( "#button11" ).button();
-	$( "#button23" ).button();
-	$( "#submitButton" ).button();
+	$("#button").button();
+	$("#button2").button();
+	$("#button3").button();
+	$("#button4").button();
+	$("#button5").button();
+	$("#button6").button();
+	$("#button7").button();
+	$("#button8").button();
+	$("#button9").button();
+	$("#button10").button();
+	$("#button11").button();
+	$("#button12").button();
+	$("#submitButton").button();
 	$("#waitingButton").button({
 		icons : {
 			primary : 'ui-icon-newwin'

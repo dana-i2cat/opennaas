@@ -67,10 +67,11 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("add entity: " + vcpeNetwork);
-		String view = "home";
+		String view = "edit";
 		try {
 			if (!result.hasErrors()) {
 				vcpeNetwork.setId(vcpeNetworkBO.create(vcpeNetwork));
+				model.addAttribute("action", new String("update"));
 				model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 				model.addAttribute("infoMsg", messageSource
 						.getMessage("vcpenetwork.create.message.info", null, locale));
@@ -307,4 +308,5 @@ public class VCPENetworkController {
 		request.setAttribute("exception", ex.getMessage());
 		return "exception";
 	}
+
 }
