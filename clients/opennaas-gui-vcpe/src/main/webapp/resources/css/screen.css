@@ -355,24 +355,37 @@ form.inline p {
 }
 
 .error,.notice,.success {
-	padding: .8em;
 	margin-bottom: 1em;
 	border: 2px solid #ddd;
 }
 
 .error {
+	padding: .8em;
 	background: #FBE3E4;
 	color: #8a1f11;
 	border-color: #FBC2C4;
 }
 
+label.error {
+	padding: .3em .6em !important;
+}
+
+input.error {
+	padding: 0em !important;
+	background: #FBE3E4 !important;
+	color: #8a1f11 !important;
+	border-color: #FBC2C4 !important;
+}
+
 .notice {
+	padding: .8em;
 	background: #FFF6BF;
 	color: #514721;
 	border-color: #FFD324;
 }
 
 .success {
+	padding: .8em;
 	background: #E6EFC2;
 	color: #264409;
 	border-color: #C6D880;
@@ -609,6 +622,10 @@ input.span-23,textarea.span-23 {
 
 input.span-24,textarea.span-24 {
 	width: 938px !important;
+}
+
+input[readonly="readonly"] {
+	background: #eeeeee;
 }
 
 .append-1 {

@@ -16,17 +16,39 @@ function updateHeader() {
 }
 
 /**
- * Ajax call to check if the VLAN is free in the environment
+ * Ajax call to check if the interface is free in the environment
  * 
  * @param vcpeId
- * @param vlan
+ * @param iface
+ * @param port
  */
-function isVLANFree(vcpeId, vlan) {
+function isInterfaceFree(vcpeId, iface, port) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId=" + vcpeId + "&iface=" + iface.value +"&port=" + port.value,
 		success: function(data) {
-		    $('#ajaxUpdate').html(data);			    
+			if (data == 'false') {
+				// Case not available
+				// First delete the tooltip
+		    	$("#tooltip").remove();
+		    	// Add the new tooltip, error classes and disable inputs
+				$(iface).after("<div id='tooltip'>The Interface is not available</div>");
+				iface.className = 'error';
+				port.className = 'error';	
+		    	// Show the tooltip
+				$("#tooltip").show("fade", {}, 400);
+			    $("#tooltip").click(function() {
+			    	// On click hide tooltip 
+			    	$(this).hide("fade", {}, 400); 
+			    	$(this).remove();
+			    });
+			} else {
+				// Case available, revert changes
+		    	iface.className = ''; 
+		    	port.className = ''; 
+				$("#tooltip").hide("fade", {}, 400);
+		    	$("#tooltip").remove();
+			}
 		}
 	});
 }
@@ -40,26 +62,65 @@ function isVLANFree(vcpeId, vlan) {
 function isIPFree(vcpeId, ip) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId=" + vcpeId + "&ip=" + ip,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId=" + vcpeId + "&ip=" + ip.value,
 		success: function(data) {
-		    $('#ajaxUpdate').html(data);			    
+			if (data == 'false') {
+				// Case not available
+				// First delete the tooltip
+		    	$("#tooltip").remove();
+		    	// Add the new tooltip, error classes and disable inputs
+				$(ip).after("<div id='tooltip'>The IP Address is not available</div>");
+				ip.className = 'error';	
+				// Show the tooltip
+				$("#tooltip").show("fade", {}, 400);
+			    $("#tooltip").click(function() {
+			    	// On click hide tooltip 
+			    	$(this).hide("fade", {}, 400); 
+			    	$(this).remove();
+			    });
+			} else {
+				// Case available, revert changes
+				ip.className = '';
+				$("#tooltip").hide("fade", {}, 400);
+		    	$("#tooltip").remove();
+
+			}
 		}
 	});
 }
 
 /**
- * Ajax call to check if the interface is free in the environment
+ * Ajax call to check if the VLAN is free in the environment
  * 
+ * @param ifaceName
  * @param vcpeId
- * @param iface
- * @param port
+ * @param vlan
  */
-function isInterfaceFree(vcpeId, iface, port) {
+function isVLANFree(vcpeId, vlan, ifaceName) {
 	$.ajax({
 		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId=" + vcpeId + "&iface=" + iface +"&port=" + port,
+		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan.value + "&ifaceName=" + ifaceName.value,
 		success: function(data) {
-		    $('#ajaxUpdate').html(data);			    
+			if (data == 'false') {
+				// Case not available
+				// First delete the tooltip
+		    	$("#tooltip").remove();
+		    	// Add the new tooltip, error classes and disable inputs
+				$(vlan).after("<div id='tooltip'>The VLAN is not available</div>");
+				vlan.className = 'error';	
+				// Show the tooltip
+				$("#tooltip").show("fade", {}, 400);
+			    $("#tooltip").click(function() {
+			    	// On click hide tooltip 
+			    	$(this).hide("fade", {}, 400); 
+			    	$(this).remove();
+			    });
+			} else {
+				// Case available, revert changes
+				vlan.className = '';
+				$("#tooltip").hide("fade", {}, 400);
+		    	$("#tooltip").remove();
+			}
 		}
 	});
 }
@@ -69,89 +130,152 @@ function isInterfaceFree(vcpeId, iface, port) {
  * 
  */
 $(function() {
-	/* vCPE customer block */
-	$("#vcpe").accordion({
-		collapsible : true,
-		icons : false,
-		autoHeight : true,
-		heightStyle : "content",
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function(event, ui) {
-			var active = $("#vcpe").accordion("option", "active");
-			vCPEvisible = !(typeof active == 'boolean' && active == false);
-			setJSPlumbStuff(vCPEvisible);
-		}
-	});
 	
-	/* BoD block */
-	$("#bod").accordion({
-		collapsible : true,
-		icons : false,
-		autoHeight : true,
-		heightStyle : "content",
-		active: false,
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
-	});
-	
-	
-	/* Customer block */
-	$("#customer").accordion({
-		collapsible : true,
-		icons : false,
-		heightStyle : "content",
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
-	});
-	
-	
-	/* Protocols */
-	$( "#bgp" ).accordion({
-		collapsible: true,
-		icons: false,
-		heightStyle : "content",
-		active: false,
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
+	// only apply accordion styles when createVCPENetwork.jsp is loaded
+	if($("#home_body").length) {
+		jsPlumbNecessary = true;
+		/**
+		 * Home view
+		 */
+		/* WAN */
+		$("#wan").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false,
+			beforeActivate : function() {
+				clearJSPlumbHome();
+			},
+			activate : function() {
+				setJSPlumbHome();
+			}
 		});
-	$( "#vrrp" ).accordion({
-		collapsible: true,
-		icons: false,
-		heightStyle : "content",
-		active: false,
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(vCPEvisible);
-		}
+		
+		/* Physical routers */
+		$("#cpe_master").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader: "ui-icon-check"
+			}
+		});
+		$("#cpe_backup").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {				
+				activeHeader: "ui-icon-check"
+			}
+		});
+		$("#cpe_core").accordion({
+			collapsible : false,
+			icons : false,
+			heightStyle : "content"
+		});		
+		
+		/* BoD block */
+		$("#cpe_bod").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false
 		});
 	
-	/* Routers */
-	$( "#lr_master" ).accordion({
-		collapsible: false,
-		icons: false,
-		heightStyle: "content"
+		/* Client block */
+		$("#cpe_client").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false
 		});
-	$( "#lr_backup" ).accordion({
-		collapsible: false,
-		icons: false,
-		heightStyle: "content"
+		
+	}
+	// only apply accordion styles when createVCPENetwork.jsp is loaded
+	if($("#createVCPENetwork").length) {
+		jsPlumbNecessary = true;
+		/* vCPE client block */
+		$("#vcpe").accordion({
+			collapsible : true,
+			icons : false,
+			autoHeight : true,
+			heightStyle : "content",
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe").accordion("option", "active");
+				vCPEvisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(vCPEvisible);
+			}
 		});
+		
+		/* BoD block */
+		$("#bod").accordion({
+			collapsible : true,
+			icons : false,
+			autoHeight : true,
+			heightStyle : "content",
+			active: false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
+		});
+		
+		
+		/* Client block */
+		$("#client").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
+		});
+		
+		
+		/* Protocols */
+		$( "#bgp" ).accordion({
+			collapsible: true,
+			icons: false,
+			heightStyle : "content",
+			active: false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
+			});
+		$( "#vrrp" ).accordion({
+			collapsible: true,
+			icons: false,
+			heightStyle : "content",
+			active: false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(vCPEvisible);
+			}
+			});
+		
+		/* Routers */
+		$( "#lr_master" ).accordion({
+			collapsible: false,
+			icons: false,
+			heightStyle: "content"
+			});
+		$( "#lr_backup" ).accordion({
+			collapsible: false,
+			icons: false,
+			heightStyle: "content"
+			});
+	}
 	
 	/* Buttons */
 	$( "#button" ).button();
@@ -166,11 +290,133 @@ $(function() {
 	$( "#button10" ).button();
 	$( "#button11" ).button();
 	$( "#submitButton" ).button();
+	$("#waitingButton").button({
+		icons : {
+			primary : 'ui-icon-newwin'
+		}
+	});
+	$("#homeButton").button({		
+		icons : {
+			primary : 'ui-icon-home'
+		}
+	});
+	$("#logoutButton").button({		
+		icons : {
+			secondary : 'ui-icon-power'
+		}
+	});
+	$("#submitLogin").button({		
+		icons : {
+			primary : 'ui-icon-triangle-1-e'
+		}
+	});
 
+	/**
+	 * Waiting dialog
+	 */
+	// Link to open the dialog
+	$("#submitButton").click(function(event) {
+		$("#pleaseWait").dialog("open");
+	});
+
+	$("#pleaseWait").dialog({
+		modal : true,
+		autoOpen : false,
+		width : 400,
+		resizable : false,
+		draggable : false,
+		closeOnEscape : false,
+		open : function() {
+			$('.ui-widget-overlay').hide().fadeIn();
+			$(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		},
+		show : "fade",
+		hide : "fade"
+	});
+	
+	/**
+	 * Language selection
+	 */    
+    $( "#languages" ).buttonset( {
+    	 icons: {
+             primary: "ui-icon-flag"
+         }
+    });        
+	// English
+	$("#english").click(function(event) {
+		open: 
+			window.open("?locale=en_gb", "_self");
+	});	
+	// Spanish
+	$("#spanish").click(function(event) {
+		open: 
+			window.open("?locale=es_es", "_self");			
+	});	
+	// Check language to activate button
+	if ($.getUrlVar('locale') == "es_es")
+	{
+		$("#spanish").attr("checked", "checked").button("refresh");
+	}
+	else
+	{
+		$("#english").attr("checked", "checked").button("refresh");
+	}
+	
 });
 
+//Read a page's GET URL variables and return them as an associative array.
+$.extend({
+	  getUrlVars: function(){
+	    var vars = [], hash;
+	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	    for(var i = 0; i < hashes.length; i++)
+	    {
+	      hash = hashes[i].split('=');
+	      vars.push(hash[0]);
+	      vars[hash[0]] = hash[1];
+	    }
+	    return vars;
+	  },
+	  getUrlVar: function(name){
+	    return $.getUrlVars()[name];
+	  }
+	});
+
+
 /**
- * jsPlumb stuff
+ * jsPlumb home
+ */
+// set jsPlumb stuff
+function setJSPlumbHome() {
+	
+	// WAN -- WAN master & backup
+	addConnection("wan", "wan_master", "home_body", 0.302, 1, 0.5, 0, false);
+	addConnection("wan", "wan_backup", "home_body", 0.7, 1, 0.5, 0, false);
+	
+	// WAN master & backup -- router master & backup
+	addConnection("wan_master", "cpe_master", "home_body", 0.5, 1, 0.6, 0, false);
+	addConnection("wan_backup", "cpe_backup", "home_body", 0.5, 1, 0.4, 0, false);
+	
+	// router master -- client master & inter master
+	addConnection("cpe_master", "cpe_client_master", "home_body", 0.22, 1, 0.5, 0, false);
+	addConnection("cpe_master", "cpe_inter_master", "home_body", 0.83, 1, 0.5, 0, false);
+	
+	// router master -- client master & inter master
+	addConnection("cpe_backup", "cpe_inter_backup", "home_body", 0.18, 1, 0.5, 0, false);
+	addConnection("cpe_backup", "cpe_client_backup", "home_body", 0.78, 1, 0.5, 0, false);
+	
+	// client master & backup -- client
+	addConnection("cpe_client_master", "cpe_client", "home_body", 0.5, 1, 0.165, 0, false);
+	addConnection("cpe_client_backup", "cpe_client", "home_body", 0.5, 1, 0.845, 0, false);
+	
+	// inter master & backup -- bod
+	addConnection("cpe_inter_master", "cpe_bod", "home_body", 0.5, 1, 0.39, 0, false);
+	addConnection("cpe_inter_backup", "cpe_bod", "home_body", 0.5, 1, 0.615, 0, false);	
+}
+
+
+/**
+ * jsPlumb create and view
  */
 // set jsPlumb stuff
 function setJSPlumbStuff(setExtra) {
@@ -179,23 +425,23 @@ function setJSPlumbStuff(setExtra) {
 	addConnection("up_backup", "lr_backup", "acc_body", 0.5, 1, 0.5, 0, false);
 	
 	// lola & myre -- down & inter, master & backup
-	addConnection("lr_master", "customer_master", "acc_body", 0.25, 1, 0.7, 0, false);
+	addConnection("lr_master", "client_master", "acc_body", 0.25, 1, 0.7, 0, false);
 	addConnection("lr_master", "inter_master", "acc_body", 0.75, 1, 0.5, 0, false);
 	addConnection("lr_backup", "inter_backup", "acc_body", 0.275, 1, 0.5, 0, false);
-	addConnection("lr_backup", "customer_backup", "acc_body", 0.71, 1, 0.2, 0, false);
+	addConnection("lr_backup", "client_backup", "acc_body", 0.71, 1, 0.2, 0, false);
 	
 	// inter master -- inter backup
 	addConnection("inter_master", "inter_backup", "acc_body", 1, 0.5, 0, 0.5, false);
 	
-	// customer master & customer backup -- customer down master & customer down backup
+	// client master & client backup -- client down master & client down backup
 	if(setExtra) {
-		addConnection("customer_master", "customer_down_master", "body", 0.5, 1, 0.5, 0, true);
-		addConnection("customer_backup", "customer_down_backup", "body", 0.5, 1, 0.5, 0, true);
+		addConnection("client_master", "client_down_master", "body", 0.5, 1, 0.5, 0, true);
+		addConnection("client_backup", "client_down_backup", "body", 0.5, 1, 0.5, 0, true);
 	}
 	
-	// customer down master & customer down backup -- customer
-	addConnection("customer_down_master", "customer", "body", 0.5, 1, 0.16, 0, false);
-	addConnection("customer_down_backup", "customer", "body", 0.5, 1, 0.845, 0, false);	
+	// client down master & client down backup -- client
+	addConnection("client_down_master", "client", "body", 0.5, 1, 0.16, 0, false);
+	addConnection("client_down_backup", "client", "body", 0.5, 1, 0.845, 0, false);	
 }
 
 // add a connection and its endpoints
@@ -267,6 +513,38 @@ function clearJSPlumbStuff() {
 	}
 }
 
+//clear all jsPlumb stuff
+function clearJSPlumbHome() {
+	jsPlumb.deleteEveryEndpoint();
+	jsPlumb.detachAllConnections();
+
+	// remove all overlays of each connection
+	if (intra_connections != null) {
+		var connection = null;
+		while ((connection = intra_connections.pop()) != null) {
+			connection.removeAllOverlays();
+		}
+	}
+	
+	if (extra_connections != null) {
+		var connection = null;
+		while ((connection = extra_connections.pop()) != null) {
+			connection.removeAllOverlays();
+		}
+	}
+
+	// detach all endpoints
+	if (intra_endpoints != null) {
+		var endpoint = null;
+		while ((endpoint = intra_endpoints.pop()) != null) {
+			endpoint.detachAll();
+		}
+	}
+}
+
+// jsPlumb instance necessary
+var jsPlumbNecessary = false;
+
 // jsPlumb instance
 var jsP;
 //jsPlumb intra accordion endpoints
@@ -283,29 +561,35 @@ var extra_connections = new Array();
 var vCPEvisible = true;
 
 $(function() {
-	// initialize jsPlumb instance
-	jsP = jsPlumb.getInstance({
-		PaintStyle : {
-			lineWidth : 1,
-			strokeStyle : "#567567",
-			outlineColor : "#6E6E6E",
-			outlineWidth : 1
-		},
-		Connector : "Straight",
-		Endpoint : "Blank"
-	});
-
-	// initialize endpoints and connections arrays
-	intra_endpoints = new Array();
-	intra_connections = new Array();
-	extra_endpoints = new Array();
-	extra_connections = new Array();
-
-	// draw jsPlumb stuff when view stuff is ready
-	jsPlumb.ready(function() {
-		jsPlumb.importDefaults({
-			ConnectorZIndex : 5
+	if(jsPlumbNecessary){
+		// initialize jsPlumb instance
+		jsP = jsPlumb.getInstance({
+			PaintStyle : {
+				lineWidth : 1,
+				strokeStyle : "#567567",
+				outlineColor : "#6E6E6E",
+				outlineWidth : 1
+			},
+			Connector : "Straight",
+			Endpoint : "Blank"
 		});
-		setJSPlumbStuff(vCPEvisible);
-	});
+	
+		// initialize endpoints and connections arrays
+		intra_endpoints = new Array();
+		intra_connections = new Array();
+		extra_endpoints = new Array();
+		extra_connections = new Array();
+	
+		// draw jsPlumb stuff when view stuff is ready
+		jsPlumb.ready(function() {
+			jsPlumb.importDefaults({
+				ConnectorZIndex : 5
+			});
+			if($("#createVCPENetwork").length){
+				setJSPlumbStuff(vCPEvisible);
+			} else if($("#home_body").length){
+				setJSPlumbHome();
+			}
+		});
+	}
 });

@@ -91,12 +91,13 @@ public class VCPENetworkBO {
 
 	/**
 	 * @param vlan
+	 * @param ifaceName
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isVLANFree(String vcpeId, String vlan) throws RestServiceException {
-		LOGGER.debug("check if the VLAN: " + vlan + " is free in the vcpeId: " + vcpeId);
-		return vcpeNetworkService.isVLANFree(vcpeId, vlan);
+	public Boolean isVLANFree(String vcpeId, String vlan, String ifaceName) throws RestServiceException {
+		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the ifaceName: " + ifaceName + ". The vcpeID: " + vcpeId);
+		return vcpeNetworkService.isVLANFree(vcpeId, vlan, ifaceName);
 	}
 
 	/**
@@ -105,7 +106,7 @@ public class VCPENetworkBO {
 	 * @throws RestServiceException
 	 */
 	public Boolean isIPFree(String vcpeId, String ip) throws RestServiceException {
-		LOGGER.debug("check if the IP: " + ip + " is free in the vcpeId: " + vcpeId);
+		LOGGER.debug("check if the IP: " + ip + " is free. The vcpeID: " + vcpeId);
 		return vcpeNetworkService.isIPFree(vcpeId, ip);
 	}
 
@@ -116,7 +117,7 @@ public class VCPENetworkBO {
 	 * @throws RestServiceException
 	 */
 	public Boolean isInterfaceFree(String vcpeId, String iface, String port) throws RestServiceException {
-		LOGGER.debug("check if the Interface: " + iface + "." + port + "is free in the vcpeId: " + vcpeId);
+		LOGGER.debug("check if the Interface: " + iface + "." + port + "is free. The vcpeID: " + vcpeId);
 		return vcpeNetworkService.isInterfaceFree(vcpeId, iface, port);
 	}
 

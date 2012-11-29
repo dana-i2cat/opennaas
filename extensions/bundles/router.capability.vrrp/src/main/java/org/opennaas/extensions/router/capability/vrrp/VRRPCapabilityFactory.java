@@ -6,6 +6,9 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
+/**
+ * @author Julio Carlos Barrera
+ */
 public class VRRPCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
@@ -20,5 +23,4 @@ public class VRRPCapabilityFactory extends AbstractCapabilityFactory {
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
 		return new VRRPCapability(capabilityDescriptor, resourceId);
 	}
-
 }
