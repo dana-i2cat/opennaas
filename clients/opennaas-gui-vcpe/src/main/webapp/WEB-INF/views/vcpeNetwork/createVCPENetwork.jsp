@@ -316,34 +316,69 @@
 		<div id="bod">
 			<h2><spring:message code="bod"/></h2>
 			<div>
-				<div id="bod_master" class="ui-widget">
-					<h3><spring:message code="vcpenetwork.bod.master"/></h3>
-					<div>
-						<div id="config" class="ui-widget-content">
-							<p>Global configuration parameters</p>
-						</div>
-						<button id="button7" class="button"><spring:message code="buttons.cancel"/></button>
-						<button id="button8" class="button"><spring:message code="buttons.renew"/></button>
+				<div id="bod_master" class="ui-widget-content"> 
+					<label><spring:message code="bod.linkMaster" /></label>
+					<div id="bod_inputs">
+						<form:label path="bod.linkMaster.source.name">
+							<form:label path="bod.linkMaster.source.port">
+								<spring:message code="interface.name" />:&nbsp;
+							</form:label>
+						</form:label>
+						${VCPENetwork.bod.linkMaster.source.name}.${VCPENetwork.bod.linkMaster.source.port}
+						<br>
+						<form:label path="bod.linkMaster.source.vlan">
+							<spring:message code="interface.vlan" />:&nbsp;
+						</form:label>
+						${VCPENetwork.bod.linkMaster.source.vlan}
+						<br>
+					</div>
+					<div id="bod_buttons">
+						<button id="button7" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button8" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>					
 					</div>
 				</div>
-				<div id="bod_inter">
-					<h3>Inter</h3>
-					<div class="ui-widget">
-						<div id="config" class="ui-widget-content">
-							<p>Global configuration parameters</p>
-						</div>
-						<button id="button9" class="button"><spring:message code="buttons.cancel"/></button>
-						<button id="button10" class="button"><spring:message code="buttons.renew"/></button>
+
+				<div id="bod_inter" class="ui-widget-content"> 
+					<label><spring:message code="bod.linkInter" /></label>
+					<div id="bod_inputs">
+						<form:label path="bod.linkInter.source.name">
+							<form:label path="bod.linkInter.source.port">
+								<spring:message code="interface.name" />:&nbsp;
+							</form:label>
+						</form:label>
+						${VCPENetwork.bod.linkInter.source.name}.${VCPENetwork.bod.linkInter.source.port}
+						<br>
+						<form:label path="bod.linkInter.source.vlan">
+							<spring:message code="interface.vlan" />:&nbsp;
+						</form:label>
+						${VCPENetwork.bod.linkInter.source.vlan}
+						<br>
+					</div>
+					<div id="bod_buttons">
+						<button id="button9" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button10" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
-				<div id="bod_backup">
-					<h3>Backup</h3>
-					<div class="ui-widget">
-						<div id="config" class="ui-widget-content">
-							<p>Global configuration parameters</p>
-						</div>
-						<button id="button11" class="button"><spring:message code="buttons.cancel"/></button>
-						<button id="button23" class="button"><spring:message code="buttons.renew"/></button>
+				
+				<div id="bod_backup" class="ui-widget-content"> 
+					<label><spring:message code="bod.linkBackup" /></label>
+					<div id="bod_inputs">
+						<form:label path="bod.linkBackup.source.name">
+							<form:label path="bod.linkBackup.source.port">
+								<spring:message code="interface.name" />:&nbsp;
+							</form:label>
+						</form:label>
+						${VCPENetwork.bod.linkBackup.source.name}.${VCPENetwork.bod.linkBackup.source.port}
+						<br>
+						<form:label path="bod.linkBackup.source.vlan">
+							<spring:message code="interface.vlan" />:&nbsp;
+						</form:label>
+						${VCPENetwork.bod.linkBackup.source.vlan}
+						<br>
+					</div>
+					<div id="bod_buttons">
+						<button id="button11" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button12" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
 			</div>

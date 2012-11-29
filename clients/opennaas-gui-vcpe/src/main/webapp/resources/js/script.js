@@ -228,6 +228,7 @@ $(function() {
 	$("#button9").button();
 	$("#button10").button();
 	$("#button11").button();
+	$("#button12").button();
 	$("#submitButton").button();
 
 	$("#waitingButton").button({

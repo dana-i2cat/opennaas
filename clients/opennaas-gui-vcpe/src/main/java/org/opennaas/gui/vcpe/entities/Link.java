@@ -5,8 +5,6 @@ package org.opennaas.gui.vcpe.entities;
 
 import java.util.List;
 
-import org.opennaas.extensions.vcpe.model.Interface;
-
 /**
  * @author Jordi
  */
