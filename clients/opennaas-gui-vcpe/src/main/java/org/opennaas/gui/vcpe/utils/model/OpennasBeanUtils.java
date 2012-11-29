@@ -41,10 +41,13 @@ public class OpennasBeanUtils {
 		// IP Range
 		modelOut.setClientIpAddressRange(modelIn.getClientIpRange());
 		// BGP
-		if (modelIn.getBgp() != null)
+		if (modelIn.getBgp() != null) {
 			modelOut.setBgp(getBGP(modelIn.getBgp()));
+		}
 		// VRRP
-		modelOut.setVrrp(getVRRP(modelIn.getVrrp()));
+		if (modelIn.getVrrp() != null) {
+			modelOut.setVrrp(getVRRP(modelIn.getVrrp()));
+		}
 		// Elements
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		modelOut.setElements(elements);
@@ -59,8 +62,10 @@ public class OpennasBeanUtils {
 		elements.addAll(logicalRouter1.getInterfaces());
 		elements.addAll(logicalRouter2.getInterfaces());
 		// Add interfaces BoD
-		elements.add(getInterface(modelIn.getBod().getIfaceClient()));
-		elements.add(getInterface(modelIn.getBod().getIfaceClientBackup()));
+		if (modelIn.getBod() != null) {
+			elements.add(getInterface(modelIn.getBod().getIfaceClient()));
+			elements.add(getInterface(modelIn.getBod().getIfaceClientBackup()));
+		}
 		return modelOut;
 	}
 

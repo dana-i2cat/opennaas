@@ -16,6 +16,43 @@
 	<form:hidden path="logicalRouter1.templateName"/>
 	<form:hidden path="logicalRouter2.name"/>
 	<form:hidden path="logicalRouter2.templateName"/>
+
+<div>				
+	<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}"	varStatus="vs" var="item">	
+		<c:choose>
+			<c:when test="${item.labelName == 'Up'}">																						
+				<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
+				<form:hidden path="logicalRouter1.interfaces[${vs.index}].name" />
+				<form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
+				<form:hidden path="logicalRouter1.interfaces[${vs.index}].port" />
+				<form:hidden path="logicalRouter1.interfaces[${vs.index}].vlan" />																					
+				<form:hidden path="logicalRouter1.interfaces[${vs.index}].ipAddress" />																
+			</c:when>
+		</c:choose>		
+	</c:forEach>
+</div>
+
+<div>				
+	<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}"	varStatus="vs" var="item">	
+		<c:choose>
+			<c:when test="${item.labelName == 'Up'}">																						
+				<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
+				<form:hidden path="logicalRouter2.interfaces[${vs.index}].name" />
+				<form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
+				<form:hidden path="logicalRouter2.interfaces[${vs.index}].port" />
+				<form:hidden path="logicalRouter2.interfaces[${vs.index}].vlan" />																					
+				<form:hidden path="logicalRouter2.interfaces[${vs.index}].ipAddress" />																
+			</c:when>
+		</c:choose>		
+	</c:forEach>
+</div>
+
+	<div>											
+		<form:hidden path="bgp.clientASNumber"/>												
+		<form:hidden path="bgp.nocASNumber" />							
+		<form:hidden path="bgp.clientPrefixes"/>					
+	</div>
+				
 	
 <div id="client_master_box" class="ui-widget-content">				
 	<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}"	varStatus="vs" var="item">	
@@ -112,7 +149,26 @@
 <!-- Start client -->
 <div id="client_box">
 	<h2>Client</h2>
-	<div id="client_data" class="fields">
+	<div id="client_data_box" class="fields">
+	<!-- VRRP -->
+	<div id="vrrp_box">
+		<h3><spring:message code="vrrp"/></h3>
+		<div  id="vrrp_data_box" class="fields">
+			<form:hidden path="vrrp.priorityMaster" />	
+			<form:hidden path="vrrp.priorityBackup" />	
+			<form:label for="vrrp.virtualIPAddress" path="vrrp.virtualIPAddress" cssErrorClass="error_field">
+				<spring:message code="vrrp.virtualIPAddress" />
+			</form:label>
+			<br />
+			<form:input path="vrrp.virtualIPAddress" size="20" />
+			<br>
+			<form:errors path="vrrp.virtualIPAddress" size="20" />
+			<br>
+			<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
+			<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
+		</div>
+	</div>	
+				
 		<!--  IP range -->
 		<div id="client_config_box" class="ui-widget-content">			
 			<div class="field">

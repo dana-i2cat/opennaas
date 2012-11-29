@@ -26,8 +26,8 @@
 		<a href="/opennaas-vcpe/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="home.home"/></button></a>
 	</div>
 	<div id="languages">
-		<input type="radio" id="english" name="radio"><label for="english">EN</label>
-		<input type="radio" id="spanish" name="radio"><label for="spanish">ES</label>
+		<input type="radio" id="english" name="radio"><label for="english"><span class="languageText"><spring:message code="header.english"/></span></label>
+		<input type="radio" id="spanish" name="radio"><label for="spanish"><span class="languageText"><spring:message code="header.spanish"/></span></label>
 	</div>
 </div>
 

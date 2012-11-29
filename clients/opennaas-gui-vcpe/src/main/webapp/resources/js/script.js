@@ -148,6 +148,21 @@ $(function() {
 		}*/
 	});
 	
+	$("#vrrp_box").accordion({
+		collapsible : true,
+		icons : false,
+		heightStyle : "content",
+		active: true
+		/*
+		beforeActivate : function() {
+			clearJSPlumbStuff();
+		},
+		activate : function() {
+			setJSPlumbStuff(topologyVisible);
+		}*/
+	});
+	
+	
 	// only apply accordion styles when createVCPENetwork.jsp is loaded
 	if($("#home_body").length) {
 		jsPlumbNecessary = true;
@@ -318,6 +333,9 @@ $(function() {
 	$( "#button4" ).button();
 	$( "#button5" ).button();
 	$( "#button6" ).button();
+	$("#button6").click(function( event ) {
+        event.preventDefault();
+	});
 	$( "#button7" ).button();
 	$( "#button8" ).button();
 	$( "#button9" ).button();
@@ -496,12 +514,12 @@ function setJSPlumbStuff(setExtra) {
 	}
 	
 	// LR master & backup -- CLIENT DOWN master & backup
-	addConnection("lr_master", "client_master", "vcpe_routers", 0.172, 1, 0.5, 0, false);
-	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.828, 1, 0.5, 0, false);
+	addConnection("lr_master", "client_master", "vcpe_routers", 0.2, 1, 0.5, 0, false);
+	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.79, 1, 0.5, 0, false);
 	
 	// CLIENT DOWN master & backup -- CLIENT
-	addConnection("client_down_master", "client", "createVCPENetwork", 0.5, 1, 0.175, 0, false);
-	addConnection("client_down_backup", "client", "createVCPENetwork", 0.5, 1, 0.825, 0, false);
+	addConnection("client_down_master", "client", "createVCPENetwork", 0.5, 1, 0.187, 0, false);
+	addConnection("client_down_backup", "client", "createVCPENetwork", 0.5, 1, 0.812, 0, false);
 }
 
 // add a connection and its endpoints
