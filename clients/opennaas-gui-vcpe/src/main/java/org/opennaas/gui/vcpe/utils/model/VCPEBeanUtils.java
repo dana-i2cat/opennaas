@@ -93,7 +93,7 @@ public class VCPEBeanUtils {
 	 * @return
 	 */
 	public static Interface getInterface(org.opennaas.extensions.vcpe.model.Interface interfaceIn) {
-		org.opennaas.gui.vcpe.entities.Interface outIface = new org.opennaas.gui.vcpe.entities.Interface();
+		Interface outIface = new Interface();
 		outIface.setName(interfaceIn.getPhysicalInterfaceName());
 		outIface.setTemplateName(interfaceIn.getNameInTemplate());
 		outIface.setPort(String.valueOf(interfaceIn.getPortNumber()));
@@ -135,8 +135,17 @@ public class VCPEBeanUtils {
 	 * @return a link
 	 */
 	public static Link getLink(org.opennaas.extensions.vcpe.model.Link inLink) {
-		// TODO
 		Link outlink = new Link();
+		outlink.setId(inLink.getId());
+		outlink.setType(inLink.getType());
+		outlink.setSource(getInterface(inLink.getSource()));
+		outlink.setDestination(getInterface(inLink.getSink()));
+		// Implemented By
+		List<Link> implementedBy = new ArrayList<Link>();
+		outlink.setImplementedBy(implementedBy);
+		for (int i = 0; inLink.getImplementedBy() != null && i < inLink.getImplementedBy().size(); i++) {
+			implementedBy.add(getLink(inLink.getImplementedBy().get(i)));
+		}
 		return outlink;
 	}
 
@@ -149,12 +158,24 @@ public class VCPEBeanUtils {
 	 */
 	private static BoD getBoD(VCPENetworkModel modelIn) {
 		BoD bod = new BoD();
+		// Interfaces
 		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
 				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
 		Interface ifaceClientBackup = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
+		// Links
+		Link linkMaster = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.DOWN1_LINK_AUTOBAHN));
+		Link linkInter = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.INTER_LINK_AUTOBAHN));
+		Link linkBackup = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.DOWN2_LINK_AUTOBAHN));
+
 		bod.setIfaceClient(ifaceClient);
 		bod.setIfaceClientBackup(ifaceClientBackup);
+		bod.setLinkMaster(linkMaster);
+		bod.setLinkInter(linkInter);
+		bod.setLinkBackup(linkBackup);
 		return bod;
 	}
 
