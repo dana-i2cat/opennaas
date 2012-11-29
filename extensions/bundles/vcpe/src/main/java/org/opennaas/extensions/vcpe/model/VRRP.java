@@ -8,10 +8,14 @@ package org.opennaas.extensions.vcpe.model;
  */
 public class VRRP {
 
-	private String	virtualIPAddress;
-	private Integer	group;
-	private Integer	priorityMaster;
-	private Integer	priorityBackup;
+	private String		virtualIPAddress;
+	private Integer		group;
+	private Integer		priorityMaster;
+	private Integer		priorityBackup;
+	private Router		masterRouter;
+	private Interface	masterInterface;
+	private Router		backupRouter;
+	private Interface	backupInterface;
 
 	/**
 	 * @return the virtualIPAddress
@@ -71,6 +75,74 @@ public class VRRP {
 	 */
 	public void setPriorityBackup(Integer priorityBackup) {
 		this.priorityBackup = priorityBackup;
+	}
+
+	/**
+	 * 
+	 * @return the master router
+	 */
+	public Router getMasterRouter() {
+		return masterRouter;
+	}
+
+	/**
+	 * 
+	 * @param masterRouter
+	 *            the master router to set
+	 */
+	public void setMasterRouter(Router masterRouter) {
+		this.masterRouter = masterRouter;
+	}
+
+	/**
+	 * 
+	 * @return the master interface
+	 */
+	public Interface getMasterInterface() {
+		return masterInterface;
+	}
+
+	/**
+	 * 
+	 * @param masterInterface
+	 *            the master interface to set
+	 */
+	public void setMasterInterface(Interface masterInterface) {
+		this.masterInterface = masterInterface;
+	}
+
+	/**
+	 * 
+	 * @return the backup router
+	 */
+	public Router getBackupRouter() {
+		return backupRouter;
+	}
+
+	/**
+	 * 
+	 * @param backupRouter
+	 *            the backup router to set
+	 */
+	public void setBackupRouter(Router backupRouter) {
+		this.backupRouter = backupRouter;
+	}
+
+	/**
+	 * 
+	 * @return the backup interface
+	 */
+	public Interface getBackupInterface() {
+		return backupInterface;
+	}
+
+	/**
+	 * 
+	 * @param backupInterface
+	 *            the master interface to set
+	 */
+	public void setBackupInterface(Interface backupInterface) {
+		this.backupInterface = backupInterface;
 	}
 
 	/*

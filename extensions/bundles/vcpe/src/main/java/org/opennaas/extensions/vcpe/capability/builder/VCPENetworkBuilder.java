@@ -31,11 +31,15 @@ import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.capability.staticroute.IStaticRouteCapability;
+import org.opennaas.extensions.router.capability.vrrp.IVRRPCapability;
+import org.opennaas.extensions.router.capability.vrrp.VRRPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.VRRPGroup;
+import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.VCPEToBoDModelTranslator;
@@ -46,6 +50,7 @@ import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
+import org.opennaas.extensions.vcpe.model.VRRP;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetworkBuilder {
@@ -201,6 +206,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		startLogicalRouters(resource, desiredScenario);
 
 		configureEGP(resource, desiredScenario);
+
+		configureVRRP(resource, desiredScenario);
 
 		try {
 			executePhysicalRouters(desiredScenario);
@@ -742,6 +749,68 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 				DateTime.now(), endTime);
 
 		return parameters;
+	}
+
+	// TODO
+	private void configureVRRP(IResource resource, VCPENetworkModel model) throws ResourceException {
+		log.debug("Configuring VRRP");
+
+		// obtain VRRP from VCPENetworkModel
+		VRRP vrrp = model.getVrrp();
+
+		// create VRRPGroup and VRRPProtocolEndpoint's
+		VRRPGroup vrrpGroup = new VRRPGroup();
+
+		// set VRRPGroup parameters
+		vrrpGroup.setVrrpName(vrrp.getGroup());
+		vrrpGroup.setVirtualIPAddress(vrrp.getVirtualIPAddress());
+
+		// obtain CIM model NetworkPort's (router interfaces)
+		NetworkPort masterNetworkPort = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(vrrp.getMasterInterface(), model);
+		NetworkPort backupNetworkPort = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(vrrp.getBackupInterface(), model);
+
+		// configure both VRRPProtocolEndpoint's
+		configureVRRPProtocolEndpoint(vrrp.getPriorityMaster(), vrrp.getMasterInterface(), vrrp.getMasterRouter(), vrrpGroup, masterNetworkPort);
+		configureVRRPProtocolEndpoint(vrrp.getPriorityBackup(), vrrp.getBackupInterface(), vrrp.getBackupRouter(), vrrpGroup, backupNetworkPort);
+	}
+
+	private void configureVRRPProtocolEndpoint(int vrrpPriority, Interface iface, Router router, VRRPGroup vrrgrGroup, NetworkPort networkPort)
+			throws ResourceException {
+		// create VRRPProtocolEndpoint
+		VRRPProtocolEndpoint vrrpProtocolEndpoint = new VRRPProtocolEndpoint();
+
+		// set VRRPProtocolEndpoint' parameters
+		vrrpProtocolEndpoint.setPriority(vrrpPriority);
+
+		// link CIM VRRP model elements
+		vrrpProtocolEndpoint.setService(vrrgrGroup);
+
+		// link VRRP CIM model elements to CIM model elements
+		// obtain router interface
+		if (networkPort.getName().equals(iface.getPhysicalInterfaceName()) &&
+				networkPort.getPortNumber() == (iface.getPortNumber())) {
+			// obtain master interface IP address
+			List<ProtocolEndpoint> ipAddresses = networkPort.getProtocolEndpoint();
+			for (ProtocolEndpoint protocolEndpoint : ipAddresses) {
+				if (protocolEndpoint instanceof IPProtocolEndpoint &&
+						(((IPProtocolEndpoint) protocolEndpoint).getIPv4Address() + "/" + IPUtilsHelper
+								.parseLongToShortIpv4NetMask(((IPProtocolEndpoint) protocolEndpoint).getSubnetMask())).equals(iface.getIpAddress())) {
+					// link VRRPProtocolEndpoint with IPProtocolEndpoint
+					vrrpProtocolEndpoint.bindServiceAccessPoint(protocolEndpoint);
+				}
+			}
+		}
+
+		// obtain VRRPCapability and apply the configuration to interface
+		IResource routerResource = getResourceManager().getResource(getResourceManager().getIdentifierFromResourceName("router", router.getName()));
+		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapabilityByInterface(VRRPCapability.class);
+		vrrpCapability.configureVRRP(vrrpProtocolEndpoint);
+	}
+
+	// TODO
+	private void unconfigureVRRP(IResource resource, VCPENetworkModel model) throws ResourceException {
+		log.debug("Unconfiguring VRRP");
+
 	}
 
 	private void executePhysicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
