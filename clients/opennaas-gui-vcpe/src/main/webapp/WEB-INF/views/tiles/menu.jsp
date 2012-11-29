@@ -20,8 +20,9 @@
 		<li class="ui-icon ui-icon-circle-plus" style="margin-top: 4px; margin-left: 4px;">
 			Icon
 		</li>
+		<hr/>
 	</sec:authorize>
-	<hr/>
+	
 	<c:forEach varStatus="vs" items="${vcpeNetworkList}">
 		<li><a href="#">${vcpeNetworkList[vs.index].name}</a>
 			<ul>

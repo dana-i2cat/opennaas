@@ -131,6 +131,23 @@ function isVLANFree(vcpeId, vlan, ifaceName) {
  */
 $(function() {
 	
+	// client update IPs
+	
+	/* Client block */
+	$("#client_box").accordion({
+		collapsible : true,
+		icons : false,
+		heightStyle : "content",
+		active: true
+		/*
+		beforeActivate : function() {
+			clearJSPlumbStuff();
+		},
+		activate : function() {
+			setJSPlumbStuff(topologyVisible);
+		}*/
+	});
+	
 	// only apply accordion styles when createVCPENetwork.jsp is loaded
 	if($("#home_body").length) {
 		jsPlumbNecessary = true;
@@ -308,6 +325,7 @@ $(function() {
 	$( "#button11" ).button();
 	$( "#button23" ).button();
 	$( "#submitButton" ).button();
+	$( "#updateIpButton" ).button();
 	$("#waitingButton").button({
 		icons : {
 			primary : 'ui-icon-newwin'
@@ -356,6 +374,9 @@ $(function() {
 	$("#submitButton").click(function(event) {
 		$("#pleaseWait").dialog("open");
 	});
+	$("#updateIpButton").click(function(event) {
+		$("#pleaseWait").dialog("open");
+	});
 
 	$("#pleaseWait").dialog({
 		modal : true,
@@ -401,6 +422,7 @@ $(function() {
 	}
 	
 	 $( "#radioset" ).buttonset();
+	 $( "#radioset2" ).buttonset();
 });
 
 //Read a page's GET URL variables and return them as an associative array.

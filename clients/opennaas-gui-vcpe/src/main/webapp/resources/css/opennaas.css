@@ -132,7 +132,17 @@ OpenNaaS Custom CSS
 	clear: both;
 }
 
+#client_box {
+	clear: both;
+	font-size: 11px;
+}
+
 #submitButton {
+	margin-top: 15px;
+	float: right;
+}
+
+#updateIpButton {
 	margin-top: 15px;
 	float: right;
 }
@@ -181,6 +191,15 @@ OpenNaaS Custom CSS
 	clear: both;
 }
 
+#client_master_box {
+	display: inline-block;
+	width: 148px;
+	padding: 10px 0 0 10px;
+	clear: both;
+	margin-left: 22px;
+}
+
+
 #client_backup,#inter_master,#inter_backup {
 	display: inline-block;
 	width: 148px;
@@ -188,6 +207,16 @@ OpenNaaS Custom CSS
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
+
+#inter_master_box, #inter_backup_box, #client_backup_box{
+	display: inline-block;
+	width: 148px;
+	padding: 10px 0 0 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 15px;
+}
+
 
 #client_down_master {
 	width: 150px;
@@ -259,6 +288,14 @@ OpenNaaS Custom CSS
 #client_config {
 	width: 210px;
 	height: 110px;
+	padding: 5px;
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+#client_config_box {
+	width: 325px;
+	height: 60px;
 	padding: 5px;
 	float: left;
 	margin: 0 10px 10px 0;

@@ -7,6 +7,8 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<sec:authorize access="hasRole('ROLE_NOC')">			
+			
 <!-- Graphical view -->
 <div id="home_body">
 	<!-- WAN -->
@@ -103,3 +105,9 @@
 	</div>
 	<!-- End client -->
 </div>
+</sec:authorize>
+
+
+<sec:authorize access="hasRole('ROLE_CLIENT')">
+	<div>&nbsp;</div>
+</sec:authorize>

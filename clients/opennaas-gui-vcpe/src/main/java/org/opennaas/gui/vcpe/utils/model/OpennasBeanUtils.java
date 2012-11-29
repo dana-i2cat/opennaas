@@ -41,7 +41,8 @@ public class OpennasBeanUtils {
 		// IP Range
 		modelOut.setClientIpAddressRange(modelIn.getClientIpRange());
 		// BGP
-		modelOut.setBgp(getBGP(modelIn.getBgp()));
+		if (modelIn.getBgp() != null)
+			modelOut.setBgp(getBGP(modelIn.getBgp()));
 		// VRRP
 		modelOut.setVrrp(getVRRP(modelIn.getVrrp()));
 		// Elements

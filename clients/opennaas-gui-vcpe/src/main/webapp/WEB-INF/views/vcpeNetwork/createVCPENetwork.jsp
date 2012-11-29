@@ -151,33 +151,31 @@
 						<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
 						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
 					</div>
-				</div>	
-	
+				</div>		
 			
 				<!-- Routers -->
 				<div id="vcpe_topology">
 				<h3><spring:message code="vcpenetwork.topology"/></h3>
-				<div id="vcpe_routers">
-					<div id="lr_master">
-					<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
-						<div>
-							<div id="config" class="ui-widget-content">
-								<p>Global configuration parameters</p>
+					<div id="vcpe_routers">
+						<div id="lr_master">
+						<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
+							<div>
+								<div id="config" class="ui-widget-content">
+									<p>Global configuration parameters</p>
+								</div>
+							<button id="button5" class="button"><spring:message code="buttons.activate"/></button>
 							</div>
-						<button id="button5" class="button"><spring:message code="buttons.activate"/></button>
+						</div>
+						<div id="lr_backup">
+						<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
+							<div>
+								<div id="config" class="ui-widget-content">
+									<p>Global configuration parameters</p>
+								</div>
+							<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
 						</div>
 					</div>
-					<div id="lr_backup">
-					<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
-						<div>
-							<div id="config" class="ui-widget-content">
-								<p>Global configuration parameters</p>
-							</div>
-						<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
-					</div>
-				</div>
-				<!-- VCPE Interfaces -->
-				
+					<!-- VCPE Interfaces -->				
 					<div id="client_master" class="ui-widget-content">				
 						<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}"
 							varStatus="vs" var="item">
@@ -315,11 +313,11 @@
 								</c:choose>
 							</div>
 						</c:forEach>
-					</div>
-				</div>
-			</div>
+					</div> <!-- End All interfaces  -->
+				</div>				
+			</div> <!-- End Topology -->
 		</div>
-		</div>
+	</div>
 		<!-- End vCPE -->
 		<!-- Start BoD -->
 		<div id="bod">
