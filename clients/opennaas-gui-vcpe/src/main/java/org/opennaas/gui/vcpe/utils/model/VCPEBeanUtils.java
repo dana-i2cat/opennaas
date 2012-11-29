@@ -162,7 +162,7 @@ public class VCPEBeanUtils {
 		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
 				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
 		Interface ifaceClientBackup = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
 		// Links
 		Link linkMaster = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
 				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.DOWN1_LINK_AUTOBAHN));
