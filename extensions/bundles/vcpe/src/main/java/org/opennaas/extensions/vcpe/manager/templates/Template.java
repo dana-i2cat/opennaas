@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
+import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
@@ -24,9 +25,11 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
  */
 public class Template implements ITemplate {
 
-	private static final String	TEMPLATE	= "/templates/template.properties";
+	private static final String	TEMPLATE		= "/templates/template.properties";
+	private static final String	BGP_TEMPLATE	= "/templates/bgpModel1.properties";
 
 	private Properties			props;
+	private Properties			bgpProps;
 
 	/**
 	 * @throws VCPENetworkManagerException
@@ -36,6 +39,10 @@ public class Template implements ITemplate {
 		try {
 			props = new Properties();
 			props.load(this.getClass().getResourceAsStream(TEMPLATE));
+
+			bgpProps = new Properties();
+			bgpProps.load(this.getClass().getResourceAsStream(BGP_TEMPLATE));
+
 		} catch (IOException e) {
 			throw new VCPENetworkManagerException("can't load the template properties");
 		}
@@ -65,6 +72,8 @@ public class Template implements ITemplate {
 
 		// set VRRP configuration
 		model.setVrrp(configureVRRP(initialModel));
+
+		model.setBgp(generateBGPConfig(initialModel));
 
 		// Add all elements
 		elements.addAll(physicalElements);
@@ -334,6 +343,18 @@ public class Template implements ITemplate {
 		vrrp.setBackupRouter(backupRouter);
 		vrrp.setBackupInterface(backupInterface);
 		return vrrp;
+	}
+
+	private BGP generateBGPConfig(VCPENetworkModel initialModel) {
+
+		BGP bgp = initialModel.getBgp();
+
+		BGPModelFactory factory = new BGPModelFactory(bgpProps);
+
+		bgp.setBgpConfigForMaster(factory.createRouterWithBGP());
+		bgp.setBgpConfigForBackup(factory.createRouterWithBGP());
+
+		return bgp;
 	}
 
 	/**
