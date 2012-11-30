@@ -453,7 +453,6 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
 
 		log.debug("Configuring EGPs");
-		// VRRP
 		configureBGP(model);
 		// only static routes by now
 		configureStaticRoutes(resource, model);
