@@ -144,18 +144,12 @@
 						<div id="lr_master">
 						<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
 							<div>
-								<div id="config" class="ui-widget-content">
-									<p>Global configuration parameters</p>
-								</div>
 							<button id="button5" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
 							</div>
 						</div>
 						<div id="lr_backup">
 						<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
 							<div>
-								<div id="config" class="ui-widget-content">
-									<p>Global configuration parameters</p>
-								</div>
 							<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
 						</div>
 					</div>
@@ -479,6 +473,7 @@
 					</div>
 				</div>
 				<!--  IP range -->
+				<!--  
 				<div id="client_config" class="ui-widget-content">			
 					<div class="field">
 						<form:label for="clientIpRange" path="clientIpRange" cssErrorClass="error">
@@ -490,6 +485,8 @@
 						<form:errors path="clientIpRange" />
 					</div>				
 				</div>	
+				-->
+				<form:hidden path="clientIpRange" size="20" />
 				<!--  IGP selector -->
 				<div id="client_config" class="ui-widget-content">
 					<div class="field">
