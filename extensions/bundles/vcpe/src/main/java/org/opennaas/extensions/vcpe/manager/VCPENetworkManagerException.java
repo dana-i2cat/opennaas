@@ -3,10 +3,14 @@
  */
 package org.opennaas.extensions.vcpe.manager;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 /**
  * @author Jordi
  */
-public class VCPENetworkManagerException extends Exception {
+public class VCPENetworkManagerException extends WebApplicationException {
 
 	/**
 	 * 
@@ -23,7 +27,21 @@ public class VCPENetworkManagerException extends Exception {
 	 * @param message
 	 */
 	public VCPENetworkManagerException(String message) {
-		super(message);
+		super(Response.serverError().entity(message).build());
+	}
+
+	/**
+	 * @param status
+	 */
+	public VCPENetworkManagerException(int status) {
+		super(status);
+	}
+
+	/**
+	 * @param response
+	 */
+	public VCPENetworkManagerException(Response response) {
+		super(response);
 	}
 
 	/**
@@ -34,11 +52,27 @@ public class VCPENetworkManagerException extends Exception {
 	}
 
 	/**
-	 * @param message
 	 * @param cause
+	 * @param status
 	 */
-	public VCPENetworkManagerException(String message, Throwable cause) {
-		super(message, cause);
+	public VCPENetworkManagerException(Throwable cause, int status) {
+		super(cause, status);
+	}
+
+	/**
+	 * @param cause
+	 * @param status
+	 */
+	public VCPENetworkManagerException(Throwable cause, Status status) {
+		super(cause, status);
+	}
+
+	/**
+	 * @param cause
+	 * @param response
+	 */
+	public VCPENetworkManagerException(Throwable cause, Response response) {
+		super(cause, response);
 	}
 
 }

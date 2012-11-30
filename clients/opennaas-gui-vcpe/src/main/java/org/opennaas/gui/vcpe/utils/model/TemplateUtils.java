@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
+import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
@@ -101,6 +102,28 @@ public class TemplateUtils {
 
 		vcpeNetwork.setLogicalRouter1(logicalRouter1);
 		vcpeNetwork.setLogicalRouter2(logicalRouter2);
+
+		// BoD
+		BoD bod = new BoD();
+		Interface ifaceClient1 = new Interface();
+		Interface ifaceClient2 = new Interface();
+
+		ifaceClient1.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.client.name"));
+		ifaceClient1.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.client.port"));
+		ifaceClient1.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.client.vlan").trim()));
+		ifaceClient1.setLabelName(Interface.Types.CLIENT.toString());
+		ifaceClient1.setTemplateName(VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+
+		ifaceClient2.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.client.name"));
+		ifaceClient2.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.client.port"));
+		ifaceClient2.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.client.vlan").trim()));
+		ifaceClient2.setLabelName(Interface.Types.CLIENT.toString());
+		ifaceClient2.setTemplateName(VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+
+		bod.setIfaceClient(ifaceClient1);
+		bod.setIfaceClientBackup(ifaceClient2);
+
+		vcpeNetwork.setBod(bod);
 
 		return vcpeNetwork;
 	}

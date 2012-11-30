@@ -9,9 +9,11 @@ import java.util.List;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
+import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
+import org.opennaas.gui.vcpe.entities.VRRP;
 
 /**
  * This class provides the methods to convert OpenNaaS beans to VCPE GUI beans
@@ -28,30 +30,43 @@ public class OpennasBeanUtils {
 	 * @param vcpeNetwork
 	 * @return CreateVCPENetRequest
 	 */
-	public static VCPENetworkModel getVCPENetwork(String vcpeNetworkId, VCPENetwork vcpeNetwork) {
-		VCPENetworkModel request = new VCPENetworkModel();
+	public static VCPENetworkModel getVCPENetwork(VCPENetwork modelIn) {
+		VCPENetworkModel modelOut = new VCPENetworkModel();
 		// Id
-		request.setVcpeNetworkId(vcpeNetworkId);
+		modelOut.setVcpeNetworkId(modelIn.getId());
 		// Name
-		request.setVcpeNetworkName(vcpeNetwork.getName());
+		modelOut.setVcpeNetworkName(modelIn.getName());
 		// Template
-		request.setTemplateName(vcpeNetwork.getTemplate());
+		modelOut.setTemplateName(modelIn.getTemplate());
 		// IP Range
-		request.setClientIpAddressRange(vcpeNetwork.getClientIpRange());
+		modelOut.setClientIpAddressRange(modelIn.getClientIpRange());
+		// BGP
+		if (modelIn.getBgp() != null) {
+			modelOut.setBgp(getBGP(modelIn.getBgp()));
+		}
+		// VRRP
+		if (modelIn.getVrrp() != null) {
+			modelOut.setVrrp(getVRRP(modelIn.getVrrp()));
+		}
 		// Elements
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
-		request.setElements(elements);
+		modelOut.setElements(elements);
 		// LogicalRouters
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter1 = getLROpennaas(vcpeNetwork.getName(), VCPETemplate.VCPE1_ROUTER,
-				vcpeNetwork.getLogicalRouter1());
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter2 = getLROpennaas(vcpeNetwork.getName(), VCPETemplate.VCPE2_ROUTER,
-				vcpeNetwork.getLogicalRouter2());
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter1 = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
+				modelIn.getLogicalRouter1());
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter2 = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
+				modelIn.getLogicalRouter2());
 		elements.add(logicalRouter1);
 		elements.add(logicalRouter2);
 		// Add interfaces to elements
 		elements.addAll(logicalRouter1.getInterfaces());
 		elements.addAll(logicalRouter2.getInterfaces());
-		return request;
+		// Add interfaces BoD
+		if (modelIn.getBod() != null) {
+			elements.add(getInterface(modelIn.getBod().getIfaceClient()));
+			elements.add(getInterface(modelIn.getBod().getIfaceClientBackup()));
+		}
+		return modelOut;
 	}
 
 	/**
@@ -86,6 +101,39 @@ public class OpennasBeanUtils {
 		outIface.setIpAddress(inIface.getIpAddress());
 		outIface.setVlanId(inIface.getVlan());
 		outIface.setNameInTemplate(inIface.getTemplateName());
+		outIface.setPhysicalInterfaceName(inIface.getName());
+		outIface.setPortNumber(Integer.parseInt(inIface.getPort()));
 		return outIface;
+	}
+
+	/**
+	 * Get the values of OpenNaaS BGP from GUI BGP
+	 * 
+	 * @param bgp
+	 * @return bgp entity
+	 */
+	private static org.opennaas.extensions.vcpe.model.BGP getBGP(BGP bgpIn) {
+		org.opennaas.extensions.vcpe.model.BGP bgpOut = new org.opennaas.extensions.vcpe.model.BGP();
+		bgpOut.setClientASNumber(bgpIn.getClientASNumber());
+		bgpOut.setNocASNumber(bgpIn.getNocASNumber());
+		List<String> clientPrefixes = new ArrayList<String>();
+		clientPrefixes.addAll(bgpIn.getClientPrefixes());
+		bgpOut.setCustomerPrefixes(clientPrefixes);
+		return bgpOut;
+	}
+
+	/**
+	 * Get the values of OpenNaaS VRRP from GUI VRRP
+	 * 
+	 * @param vrrp
+	 * @return vrrp entity
+	 */
+	private static org.opennaas.extensions.vcpe.model.VRRP getVRRP(VRRP vrrpIn) {
+		org.opennaas.extensions.vcpe.model.VRRP vrrpOut = new org.opennaas.extensions.vcpe.model.VRRP();
+		vrrpOut.setVirtualIPAddress(vrrpIn.getVirtualIPAddress());
+		vrrpOut.setPriorityMaster(vrrpIn.getPriorityMaster());
+		vrrpOut.setPriorityBackup(vrrpIn.getPriorityBackup());
+		vrrpOut.setGroup(vrrpIn.getGroup());
+		return vrrpOut;
 	}
 }

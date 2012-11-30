@@ -30,6 +30,7 @@
 		<module>router.capability.ospf</module>
 		<module>router.capability.staticroute</module>
 		<module>router.capability.bgp</module>
+		<module>router.capability.vrrp</module>
 		<module>router.model</module>
 
 		<module>fragment.velocity</module>

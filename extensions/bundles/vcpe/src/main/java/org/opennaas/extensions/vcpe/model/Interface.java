@@ -10,6 +10,14 @@ public class Interface extends VCPENetworkElement {
 
 	private String	ipAddress;
 
+	/**
+	 * Logical interfaces must hold a reference to the physical interface they belong to. This field provides this reference by holding the physical
+	 * interface name.
+	 */
+	private String	physicalInterfaceName;
+
+	private int		portNumber;
+
 	public long getVlanId() {
 		return vlanId;
 	}
@@ -26,11 +34,29 @@ public class Interface extends VCPENetworkElement {
 		this.ipAddress = ipAddress;
 	}
 
+	public String getPhysicalInterfaceName() {
+		return physicalInterfaceName;
+	}
+
+	public void setPhysicalInterfaceName(String physicalInterfaceName) {
+		this.physicalInterfaceName = physicalInterfaceName;
+	}
+
+	public int getPortNumber() {
+		return portNumber;
+	}
+
+	public void setPortNumber(int portNumber) {
+		this.portNumber = portNumber;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
+		result = prime * result + ((physicalInterfaceName == null) ? 0 : physicalInterfaceName.hashCode());
+		result = prime * result + portNumber;
 		result = prime * result + (int) (vlanId ^ (vlanId >>> 32));
 		return result;
 	}
@@ -58,6 +84,13 @@ public class Interface extends VCPENetworkElement {
 			if (other.ipAddress != null)
 				return false;
 		} else if (!ipAddress.equals(other.ipAddress))
+			return false;
+		if (physicalInterfaceName == null) {
+			if (other.physicalInterfaceName != null)
+				return false;
+		} else if (!physicalInterfaceName.equals(other.physicalInterfaceName))
+			return false;
+		if (portNumber != other.portNumber)
 			return false;
 		if (vlanId != other.vlanId)
 			return false;

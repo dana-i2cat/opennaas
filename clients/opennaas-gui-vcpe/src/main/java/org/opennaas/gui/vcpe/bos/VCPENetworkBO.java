@@ -7,16 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
-import org.opennaas.gui.vcpe.services.rest.resource.ResourceService;
 import org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService;
 import org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService;
-import org.opennaas.gui.vcpe.utils.Constants;
 import org.opennaas.gui.vcpe.utils.model.OpennasBeanUtils;
 import org.opennaas.gui.vcpe.utils.model.VCPEBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,58 +24,33 @@ public class VCPENetworkBO {
 	private static final Logger			LOGGER	= Logger.getLogger(VCPENetworkBO.class);
 
 	@Autowired
-	private ResourceService				resourceService;
-
-	@Autowired
 	private VCPENetworkService			vcpeNetworkService;
 
 	@Autowired
 	private BuilderCapabilityService	builderService;
 
 	/**
-	 * Create a VCPE Network, start the resource and build the environment
+	 * Create a VCPE Network
 	 * 
 	 * @param vcpeNetwork
+	 * @return the id
 	 * @throws RestServiceException
 	 */
 	public String create(VCPENetwork vcpeNetwork) throws RestServiceException {
-		String vcpeNetworkId = null;
-		Boolean isStarted = false;
-		try {
-			LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
-			vcpeNetworkId = resourceService.createResource(getResourceDescriptor(vcpeNetwork));
-			LOGGER.debug("start the VCPENetwork with id: " + vcpeNetworkId);
-			isStarted = resourceService.startResource(vcpeNetworkId);
-			LOGGER.debug("create the VCPENetwork enviroment");
-			vcpeNetworkService.buildVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetworkId, vcpeNetwork));
-		} catch (RestServiceException e) {
-			// Rollback if the environment has not been created.
-			if (vcpeNetworkId != null) {
-				if (isStarted) {
-					LOGGER.debug("stop the VCPENetwork with id: " + vcpeNetworkId);
-					resourceService.stopResource(vcpeNetworkId);
-				}
-				LOGGER.debug("remove the VCPENetwork with id: " + vcpeNetworkId);
-				resourceService.deleteResource(vcpeNetworkId);
-			}
-			throw e;
-		}
-		return vcpeNetworkId;
+		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
+		return vcpeNetworkService.createVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
-	 * Delete a VCPE Network. First stop the resource
+	 * Delete a VCPE Network
 	 * 
 	 * @param vcpeNetworkId
+	 * @return true if the VCPE has been deleted
 	 * @throws RestServiceException
 	 */
-	public void delete(String vcpeNetworkId) throws RestServiceException {
-		LOGGER.debug("destroy the VCPENetwork enviroment");
-		vcpeNetworkService.destroyVCPENetwork(vcpeNetworkId);
-		LOGGER.debug("stop a VCPENetwork with id: " + vcpeNetworkId);
-		resourceService.stopResource(vcpeNetworkId);
-		LOGGER.debug("delete a VCPENetwork with id: " + vcpeNetworkId);
-		resourceService.deleteResource(vcpeNetworkId);
+	public boolean delete(String vcpeNetworkId) throws RestServiceException {
+		LOGGER.debug("remove the VCPENetwork: " + vcpeNetworkId);
+		return vcpeNetworkService.destroyVCPENetwork(vcpeNetworkId);
 	}
 
 	/**
@@ -115,19 +85,19 @@ public class VCPENetworkBO {
 	 */
 	public Boolean updateIps(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update Ip's of VCPENetwork");
-		builderService
-				.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork.getId(), vcpeNetwork));
+		builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
 		return true;
 	}
 
 	/**
 	 * @param vlan
+	 * @param ifaceName
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isVLANFree(String vlan) throws RestServiceException {
-		LOGGER.debug("check if the vlan " + vlan + " is free");
-		return vcpeNetworkService.isVLANFree(vlan);
+	public Boolean isVLANFree(String vcpeId, String vlan, String ifaceName) throws RestServiceException {
+		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the ifaceName: " + ifaceName + ". The vcpeID: " + vcpeId);
+		return vcpeNetworkService.isVLANFree(vcpeId, vlan, ifaceName);
 	}
 
 	/**
@@ -135,9 +105,9 @@ public class VCPENetworkBO {
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isIPFree(String ip) throws RestServiceException {
-		LOGGER.debug("check if the IP " + ip + " is free");
-		return vcpeNetworkService.isIPFree(ip);
+	public Boolean isIPFree(String vcpeId, String ip) throws RestServiceException {
+		LOGGER.debug("check if the IP: " + ip + " is free. The vcpeID: " + vcpeId);
+		return vcpeNetworkService.isIPFree(vcpeId, ip);
 	}
 
 	/**
@@ -146,41 +116,9 @@ public class VCPENetworkBO {
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isInterfaceFree(String iface, String port) throws RestServiceException {
-		LOGGER.debug("check if the Interface " + iface + "." + port);
-		return vcpeNetworkService.isInterfaceFree(iface, port);
-	}
-
-	/**
-	 * Get the descriptor with his capability to create the resource
-	 * 
-	 * @param params
-	 * @return VCPENetworkDescriptor
-	 */
-	private VCPENetworkDescriptor getResourceDescriptor(VCPENetwork vcpeNetwork) {
-		VCPENetworkDescriptor descriptor = new VCPENetworkDescriptor();
-		Information information = new Information();
-		information.setType(Constants.RESOURCE_VCPENET_TYPE);
-		information.setName(vcpeNetwork.getName());
-		descriptor.setInformation(information);
-		// Capability
-		List<CapabilityDescriptor> capabs = new ArrayList<CapabilityDescriptor>();
-		capabs.add(getBuilderCapability());
-		descriptor.setCapabilityDescriptors(capabs);
-		return descriptor;
-	}
-
-	/**
-	 * Get the builder capability of the VCPENetwork to create the resource
-	 * 
-	 * @return CapabilityDescriptor
-	 */
-	private CapabilityDescriptor getBuilderCapability() {
-		CapabilityDescriptor desc = new CapabilityDescriptor();
-		Information info = new Information();
-		info.setType(Constants.CAPABILITY_VCPENET_BUILDER);
-		desc.setCapabilityInformation(info);
-		return desc;
+	public Boolean isInterfaceFree(String vcpeId, String iface, String port) throws RestServiceException {
+		LOGGER.debug("check if the Interface: " + iface + "." + port + "is free. The vcpeID: " + vcpeId);
+		return vcpeNetworkService.isInterfaceFree(vcpeId, iface, port);
 	}
 
 	/**
