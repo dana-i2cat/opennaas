@@ -320,7 +320,6 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		List<Interface> ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr1.getInterfaces());
-		ifaces.add((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.UP1_INTERFACE_PEER));
 
 		createInterfaces(phy1, ifaces, desiredScenario);
 
@@ -329,29 +328,16 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr2.getInterfaces());
-		ifaces.add((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.UP2_INTERFACE_PEER));
 
 		createInterfaces(phy2, ifaces, desiredScenario);
 	}
 
 	private void removeSubInterfaces(IResource resource, VCPENetworkModel currentScenario) throws ResourceException {
 		// SubInterfaces assigned to logical routers will be destroyed with them.
-		// There is only need to remove other interfaces
+		// There is only need to remove other interfaces (if any)
+		// no other interfaces, so nothing to do :P
 
 		log.debug("Removing subinterfaces");
-
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(currentScenario, VCPETemplate.CPE1_PHY_ROUTER);
-		List<Interface> ifaces = new ArrayList<Interface>();
-		ifaces.add((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentScenario, VCPETemplate.UP1_INTERFACE_PEER));
-
-		removeInterfaces(phy1, ifaces, currentScenario);
-
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(currentScenario, VCPETemplate.CPE2_PHY_ROUTER);
-		ifaces = new ArrayList<Interface>();
-		ifaces.add((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentScenario, VCPETemplate.UP2_INTERFACE_PEER));
-
-		removeInterfaces(phy2, ifaces, currentScenario);
-
 	}
 
 	private void createInterfaces(Router phy, List<Interface> ifaces, VCPENetworkModel model) throws ResourceException {
@@ -406,14 +392,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
 		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
-		Interface up1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_PEER);
-		Interface up2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_PEER);
 
 		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
 		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
-
-		setIP(phy1, up1, model);
-		setIP(phy2, up2, model);
 
 		// we assign addresses in physical routers
 		// logical ones may not exist yet
