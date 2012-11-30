@@ -12,6 +12,7 @@ import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
+import org.opennaas.gui.vcpe.entities.VRRP;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -124,6 +125,11 @@ public class TemplateUtils {
 		bod.setIfaceClientBackup(ifaceClient2);
 
 		vcpeNetwork.setBod(bod);
+
+		// VRRP
+		VRRP vrrp = new VRRP();
+		vrrp.setVirtualIPAddress(templateProperties.getProperty("vcpenetwork.vrrp.virtualIPAddress"));
+		vcpeNetwork.setVrrp(vrrp);
 
 		return vcpeNetwork;
 	}
