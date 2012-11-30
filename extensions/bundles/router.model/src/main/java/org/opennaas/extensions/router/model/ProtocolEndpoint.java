@@ -59,7 +59,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 * @return
 	 */
 	public Service getService() {
-		return (Service) this.getFirstFromAssociatedElementByType(ProvidesEndpoint.class);
+		return (Service) this.getFirstToAssociatedElementByType(ProvidesEndpoint.class);
 	}
 
 	/* BindsTo */
