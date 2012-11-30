@@ -380,7 +380,7 @@ public class Template implements ITemplate {
 
 		props1.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
 		props1.setProperty("bgp.group.0.session.0.peeras", bgpParams.remoteASNum);
-		props1.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr2)[0]); // no
+		props1.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr1)[0]); // no
 																																				// mask
 		props1.setProperty("bgp.group.1.peeras", bgpParams.clientASNumber);
 		props1.setProperty("bgp.group.1.session.0.peeras", bgpParams.clientASNumber);
@@ -415,7 +415,7 @@ public class Template implements ITemplate {
 
 		props2.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
 		props2.setProperty("bgp.group.0.session.0.peeras", bgpParams.remoteASNum);
-		props2.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr1)[0]); // no
+		props2.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr2)[0]); // no
 																																				// mask
 		props2.setProperty("bgp.group.1.peeras", bgpParams.clientASNumber);
 		props2.setProperty("bgp.group.1.session.0.peeras", bgpParams.clientASNumber);
