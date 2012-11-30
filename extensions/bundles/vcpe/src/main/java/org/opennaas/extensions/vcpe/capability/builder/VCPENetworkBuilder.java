@@ -654,15 +654,15 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		createAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
 
-		// down1 link
-		Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
-		long down1SrcVlan = down1.getSource().getVlanId();
-		long down1DstVlan = down1.getSink().getVlanId();
-
-		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
-		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
-
-		createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
+		// // down1 link
+		// Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
+		// long down1SrcVlan = down1.getSource().getVlanId();
+		// long down1DstVlan = down1.getSink().getVlanId();
+		//
+		// Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+		// Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		//
+		// createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
 		// down 2 link
 		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
