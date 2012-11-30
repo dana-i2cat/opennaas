@@ -15,10 +15,10 @@
 	<protocols>
 		<bgp>
 			## TODO ADD GLOBAL BGP CONFIG ELEMENTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			##<path-selection>
-			##	<cisco-non-deterministic/>
-			##</path-selection>
-			##<keep>all</keep>
+			<path-selection>
+				<cisco-non-deterministic/>
+			</path-selection>
+			<keep>all</keep>
 			##<hold-time>45</hold-time>
 			
 			#foreach($bgpService in $bgpUtils.getBGPServices($param))
