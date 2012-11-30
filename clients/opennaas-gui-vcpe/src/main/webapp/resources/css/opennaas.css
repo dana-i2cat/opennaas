@@ -285,10 +285,35 @@ h1 {
 	margin-top: 15px;
 }
 
-#bod_master,#bod_inter,#bod_backup {
-	float: left;
-	margin: 5px;
+#bod_master, #bod_inter, #bod_backup {
 	z-index: 10;
+	min-width: 200px;
+	min-height: 80px;
+	text-align: center;
+	padding: 10px 4px;
+}
+
+#bod_buttons {
+	margin-top: 15px;
+}
+
+#bod_inputs {
+	margin-top: 5px;
+}
+
+#bod_master {
+	float: left;
+	margin: 15px 40px 15px -10px;
+}
+
+#bod_inter {
+	float: left;
+	margin: 15px 0px;
+}
+
+#bod_backup {
+	float: right;
+	margin: 15px -15px 15px 0px;
 }
 
 #config {
