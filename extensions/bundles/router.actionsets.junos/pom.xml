@@ -56,6 +56,14 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.bgp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.vrrp</artifactId>
+		</dependency>
 		<!--
 			specify the last version from xerces-impl to work with the digester
 			parser

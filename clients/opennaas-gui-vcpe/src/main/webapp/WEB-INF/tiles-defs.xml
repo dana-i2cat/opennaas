@@ -4,7 +4,9 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
 
-	<definition name="login" template="/WEB-INF/views/login.jsp" />
+	<definition name="login" template="/WEB-INF/views/login.jsp" >
+		<put-attribute name="title" value="Login" />
+	</definition>
 		
 	<definition name="exception" template="/WEB-INF/views/exception.jsp" />
 
@@ -22,7 +24,7 @@
 	</definition>
 
 	<definition name="denied" extends="base.definition">
-		<put-attribute name="title" value="Home" />
+		<put-attribute name="title" value="Denied" />
 		<put-attribute name="body" value="/WEB-INF/views/denied.jsp" />
 	</definition>
 
@@ -34,11 +36,6 @@
 	<definition name="listVCPENetwork" extends="base.definition">
 		<put-attribute name="title" value="List VCPE Network" />
 		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/listVCPENetwork.jsp" />
-	</definition>
-
-	<definition name="viewVCPENetwork" extends="base.definition">
-		<put-attribute name="title" value="View VCPE Network" />
-		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/viewVCPENetwork.jsp" />
 	</definition>
 
 	<definition name="updateIpsVCPENetwork" extends="base.definition">

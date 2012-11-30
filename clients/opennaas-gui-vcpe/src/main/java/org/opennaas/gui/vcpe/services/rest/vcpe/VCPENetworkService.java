@@ -126,14 +126,15 @@ public class VCPENetworkService extends GenericRestService {
 	 * 
 	 * @param vcpeId
 	 * @param vlan
+	 * @param ifaceName
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isVLANFree(String vcpeId, String vlan) throws RestServiceException {
+	public Boolean isVLANFree(String vcpeId, String vlan, String ifaceName) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling isVLANFree VCPENetworkManager service");
-			String url = getURL("vcpenetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" + vlan);
+			String url = getURL("vcpenetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" + vlan + "&ifaceName=" + ifaceName);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);

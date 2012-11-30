@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
+import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
@@ -16,6 +18,7 @@ import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
+import org.opennaas.extensions.vcpe.model.VRRP;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 /**
@@ -23,9 +26,11 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
  */
 public class Template implements ITemplate {
 
-	private static final String	TEMPLATE	= "/templates/template.properties";
+	private static final String	TEMPLATE		= "/templates/template.properties";
+	private static final String	BGP_TEMPLATE	= "/templates/bgpModel1.properties";
 
 	private Properties			props;
+	private Properties			bgpProps;
 
 	/**
 	 * @throws VCPENetworkManagerException
@@ -35,6 +40,10 @@ public class Template implements ITemplate {
 		try {
 			props = new Properties();
 			props.load(this.getClass().getResourceAsStream(TEMPLATE));
+
+			bgpProps = new Properties();
+			bgpProps.load(this.getClass().getResourceAsStream(BGP_TEMPLATE));
+
 		} catch (IOException e) {
 			throw new VCPENetworkManagerException("can't load the template properties");
 		}
@@ -61,6 +70,11 @@ public class Template implements ITemplate {
 
 		// Generate the logical model
 		List<VCPENetworkElement> logicalElements = generateLogicalElements(initialModel);
+
+		// set VRRP configuration
+		model.setVrrp(configureVRRP(initialModel));
+
+		model.setBgp(generateBGPConfig(initialModel));
 
 		// Add all elements
 		elements.addAll(physicalElements);
@@ -301,6 +315,134 @@ public class Template implements ITemplate {
 		elements.addAll(autobahn.getInterfaces());
 
 		return elements;
+	}
+
+	private VRRP configureVRRP(VCPENetworkModel model) {
+		// VRRP group
+		int vrrpGoup = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.group"));
+		// configuration VCPE-router1
+		int masterVRRPPriority = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.master.priority"));
+		// configuration VCPE-router2
+		int backupVRRPPriority = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.backup.priority"));
+
+		// get master router and interface
+		Router masterRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Interface masterInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_LOCAL);
+		masterRouter.getName();
+		// get backup router and interface
+		Router backupRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Interface backupInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_LOCAL);
+
+		// set values
+		VRRP vrrp = new VRRP();
+		vrrp.setVirtualIPAddress(model.getVrrp().getVirtualIPAddress());
+		vrrp.setGroup(vrrpGoup);
+		vrrp.setPriorityMaster(masterVRRPPriority);
+		vrrp.setPriorityBackup(backupVRRPPriority);
+		vrrp.setMasterRouter(masterRouter);
+		vrrp.setMasterInterface(masterInterface);
+		vrrp.setBackupRouter(backupRouter);
+		vrrp.setBackupInterface(backupInterface);
+		return vrrp;
+	}
+
+	private ConfigureBGPRequestParameters generateBGPParameters(VCPENetworkModel model) {
+		BGP bgp = model.getBgp();
+		ConfigureBGPRequestParameters params = new ConfigureBGPRequestParameters();
+		params.clientIPRanges = bgp.getCustomerPrefixes();
+		params.clientASNumber = bgp.getClientASNumber();
+		params.remoteASNum = bgp.getNocASNumber();
+
+		params.loAddr1 = "193.1.190.141/30"; // TODO get this from GUI
+		params.upRemoteAddr1 = "193.1.190.134/30"; // TODO get this from GUI
+		params.interAddr1 = ((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_LOCAL))
+				.getIpAddress();
+
+		params.loAddr2 = "193.1.190.145/30"; // TODO get this from GUI
+		params.upRemoteAddr2 = "193.1.190.130/30"; // TODO get this from GUI
+		params.interAddr2 = ((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_LOCAL))
+				.getIpAddress();
+
+		return params;
+	}
+
+	private BGP generateBGPConfig(VCPENetworkModel initialModel) {
+
+		BGP bgp = initialModel.getBgp();
+
+		ConfigureBGPRequestParameters bgpParams = generateBGPParameters(initialModel);
+
+		// FACTORY 1
+		String router1id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0];
+
+		Properties props1 = (Properties) bgpProps.clone();
+		props1.setProperty("bgp.routerid", router1id); // no mask
+
+		props1.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
+		props1.setProperty("bgp.group.0.session.0.peeras", bgpParams.remoteASNum);
+		props1.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr2)[0]); // no
+																																				// mask
+		props1.setProperty("bgp.group.1.peeras", bgpParams.clientASNumber);
+		props1.setProperty("bgp.group.1.session.0.peeras", bgpParams.clientASNumber);
+		props1.setProperty("bgp.group.1.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.interAddr2)[0]); // no mask
+
+		// prefixes
+		props1.setProperty("prefixlist.2.prefixes.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
+		props1.setProperty("prefixlist.2.prefix." + 0, bgpParams.loAddr1);
+		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
+			props1.setProperty("prefixlist.2.prefix." + (i + 1), bgp.getCustomerPrefixes().get(i));
+		}
+
+		// policies
+		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
+		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
+		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", bgpParams.loAddr1);
+		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
+		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
+			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
+			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".address", bgp.getCustomerPrefixes().get(i));
+			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".option", "exact");
+		}
+
+		BGPModelFactory factory1 = new BGPModelFactory(props1);
+		bgp.setBgpConfigForMaster(factory1.createRouterWithBGP());
+
+		// FACTORY 2
+		String router2id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0];
+
+		Properties props2 = (Properties) bgpProps.clone();
+		props2.setProperty("bgp.routerid", router2id); // no mask
+
+		props2.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
+		props2.setProperty("bgp.group.0.session.0.peeras", bgpParams.remoteASNum);
+		props2.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr1)[0]); // no
+																																				// mask
+		props2.setProperty("bgp.group.1.peeras", bgpParams.clientASNumber);
+		props2.setProperty("bgp.group.1.session.0.peeras", bgpParams.clientASNumber);
+		props2.setProperty("bgp.group.1.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.interAddr1)[0]); // no mask
+
+		// prefixes
+		props2.setProperty("prefixlist.2.prefixes.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
+		props2.setProperty("prefixlist.2.prefix." + 0, bgpParams.loAddr2);
+		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
+			props2.setProperty("prefixlist.2.prefix." + (i + 1), bgp.getCustomerPrefixes().get(i));
+		}
+
+		// policies
+		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
+		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
+		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", bgpParams.loAddr2);
+		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
+		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
+			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
+			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".address", bgp.getCustomerPrefixes().get(i));
+			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".option", "exact");
+		}
+
+		BGPModelFactory factory2 = new BGPModelFactory(props2);
+		bgp.setBgpConfigForBackup(factory2.createRouterWithBGP());
+
+		return bgp;
 	}
 
 	/**

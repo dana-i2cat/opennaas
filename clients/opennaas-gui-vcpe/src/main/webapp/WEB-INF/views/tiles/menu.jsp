@@ -14,39 +14,35 @@
 	<sec:authorize access="hasRole('ROLE_NOC')">
 		<li>
 			<a href="<c:url value="/secure/noc/vcpeNetwork/create" />">
-				<spring:message code="index.menu.create" />
+				<spring:message code="menu.create" />
 			</a>
 		</li>
 		<li class="ui-icon ui-icon-circle-plus" style="margin-top: 4px; margin-left: 4px;">
 			Icon
 		</li>
+		<hr/>
 	</sec:authorize>
-	<hr/>
+	
 	<c:forEach varStatus="vs" items="${vcpeNetworkList}">
 		<li><a href="#">${vcpeNetworkList[vs.index].name}</a>
 			<ul>
 				<sec:authorize access="hasRole('ROLE_NOC')">
 					<li>
 						<a href="<c:url value="/secure/noc/vcpeNetwork/edit?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="index.menu.edit" />
+							<spring:message code="menu.edit" />
 						</a>
 					</li>
 					<li>
 						<a href="<c:url value="/secure/noc/vcpeNetwork/delete?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="index.menu.delete" />
+							<spring:message code="menu.delete" />
 						</a>
 					</li>
 				</sec:authorize>
 
 				<sec:authorize access="hasRole('ROLE_CLIENT')">
 					<li>
-						<a href="<c:url value="/secure/vcpeNetwork/view?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="index.menu.view" />
-						</a>
-					</li>
-					<li>
 						<a href="<c:url value="/secure/vcpeNetwork/updateIpsForm?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="index.menu.update" />
+							<spring:message code="menu.update" />
 						</a>
 					</li>
 				</sec:authorize>

@@ -37,7 +37,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 */
 	public void setService(Service service) {
 		if (service != null)
-			ProvidesEndpoint.link(this, service);
+			ProvidesEndpoint.link(service, this);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 * @return
 	 */
 	public Service getService() {
-		return (Service) this.getFirstFromAssociatedElementByType(ProvidesEndpoint.class);
+		return (Service) this.getFirstToAssociatedElementByType(ProvidesEndpoint.class);
 	}
 
 	/* BindsTo */

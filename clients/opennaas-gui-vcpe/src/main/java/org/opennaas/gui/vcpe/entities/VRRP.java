@@ -3,11 +3,14 @@
  */
 package org.opennaas.gui.vcpe.entities;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * @author Jordi
  */
 public class VRRP {
 
+	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})", message = "{error.field.format.ip}")
 	private String	virtualIPAddress;
 	private Integer	group;
 	private Integer	priorityMaster;

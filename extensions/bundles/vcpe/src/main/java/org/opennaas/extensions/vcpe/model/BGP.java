@@ -5,6 +5,8 @@ package org.opennaas.extensions.vcpe.model;
 
 import java.util.List;
 
+import org.opennaas.extensions.router.model.ComputerSystem;
+
 /**
  * @author Jordi
  */
@@ -13,6 +15,9 @@ public class BGP {
 	private String			clientASNumber;
 	private String			nocASNumber;
 	private List<String>	customerPrefixes;
+
+	private ComputerSystem	bgpConfigForMaster;
+	private ComputerSystem	bgpConfigForBackup;
 
 	/**
 	 * @return the clientASNumber
@@ -59,4 +64,19 @@ public class BGP {
 		this.customerPrefixes = customerPrefixes;
 	}
 
+	public ComputerSystem getBgpConfigForMaster() {
+		return bgpConfigForMaster;
+	}
+
+	public void setBgpConfigForMaster(ComputerSystem bgpConfigForMaster) {
+		this.bgpConfigForMaster = bgpConfigForMaster;
+	}
+
+	public ComputerSystem getBgpConfigForBackup() {
+		return bgpConfigForBackup;
+	}
+
+	public void setBgpConfigForBackup(ComputerSystem bgpConfigForBackup) {
+		this.bgpConfigForBackup = bgpConfigForBackup;
+	}
 }
