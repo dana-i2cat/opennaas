@@ -11,7 +11,7 @@ package org.opennaas.extensions.router.model;
 /*
  * @Generated(value="org.dmtf.cim.TranslateCIM", comments="TranslateCIM version 0.9.1", date="2012-11-19T12:22:55+0100")
  */
-public class PolicySetAppliesToElement {
+public class PolicySetAppliesToElement extends Association {
 
 	/**
 	 * Default constructor
@@ -43,6 +43,15 @@ public class PolicySetAppliesToElement {
 
 	public void setManagedElement(ManagedElement managedElement) {
 		this.managedElement = managedElement;
+	}
+
+	public static PolicySetAppliesToElement link(PolicySet from, ManagedElement to) {
+
+		PolicySetAppliesToElement assoc = (PolicySetAppliesToElement) Association.link(PolicySetAppliesToElement.class, from, to);
+		assoc.setPolicySet(from);
+		assoc.setManagedElement(to);
+
+		return assoc;
 	}
 
 }

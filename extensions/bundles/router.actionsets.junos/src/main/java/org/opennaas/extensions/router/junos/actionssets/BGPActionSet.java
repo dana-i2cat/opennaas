@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.bgp.ConfigureBGPAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.bgp.UnconfigureBGPAction;
 
@@ -12,6 +13,7 @@ public class BGPActionSet extends ActionSet {
 		super.setActionSetId("bgpActionSet");
 		this.putAction(ActionConstants.CONFIGURE_BGP, ConfigureBGPAction.class);
 		this.putAction(ActionConstants.UNCONFIGURE_BGP, UnconfigureBGPAction.class);
+		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
 
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.GETCONFIG);

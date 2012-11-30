@@ -16,30 +16,40 @@ public class PolicyGroupInSystem extends PolicySetInSystem {
 	public PolicyGroupInSystem() {
 	}
 
-	/**
-	 * The System in whose scope a PolicyGroup is defined.
-	 */
-	private System		antecedent;
-
-	/**
-	 * A PolicyGroup named within the scope of a System.
-	 */
-	private PolicyGroup	dependent;
+	// /**
+	// * The System in whose scope a PolicyGroup is defined.
+	// */
+	// private System antecedent;
+	//
+	// /**
+	// * A PolicyGroup named within the scope of a System.
+	// */
+	// private PolicyGroup dependent;
 
 	public System getAntecedent() {
-		return antecedent;
+		return super.getAntecedent();
 	}
 
 	public void setAntecedent(System antecedent) {
-		this.antecedent = antecedent;
+		super.setAntecedent(antecedent);
 	}
 
 	public PolicyGroup getDependent() {
-		return dependent;
+		return (PolicyGroup) super.getDependent();
 	}
 
 	public void setDependent(PolicyGroup dependent) {
-		this.dependent = dependent;
+		super.setDependent(dependent);
+	}
+
+	public static PolicyGroupInSystem link(System antecedent, PolicyGroup dependent, int priority) {
+
+		PolicyGroupInSystem assoc = (PolicyGroupInSystem) Association.link(PolicyGroupInSystem.class, antecedent, dependent);
+		assoc.setAntecedent(antecedent);
+		assoc.setDependent(dependent);
+		assoc.setPriority(priority);
+
+		return assoc;
 	}
 
 }

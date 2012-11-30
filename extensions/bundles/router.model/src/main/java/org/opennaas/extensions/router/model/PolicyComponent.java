@@ -43,14 +43,4 @@ public abstract class PolicyComponent extends Component {
 		this.partComponent = partComponent;
 	}
 
-	public static PolicyComponent link(Policy groupComponent, Policy partComponent) {
-		PolicyComponent assoc = (PolicyComponent) Association.link(PolicyComponent.class, groupComponent,
-				partComponent);
-
-		assoc.setGroupComponent(groupComponent);
-		assoc.setPartComponent(partComponent);
-
-		return assoc;
-	}
-
 }

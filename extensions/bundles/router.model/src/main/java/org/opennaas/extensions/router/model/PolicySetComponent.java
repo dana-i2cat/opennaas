@@ -24,36 +24,36 @@ public class PolicySetComponent extends PolicyComponent {
 	public PolicySetComponent() {
 	}
 
-	/**
-	 * A PolicySet that aggregates other PolicySet instances.
-	 */
-	private PolicySet	groupComponent;
-
-	/**
-	 * A PolicySet aggregated into a PolicySet.
-	 */
-	private PolicySet	partComponent;
+	// /**
+	// * A PolicySet that aggregates other PolicySet instances.
+	// */
+	// private PolicySet groupComponent;
+	//
+	// /**
+	// * A PolicySet aggregated into a PolicySet.
+	// */
+	// private PolicySet partComponent;
 
 	/**
 	 * A non-negative integer for prioritizing this PolicySet component relative to other elements of the same PolicySet. A larger value indicates a
 	 * higher priority. The Priority property MUST have a unique value when compared with others defined for the same aggregating PolicySet.
 	 */
-	private int			priority;
+	private int	priority;
 
 	public PolicySet getGroupComponent() {
-		return groupComponent;
+		return (PolicySet) super.getGroupComponent();
 	}
 
 	public void setGroupComponent(PolicySet groupComponent) {
-		this.groupComponent = groupComponent;
+		super.setGroupComponent(groupComponent);
 	}
 
 	public PolicySet getPartComponent() {
-		return partComponent;
+		return (PolicySet) super.getPartComponent();
 	}
 
 	public void setPartComponent(PolicySet partComponent) {
-		this.partComponent = partComponent;
+		super.setPartComponent(partComponent);
 	}
 
 	public int getPriority() {
@@ -62,6 +62,17 @@ public class PolicySetComponent extends PolicyComponent {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+
+	public static PolicySetComponent link(PolicySet groupComponent, PolicySet partComponent, int priority) {
+		PolicySetComponent assoc = (PolicySetComponent) Association.link(PolicySetComponent.class, groupComponent,
+				partComponent);
+
+		assoc.setGroupComponent(groupComponent);
+		assoc.setPartComponent(partComponent);
+		assoc.setPriority(priority);
+
+		return assoc;
 	}
 
 }

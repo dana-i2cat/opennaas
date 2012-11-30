@@ -8,7 +8,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
-import org.opennaas.extensions.router.model.BGPService;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class BGPCapability extends AbstractCapability implements IBGPCapability {
 
@@ -83,14 +83,14 @@ public class BGPCapability extends AbstractCapability implements IBGPCapability 
 	}
 
 	@Override
-	public void configureBGP(BGPService serviceConfiguration) throws CapabilityException {
-		IAction action = createActionAndCheckParams(BGPActionSet.CONFIGURE_BGP, serviceConfiguration);
+	public void configureBGP(ComputerSystem systemWithBGPAndPolicies) throws CapabilityException {
+		IAction action = createActionAndCheckParams(BGPActionSet.CONFIGURE_BGP, systemWithBGPAndPolicies);
 		queueAction(action);
 	}
 
 	@Override
-	public void unconfigureBGP(BGPService serviceConfiguration) throws CapabilityException {
-		IAction action = createActionAndCheckParams(BGPActionSet.UNCONFIGURE_BGP, serviceConfiguration);
+	public void unconfigureBGP(ComputerSystem systemWithBGPAndPolicies) throws CapabilityException {
+		IAction action = createActionAndCheckParams(BGPActionSet.UNCONFIGURE_BGP, systemWithBGPAndPolicies);
 		queueAction(action);
 	}
 
