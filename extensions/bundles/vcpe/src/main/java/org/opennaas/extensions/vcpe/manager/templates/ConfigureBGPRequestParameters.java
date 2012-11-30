@@ -87,7 +87,7 @@ public class ConfigureBGPRequestParameters {
 	/**
 	 * Autonomous System number assigned to this client
 	 */
-	String				asNum;
+	String				clientASNumber;
 	/**
 	 * AS number of the ISP, 1213 for HEAnet
 	 */
