@@ -2,6 +2,11 @@
 OpenNaaS Custom CSS
 ----------------------------------------------------------------------- */
 
+/* Common styles */
+h1 {	
+	color: #7E7E7E;
+}
+
 /* Layout styles
 ----------------------------------*/
 .container #menu {
@@ -49,6 +54,10 @@ OpenNaaS Custom CSS
 #languages {
 	float: right;
 	margin-right: 3px;
+}
+
+.languageText {
+	font-size: 11px;
 }
 
 #home {
@@ -103,7 +112,7 @@ OpenNaaS Custom CSS
 }
 
 /* Create and Edit styles
-----------------------------------*/
+----------------------------------
 #createVCPENetwork {
 	font-size: 10px;
 }
@@ -123,7 +132,7 @@ OpenNaaS Custom CSS
 #createVCPENetwork label {
 	font-size: 11px;
 }
-
+*/
 #vcpe {
 	clear: both;
 }
@@ -132,7 +141,17 @@ OpenNaaS Custom CSS
 	clear: both;
 }
 
+#client_box {
+	clear: both;
+	font-size: 11px;
+}
+
 #submitButton {
+	margin-top: 15px;
+	float: right;
+}
+
+#updateIpButton {
 	margin-top: 15px;
 	float: right;
 }
@@ -145,13 +164,13 @@ OpenNaaS Custom CSS
 
 #up_backup, #up_master {
 	width: 150px;
-	padding: 10px 0 0 10px;
+	padding: 10px 5px 5px 5px;
 	margin-left: 120px;
 	margin-right: 70px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	float: left;
-	font-size: 10px !important;
+	font-size: 12px !important;
 }
 
 #up_master input {
@@ -174,25 +193,50 @@ OpenNaaS Custom CSS
 	width: 100%;
 }
 
+#cpe_bod {
+	position: relative;
+	z-index: 100;
+	margin-bottom: 15px;	
+}
+
 #client_master {
+	display: inline-block;
+	width: 140px;
+	padding: 5px;
+	clear: both;
+}
+
+#client_master_box {
 	display: inline-block;
 	width: 148px;
 	padding: 10px 0 0 10px;
 	clear: both;
+	margin-left: 22px;
 }
 
+
 #client_backup,#inter_master,#inter_backup {
+	display: inline-block;
+	width: 140px;
+	padding: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#inter_master_box, #inter_backup_box, #client_backup_box{
 	display: inline-block;
 	width: 148px;
 	padding: 10px 0 0 10px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+	margin-left: 15px;
 }
+
 
 #client_down_master {
 	width: 150px;
-	padding: 10px 0 0 10px;
-	margin-left: 50px;
+	padding: 5px 5px 5px 5px;
+	margin-left: 60px;
 	margin-right: 70px;
 	margin-top: 15px;
 	margin-bottom: 15px;
@@ -201,8 +245,8 @@ OpenNaaS Custom CSS
 
 #client_down_backup {
 	width: 150px;
-	padding: 10px 0 0 10px;
-	margin-left: 256px;
+	padding: 5px 5px 5px 5px;
+	margin-left: 236px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	float: left;
@@ -275,18 +319,29 @@ OpenNaaS Custom CSS
 #config {
 	width: 200px;
 	height: 50px;
-	padding: 5px;
 	float: left;
 	margin: 0 10px 10px 0;
 	z-index: inherit;
+	padding: 10px 0 10px 0;
+	font-size: 12px !important;
+	text-align: center;
 }
 
 #client_config {
-	width: 210px;
+	width: 208px;
 	height: 110px;
 	padding: 5px;
 	float: left;
-	margin: 0 10px 10px 0;
+	margin: 10px 10px 10px 0;
+	font-size: 11px;
+}
+
+#client_config_box {
+	width: 325px;
+	height: 60px;
+	padding: 5px;
+	float: left;
+	margin: 10px 10px 10px 0;
 }
 
 #client_config_firewall {
@@ -294,6 +349,7 @@ OpenNaaS Custom CSS
 	padding: 5px;
 	clear: both;
 	margin: 0 10px 10px 0;
+	font-size: 11px;
 }
 
 
@@ -325,7 +381,8 @@ OpenNaaS Custom CSS
 	z-index: 100;
 }
 #bgp_data {
-	width: 650px; 	
+	width: 635px; 	
+	font-size: 12px;
 }
 
 #vrrp {
@@ -333,10 +390,20 @@ OpenNaaS Custom CSS
 	z-index: 100;
 }
 #vrrp_data {
-	width: 650px; 	
+	width: 636px; 	
+	font-size: 12px;
+}
+
+#vrrp_data_box {
+	width: 645px; 	
+	font-size: 12px;
 }
 
 #client_data {
+	width: 690px;
+}
+
+#client_data_box {
 	width: 700px;
 }
 
@@ -370,6 +437,9 @@ OpenNaaS Custom CSS
 	clear: both;
 }
 
+#wan {
+	width: 750px;
+}
 #wan_backup {
 	width: 150px;
 	padding: 5px;
@@ -395,6 +465,11 @@ OpenNaaS Custom CSS
 	width: 100%;
 }
 
+#cpe_core {
+	width: 280px;
+	margin-left: 202px;
+}
+
 #cpe_client_master {
 	display: inline-block;
 	width: 150px;
@@ -413,7 +488,8 @@ OpenNaaS Custom CSS
 }
 
 .config_content {
-	padding-top: 10px;
+	padding: 10px 0 10px 0;
+	font-size: 10px !important;
 }
 
 /* Other styles

@@ -18,17 +18,16 @@
 
 		<!-- WAN -->
 		<div id="wan_logical">
-			<h2><spring:message code="home.wan"/></h2>
-			<div>&nbsp;</div>
+			<h2><spring:message code="home.wan"/></h2>			
 		</div>	
 		<!-- Up Interfaces -->
 		<div id="up_interfaces">
 			<div id="up_master" class="ui-widget-content">
-				<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}" varStatus="vs" var="item">
-					<div class="input">
-						<c:choose>
-							<c:when test="${item.labelName == 'Up'}">
-								<label>${item.labelName} Master</label><br>
+				<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}" varStatus="vs" var="item">					
+					<c:choose>
+						<c:when test="${item.labelName == 'Up'}">							
+							<label>${item.labelName} Master</label><br>
+							<div class="ui-widget-content config_content">
 								<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
 								<form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
 								<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
@@ -52,17 +51,18 @@
 								</form:label>
 								<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 								<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
-							</c:when>
-						</c:choose>
-					</div>
+							</div>
+						</c:when>
+					</c:choose>				
 				</c:forEach>
 			</div>
 			<div id="up_backup" class="ui-widget-content">				
 				<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
-					<div class="input">
+					
 						<c:choose>
 							<c:when test="${item.labelName == 'Up'}">
 								<label>${item.labelName} Backup</label><br>
+								<div class="ui-widget-content config_content">
 								<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
 								 <form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
 								<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
@@ -86,9 +86,10 @@
 								</form:label>
 								<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 								<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+								</div>
 							</c:when>
 						</c:choose>
-					</div>
+					
 				</c:forEach>
 			</div>
 		</div>
@@ -134,57 +135,39 @@
 						</div>
 					</div>
 				</div>
-				<!-- VRRP -->
-				<div id="vrrp">
-					<h3><spring:message code="vrrp"/></h3>
-					<div  id="vrrp_data" class="fields">
-						<form:hidden path="vrrp.priorityMaster" />	
-						<form:hidden path="vrrp.priorityBackup" />	
-						<form:label for="vrrp.virtualIPAddress" path="vrrp.virtualIPAddress" cssErrorClass="error">
-							<spring:message code="vrrp.virtualIPAddress" />
-						</form:label>
-						<br />
-						<form:input path="vrrp.virtualIPAddress" size="8" />
-						<br>
-						<form:errors path="vrrp.virtualIPAddress" size="8" />
-						<br>
-						<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
-						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
-					</div>
-				</div>	
-	
+
 			
 				<!-- Routers -->
 				<div id="vcpe_topology">
 				<h3><spring:message code="vcpenetwork.topology"/></h3>
-				<div id="vcpe_routers">
-					<div id="lr_master">
-					<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
-						<div>
-							<div id="config" class="ui-widget-content">
-								<p>Global configuration parameters</p>
+					<div id="vcpe_routers">
+						<div id="lr_master">
+						<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
+							<div>
+								<div id="config" class="ui-widget-content">
+									<p>Global configuration parameters</p>
+								</div>
+							<button id="button5" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
 							</div>
-						<button id="button5" class="button"><spring:message code="buttons.activate"/></button>
+						</div>
+						<div id="lr_backup">
+						<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
+							<div>
+								<div id="config" class="ui-widget-content">
+									<p>Global configuration parameters</p>
+								</div>
+							<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
 						</div>
 					</div>
-					<div id="lr_backup">
-					<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
-						<div>
-							<div id="config" class="ui-widget-content">
-								<p>Global configuration parameters</p>
-							</div>
-						<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
-					</div>
-				</div>
-				<!-- VCPE Interfaces -->
-				
+					<!-- VCPE Interfaces -->				
 					<div id="client_master" class="ui-widget-content">				
 						<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}"
 							varStatus="vs" var="item">
-							<div class="input">
+							
 								<c:choose>
 									<c:when test="${item.labelName == 'Down'}">
 										<label>${item.labelName} Master</label><br>
+										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
 										 <form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
@@ -208,18 +191,20 @@
 										</form:label>
 										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
+										</div>
 									</c:when>
 								</c:choose>
-							</div>
+							
 						</c:forEach>
 					</div>
 					<div id="inter_master" class="ui-widget-content">
 						<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}"
 							varStatus="vs" var="item">
-							<div class="input">
+							
 								<c:choose>
 									<c:when test="${item.labelName == 'Inter'}">
 										<label>${item.labelName} Master</label><br>
+										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
 										 <form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
@@ -243,17 +228,19 @@
 										</form:label>
 										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 										<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
+										</div>
 									</c:when>
 								</c:choose>
-							</div>
+							
 						</c:forEach>
 					</div>
 					<div id="inter_backup" class="ui-widget-content">
 						<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
-							<div class="input">
+							
 								<c:choose>
 									<c:when test="${item.labelName == 'Inter'}">
 										<label>${item.labelName} Backup</label><br>
+										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
 										 <form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
@@ -277,17 +264,19 @@
 										</form:label>
 										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+										</div>
 									</c:when>
 								</c:choose>
-							</div>
+							
 						</c:forEach>
 					</div>
 					<div id="client_backup" class="ui-widget-content">
 						<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
-							<div class="input">
+							
 								<c:choose>
 									<c:when test="${item.labelName == 'Down'}">
 										<label>${item.labelName} Backup</label><br>
+										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
 										<form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
 										<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
@@ -311,15 +300,16 @@
 										</form:label>
 										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this.value);" />
 										<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+										</div>
 									</c:when>
 								</c:choose>
-							</div>
+							
 						</c:forEach>
-					</div>
-				</div>
-			</div>
+					</div> <!-- End All interfaces  -->
+				</div>				
+			</div> <!-- End Topology -->
 		</div>
-		</div>
+	</div>
 		<!-- End vCPE -->
 		<!-- Start BoD -->
 		<div id="bod">
@@ -396,8 +386,9 @@
 		<!-- Start Client interfaces -->
 		<div id="client_interfaces">
 			<div id="client_down_master" class="ui-widget-content">
-				<div class="input">
+				
 					<label><spring:message code="bod.ifaceClient"/></label><br>
+					<div class="ui-widget-content config_content">
 					<form:hidden path="bod.ifaceClient.templateName" />
 					<form:label for="bod.ifaceClient.name" path="bod.ifaceClient.name" cssErrorClass="error">
 						<form:label for="bod.ifaceClient.port" path="bod.ifaceClient.port" cssErrorClass="error">
@@ -418,8 +409,9 @@
 				</div>
 			</div>
 			<div id="client_down_backup" class="ui-widget-content">
-				<div class="input">
+				
 					<label><spring:message code="bod.ifaceClientBackup"/></label><br>
+					<div class="ui-widget-content config_content">
 					<form:hidden path="bod.ifaceClientBackup.templateName" />
 					<form:label for="bod.ifaceClientBackup.name" path="bod.ifaceClientBackup.name" cssErrorClass="error">
 						<form:label for="bod.ifaceClientBackup.port" path="bod.ifaceClientBackup.port" cssErrorClass="error">
@@ -445,6 +437,26 @@
 		<div id="client">
 			<h2>Client</h2>
 			<div id="client_data" class="fields">
+			
+			<div id="vrrp">
+					<h3><spring:message code="vrrp"/></h3>
+					<div  id="vrrp_data" class="fields">
+						<form:hidden path="vrrp.priorityMaster" />	
+						<form:hidden path="vrrp.priorityBackup" />	
+						<form:label for="vrrp.virtualIPAddress" path="vrrp.virtualIPAddress" cssErrorClass="error_field">
+							<spring:message code="vrrp.virtualIPAddress" />
+						</form:label>
+						<br />
+						<form:input path="vrrp.virtualIPAddress" size="20" />
+						<br>
+						<form:errors path="vrrp.virtualIPAddress" size="20" />
+						<br>
+						<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
+						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
+					</div>
+				</div>			
+
+			
 				<!--  vCPE name and template -->
 				<div id="client_config" class="ui-widget-content">
 					<div class="field">
@@ -473,7 +485,7 @@
 							<spring:message code="vcpenetwork.clientIpRange" />
 						</form:label>
 						<br />
-						<form:input path="clientIpRange" size="12" />
+						<form:input path="clientIpRange" size="20" />
 						<br>
 						<form:errors path="clientIpRange" />
 					</div>				
