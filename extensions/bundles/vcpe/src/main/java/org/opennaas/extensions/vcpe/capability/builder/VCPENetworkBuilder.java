@@ -27,6 +27,8 @@ import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.bgp.BGPCapability;
+import org.opennaas.extensions.router.capability.bgp.IBGPCapability;
 import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
@@ -451,9 +453,34 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
 
 		log.debug("Configuring EGPs");
-
+		// VRRP
+		configureBGP(model);
 		// only static routes by now
 		configureStaticRoutes(resource, model);
+	}
+
+	/**
+	 * @param model
+	 * @throws ResourceException
+	 */
+	private void configureBGP(VCPENetworkModel model) throws ResourceException {
+		log.debug("Configuring BGP");
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+
+		IResource router1Resource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+		IResource router2Resource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+
+		IBGPCapability capability1 = (IBGPCapability) router1Resource.getCapabilityByInterface(BGPCapability.class);
+		capability1.configureBGP(model.getBgp().getBgpConfigForMaster());
+
+		IBGPCapability capability2 = (IBGPCapability) router2Resource.getCapabilityByInterface(BGPCapability.class);
+		capability2.configureBGP(model.getBgp().getBgpConfigForBackup());
+
+		model.getBgp().setBgpConfigForMaster(null);
+		model.getBgp().setBgpConfigForBackup(null);
 	}
 
 	private void unconfigureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
@@ -772,6 +799,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		// configure both VRRPProtocolEndpoint's
 		configureVRRPProtocolEndpoint(vrrp.getPriorityMaster(), vrrp.getMasterInterface(), vrrp.getMasterRouter(), vrrpGroup, masterNetworkPort);
 		configureVRRPProtocolEndpoint(vrrp.getPriorityBackup(), vrrp.getBackupInterface(), vrrp.getBackupRouter(), vrrpGroup, backupNetworkPort);
+
 	}
 
 	private void configureVRRPProtocolEndpoint(int vrrpPriority, Interface iface, Router router, VRRPGroup vrrgrGroup, NetworkPort networkPort)
