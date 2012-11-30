@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.bgp;
+package org.opennaas.extensions.vcpe.manager.templates;
 
 import java.util.List;
 
