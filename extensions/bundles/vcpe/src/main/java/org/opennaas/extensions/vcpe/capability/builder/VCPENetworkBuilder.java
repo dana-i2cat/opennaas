@@ -472,7 +472,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		log.debug("Configuring static routes");
 
-		configureStaticRoutesInProvider(resource, model);
+		// configureStaticRoutesInProvider(resource, model);
 		// Notice this requires logical routers to be started
 		configureStaticRoutesInClient(resource, model);
 	}
@@ -481,7 +481,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		log.debug("Removing static routes");
 
-		unconfigureStaticRoutesInProvider(resource, model);
+		// unconfigureStaticRoutesInProvider(resource, model);
 
 		// not necessary because logical routers will be dropped anyway
 		// unconfigureStaticRoutesInClient(resource, model);
@@ -552,8 +552,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
-		String ipRange = "0.0.0.0/0";
-		String nextHopIpAddress = addressAndMask1[0];
+		String ipRange = model.getBgp().getCustomerPrefixes().get(0);
+
+		String nextHopIpAddress = "";
 
 		setStaticRoute(lr1, model, ipRange, nextHopIpAddress);
 
@@ -566,7 +567,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	}
 
-	private void setStaticRoute(Router router, VCPENetworkModel model, String ipRange, String nextHopIpAddress) throws ResourceException {
+	private void setStaticRoute(Router router, VCPENetworkModel model, String ipRange, String nextHopIpAddress)
+			throws ResourceException {
 		IResource routerResource = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
 
@@ -577,7 +579,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 
 		IStaticRouteCapability capability = (IStaticRouteCapability) routerResource.getCapabilityByInterface(IStaticRouteCapability.class);
-		capability.createStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress);
+		capability.createStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress, "true");
 	}
 
 	private void deleteStaticRoute(Router router, VCPENetworkModel model, String ipRange, String nextHopIpAddress) throws ResourceException {
