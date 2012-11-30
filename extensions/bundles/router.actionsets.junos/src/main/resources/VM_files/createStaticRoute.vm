@@ -11,7 +11,12 @@
 		<static>
 			<route>
 				<name>$param[0]/$ipUtilsHelper.parseLongToShortIpv4NetMask($param[1])</name>
+				#if(!$param[2].equals(""))
 				<next-hop>$param[2]</next-hop>
+				#end
+				#if($param[3].equals("true"))
+				<discard/>
+				#end
 			</route>
 		</static>
 	</routing-options>
