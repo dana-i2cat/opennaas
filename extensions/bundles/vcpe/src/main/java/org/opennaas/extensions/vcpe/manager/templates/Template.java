@@ -388,7 +388,7 @@ public class Template implements ITemplate {
 
 		// prefixes
 		props1.setProperty("prefixlist.2.prefixes.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
-		props1.setProperty("prefixlist.2.prefix." + 0, bgpParams.loAddr1);
+		props1.setProperty("prefixlist.2.prefix." + 0, IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0] + "/32");
 		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
 			props1.setProperty("prefixlist.2.prefix." + (i + 1), bgp.getCustomerPrefixes().get(i));
 		}
@@ -396,7 +396,7 @@ public class Template implements ITemplate {
 		// policies
 		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
 		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
-		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", bgpParams.loAddr1);
+		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0] + "/32");
 		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
 		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
 			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
@@ -423,7 +423,7 @@ public class Template implements ITemplate {
 
 		// prefixes
 		props2.setProperty("prefixlist.2.prefixes.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
-		props2.setProperty("prefixlist.2.prefix." + 0, bgpParams.loAddr2);
+		props2.setProperty("prefixlist.2.prefix." + 0, IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0] + "/32");
 		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
 			props2.setProperty("prefixlist.2.prefix." + (i + 1), bgp.getCustomerPrefixes().get(i));
 		}
@@ -431,7 +431,7 @@ public class Template implements ITemplate {
 		// policies
 		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
 		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
-		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", bgpParams.loAddr2);
+		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0] + "/32");
 		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
 		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
 			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
