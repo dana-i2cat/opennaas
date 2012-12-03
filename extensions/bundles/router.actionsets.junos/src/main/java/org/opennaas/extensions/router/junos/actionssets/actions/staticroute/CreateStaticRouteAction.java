@@ -3,17 +3,16 @@ package org.opennaas.extensions.router.junos.actionssets.actions.staticroute;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 
 /**
  * @author Jordi Puig
@@ -107,14 +106,16 @@ public class CreateStaticRouteAction extends JunosAction {
 			paramsOK = false;
 		} else {
 			String[] aParams = (String[]) params;
-			if (aParams.length != 3) {
+			if (aParams.length != 4) {
 				paramsOK = false;
 			} else if (!IPUtilsHelper
 					.validateIpAddressPattern(aParams[0]) ||
 					!IPUtilsHelper
-							.validateIpAddressPattern(aParams[1]) ||
-					!IPUtilsHelper
-							.validateIpAddressPattern(aParams[2])) {
+							.validateIpAddressPattern(aParams[1])
+			// ||
+			// !IPUtilsHelper
+			// .validateIpAddressPattern(aParams[2])
+			) {
 				paramsOK = false;
 			}
 		}
