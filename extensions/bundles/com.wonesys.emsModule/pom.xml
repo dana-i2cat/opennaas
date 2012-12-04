@@ -71,7 +71,6 @@
 							*</Import-Package>
 						<Export-Package>
 							com.wonesys.emsModule.*;version="${project.version}",
-							!uk.co.westhawk.tablelayout,
 							uk.co.westhawk.*
 						</Export-Package>
 						<!-- put snmp library in /lib and import its packages-->

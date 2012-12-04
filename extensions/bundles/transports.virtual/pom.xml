@@ -45,7 +45,7 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!org.opennaas.extensions.transports.virtual.*,org.slf4j,*</Import-Package>
+							org.slf4j,*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.transports.virtual.*;version="${project.version}"
 						</Export-Package>

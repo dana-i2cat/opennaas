@@ -26,7 +26,6 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.macbridge.model</artifactId>
-			<version>0.15-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -36,7 +35,6 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>
-			<version>0.15-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>
@@ -66,7 +64,7 @@
 						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
 						<Export-Package>
 							   org.opennaas.extensions.macbridge.ios.resource.commandsets.*;version="${project.version}",
-             				   org.opennaas.extensions.macbridge.ios.resource.actionsets.*;version="${project.version}",
+             				   org.opennaas.extensions.macbridge.ios.resource.actionssets.*;version="${project.version}",
              				   org.opennaas.extensions.macbridge.ios.resource.repository.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
