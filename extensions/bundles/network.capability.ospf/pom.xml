@@ -45,7 +45,7 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!opennaas.extension.network.capability.ospf.*,
+						<Import-Package>
   							org.slf4j,
 							org.apache.felix.service.command,
 							*

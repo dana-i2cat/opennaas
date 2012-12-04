@@ -45,7 +45,7 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!org.opennaas.extensions.protocols.cli.*,org.slf4j,
+							org.slf4j,
 							org.opennaas.core.protocols.sessionmanager;version="${project.version}",*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.protocols.cli.*;version="${project.version}"
