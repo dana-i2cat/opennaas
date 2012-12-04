@@ -112,7 +112,7 @@ public class CreateStaticRouteAction extends JunosAction {
 					||
 					!IPUtilsHelper.validateIpAddressPattern(aParams[1])
 					||
-					(!aParams[2].equals("") && IPUtilsHelper.validateIpAddressPattern(aParams[2]))) {
+					(!aParams[2].equals("") && !IPUtilsHelper.validateIpAddressPattern(aParams[2]))) {
 				paramsOK = false;
 			}
 		}
