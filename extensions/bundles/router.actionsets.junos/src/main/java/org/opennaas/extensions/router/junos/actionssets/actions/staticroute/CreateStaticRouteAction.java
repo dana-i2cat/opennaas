@@ -108,14 +108,11 @@ public class CreateStaticRouteAction extends JunosAction {
 			String[] aParams = (String[]) params;
 			if (aParams.length != 4) {
 				paramsOK = false;
-			} else if (!IPUtilsHelper
-					.validateIpAddressPattern(aParams[0]) ||
-					!IPUtilsHelper
-							.validateIpAddressPattern(aParams[1])
-			// ||
-			// !IPUtilsHelper
-			// .validateIpAddressPattern(aParams[2])
-			) {
+			} else if (!IPUtilsHelper.validateIpAddressPattern(aParams[0])
+					||
+					!IPUtilsHelper.validateIpAddressPattern(aParams[1])
+					||
+					(!aParams[2].equals("") && IPUtilsHelper.validateIpAddressPattern(aParams[2]))) {
 				paramsOK = false;
 			}
 		}
