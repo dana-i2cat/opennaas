@@ -64,7 +64,7 @@
 						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
 						<Export-Package>
 							   org.opennaas.extensions.macbridge.ios.resource.commandsets.*;version="${project.version}",
-             				   org.opennaas.extensions.macbridge.ios.resource.actionsets.*;version="${project.version}",
+             				   org.opennaas.extensions.macbridge.ios.resource.actionssets.*;version="${project.version}",
              				   org.opennaas.extensions.macbridge.ios.resource.repository.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
