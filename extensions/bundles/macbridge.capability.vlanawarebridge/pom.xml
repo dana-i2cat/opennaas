@@ -32,7 +32,6 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.macbridge.model</artifactId>
-			<version>0.15-SNAPSHOT</version>
 		</dependency>
 		<!--  auxiliar methods to use with commands -->
 		<dependency>
