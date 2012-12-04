@@ -25,12 +25,44 @@
 	<script
 		src="<c:url value="/resources/js/jquery.jsPlumb-1.3.16-all.js" />"></script>
 	<script>
+		// Javascript for menu
 		$(function() {
 			$("#_menu").menu();
 		});
-	
+		// Javascript for tabs	
 		$(function() {
 			$("#tabs").tabs();
+		});
+		// Javascript for link confirm	
+		$(document).ready(function() {
+		    $("#dialog").dialog({
+		      autoOpen: false,
+		      modal: true
+			});
+		});
+
+		$(document).ready(function(){
+		    $("#dialog").dialog({
+		      modal: true,
+		            bgiframe: true,
+		            width: 300,
+		            height: 150,
+		      autoOpen: false
+		      });
+
+		    $("a.confirm").click(function(e) {
+		        e.preventDefault();
+		        var theHREF = $(this).attr("href");
+		        $("#dialog").dialog('option', 'buttons', {
+	                "Confirm" : function() {
+	                    window.location.href = theHREF;
+	                    },
+	                "Cancel" : function() {
+	                    $(this).dialog("close");
+	                    }
+	                });
+		        $("#dialog").dialog("open");
+		    });
 		});
 	</script>
 </head>
@@ -49,6 +81,5 @@
 			<tiles:insertAttribute name="footer" />
 		</div>
 	</div>
-	<%@include file="../progressBar.jsp"%>
 </body>
 </html>
