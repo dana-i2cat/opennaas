@@ -62,14 +62,9 @@
 									#set($hasRemoteAS = false)
 								#end
 								#if($hasRemoteAS)
-									#set($remoteAS = $bgpPep.getRemoteAS())
+									<peer-as>$bgpPep.getRemoteAS()</peer-as>
 								#end
 							</neighbor>
-						#end
-						##peer-as is specified per PEP in CIM model
-						#if (! $remoteAS)
-						#else
-						<peer-as>$remoteAS</peer-as>
 						#end
 						## SET GROUP TYPE ACCORDING TO PEPS
 						<type>$bgpType</type>
