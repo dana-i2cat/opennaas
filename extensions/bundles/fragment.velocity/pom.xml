@@ -53,9 +53,7 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!org.opennaas.extensions.fragment.velocity.*,
-							*
-							</Import-Package>
+						<Import-Package>*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.fragment.velocity;version="${project.version}"
 						</Export-Package>
