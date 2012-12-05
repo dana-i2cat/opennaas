@@ -45,7 +45,7 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!org.opennaas.extensions.transports.sockets.*,org.slf4j,*</Import-Package>
+							org.slf4j,*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.transports.sockets.*;version="${project.version}"
 						</Export-Package>
