@@ -21,18 +21,9 @@
 	<!-- Javascript -->
 	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui-1.9.1.custom.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery.jsPlumb-1.3.16-all.js" />"></script>
 	<script src="<c:url value="/resources/js/script.js" />"></script>
-	<script
-		src="<c:url value="/resources/js/jquery.jsPlumb-1.3.16-all.js" />"></script>
-	<script>
-		$(function() {
-			$("#_menu").menu();
-		});
-	
-		$(function() {
-			$("#tabs").tabs();
-		});
-	</script>
+
 </head>
 <body>
 	<div class="container">
@@ -49,6 +40,5 @@
 			<tiles:insertAttribute name="footer" />
 		</div>
 	</div>
-	<%@include file="../progressBar.jsp"%>
 </body>
 </html>

@@ -33,7 +33,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="<c:url value="/secure/noc/vcpeNetwork/delete?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
+						<a class="confirm" href="<c:url value="/secure/noc/vcpeNetwork/delete?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
 							<spring:message code="menu.delete" />
 						</a>
 					</li>
