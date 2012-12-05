@@ -1,16 +1,63 @@
 /*
  * OpenNaaS script
  */
+/**
+ * Javascript for menu
+ */
+$(function() {
+	$("#_menu").menu();
+});
+
+/**
+ * Javascript for tabs
+ */
+$(function() {
+	$("#tabs").tabs();
+});
+
+/**
+ * Javascript for link confirm
+ */
+$(document).ready(function() {
+	$("#dialog").dialog({
+		autoOpen : false,
+		modal : true
+	});
+});
+
+$(document).ready(function() {
+	$("#dialog").dialog({
+		modal : true,
+		bgiframe : true,
+		width : 300,
+		height : 150,
+		autoOpen : false
+	});
+
+	$("a.confirm").click(function(e) {
+		e.preventDefault();
+		var theHREF = $(this).attr("href");
+		$("#dialog").dialog('option', 'buttons', {
+			"Confirm" : function() {
+				window.location.href = theHREF;
+			},
+			"Cancel" : function() {
+				$(this).dialog("close");
+			}
+		});
+		$("#dialog").dialog("open");
+	});
+});
 
 /**
  * Ajax Sample Method that updates the header of a view
  */
 function updateHeader() {
 	$.ajax({
-		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/getAjax",
-		success: function(data) {
-		    $('#ajaxUpdate').html(data);			    
+		type : "GET",
+		url : "/opennaas-vcpe/secure/vcpeNetwork/getAjax",
+		success : function(data) {
+			$('#ajaxUpdate').html(data);
 		}
 	});
 }
@@ -24,30 +71,37 @@ function updateHeader() {
  */
 function isInterfaceFree(vcpeId, iface, port) {
 	$.ajax({
-		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId=" + vcpeId + "&iface=" + iface.value +"&port=" + port.value,
-		success: function(data) {
+		type : "GET",
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId="
+				+ vcpeId
+				+ "&iface="
+				+ iface.value
+				+ "&port="
+				+ port.value,
+		success : function(data) {
 			if (data == 'false') {
 				// Case not available
 				// First delete the tooltip
-		    	$("#tooltip").remove();
-		    	// Add the new tooltip, error classes and disable inputs
-				$(iface).after("<div id='tooltip'>The Interface is not available</div>");
+				$("#tooltip").remove();
+				// Add the new tooltip, error classes and disable inputs
+				$(iface)
+						.after(
+								"<div id='tooltip'>The Interface is not available</div>");
 				iface.className = 'error';
-				port.className = 'error';	
-		    	// Show the tooltip
+				port.className = 'error';
+				// Show the tooltip
 				$("#tooltip").show("fade", {}, 400);
-			    $("#tooltip").click(function() {
-			    	// On click hide tooltip 
-			    	$(this).hide("fade", {}, 400); 
-			    	$(this).remove();
-			    });
+				$("#tooltip").click(function() {
+					// On click hide tooltip
+					$(this).hide("fade", {}, 400);
+					$(this).remove();
+				});
 			} else {
 				// Case available, revert changes
-		    	iface.className = ''; 
-		    	port.className = ''; 
+				iface.className = '';
+				port.className = '';
 				$("#tooltip").hide("fade", {}, 400);
-		    	$("#tooltip").remove();
+				$("#tooltip").remove();
 			}
 		}
 	});
@@ -61,29 +115,32 @@ function isInterfaceFree(vcpeId, iface, port) {
  */
 function isIPFree(vcpeId, ip) {
 	$.ajax({
-		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId=" + vcpeId + "&ip=" + ip.value,
-		success: function(data) {
+		type : "GET",
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId="
+				+ vcpeId + "&ip=" + ip.value,
+		success : function(data) {
 			if (data == 'false') {
 				// Case not available
 				// First delete the tooltip
-		    	$("#tooltip").remove();
-		    	// Add the new tooltip, error classes and disable inputs
-				$(ip).after("<div id='tooltip'>The IP Address is not available</div>");
-				ip.className = 'error';	
+				$("#tooltip").remove();
+				// Add the new tooltip, error classes and disable inputs
+				$(ip)
+						.after(
+								"<div id='tooltip'>The IP Address is not available</div>");
+				ip.className = 'error';
 				// Show the tooltip
 				$("#tooltip").show("fade", {}, 400);
-			    $("#tooltip").click(function() {
-			    	// On click hide tooltip 
-			    	$(this).hide("fade", {}, 400); 
-			    	$(this).remove();
-			    });
+				$("#tooltip").click(function() {
+					// On click hide tooltip
+					$(this).hide("fade", {}, 400);
+					$(this).remove();
+				});
 			} else {
 				// Case available, revert changes
 				ip.className = '';
 				$("#tooltip").hide("fade", {}, 400);
-		    	$("#tooltip").remove();
-
+				$("#tooltip").remove();
+	
 			}
 		}
 	});
@@ -98,73 +155,67 @@ function isIPFree(vcpeId, ip) {
  */
 function isVLANFree(vcpeId, vlan, ifaceName) {
 	$.ajax({
-		type: "GET",
-		url: "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId + "&vlan=" +  vlan.value + "&ifaceName=" + ifaceName.value,
-		success: function(data) {
+		type : "GET",
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId
+				+ "&vlan=" + vlan.value + "&ifaceName=" + ifaceName.value,
+		success : function(data) {
 			if (data == 'false') {
 				// Case not available
 				// First delete the tooltip
-		    	$("#tooltip").remove();
-		    	// Add the new tooltip, error classes and disable inputs
-				$(vlan).after("<div id='tooltip'>The VLAN is not available</div>");
-				vlan.className = 'error';	
+				$("#tooltip").remove();
+				// Add the new tooltip, error classes and disable inputs
+				$(vlan).after(
+						"<div id='tooltip'>The VLAN is not available</div>");
+				vlan.className = 'error';
 				// Show the tooltip
 				$("#tooltip").show("fade", {}, 400);
-			    $("#tooltip").click(function() {
-			    	// On click hide tooltip 
-			    	$(this).hide("fade", {}, 400); 
-			    	$(this).remove();
-			    });
+				$("#tooltip").click(function() {
+					// On click hide tooltip
+					$(this).hide("fade", {}, 400);
+					$(this).remove();
+				});
 			} else {
 				// Case available, revert changes
 				vlan.className = '';
 				$("#tooltip").hide("fade", {}, 400);
-		    	$("#tooltip").remove();
+				$("#tooltip").remove();
 			}
 		}
 	});
 }
 
 /**
- * GUI View
- * 
+ * GUI create and update view
  */
 $(function() {
-	
+
 	// client update IPs
-	
+
 	/* Client block */
 	$("#client_box").accordion({
 		collapsible : true,
 		icons : false,
 		heightStyle : "content",
-		active: true
-		/*
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(topologyVisible);
-		}*/
+		active : true
+	/*
+	 * beforeActivate : function() { clearJSPlumbStuff(); }, activate :
+	 * function() { setJSPlumbStuff(topologyVisible); }
+	 */
 	});
-	
+
 	$("#vrrp_box").accordion({
 		collapsible : true,
 		icons : false,
 		heightStyle : "content",
-		active: true
-		/*
-		beforeActivate : function() {
-			clearJSPlumbStuff();
-		},
-		activate : function() {
-			setJSPlumbStuff(topologyVisible);
-		}*/
+		active : true
+	/*
+	 * beforeActivate : function() { clearJSPlumbStuff(); }, activate :
+	 * function() { setJSPlumbStuff(topologyVisible); }
+	 */
 	});
-	
-	
+
 	// only apply accordion styles when createVCPENetwork.jsp is loaded
-	if($("#home_body").length) {
+	if ($("#home_body").length) {
 		jsPlumbNecessary = true;
 		/**
 		 * Home view
@@ -182,28 +233,28 @@ $(function() {
 				setJSPlumbHome();
 			}
 		});
-		
+
 		/* Physical routers */
 		$("#cpe_master").accordion({
 			collapsible : false,
 			heightStyle : "content",
 			icons : {
-				activeHeader: "ui-icon-check"
+				activeHeader : "ui-icon-check"
 			}
 		});
 		$("#cpe_backup").accordion({
 			collapsible : false,
 			heightStyle : "content",
-			icons : {				
-				activeHeader: "ui-icon-check"
+			icons : {
+				activeHeader : "ui-icon-check"
 			}
 		});
 		$("#cpe_core").accordion({
 			collapsible : false,
 			icons : false,
 			heightStyle : "content"
-		});		
-		
+		});
+
 		/* BoD block */
 		$("#cpe_bod").accordion({
 			collapsible : true,
@@ -211,7 +262,7 @@ $(function() {
 			heightStyle : "content",
 			active : false
 		});
-	
+
 		/* Client block */
 		$("#cpe_client").accordion({
 			collapsible : true,
@@ -219,10 +270,10 @@ $(function() {
 			heightStyle : "content",
 			active : false
 		});
-		
 	}
+
 	// only apply accordion styles when createVCPENetwork.jsp is loaded
-	if($("#createVCPENetwork").length) {
+	if ($("#createVCPENetwork").length) {
 		jsPlumbNecessary = true;
 		/* vCPE client block */
 		$("#vcpe").accordion({
@@ -230,16 +281,16 @@ $(function() {
 			icons : false,
 			autoHeight : true,
 			heightStyle : "content",
-			
+
 		});
-		
+
 		/* BoD block */
 		$("#bod").accordion({
 			collapsible : true,
 			icons : false,
 			autoHeight : true,
 			heightStyle : "content",
-			active: false,
+			active : false,
 			beforeActivate : function() {
 				clearJSPlumbStuff();
 			},
@@ -247,14 +298,13 @@ $(function() {
 				setJSPlumbStuff(topologyVisible);
 			}
 		});
-		
-		
+
 		/* Client block */
 		$("#client").accordion({
 			collapsible : true,
 			icons : false,
 			heightStyle : "content",
-			active: false,
+			active : false,
 			beforeActivate : function() {
 				clearJSPlumbStuff();
 			},
@@ -262,72 +312,74 @@ $(function() {
 				setJSPlumbStuff(topologyVisible);
 			}
 		});
-		
-		
-		/* Protocols */
-		$( "#bgp" ).accordion({
-			collapsible: true,
-			icons: false,
-			heightStyle : "content",
-			active: false,
-			beforeActivate : function() {
-				clearJSPlumbStuff();
-			},
-			activate : function() {
-				setJSPlumbStuff(topologyVisible);
-			}
-			});
-		$( "#vrrp" ).accordion({
-			collapsible: true,
-			icons: false,
-			heightStyle : "content",
-			active: false,
-			beforeActivate : function() {
-				clearJSPlumbStuff();
-			},
-			activate : function() {
-				setJSPlumbStuff(topologyVisible);
-			}
-			});
-		
-		$( "#vcpe_topology" ).accordion({
-			collapsible: true,
-			icons: false,
-			heightStyle : "content",
-			active: false,
-			beforeActivate : function() {
-				clearJSPlumbStuff();
-			},
-			activate : function(event, ui) {
-				var active = $("#vcpe_topology").accordion("option", "active");
-				topologyVisible = !(typeof active == 'boolean' && active == false);
-				setJSPlumbStuff(topologyVisible);
-			}
-			});
-		
-		$( "#wan_logical" ).accordion({
-			collapsible: true,
-			icons: false,
-			heightStyle: "content",
-			active: false
-			});
-		
-		
-		/* Routers */
-		$( "#lr_master" ).accordion({
-			collapsible: false,
-			icons: false,
-			heightStyle: "content"
-			});
-		$( "#lr_backup" ).accordion({
-			collapsible: false,
-			icons: false,
-			heightStyle: "content"
-			});
-	}
-	
-	/* Buttons */
 
+		/* Protocols */
+		$("#bgp").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(topologyVisible);
+			}
+		});
+
+		$("#vrrp").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function() {
+				setJSPlumbStuff(topologyVisible);
+			}
+		});
+
+		$("#vcpe_topology")
+				.accordion(
+						{
+							collapsible : true,
+							icons : false,
+							heightStyle : "content",
+							active : false,
+							beforeActivate : function() {
+								clearJSPlumbStuff();
+							},
+							activate : function(event, ui) {
+								var active = $("#vcpe_topology").accordion(
+										"option", "active");
+								topologyVisible = !(typeof active == 'boolean' && active == false);
+								setJSPlumbStuff(topologyVisible);
+							}
+						});
+
+		$("#wan_logical").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false
+		});
+
+		/* Routers */
+		$("#lr_master").accordion({
+			collapsible : false,
+			icons : false,
+			heightStyle : "content"
+		});
+
+		$("#lr_backup").accordion({
+			collapsible : false,
+			icons : false,
+			heightStyle : "content"
+		});
+	}
+
+	/* Buttons */
 	$("#button").button();
 	$("#button2").button();
 	$("#button3").button();
@@ -341,49 +393,52 @@ $(function() {
 	$("#button11").button();
 	$("#button12").button();
 	$("#submitButton").button();
-	$( "#updateIpButton" ).button();
+	$("#updateIpButton").button();
 	$("#waitingButton").button({
 		icons : {
 			primary : 'ui-icon-newwin'
 		}
 	});
-	$("#button6").click(function( event ) {
-        event.preventDefault();
+	$("#button6").click(function(event) {
+		event.preventDefault();
 	});
-	$("#homeButton").button({		
+	$("#homeButton").button({
 		icons : {
 			primary : 'ui-icon-home'
 		}
 	});
-	$("#logoutButton").button({		
+	$("#logoutButton").button({
 		icons : {
 			secondary : 'ui-icon-power'
 		}
 	});
-	$("#submitLogin").button({		
+	$("#submitLogin").button({
 		icons : {
 			primary : 'ui-icon-triangle-1-e'
 		}
 	});
-	
+
 	/**
 	 * Firewall table
 	 */
 	$("#fwRemove1").button();
-	$("#fwRemove1").click(function( event ) {
-        event.preventDefault();
+	$("#fwRemove1").click(function(event) {
+		event.preventDefault();
 	});
+
 	$("#fwRemove2").button();
-	$("#fwRemove2").click(function( event ) {
-        event.preventDefault();
+	$("#fwRemove2").click(function(event) {
+		event.preventDefault();
 	});
+
 	$("#fwRemove3").button();
-	$("#fwRemove3").click(function( event ) {
-        event.preventDefault();
+	$("#fwRemove3").click(function(event) {
+		event.preventDefault();
 	});
+
 	$("#fwAdd").button();
-	$("#fwAdd").click(function( event ) {
-        event.preventDefault();
+	$("#fwAdd").click(function(event) {
+		event.preventDefault();
 	});
 
 	/**
@@ -393,6 +448,7 @@ $(function() {
 	$("#submitButton").click(function(event) {
 		$("#pleaseWait").dialog("open");
 	});
+
 	$("#updateIpButton").click(function(event) {
 		$("#pleaseWait").dialog("open");
 	});
@@ -411,116 +467,129 @@ $(function() {
 		show : "fade",
 		hide : "fade"
 	});
-	
+
 	/**
 	 * Language selection
-	 */    
-    $( "#languages" ).buttonset( {
-    	 icons: {
-             primary: "ui-icon-flag"
-         }
-    });        
+	 */
+	$("#languages").buttonset({
+		icons : {
+			primary : "ui-icon-flag"
+		}
+	});
 	// English
 	$("#english").click(function(event) {
-		open: 
-			window.open("?locale=en_gb", "_self");
-	});	
+		open: window.open("?locale=en_gb", "_self");
+	});
 	// Spanish
 	$("#spanish").click(function(event) {
-		open: 
-			window.open("?locale=es_es", "_self");			
-	});	
+		open: window.open("?locale=es_es", "_self");
+	});
 	// Check language to activate button
-	if ($.getUrlVar('locale') == "es_es")
-	{
+	if ($.getUrlVar('locale') == "es_es") {
 		$("#spanish").attr("checked", "checked").button("refresh");
-	}
-	else
-	{
+	} else {
 		$("#english").attr("checked", "checked").button("refresh");
 	}
-	
-	 $( "#radioset" ).buttonset();
-	 $( "#radioset2" ).buttonset();
+
+	$("#radioset").buttonset();
+	$("#radioset2").buttonset();
 });
 
-//Read a page's GET URL variables and return them as an associative array.
+// Read a page's GET URL variables and return them as an associative array.
 $.extend({
-	  getUrlVars: function(){
-	    var vars = [], hash;
-	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-	    for(var i = 0; i < hashes.length; i++)
-	    {
-	      hash = hashes[i].split('=');
-	      vars.push(hash[0]);
-	      vars[hash[0]] = hash[1];
-	    }
-	    return vars;
-	  },
-	  getUrlVar: function(name){
-	    return $.getUrlVars()[name];
-	  }
-	});
-
+	getUrlVars : function() {
+		var vars = [], hash;
+		var hashes = window.location.href.slice(
+				window.location.href.indexOf('?') + 1).split('&');
+		for ( var i = 0; i < hashes.length; i++) {
+			hash = hashes[i].split('=');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+		return vars;
+	},
+	getUrlVar : function(name) {
+		return $.getUrlVars()[name];
+	}
+});
 
 /**
  * jsPlumb home
  */
 // set jsPlumb stuff
 function setJSPlumbHome() {
-	
+
 	// WAN -- WAN master & backup
 	addConnection("wan", "wan_master", "home_body", 0.302, 1, 0.5, 0, false);
 	addConnection("wan", "wan_backup", "home_body", 0.7, 1, 0.5, 0, false);
-	
-	// WAN master & backup -- router master & backup
-	addConnection("wan_master", "cpe_master", "home_body", 0.5, 1, 0.6, 0, false);
-	addConnection("wan_backup", "cpe_backup", "home_body", 0.5, 1, 0.4, 0, false);
-	
-	// router master -- client master & inter master
-	addConnection("cpe_master", "cpe_client_master", "home_body", 0.22, 1, 0.5, 0, false);
-	addConnection("cpe_master", "cpe_inter_master", "home_body", 0.83, 1, 0.5, 0, false);
-	
-	// router master -- client master & inter master
-	addConnection("cpe_backup", "cpe_inter_backup", "home_body", 0.18, 1, 0.5, 0, false);
-	addConnection("cpe_backup", "cpe_client_backup", "home_body", 0.78, 1, 0.5, 0, false);
-	
-	// client master & backup -- client
-	addConnection("cpe_client_master", "cpe_client", "home_body", 0.5, 1, 0.165, 0, false);
-	addConnection("cpe_client_backup", "cpe_client", "home_body", 0.5, 1, 0.845, 0, false);
-	
-	// inter master & backup -- bod
-	addConnection("cpe_inter_master", "cpe_bod", "home_body", 0.5, 1, 0.39, 0, false);
-	addConnection("cpe_inter_backup", "cpe_bod", "home_body", 0.5, 1, 0.615, 0, false);	
-}
 
+	// WAN master & backup -- router master & backup
+	addConnection("wan_master", "cpe_master", "home_body", 0.5, 1, 0.6, 0,
+			false);
+	addConnection("wan_backup", "cpe_backup", "home_body", 0.5, 1, 0.4, 0,
+			false);
+
+	// router master -- client master & inter master
+	addConnection("cpe_master", "cpe_client_master", "home_body", 0.22, 1, 0.5,
+			0, false);
+	addConnection("cpe_master", "cpe_inter_master", "home_body", 0.83, 1, 0.5,
+			0, false);
+
+	// router master -- client master & inter master
+	addConnection("cpe_backup", "cpe_inter_backup", "home_body", 0.18, 1, 0.5,
+			0, false);
+	addConnection("cpe_backup", "cpe_client_backup", "home_body", 0.78, 1, 0.5,
+			0, false);
+
+	// client master & backup -- client
+	addConnection("cpe_client_master", "cpe_client", "home_body", 0.5, 1,
+			0.165, 0, false);
+	addConnection("cpe_client_backup", "cpe_client", "home_body", 0.5, 1,
+			0.845, 0, false);
+
+	// inter master & backup -- bod
+	addConnection("cpe_inter_master", "cpe_bod", "home_body", 0.5, 1, 0.39, 0,
+			false);
+	addConnection("cpe_inter_backup", "cpe_bod", "home_body", 0.5, 1, 0.615, 0,
+			false);
+}
 
 /**
  * jsPlumb create and view
  */
 // set jsPlumb stuff
 function setJSPlumbStuff(setExtra) {
-	// WAN  -- UP master & backup
-	addConnection("wan_logical", "up_master", "createVCPENetwork", 0.268, 1, 0.5, 0, false);
-	addConnection("wan_logical", "up_backup", "createVCPENetwork", 0.738, 1, 0.5, 0, false);
-	
-	if(setExtra) {
+	// WAN -- UP master & backup
+	addConnection("wan_logical", "up_master", "createVCPENetwork", 0.268, 1,
+			0.5, 0, false);
+	addConnection("wan_logical", "up_backup", "createVCPENetwork", 0.738, 1,
+			0.5, 0, false);
+
+	if (setExtra) {
 		// UP master & backup -- LR master & backup
-		addConnection("up_master", "lr_master", "createVCPENetwork", 0.5, 1, 0.425, 0, true);
-		addConnection("up_backup", "lr_backup", "createVCPENetwork", 0.5, 1, 0.6, 0, true);	
-		
+		addConnection("up_master", "lr_master", "createVCPENetwork", 0.5, 1,
+				0.425, 0, true);
+		addConnection("up_backup", "lr_backup", "createVCPENetwork", 0.5, 1,
+				0.6, 0, true);
+
 		// CLIENT DOWN master & backup -- CLIENT master & backup
-		addConnection("client_master", "client_down_master", "createVCPENetwork", 0.5, 1, 0.5, 0, true);
-		addConnection("client_backup", "client_down_backup", "createVCPENetwork", 0.5, 1, 0.5, 0, true);			
+		addConnection("client_master", "client_down_master",
+				"createVCPENetwork", 0.5, 1, 0.5, 0, true);
+		addConnection("client_backup", "client_down_backup",
+				"createVCPENetwork", 0.5, 1, 0.5, 0, true);
 	}
-	
+
 	// LR master & backup -- CLIENT DOWN master & backup
-	addConnection("lr_master", "client_master", "vcpe_routers", 0.2, 1, 0.5, 0, false);
-	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.79, 1, 0.5, 0, false);
-	
+	addConnection("lr_master", "client_master", "vcpe_routers", 0.2, 1, 0.5, 0,
+			false);
+	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.79, 1, 0.5,
+			0, false);
+
 	// CLIENT DOWN master & backup -- CLIENT
-	addConnection("client_down_master", "client", "createVCPENetwork", 0.5, 1, 0.187, 0, false);
-	addConnection("client_down_backup", "client", "createVCPENetwork", 0.5, 1, 0.812, 0, false);
+	addConnection("client_down_master", "client", "createVCPENetwork", 0.5, 1,
+			0.187, 0, false);
+	addConnection("client_down_backup", "client", "createVCPENetwork", 0.5, 1,
+			0.812, 0, false);
 }
 
 // add a connection and its endpoints
@@ -534,7 +603,7 @@ function addConnection(origin, destination, parent, originAnchorX,
 		anchor : [ destinationAnchorX, destinationAnchorY ],
 		container : parent
 	});
-	if(extra) {
+	if (extra) {
 		extra_endpoints.push(originEndpoint);
 		extra_endpoints.push(destinationEndpoint);
 	} else {
@@ -548,7 +617,7 @@ function addConnection(origin, destination, parent, originAnchorX,
 		container : $("#" + parent)
 	});
 
-	if(extra) {
+	if (extra) {
 		extra_connections.push(connection);
 	} else {
 		intra_connections.push(connection);
@@ -568,7 +637,7 @@ function clearJSPlumbStuff() {
 			connection.removeAllOverlays();
 		}
 	}
-	
+
 	if (extra_connections != null) {
 		var connection = null;
 		while ((connection = extra_connections.pop()) != null) {
@@ -583,7 +652,7 @@ function clearJSPlumbStuff() {
 			endpoint.detachAll();
 		}
 	}
-	
+
 	if (extra_endpoints != null) {
 		var endpoint = null;
 		while ((endpoint = extra_endpoints.pop()) != null) {
@@ -592,7 +661,7 @@ function clearJSPlumbStuff() {
 	}
 }
 
-//clear all jsPlumb stuff
+// clear all jsPlumb stuff
 function clearJSPlumbHome() {
 	jsPlumb.deleteEveryEndpoint();
 	jsPlumb.detachAllConnections();
@@ -604,7 +673,7 @@ function clearJSPlumbHome() {
 			connection.removeAllOverlays();
 		}
 	}
-	
+
 	if (extra_connections != null) {
 		var connection = null;
 		while ((connection = extra_connections.pop()) != null) {
@@ -626,12 +695,12 @@ var jsPlumbNecessary = false;
 
 // jsPlumb instance
 var jsP;
-//jsPlumb intra accordion endpoints
+// jsPlumb intra accordion endpoints
 var intra_endpoints = new Array();
 // jsPlumb intra accordion connections
 var intra_connections = new Array();
 
-//jsPlumb extra accordion endpoints
+// jsPlumb extra accordion endpoints
 var extra_endpoints = new Array();
 // jsPlumb extra accordion connections
 var extra_connections = new Array();
@@ -640,7 +709,7 @@ var extra_connections = new Array();
 var topologyVisible = false;
 
 $(function() {
-	if(jsPlumbNecessary){
+	if (jsPlumbNecessary) {
 		// initialize jsPlumb instance
 		jsP = jsPlumb.getInstance({
 			PaintStyle : {
@@ -652,56 +721,56 @@ $(function() {
 			Connector : "Straight",
 			Endpoint : "Blank"
 		});
-	
+
 		// initialize endpoints and connections arrays
 		intra_endpoints = new Array();
 		intra_connections = new Array();
 		extra_endpoints = new Array();
 		extra_connections = new Array();
-	
+
 		// draw jsPlumb stuff when view stuff is ready
 		jsPlumb.ready(function() {
 			jsPlumb.importDefaults({
 				ConnectorZIndex : 5
 			});
-			if($("#createVCPENetwork").length){
+			if ($("#createVCPENetwork").length) {
 				setJSPlumbStuff(topologyVisible);
-			} else if($("#home_body").length){
+			} else if ($("#home_body").length) {
 				setJSPlumbHome();
 			}
 		});
 	}
-	
-	$.fn.styleTable = function (options) {
-        var defaults = {
-            css: 'styleTable'
-        };
-        options = $.extend(defaults, options);
 
-        return this.each(function () {
+	$.fn.styleTable = function(options) {
+		var defaults = {
+			css : 'styleTable'
+		};
+		options = $.extend(defaults, options);
 
-            input = $(this);
-            input.addClass(options.css);
+		return this.each(function() {
 
-            input.find("tr").live('mouseover mouseout', function (event) {
-                if (event.type == 'mouseover') {
-                    $(this).children("td").addClass("ui-state-hover");
-                } else {
-                    $(this).children("td").removeClass("ui-state-hover");
-                }
-            });
+			input = $(this);
+			input.addClass(options.css);
 
-            input.find("th").addClass("ui-state-default");
-            input.find("td").addClass("ui-widget-content");
+			input.find("tr").live('mouseover mouseout', function(event) {
+				if (event.type == 'mouseover') {
+					$(this).children("td").addClass("ui-state-hover");
+				} else {
+					$(this).children("td").removeClass("ui-state-hover");
+				}
+			});
 
-            input.find("tr").each(function () {
-                $(this).children("td:not(:first)").addClass("first");
-                $(this).children("th:not(:first)").addClass("first");
-            });
-        });
-    };
+			input.find("th").addClass("ui-state-default");
+			input.find("td").addClass("ui-widget-content");
+
+			input.find("tr").each(function() {
+				$(this).children("td:not(:first)").addClass("first");
+				$(this).children("th:not(:first)").addClass("first");
+			});
+		});
+	};
 });
 
-$(document).ready(function () {
-    $("#firewallTable").styleTable();
+$(document).ready(function() {
+	$("#firewallTable").styleTable();
 });
