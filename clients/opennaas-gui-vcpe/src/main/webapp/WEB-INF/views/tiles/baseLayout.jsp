@@ -21,50 +21,9 @@
 	<!-- Javascript -->
 	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui-1.9.1.custom.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery.jsPlumb-1.3.16-all.js" />"></script>
 	<script src="<c:url value="/resources/js/script.js" />"></script>
-	<script
-		src="<c:url value="/resources/js/jquery.jsPlumb-1.3.16-all.js" />"></script>
-	<script>
-		// Javascript for menu
-		$(function() {
-			$("#_menu").menu();
-		});
-		// Javascript for tabs	
-		$(function() {
-			$("#tabs").tabs();
-		});
-		// Javascript for link confirm	
-		$(document).ready(function() {
-		    $("#dialog").dialog({
-		      autoOpen: false,
-		      modal: true
-			});
-		});
 
-		$(document).ready(function(){
-		    $("#dialog").dialog({
-		      modal: true,
-		            bgiframe: true,
-		            width: 300,
-		            height: 150,
-		      autoOpen: false
-		      });
-
-		    $("a.confirm").click(function(e) {
-		        e.preventDefault();
-		        var theHREF = $(this).attr("href");
-		        $("#dialog").dialog('option', 'buttons', {
-	                "Confirm" : function() {
-	                    window.location.href = theHREF;
-	                    },
-	                "Cancel" : function() {
-	                    $(this).dialog("close");
-	                    }
-	                });
-		        $("#dialog").dialog("open");
-		    });
-		});
-	</script>
 </head>
 <body>
 	<div class="container">
