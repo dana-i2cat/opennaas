@@ -195,7 +195,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 				throw new VCPENetworkManagerException("Can't create the resource. ");
 			}
 		} catch (Exception e) {
-			throw new VCPENetworkManagerException("Can't create the resource. " + e.getMessage());
+			throw new VCPENetworkManagerException("Can't create the resource. "
+					+ e.getMessage() != null ? e.getMessage() : "");
 		}
 		return resource;
 	}
@@ -218,7 +219,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			}
 		} catch (Exception e) {
 			removeResource(vcpeNetworId);
-			throw new VCPENetworkManagerException("Can't start the resource. " + e.getMessage());
+			throw new VCPENetworkManagerException("Can't start the resource. "
+					+ e.getMessage() != null ? e.getMessage() : "");
 		}
 		return true;
 	}
@@ -245,7 +247,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 				stopResource(vcpeNetworkModel.getVcpeNetworkId());
 				removeResource(vcpeNetworkModel.getVcpeNetworkId());
 			}
-			throw new VCPENetworkManagerException("Can't build the environment of the resource. " + e.getMessage());
+			throw new VCPENetworkManagerException("Can't build the environment of the resource. "
+					+ e.getMessage() != null ? e.getMessage() : "");
 		}
 		return true;
 	}
@@ -263,7 +266,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			resource = manager.getResourceById(vcpeNetworkId);
 			manager.stopResource(resource.getResourceIdentifier());
 		} catch (Exception e) {
-			throw new VCPENetworkManagerException("Can't stop the resource. " + e.getMessage());
+			throw new VCPENetworkManagerException("Can't stop the resource. "
+					+ e.getMessage() != null ? e.getMessage() : "");
 		}
 		return true;
 	}
@@ -281,7 +285,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			resource = manager.getResourceById(vcpeNetworkId);
 			manager.removeResource(resource.getResourceIdentifier());
 		} catch (Exception e) {
-			throw new VCPENetworkManagerException("Can't remove the resource. " + e.getMessage());
+			throw new VCPENetworkManagerException("Can't remove the resource. "
+					+ e.getMessage() != null ? e.getMessage() : "");
 		}
 		return true;
 	}
