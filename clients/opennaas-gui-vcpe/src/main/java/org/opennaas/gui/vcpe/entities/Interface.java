@@ -38,14 +38,14 @@ public class Interface {
 
 	}
 
-	@Size(min = 1, max = 25, message = "{error.field.mandatory}")
+	@Size(min = 1, max = 25, message = "{message.error.field.mandatory}")
 	private String	name;
-	@Size(min = 1, max = 25, message = "{error.field.mandatory}")
+	@Size(min = 1, max = 25, message = "{message.error.field.mandatory}")
 	private String	port;
-	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{error.field.format.ipandmask}")
+	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{message.error.field.format.ipandmask}")
 	@Size(min = 1, max = 25)
 	private String	ipAddress;
-	@NotNull(message = "{error.field.mandatory}")
+	@NotNull(message = "{message.error.field.mandatory}")
 	@DecimalMin(value = "0")
 	@DecimalMax(value = "4094")
 	private Integer	vlan;
