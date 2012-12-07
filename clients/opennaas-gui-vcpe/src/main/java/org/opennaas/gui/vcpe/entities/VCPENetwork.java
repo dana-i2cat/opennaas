@@ -13,15 +13,15 @@ import org.hibernate.validator.constraints.NotBlank;
 public class VCPENetwork {
 
 	private String			id;
-	@NotBlank(message = "{error.field.mandatory}")
+	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			name;
-	@NotBlank(message = "{error.field.mandatory}")
+	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			template;
 	@Valid
 	private LogicalRouter	logicalRouter1;
 	@Valid
 	private LogicalRouter	logicalRouter2;
-	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{error.field.format.ipandmask}")
+	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{message.error.field.format.ipandmask}")
 	private String			clientIpRange;
 	@Valid
 	private BGP				bgp;

@@ -15,12 +15,12 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class BGP {
 
-	@NotBlank(message = "{error.field.mandatory}")
+	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			clientASNumber;
-	@NotBlank(message = "{error.field.mandatory}")
+	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			nocASNumber;
 	@NotNull
-	@Size(min = 1, message = "{error.field.mandatory}")
+	@Size(min = 1, message = "{message.error.field.mandatory}")
 	private List<String>	clientPrefixes;
 
 	/**
