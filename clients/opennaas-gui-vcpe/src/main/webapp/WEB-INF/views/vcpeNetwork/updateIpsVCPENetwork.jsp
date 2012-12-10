@@ -176,7 +176,7 @@
 					<spring:message code="vcpenetwork.clientIpRange" />
 				</form:label>			
 				<br>	
-				<form:input path="clientIpRange" size="12" />		
+				<form:input path="clientIpRange" size="12" onchange="fillBgpClientRange(this.value)"/>
 				<form:errors path="clientIpRange" />			
 			</div>				
 		</div>	

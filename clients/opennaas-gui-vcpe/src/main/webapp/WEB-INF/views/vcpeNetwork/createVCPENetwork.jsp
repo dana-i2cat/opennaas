@@ -124,7 +124,7 @@
 								<spring:message code="bgp.clientPrefixes" />
 							</form:label>
 							<br />
-							<form:input path="bgp.clientPrefixes" size="16" />
+							<form:input path="bgp.clientPrefixes" size="16" readonly="true"/>
 							<br />		
 							<form:errors path="bgp.clientPrefixes" size="8" />
 						</div>
@@ -472,20 +472,17 @@
 					</div>
 				</div>
 				<!--  IP range -->
-				<!--  
 				<div id="client_config" class="ui-widget-content">			
 					<div class="field">
 						<form:label for="clientIpRange" path="clientIpRange" cssErrorClass="error">
 							<spring:message code="vcpenetwork.clientIpRange" />
 						</form:label>
 						<br />
-						<form:input path="clientIpRange" size="20" />
+						<form:input path="clientIpRange" size="20" onchange="fillBgpClientRange(this.value)"/>
 						<br>
 						<form:errors path="clientIpRange" />
 					</div>				
 				</div>	
-				-->
-				<form:hidden path="clientIpRange" size="20" />
 				<!--  IGP selector -->
 				<div id="client_config" class="ui-widget-content">
 					<div class="field">
