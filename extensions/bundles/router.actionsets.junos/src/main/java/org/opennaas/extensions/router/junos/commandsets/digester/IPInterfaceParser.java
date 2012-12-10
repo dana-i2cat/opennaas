@@ -3,6 +3,7 @@ package org.opennaas.extensions.router.junos.commandsets.digester;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
@@ -15,38 +16,43 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
+import org.opennaas.extensions.router.model.VRRPGroup;
+import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * 
  * Parser of the interfaces. Takes the name and unit of the interface. Set IP values, VLAN and peer-unit when exists
  * 
  * @author Evelyn Torras
+ * @author Julio Carlos Barrera
  * 
  */
 public class IPInterfaceParser extends DigesterEngine {
 
-	private System				model;
+	private System					model;
 
-	String						portNumber				= "";
+	String							portNumber				= "";
 
-	String						location				= "";
+	String							location				= "";
 
-	VLANEndpoint				vlanEndpoint			= null;
-	boolean						flagLT					= false;
+	VLANEndpoint					vlanEndpoint			= null;
+	boolean							flagLT					= false;
 
-	GRETunnelConfiguration		gretunnelConfiguration	= null;
-	boolean						flagGT					= false;
+	GRETunnelConfiguration			gretunnelConfiguration	= null;
+	boolean							flagGT					= false;
 
-	long						peerUnit				= 0;
+	long							peerUnit				= 0;
 
-	private ArrayList<String>	disableInterface		= new ArrayList<String>();
+	private ArrayList<String>		disableInterface		= new ArrayList<String>();
 
-	private static String		GRE_PATTERN				= "gr-(\\d{1}/\\d{1}/\\d{1})";
+	private static String			GRE_PATTERN				= "gr-(\\d{1}/\\d{1}/\\d{1})";
+
+	private Map<String, VRRPGroup>	vrrpGroups				= new HashMap<String, VRRPGroup>(0);
 
 	/** vlan info **/
 
@@ -90,6 +96,12 @@ public class IPInterfaceParser extends DigesterEngine {
 
 			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
 
+			// VRRP configuration
+			addObjectCreate("*/interfaces/interface/unit/family/inet/address/vrrp-group", VRRPProtocolEndpoint.class);
+			addCallMethod("*/interfaces/interface/unit/family/inet/address/vrrp-group/priority", "setPriority", 0, new Class[] { Integer.TYPE });
+			addMyRule("*/interfaces/interface/unit/family/inet/address/vrrp-group/name", "addVRRPGroup", 0);
+			addMyRule("*/interfaces/interface/unit/family/inet/address/vrrp-group/virtual-address", "setVRRPGroupVirtualAddress", 0);
+			addSetNext("*/interfaces/interface/unit/family/inet/address/vrrp-group", "bindServiceAccessPoint");
 		}
 	}
 
@@ -305,6 +317,49 @@ public class IPInterfaceParser extends DigesterEngine {
 		vlanEndpoint = new VLANEndpoint();
 		vlanEndpoint.setVlanID(Integer.parseInt(vlanID));
 
+	}
+
+	/**
+	 * 
+	 * @param groupId
+	 *            VRRP group ID (name)
+	 * @param virtualAddress
+	 *            virtual IP address of this VRRP group (virtual-address)
+	 * @param vrrpProtocolEndpoint
+	 *            IP Protocol Endpoint associated with this VRRP Group
+	 */
+	public void addVRRPGroup(String groupId) {
+		try {
+			VRRPGroup vrrpGroup = null;
+			if ((vrrpGroup = vrrpGroups.get(groupId)) == null) {
+				vrrpGroup = new VRRPGroup();
+				vrrpGroups.put(groupId, vrrpGroup);
+				getModel().addHostedService(vrrpGroup);
+			}
+
+			vrrpGroup.setVrrpName(Integer.parseInt(groupId));
+
+			push(vrrpGroup);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * @param virtualAddress
+	 *            virtual IP address of this VRRP group (virtual-address)
+	 */
+	public void setVRRPGroupVirtualAddress(String virtualAddress) {
+		Object obj = peek(0);
+		assert (obj instanceof VRRPGroup);
+		VRRPGroup vrrpGroup = (VRRPGroup) obj;
+		vrrpGroup.setVirtualIPAddress(virtualAddress);
+		pop();
+
+		Object obj2 = peek(0);
+		assert (obj2 instanceof VRRPProtocolEndpoint);
+		((VRRPProtocolEndpoint) obj2).setService(vrrpGroup);
 	}
 
 	@Deprecated
