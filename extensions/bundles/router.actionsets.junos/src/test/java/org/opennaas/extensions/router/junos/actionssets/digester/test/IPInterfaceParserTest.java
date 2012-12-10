@@ -269,5 +269,28 @@ public class IPInterfaceParserTest {
 		}
 
 		log.info(str);
+
+		int vrrpGroups = 0;
+		int vrrpProtocolEndpoints = 0;
+		List<Service> routerServices = model.getHostedService();
+		for (Service service : routerServices) {
+			if (service instanceof VRRPGroup) {
+				vrrpGroups++;
+				VRRPGroup vrrpGroup = (VRRPGroup) service;
+				Assert.assertTrue("Our VRRPGroup vrrpName must be 201", vrrpGroup.getVrrpName() == 201);
+				Assert.assertTrue("Our VRRPGroup virtual IP address mult be 193.1.190.161", vrrpGroup.getVirtualIPAddress().equals("193.1.190.161"));
+				List<ProtocolEndpoint> protocolEndpoints = vrrpGroup.getProtocolEndpoint();
+				for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
+					Assert.assertTrue("ProtocolEndpoint's binded to VRRPGroup must be instances of VRRPProtocolEndpoint",
+							protocolEndpoint instanceof VRRPProtocolEndpoint);
+					vrrpProtocolEndpoints++;
+					VRRPProtocolEndpoint vrrpProtocolEndpoint = (VRRPProtocolEndpoint) protocolEndpoint;
+					Assert.assertTrue("Our VRRPProtocolEndpoint's must have priority 100 or 200",
+							vrrpProtocolEndpoint.getPriority() == 100 || vrrpProtocolEndpoint.getPriority() == 200);
+				}
+			}
+		}
+		Assert.assertTrue("Our configuration must have one VRRPGroup", vrrpGroups == 1);
+		Assert.assertTrue("Our configuration must have two VRRPProtocolEndpoint's", vrrpProtocolEndpoints == 2);
 	}
 }
