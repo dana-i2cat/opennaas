@@ -130,7 +130,7 @@
 						</div>
 						<br>
 						<div>
-							<button id="button" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
+							<button id="button1" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
 						</div>
 					</div>
 				</div>
@@ -143,13 +143,13 @@
 						<div id="lr_master">
 						<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
 							<div>
-							<button id="button5" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
+							<button id="button2" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
 							</div>
 						</div>
 						<div id="lr_backup">
 						<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
 							<div>
-							<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
+							<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.backup"/></button>
 						</div>
 					</div>
 					<!-- VCPE Interfaces -->				
@@ -325,8 +325,8 @@
 						<br>
 					</div>
 					<div id="bod_buttons">
-						<button id="button7" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
-						<button id="button8" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>					
+						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button5" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>					
 					</div>
 				</div>
 
@@ -347,8 +347,8 @@
 						<br>
 					</div>
 					<div id="bod_buttons">
-						<button id="button9" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
-						<button id="button10" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
+						<button id="button6" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button7" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
 				
@@ -369,8 +369,8 @@
 						<br>
 					</div>
 					<div id="bod_buttons">
-						<button id="button11" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
-						<button id="button12" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
+						<button id="button8" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button9" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
 			</div>
@@ -444,7 +444,7 @@
 						<br>
 						<form:errors path="vrrp.virtualIPAddress" size="20" />
 						<br>
-						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.change"/></button>
+						<button id="button10" class="button" disabled="disabled"><spring:message code="buttons.change"/></button>
 					</div>
 				</div>			
 

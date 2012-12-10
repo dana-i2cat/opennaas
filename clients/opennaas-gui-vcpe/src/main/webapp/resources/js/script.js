@@ -380,7 +380,7 @@ $(function() {
 	}
 
 	/* Buttons */
-	$("#button").button();
+	$("#button1").button();
 	$("#button2").button();
 	$("#button3").button();
 	$("#button4").button();
