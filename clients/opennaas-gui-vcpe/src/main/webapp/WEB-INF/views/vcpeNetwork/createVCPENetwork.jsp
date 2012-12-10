@@ -130,8 +130,7 @@
 						</div>
 						<br>
 						<div>
-							<button id="button" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
-							<button id="button2" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
+							<button id="button" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
 						</div>
 					</div>
 				</div>
