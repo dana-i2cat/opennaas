@@ -461,13 +461,13 @@
 						<form:errors path="name" />
 					</div>					
 					<div class="field">
-						<form:label for="template" path="template" cssErrorClass="error">
-							<spring:message code="vcpenetwork.template" />
+						<form:label for="templateType" path="templateType" cssErrorClass="error">
+							<spring:message code="vcpenetwork.templateType" />
 						</form:label>
-						<form:select path="template">
+						<form:select path="templateType">
 							<form:option value="basic.template">Basic Template </form:option>
 						</form:select>
-						<form:errors path="template" />
+						<form:errors path="templateType" />
 					</div>
 				</div>
 				<!--  IP range -->

@@ -10,8 +10,8 @@
 <form:form modelAttribute="VCPENetwork" action="updateIps" method="post">
 	<form:hidden path="id" />
 	<form:hidden path="name" />
-	<form:hidden path="template" />
-	<!--  form:hidden path="clientIpRange"/--> 
+	<form:hidden path="templateType" />
+	<form:hidden path="clientIpRange"/> 
 	<form:hidden path="logicalRouter1.name"/>
 	<form:hidden path="logicalRouter1.templateName"/>
 	<form:hidden path="logicalRouter2.name"/>

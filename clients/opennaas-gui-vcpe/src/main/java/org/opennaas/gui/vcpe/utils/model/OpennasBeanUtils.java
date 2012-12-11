@@ -37,7 +37,7 @@ public class OpennasBeanUtils {
 		// Name
 		modelOut.setName(modelIn.getName());
 		// Template
-		modelOut.setTemplateType(modelIn.getTemplate());
+		modelOut.setTemplateType(modelIn.getTemplateType());
 		// IP Range
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
 		// BGP

@@ -37,7 +37,7 @@ public class VCPEBeanUtils {
 		modelOut.setId(modelIn.getId());
 		modelOut.setName(modelIn.getName());
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
-		modelOut.setTemplate(modelIn.getTemplateType());
+		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Logical Routers
 		Router logicalRouter1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
 		Router logicalRouter2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE2_ROUTER);

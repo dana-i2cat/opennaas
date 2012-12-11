@@ -16,7 +16,7 @@ public class VCPENetwork {
 	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			name;
 	@NotBlank(message = "{message.error.field.mandatory}")
-	private String			template;
+	private String			templateType;
 	@Valid
 	private LogicalRouter	logicalRouter1;
 	@Valid
@@ -35,18 +35,6 @@ public class VCPENetwork {
 	 * Default constructor
 	 */
 	public VCPENetwork() {
-	}
-
-	/**
-	 * @param vcpeNetwork
-	 */
-	public VCPENetwork(VCPENetwork vcpeNetwork) {
-		this.id = vcpeNetwork.getId();
-		this.name = vcpeNetwork.getName();
-		this.template = vcpeNetwork.getName();
-		this.logicalRouter1 = vcpeNetwork.getLogicalRouter1();
-		this.logicalRouter2 = vcpeNetwork.getLogicalRouter2();
-		this.clientIpRange = vcpeNetwork.getClientIpRange();
 	}
 
 	/**
@@ -80,18 +68,18 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @return the template
+	 * @return the templateType
 	 */
-	public String getTemplate() {
-		return template;
+	public String getTemplateType() {
+		return templateType;
 	}
 
 	/**
-	 * @param template
-	 *            the template to set
+	 * @param templateType
+	 *            the templateType to set
 	 */
-	public void setTemplate(String template) {
-		this.template = template;
+	public void setTemplateType(String templateType) {
+		this.templateType = templateType;
 	}
 
 	/**
@@ -206,7 +194,7 @@ public class VCPENetwork {
 	 */
 	@Override
 	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + ", bod=" + bod + "]";
+		return "VCPENetwork [id=" + id + ", name=" + name + ", templateType=" + templateType + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + ", bod=" + bod + "]";
 	}
 
 }
