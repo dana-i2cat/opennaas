@@ -57,10 +57,10 @@ public class Template implements ITemplate {
 	@Override
 	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) {
 		VCPENetworkModel model = new VCPENetworkModel();
-		model.setVcpeNetworkId(initialModel.getVcpeNetworkId());
-		model.setVcpeNetworkName(initialModel.getVcpeNetworkName());
-		model.setClientIpAddressRange(initialModel.getClientIpAddressRange());
-		model.setTemplateName(initialModel.getTemplateName());
+		model.setId(initialModel.getId());
+		model.setName(initialModel.getName());
+		model.setClientIpRange(initialModel.getClientIpRange());
+		model.setTemplateType(initialModel.getTemplateType());
 
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		model.setElements(elements);
@@ -89,7 +89,7 @@ public class Template implements ITemplate {
 	private List<VCPENetworkElement> generateLogicalElements(VCPENetworkModel initialModel) {
 		// ----------------------------- VCPE-router1 -----------------------------
 		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.VCPE1_ROUTER);
-		vcpe1.setName(props.getProperty("vcpenetwork.logicalrouter1.name") + "-" + initialModel.getVcpeNetworkName());
+		vcpe1.setName(props.getProperty("vcpenetwork.logicalrouter1.name") + "-" + initialModel.getName());
 
 		// Interfaces VCPE-router1
 		Interface inter1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.INTER1_INTERFACE_LOCAL);
@@ -118,7 +118,7 @@ public class Template implements ITemplate {
 
 		// ----------------------------- VCPE-router2 -----------------------------
 		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.VCPE2_ROUTER);
-		vcpe2.setName(props.getProperty("vcpenetwork.logicalrouter2.name") + "-" + initialModel.getVcpeNetworkName());
+		vcpe2.setName(props.getProperty("vcpenetwork.logicalrouter2.name") + "-" + initialModel.getName());
 
 		// Interfaces VCPE-router2
 		Interface inter2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.INTER2_INTERFACE_LOCAL);
@@ -218,34 +218,34 @@ public class Template implements ITemplate {
 		// TODO MUST CHECK CREATED ELEMENTS EXIST IN PHYSICAL TOPOLOGY
 
 		Router r1 = new Router();
-		r1.setNameInTemplate(VCPETemplate.CPE1_PHY_ROUTER);
+		r1.setTemplateName(VCPETemplate.CPE1_PHY_ROUTER);
 		r1.setName(props.getProperty("vcpenetwork.router1.name"));
 
 		Interface inter1 = new Interface();
-		inter1.setNameInTemplate(VCPETemplate.INTER1_PHY_INTERFACE_LOCAL);
+		inter1.setTemplateName(VCPETemplate.INTER1_PHY_INTERFACE_LOCAL);
 		inter1.setName(props.getProperty("vcpenetwork.router1.interface.inter.name"));
 
 		Interface inter1other = new Interface();
-		inter1other.setNameInTemplate(VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+		inter1other.setTemplateName(VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
 		inter1other.setName(props.getProperty("vcpenetwork.router1.interface.inter.other.name"));
 
 		Interface down1 = new Interface();
-		down1.setNameInTemplate(VCPETemplate.DOWN1_PHY_INTERFACE_LOCAL);
+		down1.setTemplateName(VCPETemplate.DOWN1_PHY_INTERFACE_LOCAL);
 		down1.setName(props.getProperty("vcpenetwork.router1.interface.down.name"));
 
 		Interface down1other = new Interface();
-		down1other.setNameInTemplate(VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+		down1other.setTemplateName(VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
 		down1other.setName(props.getProperty("vcpenetwork.router1.interface.down.other.name"));
 
 		Interface up1 = new Interface();
-		up1.setNameInTemplate(VCPETemplate.UP1_PHY_INTERFACE_LOCAL);
+		up1.setTemplateName(VCPETemplate.UP1_PHY_INTERFACE_LOCAL);
 		up1.setName(props.getProperty("vcpenetwork.router1.interface.up.name"));
 
 		// select client1 interface using initialModel
 		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 
 		Interface client1 = new Interface();
-		client1.setNameInTemplate(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		client1.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 		client1.setName(inputClient1.getPhysicalInterfaceName());
 		// TODO check there is a physical interface in physical topology with client1.getName() name
 
@@ -256,34 +256,34 @@ public class Template implements ITemplate {
 		r1.setInterfaces(r1Interfaces);
 
 		Router r2 = new Router();
-		r2.setNameInTemplate(VCPETemplate.CPE2_PHY_ROUTER);
+		r2.setTemplateName(VCPETemplate.CPE2_PHY_ROUTER);
 		r2.setName(props.getProperty("vcpenetwork.router2.name"));
 
 		Interface inter2 = new Interface();
-		inter2.setNameInTemplate(VCPETemplate.INTER2_PHY_INTERFACE_LOCAL);
+		inter2.setTemplateName(VCPETemplate.INTER2_PHY_INTERFACE_LOCAL);
 		inter2.setName(props.getProperty("vcpenetwork.router2.interface.inter.name"));
 
 		Interface inter2other = new Interface();
-		inter2other.setNameInTemplate(VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+		inter2other.setTemplateName(VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
 		inter2other.setName(props.getProperty("vcpenetwork.router2.interface.inter.other.name"));
 
 		Interface down2 = new Interface();
-		down2.setNameInTemplate(VCPETemplate.DOWN2_PHY_INTERFACE_LOCAL);
+		down2.setTemplateName(VCPETemplate.DOWN2_PHY_INTERFACE_LOCAL);
 		down2.setName(props.getProperty("vcpenetwork.router2.interface.down.name"));
 
 		Interface down2other = new Interface();
-		down2other.setNameInTemplate(VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		down2other.setTemplateName(VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
 		down2other.setName(props.getProperty("vcpenetwork.router2.interface.down.other.name"));
 
 		Interface up2 = new Interface();
-		up2.setNameInTemplate(VCPETemplate.UP2_PHY_INTERFACE_LOCAL);
+		up2.setTemplateName(VCPETemplate.UP2_PHY_INTERFACE_LOCAL);
 		up2.setName(props.getProperty("vcpenetwork.router2.interface.up.name"));
 
 		// select client1 interface using initialModel
 		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
 		Interface client2 = new Interface();
-		client2.setNameInTemplate(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		client2.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 		client2.setName(inputClient2.getPhysicalInterfaceName());
 		// TODO check there is a physical interface in physical topology with client2.getName() name
 
@@ -294,7 +294,7 @@ public class Template implements ITemplate {
 		r2.setInterfaces(r2Interfaces);
 
 		Domain autobahn = new Domain();
-		autobahn.setNameInTemplate(VCPETemplate.AUTOBAHN);
+		autobahn.setTemplateName(VCPETemplate.AUTOBAHN);
 		autobahn.setName(props.getProperty("vcpenetwork.bod.name"));
 
 		List<Interface> autobahnInterfaces = new ArrayList<Interface>();
@@ -396,7 +396,8 @@ public class Template implements ITemplate {
 		// policies
 		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
 		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
-		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0] + "/32");
+		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address",
+				IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0] + "/32");
 		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
 		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
 			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
@@ -431,7 +432,8 @@ public class Template implements ITemplate {
 		// policies
 		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
 		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
-		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0] + "/32");
+		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address",
+				IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0] + "/32");
 		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
 		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
 			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
@@ -447,19 +449,19 @@ public class Template implements ITemplate {
 
 	/**
 	 * @param name
-	 * @param nameInTemplate
+	 * @param templateName
 	 * @param vlan
 	 * @param ipAddress
 	 * @return the interface
 	 */
-	private Interface getInterface(String name, String nameInTemplate, long vlan, String ipAddress, String physicalInterfaceName, int portNum) {
+	private Interface getInterface(String name, String templateName, long vlan, String ipAddress, String physicalInterfaceName, int port) {
 		Interface iface = new Interface();
 		iface.setName(name);
-		iface.setNameInTemplate(nameInTemplate);
+		iface.setTemplateName(templateName);
 		iface.setIpAddress(ipAddress);
-		iface.setVlanId(vlan);
+		iface.setVlan(vlan);
 		iface.setPhysicalInterfaceName(physicalInterfaceName);
-		iface.setPortNumber(portNum);
+		iface.setPort(port);
 		return iface;
 	}
 
@@ -474,7 +476,7 @@ public class Template implements ITemplate {
 	private Link getLink(String id, String nameInTemplate, String type, Interface source, Interface sink) {
 		Link link = new Link();
 		link.setId(id);
-		link.setNameInTemplate(nameInTemplate);
+		link.setTemplateName(nameInTemplate);
 		link.setType(type);
 		link.setSource(source);
 		link.setSink(sink);

@@ -152,7 +152,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		try {
 			for (Router router : filter(updatedModel.getElements(), Router.class)) {
 				for (Interface iface : router.getInterfaces()) {
-					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getNameInTemplate());
+					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getName());
 					if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
 						setIP(router, outDatedIface, iface.getIpAddress(), currentModel);
 					}
@@ -173,7 +173,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		// update IP addresses in model
 		for (Router router : filter(updatedModel.getElements(), Router.class)) {
 			for (Interface iface : router.getInterfaces()) {
-				Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getNameInTemplate());
+				Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getName());
 				if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
 					outDatedIface.setIpAddress(iface.getIpAddress());
 				}
@@ -255,8 +255,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// return the model after deleting all LR and subInterfaces from it
 		VCPENetworkModel model = new VCPENetworkModel();
-		model.setVcpeNetworkId(currentScenario.getVcpeNetworkId());
-		model.setVcpeNetworkName(currentScenario.getVcpeNetworkName());
+		model.setId(currentScenario.getId());
+		model.setName(currentScenario.getName());
 		model.setCreated(false);
 		resource.setModel(model);
 
@@ -512,7 +512,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
-		String ipRange = model.getClientIpAddressRange();
+		String ipRange = model.getClientIpRange();
 		String nextHopIpAddress1 = addressAndMask1[0];
 
 		deleteStaticRoute(phy1, model, ipRange, nextHopIpAddress1);
@@ -532,7 +532,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
-		String ipRange = model.getClientIpAddressRange();
+		String ipRange = model.getClientIpRange();
 		String nextHopIpAddress1 = addressAndMask1[0];
 
 		setStaticRoute(phy1, model, ipRange, nextHopIpAddress1);
@@ -646,8 +646,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// inter link
 		Link inter = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.INTER_LINK);
-		long interSrcVlan = inter.getSource().getVlanId();
-		long interDstVlan = inter.getSink().getVlanId();
+		long interSrcVlan = inter.getSource().getVlan();
+		long interDstVlan = inter.getSink().getVlan();
 
 		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
 		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
@@ -666,8 +666,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// down 2 link
 		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
-		long down2SrcVlan = down2.getSource().getVlanId();
-		long down2DstVlan = down2.getSink().getVlanId();
+		long down2SrcVlan = down2.getSource().getVlan();
+		long down2DstVlan = down2.getSink().getVlan();
 
 		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
 		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
@@ -683,8 +683,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// inter link
 		Link inter = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.INTER_LINK);
-		long interSrcVlan = inter.getSource().getVlanId();
-		long interDstVlan = inter.getSink().getVlanId();
+		long interSrcVlan = inter.getSource().getVlan();
+		long interDstVlan = inter.getSink().getVlan();
 
 		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
 		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
@@ -703,8 +703,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// down 2 link
 		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
-		long down2SrcVlan = down2.getSource().getVlanId();
-		long down2DstVlan = down2.getSink().getVlanId();
+		long down2SrcVlan = down2.getSource().getVlan();
+		long down2DstVlan = down2.getSink().getVlan();
 
 		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
 		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
@@ -798,7 +798,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		// link VRRP CIM model elements to CIM model elements
 		// obtain router interface
 		if (networkPort.getName().equals(iface.getPhysicalInterfaceName()) &&
-				networkPort.getPortNumber() == (iface.getPortNumber())) {
+				networkPort.getPortNumber() == (iface.getPort())) {
 			// obtain master interface IP address
 			List<ProtocolEndpoint> ipAddresses = networkPort.getProtocolEndpoint();
 			for (ProtocolEndpoint protocolEndpoint : ipAddresses) {

@@ -33,13 +33,13 @@ public class OpennasBeanUtils {
 	public static VCPENetworkModel getVCPENetwork(VCPENetwork modelIn) {
 		VCPENetworkModel modelOut = new VCPENetworkModel();
 		// Id
-		modelOut.setVcpeNetworkId(modelIn.getId());
+		modelOut.setId(modelIn.getId());
 		// Name
-		modelOut.setVcpeNetworkName(modelIn.getName());
+		modelOut.setName(modelIn.getName());
 		// Template
-		modelOut.setTemplateName(modelIn.getTemplate());
+		modelOut.setTemplateType(modelIn.getTemplate());
 		// IP Range
-		modelOut.setClientIpAddressRange(modelIn.getClientIpRange());
+		modelOut.setClientIpRange(modelIn.getClientIpRange());
 		// BGP
 		if (modelIn.getBgp() != null) {
 			modelOut.setBgp(getBGP(modelIn.getBgp()));
@@ -79,7 +79,7 @@ public class OpennasBeanUtils {
 	public static org.opennaas.extensions.vcpe.model.LogicalRouter getLROpennaas(String networkName, String templateName, LogicalRouter lrIn) {
 		org.opennaas.extensions.vcpe.model.LogicalRouter lrOut = new org.opennaas.extensions.vcpe.model.LogicalRouter();
 		lrOut.setName(lrIn.getName());
-		lrOut.setNameInTemplate(templateName);
+		lrOut.setTemplateName(templateName);
 		// Interfaces
 		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
 		lrOut.setInterfaces(interfaces);
@@ -99,10 +99,10 @@ public class OpennasBeanUtils {
 		org.opennaas.extensions.vcpe.model.Interface outIface = new org.opennaas.extensions.vcpe.model.Interface();
 		outIface.setName(inIface.getCompleteName());
 		outIface.setIpAddress(inIface.getIpAddress());
-		outIface.setVlanId(inIface.getVlan());
-		outIface.setNameInTemplate(inIface.getTemplateName());
+		outIface.setVlan(inIface.getVlan());
+		outIface.setTemplateName(inIface.getTemplateName());
 		outIface.setPhysicalInterfaceName(inIface.getName());
-		outIface.setPortNumber(Integer.parseInt(inIface.getPort()));
+		outIface.setPort(Integer.parseInt(inIface.getPort()));
 		return outIface;
 	}
 
