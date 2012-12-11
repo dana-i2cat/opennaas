@@ -70,41 +70,42 @@ function updateHeader() {
  * @param port
  */
 function isInterfaceFree(vcpeId, iface, port) {
-	$.ajax({
-		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId="
-				+ vcpeId
-				+ "&iface="
-				+ iface.value
-				+ "&port="
-				+ port.value,
-		success : function(data) {
-			if (data == 'false') {
-				// Case not available
-				// First delete the tooltip
-				$("#tooltip").remove();
-				// Add the new tooltip, error classes and disable inputs
-				$(iface)
-						.after(
-								"<div id='tooltip'>The Interface is not available</div>");
-				iface.className = 'error';
-				port.className = 'error';
-				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
-				$("#tooltip").click(function() {
-					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
-					$(this).remove();
-				});
-			} else {
-				// Case available, revert changes
-				iface.className = '';
-				port.className = '';
-				$("#tooltip").hide("fade", {}, 400);
-				$("#tooltip").remove();
-			}
-		}
-	});
+	$
+			.ajax({
+				type : "GET",
+				url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId="
+						+ vcpeId
+						+ "&iface="
+						+ iface.value
+						+ "&port="
+						+ port.value,
+				success : function(data) {
+					if (data == 'false') {
+						// Case not available
+						// First delete the tooltip
+						$("#tooltip").remove();
+						// Add the new tooltip, error classes and disable inputs
+						$(iface)
+								.after(
+										"<div id='tooltip'>The Interface is not available</div>");
+						iface.className = 'error';
+						port.className = 'error';
+						// Show the tooltip
+						$("#tooltip").show("fade", {}, 400);
+						$("#tooltip").click(function() {
+							// On click hide tooltip
+							$(this).hide("fade", {}, 400);
+							$(this).remove();
+						});
+					} else {
+						// Case available, revert changes
+						iface.className = '';
+						port.className = '';
+						$("#tooltip").hide("fade", {}, 400);
+						$("#tooltip").remove();
+					}
+				}
+			});
 }
 
 /**
@@ -114,36 +115,37 @@ function isInterfaceFree(vcpeId, iface, port) {
  * @param ip
  */
 function isIPFree(vcpeId, ip) {
-	$.ajax({
-		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId="
-				+ vcpeId + "&ip=" + ip.value,
-		success : function(data) {
-			if (data == 'false') {
-				// Case not available
-				// First delete the tooltip
-				$("#tooltip").remove();
-				// Add the new tooltip, error classes and disable inputs
-				$(ip)
-						.after(
-								"<div id='tooltip'>The IP Address is not available</div>");
-				ip.className = 'error';
-				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
-				$("#tooltip").click(function() {
-					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
-					$(this).remove();
-				});
-			} else {
-				// Case available, revert changes
-				ip.className = '';
-				$("#tooltip").hide("fade", {}, 400);
-				$("#tooltip").remove();
-	
-			}
-		}
-	});
+	$
+			.ajax({
+				type : "GET",
+				url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId="
+						+ vcpeId + "&ip=" + ip.value,
+				success : function(data) {
+					if (data == 'false') {
+						// Case not available
+						// First delete the tooltip
+						$("#tooltip").remove();
+						// Add the new tooltip, error classes and disable inputs
+						$(ip)
+								.after(
+										"<div id='tooltip'>The IP Address is not available</div>");
+						ip.className = 'error';
+						// Show the tooltip
+						$("#tooltip").show("fade", {}, 400);
+						$("#tooltip").click(function() {
+							// On click hide tooltip
+							$(this).hide("fade", {}, 400);
+							$(this).remove();
+						});
+					} else {
+						// Case available, revert changes
+						ip.className = '';
+						$("#tooltip").hide("fade", {}, 400);
+						$("#tooltip").remove();
+
+					}
+				}
+			});
 }
 
 /**
@@ -294,8 +296,15 @@ $(function() {
 			beforeActivate : function() {
 				clearJSPlumbStuff();
 			},
-			activate : function() {
-				setJSPlumbStuff(topologyVisible);
+			activate : function(event, ui) {
+				var active = $("#bod").accordion("option", "active");
+				bodVisible = !(typeof active == 'boolean' && active == false);
+				if (bodVisible) {
+					$("#bod").css('zIndex', 0);
+				} else {
+					$("#bod").css('zIndex', 100);
+				}
+				setJSPlumbStuff(topologyVisible, bodVisible);
 			}
 		});
 
@@ -309,7 +318,7 @@ $(function() {
 				clearJSPlumbStuff();
 			},
 			activate : function() {
-				setJSPlumbStuff(topologyVisible);
+				setJSPlumbStuff(topologyVisible, bodVisible);
 			}
 		});
 
@@ -323,7 +332,7 @@ $(function() {
 				clearJSPlumbStuff();
 			},
 			activate : function() {
-				setJSPlumbStuff(topologyVisible);
+				setJSPlumbStuff(topologyVisible, bodVisible);
 			}
 		});
 
@@ -336,7 +345,7 @@ $(function() {
 				clearJSPlumbStuff();
 			},
 			activate : function() {
-				setJSPlumbStuff(topologyVisible);
+				setJSPlumbStuff(topologyVisible, bodVisible);
 			}
 		});
 
@@ -354,7 +363,7 @@ $(function() {
 								var active = $("#vcpe_topology").accordion(
 										"option", "active");
 								topologyVisible = !(typeof active == 'boolean' && active == false);
-								setJSPlumbStuff(topologyVisible);
+								setJSPlumbStuff(topologyVisible, bodVisible);
 							}
 						});
 
@@ -558,32 +567,74 @@ function setJSPlumbHome() {
  * jsPlumb create and view
  */
 // set jsPlumb stuff
-function setJSPlumbStuff(setExtra) {
+function setJSPlumbStuff(topologyVisible, bodVisible) {
 	// WAN -- UP master & backup
 	addConnection("wan_logical", "up_master", "createVCPENetwork", 0.268, 1,
 			0.5, 0, false);
 	addConnection("wan_logical", "up_backup", "createVCPENetwork", 0.738, 1,
 			0.5, 0, false);
 
-	if (setExtra) {
+	if (topologyVisible) {
 		// UP master & backup -- LR master & backup
 		addConnection("up_master", "lr_master", "createVCPENetwork", 0.5, 1,
 				0.425, 0, true);
 		addConnection("up_backup", "lr_backup", "createVCPENetwork", 0.5, 1,
-				0.6, 0, true);
+				0.59, 0, true);
 
 		// CLIENT DOWN master & backup -- CLIENT master & backup
 		addConnection("client_master", "client_down_master",
 				"createVCPENetwork", 0.5, 1, 0.5, 0, true);
 		addConnection("client_backup", "client_down_backup",
 				"createVCPENetwork", 0.5, 1, 0.5, 0, true);
+	} else {
+		// UP master & backup -- vCPE
+		addConnection("up_master", "vcpe_topology", "createVCPENetwork", 0.5,
+				1, 0.248, 0, true);
+		addConnection("up_backup", "vcpe_topology", "createVCPENetwork", 0.5,
+				1, 0.758, 0, true);
+
+		// vCPE -- CLIENT master & backup
+		addConnection("vcpe_topology", "client_down_master",
+				"createVCPENetwork", 0.16, 1, 0.5, 0, true);
+		addConnection("vcpe_topology", "client_down_backup",
+				"createVCPENetwork", 0.84, 1, 0.5, 0, true);
 	}
 
-	// LR master & backup -- CLIENT DOWN master & backup
+	// LR master & backup -- CLIENT DOWN master & backup, down & inter
 	addConnection("lr_master", "client_master", "vcpe_routers", 0.2, 1, 0.5, 0,
 			false);
 	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.79, 1, 0.5,
 			0, false);
+	addConnection("lr_master", "inter_master", "vcpe_routers", 0.76, 1, 0.5, 0,
+			false);
+	addConnection("lr_backup", "inter_backup", "vcpe_routers", 0.24, 1, 0.5, 0,
+			false);
+
+	if (bodVisible && topologyVisible) {
+		// inter master & backup -- BoD inter
+		addConnection("inter_master", "bod_inter", "createVCPENetwork", 0.5,
+				1, 0.13, 0, true);
+		addConnection("inter_backup", "bod_inter", "createVCPENetwork", 0.5,
+				1, 0.84, 0, true);
+	} else if (bodVisible && !topologyVisible) {
+		// inter master & backup -- CLIENT master & backup
+		addConnection("vcpe_topology", "bod_inter",
+				"createVCPENetwork", 0.385, 1, 0.12, 0, true);
+		addConnection("vcpe_topology", "bod_inter",
+				"createVCPENetwork", 0.615, 1, 0.85, 0, true);
+	} else if (!bodVisible && topologyVisible) {
+		// inter master & backup -- BoD
+		addConnection("inter_master", "bod", "createVCPENetwork", 0.5,
+				1, 0.395, 0, true);
+		addConnection("inter_backup", "bod", "createVCPENetwork", 0.5,
+				1, 0.605, 0, true);
+	} else {
+		// vCPE -- bod
+		addConnection("vcpe_topology", "bod",
+				"createVCPENetwork", 0.385, 1, 0.395, 0, true);
+		addConnection("vcpe_topology", "bod",
+				"createVCPENetwork", 0.615, 1, 0.605, 0, true);
+	}
 
 	// CLIENT DOWN master & backup -- CLIENT
 	addConnection("client_down_master", "client", "createVCPENetwork", 0.5, 1,
@@ -594,7 +645,7 @@ function setJSPlumbStuff(setExtra) {
 
 // add a connection and its endpoints
 function addConnection(origin, destination, parent, originAnchorX,
-		originAnchorY, destinationAnchorX, destinationAnchorY, extra) {
+		originAnchorY, destinationAnchorX, destinationAnchorY, extra_topology) {
 	var originEndpoint = jsP.addEndpoint(origin, {
 		anchor : [ originAnchorX, originAnchorY ],
 		container : parent
@@ -603,12 +654,12 @@ function addConnection(origin, destination, parent, originAnchorX,
 		anchor : [ destinationAnchorX, destinationAnchorY ],
 		container : parent
 	});
-	if (extra) {
-		extra_endpoints.push(originEndpoint);
-		extra_endpoints.push(destinationEndpoint);
+	if (extra_topology) {
+		extra_topology_endpoints.push(originEndpoint);
+		extra_topology_endpoints.push(destinationEndpoint);
 	} else {
-		intra_endpoints.push(originEndpoint);
-		intra_endpoints.push(destinationEndpoint);
+		intra_topology_endpoints.push(originEndpoint);
+		intra_topology_endpoints.push(destinationEndpoint);
 	}
 
 	var connection = jsP.connect({
@@ -617,10 +668,10 @@ function addConnection(origin, destination, parent, originAnchorX,
 		container : $("#" + parent)
 	});
 
-	if (extra) {
-		extra_connections.push(connection);
+	if (extra_topology) {
+		extra_topology_connections.push(connection);
 	} else {
-		intra_connections.push(connection);
+		intra_topology_connections.push(connection);
 
 	}
 }
@@ -631,31 +682,31 @@ function clearJSPlumbStuff() {
 	jsPlumb.detachAllConnections();
 
 	// remove all overlays of each connection
-	if (intra_connections != null) {
+	if (intra_topology_connections != null) {
 		var connection = null;
-		while ((connection = intra_connections.pop()) != null) {
+		while ((connection = intra_topology_connections.pop()) != null) {
 			connection.removeAllOverlays();
 		}
 	}
 
-	if (extra_connections != null) {
+	if (extra_topology_connections != null) {
 		var connection = null;
-		while ((connection = extra_connections.pop()) != null) {
+		while ((connection = extra_topology_connections.pop()) != null) {
 			connection.removeAllOverlays();
 		}
 	}
 
 	// detach all endpoints
-	if (intra_endpoints != null) {
+	if (intra_topology_endpoints != null) {
 		var endpoint = null;
-		while ((endpoint = intra_endpoints.pop()) != null) {
+		while ((endpoint = intra_topology_endpoints.pop()) != null) {
 			endpoint.detachAll();
 		}
 	}
 
-	if (extra_endpoints != null) {
+	if (extra_topology_endpoints != null) {
 		var endpoint = null;
-		while ((endpoint = extra_endpoints.pop()) != null) {
+		while ((endpoint = extra_topology_endpoints.pop()) != null) {
 			endpoint.detachAll();
 		}
 	}
@@ -667,24 +718,24 @@ function clearJSPlumbHome() {
 	jsPlumb.detachAllConnections();
 
 	// remove all overlays of each connection
-	if (intra_connections != null) {
+	if (intra_topology_connections != null) {
 		var connection = null;
-		while ((connection = intra_connections.pop()) != null) {
+		while ((connection = intra_topology_connections.pop()) != null) {
 			connection.removeAllOverlays();
 		}
 	}
 
-	if (extra_connections != null) {
+	if (extra_topology_connections != null) {
 		var connection = null;
-		while ((connection = extra_connections.pop()) != null) {
+		while ((connection = extra_topology_connections.pop()) != null) {
 			connection.removeAllOverlays();
 		}
 	}
 
 	// detach all endpoints
-	if (intra_endpoints != null) {
+	if (intra_topology_endpoints != null) {
 		var endpoint = null;
-		while ((endpoint = intra_endpoints.pop()) != null) {
+		while ((endpoint = intra_topology_endpoints.pop()) != null) {
 			endpoint.detachAll();
 		}
 	}
@@ -696,17 +747,19 @@ var jsPlumbNecessary = false;
 // jsPlumb instance
 var jsP;
 // jsPlumb intra accordion endpoints
-var intra_endpoints = new Array();
+var intra_topology_endpoints = new Array();
 // jsPlumb intra accordion connections
-var intra_connections = new Array();
+var intra_topology_connections = new Array();
 
 // jsPlumb extra accordion endpoints
-var extra_endpoints = new Array();
+var extra_topology_endpoints = new Array();
 // jsPlumb extra accordion connections
-var extra_connections = new Array();
+var extra_topology_connections = new Array();
 
 // state of vCPE accordion
 var topologyVisible = false;
+// state of BoD accordion
+var bodVisible = false;
 
 $(function() {
 	if (jsPlumbNecessary) {
@@ -723,18 +776,18 @@ $(function() {
 		});
 
 		// initialize endpoints and connections arrays
-		intra_endpoints = new Array();
-		intra_connections = new Array();
-		extra_endpoints = new Array();
-		extra_connections = new Array();
+		intra_topology_endpoints = new Array();
+		intra_topology_connections = new Array();
+		extra_topology_endpoints = new Array();
+		extra_topology_connections = new Array();
 
 		// draw jsPlumb stuff when view stuff is ready
 		jsPlumb.ready(function() {
 			jsPlumb.importDefaults({
-				ConnectorZIndex : 5
+				ConnectorZIndex : 50
 			});
 			if ($("#createVCPENetwork").length) {
-				setJSPlumbStuff(topologyVisible);
+				setJSPlumbStuff(topologyVisible, bodVisible);
 			} else if ($("#home_body").length) {
 				setJSPlumbHome();
 			}
