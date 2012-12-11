@@ -124,13 +124,13 @@
 								<spring:message code="bgp.clientPrefixes" />
 							</form:label>
 							<br />
-							<form:input path="bgp.clientPrefixes" size="16" />
+							<form:input path="bgp.clientPrefixes" size="16" readonly="true"/>
 							<br />		
 							<form:errors path="bgp.clientPrefixes" size="8" />
 						</div>
 						<br>
 						<div>
-							<button id="button" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
+							<button id="button1" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
 						</div>
 					</div>
 				</div>
@@ -143,13 +143,13 @@
 						<div id="lr_master">
 						<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
 							<div>
-							<button id="button5" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
+							<button id="button2" class="button" disabled="disabled"><spring:message code="buttons.activate"/></button>
 							</div>
 						</div>
 						<div id="lr_backup">
 						<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
 							<div>
-							<button id="button6" class="button"><spring:message code="buttons.backup"/></button>
+							<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.backup"/></button>
 						</div>
 					</div>
 					<!-- VCPE Interfaces -->				
@@ -325,8 +325,8 @@
 						<br>
 					</div>
 					<div id="bod_buttons">
-						<button id="button7" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
-						<button id="button8" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>					
+						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button5" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>					
 					</div>
 				</div>
 
@@ -347,8 +347,8 @@
 						<br>
 					</div>
 					<div id="bod_buttons">
-						<button id="button9" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
-						<button id="button10" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
+						<button id="button6" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button7" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
 				
@@ -369,8 +369,8 @@
 						<br>
 					</div>
 					<div id="bod_buttons">
-						<button id="button11" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
-						<button id="button12" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
+						<button id="button8" class="button" disabled="disabled"><spring:message code="buttons.cancel"/></button>
+						<button id="button9" class="button" disabled="disabled"><spring:message code="buttons.renew"/></button>
 					</div>
 				</div>
 			</div>
@@ -444,8 +444,7 @@
 						<br>
 						<form:errors path="vrrp.virtualIPAddress" size="20" />
 						<br>
-						<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
-						<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
+						<button id="button10" class="button" disabled="disabled"><spring:message code="buttons.change"/></button>
 					</div>
 				</div>			
 
@@ -462,30 +461,27 @@
 						<form:errors path="name" />
 					</div>					
 					<div class="field">
-						<form:label for="template" path="template" cssErrorClass="error">
-							<spring:message code="vcpenetwork.template" />
+						<form:label for="templateType" path="templateType" cssErrorClass="error">
+							<spring:message code="vcpenetwork.templateType" />
 						</form:label>
-						<form:select path="template">
+						<form:select path="templateType">
 							<form:option value="basic.template">Basic Template </form:option>
 						</form:select>
-						<form:errors path="template" />
+						<form:errors path="templateType" />
 					</div>
 				</div>
 				<!--  IP range -->
-				<!--  
 				<div id="client_config" class="ui-widget-content">			
 					<div class="field">
 						<form:label for="clientIpRange" path="clientIpRange" cssErrorClass="error">
 							<spring:message code="vcpenetwork.clientIpRange" />
 						</form:label>
 						<br />
-						<form:input path="clientIpRange" size="20" />
+						<form:input path="clientIpRange" size="20" onchange="fillBgpClientRange(this.value)"/>
 						<br>
 						<form:errors path="clientIpRange" />
 					</div>				
 				</div>	
-				-->
-				<form:hidden path="clientIpRange" size="20" />
 				<!--  IGP selector -->
 				<div id="client_config" class="ui-widget-content">
 					<div class="field">
