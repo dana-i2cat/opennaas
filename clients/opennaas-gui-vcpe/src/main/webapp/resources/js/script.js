@@ -792,6 +792,17 @@ $(function() {
 				setJSPlumbHome();
 			}
 		});
+		
+		$(window).bind("resize", resizeWindow);
+		function resizeWindow( e ) {
+			if ($("#createVCPENetwork").length) {
+				clearJSPlumbStuff();
+				setJSPlumbStuff(topologyVisible, bodVisible);
+			} else if ($("#home_body").length) {
+				clearJSPlumbStuff();
+				setJSPlumbHome();
+			}
+		}
 	}
 
 	$.fn.styleTable = function(options) {
