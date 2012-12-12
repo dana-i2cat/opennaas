@@ -23,6 +23,9 @@ import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestH
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPVirtualIPAddressAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
+/**
+ * @author Julio Carlos Barrera
+ */
 public class VRRPActionTest {
 
 	Log												log	= LogFactory.getLog(VRRPActionTest.class);
