@@ -71,7 +71,7 @@ public class VCPEToRouterModelTranslator {
 		}
 
 		port.setName(ifaceNameParts[0]);
-		((NetworkPort) port).setPortNumber(Integer.parseInt(ifaceNameParts[1]));
+		port.setPortNumber(Integer.parseInt(ifaceNameParts[1]));
 
 		port = (NetworkPort) assignIPAddressAndVlan(iface, port);
 		return port;
@@ -79,9 +79,9 @@ public class VCPEToRouterModelTranslator {
 
 	private static LogicalPort assignIPAddressAndVlan(Interface source, LogicalPort target) {
 
-		if (source.getVlanId() != 0) {
+		if (source.getVlan() != 0) {
 			VLANEndpoint vlanEP = new VLANEndpoint();
-			vlanEP.setVlanID(Integer.parseInt(Long.toString(source.getVlanId())));
+			vlanEP.setVlanID(Integer.parseInt(Long.toString(source.getVlan())));
 			target.addProtocolEndpoint(vlanEP);
 		}
 		if (source.getIpAddress() != null) {
