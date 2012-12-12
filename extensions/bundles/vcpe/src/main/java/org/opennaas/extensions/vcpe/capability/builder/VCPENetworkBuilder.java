@@ -152,7 +152,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		try {
 			for (Router router : filter(updatedModel.getElements(), Router.class)) {
 				for (Interface iface : router.getInterfaces()) {
-					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getName());
+					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(currentModel, iface.getTemplateName());
 					if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
 						setIP(router, outDatedIface, iface.getIpAddress(), currentModel);
 					}
@@ -173,7 +173,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		// update IP addresses in model
 		for (Router router : filter(updatedModel.getElements(), Router.class)) {
 			for (Interface iface : router.getInterfaces()) {
-				Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getName());
+				Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(currentModel, iface.getTemplateName());
 				if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
 					outDatedIface.setIpAddress(iface.getIpAddress());
 				}
@@ -265,26 +265,26 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void createLogicalRouters(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
 
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.VCPE1_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE1_ROUTER);
 
 		createLR(phy1, lr1, desiredScenario);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.VCPE2_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE2_ROUTER);
 
 		createLR(phy2, lr2, desiredScenario);
 	}
 
 	private void removeLogicalRouters(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
 
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.VCPE1_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE1_ROUTER);
 
 		removeLR(phy1, lr1, desiredScenario);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.VCPE2_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE2_ROUTER);
 
 		removeLR(phy2, lr2, desiredScenario);
 	}
@@ -315,16 +315,16 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		log.debug("Configuring subinterfaces");
 
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.VCPE1_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE1_ROUTER);
 
 		List<Interface> ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr1.getInterfaces());
 
 		createInterfaces(phy1, ifaces, desiredScenario);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(desiredScenario, VCPETemplate.VCPE2_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE2_ROUTER);
 
 		ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr2.getInterfaces());
@@ -368,8 +368,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void removeResources(VCPENetworkModel model) throws ResourceException {
 
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
 		removeFromRM(lr1);
 		removeFromRM(lr2);
@@ -390,11 +390,11 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		log.debug("Assigning IP addresses");
 
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
 
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
 		// we assign addresses in physical routers
 		// logical ones may not exist yet
@@ -445,8 +445,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 */
 	private void configureBGP(VCPENetworkModel model) throws ResourceException {
 		log.debug("Configuring BGP");
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
 		IResource router1Resource = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
@@ -488,8 +488,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void unconfigureStaticRoutesInClient(IResource resource, VCPENetworkModel model) throws ResourceException {
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_PEER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER);
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
@@ -498,8 +498,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		deleteStaticRoute(lr1, model, ipRange, nextHopIpAddress);
 
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
-		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_PEER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER);
 		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
 		String nextHopIpAddress2 = addressAndMask2[0];
 
@@ -507,8 +507,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void unconfigureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) throws ResourceException {
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_LOCAL);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_LOCAL);
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
@@ -517,8 +517,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		deleteStaticRoute(phy1, model, ipRange, nextHopIpAddress1);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
-		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_LOCAL);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_LOCAL);
 
 		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
 		String nextHopIpAddress2 = addressAndMask2[0];
@@ -527,8 +527,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void configureStaticRoutesInProvider(IResource resource, VCPENetworkModel model) throws ResourceException {
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_LOCAL);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_LOCAL);
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
@@ -537,8 +537,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		setStaticRoute(phy1, model, ipRange, nextHopIpAddress1);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
-		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_LOCAL);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_LOCAL);
 
 		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
 		String nextHopIpAddress2 = addressAndMask2[0];
@@ -547,8 +547,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void configureStaticRoutesInClient(IResource resource, VCPENetworkModel model) throws ResourceException {
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_PEER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER);
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
@@ -558,8 +558,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		setStaticRoute(lr1, model, ipRange, nextHopIpAddress);
 
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
-		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_PEER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER);
 		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
 		String nextHopIpAddress2 = addressAndMask2[0];
 
@@ -600,10 +600,10 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		log.debug("Starting logical routers");
 
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
 		try {
 			registerContexts(phy1, lr1);
@@ -617,8 +617,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void stopLogicalRouters(IResource resource, VCPENetworkModel model) throws ResourceException {
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
 		getResourceManager().stopResource(getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
 		getResourceManager().stopResource(getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
@@ -645,32 +645,32 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 
 		// inter link
-		Link inter = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.INTER_LINK);
+		Link inter = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.INTER_LINK);
 		long interSrcVlan = inter.getSource().getVlan();
 		long interDstVlan = inter.getSink().getVlan();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
 
 		createAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
 
 		// // down1 link
-		// Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
+		// Link down1 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN1_LINK);
 		// long down1SrcVlan = down1.getSource().getVlanId();
 		// long down1DstVlan = down1.getSink().getVlanId();
 		//
-		// Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
-		// Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		// Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+		// Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 		//
 		// createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
 		// down 2 link
-		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
+		Link down2 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN2_LINK);
 		long down2SrcVlan = down2.getSource().getVlan();
 		long down2DstVlan = down2.getSink().getVlan();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
 		createAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
 	}
@@ -682,39 +682,39 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 
 		// inter link
-		Link inter = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.INTER_LINK);
+		Link inter = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.INTER_LINK);
 		long interSrcVlan = inter.getSource().getVlan();
 		long interDstVlan = inter.getSink().getVlan();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
 
 		destroyAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
 
 		// down1 link
-		// Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
+		// Link down1 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN1_LINK);
 		// long down1SrcVlan = down1.getSource().getVlanId();
 		// long down1DstVlan = down1.getSink().getVlanId();
 		//
-		// Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
-		// Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		// Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+		// Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 		//
 		// destroyAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
 		// down 2 link
-		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
+		Link down2 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN2_LINK);
 		long down2SrcVlan = down2.getSource().getVlan();
 		long down2DstVlan = down2.getSink().getVlan();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
 		destroyAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
 	}
 
 	private void createAutobahnLink(VCPENetworkModel model, Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
 
-		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
 
 		IResource autobahn = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
@@ -727,7 +727,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void destroyAutobahnLink(VCPENetworkModel model, Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
 
-		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
 
 		IResource autobahn = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
@@ -824,8 +824,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void executePhysicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
 
 		IResource phyResource1 = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("router", phy1.getName()));
@@ -837,8 +837,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	}
 
 	private void executeLogicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
 		IResource lrResource1 = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
@@ -851,7 +851,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void executeAutobahn(VCPENetworkModel model) throws ResourceException, ProtocolException {
 
-		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
 
 		IResource autobahn = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));

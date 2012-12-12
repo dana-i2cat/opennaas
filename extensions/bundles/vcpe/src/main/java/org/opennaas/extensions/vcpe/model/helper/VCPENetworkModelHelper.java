@@ -14,16 +14,16 @@ import org.opennaas.extensions.vcpe.model.VCPETemplate;
 
 public class VCPENetworkModelHelper {
 
-	public static VCPENetworkElement getElementByNameInTemplate(VCPENetworkModel model, String nameInTemplate) {
-		return getElementByNameInTemplate(model.getElements(), nameInTemplate);
+	public static VCPENetworkElement getElementByTemplateName(VCPENetworkModel model, String templateName) {
+		return getElementByTemplateName(model.getElements(), templateName);
 	}
 
-	public static VCPENetworkElement getElementByNameInTemplate(List<? extends VCPENetworkElement> elements, String nameInTemplate) {
-		if (nameInTemplate == null || elements == null)
+	public static VCPENetworkElement getElementByTemplateName(List<? extends VCPENetworkElement> elements, String templateName) {
+		if (templateName == null || elements == null)
 			return null;
 
 		for (VCPENetworkElement element : elements) {
-			if (nameInTemplate.equals(element.getTemplateName()))
+			if (templateName.equals(element.getTemplateName()))
 				return element;
 		}
 		return null;

@@ -88,13 +88,13 @@ public class Template implements ITemplate {
 	 */
 	private List<VCPENetworkElement> generateLogicalElements(VCPENetworkModel initialModel) {
 		// ----------------------------- VCPE-router1 -----------------------------
-		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.VCPE1_ROUTER);
+		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.VCPE1_ROUTER);
 		vcpe1.setName(props.getProperty("vcpenetwork.logicalrouter1.name") + "-" + initialModel.getName());
 
 		// Interfaces VCPE-router1
-		Interface inter1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.INTER1_INTERFACE_LOCAL);
-		Interface down1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.DOWN1_INTERFACE_LOCAL);
-		Interface up1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.UP1_INTERFACE_LOCAL);
+		Interface inter1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.INTER1_INTERFACE_LOCAL);
+		Interface down1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.DOWN1_INTERFACE_LOCAL);
+		Interface up1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.UP1_INTERFACE_LOCAL);
 
 		// Other interfaces VCPE-router1
 		String inter1OtherName = props.getProperty("vcpenetwork.logicalrouter1.interface.inter.other.name");
@@ -117,13 +117,13 @@ public class Template implements ITemplate {
 				up1OtherName, Integer.parseInt(up1OtherPort));
 
 		// ----------------------------- VCPE-router2 -----------------------------
-		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.VCPE2_ROUTER);
+		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.VCPE2_ROUTER);
 		vcpe2.setName(props.getProperty("vcpenetwork.logicalrouter2.name") + "-" + initialModel.getName());
 
 		// Interfaces VCPE-router2
-		Interface inter2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.INTER2_INTERFACE_LOCAL);
-		Interface down2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.DOWN2_INTERFACE_LOCAL);
-		Interface up2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.UP2_INTERFACE_LOCAL);
+		Interface inter2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.INTER2_INTERFACE_LOCAL);
+		Interface down2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.DOWN2_INTERFACE_LOCAL);
+		Interface up2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.UP2_INTERFACE_LOCAL);
 
 		// Other interfaces VCPE-router2
 		String inter2OtherName = props.getProperty("vcpenetwork.logicalrouter2.interface.inter.other.name");
@@ -146,8 +146,8 @@ public class Template implements ITemplate {
 				up2OtherName, Integer.parseInt(up2OtherPort));
 
 		// Client interfaces
-		Interface client1other = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
-		Interface client2other = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+		Interface client1other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+		Interface client2other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
 		// ----------------------------- Links ------------------------------------
 		// Inter links
@@ -242,7 +242,7 @@ public class Template implements ITemplate {
 		up1.setName(props.getProperty("vcpenetwork.router1.interface.up.name"));
 
 		// select client1 interface using initialModel
-		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 
 		Interface client1 = new Interface();
 		client1.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
@@ -280,7 +280,7 @@ public class Template implements ITemplate {
 		up2.setName(props.getProperty("vcpenetwork.router2.interface.up.name"));
 
 		// select client1 interface using initialModel
-		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(initialModel, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
 		Interface client2 = new Interface();
 		client2.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
@@ -326,12 +326,12 @@ public class Template implements ITemplate {
 		int backupVRRPPriority = Integer.parseInt(props.getProperty("vcpenetwork.vrrp.backup.priority"));
 
 		// get master router and interface
-		Router masterRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
-		Interface masterInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_LOCAL);
+		Router masterRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		Interface masterInterface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_LOCAL);
 		masterRouter.getName();
 		// get backup router and interface
-		Router backupRouter = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
-		Interface backupInterface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_LOCAL);
+		Router backupRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Interface backupInterface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_LOCAL);
 
 		// set values
 		VRRP vrrp = new VRRP();
@@ -355,12 +355,12 @@ public class Template implements ITemplate {
 
 		params.loAddr1 = "193.1.190.141/30"; // TODO get this from GUI
 		params.upRemoteAddr1 = "193.1.190.134/30"; // TODO get this from GUI
-		params.interAddr1 = ((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_LOCAL))
+		params.interAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_LOCAL))
 				.getIpAddress();
 
 		params.loAddr2 = "193.1.190.145/30"; // TODO get this from GUI
 		params.upRemoteAddr2 = "193.1.190.130/30"; // TODO get this from GUI
-		params.interAddr2 = ((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_LOCAL))
+		params.interAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_LOCAL))
 				.getIpAddress();
 
 		return params;
@@ -467,16 +467,16 @@ public class Template implements ITemplate {
 
 	/**
 	 * @param id
-	 * @param nameInTemplate
+	 * @param templateName
 	 * @param type
 	 * @param source
 	 * @param sink
 	 * @return
 	 */
-	private Link getLink(String id, String nameInTemplate, String type, Interface source, Interface sink) {
+	private Link getLink(String id, String templateName, String type, Interface source, Interface sink) {
 		Link link = new Link();
 		link.setId(id);
-		link.setTemplateName(nameInTemplate);
+		link.setTemplateName(templateName);
 		link.setType(type);
 		link.setSource(source);
 		link.setSink(sink);

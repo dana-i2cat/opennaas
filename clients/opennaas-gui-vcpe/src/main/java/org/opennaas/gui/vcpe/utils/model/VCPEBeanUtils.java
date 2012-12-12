@@ -39,8 +39,8 @@ public class VCPEBeanUtils {
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
 		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Logical Routers
-		Router logicalRouter1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
-		Router logicalRouter2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE2_ROUTER);
+		Router logicalRouter1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
+		Router logicalRouter2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
 		modelOut.setLogicalRouter1(getLogicalRouter(logicalRouter1));
 		modelOut.setLogicalRouter2(getLogicalRouter(logicalRouter2));
 		// BGP
@@ -160,16 +160,16 @@ public class VCPEBeanUtils {
 		BoD bod = new BoD();
 		// Interfaces
 		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
 		Interface ifaceClientBackup = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
 		// Links
 		Link linkMaster = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.DOWN1_LINK_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.DOWN1_LINK_AUTOBAHN));
 		Link linkInter = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.INTER_LINK_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.INTER_LINK_AUTOBAHN));
 		Link linkBackup = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.DOWN2_LINK_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.DOWN2_LINK_AUTOBAHN));
 
 		bod.setIfaceClient(ifaceClient);
 		bod.setIfaceClientBackup(ifaceClientBackup);
