@@ -30,9 +30,9 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -109,11 +109,11 @@ public class StaticRouteIntegrationTest {
 
 		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE));
-		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1");
+		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1", "false");
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		QueueResponse queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();

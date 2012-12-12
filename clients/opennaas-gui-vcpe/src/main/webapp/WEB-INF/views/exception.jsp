@@ -9,7 +9,7 @@
 <html>
 <head>
 	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title><fmt:message key="index.title"/></title>
+	<title>Error</title>
 	<link rel="stylesheet" href="<c:url value="/resources/css/screen.css" />" type="text/css">
 	<link rel="stylesheet" href="<c:url value="/resources/css/print.css" />" type="text/css">
 	<!--[if lt IE 8]>

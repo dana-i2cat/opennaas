@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.opennaas.core.resources.helpers.XmlHelper;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi
@@ -56,10 +56,11 @@ public class StaticRouteTemplatesTest extends VelocityTemplatesTest {
 	 * @return string array with params
 	 */
 	private String[] getParams() {
-		String[] params = new String[3];
+		String[] params = new String[4];
 		params[0] = "0.0.0.0";
 		params[1] = "0.0.0.0";
 		params[2] = "192.168.1.1";
+		params[3] = "false";
 		return params;
 	}
 

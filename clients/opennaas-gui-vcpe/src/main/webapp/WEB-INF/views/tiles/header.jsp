@@ -8,24 +8,30 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<div style='float: right'>
-	User: <sec:authentication property="principal.username" /> | <a href="<c:url value="/auth/logout" />">Logout</a>
+<div id="header_logo">
+	<img src="<c:url value="/resources/images/opennaas-orange-150.png" />" height= "99px" width= "150px" alt="OpenNaaS Logo">
+</div>
+<div id="header_title">
+	<h1><spring:message code="header.title"/></h1>
+</div>	
+<div id="header_user" class="ui-state-default">
+	<span id="user_icon" class="ui-icon ui-icon-person"></span>
+	<span id="username">
+		<spring:message code="home.user"/>: <sec:authentication property="principal.username" />
+	</span>
+	<div><a href="<c:url value="/auth/logout" />"><button id="logoutButton" class="button"><spring:message code="home.logout"/></button></a></div>
+</div>	
+<div id="header_menu" class="ui-widget-content ui-corner-all">
+	<div id="home">
+		<a href="/opennaas-vcpe/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="home.home"/></button></a>
+	</div>
+	<div id="languages">
+		<input type="radio" id="english" name="radio"><label for="english"><span class="languageText"><spring:message code="header.language.english"/></span></label>
+		<input type="radio" id="spanish" name="radio"><label for="spanish"><span class="languageText"><spring:message code="header.language.spanish"/></span></label>
+	</div>
 </div>
 
-<h1>
-	<spring:message code="index.title"/>
-</h1>
-
-<div>
-	<div style='float: right'>
-		<a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a>
-	</div>
-	<div style='float: left'>
-		<a href="<c:url value="/secure/home" />">Home</a>
-	</div>
-
-</div>
-<hr>
+<br>
 
 <c:if test="${not empty infoMsg}" >
 	<div class="success">

@@ -65,25 +65,27 @@ public interface IVCPENetworkManager {
 	public List<VCPENetworkModel> getAllVCPENetworks() throws VCPENetworkManagerException;
 
 	/**
-	 * Check if a VLAN is busy or not in the environment
+	 * Check if a VLAN is available or not in a interface
 	 * 
 	 * @param vcpeId
-	 * @param iface
-	 * @return true if isn't busy
+	 * @param ifaceName
+	 * @param vlan
+	 * @return true if is available
 	 * @throws VCPENetworkManagerException
 	 */
 	@Path("/isVLANFree")
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isVLANFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("vlan") String vlan) throws VCPENetworkManagerException;
+	public Boolean isVLANFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("vlan") String vlan, @QueryParam("ifaceName") String ifaceName)
+			throws VCPENetworkManagerException;
 
 	/**
-	 * Check if an IP is busy or not in the environment
+	 * Check if an IP is available or not in the environment
 	 * 
 	 * @param vcpeId
 	 * @param iface
-	 * @return true if isn't busy
+	 * @return true if is available
 	 * @throws VCPENetworkManagerException
 	 */
 	@Path("/isIPFree")
@@ -93,11 +95,11 @@ public interface IVCPENetworkManager {
 	public Boolean isIPFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("ip") String ip) throws VCPENetworkManagerException;
 
 	/**
-	 * Check if an interface is busy or not in the environment
+	 * Check if an interface is available or not in the environment
 	 * 
 	 * @param vcpeId
 	 * @param iface
-	 * @return true if isn't busy
+	 * @return true if is available
 	 * @throws VCPENetworkManagerException
 	 */
 	@Path("/isInterfaceFree")

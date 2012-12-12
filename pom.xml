@@ -58,7 +58,7 @@
 		<jodatime.version>2.1</jodatime.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
-		<hibernate-validator>4.1.0.Final</hibernate-validator>
+		<hibernate-validator>4.3.0.Final</hibernate-validator>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<javamail.version>1.4.4</javamail.version>
@@ -280,6 +280,16 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.bgp</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.vrrp</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
