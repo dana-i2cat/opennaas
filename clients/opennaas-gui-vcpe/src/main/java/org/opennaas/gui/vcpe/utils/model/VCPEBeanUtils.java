@@ -39,10 +39,10 @@ public class VCPEBeanUtils {
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
 		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Logical Routers
-		Router logicalRouter1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
-		Router logicalRouter2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
-		modelOut.setLogicalRouter1(getLogicalRouter(logicalRouter1));
-		modelOut.setLogicalRouter2(getLogicalRouter(logicalRouter2));
+		Router logicalRouterMaster = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
+		Router logicalRouterBackup = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
+		modelOut.setLogicalRouterMaster(getLogicalRouter(logicalRouterMaster));
+		modelOut.setLogicalRouterBackup(getLogicalRouter(logicalRouterBackup));
 		// BGP
 		BGP bgp = getBGP(modelIn.getBgp());
 		modelOut.setBgp(bgp);

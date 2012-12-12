@@ -12,24 +12,27 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class VCPENetwork {
 
-	private String			id;
+	private String					id;
 	@NotBlank(message = "{message.error.field.mandatory}")
-	private String			name;
+	private String					name;
 	@NotBlank(message = "{message.error.field.mandatory}")
-	private String			templateType;
+	private String					templateType;
 	@Valid
-	private LogicalRouter	logicalRouter1;
+	private LogicalRouter			logicalRouterMaster;
 	@Valid
-	private LogicalRouter	logicalRouter2;
+	private LogicalRouter			logicalRouterBackup;
 	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{message.error.field.format.ipandmask}")
-	private String			clientIpRange;
+	private String					clientIpRange;
 	@Valid
-	private BGP				bgp;
+	private BGP						bgp;
 	@Valid
-	private BoD				bod;
+	private BoD						bod;
 	@Valid
-	private VRRP			vrrp;
-	private List<Link>		links;
+	private VRRP					vrrp;
+	@Valid
+	private PhysicalInfrastructure	physicalInfrastructure;
+
+	private List<Link>				links;
 
 	/**
 	 * Default constructor
@@ -83,33 +86,33 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @return the logicalRouter1
+	 * @return the logicalRouterMaster
 	 */
-	public LogicalRouter getLogicalRouter1() {
-		return logicalRouter1;
+	public LogicalRouter getLogicalRouterMaster() {
+		return logicalRouterMaster;
 	}
 
 	/**
-	 * @param logicalRouter1
-	 *            the logicalRouter1 to set
+	 * @param logicalRouterMaster
+	 *            the logicalRouterMaster to set
 	 */
-	public void setLogicalRouter1(LogicalRouter logicalRouter1) {
-		this.logicalRouter1 = logicalRouter1;
+	public void setLogicalRouterMaster(LogicalRouter logicalRouterMaster) {
+		this.logicalRouterMaster = logicalRouterMaster;
 	}
 
 	/**
-	 * @return the logicalRouter2
+	 * @return the logicalRouterBackup
 	 */
-	public LogicalRouter getLogicalRouter2() {
-		return logicalRouter2;
+	public LogicalRouter getLogicalRouterBackup() {
+		return logicalRouterBackup;
 	}
 
 	/**
-	 * @param logicalRouter2
-	 *            the logicalRouter2 to set
+	 * @param logicalRouterBackup
+	 *            the logicalRouterBackup to set
 	 */
-	public void setLogicalRouter2(LogicalRouter logicalRouter2) {
-		this.logicalRouter2 = logicalRouter2;
+	public void setLogicalRouterBackup(LogicalRouter logicalRouterBackup) {
+		this.logicalRouterBackup = logicalRouterBackup;
 	}
 
 	/**
@@ -187,14 +190,19 @@ public class VCPENetwork {
 		this.vrrp = vrrp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return the physicalInfrastructure
 	 */
-	@Override
-	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", templateType=" + templateType + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + ", bod=" + bod + "]";
+	public PhysicalInfrastructure getPhysicalInfrastructure() {
+		return physicalInfrastructure;
+	}
+
+	/**
+	 * @param physicalInfrastructure
+	 *            the physicalInfrastructure to set
+	 */
+	public void setPhysicalInfrastructure(PhysicalInfrastructure physicalInfrastructure) {
+		this.physicalInfrastructure = physicalInfrastructure;
 	}
 
 }
