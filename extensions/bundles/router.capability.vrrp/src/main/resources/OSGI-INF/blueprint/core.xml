@@ -30,5 +30,12 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="vrrp/updateVirtualIPAddress">
+			<action class="org.opennaas.extensions.router.capability.vrrp.shell.UpdateVRRPVirtualIPAddressCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>
