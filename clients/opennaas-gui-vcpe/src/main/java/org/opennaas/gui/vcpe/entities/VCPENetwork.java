@@ -12,27 +12,25 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class VCPENetwork {
 
-	private String					id;
+	private String			id;
 	@NotBlank(message = "{message.error.field.mandatory}")
-	private String					name;
+	private String			name;
 	@NotBlank(message = "{message.error.field.mandatory}")
-	private String					templateType;
+	private String			templateType;
 	@Valid
-	private LogicalRouter			logicalRouterMaster;
+	private LogicalRouter	logicalRouterMaster;
 	@Valid
-	private LogicalRouter			logicalRouterBackup;
+	private LogicalRouter	logicalRouterBackup;
 	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{message.error.field.format.ipandmask}")
-	private String					clientIpRange;
+	private String			clientIpRange;
 	@Valid
-	private BGP						bgp;
+	private BGP				bgp;
 	@Valid
-	private BoD						bod;
+	private BoD				bod;
 	@Valid
-	private VRRP					vrrp;
-	@Valid
-	private PhysicalInfrastructure	physicalInfrastructure;
+	private VRRP			vrrp;
 
-	private List<Link>				links;
+	private List<Link>		links;
 
 	/**
 	 * Default constructor
@@ -188,21 +186,6 @@ public class VCPENetwork {
 	 */
 	public void setVrrp(VRRP vrrp) {
 		this.vrrp = vrrp;
-	}
-
-	/**
-	 * @return the physicalInfrastructure
-	 */
-	public PhysicalInfrastructure getPhysicalInfrastructure() {
-		return physicalInfrastructure;
-	}
-
-	/**
-	 * @param physicalInfrastructure
-	 *            the physicalInfrastructure to set
-	 */
-	public void setPhysicalInfrastructure(PhysicalInfrastructure physicalInfrastructure) {
-		this.physicalInfrastructure = physicalInfrastructure;
 	}
 
 }
