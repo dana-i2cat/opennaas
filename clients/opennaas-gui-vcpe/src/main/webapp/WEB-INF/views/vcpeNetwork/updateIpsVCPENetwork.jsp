@@ -10,8 +10,8 @@
 <form:form modelAttribute="VCPENetwork" action="updateIps" method="post">
 	<form:hidden path="id" />
 	<form:hidden path="name" />
-	<form:hidden path="template" />
-	<!--  form:hidden path="clientIpRange"/--> 
+	<form:hidden path="templateType" />
+	<form:hidden path="clientIpRange"/> 
 	<form:hidden path="logicalRouter1.name"/>
 	<form:hidden path="logicalRouter1.templateName"/>
 	<form:hidden path="logicalRouter2.name"/>
@@ -164,8 +164,7 @@
 			<br>
 			<form:errors path="vrrp.virtualIPAddress" size="20" />
 			<br>
-			<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.deactivate"/></button>
-			<button id="button4" class="button" disabled="disabled"><spring:message code="buttons.reapply"/></button>
+			<button id="button1" class="button" disabled="disabled"><spring:message code="buttons.change"/></button>
 		</div>
 	</div>	
 				
@@ -176,7 +175,7 @@
 					<spring:message code="vcpenetwork.clientIpRange" />
 				</form:label>			
 				<br>	
-				<form:input path="clientIpRange" size="12" />		
+				<form:input path="clientIpRange" size="12" onchange="fillBgpClientRange(this.value)"/>
 				<form:errors path="clientIpRange" />			
 			</div>				
 		</div>	

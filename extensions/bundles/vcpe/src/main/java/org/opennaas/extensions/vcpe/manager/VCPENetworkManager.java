@@ -33,8 +33,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	@Override
 	public String create(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException {
 		// Create the resource
-		IResource resource = createResource(vcpeNetworkModel.getVcpeNetworkName());
-		vcpeNetworkModel.setVcpeNetworkId(resource.getResourceIdentifier().getId());
+		IResource resource = createResource(vcpeNetworkModel.getName());
+		vcpeNetworkModel.setId(resource.getResourceIdentifier().getId());
 		// Start the resource
 		startResource(resource.getResourceIdentifier().getId());
 		// Build the enviroment
@@ -116,7 +116,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			for (IResource vcpe : vcpes) {
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					for (Interface iface : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Interface.class)) {
-						if (ifaceName.equals(iface.getPhysicalInterfaceName()) && vlan.equals(String.valueOf(iface.getVlanId()))) {
+						if (ifaceName.equals(iface.getPhysicalInterfaceName()) && vlan.equals(String.valueOf(iface.getVlan()))) {
 							isFree = false;
 						}
 					}
@@ -234,18 +234,18 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	private Boolean build(VCPENetworkModel vcpeNetworkModel) {
 		IResource resource = null;
 		try {
-			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateName());
+			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateType());
 			VCPENetworkModel model = template.buildModel(vcpeNetworkModel);
 			resource = Activator.getResourceManagerService()
-					.getResourceById(vcpeNetworkModel.getVcpeNetworkId());
+					.getResourceById(vcpeNetworkModel.getId());
 			// Execute the capability and generate the real environment
 			IVCPENetworkBuilder vcpeNetworkBuilder = (IVCPENetworkBuilder) resource
 					.getCapabilityByInterface(IVCPENetworkBuilder.class);
 			vcpeNetworkBuilder.buildVCPENetwork(model);
 		} catch (Exception e) {
 			if (resource != null) {
-				stopResource(vcpeNetworkModel.getVcpeNetworkId());
-				removeResource(vcpeNetworkModel.getVcpeNetworkId());
+				stopResource(vcpeNetworkModel.getId());
+				removeResource(vcpeNetworkModel.getId());
 			}
 			throw new VCPENetworkManagerException("Can't build the environment of the resource. "
 					+ e.getMessage() != null ? e.getMessage() : "");
