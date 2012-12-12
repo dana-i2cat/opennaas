@@ -6,6 +6,9 @@ import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.ConfigureVR
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UnconfigureVRRPAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPVirtualIPAddressAction;
 
+/**
+ * @author Julio Carlos Barrera
+ */
 public class VRRPActionSet extends ActionSet {
 
 	public VRRPActionSet() {
