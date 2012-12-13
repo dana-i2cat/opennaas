@@ -10,10 +10,10 @@
 <div id="createVCPENetwork" >
 	<form:form modelAttribute="VCPENetwork" action="${action}" method="post">
 		<form:hidden path="id" />
-		<form:hidden path="logicalRouter1.name" />
-		<form:hidden path="logicalRouter1.templateName" />
-		<form:hidden path="logicalRouter2.name" />
-		<form:hidden path="logicalRouter2.templateName" />
+		<form:hidden path="logicalRouterMaster.name" />
+		<form:hidden path="logicalRouterMaster.templateName" />
+		<form:hidden path="logicalRouterBackup.name" />
+		<form:hidden path="logicalRouterBackup.templateName" />
 		<!-- Graphical view -->
 
 		<!-- WAN -->
@@ -23,69 +23,69 @@
 		<!-- Up Interfaces -->
 		<div id="up_interfaces">
 			<div id="up_master" class="ui-widget-content">
-				<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}" varStatus="vs" var="item">					
+				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}" varStatus="vs" var="item">					
 					<c:choose>
 						<c:when test="${item.labelName == 'Up'}">							
 							<label>${item.labelName} Master</label><br>
 							<div class="ui-widget-content config_content">
-								<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
-								<form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
-								<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
-									<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
+								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
+								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+								<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
+									<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
 										<spring:message code="interface.name" />
 									</form:label>
 								</form:label>
-								<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.port'));" />.
-								<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
-								<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name'), this);" />
-								<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
+								<form:input path="logicalRouterMaster.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterMaster.interfaces${vs.index}.port'));" />.
+								<form:errors path="logicalRouterMaster.interfaces[${vs.index}].name" size="8" />
+								<form:input path="logicalRouterMaster.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouterMaster.interfaces${vs.index}.name'), this);" />
+								<form:errors path="logicalRouterMaster.interfaces[${vs.index}].port" size="3" />
 								<br>
-								<form:label for="logicalRouter1.interfaces[${vs.index}].ipAddress" path="logicalRouter1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+								<form:label for="logicalRouterMaster.interfaces[${vs.index}].ipAddress" path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 									<spring:message code="interface.ipAddress" />
 								</form:label>
-								<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
-								<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" />
+								<form:input path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
+								<form:errors path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" />
 								<br>
-								<form:label for="logicalRouter1.interfaces[${vs.index}].vlan" path="logicalRouter1.interfaces[${vs.index}].vlan" cssErrorClass="error">
+								<form:label for="logicalRouterMaster.interfaces[${vs.index}].vlan" path="logicalRouterMaster.interfaces[${vs.index}].vlan" cssErrorClass="error">
 									<spring:message code="interface.vlan" />
 								</form:label>
-								<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.name'));" />
-								<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
+								<form:input path="logicalRouterMaster.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterMaster.interfaces${vs.index}.name'));" />
+								<form:errors path="logicalRouterMaster.interfaces[${vs.index}].vlan" size="3" />
 							</div>
 						</c:when>
 					</c:choose>				
 				</c:forEach>
 			</div>
 			<div id="up_backup" class="ui-widget-content">				
-				<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
+				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}" varStatus="vs" var="item">
 					
 						<c:choose>
 							<c:when test="${item.labelName == 'Up'}">
 								<label>${item.labelName} Backup</label><br>
 								<div class="ui-widget-content config_content">
-								<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
-								 <form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
-								<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
-									<form:label for="logicalRouter2.interfaces[${vs.index}].port" path="logicalRouter2.interfaces[${vs.index}].port" cssErrorClass="error">
+								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
+								 <form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+								<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].name" cssErrorClass="error">
+									<form:label for="logicalRouterBackup.interfaces[${vs.index}].port" path="logicalRouterBackup.interfaces[${vs.index}].port" cssErrorClass="error">
 										<spring:message code="interface.name" />
 									</form:label>
 								</form:label>
-								<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.port'));" />.
-								<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8" />
-								<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter2.interfaces${vs.index}.name'), this);" />
-								<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
+								<form:input path="logicalRouterBackup.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterBackup.interfaces${vs.index}.port'));" />.
+								<form:errors path="logicalRouterBackup.interfaces[${vs.index}].name" size="8" />
+								<form:input path="logicalRouterBackup.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouterBackup.interfaces${vs.index}.name'), this);" />
+								<form:errors path="logicalRouterBackup.interfaces[${vs.index}].port" size="3" />
 								<br>
-								<form:label for="logicalRouter2.interfaces[${vs.index}].ipAddress" path="logicalRouter2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+								<form:label for="logicalRouterBackup.interfaces[${vs.index}].ipAddress" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 									<spring:message code="interface.ipAddress" />
 								</form:label>
-								<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
-								<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" />
+								<form:input path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
+								<form:errors path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" />
 								<br>
-								<form:label for="logicalRouter2.interfaces[${vs.index}].vlan" path="logicalRouter2.interfaces[${vs.index}].vlan" cssErrorClass="error">
+								<form:label for="logicalRouterBackup.interfaces[${vs.index}].vlan" path="logicalRouterBackup.interfaces[${vs.index}].vlan" cssErrorClass="error">
 									<spring:message code="interface.vlan" />
 								</form:label>
-								<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.name'));" />
-								<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+								<form:input path="logicalRouterBackup.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterBackup.interfaces${vs.index}.name'));" />
+								<form:errors path="logicalRouterBackup.interfaces[${vs.index}].vlan" size="3" />
 								</div>
 							</c:when>
 						</c:choose>
@@ -154,36 +154,36 @@
 					</div>
 					<!-- VCPE Interfaces -->				
 					<div id="client_master" class="ui-widget-content">				
-						<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}"
+						<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}"
 							varStatus="vs" var="item">
 							
 								<c:choose>
 									<c:when test="${item.labelName == 'Down'}">
 										<label>${item.labelName} Master</label><br>
 										<div class="ui-widget-content config_content">
-										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
-										 <form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
-										<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
-											<form:label for="logicalRouter1.interfaces[${vs.index}].port" path="logicalRouter1.interfaces[${vs.index}].port" cssErrorClass="error">
+										<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
+										 <form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+										<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
+											<form:label for="logicalRouterMaster.interfaces[${vs.index}].port" path="logicalRouterMaster.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.port'));" />.
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
-										<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name'), this);" />
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].name" size="8" readonly="true" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterMaster.interfaces${vs.index}.port'));" />.
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].name" size="8" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouterMaster.interfaces${vs.index}.name'), this);" />
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].port" size="3" />
 										<br>
-										<form:label for="logicalRouter1.interfaces[${vs.index}].ipAddress" path="logicalRouter1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+										<form:label for="logicalRouterMaster.interfaces[${vs.index}].ipAddress" path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" />
 										<br>
-										<form:label for="logicalRouter1.interfaces[${vs.index}].vlan" path="logicalRouter1.interfaces[${vs.index}].vlan" cssErrorClass="error">
+										<form:label for="logicalRouterMaster.interfaces[${vs.index}].vlan" path="logicalRouterMaster.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.name'));" />				
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterMaster.interfaces${vs.index}.name'));" />				
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].vlan" size="3" />
 										</div>
 									</c:when>
 								</c:choose>
@@ -191,36 +191,36 @@
 						</c:forEach>
 					</div>
 					<div id="inter_master" class="ui-widget-content">
-						<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}"
+						<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}"
 							varStatus="vs" var="item">
 							
 								<c:choose>
 									<c:when test="${item.labelName == 'Inter'}">
 										<label>${item.labelName} Master</label><br>
 										<div class="ui-widget-content config_content">
-										<form:hidden path="logicalRouter1.interfaces[${vs.index}].templateName" />
-										 <form:hidden path="logicalRouter1.interfaces[${vs.index}].labelName" />
-										<form:label for="logicalRouter1.interfaces[${vs.index}].name" path="logicalRouter1.interfaces[${vs.index}].name" cssErrorClass="error">
-											<form:label for="logicalRouter1.interfaces[${vs.index}].port" path="logicalRouter1.interfaces[${vs.index}].port" cssErrorClass="error">
+										<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
+										 <form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+										<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
+											<form:label for="logicalRouterMaster.interfaces[${vs.index}].port" path="logicalRouterMaster.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.port'));" />.
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8" />
-										<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter1.interfaces${vs.index}.name'), this);" />
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterMaster.interfaces${vs.index}.port'));" />.
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].name" size="8" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouterMaster.interfaces${vs.index}.name'), this);" />
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].port" size="3" />
 										<br>
-										<form:label for="logicalRouter1.interfaces[${vs.index}].ipAddress" path="logicalRouter1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+										<form:label for="logicalRouterMaster.interfaces[${vs.index}].ipAddress" path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" />
 										<br>
-										<form:label for="logicalRouter1.interfaces[${vs.index}].vlan" path="logicalRouter1.interfaces[${vs.index}].vlan" cssErrorClass="error">
+										<form:label for="logicalRouterMaster.interfaces[${vs.index}].vlan" path="logicalRouterMaster.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter1.interfaces${vs.index}.name'));" />
-										<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
+										<form:input path="logicalRouterMaster.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterMaster.interfaces${vs.index}.name'));" />
+										<form:errors path="logicalRouterMaster.interfaces[${vs.index}].vlan" size="3" />
 										</div>
 									</c:when>
 								</c:choose>
@@ -228,35 +228,35 @@
 						</c:forEach>
 					</div>
 					<div id="inter_backup" class="ui-widget-content">
-						<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
+						<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}" varStatus="vs" var="item">
 							
 								<c:choose>
 									<c:when test="${item.labelName == 'Inter'}">
 										<label>${item.labelName} Backup</label><br>
 										<div class="ui-widget-content config_content">
-										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
-										 <form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
-										<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
-											<form:label for="logicalRouter2.interfaces[${vs.index}].port" path="logicalRouter2.interfaces[${vs.index}].port" cssErrorClass="error">
+										<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
+										 <form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+										<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].name" cssErrorClass="error">
+											<form:label for="logicalRouterBackup.interfaces[${vs.index}].port" path="logicalRouterBackup.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.port'));" />.
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8" />
-										<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter2.interfaces${vs.index}.name'), this);" />
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterBackup.interfaces${vs.index}.port'));" />.
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].name" size="8" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouterBackup.interfaces${vs.index}.name'), this);" />
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].port" size="3" />
 										<br>
-										<form:label for="logicalRouter2.interfaces[${vs.index}].ipAddress" path="logicalRouter2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+										<form:label for="logicalRouterBackup.interfaces[${vs.index}].ipAddress" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" />
 										<br>
-										<form:label for="logicalRouter2.interfaces[${vs.index}].vlan" path="logicalRouter2.interfaces[${vs.index}].vlan" cssErrorClass="error">
+										<form:label for="logicalRouterBackup.interfaces[${vs.index}].vlan" path="logicalRouterBackup.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.name'));" />
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterBackup.interfaces${vs.index}.name'));" />
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].vlan" size="3" />
 										</div>
 									</c:when>
 								</c:choose>
@@ -264,35 +264,35 @@
 						</c:forEach>
 					</div>
 					<div id="client_backup" class="ui-widget-content">
-						<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs" var="item">
+						<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}" varStatus="vs" var="item">
 							
 								<c:choose>
 									<c:when test="${item.labelName == 'Down'}">
 										<label>${item.labelName} Backup</label><br>
 										<div class="ui-widget-content config_content">
-										<form:hidden path="logicalRouter2.interfaces[${vs.index}].templateName" />
-										<form:hidden path="logicalRouter2.interfaces[${vs.index}].labelName" />
-										<form:label for="logicalRouter2.interfaces[${vs.index}].name" path="logicalRouter2.interfaces[${vs.index}].name" cssErrorClass="error">
-											<form:label for="logicalRouter2.interfaces[${vs.index}].port" path="logicalRouter2.interfaces[${vs.index}].port" cssErrorClass="error">
+										<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
+										<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+										<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].name" cssErrorClass="error">
+											<form:label for="logicalRouterBackup.interfaces[${vs.index}].port" path="logicalRouterBackup.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.port'));" />.
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8" />
-										<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouter2.interfaces${vs.index}.name'), this);" />
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].name" readonly="true" size="8" onchange="isInterfaceFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterBackup.interfaces${vs.index}.port'));" />.
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].name" size="8" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].port" size="3" onchange="isInterfaceFree('${VCPENetwork.id}', document.getElementById('logicalRouterBackup.interfaces${vs.index}.name'), this);" />
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].port" size="3" />
 										<br>
-										<form:label for="logicalRouter2.interfaces[${vs.index}].ipAddress" path="logicalRouter2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+										<form:label for="logicalRouterBackup.interfaces[${vs.index}].ipAddress" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', this);" />
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" />
 										<br>
-										<form:label for="logicalRouter2.interfaces[${vs.index}].vlan" path="logicalRouter2.interfaces[${vs.index}].vlan" cssErrorClass="error">
+										<form:label for="logicalRouterBackup.interfaces[${vs.index}].vlan" path="logicalRouterBackup.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouter2.interfaces${vs.index}.name'));" />
-										<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+										<form:input path="logicalRouterBackup.interfaces[${vs.index}].vlan" size="3" onchange="isVLANFree('${VCPENetwork.id}', this, document.getElementById('logicalRouterBackup.interfaces${vs.index}.name'));" />
+										<form:errors path="logicalRouterBackup.interfaces[${vs.index}].vlan" size="3" />
 										</div>
 									</c:when>
 								</c:choose>

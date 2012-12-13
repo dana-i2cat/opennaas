@@ -15,6 +15,7 @@ import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
+import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.entities.VRRP;
 
@@ -39,10 +40,10 @@ public class VCPEBeanUtils {
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
 		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Logical Routers
-		Router logicalRouter1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
-		Router logicalRouter2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
-		modelOut.setLogicalRouter1(getLogicalRouter(logicalRouter1));
-		modelOut.setLogicalRouter2(getLogicalRouter(logicalRouter2));
+		Router logicalRouterMaster = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
+		Router logicalRouterBackup = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
+		modelOut.setLogicalRouterMaster(getLogicalRouter(logicalRouterMaster));
+		modelOut.setLogicalRouterBackup(getLogicalRouter(logicalRouterBackup));
 		// BGP
 		BGP bgp = getBGP(modelIn.getBgp());
 		modelOut.setBgp(bgp);
@@ -212,5 +213,14 @@ public class VCPEBeanUtils {
 			vrrpOut.setGroup(vrrpIn.getGroup());
 		}
 		return vrrpOut;
+	}
+
+	/**
+	 * @param physicalInfrastructure
+	 * @return
+	 */
+	public static PhysicalInfrastructure getPhysicalInfrastructure(org.opennaas.extensions.vcpe.model.PhysicalInfrastructure physicalInfrastructure) {
+		// TODO Auto-generated method stub
+		return new PhysicalInfrastructure();
 	}
 }

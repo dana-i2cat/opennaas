@@ -30,8 +30,6 @@ public class VCPENetworkModel implements IModel {
 	private String						id;
 	private String						name;
 	private String						templateType;
-	private LogicalRouter				logicalRouter1;
-	private LogicalRouter				logicalRouter2;
 	private String						clientIpRange;
 	private BGP							bgp;
 	private VRRP						vrrp;
@@ -66,36 +64,6 @@ public class VCPENetworkModel implements IModel {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * @return the logicalRouter1
-	 */
-	public LogicalRouter getLogicalRouter1() {
-		return logicalRouter1;
-	}
-
-	/**
-	 * @param logicalRouter1
-	 *            the logicalRouter1 to set
-	 */
-	public void setLogicalRouter1(LogicalRouter logicalRouter1) {
-		this.logicalRouter1 = logicalRouter1;
-	}
-
-	/**
-	 * @return the logicalRouter2
-	 */
-	public LogicalRouter getLogicalRouter2() {
-		return logicalRouter2;
-	}
-
-	/**
-	 * @param logicalRouter2
-	 *            the logicalRouter2 to set
-	 */
-	public void setLogicalRouter2(LogicalRouter logicalRouter2) {
-		this.logicalRouter2 = logicalRouter2;
 	}
 
 	/**
@@ -220,8 +188,6 @@ public class VCPENetworkModel implements IModel {
 		result = prime * result + (created ? 1231 : 1237);
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((logicalRouter1 == null) ? 0 : logicalRouter1.hashCode());
-		result = prime * result + ((logicalRouter2 == null) ? 0 : logicalRouter2.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((templateType == null) ? 0 : templateType.hashCode());
 		result = prime * result + ((vrrp == null) ? 0 : vrrp.hashCode());
@@ -263,16 +229,6 @@ public class VCPENetworkModel implements IModel {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (logicalRouter1 == null) {
-			if (other.logicalRouter1 != null)
-				return false;
-		} else if (!logicalRouter1.equals(other.logicalRouter1))
-			return false;
-		if (logicalRouter2 == null) {
-			if (other.logicalRouter2 != null)
-				return false;
-		} else if (!logicalRouter2.equals(other.logicalRouter2))
 			return false;
 		if (name == null) {
 			if (other.name != null)

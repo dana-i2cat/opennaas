@@ -52,15 +52,15 @@ public class OpennasBeanUtils {
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		modelOut.setElements(elements);
 		// LogicalRouters
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter1 = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
-				modelIn.getLogicalRouter1());
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter2 = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
-				modelIn.getLogicalRouter2());
-		elements.add(logicalRouter1);
-		elements.add(logicalRouter2);
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouterMaster = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
+				modelIn.getLogicalRouterMaster());
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouterBackup = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
+				modelIn.getLogicalRouterBackup());
+		elements.add(logicalRouterMaster);
+		elements.add(logicalRouterBackup);
 		// Add interfaces to elements
-		elements.addAll(logicalRouter1.getInterfaces());
-		elements.addAll(logicalRouter2.getInterfaces());
+		elements.addAll(logicalRouterMaster.getInterfaces());
+		elements.addAll(logicalRouterBackup.getInterfaces());
 		// Add interfaces BoD
 		if (modelIn.getBod() != null) {
 			elements.add(getInterface(modelIn.getBod().getIfaceClient()));
@@ -73,7 +73,7 @@ public class OpennasBeanUtils {
 	 * Return a OpenNaaS logical router from a GUI logical router
 	 * 
 	 * @param networkName
-	 * @param logicalRouter1
+	 * @param logicalRouterMaster
 	 * @return LogicalRouter of opennaas model
 	 */
 	public static org.opennaas.extensions.vcpe.model.LogicalRouter getLROpennaas(String networkName, String templateName, LogicalRouter lrIn) {

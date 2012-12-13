@@ -18,9 +18,9 @@ public class VCPENetwork {
 	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			templateType;
 	@Valid
-	private LogicalRouter	logicalRouter1;
+	private LogicalRouter	logicalRouterMaster;
 	@Valid
-	private LogicalRouter	logicalRouter2;
+	private LogicalRouter	logicalRouterBackup;
 	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{message.error.field.format.ipandmask}")
 	private String			clientIpRange;
 	@Valid
@@ -29,6 +29,7 @@ public class VCPENetwork {
 	private BoD				bod;
 	@Valid
 	private VRRP			vrrp;
+
 	private List<Link>		links;
 
 	/**
@@ -83,33 +84,33 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @return the logicalRouter1
+	 * @return the logicalRouterMaster
 	 */
-	public LogicalRouter getLogicalRouter1() {
-		return logicalRouter1;
+	public LogicalRouter getLogicalRouterMaster() {
+		return logicalRouterMaster;
 	}
 
 	/**
-	 * @param logicalRouter1
-	 *            the logicalRouter1 to set
+	 * @param logicalRouterMaster
+	 *            the logicalRouterMaster to set
 	 */
-	public void setLogicalRouter1(LogicalRouter logicalRouter1) {
-		this.logicalRouter1 = logicalRouter1;
+	public void setLogicalRouterMaster(LogicalRouter logicalRouterMaster) {
+		this.logicalRouterMaster = logicalRouterMaster;
 	}
 
 	/**
-	 * @return the logicalRouter2
+	 * @return the logicalRouterBackup
 	 */
-	public LogicalRouter getLogicalRouter2() {
-		return logicalRouter2;
+	public LogicalRouter getLogicalRouterBackup() {
+		return logicalRouterBackup;
 	}
 
 	/**
-	 * @param logicalRouter2
-	 *            the logicalRouter2 to set
+	 * @param logicalRouterBackup
+	 *            the logicalRouterBackup to set
 	 */
-	public void setLogicalRouter2(LogicalRouter logicalRouter2) {
-		this.logicalRouter2 = logicalRouter2;
+	public void setLogicalRouterBackup(LogicalRouter logicalRouterBackup) {
+		this.logicalRouterBackup = logicalRouterBackup;
 	}
 
 	/**
@@ -185,16 +186,6 @@ public class VCPENetwork {
 	 */
 	public void setVrrp(VRRP vrrp) {
 		this.vrrp = vrrp;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", templateType=" + templateType + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + ", bod=" + bod + "]";
 	}
 
 }
