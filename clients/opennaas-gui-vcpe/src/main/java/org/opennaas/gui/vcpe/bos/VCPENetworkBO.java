@@ -95,11 +95,23 @@ public class VCPENetworkBO {
 	 * 
 	 * @param vcpeNetwork
 	 * @return true if the Ips have been updated
+	 * @throws RestServiceException
 	 */
 	public Boolean updateIps(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update Ip's of VCPENetwork");
-		builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
-		return true;
+		return builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+	}
+
+	/**
+	 * Update the VRRP virtual ip address of the VCPENetwork
+	 * 
+	 * @param vcpeNetwork
+	 * @return true if the Ip has been updated
+	 * @throws RestServiceException
+	 */
+	public Boolean updateVRRPIp(VCPENetwork vcpeNetwork) throws RestServiceException {
+		LOGGER.debug("update VRRP Ip of VCPENetwork");
+		return builderService.updateVRRPIp(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**

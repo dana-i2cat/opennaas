@@ -181,6 +181,34 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#updateVRRPIp(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 */
+	@Override
+	public void updateVRRPIp(VCPENetworkModel model) throws CapabilityException {
+		log.debug("Updating VRRP ip");
+		try {
+			Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+			Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+
+			IResource router1Resource = getResourceManager().getResource(
+					getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+			IResource router2Resource = getResourceManager().getResource(
+					getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+
+			IVRRPCapability capability1 = (IVRRPCapability) router1Resource.getCapabilityByInterface(IVRRPCapability.class);
+			// TODO Recover the VRRPProtocolEndpoint
+			capability1.updateVRRPVirtualIPAddress(null);
+			IVRRPCapability capability2 = (IVRRPCapability) router2Resource.getCapabilityByInterface(IVRRPCapability.class);
+			// TODO Recover the VRRPProtocolEndpoint
+			capability2.updateVRRPVirtualIPAddress(null);
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
 	private VCPENetworkModel buildDesiredScenario(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
 
 		log.debug("building scenario in resource" + resource.getResourceDescriptor().getInformation().getName());
@@ -884,5 +912,4 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 			throw new ResourceException("Could not find ProtocolManager", e);
 		}
 	}
-
 }
