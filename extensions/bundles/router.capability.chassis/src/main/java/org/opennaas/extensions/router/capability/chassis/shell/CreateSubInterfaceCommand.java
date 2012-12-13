@@ -102,7 +102,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		}
 
 		/* check ethernet ports */
-		if (ethmatcher.find() || lomatcher.find()) {
+		if (ethmatcher.find()) {
 			if ((vlanid == -1) && (Integer.parseInt(args[1]) != 0))
 				throw new Exception("Only unit 0 is valid for non tagged-ethernet encapsulation.");
 		}
