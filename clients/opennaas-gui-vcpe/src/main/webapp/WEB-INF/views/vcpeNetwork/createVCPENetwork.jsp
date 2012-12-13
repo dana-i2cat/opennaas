@@ -444,7 +444,7 @@
 						<br>
 						<form:errors path="vrrp.virtualIPAddress" size="20" />
 						<br>
-						<button id="button10" class="button" disabled="disabled"><spring:message code="buttons.change"/></button>
+						<input id="button10" class="button" type="submit" value="<spring:message code="buttons.change"/>" formaction="updateVRRPIp"/>
 					</div>
 				</div>			
 
