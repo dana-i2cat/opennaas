@@ -46,4 +46,15 @@ public interface IVCPENetworkBuilder extends ICapability {
 	@Consumes(MediaType.APPLICATION_XML)
 	public void updateIps(VCPENetworkModel vcpeNetworkModel) throws CapabilityException;
 
+	/**
+	 * Update the VRRP virtual ip address
+	 * 
+	 * @param model
+	 * @throws CapabilityException
+	 */
+	@Path("/updateVRRPIp")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void updateVRRPIp(VCPENetworkModel model) throws CapabilityException;
+
 }
