@@ -115,6 +115,18 @@ public class VCPENetworkBO {
 	}
 
 	/**
+	 * Change the priority VRRP in the VCPENetwork
+	 * 
+	 * @param vcpeNetwork
+	 * @return true if the priority has been changed
+	 * @throws RestServiceException
+	 */
+	public Boolean changeVRRPPriority(VCPENetwork vcpeNetwork) throws RestServiceException {
+		LOGGER.debug("change the Priority VRRP of VCPENetwork");
+		return builderService.changeVRRPPriority(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+	}
+
+	/**
 	 * @param vlan
 	 * @param ifaceName
 	 * @return true if is free
