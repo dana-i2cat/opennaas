@@ -28,7 +28,7 @@ public class TemplateUtils {
 		// VCPENetwork
 		VCPENetwork vcpeNetwork = new VCPENetwork();
 		vcpeNetwork.setClientIpRange(templateProperties.getProperty("vcpenetwork.client.iprange"));
-		vcpeNetwork.setTemplate(templateProperties.getProperty("vcpenetwork.template"));
+		vcpeNetwork.setTemplateType(templateProperties.getProperty("vcpenetwork.template"));
 
 		// Logical Router1
 		LogicalRouter logicalRouter1 = new LogicalRouter();
