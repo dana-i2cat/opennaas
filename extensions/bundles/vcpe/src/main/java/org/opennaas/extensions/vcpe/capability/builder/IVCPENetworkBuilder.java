@@ -57,4 +57,15 @@ public interface IVCPENetworkBuilder extends ICapability {
 	@Consumes(MediaType.APPLICATION_XML)
 	public void updateVRRPIp(VCPENetworkModel model) throws CapabilityException;
 
+	/**
+	 * Change the priority VRRP
+	 * 
+	 * @param model
+	 * @throws CapabilityException
+	 */
+	@Path("/changeVRRPPriority")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void changeVRRPPriority(VCPENetworkModel model) throws CapabilityException;
+
 }
