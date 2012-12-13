@@ -1,0 +1,21 @@
+<configuration>
+	<interfaces>
+		<interface>
+			<name>fe-0/3/2</name>
+			<unit>
+				<name>0</name>
+				<family>
+					<inet>
+						<address>
+							<name>192.168.1.1/24</name>
+							<vrrp-group>
+								<name>201</name>
+								<priority operation="replace">100</priority>
+							</vrrp-group>
+						</address>
+					</inet>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>
