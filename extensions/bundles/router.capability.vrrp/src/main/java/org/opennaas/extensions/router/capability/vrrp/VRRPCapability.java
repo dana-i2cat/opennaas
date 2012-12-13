@@ -106,4 +106,13 @@ public class VRRPCapability extends AbstractCapability implements IVRRPCapabilit
 		queueAction(action);
 		log.info("End of unconfigureVRRP call");
 	}
+
+	@Override
+	public void updateVRRPVirtualIPAddress(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException {
+		log.info("Start of updateVRRPVirtualIPAddress call");
+		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_VIRTUAL_IP_ADDRESS, vrrpProtocolEndpoint);
+		queueAction(action);
+		log.info("End of updateVRRPVirtualIPAddress call");
+
+	}
 }

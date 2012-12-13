@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService;
@@ -78,15 +79,39 @@ public class VCPENetworkBO {
 	}
 
 	/**
+	 * Get the physical infrastructure
+	 * 
+	 * @return the physical infrastructure
+	 * @throws RestServiceException
+	 */
+	public PhysicalInfrastructure getPhysicalInfrastructure() throws RestServiceException {
+		LOGGER.debug("get the physical infrastructure");
+		return VCPEBeanUtils
+				.getPhysicalInfrastructure(vcpeNetworkService.getPhysicalInfrastructure());
+	}
+
+	/**
 	 * Update the ip's of the VCPENetwork
 	 * 
 	 * @param vcpeNetwork
 	 * @return true if the Ips have been updated
+	 * @throws RestServiceException
 	 */
 	public Boolean updateIps(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update Ip's of VCPENetwork");
-		builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
-		return true;
+		return builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+	}
+
+	/**
+	 * Update the VRRP virtual ip address of the VCPENetwork
+	 * 
+	 * @param vcpeNetwork
+	 * @return true if the Ip has been updated
+	 * @throws RestServiceException
+	 */
+	public Boolean updateVRRPIp(VCPENetwork vcpeNetwork) throws RestServiceException {
+		LOGGER.debug("update VRRP Ip of VCPENetwork");
+		return builderService.updateVRRPIp(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**

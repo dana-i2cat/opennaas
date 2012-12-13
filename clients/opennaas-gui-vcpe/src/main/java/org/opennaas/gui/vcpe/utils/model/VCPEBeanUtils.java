@@ -15,6 +15,7 @@ import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
+import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.entities.VRRP;
 
@@ -34,15 +35,15 @@ public class VCPEBeanUtils {
 	public static VCPENetwork getVCPENetwork(VCPENetworkModel modelIn) {
 		VCPENetwork modelOut = new VCPENetwork();
 		// Network dates
-		modelOut.setId(modelIn.getVcpeNetworkId());
-		modelOut.setName(modelIn.getVcpeNetworkName());
-		modelOut.setClientIpRange(modelIn.getClientIpAddressRange());
-		modelOut.setTemplate(modelIn.getTemplateName());
+		modelOut.setId(modelIn.getId());
+		modelOut.setName(modelIn.getName());
+		modelOut.setClientIpRange(modelIn.getClientIpRange());
+		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Logical Routers
-		Router logicalRouter1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
-		Router logicalRouter2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE2_ROUTER);
-		modelOut.setLogicalRouter1(getLogicalRouter(logicalRouter1));
-		modelOut.setLogicalRouter2(getLogicalRouter(logicalRouter2));
+		Router logicalRouterMaster = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
+		Router logicalRouterBackup = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
+		modelOut.setLogicalRouterMaster(getLogicalRouter(logicalRouterMaster));
+		modelOut.setLogicalRouterBackup(getLogicalRouter(logicalRouterBackup));
 		// BGP
 		BGP bgp = getBGP(modelIn.getBgp());
 		modelOut.setBgp(bgp);
@@ -67,7 +68,7 @@ public class VCPEBeanUtils {
 		LogicalRouter lrOut = new LogicalRouter();
 		if (lrIn != null) {
 			lrOut.setName(lrIn.getName());
-			lrOut.setTemplateName(lrIn.getNameInTemplate());
+			lrOut.setTemplateName(lrIn.getTemplateName());
 			// Interfaces
 			List<org.opennaas.gui.vcpe.entities.Interface> interfaces = new ArrayList<org.opennaas.gui.vcpe.entities.Interface>();
 			lrOut.setInterfaces(interfaces);
@@ -95,18 +96,18 @@ public class VCPEBeanUtils {
 	public static Interface getInterface(org.opennaas.extensions.vcpe.model.Interface interfaceIn) {
 		Interface outIface = new Interface();
 		outIface.setName(interfaceIn.getPhysicalInterfaceName());
-		outIface.setTemplateName(interfaceIn.getNameInTemplate());
-		outIface.setPort(String.valueOf(interfaceIn.getPortNumber()));
+		outIface.setTemplateName(interfaceIn.getTemplateName());
+		outIface.setPort(String.valueOf(interfaceIn.getPort()));
 		outIface.setIpAddress(interfaceIn.getIpAddress());
-		outIface.setVlan((int) interfaceIn.getVlanId());
-		if (interfaceIn.getNameInTemplate().equals(VCPETemplate.DOWN1_INTERFACE_LOCAL)
-				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.DOWN2_INTERFACE_LOCAL)) {
+		outIface.setVlan((int) interfaceIn.getVlan());
+		if (interfaceIn.getTemplateName().equals(VCPETemplate.DOWN1_INTERFACE_LOCAL)
+				|| interfaceIn.getTemplateName().equals(VCPETemplate.DOWN2_INTERFACE_LOCAL)) {
 			outIface.setLabelName(Interface.Types.DOWN.toString());
-		} else if (interfaceIn.getNameInTemplate().equals(VCPETemplate.UP1_INTERFACE_LOCAL)
-				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.UP2_INTERFACE_LOCAL)) {
+		} else if (interfaceIn.getTemplateName().equals(VCPETemplate.UP1_INTERFACE_LOCAL)
+				|| interfaceIn.getTemplateName().equals(VCPETemplate.UP2_INTERFACE_LOCAL)) {
 			outIface.setLabelName(Interface.Types.UP.toString());
-		} else if (interfaceIn.getNameInTemplate().equals(VCPETemplate.INTER1_INTERFACE_LOCAL)
-				|| interfaceIn.getNameInTemplate().equals(VCPETemplate.INTER2_INTERFACE_LOCAL)) {
+		} else if (interfaceIn.getTemplateName().equals(VCPETemplate.INTER1_INTERFACE_LOCAL)
+				|| interfaceIn.getTemplateName().equals(VCPETemplate.INTER2_INTERFACE_LOCAL)) {
 			outIface.setLabelName(Interface.Types.INTER.toString());
 		} else {
 			outIface.setLabelName(Interface.Types.CLIENT.toString());
@@ -160,16 +161,16 @@ public class VCPEBeanUtils {
 		BoD bod = new BoD();
 		// Interfaces
 		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
 		Interface ifaceClientBackup = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
 		// Links
 		Link linkMaster = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.DOWN1_LINK_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.DOWN1_LINK_AUTOBAHN));
 		Link linkInter = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.INTER_LINK_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.INTER_LINK_AUTOBAHN));
 		Link linkBackup = getLink((org.opennaas.extensions.vcpe.model.Link) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn.getElements(), VCPETemplate.DOWN2_LINK_AUTOBAHN));
+				.getElementByTemplateName(modelIn.getElements(), VCPETemplate.DOWN2_LINK_AUTOBAHN));
 
 		bod.setIfaceClient(ifaceClient);
 		bod.setIfaceClientBackup(ifaceClientBackup);
@@ -212,5 +213,14 @@ public class VCPEBeanUtils {
 			vrrpOut.setGroup(vrrpIn.getGroup());
 		}
 		return vrrpOut;
+	}
+
+	/**
+	 * @param physicalInfrastructure
+	 * @return
+	 */
+	public static PhysicalInfrastructure getPhysicalInfrastructure(org.opennaas.extensions.vcpe.model.PhysicalInfrastructure physicalInfrastructure) {
+		// TODO Auto-generated method stub
+		return new PhysicalInfrastructure();
 	}
 }

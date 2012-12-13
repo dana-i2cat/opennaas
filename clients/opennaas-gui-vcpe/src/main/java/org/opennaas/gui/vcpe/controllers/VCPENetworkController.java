@@ -38,6 +38,24 @@ public class VCPENetworkController {
 	private TemplateUtils							templateUtils;
 
 	/**
+	 * Redirect to home
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/home")
+	public String home(Model model, Locale locale) {
+		LOGGER.debug("home");
+		try {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.list.message.error", null, locale));
+		}
+		return "home";
+	}
+
+	/**
 	 * Redirect to the form to create a VCPENetwork
 	 * 
 	 * @param model
@@ -164,24 +182,6 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * List all the VCPENetwork
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/home")
-	public String home(Model model, Locale locale) {
-		LOGGER.debug("home");
-		try {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.list.message.error", null, locale));
-		}
-		return "home";
-	}
-
-	/**
 	 * Redirect to the form to modify the ip's
 	 * 
 	 * @param model
@@ -193,6 +193,7 @@ public class VCPENetworkController {
 		try {
 			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute("physical", vcpeNetworkBO.getPhysicalInfrastructure());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.edit.message.error", null, locale));
@@ -219,6 +220,27 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.updateIps.message.error", null, locale));
 		}
 		return "updateIpsVCPENetwork";
+	}
+
+	/**
+	 * Redirect to the form to modify the ip's
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/updateVRRPIp")
+	public String updateVRRPIp(VCPENetwork vcpeNetwork, Model model, Locale locale) {
+		LOGGER.debug("updateIps of VCPENetwork" + vcpeNetwork);
+		try {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute(vcpeNetworkBO.updateVRRPIp(vcpeNetwork));
+			model.addAttribute("infoMsg", messageSource
+					.getMessage("vcpenetwork.updateVRRPIp.message.info", null, locale));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.updateVRRPIp.message.error", null, locale));
+		}
+		return "createVCPENetwork";
 	}
 
 	/**
