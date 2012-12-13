@@ -34,4 +34,14 @@ public interface IVRRPCapability extends ICapability {
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	public void unconfigureVRRP(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException;
+
+	/**
+	 * Update VRRP Group Virtual IP Address on
+	 * 
+	 * @throws CapabilityException
+	 */
+	@Path("/updateVRRPVirtualIPAddress")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void updateVRRPVirtualIPAddress(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException;
 }
