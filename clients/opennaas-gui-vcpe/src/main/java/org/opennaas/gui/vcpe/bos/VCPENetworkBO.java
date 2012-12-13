@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService;
@@ -75,6 +76,18 @@ public class VCPENetworkBO {
 	public List<VCPENetwork> getAllVCPENetworks() throws RestServiceException {
 		LOGGER.debug("get all VCPENetwork");
 		return getListVCPENetworkGUI(vcpeNetworkService.getAllVCPENetworks());
+	}
+
+	/**
+	 * Get the physical infrastructure
+	 * 
+	 * @return the physical infrastructure
+	 * @throws RestServiceException
+	 */
+	public PhysicalInfrastructure getPhysicalInfrastructure() throws RestServiceException {
+		LOGGER.debug("get the physical infrastructure");
+		return VCPEBeanUtils
+				.getPhysicalInfrastructure(vcpeNetworkService.getPhysicalInfrastructure());
 	}
 
 	/**

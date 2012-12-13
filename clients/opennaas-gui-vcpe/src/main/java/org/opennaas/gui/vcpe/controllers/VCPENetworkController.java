@@ -193,6 +193,7 @@ public class VCPENetworkController {
 		try {
 			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute("physical", vcpeNetworkBO.getPhysicalInfrastructure());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.edit.message.error", null, locale));
