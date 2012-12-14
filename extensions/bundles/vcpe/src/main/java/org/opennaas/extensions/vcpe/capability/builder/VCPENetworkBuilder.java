@@ -815,7 +815,6 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		return parameters;
 	}
 
-	// TODO
 	private void configureVRRP(IResource resource, VCPENetworkModel model) throws ResourceException {
 		log.debug("Configuring VRRP");
 
