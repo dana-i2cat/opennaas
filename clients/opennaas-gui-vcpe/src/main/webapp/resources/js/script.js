@@ -380,7 +380,7 @@ $(function() {
 	}
 
 	/* Buttons */
-	$("#button").button();
+	$("#button1").button();
 	$("#button2").button();
 	$("#button3").button();
 	$("#button4").button();
@@ -774,3 +774,10 @@ $(function() {
 $(document).ready(function() {
 	$("#firewallTable").styleTable();
 });
+
+/**
+ * Fill the BGP Client Range. Should be the same as the client range
+ */
+function fillBgpClientRange (value) {
+	document.getElementById("bgp.clientPrefixes").value = value;
+}

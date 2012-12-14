@@ -23,7 +23,7 @@ public class BuilderCapabilityService extends GenericRestService {
 	private static final Logger	LOGGER	= Logger.getLogger(BuilderCapabilityService.class);
 
 	/**
-	 * Call a rest url to build a VCPENetwork environment
+	 * Call a rest url to update the ips
 	 * 
 	 * @param request
 	 * @return true if the environment has been created
@@ -32,13 +32,61 @@ public class BuilderCapabilityService extends GenericRestService {
 	public Boolean updateIpsVCPENetwork(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling update VCPENetworkBuilder service");
-			String url = getURL("vcpenet/" + request.getVcpeNetworkName() + "/vcpenet_builder/updateIps");
+			LOGGER.info("Calling update ips VCPENetworkBuilder service");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/updateIps");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
-			LOGGER.info("VCPENetwork created: " + response);
+			LOGGER.info("ips updated: " + response);
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return checkResponse(response);
+	}
+
+	/**
+	 * Call a rest url to update the vrrp ip address
+	 * 
+	 * @param vcpeNetwork
+	 * @return true if the vrrp ip address has been created
+	 * @throws RestServiceException
+	 */
+	public Boolean updateVRRPIp(VCPENetworkModel request) throws RestServiceException {
+		ClientResponse response = null;
+		try {
+			LOGGER.info("Calling update vrrp ip VCPENetworkBuilder service");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/updateVRRPIp");
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML)
+					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
+			LOGGER.info("vrrp ip updated: " + response);
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return checkResponse(response);
+	}
+
+	/**
+	 * Call a rest url to change the priority vrrp
+	 * 
+	 * @param vcpeNetwork
+	 * @return true if the priority vrrp has been changed
+	 * @throws RestServiceException
+	 */
+	public Boolean changeVRRPPriority(VCPENetworkModel request) throws RestServiceException {
+		ClientResponse response = null;
+		try {
+			LOGGER.info("Calling change priority vrrp VCPENetworkBuilder service");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/changeVRRPPriority");
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML)
+					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
+			LOGGER.info("priority vrrp changed: " + response);
 		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
