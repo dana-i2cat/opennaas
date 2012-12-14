@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Path("/")
@@ -107,4 +108,10 @@ public interface IVCPENetworkManager {
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public Boolean isInterfaceFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("iface") String iface) throws VCPENetworkManagerException;
+
+	@Path("/getModel")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public VCPEManagerModel getModel();
+
 }
