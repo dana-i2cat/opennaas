@@ -50,6 +50,7 @@ public class BuilderCapabilityService extends GenericRestService {
 	 * Call a rest url to update the vrrp ip address
 	 * 
 	 * @param vcpeNetwork
+	 * @return true if the vrrp ip address has been created
 	 * @throws RestServiceException
 	 */
 	public Boolean updateVRRPIp(VCPENetworkModel request) throws RestServiceException {
@@ -62,6 +63,30 @@ public class BuilderCapabilityService extends GenericRestService {
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
 			LOGGER.info("vrrp ip updated: " + response);
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return checkResponse(response);
+	}
+
+	/**
+	 * Call a rest url to change the priority vrrp
+	 * 
+	 * @param vcpeNetwork
+	 * @return true if the priority vrrp has been changed
+	 * @throws RestServiceException
+	 */
+	public Boolean changeVRRPPriority(VCPENetworkModel request) throws RestServiceException {
+		ClientResponse response = null;
+		try {
+			LOGGER.info("Calling change priority vrrp VCPENetworkBuilder service");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/changeVRRPPriority");
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML)
+					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
+			LOGGER.info("priority vrrp changed: " + response);
 		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
 			throw e;

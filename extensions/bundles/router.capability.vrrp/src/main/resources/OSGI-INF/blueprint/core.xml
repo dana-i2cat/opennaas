@@ -37,5 +37,12 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="vrrp/updatePriority">
+			<action class="org.opennaas.extensions.router.capability.vrrp.shell.UpdateVRRPPriorityCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>
