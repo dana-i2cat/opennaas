@@ -436,6 +436,7 @@
 					<div  id="vrrp_data" class="fields">
 						<form:hidden path="vrrp.priorityMaster" />	
 						<form:hidden path="vrrp.priorityBackup" />	
+						<form:hidden path="vrrp.group" />	
 						<form:label for="vrrp.virtualIPAddress" path="vrrp.virtualIPAddress" cssErrorClass="error_field">
 							<spring:message code="vrrp.virtualIPAddress" />
 						</form:label>
