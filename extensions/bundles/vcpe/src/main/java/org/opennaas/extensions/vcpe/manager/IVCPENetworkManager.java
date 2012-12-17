@@ -12,6 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
+import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Path("/")
@@ -57,13 +58,34 @@ public interface IVCPENetworkManager {
 	/**
 	 * Get all VCPENetworks
 	 * 
-	 * @return
+	 * @return all the VCPENetworks
 	 * @throws VCPENetworkManagerException
 	 */
 	@Path("/getAllVCPENetworks")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public List<VCPENetworkModel> getAllVCPENetworks() throws VCPENetworkManagerException;
+
+	/**
+	 * Get the VCPEManagerModel model
+	 * 
+	 * @return the VCPEManagerModel model
+	 */
+	@Path("/getModel")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public VCPEManagerModel getModel();
+
+	/**
+	 * Get the physical infrastructure
+	 * 
+	 * @return the physical infrastructure
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/getPhysicalInfrastructure")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws VCPENetworkManagerException;
 
 	/**
 	 * Check if a VLAN is available or not in a interface
@@ -108,10 +130,5 @@ public interface IVCPENetworkManager {
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public Boolean isInterfaceFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("iface") String iface) throws VCPENetworkManagerException;
-
-	@Path("/getModel")
-	@GET
-	@Produces(MediaType.APPLICATION_XML)
-	public VCPEManagerModel getModel();
 
 }

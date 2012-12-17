@@ -22,6 +22,11 @@ public class Router extends VCPENetworkElement {
 		this.interfaces = interfaces;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -30,6 +35,11 @@ public class Router extends VCPENetworkElement {
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -39,16 +49,6 @@ public class Router extends VCPENetworkElement {
 		if (getClass() != obj.getClass())
 			return false;
 		Router other = (Router) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (nameInTemplate == null) {
-			if (other.nameInTemplate != null)
-				return false;
-		} else if (!nameInTemplate.equals(other.nameInTemplate))
-			return false;
 		if (interfaces == null) {
 			if (other.interfaces != null)
 				return false;

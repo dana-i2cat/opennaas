@@ -39,7 +39,7 @@ public class PhysicalInfrastructureLoader {
 
 			Router router = new Router();
 			router.setName(props.getProperty(routerNS + ".name"));
-			router.setNameInTemplate(routerNS);
+			router.setTemplateName(routerNS);
 			List<Interface> routerIfaces = loadInterfacesFromProperties(props, routerNS);
 			router.setInterfaces(routerIfaces);
 			routers.add(router);
@@ -54,7 +54,7 @@ public class PhysicalInfrastructureLoader {
 
 			Domain domain = new Domain();
 			domain.setName(props.getProperty(bodNS + ".name"));
-			domain.setNameInTemplate(bodNS);
+			domain.setTemplateName(bodNS);
 			List<Interface> bodIfaces = loadInterfacesFromProperties(props, bodNS);
 			domain.setInterfaces(bodIfaces);
 			bods.add(domain);
@@ -67,10 +67,10 @@ public class PhysicalInfrastructureLoader {
 		for (int i = 0; i < bodsSize; i++) {
 			String linkNS = "phy.link." + i;
 			Link link = new Link();
-			link.setNameInTemplate(linkNS);
+			link.setTemplateName(linkNS);
 			link.setName(props.getProperty(linkNS + ".name"));
-			link.setSource((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(allIfaces, props.getProperty(linkNS + ".source")));
-			link.setSink((Interface) VCPENetworkModelHelper.getElementByNameInTemplate(allIfaces, props.getProperty(linkNS + ".dst")));
+			link.setSource((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, props.getProperty(linkNS + ".source")));
+			link.setSink((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, props.getProperty(linkNS + ".dst")));
 			links.add(link);
 		}
 
@@ -87,7 +87,7 @@ public class PhysicalInfrastructureLoader {
 			Interface iface = new Interface();
 			iface.setName(props.getProperty(ifaceNS));
 			iface.setPhysicalInterfaceName(props.getProperty(ifaceNS));
-			iface.setNameInTemplate(ifaceNS);
+			iface.setTemplateName(ifaceNS);
 
 			ifaces.add(iface);
 		}

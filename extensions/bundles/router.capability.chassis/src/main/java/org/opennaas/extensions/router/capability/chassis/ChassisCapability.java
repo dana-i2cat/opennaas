@@ -6,11 +6,13 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -255,6 +257,11 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	@Override
 	public void createLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException {
 		log.info("Start of createLogicalRouter call");
+
+		if (isVirtual(resource)) {
+			throw new CapabilityException("UnsupportedOperation: Cannot create logical routers from a logical router");
+		}
+
 		IAction action = createActionAndCheckParams(ChassisActionSet.CREATELOGICALROUTER, logicalRouter);
 		queueAction(action);
 
@@ -273,6 +280,10 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	@Override
 	public void deleteLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException {
 		log.info("Start of deleteLogicalRouter call");
+
+		if (isVirtual(resource)) {
+			throw new CapabilityException("UnsupportedOperation: Cannot delete logical routers from a logical router");
+		}
 		// By default, interfaces are not transfered back to the physical router.
 		// Instead, their configuration is lost. If the user wants to maintain them,
 		// it can be done launching removeInterfacesFromLogicalRouter(desiredInterfaces) before deleting it.
@@ -307,6 +318,11 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	@Override
 	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
 		log.info("Start of addInterfacesToLogicalRouter call");
+
+		if (isVirtual(resource)) {
+			throw new CapabilityException("UnsupportedOperation: Cannot interact with logical routers from a logical router");
+		}
+
 		IAction action;
 		ComputerSystem logicalRouterStub;
 		for (LogicalPort interfaceToAdd : interfaces) {
@@ -345,6 +361,11 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	@Override
 	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
 		log.info("Start of removeInterfacesFromLogicalRouter call");
+
+		if (isVirtual(resource)) {
+			throw new CapabilityException("UnsupportedOperation: Cannot interact with logical routers from a logical router");
+		}
+
 		IAction action;
 		ComputerSystem logicalRouterStub;
 		for (LogicalPort interfaceToAdd : interfaces) {
@@ -416,6 +437,12 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 				throw new CapabilityException("Unsupported encapsulation type");
 			}
 		}
+	}
+
+	private boolean isVirtual(IResource resource) {
+		return resource.getResourceDescriptor().getProperties() != null &&
+				resource.getResourceDescriptor().getProperties().get(ResourceDescriptor.VIRTUAL) != null &&
+				resource.getResourceDescriptor().getProperties().get(ResourceDescriptor.VIRTUAL).equals("true");
 	}
 
 }
