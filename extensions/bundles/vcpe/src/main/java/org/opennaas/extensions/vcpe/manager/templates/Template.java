@@ -116,6 +116,15 @@ public class Template implements ITemplate {
 		Interface up1other = getInterface(up1OtherName + "." + up1OtherPort, VCPETemplate.UP1_INTERFACE_PEER, up1OtherVlan, up1OtherIp,
 				up1OtherName, Integer.parseInt(up1OtherPort));
 
+		// Loopback interface VCPE-router1
+		String loopback1Name = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.name");
+		String loopback1Port = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.port");
+		Long loopback1Vlan = 0L;
+		String loopback1Ip = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.ipaddress");
+		Interface loopback1 = getInterface(loopback1Name + "." + loopback1Port, VCPETemplate.UP1_INTERFACE_PEER, loopback1Vlan, loopback1Ip,
+				loopback1Name, Integer.parseInt(loopback1Port));
+		vcpe1.getInterfaces().add(loopback1);
+
 		// ----------------------------- VCPE-router2 -----------------------------
 		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.VCPE2_ROUTER);
 		vcpe2.setName(props.getProperty("vcpenetwork.logicalrouter2.name") + "-" + initialModel.getName());
@@ -144,6 +153,15 @@ public class Template implements ITemplate {
 		String up2OtherIp = props.getProperty("vcpenetwork.logicalrouter2.interface.up.other.ipaddress");
 		Interface up2other = getInterface(up2OtherName + "." + up2OtherPort, VCPETemplate.UP2_INTERFACE_PEER, up2OtherVlan, up2OtherIp,
 				up2OtherName, Integer.parseInt(up2OtherPort));
+
+		// Loopback interface VCPE-router2
+		String loopback2Name = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.name");
+		String loopback2Port = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.port");
+		Long loopback2Vlan = 0L;
+		String loopback2Ip = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.ipaddress");
+		Interface loopback2 = getInterface(loopback2Name + "." + loopback2Port, VCPETemplate.UP1_INTERFACE_PEER, loopback2Vlan, loopback2Ip,
+				loopback2Name, Integer.parseInt(loopback2Port));
+		vcpe2.getInterfaces().add(loopback2);
 
 		// Client interfaces
 		Interface client1other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
