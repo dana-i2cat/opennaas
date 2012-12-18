@@ -8,7 +8,6 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.vrrp.IVRRPCapability;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
@@ -62,7 +61,6 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 			NetworkPort routerInterface = new NetworkPort();
 			routerInterface.setName(interfaceName);
 			routerInterface.setPortNumber(port);
-			routerInterface.setLinkTechnology(LinkTechnology.OTHER);
 
 			// TODO setIPv4 or IPv6? now IPv4
 			IPProtocolEndpoint interfaceIPProtocolEndpoint = new IPProtocolEndpoint();
