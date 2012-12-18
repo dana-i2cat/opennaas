@@ -129,8 +129,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws VCPENetworkManagerException {
-		// TODO Auto-generated method stub
-		return null;
+		return getModel().getPhysicalInfrastructure();
 	}
 
 	/*
