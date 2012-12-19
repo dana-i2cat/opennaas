@@ -271,10 +271,6 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 			throw new ResourceException(e);
 		}
 
-		createSubInterfaces(resource, desiredScenario);
-
-		assignIPAddresses(resource, desiredScenario);
-
 		createLogicalRouters(resource, desiredScenario);
 
 		try {
@@ -284,6 +280,16 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 
 		startLogicalRouters(resource, desiredScenario);
+
+		createSubInterfaces(resource, desiredScenario);
+
+		assignIPAddresses(resource, desiredScenario);
+
+		try {
+			executeLogicalRouters(desiredScenario);
+		} catch (ProtocolException e) {
+			throw new ResourceException(e);
+		}
 
 		configureEGP(resource, desiredScenario);
 
@@ -371,7 +377,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		IResource phyResource = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("router", phy.getName()));
 
-		ComputerSystem lrModel = VCPEToRouterModelTranslator.vCPERouterToRouter(lr, model);
+		ComputerSystem lrModel = VCPEToRouterModelTranslator.vCPERouterToRouterWithoutIfaces(lr, model);
 
 		IChassisCapability lrCapability = (IChassisCapability) phyResource.getCapabilityByInterface(ChassisCapability.class);
 		lrCapability.createLogicalRouter(lrModel);
@@ -393,21 +399,19 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		log.debug("Configuring subinterfaces");
 
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
 		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE1_ROUTER);
 
 		List<Interface> ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr1.getInterfaces());
 
-		createInterfaces(phy1, ifaces, desiredScenario);
+		createInterfaces(lr1, ifaces, desiredScenario);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
 		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE2_ROUTER);
 
 		ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr2.getInterfaces());
 
-		createInterfaces(phy2, ifaces, desiredScenario);
+		createInterfaces(lr2, ifaces, desiredScenario);
 	}
 
 	private void removeSubInterfaces(IResource resource, VCPENetworkModel currentScenario) throws ResourceException {
@@ -418,11 +422,11 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		log.debug("Removing subinterfaces");
 	}
 
-	private void createInterfaces(Router phy, List<Interface> ifaces, VCPENetworkModel model) throws ResourceException {
+	private void createInterfaces(Router router, List<Interface> ifaces, VCPENetworkModel model) throws ResourceException {
 
-		IResource phyResource = getResourceManager().getResource(
-				getResourceManager().getIdentifierFromResourceName("router", phy.getName()));
-		IChassisCapability chassisCapability = (IChassisCapability) phyResource.getCapabilityByInterface(ChassisCapability.class);
+		IResource routerResource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
+		IChassisCapability chassisCapability = (IChassisCapability) routerResource.getCapabilityByInterface(ChassisCapability.class);
 
 		for (Interface iface : ifaces) {
 			NetworkPort port = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(iface, model);
@@ -468,19 +472,14 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		log.debug("Assigning IP addresses");
 
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
-
 		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
 		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
-		// we assign addresses in physical routers
-		// logical ones may not exist yet
 		for (Interface iface : lr1.getInterfaces()) {
-			setIP(phy1, iface, model);
+			setIP(lr1, iface, model);
 		}
 		for (Interface iface : lr2.getInterfaces()) {
-			setIP(phy2, iface, model);
+			setIP(lr2, iface, model);
 		}
 	}
 

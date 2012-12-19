@@ -20,14 +20,20 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 public class VCPEToRouterModelTranslator {
 
 	public static ComputerSystem vCPERouterToRouter(Router router, VCPENetworkModel model) {
-		ComputerSystem cimRouter = new ComputerSystem();
-		cimRouter.setName(router.getName());
-		cimRouter.setElementName(router.getName());
+		ComputerSystem cimRouter = vCPERouterToRouterWithoutIfaces(router, model);
 
 		for (Interface iface : router.getInterfaces()) {
 			LogicalPort port = vCPEInterfaceToLogicalPort(iface, model);
 			cimRouter.addLogicalDevice(port);
 		}
+		return cimRouter;
+	}
+
+	public static ComputerSystem vCPERouterToRouterWithoutIfaces(Router router, VCPENetworkModel model) {
+		ComputerSystem cimRouter = new ComputerSystem();
+		cimRouter.setName(router.getName());
+		cimRouter.setElementName(router.getName());
+
 		return cimRouter;
 	}
 
