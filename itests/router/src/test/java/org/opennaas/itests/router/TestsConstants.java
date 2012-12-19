@@ -13,6 +13,7 @@ public class TestsConstants {
 	public static final String	OSPF_CAPABILIY_TYPE				= "ospf";
 	public static final String	QUEUE_CAPABILIY_TYPE			= "queue";
 	public static final String	STATIC_ROUTE_CAPABILITY_TYPE	= "staticroute";
+	public static final String	VRRP_CAPABILITY_TYPE			= "vrrp";
 	public static final String	CAPABILIY_VERSION				= "10.10";
 
 }
