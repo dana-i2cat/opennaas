@@ -8,7 +8,7 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.opennaas.extensions.vcpe.model.PhysicalInfrastructure;
+import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.gui.vcpe.services.rest.GenericRestService;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
@@ -128,7 +128,7 @@ public class VCPENetworkService extends GenericRestService {
 	 * @return the physical infrastructure
 	 * @throws RestServiceException
 	 */
-	public PhysicalInfrastructure getPhysicalInfrastructure() throws RestServiceException {
+	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling getPhysicalInfrastructure VCPENetworkManager service");
@@ -141,7 +141,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
-		return checkResponse(response) ? response.getEntity(PhysicalInfrastructure.class) : null;
+		return checkResponse(response) ? response.getEntity(VCPEPhysicalInfrastructure.class) : null;
 
 	}
 
