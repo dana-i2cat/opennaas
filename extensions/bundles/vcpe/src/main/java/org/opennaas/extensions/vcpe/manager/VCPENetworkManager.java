@@ -2,6 +2,7 @@ package org.opennaas.extensions.vcpe.manager;
 
 import static com.google.common.collect.Iterables.filter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +17,33 @@ import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
+import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.Interface;
-import org.opennaas.extensions.vcpe.model.PhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
 
 	public static final String	RESOURCE_VCPENET_TYPE	= "vcpenet";
+
+	private VCPEManagerModel	model;
+
+	public VCPENetworkManager() throws IOException {
+
+		initModel();
+
+	}
+
+	@Override
+	public VCPEManagerModel getModel() throws VCPENetworkManagerException {
+		return model;
+	}
+
+	public void setModel(VCPEManagerModel model) {
+		this.model = model;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -109,9 +128,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#getPhysicalInfrastructure()
 	 */
 	@Override
-	public PhysicalInfrastructure getPhysicalInfrastructure() throws VCPENetworkManagerException {
-		// TODO Auto-generated method stub
-		return null;
+	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws VCPENetworkManagerException {
+		return getModel().getPhysicalInfrastructure();
 	}
 
 	/*
@@ -356,6 +374,16 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		info.setType(VCPENetworkBuilder.CAPABILITY_TYPE);
 		desc.setCapabilityInformation(info);
 		return desc;
+	}
+
+	// TODO this method should go to the Bootstrapper and VCPENetworkManager to be a Resource
+	// TODO the IOException thrown would then prevent the resource to start
+	private void initModel() throws IOException {
+
+		VCPEManagerModel model = new VCPEManagerModel();
+		PhysicalInfrastructureLoader loader = new PhysicalInfrastructureLoader();
+		model.setPhysicalInfrastructure(loader.loadPhysicalInfrastructure());
+		setModel(model);
 	}
 
 }

@@ -3,6 +3,8 @@
  */
 package org.opennaas.extensions.vcpe.manager.templates;
 
+import static com.google.common.collect.Iterables.filter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.Properties;
 
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
+import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
+import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -55,7 +59,7 @@ public class Template implements ITemplate {
 	 * @return VCPENetworkModel
 	 */
 	@Override
-	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) {
+	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) throws VCPENetworkManagerException {
 		VCPENetworkModel model = new VCPENetworkModel();
 		model.setId(initialModel.getId());
 		model.setName(initialModel.getName());
@@ -67,6 +71,8 @@ public class Template implements ITemplate {
 
 		// Generate the physical model
 		List<VCPENetworkElement> physicalElements = generatePhysicalElements(initialModel);
+
+		// checkPhysicalAvailability(physicalElements, managerModel);
 
 		// Generate the logical model
 		List<VCPENetworkElement> logicalElements = generateLogicalElements(initialModel);
@@ -116,6 +122,15 @@ public class Template implements ITemplate {
 		Interface up1other = getInterface(up1OtherName + "." + up1OtherPort, VCPETemplate.UP1_INTERFACE_PEER, up1OtherVlan, up1OtherIp,
 				up1OtherName, Integer.parseInt(up1OtherPort));
 
+		// Loopback interface VCPE-router1
+		String loopback1Name = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.name");
+		String loopback1Port = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.port");
+		Long loopback1Vlan = 0L;
+		String loopback1Ip = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.ipaddress");
+		Interface loopback1 = getInterface(loopback1Name + "." + loopback1Port, VCPETemplate.UP1_INTERFACE_PEER, loopback1Vlan, loopback1Ip,
+				loopback1Name, Integer.parseInt(loopback1Port));
+		vcpe1.getInterfaces().add(loopback1);
+
 		// ----------------------------- VCPE-router2 -----------------------------
 		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.VCPE2_ROUTER);
 		vcpe2.setName(props.getProperty("vcpenetwork.logicalrouter2.name") + "-" + initialModel.getName());
@@ -144,6 +159,15 @@ public class Template implements ITemplate {
 		String up2OtherIp = props.getProperty("vcpenetwork.logicalrouter2.interface.up.other.ipaddress");
 		Interface up2other = getInterface(up2OtherName + "." + up2OtherPort, VCPETemplate.UP2_INTERFACE_PEER, up2OtherVlan, up2OtherIp,
 				up2OtherName, Integer.parseInt(up2OtherPort));
+
+		// Loopback interface VCPE-router2
+		String loopback2Name = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.name");
+		String loopback2Port = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.port");
+		Long loopback2Vlan = 0L;
+		String loopback2Ip = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.ipaddress");
+		Interface loopback2 = getInterface(loopback2Name + "." + loopback2Port, VCPETemplate.UP1_INTERFACE_PEER, loopback2Vlan, loopback2Ip,
+				loopback2Name, Integer.parseInt(loopback2Port));
+		vcpe2.getInterfaces().add(loopback2);
 
 		// Client interfaces
 		Interface client1other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
@@ -481,6 +505,46 @@ public class Template implements ITemplate {
 		link.setSource(source);
 		link.setSink(sink);
 		return link;
+	}
+
+	private void checkPhysicalAvailability(List<VCPENetworkElement> toBeChecked, VCPEManagerModel managerModel) throws VCPENetworkManagerException {
+		checkExistenceInPhysicalInsfrastructure(toBeChecked, managerModel.getPhysicalInfrastructure());
+	}
+
+	private void checkExistenceInPhysicalInsfrastructure(List<VCPENetworkElement> toBeChecked, VCPEPhysicalInfrastructure phyInfrastructure) {
+
+		List<VCPENetworkElement> availablePhysicalElements = phyInfrastructure.getAllElements();
+
+		for (Domain domain : filter(toBeChecked, Domain.class)) {
+			if (!availablePhysicalElements.contains(domain))
+				throw new VCPENetworkManagerException("Domain " + domain.getName() + " is not available in physical insfrastructure");
+
+			Domain phyInfrDomain = (Domain) availablePhysicalElements.get(availablePhysicalElements.indexOf(domain));
+
+			for (Interface iface : domain.getInterfaces()) {
+				if (!phyInfrDomain.getInterfaces().contains(iface))
+					throw new VCPENetworkManagerException(
+							"Interfce " + iface.getName() + " for domain " + domain.getName() + " is not available in physical insfrastructure");
+			}
+		}
+
+		for (Router router : filter(toBeChecked, Router.class)) {
+			if (!availablePhysicalElements.contains(router))
+				throw new VCPENetworkManagerException("Router " + router.getName() + " is not available in physical insfrastructure");
+
+			Router phyInfrRouter = (Router) availablePhysicalElements.get(availablePhysicalElements.indexOf(router));
+
+			for (Interface iface : router.getInterfaces()) {
+				if (!phyInfrRouter.getInterfaces().contains(iface))
+					throw new VCPENetworkManagerException(
+							"Interfce " + iface.getName() + " for router " + router.getName() + " is not available in physical insfrastructure");
+			}
+		}
+
+		for (Link link : filter(toBeChecked, Link.class)) {
+			if (!availablePhysicalElements.contains(link))
+				throw new VCPENetworkManagerException("Link " + link.getName() + " is not available in physical insfrastructure");
+		}
 	}
 
 }

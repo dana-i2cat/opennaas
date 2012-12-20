@@ -219,7 +219,8 @@ public class VCPEBeanUtils {
 	 * @param physicalInfrastructure
 	 * @return
 	 */
-	public static PhysicalInfrastructure getPhysicalInfrastructure(org.opennaas.extensions.vcpe.model.PhysicalInfrastructure physicalInfrastructure) {
+	public static PhysicalInfrastructure getPhysicalInfrastructure(
+			org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure physicalInfrastructure) {
 		// TODO Auto-generated method stub
 		return new PhysicalInfrastructure();
 	}
