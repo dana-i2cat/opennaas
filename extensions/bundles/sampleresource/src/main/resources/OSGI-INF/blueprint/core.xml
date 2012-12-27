@@ -16,13 +16,13 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Build the bootstrapper -->
-	<bean id="sampleresourceBootstrapperFactory" class="org.opennaas.extensions.sampleresource.repository.sampleResourceBootstrapperFactory"/>
+	<bean id="sampleresourceBootstrapperFactory" class="org.opennaas.extensions.sampleresource.repository.SampleResourceBootstrapperFactory"/>
     <bean id="resourceDescriptorRepository"
           class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
           init-method="initializeEntityManager" destroy-method="close">
          <property name="persistenceUnit" value="ResourceCore"/>
     </bean>
-	<bean id="sampleresourceRepository" class="org.opennaas.extensions.sampleresource.repository.sampleResourceRepository" init-method="init">
+	<bean id="sampleresourceRepository" class="org.opennaas.extensions.sampleresource.repository.SampleResourceRepository" init-method="init">
 		<argument value="sampleresource"/>
 		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 		<property name="resourceBootstrapperFactory" ref="sampleresourceBootstrapperFactory"/>

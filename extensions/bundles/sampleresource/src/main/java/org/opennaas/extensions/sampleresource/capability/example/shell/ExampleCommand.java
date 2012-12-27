@@ -24,7 +24,6 @@ public class ExampleCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		printInitCommand("sayHello");
 		try {
-
 			IResource resource = getResourceFromFriendlyName(resourceName);
 			ExampleCapability capab = (ExampleCapability) resource.getCapabilityByType("example");
 			String greeting = capab.sayHello(username);

@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.14</version>
+		<version>0.15</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
@@ -49,7 +49,7 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!org.opennaas.extensions.protocols.netconf.*,org.slf4j,
+							org.slf4j,
 							org.opennaas.core.protocols.sessionmanager;version="${project.version}",*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.protocols.netconf.*;version="${project.version}"

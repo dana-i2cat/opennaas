@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.14</version>
+		<version>0.15</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
@@ -45,7 +45,7 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!opennaas.extension.network.capability.ospf.*,
+						<Import-Package>
   							org.slf4j,
 							org.apache.felix.service.command,
 							*

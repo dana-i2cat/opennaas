@@ -11,6 +11,14 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 
+/**
+ * This class represents a VCPENetwork model. <br/>
+ * It is the root of the model and the only class in it annotated with as XmlRootElement. Hence, it is the only class where xml marshaling and
+ * unmarshaling should be applied to. This is due to using id and idref in VCPENetworkElements to marshal into xml.
+ * 
+ * @author Isart Canyameres Gimenez (i2cat Foundation)
+ * 
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VCPENetworkModel implements IModel {
@@ -24,8 +32,9 @@ public class VCPENetworkModel implements IModel {
 	private String						templateName;
 	private List<VCPENetworkElement>	elements;
 	private boolean						created;
-
 	private String						clientIpAddressRange;
+	private BGP							bgp;
+	private VRRP						vrrp;
 
 	/**
 	 * @return
@@ -100,12 +109,33 @@ public class VCPENetworkModel implements IModel {
 		this.clientIpAddressRange = clientIpAddressRange;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isCreated() {
 		return created;
 	}
 
+	/**
+	 * @param created
+	 */
 	public void setCreated(boolean created) {
 		this.created = created;
+	}
+
+	/**
+	 * @return the bgp
+	 */
+	public BGP getBgp() {
+		return bgp;
+	}
+
+	/**
+	 * @param bgp
+	 *            the bgp to set
+	 */
+	public void setBgp(BGP bgp) {
+		this.bgp = bgp;
 	}
 
 	/*
@@ -128,29 +158,36 @@ public class VCPENetworkModel implements IModel {
 		return ObjectSerializer.toXml(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * @return the vrrp
 	 */
+	public VRRP getVrrp() {
+		return vrrp;
+	}
+
+	/**
+	 * @param vrrp
+	 *            the vrrp to set
+	 */
+	public void setVrrp(VRRP vrrp) {
+		this.vrrp = vrrp;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((bgp == null) ? 0 : bgp.hashCode());
 		result = prime * result + ((clientIpAddressRange == null) ? 0 : clientIpAddressRange.hashCode());
 		result = prime * result + (created ? 1231 : 1237);
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
 		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
 		result = prime * result + ((vcpeNetworkId == null) ? 0 : vcpeNetworkId.hashCode());
 		result = prime * result + ((vcpeNetworkName == null) ? 0 : vcpeNetworkName.hashCode());
+		result = prime * result + ((vrrp == null) ? 0 : vrrp.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -160,6 +197,11 @@ public class VCPENetworkModel implements IModel {
 		if (getClass() != obj.getClass())
 			return false;
 		VCPENetworkModel other = (VCPENetworkModel) obj;
+		if (bgp == null) {
+			if (other.bgp != null)
+				return false;
+		} else if (!bgp.equals(other.bgp))
+			return false;
 		if (clientIpAddressRange == null) {
 			if (other.clientIpAddressRange != null)
 				return false;
@@ -187,6 +229,12 @@ public class VCPENetworkModel implements IModel {
 				return false;
 		} else if (!vcpeNetworkName.equals(other.vcpeNetworkName))
 			return false;
+		if (vrrp == null) {
+			if (other.vrrp != null)
+				return false;
+		} else if (!vrrp.equals(other.vrrp))
+			return false;
 		return true;
 	}
+
 }
