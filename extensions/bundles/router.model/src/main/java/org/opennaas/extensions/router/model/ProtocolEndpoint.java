@@ -37,7 +37,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 */
 	public void setService(Service service) {
 		if (service != null)
-			ProvidesEndpoint.link(this, service);
+			ProvidesEndpoint.link(service, this);
 	}
 
 	/**

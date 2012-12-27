@@ -1,0 +1,90 @@
+#** 
+@param param: a System with BGP services associated through HostedService association
+@param isLR: a boolean telling weather param is a logical router or not
+@param lrName: a String with the logical router name (only set if isLR is true)
+@param bgpUtils: a utility class with static methods for managing BGP and policies model objects.
+*#
+<configuration>
+	#if($isLR)
+		<logical-systems>
+			<name>$lrName</name>
+	#end
+	#set($routerId = "false")
+	## Configure BGP
+	#if(!$bgpUtils.getBGPServices($param).isEmpty())
+	<protocols>
+		<bgp>
+			## TODO ADD GLOBAL BGP CONFIG ELEMENTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			<path-selection>
+				<cisco-non-deterministic/>
+			</path-selection>
+			<keep>all</keep>
+			##<hold-time>45</hold-time>
+			
+			#foreach($bgpService in $bgpUtils.getBGPServices($param))
+				#set($routerId = $bgpService.getRouterID())
+				#foreach($bgpGroup in $bgpUtils.getBGPPeerGroups($bgpService))
+					<group>
+						<name>$bgpGroup.getName()</name>
+						<hold-time>$bgpGroup.getHoldTimeConfigured()</hold-time>
+						#foreach($bgpPep in $bgpUtils.getBGPProtocolEndpoints($bgpService))
+							<neighbor>
+								<name>$bgpPep.getPeerIdentifier()</name>
+								## CHECK DESCRIPTION != null
+								#set ($hasDescription = true)
+								#if (! $bgpPep.getDescription())
+									#set ($hasDescription = false)
+								#end
+								#if($hasDescription)
+								<description>$bgpPep.getDescription()</description>
+								#end
+								#if($bgpPep.isIsEBGP())
+									#set ($bgpType = "external")
+								#else
+									#set ($bgpType = "internal")
+								#end
+								## DETECT IMPORT AND EXPORT POLICIES
+								#foreach($policySet in $bgpUtils.getAppliedPolicies($bgpPep))
+									#if($policySet.getElementName().equals("import"))
+										##IMPORT POLICIES
+										#foreach($importPolicySet in $bgpUtils.getPolicySetComponents($policySet))
+											<import>$importPolicySet.getElementName()</import>
+										#end
+									#elseif($policySet.getElementName().equals("export"))
+										##EXPORT POLICIES
+										#foreach($exportPolicySet in $bgpUtils.getPolicySetComponents($policySet))
+											<export>$exportPolicySet.getElementName()</export>
+										#end
+									#end
+								#end
+								#set($hasRemoteAS = true)
+								#if(! $bgpPep.getRemoteAS())
+									#set($hasRemoteAS = false)
+								#end
+								#if($hasRemoteAS)
+									<peer-as>$bgpPep.getRemoteAS()</peer-as>
+								#end
+							</neighbor>
+						#end
+						## SET GROUP TYPE ACCORDING TO PEPS
+						<type>$bgpType</type>
+					</group>
+				#end
+			#end
+		</bgp>
+	</protocols>
+	#end
+	##SET ROUTER ID
+	<routing-options operation="merge">
+		#if(!$routerId.equals("false"))
+		<router-id>$routerId</router-id>
+		#end
+		## SET AS
+		<autonomous-system>
+			<as-number>$bgpUtils.getASFromRouter($param).getASNumber()</as-number>
+    	</autonomous-system>	
+	</routing-options>
+	#if($isLR)
+		</logical-systems>
+	#end
+</configuration>

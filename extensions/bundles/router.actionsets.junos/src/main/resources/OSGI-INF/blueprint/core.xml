@@ -65,4 +65,24 @@
 			<entry key="actionset.version" value="10.10"/>
 		</service-properties>
 	</service>
+	<bean id="bgpActionSet" class="org.opennaas.extensions.router.junos.actionssets.BGPActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="bgpActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="bgp"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+	<bean id="vrrpActionSet" class="org.opennaas.extensions.router.junos.actionssets.VRRPActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="vrrpActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="vrrp"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
 </blueprint>

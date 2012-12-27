@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Factory that creates protocol capabilities -->
+	<bean id="bgpCapabilityFactory" class="org.opennaas.extensions.router.capability.bgp.BGPCapabilityFactory">
+		<property name="type" value="bgp"/>
+	</bean>
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="bgpCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="bgp"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- Command completers -->
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="bgp/configureBGP">
+			<action class="org.opennaas.extensions.router.capability.bgp.shell.ConfigureBGPCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+	</command-bundle>
+</blueprint>
