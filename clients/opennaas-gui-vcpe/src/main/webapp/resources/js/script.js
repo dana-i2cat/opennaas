@@ -34,12 +34,28 @@ $(document).ready(function() {
 		autoOpen : false
 	});
 
-	$("a.confirm").click(function(e) {
+	$(".link_confirm").click(function(e) {
 		e.preventDefault();
 		var theHREF = $(this).attr("href");
 		$("#dialog").dialog('option', 'buttons', {
 			"Confirm" : function() {
 				window.location.href = theHREF;
+			},
+			"Cancel" : function() {
+				$(this).dialog("close");
+			}
+		});
+		$("#dialog").dialog("open");
+	});
+
+	$(".button_confirm").click(function(e) {
+		e.preventDefault();
+		var $form = $(this).closest('form');
+		var action = $(this).attr("formaction");
+		$form.attr("action", action);
+		$("#dialog").dialog('option', 'buttons', {
+			"Confirm" : function() {
+				$form.submit();
 			},
 			"Cancel" : function() {
 				$(this).dialog("close");

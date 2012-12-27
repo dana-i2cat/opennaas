@@ -270,13 +270,30 @@ h1 {
 	text-align: center;
 }
 
-#lr_master,#lr_backup {
+#lr_master, #lr_backup {
 	display: inline-block;
 	width: 280px;
 	margin-left: 10px;
 	margin-right: 10px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+}
+
+h3.lr_active {
+	border: 1px solid #dddddd !important;
+	background: #e6efd7  50% top repeat-x !important;
+	color: #2f4f4f !important;
+}
+
+h3.lr_active {
+	border: 1px solid #dddddd !important;
+	background: #e6efd7  50% top repeat-x !important;
+	color: #2f4f4f !important;
+}
+
+h3.lr_inactive {
+	border: 1px solid #dddddd !important;
+	color: #2f4f4f !important;
 }
 
 #bod {
