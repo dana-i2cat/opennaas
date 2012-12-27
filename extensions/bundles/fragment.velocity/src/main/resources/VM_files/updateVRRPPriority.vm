@@ -1,14 +1,3 @@
-
-#macro (isPeerUnit $element $resp $peerUnit)
-	#set( $resp = "false" )
-	#if($element.getClass().getSimpleName().equals("LogicalTunnelPort"))
-			#set( $peerUnit = $element.Peer_unit)
-			#set( $resp = "true" )
-			#break
-	#end
-
-#end
-
 ###############################################################################
 ###########            UPDATE VRRP VIRTUAL IP ADDRESS               ###########
 ###############################################################################

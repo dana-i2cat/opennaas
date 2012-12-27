@@ -25,6 +25,8 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.ConfigureVRRPAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UnconfigureVRRPAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPPriorityAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPVirtualIPAddressAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -71,7 +73,50 @@ public class VRRPActionTest {
 	}
 
 	@Test
+	public void configureVRRPTest() {
+		log.info("Testing ConfigureVRRP");
+		action = new ConfigureVRRPAction();
+		action.setModelToUpdate(new ComputerSystem());
+		action.setParams(ActionTestHelper.newParamsVRRPGroupWithOneEndpoint().getProtocolEndpoint().get(0));
+		try {
+			ActionResponse response = action.execute(mockProtocolSessionManager);
+			Assert.assertTrue(response.getActionID().equals(ActionConstants.VRRP_CONFIGURE));
+			Assert.assertEquals(action.getTemplate(), "/VM_files/configureVRRP.vm");
+
+			// read expected message into a String
+			String expectedMessage = textFileToString("/actions/configureVRRP.xml");
+
+			assertEqualXMLConfigurations(expectedMessage, message.getValue().getConfig());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void unconfigureVRRPTest() {
+		log.info("Testing UnconfigureVRRP");
+		action = new UnconfigureVRRPAction();
+		action.setModelToUpdate(new ComputerSystem());
+		action.setParams(ActionTestHelper.newParamsVRRPGroupWithOneEndpoint().getProtocolEndpoint().get(0));
+		try {
+			ActionResponse response = action.execute(mockProtocolSessionManager);
+			Assert.assertTrue(response.getActionID().equals(ActionConstants.VRRP_UNCONFIGURE));
+			Assert.assertEquals(action.getTemplate(), "/VM_files/unconfigureVRRP.vm");
+
+			// read expected message into a String
+			String expectedMessage = textFileToString("/actions/unconfigureVRRP.xml");
+
+			assertEqualXMLConfigurations(expectedMessage, message.getValue().getConfig());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+	}
+
+	@Test
 	public void updateVirtualIPAddressTest() {
+		log.info("Testing UpdateVirtualIPAddress");
 		action = new UpdateVRRPVirtualIPAddressAction();
 		action.setModelToUpdate(new ComputerSystem());
 		action.setParams(ActionTestHelper.newParamsVRRPGroupWithOneEndpoint().getProtocolEndpoint().get(0));
@@ -92,6 +137,7 @@ public class VRRPActionTest {
 
 	@Test
 	public void updatePriorityTest() {
+		log.info("Testing UpdatePriority");
 		action = new UpdateVRRPPriorityAction();
 		action.setModelToUpdate(new ComputerSystem());
 		action.setParams(ActionTestHelper.newParamsVRRPGroupWithOneEndpoint().getProtocolEndpoint().get(0));

@@ -126,20 +126,25 @@ public class ActionTestHelper {
 		eth1.setName("fe-0/3/2");
 		ipProtocolEndpoint1.addLogiaclPort(eth1);
 
-		// // VRRPProtocolEndpoint 2
-		// VRRPProtocolEndpoint vrrProtocolEndpoint2 = new VRRPProtocolEndpoint();
-		// vrrProtocolEndpoint2.setPriority(200);
-		// vrrProtocolEndpoint2.setService(vrrpGroup);
-		//
-		// IPProtocolEndpoint ipProtocolEndpoint2 = new IPProtocolEndpoint();
-		// ipProtocolEndpoint2.setIPv4Address("192.168.1.2");
-		// ipProtocolEndpoint2.setSubnetMask("255.255.255.0");
-		// vrrProtocolEndpoint2.bindServiceAccessPoint(ipProtocolEndpoint2);
-		//
-		// EthernetPort eth2 = new EthernetPort();
-		// eth2.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		// eth2.setName("fe-1/3/2");
-		// ipProtocolEndpoint2.addLogiaclPort(eth2);
+		return vrrpGroup;
+	}
+
+	public static VRRPGroup newParamsVRRPGroupWithTwoEndpoints() {
+		VRRPGroup vrrpGroup = newParamsVRRPGroupWithOneEndpoint();
+		// VRRPProtocolEndpoint 2
+		VRRPProtocolEndpoint vrrProtocolEndpoint2 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint2.setPriority(200);
+		vrrProtocolEndpoint2.setService(vrrpGroup);
+
+		IPProtocolEndpoint ipProtocolEndpoint2 = new IPProtocolEndpoint();
+		ipProtocolEndpoint2.setIPv4Address("192.168.1.2");
+		ipProtocolEndpoint2.setSubnetMask("255.255.255.0");
+		vrrProtocolEndpoint2.bindServiceAccessPoint(ipProtocolEndpoint2);
+
+		EthernetPort eth2 = new EthernetPort();
+		eth2.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth2.setName("fe-1/3/2");
+		ipProtocolEndpoint2.addLogiaclPort(eth2);
 
 		return vrrpGroup;
 	}
