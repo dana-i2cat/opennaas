@@ -253,6 +253,7 @@ public class VCPENetworkController {
 	public String changeVRRPPriority(VCPENetwork vcpeNetwork, Model model, Locale locale) {
 		LOGGER.debug("change priority VRRP of VCPENetwork: " + vcpeNetwork);
 		try {
+			model.addAttribute("action", "update");
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute(vcpeNetworkBO.changeVRRPPriority(vcpeNetwork));
 			model.addAttribute("infoMsg", messageSource

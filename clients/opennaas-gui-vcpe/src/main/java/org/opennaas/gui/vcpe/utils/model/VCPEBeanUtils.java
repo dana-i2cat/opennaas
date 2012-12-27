@@ -157,7 +157,7 @@ public class VCPEBeanUtils {
 	 * 
 	 * @return BoD
 	 */
-	private static BoD getBoD(VCPENetworkModel modelIn) {
+	public static BoD getBoD(VCPENetworkModel modelIn) {
 		BoD bod = new BoD();
 		// Interfaces
 		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
@@ -186,7 +186,7 @@ public class VCPEBeanUtils {
 	 * @param bgp
 	 * @return bgp entity
 	 */
-	private static BGP getBGP(org.opennaas.extensions.vcpe.model.BGP bgpIn) {
+	public static BGP getBGP(org.opennaas.extensions.vcpe.model.BGP bgpIn) {
 		BGP bgpOut = new BGP();
 		if (bgpIn != null) {
 			bgpOut.setClientASNumber(bgpIn.getClientASNumber());
@@ -204,7 +204,7 @@ public class VCPEBeanUtils {
 	 * @param vrrp
 	 * @return
 	 */
-	private static VRRP getVRRP(org.opennaas.extensions.vcpe.model.VRRP vrrpIn) {
+	public static VRRP getVRRP(org.opennaas.extensions.vcpe.model.VRRP vrrpIn) {
 		VRRP vrrpOut = new VRRP();
 		if (vrrpIn != null) {
 			vrrpOut.setVirtualIPAddress(vrrpIn.getVirtualIPAddress());
