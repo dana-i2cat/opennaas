@@ -3,10 +3,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions;
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.extensions.router.junos.commandsets.commands.JunosCommand;
-import org.opennaas.extensions.router.junos.commandsets.velocity.VelocityEngine;
-import org.opennaas.extensions.protocols.netconf.NetconfProtocolSession;
-
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.opennaas.core.resources.action.Action;
@@ -16,6 +12,8 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.router.junos.commandsets.commands.JunosCommand;
+import org.opennaas.extensions.router.junos.commandsets.velocity.VelocityEngine;
 
 public abstract class JunosAction extends Action {
 	protected VelocityEngine	velocityEngine;
@@ -57,8 +55,7 @@ public abstract class JunosAction extends Action {
 	public Response sendCommandToProtocol(JunosCommand command, IProtocolSession
 			generalProtocol) throws ProtocolException,
 			ActionException {
-		// FIXME PARSE TO NETCONFPROTOCOL SESSION
-		NetconfProtocolSession protocol = (NetconfProtocolSession) generalProtocol;
+		IProtocolSession protocol = generalProtocol;
 		Object messageResp = protocol.sendReceive(command.message());
 
 		Response response = command.checkResponse(messageResp);
@@ -75,7 +72,7 @@ public abstract class JunosAction extends Action {
 		try {
 
 			// TODO WHY THE PROTOCOL NAME, WE ALWAYS USE A NETCONFPROTOCOLSESSION PROTOCOL
-			NetconfProtocolSession protocol = (NetconfProtocolSession) protocolSessionManager.obtainSessionByProtocol(protocolName, false);
+			IProtocolSession protocol = protocolSessionManager.obtainSessionByProtocol(protocolName, false);
 			/* call commands */
 			prepareMessage();
 

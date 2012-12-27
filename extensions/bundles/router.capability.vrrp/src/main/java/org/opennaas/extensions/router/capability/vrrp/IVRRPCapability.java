@@ -16,7 +16,7 @@ import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 public interface IVRRPCapability extends ICapability {
 
 	/**
-	 * Configure VRRP on
+	 * Configure VRRP
 	 * 
 	 * @throws CapabilityException
 	 */
@@ -26,7 +26,7 @@ public interface IVRRPCapability extends ICapability {
 	public void configureVRRP(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException;
 
 	/**
-	 * Unconfigure VRRP on
+	 * Unconfigure VRRP
 	 * 
 	 * @throws CapabilityException
 	 */
@@ -34,4 +34,28 @@ public interface IVRRPCapability extends ICapability {
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	public void unconfigureVRRP(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException;
+
+	/**
+	 * Update VRRP Virtual IP Address
+	 * 
+	 * @throws CapabilityException
+	 */
+	@Path("/updateVRRPVirtualIPAddress")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void updateVRRPVirtualIPAddress(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException;
+
+	/**
+	 * Update VRRP Priority
+	 * 
+	 * @throws CapabilityException
+	 */
+	/*
+	 * @Path("/updateVRRPPriority")
+	 * 
+	 * @POST
+	 * 
+	 * @Consumes(MediaType.APPLICATION_XML)
+	 */
+	public void updateVRRPPriority(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException;
 }

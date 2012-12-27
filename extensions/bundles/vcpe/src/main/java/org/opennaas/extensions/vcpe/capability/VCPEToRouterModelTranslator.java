@@ -20,14 +20,20 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 public class VCPEToRouterModelTranslator {
 
 	public static ComputerSystem vCPERouterToRouter(Router router, VCPENetworkModel model) {
-		ComputerSystem cimRouter = new ComputerSystem();
-		cimRouter.setName(router.getName());
-		cimRouter.setElementName(router.getName());
+		ComputerSystem cimRouter = vCPERouterToRouterWithoutIfaces(router, model);
 
 		for (Interface iface : router.getInterfaces()) {
 			LogicalPort port = vCPEInterfaceToLogicalPort(iface, model);
 			cimRouter.addLogicalDevice(port);
 		}
+		return cimRouter;
+	}
+
+	public static ComputerSystem vCPERouterToRouterWithoutIfaces(Router router, VCPENetworkModel model) {
+		ComputerSystem cimRouter = new ComputerSystem();
+		cimRouter.setName(router.getName());
+		cimRouter.setElementName(router.getName());
+
 		return cimRouter;
 	}
 
@@ -71,7 +77,7 @@ public class VCPEToRouterModelTranslator {
 		}
 
 		port.setName(ifaceNameParts[0]);
-		((NetworkPort) port).setPortNumber(Integer.parseInt(ifaceNameParts[1]));
+		port.setPortNumber(Integer.parseInt(ifaceNameParts[1]));
 
 		port = (NetworkPort) assignIPAddressAndVlan(iface, port);
 		return port;
@@ -79,9 +85,9 @@ public class VCPEToRouterModelTranslator {
 
 	private static LogicalPort assignIPAddressAndVlan(Interface source, LogicalPort target) {
 
-		if (source.getVlanId() != 0) {
+		if (source.getVlan() != 0) {
 			VLANEndpoint vlanEP = new VLANEndpoint();
-			vlanEP.setVlanID(Integer.parseInt(Long.toString(source.getVlanId())));
+			vlanEP.setVlanID(Integer.parseInt(Long.toString(source.getVlan())));
 			target.addProtocolEndpoint(vlanEP);
 		}
 		if (source.getIpAddress() != null) {

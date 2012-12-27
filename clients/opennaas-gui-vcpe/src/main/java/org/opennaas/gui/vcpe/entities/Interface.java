@@ -14,38 +14,14 @@ import javax.validation.constraints.Size;
  */
 public class Interface {
 
-	public enum Types {
-		INTER("Inter"), UP("Up"), DOWN("Down"), CLIENT("Client");
-
-		private final String	text;
-
-		/**
-		 * @param text
-		 */
-		private Types(final String text) {
-			this.text = text;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-			return text;
-		}
-
-	}
-
-	@Size(min = 1, max = 25, message = "{error.field.mandatory}")
+	@Size(min = 1, max = 25, message = "{message.error.field.mandatory}")
 	private String	name;
-	@Size(min = 1, max = 25, message = "{error.field.mandatory}")
+	@Size(min = 1, max = 25, message = "{message.error.field.mandatory}")
 	private String	port;
-	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{error.field.format.ipandmask}")
+	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{message.error.field.format.ipandmask}")
 	@Size(min = 1, max = 25)
 	private String	ipAddress;
-	@NotNull(message = "{error.field.mandatory}")
+	@NotNull(message = "{message.error.field.mandatory}")
 	@DecimalMin(value = "0")
 	@DecimalMax(value = "4094")
 	private Integer	vlan;
@@ -164,4 +140,32 @@ public class Interface {
 		String aCompleteName[] = completeName.split("\\.");
 		return aCompleteName[1];
 	}
+
+	/**
+	 * @author Jordi
+	 */
+	public enum Types {
+		INTER("Inter"), UP("Up"), DOWN("Down"), CLIENT("Client"), LOOPBACK("Loopback"), WAN("Wan");
+
+		private final String	text;
+
+		/**
+		 * @param text
+		 */
+		private Types(final String text) {
+			this.text = text;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString() {
+			return text;
+		}
+
+	}
+
 }
