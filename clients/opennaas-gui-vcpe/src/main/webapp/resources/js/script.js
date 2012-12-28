@@ -22,12 +22,6 @@ $(function() {
 $(document).ready(function() {
 	$("#dialog").dialog({
 		autoOpen : false,
-		modal : true
-	});
-});
-
-$(document).ready(function() {
-	$("#dialog").dialog({
 		modal : true,
 		bgiframe : true,
 		width : 300,
@@ -214,10 +208,6 @@ $(function() {
 		icons : false,
 		heightStyle : "content",
 		active : true
-	/*
-	 * beforeActivate : function() { clearJSPlumbStuff(); }, activate :
-	 * function() { setJSPlumbStuff(topologyVisible); }
-	 */
 	});
 
 	$("#vrrp_box").accordion({
@@ -225,13 +215,9 @@ $(function() {
 		icons : false,
 		heightStyle : "content",
 		active : true
-	/*
-	 * beforeActivate : function() { clearJSPlumbStuff(); }, activate :
-	 * function() { setJSPlumbStuff(topologyVisible); }
-	 */
 	});
 
-	// only apply accordion styles when createVCPENetwork.jsp is loaded
+	// only apply accordion styles when home.jsp is loaded
 	if ($("#home_body").length) {
 		jsPlumbNecessary = true;
 		/**
@@ -357,23 +343,21 @@ $(function() {
 			}
 		});
 
-		$("#vcpe_topology")
-				.accordion(
-						{
-							collapsible : true,
-							icons : false,
-							heightStyle : "content",
-							active : false,
-							beforeActivate : function() {
-								clearJSPlumbStuff();
-							},
-							activate : function(event, ui) {
-								var active = $("#vcpe_topology").accordion(
-										"option", "active");
-								topologyVisible = !(typeof active == 'boolean' && active == false);
-								setJSPlumbStuff(topologyVisible);
-							}
-						});
+		$("#vcpe_topology").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe_topology").accordion(
+						"option", "active");
+				topologyVisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(topologyVisible);
+			}
+		});
 
 		$("#wan_logical").accordion({
 			collapsible : true,
@@ -807,10 +791,6 @@ $(document).ready(function() {
 	
 	// ============ begin validation options ==================== //
 	$("#VCPENetwork").validate({
-		success: function(label) {
-			// enable create button when no errors are produced
-			console.log("success!!");
-		},
 		showErrors: function(errorMap, errorList) {
 			var i, elements;
 			for ( i = 0; this.errorList[i]; i++ ) {
@@ -827,13 +807,12 @@ $(document).ready(function() {
 			}
 			
 			var errors = this.numberOfInvalids();
-			console.log("errors = " + errors);
 			if(errors == 0) {
-				console.log("no errors, enabling button!");
+				// disable create button when errors are produced
 				$("#submitButton").attr("disabled", false);
 			}
 			else {
-				console.log("errors, disabling button!");
+				// enable create button when no errors are produced
 				$("#submitButton").attr("disabled", true);
 			}
 			
@@ -843,12 +822,10 @@ $(document).ready(function() {
 		},
 		highlight: function(element, errorClass, validClass) {
 			// add error class to label for element
-			console.log("marking error on " + element.name);
 			$('label[for=\"' + element.name + '\"]').addClass("error");
 		},
         unhighlight: function(element, errorClass, validClass) {
         	// remove error class to label for element
-			console.log("unmarking error on " + element.name);
 			$('label[for=\"' + element.name + '\"]').removeClass("error");
         },
 
