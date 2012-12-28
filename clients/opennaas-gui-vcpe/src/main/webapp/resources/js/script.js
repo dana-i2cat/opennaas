@@ -1,6 +1,7 @@
 /*
  * OpenNaaS script
  */
+
 /**
  * Javascript for menu
  */
@@ -21,12 +22,6 @@ $(function() {
 $(document).ready(function() {
 	$("#dialog").dialog({
 		autoOpen : false,
-		modal : true
-	});
-});
-
-$(document).ready(function() {
-	$("#dialog").dialog({
 		modal : true,
 		bgiframe : true,
 		width : 300,
@@ -213,10 +208,6 @@ $(function() {
 		icons : false,
 		heightStyle : "content",
 		active : true
-	/*
-	 * beforeActivate : function() { clearJSPlumbStuff(); }, activate :
-	 * function() { setJSPlumbStuff(topologyVisible); }
-	 */
 	});
 
 	$("#vrrp_box").accordion({
@@ -224,13 +215,9 @@ $(function() {
 		icons : false,
 		heightStyle : "content",
 		active : true
-	/*
-	 * beforeActivate : function() { clearJSPlumbStuff(); }, activate :
-	 * function() { setJSPlumbStuff(topologyVisible); }
-	 */
 	});
 
-	// only apply accordion styles when createVCPENetwork.jsp is loaded
+	// only apply accordion styles when home.jsp is loaded
 	if ($("#home_body").length) {
 		jsPlumbNecessary = true;
 		/**
@@ -356,23 +343,21 @@ $(function() {
 			}
 		});
 
-		$("#vcpe_topology")
-				.accordion(
-						{
-							collapsible : true,
-							icons : false,
-							heightStyle : "content",
-							active : false,
-							beforeActivate : function() {
-								clearJSPlumbStuff();
-							},
-							activate : function(event, ui) {
-								var active = $("#vcpe_topology").accordion(
-										"option", "active");
-								topologyVisible = !(typeof active == 'boolean' && active == false);
-								setJSPlumbStuff(topologyVisible);
-							}
-						});
+		$("#vcpe_topology").accordion({
+			collapsible : true,
+			icons : false,
+			heightStyle : "content",
+			active : false,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe_topology").accordion(
+						"option", "active");
+				topologyVisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(topologyVisible);
+			}
+		});
 
 		$("#wan_logical").accordion({
 			collapsible : true,
@@ -787,8 +772,119 @@ $(function() {
 	};
 });
 
+// IPv4 validator regex based on RFC 1123 http://tools.ietf.org/html/rfc1123
+var validIPAddressRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+var validIPAddressSubnetMaskRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/(\d{1}|[0-2]{1}\d{1}|3[0-2])$");
+
 $(document).ready(function() {
 	$("#firewallTable").styleTable();
+	
+	// onload disable create submit button
+	$("#submitButton").attr("disabled", true);
+	
+	// ============ begin custom validators ==================== //
+	// regex
+	$.validator.addMethod("custom_regex", function(value, element,	regexp) {
+		return this.optional(element) || regexp.test(value);
+	});
+	// ============ end custom validators ==================== //
+	
+	// ============ begin validation options ==================== //
+	$("#VCPENetwork").validate({
+		showErrors: function(errorMap, errorList) {
+			var i, elements;
+			for ( i = 0; this.errorList[i]; i++ ) {
+				var error = this.errorList[i];
+				if ( this.settings.highlight ) {
+					this.settings.highlight.call( this, error.element, this.settings.errorClass, this.settings.validClass );
+				}
+			}
+			
+			if (this.settings.unhighlight) {
+				for ( i = 0, elements = this.validElements(); elements[i]; i++ ) {
+					this.settings.unhighlight.call( this, elements[i], this.settings.errorClass, this.settings.validClass );
+				}
+			}
+			
+			var errors = this.numberOfInvalids();
+			if(errors == 0) {
+				// disable create button when errors are produced
+				$("#submitButton").attr("disabled", false);
+			}
+			else {
+				// enable create button when no errors are produced
+				$("#submitButton").attr("disabled", true);
+			}
+			
+		},
+		errorPlacement: function(error,element) {
+			return true;
+		},
+		highlight: function(element, errorClass, validClass) {
+			// add error class to label for element
+			$('label[for=\"' + element.name + '\"]').addClass("error");
+		},
+        unhighlight: function(element, errorClass, validClass) {
+        	// remove error class to label for element
+			$('label[for=\"' + element.name + '\"]').removeClass("error");
+        },
+
+		debug: true,
+		onkeyup : function(element) {$(element).valid();},
+		onsubmit : false,
+		onclick : false,
+		onfocusout : function(element) {$(element).valid();}
+	});
+	// ============ end validation options ==================== //
+	
+	// ============ begin validation rules ==================== //	
+	$('#logicalRouterMaster\\.interfaces2\\.name').rules("add", { required: true });
+	$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true });
+	$('#logicalRouterMaster\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+	$('#logicalRouterMaster\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#logicalRouterBackup\\.interfaces2\\.name').rules("add", { required: true });
+	$('#logicalRouterBackup\\.interfaces2\\.port').rules("add", { required: true });
+	$('#logicalRouterBackup\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+	$('#logicalRouterBackup\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#bgp\\.clientASNumber').rules("add", { required: true });
+	$('#bgp\\.nocASNumber').rules("add", { required: true });
+	$('#bgp\\.clientPrefixes').rules("add", { required: true });
+
+	$('#logicalRouterMaster\\.interfaces1\\.name').rules("add", { required: true });
+	$('#logicalRouterMaster\\.interfaces1\\.port').rules("add", { required: true });
+	$('#logicalRouterMaster\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+	$('#logicalRouterMaster\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#logicalRouterMaster\\.interfaces0\\.name').rules("add", { required: true });
+	$('#logicalRouterMaster\\.interfaces0\\.port').rules("add", { required: true });
+	$('#logicalRouterMaster\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+	$('#logicalRouterMaster\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#logicalRouterBackup\\.interfaces0\\.name').rules("add", { required: true });
+	$('#logicalRouterBackup\\.interfaces0\\.port').rules("add", { required: true });
+	$('#logicalRouterBackup\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+	$('#logicalRouterBackup\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#logicalRouterBackup\\.interfaces1\\.name').rules("add", { required: true });
+	$('#logicalRouterBackup\\.interfaces1\\.port').rules("add", { required: true });
+	$('#logicalRouterBackup\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+	$('#logicalRouterBackup\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#bod\\.ifaceClient\\.name').rules("add", { required: true, maxlength: 25 });
+	$('#bod\\.ifaceClient\\.port').rules("add", { required: true });
+	$('#bod\\.ifaceClient\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#bod\\.ifaceClientBackup\\.name').rules("add", { required: true });
+	$('#bod\\.ifaceClientBackup\\.port').rules("add", { required: true });
+	$('#bod\\.ifaceClientBackup\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+	
+	$('#vrrp\\.virtualIPAddress').rules("add", { custom_regex: validIPAddressRegExp, required: true });
+	
+	$('#name').rules("add", { required: true });
+	$('#clientIpRange').rules("add", { required: true });
+	// ============ end validation rules ==================== //
 });
 
 /**
