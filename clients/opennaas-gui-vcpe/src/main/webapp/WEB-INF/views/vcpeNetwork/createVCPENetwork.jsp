@@ -31,7 +31,7 @@
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
 								<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
-									<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
+									<form:label for="logicalRouterMaster.interfaces[${vs.index}].port" path="logicalRouterMaster.interfaces[${vs.index}].port" cssErrorClass="error">
 										<spring:message code="interface.name" />
 									</form:label>
 								</form:label>
