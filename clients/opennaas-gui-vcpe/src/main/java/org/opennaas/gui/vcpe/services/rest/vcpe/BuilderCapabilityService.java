@@ -74,10 +74,10 @@ public class BuilderCapabilityService extends GenericRestService {
 	 * Call a rest url to change the priority vrrp
 	 * 
 	 * @param vcpeNetwork
-	 * @return true if the priority vrrp has been changed
+	 * @return new model
 	 * @throws RestServiceException
 	 */
-	public Boolean changeVRRPPriority(VCPENetworkModel request) throws RestServiceException {
+	public VCPENetworkModel changeVRRPPriority(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling change priority vrrp VCPENetworkBuilder service");
@@ -91,7 +91,7 @@ public class BuilderCapabilityService extends GenericRestService {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
-		return checkResponse(response);
+		return checkResponse(response) ? response.getEntity(VCPENetworkModel.class) : null;
 	}
 
 }

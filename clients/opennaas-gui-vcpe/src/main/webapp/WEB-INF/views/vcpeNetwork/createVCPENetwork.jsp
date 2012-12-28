@@ -141,17 +141,20 @@
 				<h3><spring:message code="vcpenetwork.topology"/></h3>
 					<div id="vcpe_routers">
 						<div id="lr_master">
-						<h3><spring:message code="vcpenetwork.lrmaster"/></h3>
-							<div>
-							<button id="button2" class="button" formaction="changeVRRPPriority"><spring:message code="buttons.activate"/></button>
-							</div>
+							<h3 class="${VCPENetwork.vrrp.priorityMaster > VCPENetwork.vrrp.priorityBackup ? 'lr_active' : 'lr_inactive'}">
+								<spring:message code="vcpenetwork.lrmaster"/>
+							</h3>
 						</div>
 						<div id="lr_backup">
-						<h3><spring:message code="vcpenetwork.lrbackup"/></h3>
-							<div>
-							<button id="button3" class="button" disabled="disabled"><spring:message code="buttons.backup"/></button>
+							<h3 class="${VCPENetwork.vrrp.priorityMaster < VCPENetwork.vrrp.priorityBackup ? 'lr_active' : 'lr_inactive'}">
+								<spring:message code="vcpenetwork.lrbackup"/>
+							</h3>
 						</div>
-					</div>
+						<div>
+							<c:if test="${action == 'update'}">
+								<button id="button2" class="button_confirm" formaction="changeVRRPPriority"><spring:message code="buttons.switch"/></button>
+							</c:if>
+						</div>
 					<!-- VCPE Interfaces -->				
 					<div id="client_master" class="ui-widget-content">				
 						<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}"
@@ -445,7 +448,9 @@
 						<br>
 						<form:errors path="vrrp.virtualIPAddress" size="20" />
 						<br>
-						<input id="button10" class="button" type="submit" value="<spring:message code="buttons.change"/>" formaction="updateVRRPIp"/>
+						<c:if test="${action == 'update'}">
+							<input id="button10" class="button" type="submit" value="<spring:message code="buttons.change"/>" formaction="updateVRRPIp"/>
+						</c:if>
 					</div>
 				</div>			
 
