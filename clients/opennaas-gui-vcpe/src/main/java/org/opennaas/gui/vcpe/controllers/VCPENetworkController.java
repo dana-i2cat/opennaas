@@ -67,6 +67,7 @@ public class VCPENetworkController {
 		try {
 			model.addAttribute(templateUtils.getDefaultVCPENetwork());
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute("operation", new String("create"));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
@@ -119,6 +120,7 @@ public class VCPENetworkController {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
 			model.addAttribute("action", new String("update"));
+			model.addAttribute("operation", new String("edit"));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.edit.message.error", null, locale));
