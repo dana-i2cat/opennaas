@@ -582,6 +582,11 @@
 			</div>						
 		</div>
 		<!-- End client -->
-		<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.create"/>" />
+		<c:if test='${operation.equals("create")}'>
+			<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.create"/>" />
+		</c:if>
+		<c:if test='${operation.equals("edit")}'>
+			<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.edit"/>" />
+		</c:if>
 	</form:form>
 </div>
