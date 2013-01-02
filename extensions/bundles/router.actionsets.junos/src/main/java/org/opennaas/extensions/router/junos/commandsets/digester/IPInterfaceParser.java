@@ -334,6 +334,7 @@ public class IPInterfaceParser extends DigesterEngine {
 			if ((vrrpGroup = vrrpGroups.get(groupId)) == null) {
 				vrrpGroup = new VRRPGroup();
 				vrrpGroups.put(groupId, vrrpGroup);
+				getModel().addHostedService(vrrpGroup);
 			}
 
 			vrrpGroup.setVrrpName(Integer.parseInt(groupId));

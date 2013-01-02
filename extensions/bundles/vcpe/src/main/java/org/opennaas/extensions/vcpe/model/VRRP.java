@@ -6,10 +6,12 @@ package org.opennaas.extensions.vcpe.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Jordi
  */
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VRRP {
 

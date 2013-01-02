@@ -270,7 +270,7 @@ h1 {
 	text-align: center;
 }
 
-#lr_master,#lr_backup {
+#lr_master, #lr_backup {
 	display: inline-block;
 	width: 280px;
 	margin-left: 10px;
@@ -279,9 +279,25 @@ h1 {
 	margin-bottom: 15px;
 }
 
+h3.lr_active {
+	border: 1px solid #dddddd !important;
+	background: #e6efd7  50% top repeat-x !important;
+	color: #2f4f4f !important;
+}
+
+h3.lr_active {
+	border: 1px solid #dddddd !important;
+	background: #e6efd7  50% top repeat-x !important;
+	color: #2f4f4f !important;
+}
+
+h3.lr_inactive {
+	border: 1px solid #dddddd !important;
+	color: #2f4f4f !important;
+}
+
 #bod {
 	position: relative;
-	z-index: 100;
 	margin-top: 15px;
 }
 
@@ -333,7 +349,7 @@ h1 {
 	height: 110px;
 	padding: 5px;
 	float: left;
-	margin: 10px 10px 10px 80px;
+	margin: 10px 0px 10px 7px;
 	font-size: 11px;
 }
 

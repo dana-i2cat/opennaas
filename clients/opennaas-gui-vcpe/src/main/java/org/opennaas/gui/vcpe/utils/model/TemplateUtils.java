@@ -28,16 +28,16 @@ public class TemplateUtils {
 		// VCPENetwork
 		VCPENetwork vcpeNetwork = new VCPENetwork();
 		vcpeNetwork.setClientIpRange(templateProperties.getProperty("vcpenetwork.client.iprange"));
-		vcpeNetwork.setTemplate(templateProperties.getProperty("vcpenetwork.template"));
+		vcpeNetwork.setTemplateType(templateProperties.getProperty("vcpenetwork.template"));
 
 		// Logical Router1
-		LogicalRouter logicalRouter1 = new LogicalRouter();
-		logicalRouter1.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.name"));
-		logicalRouter1.setTemplateName(VCPETemplate.VCPE1_ROUTER);
+		LogicalRouter logicalRouterMaster = new LogicalRouter();
+		logicalRouterMaster.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.name"));
+		logicalRouterMaster.setTemplateName(VCPETemplate.VCPE1_ROUTER);
 
 		// Interfaces router1
 		List<Interface> interfaces = new ArrayList<Interface>();
-		logicalRouter1.setInterfaces(interfaces);
+		logicalRouterMaster.setInterfaces(interfaces);
 		Interface ifaceInter = new Interface();
 		Interface ifaceDown = new Interface();
 		Interface ifaceUp = new Interface();
@@ -67,9 +67,9 @@ public class TemplateUtils {
 		ifaceUp.setLabelName(Interface.Types.UP.toString());
 
 		// Logical Router2
-		LogicalRouter logicalRouter2 = new LogicalRouter();
-		logicalRouter2.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.name"));
-		logicalRouter2.setTemplateName(VCPETemplate.VCPE2_ROUTER);
+		LogicalRouter logicalRouterBackup = new LogicalRouter();
+		logicalRouterBackup.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.name"));
+		logicalRouterBackup.setTemplateName(VCPETemplate.VCPE2_ROUTER);
 
 		// Interfaces router2
 		interfaces = new ArrayList<Interface>();
@@ -79,7 +79,7 @@ public class TemplateUtils {
 		interfaces.add(ifaceInter);
 		interfaces.add(ifaceDown);
 		interfaces.add(ifaceUp);
-		logicalRouter2.setInterfaces(interfaces);
+		logicalRouterBackup.setInterfaces(interfaces);
 
 		ifaceInter.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.name"));
 		ifaceInter.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.port"));
@@ -102,8 +102,8 @@ public class TemplateUtils {
 		ifaceUp.setTemplateName(VCPETemplate.UP2_INTERFACE_LOCAL);
 		ifaceUp.setLabelName(Interface.Types.UP.toString());
 
-		vcpeNetwork.setLogicalRouter1(logicalRouter1);
-		vcpeNetwork.setLogicalRouter2(logicalRouter2);
+		vcpeNetwork.setLogicalRouterMaster(logicalRouterMaster);
+		vcpeNetwork.setLogicalRouterBackup(logicalRouterBackup);
 
 		// BoD
 		BoD bod = new BoD();

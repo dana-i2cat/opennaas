@@ -101,7 +101,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	public void printError(String message, Throwable e) {
-		err.println(error + message);
+		err.println(error + message + e.getMessage());
 		log.error(error + message, e);
 	}
 
