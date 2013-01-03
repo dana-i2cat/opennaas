@@ -91,6 +91,10 @@ form:after {
 	margin-left: 275px;
 }
 
+#login_error {
+	color: red;			
+}
+
 #submitLogin {
 	margin-left: 250px;
 	margin-top: 30px;
