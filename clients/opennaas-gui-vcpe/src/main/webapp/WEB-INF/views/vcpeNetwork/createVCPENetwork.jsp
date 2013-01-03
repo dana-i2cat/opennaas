@@ -1,3 +1,4 @@
+
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ page session="false"%>
@@ -582,11 +583,11 @@
 			</div>						
 		</div>
 		<!-- End client -->
-		<c:if test='${operation.equals("create")}'>
+		<c:if test='${action == "create"}'>
 			<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.create"/>" />
 		</c:if>
-		<c:if test='${operation.equals("edit")}'>
-			<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.edit"/>" />
+		<c:if test='${action == "update"}'>
+			<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.update"/>" />
 		</c:if>
 	</form:form>
 </div>
