@@ -213,6 +213,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 			execute(router1);
 			execute(router2);
+
 		} catch (Exception e) {
 			throw new CapabilityException(e);
 		}
@@ -225,7 +226,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 * org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#changeVRRPPriority(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
-	public void changeVRRPPriority(VCPENetworkModel model) throws CapabilityException {
+	public VCPENetworkModel changeVRRPPriority(VCPENetworkModel model) throws CapabilityException {
 		log.debug("Change the priority VRRP");
 		try {
 			Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
@@ -239,6 +240,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 			// get VRRPProtocolEndpoint deep copies
 			VRRPProtocolEndpoint vrrpProtocolEndpoint1 = getVRRPProtocolEndpointDeepCopy((ComputerSystem) router1.getModel());
 			VRRPProtocolEndpoint vrrpProtocolEndpoint2 = getVRRPProtocolEndpointDeepCopy((ComputerSystem) router2.getModel());
+
 			// swap priorities
 			int priority1 = vrrpProtocolEndpoint1.getPriority();
 			int priority2 = vrrpProtocolEndpoint2.getPriority();
@@ -254,6 +256,15 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 			// execute queues
 			execute(router1);
 			execute(router2);
+
+			// Update the priority in the model and return the model
+			IResource vcpeResource = getResourceManager().getResourceById(resourceId);
+			VCPENetworkModel vcpeNetworkModel = (VCPENetworkModel) vcpeResource.getModel();
+			if (vcpeNetworkModel != null) {
+				vcpeNetworkModel.getVrrp().setPriorityMaster(vrrpProtocolEndpoint1.getPriority());
+				vcpeNetworkModel.getVrrp().setPriorityBackup(vrrpProtocolEndpoint2.getPriority());
+			}
+			return (VCPENetworkModel) (vcpeResource != null ? vcpeResource.getModel() : null);
 		} catch (Exception e) {
 			throw new CapabilityException(e);
 		}
