@@ -90,20 +90,20 @@ public class VCPENetworkController {
 		try {
 			if (!result.hasErrors()) {
 				String vcpeNetworkId = vcpeNetworkBO.create(vcpeNetwork);
-				model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 				model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
 				model.addAttribute("infoMsg", messageSource
 						.getMessage("vcpenetwork.create.message.info", null, locale));
+				model.addAttribute("action", new String("update"));
 			} else {
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.create.message.error.fields", null, locale));
+				model.addAttribute("action", new String("create"));
 			}
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
-		} finally {
-			model.addAttribute("action", new String("update"));
+			model.addAttribute("action", new String("create"));
 		}
 		return "createVCPENetwork";
 	}

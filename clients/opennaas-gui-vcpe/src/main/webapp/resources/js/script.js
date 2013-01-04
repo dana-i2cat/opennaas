@@ -882,7 +882,7 @@ $(document).ready(function() {
 					}
 				}
 				
-				// enable/disable submit button when error are produced
+				// enable/disable submit button when errors are produced
 				var errors = this.numberOfInvalids();
 				console.log("errors = " + errors);
 				if(errors == 0) {
@@ -890,11 +890,6 @@ $(document).ready(function() {
 				}
 				else {
 					button.attr("disabled", true);
-				}
-				// reset jsPlumb stuff on create view (some error labels produce div adjustments)
-				if($("#createVCPENetwork").length){
-					clearJSPlumbStuff();
-					setJSPlumbStuff(topologyVisible, bodVisible);
 				}
 			},
 			errorPlacement: function(error,element) {
