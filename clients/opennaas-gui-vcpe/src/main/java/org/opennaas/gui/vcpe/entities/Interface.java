@@ -18,7 +18,7 @@ public class Interface {
 	private String	name;
 	@Size(min = 1, max = 25, message = "{message.error.field.mandatory}")
 	private String	port;
-	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{message.error.field.format.ipandmask}")
+	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/(\\d{1}|[0-2]{1}\\d{1}|3[0-2])$", message = "{message.error.field.format.ipandmask}")
 	@Size(min = 1, max = 25)
 	private String	ipAddress;
 	@NotNull(message = "{message.error.field.mandatory}")
