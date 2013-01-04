@@ -7,6 +7,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<div id="updateIPs">
 <form:form modelAttribute="VCPENetwork" action="updateIps" method="post">
 	<form:hidden path="id" />
 	<form:hidden path="name" />
@@ -275,3 +276,4 @@
 
 <input id="updateIpButton" class="button" type="submit" value="<spring:message code="buttons.update"/>" />
 </form:form>
+</div>
