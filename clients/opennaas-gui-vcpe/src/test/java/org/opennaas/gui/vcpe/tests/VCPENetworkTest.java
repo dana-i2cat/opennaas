@@ -81,14 +81,11 @@ public class VCPENetworkTest {
 
 		VRRP vrrp = new VRRP();
 		vrrp.setVirtualIPAddress("193.1.190.161/24");
-		vrrp.setGroup(-1);
-		vrrp.setPriorityMaster(0);
-		vrrp.setPriorityBackup(0);
 
 		Set<ConstraintViolation<VRRP>> constraintViolations =
 				validator.validate(vrrp);
 
-		assertEquals(4, constraintViolations.size());
+		assertEquals(1, constraintViolations.size());
 		for (ConstraintViolation<VRRP> constraintViolation : constraintViolations) {
 			log.debug("Invalid param = '" + constraintViolation.getPropertyPath()
 					+ "', value = '" + constraintViolation.getInvalidValue()
