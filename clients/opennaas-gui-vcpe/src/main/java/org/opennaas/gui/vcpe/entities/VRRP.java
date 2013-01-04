@@ -3,6 +3,9 @@
  */
 package org.opennaas.gui.vcpe.entities;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -10,10 +13,19 @@ import javax.validation.constraints.Pattern;
  */
 public class VRRP {
 
-	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})", message = "{message.error.field.format.ip}")
+	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$", message = "{message.error.field.format.ip}")
 	private String	virtualIPAddress;
+	@NotNull(message = "{message.error.field.mandatory}")
+	@DecimalMin(value = "0")
+	@DecimalMax(value = "255")
 	private Integer	group;
+	@NotNull(message = "{message.error.field.mandatory}")
+	@DecimalMin(value = "1")
+	@DecimalMax(value = "255")
 	private Integer	priorityMaster;
+	@NotNull(message = "{message.error.field.mandatory}")
+	@DecimalMin(value = "1")
+	@DecimalMax(value = "255")
 	private Integer	priorityBackup;
 
 	/**
