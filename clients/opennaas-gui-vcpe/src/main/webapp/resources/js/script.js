@@ -835,16 +835,24 @@ function resizeWindow(e) {
 }
 
 // IPv4 validator regex based on RFC 1123 http://tools.ietf.org/html/rfc1123
-var validIPAddressRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
-var validIPAddressSubnetMaskRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/(\d{1}|[0-2]{1}\d{1}|3[0-2])$");
+var validIPAddressRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+var validIPAddressSubnetMaskRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/(\\d{1}|[0-2]{1}\\d{1}|3[0-2])$");
 
 $(document).ready(function() {
-	// only apply when create view is loaded
-	if($("#createVCPENetwork").length) {
+	// only apply when create view or update IPs view are loaded
+	if($("#createVCPENetwork").length || $("#updateIPs").length) {
+		// apply firewall table style
 		$("#firewallTable").styleTable();
 		
-		// onload disable create submit button
-		$("#submitButton").attr("disabled", true);
+		// get submit button
+		var button = null;
+		if($("#createVCPENetwork").length) {
+			button = $("#submitButton");
+		} else if($("#updateIPs").length) {
+			button = $("#updateIpButton");
+		}
+		// onload disable submit button
+		button.attr("disabled", true);
 		
 		// predefined style on BoD div
 		$("#bod").css('zIndex', 100);
@@ -852,6 +860,7 @@ $(document).ready(function() {
 		// ============ begin custom validators ==================== //
 		// regex
 		$.validator.addMethod("custom_regex", function(value, element,	regexp) {
+			console.log("regexp = " + regexp);
 			return this.optional(element) || regexp.test(value);
 		});
 		// ============ end custom validators ==================== //
@@ -873,38 +882,45 @@ $(document).ready(function() {
 					}
 				}
 				
+				// enable/disable submit button when error are produced
 				var errors = this.numberOfInvalids();
+				console.log("errors = " + errors);
 				if(errors == 0) {
-					// disable create button when errors are produced
-					$("#submitButton").attr("disabled", false);
+					button.attr("disabled", false);
 				}
 				else {
-					// enable create button when no errors are produced
-					$("#submitButton").attr("disabled", true);
+					button.attr("disabled", true);
 				}
-				// reset jsPlumb stuff
-				clearJSPlumbStuff();
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				// reset jsPlumb stuff on create view (some error labels produce div adjustments)
+				if($("#createVCPENetwork").length){
+					clearJSPlumbStuff();
+					setJSPlumbStuff(topologyVisible, bodVisible);
+				}
 			},
 			errorPlacement: function(error,element) {
 				return true;
 			},
 			highlight: function(element, errorClass, validClass) {
 				// add error class to label for element
+				console.log("errors on " + element.name);
 				$('label[for=\"' + element.name + '\"]').addClass("error");
 			},
 	        unhighlight: function(element, errorClass, validClass) {
 	        	// remove error class to label for element
+				console.log("valid value on " + element.name);
 				$('label[for=\"' + element.name + '\"]').removeClass("error");
 	        },
 	
-			onkeyup : function(element) {$(element).valid();},
+			onkeyup : false,
 			onsubmit : false,
 			onclick : false,
 			onfocusout : function(element) {$(element).valid();}
 		});
 		// ============ end validation options ==================== //
-		
+	}
+	
+	// create view form validation rules
+	if($("#createVCPENetwork").length) {
 		// ============ begin validation rules ==================== //	
 		$('#logicalRouterMaster\\.interfaces2\\.name').rules("add", { required: true });
 		$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true });
@@ -952,6 +968,16 @@ $(document).ready(function() {
 		
 		$('#name').rules("add", { required: true });
 		$('#clientIpRange').rules("add", { required: true });
+		// ============ end validation rules ==================== //
+	}
+	
+	// update IPs view form validation rules
+	else if($("#updateIPs").length) {
+		// ============ begin validation rules ==================== //
+		$('#logicalRouterMaster\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#logicalRouterMaster\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#logicalRouterBackup\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#logicalRouterBackup\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		// ============ end validation rules ==================== //
 	}
 });
