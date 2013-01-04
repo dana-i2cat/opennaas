@@ -881,10 +881,7 @@ $(document).ready(function() {
 				else {
 					// enable create button when no errors are produced
 					$("#submitButton").attr("disabled", true);
-				}
-				// reset jsPlumb stuff
-				clearJSPlumbStuff();
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				}				
 			},
 			errorPlacement: function(error,element) {
 				return true;
@@ -898,7 +895,7 @@ $(document).ready(function() {
 				$('label[for=\"' + element.name + '\"]').removeClass("error");
 	        },
 	
-			onkeyup : function(element) {$(element).valid();},
+			onkeyup : false,
 			onsubmit : false,
 			onclick : false,
 			onfocusout : function(element) {$(element).valid();}
