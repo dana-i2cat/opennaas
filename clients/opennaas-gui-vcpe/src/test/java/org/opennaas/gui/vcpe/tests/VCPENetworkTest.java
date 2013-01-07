@@ -1,4 +1,4 @@
-package org.opennaas.gui.vcpe.entities.tests;
+package org.opennaas.gui.vcpe.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opennaas.gui.vcpe.entities.Interface;
@@ -19,9 +20,8 @@ import org.opennaas.gui.vcpe.entities.VRRP;
  * @author Julio Carlos Barrera
  * 
  */
-// TODO solve errors on Logger load
 public class VCPENetworkTest {
-	// private Logger log = Logger.getLogger(VCPENetworkTest.class);
+	private Logger				log	= Logger.getLogger(VCPENetworkTest.class);
 
 	private static Validator	validator;
 
@@ -33,7 +33,7 @@ public class VCPENetworkTest {
 
 	@Test
 	public void interfaceIsNotValid() {
-		// log.debug("Testing interfaceIsNotValid...");
+		log.debug("Testing interfaceIsNotValid...");
 
 		Interface interface1 = new Interface();
 		interface1.setName("");
@@ -48,16 +48,16 @@ public class VCPENetworkTest {
 
 		assertEquals(4, constraintViolations.size());
 		for (ConstraintViolation<Interface> constraintViolation : constraintViolations) {
-			// log.debug("Invalid param = '" + constraintViolation.getPropertyPath()
-			// + "', value = '" + constraintViolation.getInvalidValue()
-			// + "', error = " + constraintViolation.getMessage());
+			log.debug("Invalid param = '" + constraintViolation.getPropertyPath()
+					+ "', value = '" + constraintViolation.getInvalidValue()
+					+ "', error = " + constraintViolation.getMessage());
 		}
-		// log.debug("End testing interfaceIsNotValid.");
+		log.debug("End testing interfaceIsNotValid.");
 	}
 
 	@Test
 	public void interfaceIsValid() {
-		// log.debug("Testing interfaceIsValid...");
+		log.debug("Testing interfaceIsValid...");
 
 		Interface interface1 = new Interface();
 		interface1.setName("ge-2/0/0");
@@ -72,12 +72,12 @@ public class VCPENetworkTest {
 
 		// no validation errors
 		assertEquals(0, constraintViolations.size());
-		// log.debug("End testing interfaceIsValid.");
+		log.debug("End testing interfaceIsValid.");
 	}
 
 	@Test
 	public void vrrpIsNotValid() {
-		// log.debug("Testing vrrpIsNotValid...");
+		log.debug("Testing vrrpIsNotValid...");
 
 		VRRP vrrp = new VRRP();
 		vrrp.setVirtualIPAddress("193.1.190.161/24");
@@ -87,16 +87,16 @@ public class VCPENetworkTest {
 
 		assertEquals(1, constraintViolations.size());
 		for (ConstraintViolation<VRRP> constraintViolation : constraintViolations) {
-			// log.debug("Invalid param = '" + constraintViolation.getPropertyPath()
-			// + "', value = '" + constraintViolation.getInvalidValue()
-			// + "', error = " + constraintViolation.getMessage());
+			log.debug("Invalid param = '" + constraintViolation.getPropertyPath()
+					+ "', value = '" + constraintViolation.getInvalidValue()
+					+ "', error = " + constraintViolation.getMessage());
 		}
-		// log.debug("End testing vrrpIsNotValid.");
+		log.debug("End testing vrrpIsNotValid.");
 	}
 
 	@Test
 	public void vrrpIsValid() {
-		// log.debug("Testing vrrpIsValid...");
+		log.debug("Testing vrrpIsValid...");
 
 		VRRP vrrp = new VRRP();
 		vrrp.setVirtualIPAddress("193.1.190.161");
@@ -109,6 +109,6 @@ public class VCPENetworkTest {
 
 		// no validation errors
 		assertEquals(0, constraintViolations.size());
-		// log.debug("End testing vrrpIsValid.");
+		log.debug("End testing vrrpIsValid.");
 	}
 }
