@@ -860,7 +860,6 @@ $(document).ready(function() {
 		// ============ begin custom validators ==================== //
 		// regex
 		$.validator.addMethod("custom_regex", function(value, element,	regexp) {
-			console.log("regexp = " + regexp);
 			return this.optional(element) || regexp.test(value);
 		});
 		// ============ end custom validators ==================== //
@@ -884,7 +883,6 @@ $(document).ready(function() {
 				
 				// enable/disable submit button when errors are produced
 				var errors = this.numberOfInvalids();
-				console.log("errors = " + errors);
 				if(errors == 0) {
 					button.attr("disabled", false);
 				}
@@ -897,12 +895,10 @@ $(document).ready(function() {
 			},
 			highlight: function(element, errorClass, validClass) {
 				// add error class to label for element
-				console.log("errors on " + element.name);
 				$('label[for=\"' + element.name + '\"]').addClass("error");
 			},
 	        unhighlight: function(element, errorClass, validClass) {
 	        	// remove error class to label for element
-				console.log("valid value on " + element.name);
 				$('label[for=\"' + element.name + '\"]').removeClass("error");
 	        },
 	
