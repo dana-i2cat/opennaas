@@ -914,12 +914,12 @@ $(document).ready(function() {
 	if($("#createVCPENetwork").length) {
 		// ============ begin validation rules ==================== //	
 		$('#logicalRouterMaster\\.interfaces2\\.name').rules("add", { required: true });
-		$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true });
+		$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterMaster\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterMaster\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterBackup\\.interfaces2\\.name').rules("add", { required: true });
-		$('#logicalRouterBackup\\.interfaces2\\.port').rules("add", { required: true });
+		$('#logicalRouterBackup\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterBackup\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterBackup\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
@@ -928,31 +928,31 @@ $(document).ready(function() {
 		$('#bgp\\.clientPrefixes').rules("add", { required: true });
 	
 		$('#logicalRouterMaster\\.interfaces1\\.name').rules("add", { required: true });
-		$('#logicalRouterMaster\\.interfaces1\\.port').rules("add", { required: true });
+		$('#logicalRouterMaster\\.interfaces1\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterMaster\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterMaster\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterMaster\\.interfaces0\\.name').rules("add", { required: true });
-		$('#logicalRouterMaster\\.interfaces0\\.port').rules("add", { required: true });
+		$('#logicalRouterMaster\\.interfaces0\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterMaster\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterMaster\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterBackup\\.interfaces0\\.name').rules("add", { required: true });
-		$('#logicalRouterBackup\\.interfaces0\\.port').rules("add", { required: true });
+		$('#logicalRouterBackup\\.interfaces0\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterBackup\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterBackup\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterBackup\\.interfaces1\\.name').rules("add", { required: true });
-		$('#logicalRouterBackup\\.interfaces1\\.port').rules("add", { required: true });
+		$('#logicalRouterBackup\\.interfaces1\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterBackup\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterBackup\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#bod\\.ifaceClient\\.name').rules("add", { required: true, maxlength: 25 });
-		$('#bod\\.ifaceClient\\.port').rules("add", { required: true });
+		$('#bod\\.ifaceClient\\.port').rules("add", { required: true, min: 0, max: 4094 });
 		$('#bod\\.ifaceClient\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#bod\\.ifaceClientBackup\\.name').rules("add", { required: true });
-		$('#bod\\.ifaceClientBackup\\.port').rules("add", { required: true });
+		$('#bod\\.ifaceClientBackup\\.port').rules("add", { required: true, min: 0 });
 		$('#bod\\.ifaceClientBackup\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#vrrp\\.virtualIPAddress').rules("add", { custom_regex: validIPAddressRegExp, required: true });
