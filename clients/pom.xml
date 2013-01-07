@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.16-SNAPSHOT</version>
+        <version>0.16</version>
 	</parent>
 	
 	<name>OpenNaaS :: Clients</name>
