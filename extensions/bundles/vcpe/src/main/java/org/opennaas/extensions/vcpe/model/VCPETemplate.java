@@ -27,6 +27,7 @@ public class VCPETemplate {
 	public static final String	DOWN1_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe1.down.iface.other";
 	public static final String	UP1_INTERFACE_LOCAL				= TEMPLATE_NS + ".vcpe1.up.iface.local";
 	public static final String	UP1_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe1.up.iface.other";
+	public static final String	LO1_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe1.lo.iface";
 
 	public static final String	VCPE2_ROUTER					= TEMPLATE_NS + ".vcpe2.router";
 	public static final String	INTER2_INTERFACE_LOCAL			= TEMPLATE_NS + ".vcpe2.inter.iface.local";
@@ -35,6 +36,7 @@ public class VCPETemplate {
 	public static final String	DOWN2_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe2.down.iface.other";
 	public static final String	UP2_INTERFACE_LOCAL				= TEMPLATE_NS + ".vcpe2.up.iface.local";
 	public static final String	UP2_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe2.up.iface.other";
+	public static final String	LO2_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe2.lo.iface";
 
 	public static final String	CLIENT1_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe1.client.iface.other";
 	public static final String	CLIENT2_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe2.client.iface.other";

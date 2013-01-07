@@ -38,6 +38,24 @@ public class VCPENetworkController {
 	private TemplateUtils							templateUtils;
 
 	/**
+	 * Redirect to home
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/home")
+	public String home(Model model, Locale locale) {
+		LOGGER.debug("home");
+		try {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.list.message.error", null, locale));
+		}
+		return "home";
+	}
+
+	/**
 	 * Redirect to the form to create a VCPENetwork
 	 * 
 	 * @param model
@@ -52,6 +70,8 @@ public class VCPENetworkController {
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
+		} finally {
+			model.addAttribute("action", new String("create"));
 		}
 		return "createVCPENetwork";
 	}
@@ -70,19 +90,20 @@ public class VCPENetworkController {
 		try {
 			if (!result.hasErrors()) {
 				String vcpeNetworkId = vcpeNetworkBO.create(vcpeNetwork);
-				model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 				model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
-				model.addAttribute("action", new String("update"));
 				model.addAttribute("infoMsg", messageSource
 						.getMessage("vcpenetwork.create.message.info", null, locale));
+				model.addAttribute("action", new String("update"));
 			} else {
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.create.message.error.fields", null, locale));
+				model.addAttribute("action", new String("create"));
 			}
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
+			model.addAttribute("action", new String("create"));
 		}
 		return "createVCPENetwork";
 	}
@@ -100,10 +121,11 @@ public class VCPENetworkController {
 		try {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
-			model.addAttribute("action", new String("update"));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.edit.message.error", null, locale));
+		} finally {
+			model.addAttribute("action", new String("update"));
 		}
 		return "createVCPENetwork";
 	}
@@ -119,7 +141,6 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/update")
 	public String update(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("update entity: " + vcpeNetwork);
-		String view = "createVCPENetwork";
 		try {
 			if (!result.hasErrors()) {
 				LOGGER.debug("removing the old environment");
@@ -136,8 +157,10 @@ public class VCPENetworkController {
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.update.message.error", null, locale) + ": " + e.getMessage());
+		} finally {
+			model.addAttribute("action", new String("update"));
 		}
-		return view;
+		return "createVCPENetwork";
 	}
 
 	/**
@@ -159,24 +182,6 @@ public class VCPENetworkController {
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.error", null, locale));
-		}
-		return "home";
-	}
-
-	/**
-	 * List all the VCPENetwork
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/home")
-	public String home(Model model, Locale locale) {
-		LOGGER.debug("home");
-		try {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.list.message.error", null, locale));
 		}
 		return "home";
 	}
@@ -208,7 +213,7 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/updateIps")
 	public String updateIps(VCPENetwork vcpeNetwork, Model model, Locale locale) {
-		LOGGER.debug("updateIps of VCPENetwork" + vcpeNetwork);
+		LOGGER.debug("update Ips of VCPENetwork: " + vcpeNetwork);
 		try {
 			model.addAttribute(vcpeNetworkBO.updateIps(vcpeNetwork));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
@@ -219,6 +224,49 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.updateIps.message.error", null, locale));
 		}
 		return "updateIpsVCPENetwork";
+	}
+
+	/**
+	 * Redirect to the form to modify the ip's
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/updateVRRPIp")
+	public String updateVRRPIp(VCPENetwork vcpeNetwork, Model model, Locale locale) {
+		LOGGER.debug("update VRRP ip of VCPENetwork: " + vcpeNetwork);
+		try {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute(vcpeNetworkBO.updateVRRPIp(vcpeNetwork));
+			model.addAttribute("infoMsg", messageSource
+					.getMessage("vcpenetwork.updateVRRPIp.message.info", null, locale));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.updateVRRPIp.message.error", null, locale));
+		}
+		return "createVCPENetwork";
+	}
+
+	/**
+	 * Change the priority in VRRP
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/changeVRRPPriority")
+	public String changeVRRPPriority(VCPENetwork vcpeNetwork, Model model, Locale locale) {
+		LOGGER.debug("change priority VRRP of VCPENetwork: " + vcpeNetwork);
+		try {
+			model.addAttribute("action", "update");
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute(vcpeNetworkBO.changeVRRPPriority(vcpeNetwork));
+			model.addAttribute("infoMsg", messageSource
+					.getMessage("vcpenetwork.changeVRRPPriority.message.info", null, locale));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.changeVRRPPriority.message.error", null, locale));
+		}
+		return "createVCPENetwork";
 	}
 
 	/**

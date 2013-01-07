@@ -85,16 +85,16 @@ public class VCPENetworkTest {
 			Assert.assertNotNull(resource.getModel());
 			Assert.assertEquals(model, resource.getModel());
 
-			String oldValue = ((VCPENetworkModel) resource.getModel()).getTemplateName();
+			String oldValue = ((VCPENetworkModel) resource.getModel()).getTemplateType();
 			String changed = "AAABBBCCC";
-			((VCPENetworkModel) resource.getModel()).setTemplateName(changed);
+			((VCPENetworkModel) resource.getModel()).setTemplateType(changed);
 
 			rm.stopResource(resource.getResourceIdentifier());
 			rm.startResource(resource.getResourceIdentifier());
 
-			Assert.assertEquals(changed, ((VCPENetworkModel) resource.getModel()).getTemplateName());
+			Assert.assertEquals(changed, ((VCPENetworkModel) resource.getModel()).getTemplateType());
 
-			((VCPENetworkModel) resource.getModel()).setTemplateName(oldValue);
+			((VCPENetworkModel) resource.getModel()).setTemplateType(oldValue);
 			Assert.assertEquals(model, resource.getModel());
 
 		} finally {

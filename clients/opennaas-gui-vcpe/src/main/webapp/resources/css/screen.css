@@ -367,7 +367,7 @@ form.inline p {
 }
 
 label.error {
-	padding: .3em .6em !important;
+	padding: .3em !important;
 }
 
 input.error {
