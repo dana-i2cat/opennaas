@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.gui.vcpe.services.rest.GenericRestService;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
@@ -122,6 +123,29 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
+	 * Call a rest service to the Physical Infrastructure
+	 * 
+	 * @return the physical infrastructure
+	 * @throws RestServiceException
+	 */
+	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws RestServiceException {
+		ClientResponse response = null;
+		try {
+			LOGGER.info("Calling getPhysicalInfrastructure VCPENetworkManager service");
+			String url = getURL("vcpenetwork/getPhysicalInfrastructure");
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
+			LOGGER.info("VCPENetwork recovered");
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return checkResponse(response) ? response.getEntity(VCPEPhysicalInfrastructure.class) : null;
+
+	}
+
+	/**
 	 * Call a rest service to check if the VLAN is free in the environment
 	 * 
 	 * @param vcpeId
@@ -194,4 +218,5 @@ public class VCPENetworkService extends GenericRestService {
 		}
 		return checkResponse(response) ? Boolean.valueOf(response.getEntity(String.class)) : null;
 	}
+
 }

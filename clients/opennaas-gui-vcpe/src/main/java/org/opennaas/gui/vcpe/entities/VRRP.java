@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
  */
 public class VRRP {
 
-	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})", message = "{error.field.format.ip}")
+	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$", message = "{message.error.field.format.ip}")
 	private String	virtualIPAddress;
 	private Integer	group;
 	private Integer	priorityMaster;

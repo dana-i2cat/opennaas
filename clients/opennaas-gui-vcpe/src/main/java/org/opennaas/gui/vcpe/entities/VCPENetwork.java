@@ -13,15 +13,15 @@ import org.hibernate.validator.constraints.NotBlank;
 public class VCPENetwork {
 
 	private String			id;
-	@NotBlank(message = "{error.field.mandatory}")
+	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			name;
-	@NotBlank(message = "{error.field.mandatory}")
-	private String			template;
+	@NotBlank(message = "{message.error.field.mandatory}")
+	private String			templateType;
 	@Valid
-	private LogicalRouter	logicalRouter1;
+	private LogicalRouter	logicalRouterMaster;
 	@Valid
-	private LogicalRouter	logicalRouter2;
-	@Pattern(regexp = "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,3})", message = "{error.field.format.ipandmask}")
+	private LogicalRouter	logicalRouterBackup;
+	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/(\\d{1}|[0-2]{1}\\d{1}|3[0-2])$", message = "{message.error.field.format.ipandmask}")
 	private String			clientIpRange;
 	@Valid
 	private BGP				bgp;
@@ -29,24 +29,13 @@ public class VCPENetwork {
 	private BoD				bod;
 	@Valid
 	private VRRP			vrrp;
+
 	private List<Link>		links;
 
 	/**
 	 * Default constructor
 	 */
 	public VCPENetwork() {
-	}
-
-	/**
-	 * @param vcpeNetwork
-	 */
-	public VCPENetwork(VCPENetwork vcpeNetwork) {
-		this.id = vcpeNetwork.getId();
-		this.name = vcpeNetwork.getName();
-		this.template = vcpeNetwork.getName();
-		this.logicalRouter1 = vcpeNetwork.getLogicalRouter1();
-		this.logicalRouter2 = vcpeNetwork.getLogicalRouter2();
-		this.clientIpRange = vcpeNetwork.getClientIpRange();
 	}
 
 	/**
@@ -80,48 +69,48 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @return the template
+	 * @return the templateType
 	 */
-	public String getTemplate() {
-		return template;
+	public String getTemplateType() {
+		return templateType;
 	}
 
 	/**
-	 * @param template
-	 *            the template to set
+	 * @param templateType
+	 *            the templateType to set
 	 */
-	public void setTemplate(String template) {
-		this.template = template;
+	public void setTemplateType(String templateType) {
+		this.templateType = templateType;
 	}
 
 	/**
-	 * @return the logicalRouter1
+	 * @return the logicalRouterMaster
 	 */
-	public LogicalRouter getLogicalRouter1() {
-		return logicalRouter1;
+	public LogicalRouter getLogicalRouterMaster() {
+		return logicalRouterMaster;
 	}
 
 	/**
-	 * @param logicalRouter1
-	 *            the logicalRouter1 to set
+	 * @param logicalRouterMaster
+	 *            the logicalRouterMaster to set
 	 */
-	public void setLogicalRouter1(LogicalRouter logicalRouter1) {
-		this.logicalRouter1 = logicalRouter1;
+	public void setLogicalRouterMaster(LogicalRouter logicalRouterMaster) {
+		this.logicalRouterMaster = logicalRouterMaster;
 	}
 
 	/**
-	 * @return the logicalRouter2
+	 * @return the logicalRouterBackup
 	 */
-	public LogicalRouter getLogicalRouter2() {
-		return logicalRouter2;
+	public LogicalRouter getLogicalRouterBackup() {
+		return logicalRouterBackup;
 	}
 
 	/**
-	 * @param logicalRouter2
-	 *            the logicalRouter2 to set
+	 * @param logicalRouterBackup
+	 *            the logicalRouterBackup to set
 	 */
-	public void setLogicalRouter2(LogicalRouter logicalRouter2) {
-		this.logicalRouter2 = logicalRouter2;
+	public void setLogicalRouterBackup(LogicalRouter logicalRouterBackup) {
+		this.logicalRouterBackup = logicalRouterBackup;
 	}
 
 	/**
@@ -197,16 +186,6 @@ public class VCPENetwork {
 	 */
 	public void setVrrp(VRRP vrrp) {
 		this.vrrp = vrrp;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", links=" + links + ", clientIpRange=" + clientIpRange + ", bgp=" + bgp + ", bod=" + bod + "]";
 	}
 
 }

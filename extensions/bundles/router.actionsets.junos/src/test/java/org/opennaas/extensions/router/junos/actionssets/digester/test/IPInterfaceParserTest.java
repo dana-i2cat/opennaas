@@ -20,9 +20,13 @@ import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.Service;
+import org.opennaas.extensions.router.model.ServiceAccessPoint;
 import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.VRRPGroup;
+import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 
 public class IPInterfaceParserTest {
 	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
@@ -53,8 +57,7 @@ public class IPInterfaceParserTest {
 				str += '\n';
 				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
 					if (protocolEndpoint instanceof IPProtocolEndpoint) {
-						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
-								protocolEndpoint;
+						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint) protocolEndpoint;
 						str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
 						str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
 					}
@@ -218,4 +221,76 @@ public class IPInterfaceParserTest {
 		return answer;
 	}
 
+	@Test
+	public void testVRRPConfigParserTest() throws Exception {
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String message = readStringFromFile("/parsers/getConfigWithVRRP.xml");
+
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
+
+		model = parser.getModel();
+
+		for (LogicalDevice device : model.getLogicalDevices()) {
+			if (device instanceof NetworkPort) {
+				NetworkPort port = (NetworkPort) device;
+
+				str += "- NetworkPort: " + '\n';
+				str += port.getName() + '.' + port.getPortNumber() + '\n';
+				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
+					if (protocolEndpoint instanceof IPProtocolEndpoint) {
+						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint) protocolEndpoint;
+						for (ServiceAccessPoint bindedProtocolEndpoint : ipProtocol
+								.getBindedServiceAccessPoints()) {
+							if (bindedProtocolEndpoint instanceof VRRPProtocolEndpoint) {
+								str += "VRRP endpoint ==> ";
+								VRRPProtocolEndpoint vrrpProtocolEndpoint = (VRRPProtocolEndpoint) bindedProtocolEndpoint;
+								str += "priority: " + vrrpProtocolEndpoint.getPriority() + ", ";
+								Service service = vrrpProtocolEndpoint.getService();
+								Assert.assertTrue("VRRPProtocolEndpoint must have a Service instace of VRRPGroup", service instanceof VRRPGroup);
+								VRRPGroup vrrpGroup = (VRRPGroup) service;
+								Assert.assertNotNull("VRRPGroup must have a VRRP name (ID)", vrrpGroup.getVrrpName());
+								str += "VRRP group: " + vrrpGroup.getVrrpName() + ", ";
+								Assert.assertNotNull("VRRPGroup must have a virtual IP address", vrrpGroup.getVirtualIPAddress());
+								str += "virtual IP address: " + vrrpGroup.getVirtualIPAddress();
+								str += '\n';
+							}
+						}
+					}
+				}
+				str += '\n';
+			} else {
+				str += "not searched device";
+			}
+
+		}
+
+		log.info(str);
+
+		int vrrpGroups = 0;
+		int vrrpProtocolEndpoints = 0;
+		List<Service> routerServices = model.getHostedService();
+		for (Service service : routerServices) {
+			if (service instanceof VRRPGroup) {
+				vrrpGroups++;
+				VRRPGroup vrrpGroup = (VRRPGroup) service;
+				Assert.assertTrue("Our VRRPGroup vrrpName must be 201", vrrpGroup.getVrrpName() == 201);
+				Assert.assertTrue("Our VRRPGroup virtual IP address mult be 193.1.190.161", vrrpGroup.getVirtualIPAddress().equals("193.1.190.161"));
+				List<ProtocolEndpoint> protocolEndpoints = vrrpGroup.getProtocolEndpoint();
+				for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
+					Assert.assertTrue("ProtocolEndpoint's binded to VRRPGroup must be instances of VRRPProtocolEndpoint",
+							protocolEndpoint instanceof VRRPProtocolEndpoint);
+					vrrpProtocolEndpoints++;
+					VRRPProtocolEndpoint vrrpProtocolEndpoint = (VRRPProtocolEndpoint) protocolEndpoint;
+					Assert.assertTrue("Our VRRPProtocolEndpoint's must have priority 100 or 200",
+							vrrpProtocolEndpoint.getPriority() == 100 || vrrpProtocolEndpoint.getPriority() == 200);
+				}
+			}
+		}
+		Assert.assertTrue("Our configuration must have one VRRPGroup", vrrpGroups == 1);
+		Assert.assertTrue("Our configuration must have two VRRPProtocolEndpoint's", vrrpProtocolEndpoints == 2);
+	}
 }

@@ -42,4 +42,25 @@ public class XmlHelper {
 		return formatted;
 	}
 
+	/**
+	 * Compares two XML String applying format
+	 * 
+	 * @param xmlString1
+	 *            first XML String to compare
+	 * @param xmlString2
+	 *            second XML String to compare
+	 * @return true if both XML formatted Strings are equal, false otherwise
+	 * @throws ParserConfigurationException
+	 * @throws TransformerException
+	 * @throws IOException
+	 * @throws SAXException
+	 * 
+	 * @author Julio Carlos Barrera
+	 */
+	public static boolean compareXMLStrings(String xmlString1, String xmlString2) throws SAXException, IOException, TransformerException,
+			ParserConfigurationException {
+		String formattedXMLString1 = XmlHelper.formatXML(xmlString1);
+		String formattedXMLString2 = XmlHelper.formatXML(xmlString2);
+		return formattedXMLString2.equals(formattedXMLString1);
+	}
 }

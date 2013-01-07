@@ -27,86 +27,58 @@ public class VCPENetworkModel implements IModel {
 	 * 
 	 */
 	private static final long			serialVersionUID	= -1793468268517626224L;
-	private String						vcpeNetworkId;
-	private String						vcpeNetworkName;
-	private String						templateName;
-	private List<VCPENetworkElement>	elements;
-	private boolean						created;
-	private String						clientIpAddressRange;
+	private String						id;
+	private String						name;
+	private String						templateType;
+	private String						clientIpRange;
 	private BGP							bgp;
 	private VRRP						vrrp;
+	private boolean						created;
+	private List<VCPENetworkElement>	elements;
 
 	/**
-	 * @return
+	 * @return the id
 	 */
-	public List<VCPENetworkElement> getElements() {
-		return elements;
+	public String getId() {
+		return id;
 	}
 
 	/**
-	 * @param elements
+	 * @param id
+	 *            the id to set
 	 */
-	public void setElements(List<VCPENetworkElement> elements) {
-		this.elements = elements;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
-	 * @return the vcpeNetworkId
+	 * @return the name
 	 */
-	public String getVcpeNetworkId() {
-		return vcpeNetworkId;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param vcpeNetworkId
-	 *            the vcpeNetworkId to set
+	 * @param name
+	 *            the name to set
 	 */
-	public void setVcpeNetworkId(String vcpeNetworkId) {
-		this.vcpeNetworkId = vcpeNetworkId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
-	 * @return the vcpeNetworkName
+	 * @return the clientIpRange
 	 */
-	public String getVcpeNetworkName() {
-		return vcpeNetworkName;
+	public String getClientIpRange() {
+		return clientIpRange;
 	}
 
 	/**
-	 * @param vcpeNetworkName
-	 *            the vcpeNetworkName to set
+	 * @param clientIpRange
+	 *            the clientIpRange to set
 	 */
-	public void setVcpeNetworkName(String vcpeNetworkName) {
-		this.vcpeNetworkName = vcpeNetworkName;
-	}
-
-	/**
-	 * @return the templateName
-	 */
-	public String getTemplateName() {
-		return templateName;
-	}
-
-	/**
-	 * @param templateName
-	 *            the templateName to set
-	 */
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
-	}
-
-	/**
-	 * @return the clientIpAddressRange
-	 */
-	public String getClientIpAddressRange() {
-		return clientIpAddressRange;
-	}
-
-	/**
-	 * @param clientIpAddressRange
-	 */
-	public void setClientIpAddressRange(String clientIpAddressRange) {
-		this.clientIpAddressRange = clientIpAddressRange;
+	public void setClientIpRange(String clientIpRange) {
+		this.clientIpRange = clientIpRange;
 	}
 
 	/**
@@ -136,6 +108,20 @@ public class VCPENetworkModel implements IModel {
 	 */
 	public void setBgp(BGP bgp) {
 		this.bgp = bgp;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<VCPENetworkElement> getElements() {
+		return elements;
+	}
+
+	/**
+	 * @param elements
+	 */
+	public void setElements(List<VCPENetworkElement> elements) {
+		this.elements = elements;
 	}
 
 	/*
@@ -173,21 +159,46 @@ public class VCPENetworkModel implements IModel {
 		this.vrrp = vrrp;
 	}
 
+	/**
+	 * @return the templateType
+	 */
+	public String getTemplateType() {
+		return templateType;
+	}
+
+	/**
+	 * @param templateType
+	 *            the templateType to set
+	 */
+	public void setTemplateType(String templateType) {
+		this.templateType = templateType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bgp == null) ? 0 : bgp.hashCode());
-		result = prime * result + ((clientIpAddressRange == null) ? 0 : clientIpAddressRange.hashCode());
+		result = prime * result + ((clientIpRange == null) ? 0 : clientIpRange.hashCode());
 		result = prime * result + (created ? 1231 : 1237);
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
-		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
-		result = prime * result + ((vcpeNetworkId == null) ? 0 : vcpeNetworkId.hashCode());
-		result = prime * result + ((vcpeNetworkName == null) ? 0 : vcpeNetworkName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((templateType == null) ? 0 : templateType.hashCode());
 		result = prime * result + ((vrrp == null) ? 0 : vrrp.hashCode());
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -202,10 +213,10 @@ public class VCPENetworkModel implements IModel {
 				return false;
 		} else if (!bgp.equals(other.bgp))
 			return false;
-		if (clientIpAddressRange == null) {
-			if (other.clientIpAddressRange != null)
+		if (clientIpRange == null) {
+			if (other.clientIpRange != null)
 				return false;
-		} else if (!clientIpAddressRange.equals(other.clientIpAddressRange))
+		} else if (!clientIpRange.equals(other.clientIpRange))
 			return false;
 		if (created != other.created)
 			return false;
@@ -214,20 +225,20 @@ public class VCPENetworkModel implements IModel {
 				return false;
 		} else if (!elements.equals(other.elements))
 			return false;
-		if (templateName == null) {
-			if (other.templateName != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!templateName.equals(other.templateName))
+		} else if (!id.equals(other.id))
 			return false;
-		if (vcpeNetworkId == null) {
-			if (other.vcpeNetworkId != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!vcpeNetworkId.equals(other.vcpeNetworkId))
+		} else if (!name.equals(other.name))
 			return false;
-		if (vcpeNetworkName == null) {
-			if (other.vcpeNetworkName != null)
+		if (templateType == null) {
+			if (other.templateType != null)
 				return false;
-		} else if (!vcpeNetworkName.equals(other.vcpeNetworkName))
+		} else if (!templateType.equals(other.templateType))
 			return false;
 		if (vrrp == null) {
 			if (other.vrrp != null)

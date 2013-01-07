@@ -19,20 +19,25 @@ import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 
+/**
+ * @author ?
+ * @author Julio Carlos Barrera
+ */
 public class ConfigureSubinterfaceActionTest {
 
 	private static ConfigureSubInterfaceAction	action;
 	private static ActionTestHelper				helper;
 	private static ProtocolSessionManager		protocolsessionmanager;
 
-	private final static String					iface1			= "fe-2/0/1.0";
-	private final static String					iface2			= "fe-2/0/1.1";
-	private final static String					logicalTunnel	= "lt-1/2/0.1";
-	private final static String					greInterface	= "gr-1/0/1.2";
+	private final static String					iface1				= "fe-2/0/1.0";
+	private final static String					iface2				= "fe-2/0/1.1";
+	private final static String					logicalTunnel		= "lt-1/2/0.1";
+	private final static String					greInterface		= "gr-1/0/1.2";
+	private final static String					loopbackInterface	= "lo0.100";
 
-	private static int							peerUnit		= 1;
-	private static int							vlanid			= 1;
-	Log											log				= LogFactory.getLog(ConfigureSubinterfaceActionTest.class);
+	private static int							peerUnit			= 1;
+	private static int							vlanid				= 1;
+	Log											log					= LogFactory.getLog(ConfigureSubinterfaceActionTest.class);
 
 	@BeforeClass
 	public static void init() {
@@ -132,6 +137,19 @@ public class ConfigureSubinterfaceActionTest {
 
 		Assert.assertTrue(response.getActionID()
 				.equals(ActionConstants.CONFIGURESUBINTERFACE));
+
+		assertEquals(STATUS.OK, response.getStatus());
+	}
+
+	@Test
+	public void LoopbackInterfaceTest() throws ActionException {
+		action.setParams(newUntaggedInterface(loopbackInterface));
+		action.checkParams(action.getParams());
+
+		Assert.assertEquals("Unvalid velocity template", "/VM_files/configureEthWithoutVLAN.vm", action.getTemplate());
+
+		ActionResponse response = action.execute(protocolsessionmanager);
+		Assert.assertTrue(response.getActionID().equals(ActionConstants.CONFIGURESUBINTERFACE));
 
 		assertEquals(STATUS.OK, response.getStatus());
 	}

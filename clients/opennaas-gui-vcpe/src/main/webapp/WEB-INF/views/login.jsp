@@ -31,6 +31,7 @@
 	<section id="content">	
 		<form action="../j_spring_security_check" method="post">
 			<h1><spring:message code="login.welcome"/></h1>
+			<div id="login_error">${error}</div>
 			<div>
 				<input type="text" placeholder=<spring:message code="login.username"/> required="required" id="j_username" name="j_username" />
 			</div>
