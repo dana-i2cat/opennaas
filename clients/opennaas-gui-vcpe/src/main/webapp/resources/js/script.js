@@ -924,7 +924,7 @@ $(document).ready(function() {
 		$('#logicalRouterBackup\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#bgp\\.clientASNumber').rules("add", { required: true });
-		$('#bgp\\.nocASNumber').rules("add", { required: true });
+		$('#bgp\\.nocASNumber').rules("add", { required: true, min: 0, max: 4294967295 });
 		$('#bgp\\.clientPrefixes').rules("add", { required: true });
 	
 		$('#logicalRouterMaster\\.interfaces1\\.name').rules("add", { required: true });
