@@ -5,7 +5,6 @@ package org.opennaas.gui.vcpe.entities;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -16,14 +15,12 @@ public class Interface {
 
 	@Size(min = 1, max = 25, message = "{message.error.field.mandatory}")
 	private String	name;
-	@Size(min = 1, max = 25, message = "{message.error.field.mandatory}")
+	@DecimalMin(value = "0", message = "{message.error.field.format.port}")
 	private String	port;
 	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/(\\d{1}|[0-2]{1}\\d{1}|3[0-2])$", message = "{message.error.field.format.ipandmask}")
-	@Size(min = 1, max = 25)
 	private String	ipAddress;
-	@NotNull(message = "{message.error.field.mandatory}")
-	@DecimalMin(value = "0")
-	@DecimalMax(value = "4094")
+	@DecimalMin(value = "0", message = "{message.error.field.format.vlan}")
+	@DecimalMax(value = "4094", message = "{message.error.field.format.vlan}")
 	private Integer	vlan;
 	private String	templateName;
 	private String	labelName;
