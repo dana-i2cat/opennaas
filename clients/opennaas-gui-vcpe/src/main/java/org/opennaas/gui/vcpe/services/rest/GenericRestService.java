@@ -3,6 +3,8 @@
  */
 package org.opennaas.gui.vcpe.services.rest;
 
+import java.util.Locale;
+
 import javax.ws.rs.core.Response.Status.Family;
 
 import org.apache.log4j.Logger;
@@ -20,6 +22,9 @@ public abstract class GenericRestService {
 	private static final Logger						LOGGER	= Logger.getLogger(GenericRestService.class);
 
 	@Autowired
+	private ReloadableResourceBundleMessageSource	configSource;
+
+	@Autowired
 	private ReloadableResourceBundleMessageSource	messageSource;
 
 	/**
@@ -27,7 +32,7 @@ public abstract class GenericRestService {
 	 * @return the url rest to call
 	 */
 	protected String getURL(String path) {
-		String url = messageSource.getMessage(Constants.WS_REST_URL, null, null) + path;
+		String url = configSource.getMessage(Constants.WS_REST_URL, null, Locale.getDefault()) + path;
 		LOGGER.info("Web service url: " + url);
 		return url;
 	}
