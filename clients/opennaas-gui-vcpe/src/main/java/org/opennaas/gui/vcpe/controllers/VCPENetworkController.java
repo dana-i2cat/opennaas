@@ -227,24 +227,39 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * Redirect to the form to modify the ip's
+	 * Method for the client user to update the VRRP Ip
 	 * 
+	 * @param vcpeNetwork
 	 * @param model
+	 * @param locale
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/updateVRRPIp")
+	public String updateVRRPIpClient(VCPENetwork vcpeNetwork, Model model, Locale locale) {
+		return updateVRRPIp(vcpeNetwork, model, locale);
+	}
+
+	/**
+	 * Modifiy the VRRP Ip
+	 * 
+	 * @param vcpeNetwork
+	 * @param model
+	 * @param locale
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/updateVRRPIp")
 	public String updateVRRPIp(VCPENetwork vcpeNetwork, Model model, Locale locale) {
 		LOGGER.debug("update VRRP ip of VCPENetwork: " + vcpeNetwork);
 		try {
+			vcpeNetworkBO.updateVRRPIp(vcpeNetwork);
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-			model.addAttribute(vcpeNetworkBO.updateVRRPIp(vcpeNetwork));
 			model.addAttribute("infoMsg", messageSource
 					.getMessage("vcpenetwork.updateVRRPIp.message.info", null, locale));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.updateVRRPIp.message.error", null, locale));
 		}
-		return "createVCPENetwork";
+		return "updateIpsVCPENetwork";
 	}
 
 	/**
