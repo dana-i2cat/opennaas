@@ -26,6 +26,12 @@
         <appender-ref ref="file" />
 	</logger>
 
+	<!-- OpenNaas Test Loggers -->
+	<logger name="org.opennaas.gui.vcpe.tests" additivity="false">
+		<level value="debug" />
+        <appender-ref ref="console" />
+	</logger>
+
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="error" />
