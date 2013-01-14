@@ -18,7 +18,6 @@ import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
-import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -122,14 +121,13 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#getPhysicalInfrastructure()
+	/**
+	 * @return
+	 * @throws VCPENetworkManagerException
 	 */
 	@Override
-	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws VCPENetworkManagerException {
-		return getModel().getPhysicalInfrastructure();
+	public VCPENetworkModel getPhyInfrastructureSuggestion() throws VCPENetworkManagerException {
+		return null;
 	}
 
 	/*
