@@ -83,9 +83,9 @@ public class VCPENetworkBO {
 	 * @return the physical infrastructure
 	 * @throws RestServiceException
 	 */
-	public VCPENetwork getPhyInfrastructureSuggestion() throws RestServiceException {
+	public VCPENetwork getPhyInfrastructureSuggestion(String templateType) throws RestServiceException {
 		LOGGER.debug("get the physical infrastructure");
-		return VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getPhysicalInfrastructure());
+		return VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getPhysicalInfrastructure(templateType));
 	}
 
 	/**
