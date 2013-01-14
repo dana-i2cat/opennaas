@@ -8,7 +8,6 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.gui.vcpe.services.rest.GenericRestService;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
@@ -128,20 +127,20 @@ public class VCPENetworkService extends GenericRestService {
 	 * @return the physical infrastructure
 	 * @throws RestServiceException
 	 */
-	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws RestServiceException {
+	public VCPENetworkModel getPhysicalInfrastructure() throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling getPhysicalInfrastructure VCPENetworkManager service");
-			String url = getURL("vcpenetwork/getPhysicalInfrastructure");
+			LOGGER.info("Calling getPhyInfrastructureSuggestion VCPENetworkManager service");
+			String url = getURL("vcpenetwork/getPhyInfrastructureSuggestion");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
-			LOGGER.info("VCPENetwork recovered");
+			LOGGER.info("PhysicalInfrastructure recovered");
 		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
-		return checkResponse(response) ? response.getEntity(VCPEPhysicalInfrastructure.class) : null;
+		return checkResponse(response) ? response.getEntity(VCPENetworkModel.class) : null;
 
 	}
 
