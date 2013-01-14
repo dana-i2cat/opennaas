@@ -12,7 +12,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
-import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Path("/")
@@ -77,15 +76,15 @@ public interface IVCPENetworkManager {
 	public VCPEManagerModel getModel();
 
 	/**
-	 * Get the physical infrastructure
+	 * Get a suggestion for the physical infrastructure
 	 * 
 	 * @return the physical infrastructure
 	 * @throws VCPENetworkManagerException
 	 */
-	@Path("/getPhysicalInfrastructure")
+	@Path("/getPhyInfrastructureSuggestion")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws VCPENetworkManagerException;
+	public VCPENetworkModel getPhyInfrastructureSuggestion() throws VCPENetworkManagerException;
 
 	/**
 	 * Check if a VLAN is available or not in a interface
