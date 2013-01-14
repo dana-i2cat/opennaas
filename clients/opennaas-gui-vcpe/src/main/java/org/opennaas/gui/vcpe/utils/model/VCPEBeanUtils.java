@@ -15,7 +15,6 @@ import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
-import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.entities.VRRP;
 
@@ -215,13 +214,4 @@ public class VCPEBeanUtils {
 		return vrrpOut;
 	}
 
-	/**
-	 * @param physicalInfrastructure
-	 * @return
-	 */
-	public static PhysicalInfrastructure getPhysicalInfrastructure(
-			org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure physicalInfrastructure) {
-		// TODO Auto-generated method stub
-		return new PhysicalInfrastructure();
-	}
 }
