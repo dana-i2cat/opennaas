@@ -126,8 +126,11 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @throws VCPENetworkManagerException
 	 */
 	@Override
-	public VCPENetworkModel getPhyInfrastructureSuggestion() throws VCPENetworkManagerException {
-		return null;
+	public VCPENetworkModel getPhyInfrastructureSuggestion(String templateType) throws VCPENetworkManagerException {
+
+		ITemplate template = TemplateSelector.getTemplate(templateType);
+		VCPENetworkModel phySuggestion = template.getPhysicalInfrastructureSuggestion();
+		return phySuggestion;
 	}
 
 	/*
