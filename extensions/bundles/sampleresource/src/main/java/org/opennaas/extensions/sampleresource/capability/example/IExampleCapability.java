@@ -14,6 +14,6 @@ public interface IExampleCapability extends ICapability {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public String sayHello(String userName) throws CapabilityException;
+	public String sayHello(String userName,InPNetwork net) throws CapabilityException;
 
 }
