@@ -13,14 +13,13 @@
 <div id="home_body">
 	<!-- WAN -->
 	<div id="wan">
-		<h2><spring:message code="home.wan"/></h2>
+		<h2><spring:message code="physical.wan"/></h2>
 		<div style="=width:780px;">
 			<div id="cpe_core">
-				<h3><spring:message code="home.routerCore"/></h3>
+				<h3><spring:message code="physical.routerCore"/></h3>
 				<div>
 					<div id="config" class="ui-widget-content">
-						<p><b>Interface:</b> lo0.100</p>
-						<p><b>IP:</b> 193.1.190.141/30</p>
+						<p><b><spring:message code="interface"/>:</b> lo0.100</p>
 					</div>
 				</div>
 			</div>
@@ -28,72 +27,58 @@
 	</div>	
 	<!-- WAN Interfaces -->
 	<div id="wan_master" class="ui-widget-content">	
-		<label>WAN Master</label>
+		<label><spring:message code="physical.routerMaster.up"/></label>
 		<div class="ui-widget-content config_content">
-			<div><b>Interface:</b> <spring:message code="home.wan_master.interface"/></div>
-			<br>
-			<div><b>IP:</b> <spring:message code="home.wan_master.ip"/></div>
+			<div><b><spring:message code="interface"/>:</b> <spring:message code="physical.wan_master.interface"/></div>
 		</div>										
 	</div>
 	<div id="wan_backup" class="ui-widget-content">				
-		<label>WAN Backup</label>	
+		<label><spring:message code="physical.routerBackup.up"/></label>
 		<div class="ui-widget-content config_content">
-			<div><b>Interface:</b> <spring:message code="home.wan_backup.interface"/></div>
-			<br>
-			<div><b>IP:</b> <spring:message code="home.wan_backup.ip"/></div>
+			<div><b><spring:message code="interface"/>:</b> <spring:message code="physical.wan_backup.interface"/></div>
 		</div>		
 	</div>
 	<!-- Routers -->
 	<div id="cpe_master">
-		<h3><spring:message code="home.routerMaster"/></h3>
+		<h3><spring:message code="physical.routerMaster"/></h3>
 		<div>
 			<div id="config" class="ui-widget-content">
-				<p><b>Interface:</b> lo0.100</p>
-				<p><b>IP:</b> 193.1.190.141/30</p>
+				<p><b><spring:message code="interface"/>:</b> lo0.100</p>
 			</div>
 		</div>
 	</div>
 	<div id="cpe_backup">
-		<h3><spring:message code="home.routerBackup"/></h3>
+		<h3><spring:message code="physical.routerBackup"/></h3>
 		<div>
 			<div id="config" class="ui-widget-content">
-				<p><b>Interface:</b> lo0.0</p>
-				<p><b>IP:</b> 193.1.190.141/30</p>
+				<p><b><spring:message code="interface"/>:</b> lo0.0</p>
 			</div>
 		</div>
 	</div>
 	<!-- VCPE Interfaces -->
 	<div id="cpe_interfaces">
 		<div id="cpe_client_master" class="ui-widget-content">				
-			<label>Client Master</label>
+		<label><spring:message code="physical.routerMaster.down"/></label>
 			<div class="ui-widget-content config_content">
-				<div><b>Interface:</b> <spring:message code="home.cpe_client_master.interface"/> </div>
-				<br>
-				<div><b>IP:</b> <spring:message code="home.cpe_client_master.ip"/></div>
+				<div><b><spring:message code="interface"/>:</b> <spring:message code="physical.cpe_client_master.interface"/> </div>
 			</div>	
 		</div>
 		<div id="cpe_inter_master" class="ui-widget-content">
-			<label>Inter Master</label>
+		<label><spring:message code="physical.routerMaster.inter"/></label>
 			<div class="ui-widget-content config_content">
-				<div><b>Interface:</b> <spring:message code="home.cpe_inter_master.interface"/></div>
-				<br>
-				<div><b>IP:</b> <spring:message code="home.cpe_inter_master.ip"/></div>
+				<div><b><spring:message code="interface"/>:</b> <spring:message code="physical.cpe_inter_master.interface"/></div>
 			</div>
 		</div>
 		<div id="cpe_inter_backup" class="ui-widget-content">
-			<label>Inter Backup</label>
+		<label><spring:message code="physical.routerBackup.inter"/></label>
 			<div class="ui-widget-content config_content">
-				<div><b>Interface:</b> <spring:message code="home.cpe_inter_backup.interface"/></div>
-				<br>
-				<div><b>IP:</b> <spring:message code="home.cpe_inter_backup.ip"/></div>
+				<div><b><spring:message code="interface"/>:</b><spring:message code="physical.cpe_inter_backup.interface"/></div>
 			</div>
 		</div>
 		<div id="cpe_client_backup" class="ui-widget-content">
-			<label>Client Backup</label>
+		<label><spring:message code="physical.routerBackup.down"/></label>
 			<div class="ui-widget-content config_content">
-				<div><b>Interface:</b> <spring:message code="home.cpe_client_backup.interface"/></div>
-				<br>
-				<div><b>IP:</b> <spring:message code="home.cpe_client_backup.ip"/></div>
+				<div><b><spring:message code="interface"/>:</b> <spring:message code="physical.cpe_client_backup.interface"/></div>
 			</div>
 		</div>
 	</div>

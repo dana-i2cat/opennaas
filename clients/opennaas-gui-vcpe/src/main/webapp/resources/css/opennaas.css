@@ -335,7 +335,7 @@ h3.lr_inactive {
 
 #config {
 	width: 200px;
-	height: 50px;
+	height: 20px;
 	float: left;
 	margin: 0 10px 10px 0;
 	z-index: inherit;
