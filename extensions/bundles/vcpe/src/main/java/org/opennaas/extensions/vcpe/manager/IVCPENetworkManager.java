@@ -89,6 +89,23 @@ public interface IVCPENetworkManager {
 	public VCPENetworkModel getPhyInfrastructureSuggestion(@QueryParam("templateType") String templateType) throws VCPENetworkManagerException;
 
 	/**
+	 * Get a suggestion for the logical infrastructure
+	 * 
+	 * @param templateType
+	 *            whose physical infrastructure is desired.
+	 * @param physicalInfrastructure
+	 *            supporting the logical infrastructure to obtain.
+	 * @return the suggested logical infrastructure
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/getLogicalInfrastructureSuggestion")
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	public VCPENetworkModel getLogicalInfrastructureSuggestion(@QueryParam("templateType") String templateType,
+			VCPENetworkModel physicalInfrastructure) throws VCPENetworkManagerException;
+
+	/**
 	 * Check if a VLAN is available or not in a interface
 	 * 
 	 * @param vcpeId
