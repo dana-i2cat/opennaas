@@ -33,6 +33,8 @@ public class Template implements ITemplate {
 	private static final String	TEMPLATE		= "/templates/template.properties";
 	private static final String	BGP_TEMPLATE	= "/templates/bgpModel1.properties";
 
+	private String				templateType	= TemplateSelector.BASIC_TEMPLATE;
+
 	private Properties			props;
 	private Properties			bgpProps;
 
@@ -53,6 +55,10 @@ public class Template implements ITemplate {
 		}
 	}
 
+	public String getTemplateType() {
+		return templateType;
+	}
+
 	/**
 	 * Generate the model
 	 * 
@@ -70,7 +76,7 @@ public class Template implements ITemplate {
 		model.setElements(elements);
 
 		// Generate the physical model
-		List<VCPENetworkElement> physicalElements = generatePhysicalElements(initialModel);
+		List<VCPENetworkElement> physicalElements = generateAndMapPhysicalElements(initialModel).getElements();
 
 		// checkPhysicalAvailability(physicalElements, managerModel);
 
@@ -86,6 +92,16 @@ public class Template implements ITemplate {
 		elements.addAll(physicalElements);
 		elements.addAll(logicalElements);
 		return model;
+	}
+
+	@Override
+	public VCPENetworkModel getPhysicalInfrastructureSuggestion() throws VCPENetworkManagerException {
+
+		VCPENetworkModel generated = generatePhysicalElements();
+		// TODO suggested mapping should be more intelligent, not properties driven
+		VCPENetworkModel mappedFromProperties = mapPhysicalElementsFromProperties(generated, props);
+		// TODO MUST CHECK MAPPED ELEMENTS EXIST IN PHYSICAL TOPOLOGY
+		return mappedFromProperties;
 	}
 
 	/**
@@ -127,7 +143,7 @@ public class Template implements ITemplate {
 		String loopback1Port = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.port");
 		Long loopback1Vlan = 0L;
 		String loopback1Ip = props.getProperty("vcpenetwork.logicalrouter1.interface.lo.ipaddress");
-		Interface loopback1 = getInterface(loopback1Name + "." + loopback1Port, VCPETemplate.UP1_INTERFACE_PEER, loopback1Vlan, loopback1Ip,
+		Interface loopback1 = getInterface(loopback1Name + "." + loopback1Port, VCPETemplate.LO1_INTERFACE, loopback1Vlan, loopback1Ip,
 				loopback1Name, Integer.parseInt(loopback1Port));
 		vcpe1.getInterfaces().add(loopback1);
 
@@ -165,7 +181,7 @@ public class Template implements ITemplate {
 		String loopback2Port = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.port");
 		Long loopback2Vlan = 0L;
 		String loopback2Ip = props.getProperty("vcpenetwork.logicalrouter2.interface.lo.ipaddress");
-		Interface loopback2 = getInterface(loopback2Name + "." + loopback2Port, VCPETemplate.UP1_INTERFACE_PEER, loopback2Vlan, loopback2Ip,
+		Interface loopback2 = getInterface(loopback2Name + "." + loopback2Port, VCPETemplate.LO2_INTERFACE, loopback2Vlan, loopback2Ip,
 				loopback2Name, Integer.parseInt(loopback2Port));
 		vcpe2.getInterfaces().add(loopback2);
 
@@ -237,89 +253,182 @@ public class Template implements ITemplate {
 		return elements;
 	}
 
-	private List<VCPENetworkElement> generatePhysicalElements(VCPENetworkModel initialModel) {
+	private VCPENetworkModel generateAndMapPhysicalElements(VCPENetworkModel initialModel) {
 
-		// TODO MUST CHECK CREATED ELEMENTS EXIST IN PHYSICAL TOPOLOGY
+		VCPENetworkModel generated = generatePhysicalElements();
+		VCPENetworkModel mappedFromProperties = mapPhysicalElementsFromProperties(generated, props);
+		VCPENetworkModel mapped = mapPhysicalElementsFromInputModel(mappedFromProperties, initialModel);
+		// TODO MUST CHECK MAPPED ELEMENTS EXIST IN PHYSICAL TOPOLOGY
+		return mapped;
+	}
+
+	private VCPENetworkModel mapPhysicalElementsFromInputModel(VCPENetworkModel model, VCPENetworkModel inputModel) {
+
+		// TODO update ALL elements with data in inputModel (everything may have changed)
+
+		// select client1 interface using inputModel
+		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+				VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+
+		Interface client1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		client1.setName(inputClient1.getPhysicalInterfaceName());
+
+		// select client2 interface using inputModel
+		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+				VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+
+		Interface client2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		client2.setName(inputClient2.getPhysicalInterfaceName());
+
+		return model;
+	}
+
+	private VCPENetworkModel mapPhysicalElementsFromProperties(VCPENetworkModel model, Properties props) {
+
+		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_ROUTER);
+		core.setName(props.getProperty("vcpenetwork.routercore.name"));
+
+		Interface coremaster = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_INTERFACE_MASTER);
+		coremaster.setName(props.getProperty("vcpenetwork.routercore.interface.master.name"));
+
+		Interface corebkp = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_INTERFACE_BKP);
+		corebkp.setName(props.getProperty("vcpenetwork.routercore.interface.bkp.name"));
+
+		Interface corelo = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_LO_INTERFACE);
+		corelo.setName(props.getProperty("vcpenetwork.routercore.interface.lo.name"));
+
+		Router r1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
+		r1.setName(props.getProperty("vcpenetwork.router1.name"));
+
+		Interface inter1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_PHY_INTERFACE_LOCAL);
+		inter1.setName(props.getProperty("vcpenetwork.router1.interface.inter.name"));
+
+		Interface inter1other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
+		inter1other.setName(props.getProperty("vcpenetwork.router1.interface.inter.other.name"));
+
+		Interface down1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_PHY_INTERFACE_LOCAL);
+		down1.setName(props.getProperty("vcpenetwork.router1.interface.down.name"));
+
+		Interface down1other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
+		down1other.setName(props.getProperty("vcpenetwork.router1.interface.down.other.name"));
+
+		Interface up1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_PHY_INTERFACE_LOCAL);
+		up1.setName(props.getProperty("vcpenetwork.router1.interface.up.name"));
+
+		Interface lo1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO1_PHY_INTERFACE);
+		lo1.setName(props.getProperty("vcpenetwork.router1.interface.lo.name"));
+
+		Router r2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
+		r2.setName(props.getProperty("vcpenetwork.router2.name"));
+
+		Interface inter2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_PHY_INTERFACE_LOCAL);
+		inter2.setName(props.getProperty("vcpenetwork.router2.interface.inter.name"));
+
+		Interface inter2other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+		inter2other.setName(props.getProperty("vcpenetwork.router2.interface.inter.other.name"));
+
+		Interface down2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_PHY_INTERFACE_LOCAL);
+		down2.setName(props.getProperty("vcpenetwork.router2.interface.down.name"));
+
+		Interface down2other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		down2other.setName(props.getProperty("vcpenetwork.router2.interface.down.other.name"));
+
+		Interface up2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_PHY_INTERFACE_LOCAL);
+		up2.setName(props.getProperty("vcpenetwork.router2.interface.up.name"));
+
+		Interface lo2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO2_PHY_INTERFACE);
+		lo2.setName(props.getProperty("vcpenetwork.router2.interface.lo.name"));
+
+		Domain autobahn = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
+		autobahn.setName(props.getProperty("vcpenetwork.bod.name"));
+
+		return model;
+	}
+
+	private VCPENetworkModel generatePhysicalElements() {
+
+		Router core = new Router();
+		core.setTemplateName(VCPETemplate.CORE_PHY_ROUTER);
+
+		Interface coreMaster = new Interface();
+		coreMaster.setTemplateName(VCPETemplate.CORE_PHY_INTERFACE_MASTER);
+
+		Interface coreBkp = new Interface();
+		coreBkp.setTemplateName(VCPETemplate.CORE_PHY_INTERFACE_BKP);
+
+		Interface coreLo = new Interface();
+		coreLo.setTemplateName(VCPETemplate.CORE_PHY_LO_INTERFACE);
+
+		List<Interface> coreInterfaces = new ArrayList<Interface>();
+		coreInterfaces.add(coreMaster);
+		coreInterfaces.add(coreBkp);
+		coreInterfaces.add(coreLo);
+		core.setInterfaces(coreInterfaces);
 
 		Router r1 = new Router();
 		r1.setTemplateName(VCPETemplate.CPE1_PHY_ROUTER);
-		r1.setName(props.getProperty("vcpenetwork.router1.name"));
 
 		Interface inter1 = new Interface();
 		inter1.setTemplateName(VCPETemplate.INTER1_PHY_INTERFACE_LOCAL);
-		inter1.setName(props.getProperty("vcpenetwork.router1.interface.inter.name"));
 
 		Interface inter1other = new Interface();
 		inter1other.setTemplateName(VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
-		inter1other.setName(props.getProperty("vcpenetwork.router1.interface.inter.other.name"));
 
 		Interface down1 = new Interface();
 		down1.setTemplateName(VCPETemplate.DOWN1_PHY_INTERFACE_LOCAL);
-		down1.setName(props.getProperty("vcpenetwork.router1.interface.down.name"));
 
 		Interface down1other = new Interface();
 		down1other.setTemplateName(VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN);
-		down1other.setName(props.getProperty("vcpenetwork.router1.interface.down.other.name"));
 
 		Interface up1 = new Interface();
 		up1.setTemplateName(VCPETemplate.UP1_PHY_INTERFACE_LOCAL);
-		up1.setName(props.getProperty("vcpenetwork.router1.interface.up.name"));
-
-		// select client1 interface using initialModel
-		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 
 		Interface client1 = new Interface();
 		client1.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
-		client1.setName(inputClient1.getPhysicalInterfaceName());
-		// TODO check there is a physical interface in physical topology with client1.getName() name
+
+		Interface lo1 = new Interface();
+		lo1.setTemplateName(VCPETemplate.LO1_PHY_INTERFACE);
 
 		List<Interface> r1Interfaces = new ArrayList<Interface>();
 		r1Interfaces.add(inter1);
 		r1Interfaces.add(down1);
 		r1Interfaces.add(up1);
+		r1Interfaces.add(lo1);
 		r1.setInterfaces(r1Interfaces);
 
 		Router r2 = new Router();
 		r2.setTemplateName(VCPETemplate.CPE2_PHY_ROUTER);
-		r2.setName(props.getProperty("vcpenetwork.router2.name"));
 
 		Interface inter2 = new Interface();
 		inter2.setTemplateName(VCPETemplate.INTER2_PHY_INTERFACE_LOCAL);
-		inter2.setName(props.getProperty("vcpenetwork.router2.interface.inter.name"));
 
 		Interface inter2other = new Interface();
 		inter2other.setTemplateName(VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
-		inter2other.setName(props.getProperty("vcpenetwork.router2.interface.inter.other.name"));
 
 		Interface down2 = new Interface();
 		down2.setTemplateName(VCPETemplate.DOWN2_PHY_INTERFACE_LOCAL);
-		down2.setName(props.getProperty("vcpenetwork.router2.interface.down.name"));
 
 		Interface down2other = new Interface();
 		down2other.setTemplateName(VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
-		down2other.setName(props.getProperty("vcpenetwork.router2.interface.down.other.name"));
 
 		Interface up2 = new Interface();
 		up2.setTemplateName(VCPETemplate.UP2_PHY_INTERFACE_LOCAL);
-		up2.setName(props.getProperty("vcpenetwork.router2.interface.up.name"));
-
-		// select client1 interface using initialModel
-		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(initialModel, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
 		Interface client2 = new Interface();
 		client2.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
-		client2.setName(inputClient2.getPhysicalInterfaceName());
-		// TODO check there is a physical interface in physical topology with client2.getName() name
+
+		Interface lo2 = new Interface();
+		lo2.setTemplateName(VCPETemplate.LO2_PHY_INTERFACE);
 
 		List<Interface> r2Interfaces = new ArrayList<Interface>();
 		r2Interfaces.add(inter2);
 		r2Interfaces.add(down2);
 		r2Interfaces.add(up2);
+		r2Interfaces.add(lo2);
 		r2.setInterfaces(r2Interfaces);
 
 		Domain autobahn = new Domain();
 		autobahn.setTemplateName(VCPETemplate.AUTOBAHN);
-		autobahn.setName(props.getProperty("vcpenetwork.bod.name"));
 
 		List<Interface> autobahnInterfaces = new ArrayList<Interface>();
 		autobahnInterfaces.add(inter1other);
@@ -331,6 +440,8 @@ public class Template implements ITemplate {
 		autobahn.setInterfaces(autobahnInterfaces);
 
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
+		elements.add(core);
+		elements.addAll(core.getInterfaces());
 		elements.add(r1);
 		elements.addAll(r1.getInterfaces());
 		elements.add(r2);
@@ -338,7 +449,12 @@ public class Template implements ITemplate {
 		elements.add(autobahn);
 		elements.addAll(autobahn.getInterfaces());
 
-		return elements;
+		VCPENetworkModel model = new VCPENetworkModel();
+		model.setElements(elements);
+		model.setTemplateType(getTemplateType());
+		model.setCreated(false);
+
+		return model;
 	}
 
 	private VRRP configureVRRP(VCPENetworkModel model) {
@@ -524,7 +640,7 @@ public class Template implements ITemplate {
 			for (Interface iface : domain.getInterfaces()) {
 				if (!phyInfrDomain.getInterfaces().contains(iface))
 					throw new VCPENetworkManagerException(
-							"Interfce " + iface.getName() + " for domain " + domain.getName() + " is not available in physical insfrastructure");
+							"Interface " + iface.getName() + " for domain " + domain.getName() + " is not available in physical insfrastructure");
 			}
 		}
 
@@ -537,7 +653,7 @@ public class Template implements ITemplate {
 			for (Interface iface : router.getInterfaces()) {
 				if (!phyInfrRouter.getInterfaces().contains(iface))
 					throw new VCPENetworkManagerException(
-							"Interfce " + iface.getName() + " for router " + router.getName() + " is not available in physical insfrastructure");
+							"Interface " + iface.getName() + " for router " + router.getName() + " is not available in physical insfrastructure");
 			}
 		}
 

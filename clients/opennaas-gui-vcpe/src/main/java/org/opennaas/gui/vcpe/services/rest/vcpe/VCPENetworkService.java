@@ -127,11 +127,11 @@ public class VCPENetworkService extends GenericRestService {
 	 * @return the physical infrastructure
 	 * @throws RestServiceException
 	 */
-	public VCPENetworkModel getPhysicalInfrastructure() throws RestServiceException {
+	public VCPENetworkModel getPhysicalInfrastructure(String templateType) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling getPhyInfrastructureSuggestion VCPENetworkManager service");
-			String url = getURL("vcpenetwork/getPhyInfrastructureSuggestion");
+			String url = getURL("vcpenetwork/getPhyInfrastructureSuggestion?templateType=" + templateType);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
