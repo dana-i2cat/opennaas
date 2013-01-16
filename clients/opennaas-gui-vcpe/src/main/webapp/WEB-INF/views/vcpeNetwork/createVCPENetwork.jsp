@@ -19,18 +19,18 @@
 
 		<!-- WAN -->
 		<div id="wan_logical">
-			<h2><spring:message code="home.wan"/></h2>			
+			<h2><spring:message code="vcpenetwork.wan"/></h2>			
 		</div>	
 		<!-- Up Interfaces -->
 		<div id="up_interfaces">
 			<div id="up_master" class="ui-widget-content">
 				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}" varStatus="vs" var="item">					
 					<c:choose>
-						<c:when test="${item.labelName == 'Up'}">							
-							<label>${item.labelName} Master</label><br>
+						<c:when test="${item.type == 'Up'}">							
+							<label>${item.type} Master</label><br>
 							<div class="ui-widget-content config_content">
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
-								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].type" />
 								<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
 									<form:label for="logicalRouterMaster.interfaces[${vs.index}].port" path="logicalRouterMaster.interfaces[${vs.index}].port" cssErrorClass="error">
 										<spring:message code="interface.name" />
@@ -61,11 +61,11 @@
 				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}" varStatus="vs" var="item">
 					
 						<c:choose>
-							<c:when test="${item.labelName == 'Up'}">
-								<label>${item.labelName} Backup</label><br>
+							<c:when test="${item.type == 'Up'}">
+								<label>${item.type} Backup</label><br>
 								<div class="ui-widget-content config_content">
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
-								 <form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+								 <form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
 								<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].name" cssErrorClass="error">
 									<form:label for="logicalRouterBackup.interfaces[${vs.index}].port" path="logicalRouterBackup.interfaces[${vs.index}].port" cssErrorClass="error">
 										<spring:message code="interface.name" />
@@ -162,11 +162,11 @@
 							varStatus="vs" var="item">
 							
 								<c:choose>
-									<c:when test="${item.labelName == 'Down'}">
-										<label>${item.labelName} Master</label><br>
+									<c:when test="${item.type == 'Down'}">
+										<label>${item.type} Master</label><br>
 										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
-										 <form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+										 <form:hidden path="logicalRouterMaster.interfaces[${vs.index}].type" />
 										<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouterMaster.interfaces[${vs.index}].port" path="logicalRouterMaster.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -199,11 +199,11 @@
 							varStatus="vs" var="item">
 							
 								<c:choose>
-									<c:when test="${item.labelName == 'Inter'}">
-										<label>${item.labelName} Master</label><br>
+									<c:when test="${item.type == 'Inter'}">
+										<label>${item.type} Master</label><br>
 										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
-										 <form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+										 <form:hidden path="logicalRouterMaster.interfaces[${vs.index}].type" />
 										<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterMaster.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouterMaster.interfaces[${vs.index}].port" path="logicalRouterMaster.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -235,11 +235,11 @@
 						<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}" varStatus="vs" var="item">
 							
 								<c:choose>
-									<c:when test="${item.labelName == 'Inter'}">
-										<label>${item.labelName} Backup</label><br>
+									<c:when test="${item.type == 'Inter'}">
+										<label>${item.type} Backup</label><br>
 										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
-										 <form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+										 <form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
 										<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouterBackup.interfaces[${vs.index}].port" path="logicalRouterBackup.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -271,11 +271,11 @@
 						<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}" varStatus="vs" var="item">
 							
 								<c:choose>
-									<c:when test="${item.labelName == 'Down'}">
-										<label>${item.labelName} Backup</label><br>
+									<c:when test="${item.type == 'Down'}">
+										<label>${item.type} Backup</label><br>
 										<div class="ui-widget-content config_content">
 										<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
-										<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+										<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
 										<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].name" cssErrorClass="error">
 											<form:label for="logicalRouterBackup.interfaces[${vs.index}].port" path="logicalRouterBackup.interfaces[${vs.index}].port" cssErrorClass="error">
 												<spring:message code="interface.name" />
@@ -472,7 +472,7 @@
 							<spring:message code="vcpenetwork.templateType" />
 						</form:label>
 						<form:select path="templateType">
-							<form:option value="basic.template">Basic Template </form:option>
+							<form:option value="vcpe.template">VCPE Template </form:option>
 						</form:select>
 						<form:errors path="templateType" />
 					</div>

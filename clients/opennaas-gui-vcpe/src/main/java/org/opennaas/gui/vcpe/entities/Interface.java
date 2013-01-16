@@ -23,7 +23,7 @@ public class Interface {
 	@DecimalMax(value = "4094", message = "{message.error.field.format.vlan}")
 	private Integer	vlan;
 	private String	templateName;
-	private String	labelName;
+	private String	type;
 
 	/**
 	 * @return the name
@@ -86,18 +86,18 @@ public class Interface {
 	}
 
 	/**
-	 * @return the labelName
+	 * @return the type
 	 */
-	public String getLabelName() {
-		return labelName;
+	public String getType() {
+		return type;
 	}
 
 	/**
-	 * @param labelName
-	 *            the labelName to set
+	 * @param type
+	 *            the type to set
 	 */
-	public void setLabelName(String labelName) {
-		this.labelName = labelName;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class Interface {
 	 * @author Jordi
 	 */
 	public enum Types {
-		INTER("Inter"), UP("Up"), DOWN("Down"), CLIENT("Client"), LOOPBACK("Loopback"), WAN("Wan");
+		INTER("Inter"), UP("Up"), DOWN("Down"), CLIENT("Client"), LOOPBACK("Loopback");
 
 		private final String	text;
 

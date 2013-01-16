@@ -22,10 +22,10 @@
 			<div>				
 				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}" varStatus="vs" var="item">	
 					<c:choose>
-						<c:when test="${item.labelName == 'Up'}">																						
+						<c:when test="${item.type == 'Up'}">																						
 							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
 							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].name" />
-							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].type" />
 							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].port" />
 							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].vlan" />																					
 							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" />																
@@ -37,10 +37,10 @@
 			<div>				
 				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
-						<c:when test="${item.labelName == 'Up'}">																						
+						<c:when test="${item.type == 'Up'}">																						
 							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
 							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].name" />
-							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
 							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].port" />
 							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].vlan" />																					
 							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" />																
@@ -59,13 +59,13 @@
 			<div id="client_master_box" class="ui-widget-content">				
 				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
-						<c:when test="${item.labelName == 'Down'}">
+						<c:when test="${item.type == 'Down'}">
 							<div class="input">
-								<label>${item.labelName} Master</label>
+								<label>${item.type} Master</label>
 								<br>																						
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].name" />
-								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].type" />
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].port" />
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].vlan" />																					
 								<form:label for="logicalRouterMaster.interfaces[${vs.index}].ipAddress" path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" cssErrorClass="error_field">
@@ -82,13 +82,13 @@
 			<div id="inter_master_box" class="ui-widget-content">				
 				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
-						<c:when test="${item.labelName == 'Inter'}">
+						<c:when test="${item.type == 'Inter'}">
 							<div class="input">
-								<label>${item.labelName} Master</label>
+								<label>${item.type} Master</label>
 								<br>																						
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].name" />
-								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].labelName" />
+								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].type" />
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].port" />
 								<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].vlan" />																					
 								<form:label for="logicalRouterMaster.interfaces[${vs.index}].ipAddress" path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" cssErrorClass="error_field">
@@ -105,13 +105,13 @@
 			<div id="inter_backup_box" class="ui-widget-content">				
 				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
-						<c:when test="${item.labelName == 'Inter'}">
+						<c:when test="${item.type == 'Inter'}">
 							<div class="input">
-								<label>${item.labelName} Backup</label>
+								<label>${item.type} Backup</label>
 								<br>																						
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].name" />
-								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].port" />
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].vlan" />																					
 								<form:label for="logicalRouterBackup.interfaces[${vs.index}].ipAddress" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error_field">
@@ -128,13 +128,13 @@
 			<div id="client_backup_box" class="ui-widget-content">				
 				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
-						<c:when test="${item.labelName == 'Down'}">
+						<c:when test="${item.type == 'Down'}">
 							<div class="input">
-								<label>${item.labelName} Backup</label>
+								<label>${item.type} Backup</label>
 								<br>																						
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].name" />
-								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].labelName" />
+								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].port" />
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].vlan" />																					
 								<form:label for="logicalRouterBackup.interfaces[${vs.index}].ipAddress" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error_field">

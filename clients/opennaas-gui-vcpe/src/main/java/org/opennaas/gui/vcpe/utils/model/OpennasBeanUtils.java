@@ -52,9 +52,9 @@ public class OpennasBeanUtils {
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		modelOut.setElements(elements);
 		// LogicalRouters
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouterMaster = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
+		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
 				modelIn.getLogicalRouterMaster());
-		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouterBackup = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
+		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
 				modelIn.getLogicalRouterBackup());
 		elements.add(logicalRouterMaster);
 		elements.add(logicalRouterBackup);
@@ -76,8 +76,8 @@ public class OpennasBeanUtils {
 	 * @param logicalRouterMaster
 	 * @return LogicalRouter of opennaas model
 	 */
-	public static org.opennaas.extensions.vcpe.model.LogicalRouter getLROpennaas(String networkName, String templateName, LogicalRouter lrIn) {
-		org.opennaas.extensions.vcpe.model.LogicalRouter lrOut = new org.opennaas.extensions.vcpe.model.LogicalRouter();
+	public static org.opennaas.extensions.vcpe.model.Router getLROpennaas(String networkName, String templateName, LogicalRouter lrIn) {
+		org.opennaas.extensions.vcpe.model.Router lrOut = new org.opennaas.extensions.vcpe.model.Router();
 		lrOut.setName(lrIn.getName());
 		lrOut.setTemplateName(templateName);
 		// Interfaces

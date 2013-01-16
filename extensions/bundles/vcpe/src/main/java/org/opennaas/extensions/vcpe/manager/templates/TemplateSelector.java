@@ -10,7 +10,7 @@ import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
  */
 public class TemplateSelector {
 
-	public static final String	BASIC_TEMPLATE	= "basic.template";
+	public static final String	VCPE_TEMPLATE	= "vcpe.template";
 
 	/**
 	 * Return the correct ITemplate from the templateId
@@ -21,7 +21,7 @@ public class TemplateSelector {
 	 */
 	public static ITemplate getTemplate(String templateId) throws VCPENetworkManagerException {
 		ITemplate iTemplate = new Template();
-		if (templateId.equals(BASIC_TEMPLATE)) {
+		if (templateId.equals(VCPE_TEMPLATE)) {
 			iTemplate = new Template();
 		}
 		return iTemplate;

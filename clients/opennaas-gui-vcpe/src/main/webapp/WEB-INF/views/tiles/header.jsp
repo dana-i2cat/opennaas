@@ -17,13 +17,13 @@
 <div id="header_user" class="ui-state-default">
 	<span id="user_icon" class="ui-icon ui-icon-person"></span>
 	<span id="username">
-		<spring:message code="home.user"/>: <sec:authentication property="principal.username" />
+		<spring:message code="header.user"/>: <sec:authentication property="principal.username" />
 	</span>
-	<div><a href="<c:url value="/auth/logout" />"><button id="logoutButton" class="button"><spring:message code="home.logout"/></button></a></div>
+	<div><a href="<c:url value="/auth/logout" />"><button id="logoutButton" class="button"><spring:message code="header.logout"/></button></a></div>
 </div>	
 <div id="header_menu" class="ui-widget-content ui-corner-all">
 	<div id="home">
-		<a href="/opennaas-vcpe/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="home.home"/></button></a>
+		<a href="/opennaas-vcpe/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
 	</div>
 	<div id="languages">
 		<input type="radio" id="english" name="radio"><label for="english"><span class="languageText"><spring:message code="header.language.english"/></span></label>

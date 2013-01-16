@@ -42,7 +42,7 @@ public class VCPENetworkTest {
 		interface1.setPort("");
 		interface1.setIpAddress("193.1.190.133");
 		interface1.setVlan(5000);
-		interface1.setLabelName(null);
+		interface1.setType(null);
 		interface1.setTemplateName(null);
 
 		Set<ConstraintViolation<Interface>> constraintViolations =
@@ -66,7 +66,7 @@ public class VCPENetworkTest {
 		interface1.setPort("12");
 		interface1.setIpAddress("193.1.190.133/30");
 		interface1.setVlan(12);
-		interface1.setLabelName(null);
+		interface1.setType(null);
 		interface1.setTemplateName(null);
 
 		Set<ConstraintViolation<Interface>> constraintViolations =
