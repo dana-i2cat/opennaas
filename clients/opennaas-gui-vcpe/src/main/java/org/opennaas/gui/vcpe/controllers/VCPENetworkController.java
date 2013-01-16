@@ -10,7 +10,6 @@ import org.opennaas.gui.vcpe.bos.VCPENetworkBO;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
-import org.opennaas.gui.vcpe.utils.model.TemplateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -35,9 +34,6 @@ public class VCPENetworkController {
 	@Autowired
 	private ReloadableResourceBundleMessageSource	messageSource;
 
-	@Autowired
-	private TemplateUtils							templateUtils;
-
 	/**
 	 * Redirect to home
 	 * 
@@ -49,8 +45,6 @@ public class VCPENetworkController {
 		LOGGER.debug("home");
 		try {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-			PhysicalInfrastructure physicalInfrastructure = vcpeNetworkBO.getPhysicalInfrastructure("vcpe.template");
-			model.addAttribute("physicalInfrastructure", physicalInfrastructure);
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.list.message.error", null, locale));
@@ -59,16 +53,35 @@ public class VCPENetworkController {
 	}
 
 	/**
+	 * Redirect to home
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/physical")
+	public String getPhysicalForm(Model model, Locale locale) {
+		LOGGER.debug("home");
+		try {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute(vcpeNetworkBO.getPhysicalInfrastructure("vcpe.template"));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.list.message.error", null, locale));
+		}
+		return "physicalForm";
+	}
+
+	/**
 	 * Redirect to the form to create a VCPENetwork
 	 * 
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public String createForm(Model model, Locale locale) {
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/logical")
+	public String getLogicalForm(PhysicalInfrastructure physical, Model model, Locale locale) {
 		LOGGER.debug("form to create a VCPENetwork");
 		try {
-			model.addAttribute(templateUtils.getDefaultVCPENetwork());
+			model.addAttribute(vcpeNetworkBO.getSuggestVCPENetwork(physical));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
@@ -76,7 +89,7 @@ public class VCPENetworkController {
 		} finally {
 			model.addAttribute("action", new String("create"));
 		}
-		return "createVCPENetwork";
+		return "logicalForm";
 	}
 
 	/**
@@ -108,7 +121,7 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 			model.addAttribute("action", new String("create"));
 		}
-		return "createVCPENetwork";
+		return "logicalForm";
 	}
 
 	/**
@@ -130,7 +143,7 @@ public class VCPENetworkController {
 		} finally {
 			model.addAttribute("action", new String("update"));
 		}
-		return "createVCPENetwork";
+		return "logicalForm";
 	}
 
 	/**
@@ -163,7 +176,7 @@ public class VCPENetworkController {
 		} finally {
 			model.addAttribute("action", new String("update"));
 		}
-		return "createVCPENetwork";
+		return "logicalForm";
 	}
 
 	/**
@@ -284,7 +297,7 @@ public class VCPENetworkController {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.changeVRRPPriority.message.error", null, locale));
 		}
-		return "createVCPENetwork";
+		return "logicalForm";
 	}
 
 	/**

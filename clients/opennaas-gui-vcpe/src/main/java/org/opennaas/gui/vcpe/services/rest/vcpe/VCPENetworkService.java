@@ -33,7 +33,7 @@ public class VCPENetworkService extends GenericRestService {
 	 * @return true if the environment has been created
 	 * @throws RestServiceException
 	 */
-	public String createVCPENetwork(VCPENetworkModel request) throws RestServiceException {
+	public String logicalForm(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling create VCPENetworkManager service");
