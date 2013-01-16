@@ -235,7 +235,7 @@
 	</dependencies>
 	
 	<build>
-		<finalName>opennaas-vcpe-${project.version}</finalName>
+		<finalName>opennaas-vcpe</finalName>
 	</build>
 	
 </project>

@@ -225,7 +225,7 @@ $(function() {
 		 */
 		/* WAN */
 		$("#wan").accordion({
-			collapsible : true,
+			collapsible : false,
 			icons : false,
 			heightStyle : "content",
 			active : false,
