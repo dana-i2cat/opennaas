@@ -24,42 +24,33 @@ public class TemplateUtils {
 	@Autowired
 	private Properties	templateProperties;
 
-	public VCPENetwork getDefaultVCPENetwork() {
+	public VCPENetwork getDefaultVCPENetwork(VCPENetwork vcpeNetwork) {
 		// VCPENetwork
-		VCPENetwork vcpeNetwork = new VCPENetwork();
 		vcpeNetwork.setClientIpRange(templateProperties.getProperty("vcpenetwork.client.iprange"));
-		vcpeNetwork.setTemplateType(templateProperties.getProperty("vcpenetwork.template"));
 
 		// Logical Router1
-		LogicalRouter logicalRouterMaster = new LogicalRouter();
+		LogicalRouter logicalRouterMaster = vcpeNetwork.getLogicalRouterMaster();
 		logicalRouterMaster.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.name"));
 		logicalRouterMaster.setTemplateName(VCPETemplate.VCPE1_ROUTER);
 
 		// Interfaces router1
-		List<Interface> interfaces = new ArrayList<Interface>();
-		logicalRouterMaster.setInterfaces(interfaces);
-		Interface ifaceInter = new Interface();
-		Interface ifaceDown = new Interface();
-		Interface ifaceUp = new Interface();
-		interfaces.add(ifaceInter);
-		interfaces.add(ifaceDown);
-		interfaces.add(ifaceUp);
+		Interface ifaceInter = getInterfaceByType(logicalRouterMaster, Interface.Types.INTER.toString());
+		Interface ifaceDown = getInterfaceByType(logicalRouterMaster, Interface.Types.DOWN.toString());
+		Interface ifaceUp = getInterfaceByType(logicalRouterMaster, Interface.Types.UP.toString());
+		Interface ifaceLoopback = getInterfaceByType(logicalRouterMaster, Interface.Types.LOOPBACK.toString());
 
-		ifaceInter.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.name"));
 		ifaceInter.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.port"));
 		ifaceInter.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.vlan").trim()));
 		ifaceInter.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.ipaddress"));
 		ifaceInter.setTemplateName(VCPETemplate.INTER1_INTERFACE_LOCAL);
 		ifaceInter.setType(Interface.Types.INTER.toString());
 
-		ifaceDown.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.name"));
 		ifaceDown.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.port"));
 		ifaceDown.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.vlan").trim()));
 		ifaceDown.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.ipaddress"));
 		ifaceDown.setTemplateName(VCPETemplate.DOWN1_INTERFACE_LOCAL);
 		ifaceDown.setType(Interface.Types.DOWN.toString());
 
-		ifaceUp.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.name"));
 		ifaceUp.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.port"));
 		ifaceUp.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.vlan").trim()));
 		ifaceUp.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.ipaddress"));
@@ -67,35 +58,28 @@ public class TemplateUtils {
 		ifaceUp.setType(Interface.Types.UP.toString());
 
 		// Logical Router2
-		LogicalRouter logicalRouterBackup = new LogicalRouter();
+		LogicalRouter logicalRouterBackup = vcpeNetwork.getLogicalRouterBackup();
 		logicalRouterBackup.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.name"));
 		logicalRouterBackup.setTemplateName(VCPETemplate.VCPE2_ROUTER);
 
 		// Interfaces router2
-		interfaces = new ArrayList<Interface>();
-		ifaceInter = new Interface();
-		ifaceDown = new Interface();
-		ifaceUp = new Interface();
-		interfaces.add(ifaceInter);
-		interfaces.add(ifaceDown);
-		interfaces.add(ifaceUp);
-		logicalRouterBackup.setInterfaces(interfaces);
+		ifaceInter = getInterfaceByType(logicalRouterBackup, Interface.Types.INTER.toString());
+		ifaceDown = getInterfaceByType(logicalRouterBackup, Interface.Types.DOWN.toString());
+		ifaceUp = getInterfaceByType(logicalRouterBackup, Interface.Types.UP.toString());
+		ifaceLoopback = getInterfaceByType(logicalRouterBackup, Interface.Types.LOOPBACK.toString());
 
-		ifaceInter.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.name"));
 		ifaceInter.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.port"));
 		ifaceInter.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.vlan").trim()));
 		ifaceInter.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.ipaddress"));
 		ifaceInter.setTemplateName(VCPETemplate.INTER2_INTERFACE_LOCAL);
 		ifaceInter.setType(Interface.Types.INTER.toString());
 
-		ifaceDown.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.name"));
 		ifaceDown.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.port"));
 		ifaceDown.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.vlan").trim()));
 		ifaceDown.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.ipaddress"));
 		ifaceDown.setTemplateName(VCPETemplate.DOWN2_INTERFACE_LOCAL);
 		ifaceDown.setType(Interface.Types.DOWN.toString());
 
-		ifaceUp.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.name"));
 		ifaceUp.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.port"));
 		ifaceUp.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.vlan").trim()));
 		ifaceUp.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.ipaddress"));
@@ -142,5 +126,19 @@ public class TemplateUtils {
 		vcpeNetwork.setBgp(bgp);
 
 		return vcpeNetwork;
+	}
+
+	/**
+	 * @param logicalRouterMaster
+	 * @param inter
+	 * @return
+	 */
+	private Interface getInterfaceByType(LogicalRouter logicalRouter, String type) {
+		List<Interface> interfaces = logicalRouter.getInterfaces();
+		Interface iface = null;
+		for (int i = 0; i < interfaces.size(); i++) {
+			iface = interfaces.get(i).getType().equals(type) ? interfaces.get(i) : iface;
+		}
+		return iface;
 	}
 }
