@@ -8,13 +8,17 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
+import org.opennaas.gui.vcpe.entities.PhysicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService;
 import org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService;
 import org.opennaas.gui.vcpe.utils.model.OpennasBeanUtils;
+import org.opennaas.gui.vcpe.utils.model.TemplateUtils;
 import org.opennaas.gui.vcpe.utils.model.VCPEBeanUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -23,6 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class VCPENetworkBO {
 
 	private static final Logger			LOGGER	= Logger.getLogger(VCPENetworkBO.class);
+
+	@Autowired
+	private TemplateUtils				templateUtils;
 
 	@Autowired
 	private VCPENetworkService			vcpeNetworkService;
@@ -39,7 +46,7 @@ public class VCPENetworkBO {
 	 */
 	public String create(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
-		return vcpeNetworkService.createVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		return vcpeNetworkService.logicalForm(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
@@ -159,6 +166,20 @@ public class VCPENetworkBO {
 	}
 
 	/**
+	 * Get a suggest VCPENetwork from physical + logical
+	 * 
+	 * @param physical
+	 * @return VCPENetwork
+	 */
+	public VCPENetwork getSuggestVCPENetwork(PhysicalInfrastructure physical) {
+		VCPENetwork vcpeNetwork = new VCPENetwork();
+		vcpeNetwork.setTemplateType(physical.getTemplateType());
+		vcpeNetwork.setLogicalRouterMaster(getLogicalRouterfromPhysical(physical.getPhysicalRouterMaster()));
+		vcpeNetwork.setLogicalRouterBackup(getLogicalRouterfromPhysical(physical.getPhysicalRouterBackup()));
+		return templateUtils.getDefaultVCPENetwork(vcpeNetwork);
+	}
+
+	/**
 	 * @param allVCPENetworks
 	 * @return
 	 */
@@ -170,4 +191,15 @@ public class VCPENetworkBO {
 		return listModelOut;
 	}
 
+	/**
+	 * Convert a physical router to a logical router
+	 * 
+	 * @return LogicalRouter
+	 */
+	private LogicalRouter getLogicalRouterfromPhysical(PhysicalRouter physicalRouter) {
+		LogicalRouter logicalRouter = new LogicalRouter();
+		BeanUtils.copyProperties(physicalRouter, logicalRouter);
+		logicalRouter.setPhysicalRouter(physicalRouter);
+		return logicalRouter;
+	}
 }

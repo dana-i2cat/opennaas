@@ -13,7 +13,7 @@
 <ul id="_menu">
 	<sec:authorize access="hasRole('ROLE_NOC')">
 		<li>
-			<a href="<c:url value="/secure/noc/vcpeNetwork/create" />">
+			<a href="<c:url value="/secure/noc/vcpeNetwork/physical" />">
 				<spring:message code="menu.create" />
 			</a>
 		</li>

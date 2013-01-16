@@ -8,7 +8,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<div id="createVCPENetwork" >
+<div id="logicalForm" >
 	<form:form modelAttribute="VCPENetwork" action="${action}" method="post">
 		<form:hidden path="id" />
 		<form:hidden path="logicalRouterMaster.name" />
