@@ -6,7 +6,6 @@ package org.opennaas.gui.vcpe.utils.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
@@ -15,6 +14,8 @@ import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
+import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
+import org.opennaas.gui.vcpe.entities.PhysicalRouter;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.entities.VRRP;
 
@@ -33,28 +34,80 @@ public class VCPEBeanUtils {
 	 */
 	public static VCPENetwork getVCPENetwork(VCPENetworkModel modelIn) {
 		VCPENetwork modelOut = new VCPENetwork();
+
 		// Network dates
 		modelOut.setId(modelIn.getId());
 		modelOut.setName(modelIn.getName());
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
 		modelOut.setTemplateType(modelIn.getTemplateType());
+
 		// Logical Routers
-		Router logicalRouterMaster = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
-		Router logicalRouterBackup = (Router) VCPENetworkModelHelper.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
+		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
+		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
 		modelOut.setLogicalRouterMaster(getLogicalRouter(logicalRouterMaster));
 		modelOut.setLogicalRouterBackup(getLogicalRouter(logicalRouterBackup));
+
 		// BGP
 		BGP bgp = getBGP(modelIn.getBgp());
 		modelOut.setBgp(bgp);
+
 		// BoD
 		BoD bod = getBoD(modelIn);
 		modelOut.setBod(bod);
+
 		// VRRP
 		modelOut.setVrrp(getVRRP(modelIn.getVrrp()));
+
 		// Links
 		List<Link> links = getLinks(VCPENetworkModelHelper.getLinks(modelIn.getElements()));
 		modelOut.setLinks(links);
 		return modelOut;
+	}
+
+	/**
+	 * Convert a OpenNaaS model to a GUI VCPEPhysicalNetwork model
+	 * 
+	 * @param openNaasModel
+	 * @return VCPENetwork
+	 */
+	public static PhysicalInfrastructure getPhysicalInfrastructure(VCPENetworkModel modelIn) {
+		PhysicalInfrastructure modelOut = new PhysicalInfrastructure();
+		modelOut.setTemplateType(modelIn.getTemplateType());
+		// Routers
+		org.opennaas.extensions.vcpe.model.Router physicalRouterMaster = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, VCPETemplate.CPE1_PHY_ROUTER);
+		org.opennaas.extensions.vcpe.model.Router physicalRouterBackup = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, VCPETemplate.CPE2_PHY_ROUTER);
+		org.opennaas.extensions.vcpe.model.Router physicalRouterCore = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, VCPETemplate.CORE_PHY_ROUTER);
+
+		modelOut.setPhysicalRouterMaster(getPhysicalRouter(physicalRouterMaster));
+		modelOut.setPhysicalRouterBackup(getPhysicalRouter(physicalRouterBackup));
+		modelOut.setPhysicalRouterCore(getPhysicalRouter(physicalRouterCore));
+
+		return modelOut;
+	}
+
+	/**
+	 * @param physicalRouterCore
+	 * @return
+	 */
+	private static PhysicalRouter getPhysicalRouter(org.opennaas.extensions.vcpe.model.Router phyRouterIn) {
+		PhysicalRouter phyRouterOut = new PhysicalRouter();
+		if (phyRouterIn != null) {
+			phyRouterOut.setName(phyRouterIn.getName());
+			phyRouterOut.setTemplateName(phyRouterIn.getTemplateName());
+			// Interfaces
+			List<org.opennaas.gui.vcpe.entities.Interface> interfaces = new ArrayList<org.opennaas.gui.vcpe.entities.Interface>();
+			phyRouterOut.setInterfaces(interfaces);
+			for (int i = 0; i < phyRouterIn.getInterfaces().size(); i++) {
+				Interface inter = getInterface(phyRouterIn.getInterfaces().get(i));
+				interfaces.add(inter);
+			}
+		}
+		return phyRouterOut;
 	}
 
 	/**
@@ -63,7 +116,7 @@ public class VCPEBeanUtils {
 	 * @param inLR
 	 * @return
 	 */
-	public static LogicalRouter getLogicalRouter(Router lrIn) {
+	public static LogicalRouter getLogicalRouter(org.opennaas.extensions.vcpe.model.Router lrIn) {
 		LogicalRouter lrOut = new LogicalRouter();
 		if (lrIn != null) {
 			lrOut.setName(lrIn.getName());
@@ -71,18 +124,10 @@ public class VCPEBeanUtils {
 			// Interfaces
 			List<org.opennaas.gui.vcpe.entities.Interface> interfaces = new ArrayList<org.opennaas.gui.vcpe.entities.Interface>();
 			lrOut.setInterfaces(interfaces);
-			// Interface Inter
-			Interface inter = getInterface(lrIn.getInterfaces().get(0));
-			inter.setLabelName(Interface.Types.INTER.toString());
-			interfaces.add(inter);
-			// Interface Down
-			Interface down = getInterface(lrIn.getInterfaces().get(1));
-			down.setLabelName(Interface.Types.DOWN.toString());
-			interfaces.add(down);
-			// Interface Up
-			Interface up = getInterface(lrIn.getInterfaces().get(2));
-			up.setLabelName(Interface.Types.UP.toString());
-			interfaces.add(up);
+			for (int i = 0; i < lrIn.getInterfaces().size(); i++) {
+				Interface inter = getInterface(lrIn.getInterfaces().get(i));
+				interfaces.add(inter);
+			}
 		}
 		return lrOut;
 	}
@@ -99,17 +144,29 @@ public class VCPEBeanUtils {
 		outIface.setPort(String.valueOf(interfaceIn.getPort()));
 		outIface.setIpAddress(interfaceIn.getIpAddress());
 		outIface.setVlan((int) interfaceIn.getVlan());
-		if (interfaceIn.getTemplateName().equals(VCPETemplate.DOWN1_INTERFACE_LOCAL)
-				|| interfaceIn.getTemplateName().equals(VCPETemplate.DOWN2_INTERFACE_LOCAL)) {
-			outIface.setLabelName(Interface.Types.DOWN.toString());
-		} else if (interfaceIn.getTemplateName().equals(VCPETemplate.UP1_INTERFACE_LOCAL)
-				|| interfaceIn.getTemplateName().equals(VCPETemplate.UP2_INTERFACE_LOCAL)) {
-			outIface.setLabelName(Interface.Types.UP.toString());
-		} else if (interfaceIn.getTemplateName().equals(VCPETemplate.INTER1_INTERFACE_LOCAL)
-				|| interfaceIn.getTemplateName().equals(VCPETemplate.INTER2_INTERFACE_LOCAL)) {
-			outIface.setLabelName(Interface.Types.INTER.toString());
+
+		String templateName = interfaceIn.getTemplateName();
+		if (templateName.equals(VCPETemplate.DOWN1_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.DOWN2_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.DOWN1_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.DOWN2_PHY_INTERFACE_LOCAL)) {
+			outIface.setType(Interface.Types.DOWN.toString());
+		} else if (templateName.equals(VCPETemplate.UP1_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.UP2_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.UP1_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.UP2_PHY_INTERFACE_LOCAL)) {
+			outIface.setType(Interface.Types.UP.toString());
+		} else if (templateName.equals(VCPETemplate.INTER1_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.INTER2_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.INTER1_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(VCPETemplate.INTER2_PHY_INTERFACE_LOCAL)) {
+			outIface.setType(Interface.Types.INTER.toString());
+		} else if (templateName.equals(VCPETemplate.CORE_PHY_LO_INTERFACE)
+				|| templateName.equals(VCPETemplate.LO1_PHY_INTERFACE)
+				|| templateName.equals(VCPETemplate.LO2_PHY_INTERFACE)) {
+			outIface.setType(Interface.Types.LOOPBACK.toString());
 		} else {
-			outIface.setLabelName(Interface.Types.CLIENT.toString());
+			outIface.setType(Interface.Types.CLIENT.toString());
 		}
 		return outIface;
 	}

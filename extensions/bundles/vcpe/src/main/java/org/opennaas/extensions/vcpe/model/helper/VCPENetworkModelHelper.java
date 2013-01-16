@@ -56,7 +56,7 @@ public class VCPENetworkModelHelper {
 		model.setElements(all);
 
 		model.setClientIpRange("192.0.2.0/24");
-		model.setTemplateType(TemplateSelector.BASIC_TEMPLATE);
+		model.setTemplateType(TemplateSelector.VCPE_TEMPLATE);
 		model.setName("vcpeNet1");
 
 		return model;

@@ -50,21 +50,21 @@ public class TemplateUtils {
 		ifaceInter.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.vlan").trim()));
 		ifaceInter.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.ipaddress"));
 		ifaceInter.setTemplateName(VCPETemplate.INTER1_INTERFACE_LOCAL);
-		ifaceInter.setLabelName(Interface.Types.INTER.toString());
+		ifaceInter.setType(Interface.Types.INTER.toString());
 
 		ifaceDown.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.name"));
 		ifaceDown.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.port"));
 		ifaceDown.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.vlan").trim()));
 		ifaceDown.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.ipaddress"));
 		ifaceDown.setTemplateName(VCPETemplate.DOWN1_INTERFACE_LOCAL);
-		ifaceDown.setLabelName(Interface.Types.DOWN.toString());
+		ifaceDown.setType(Interface.Types.DOWN.toString());
 
 		ifaceUp.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.name"));
 		ifaceUp.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.port"));
 		ifaceUp.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.vlan").trim()));
 		ifaceUp.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.ipaddress"));
 		ifaceUp.setTemplateName(VCPETemplate.UP1_INTERFACE_LOCAL);
-		ifaceUp.setLabelName(Interface.Types.UP.toString());
+		ifaceUp.setType(Interface.Types.UP.toString());
 
 		// Logical Router2
 		LogicalRouter logicalRouterBackup = new LogicalRouter();
@@ -86,21 +86,21 @@ public class TemplateUtils {
 		ifaceInter.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.vlan").trim()));
 		ifaceInter.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.ipaddress"));
 		ifaceInter.setTemplateName(VCPETemplate.INTER2_INTERFACE_LOCAL);
-		ifaceInter.setLabelName(Interface.Types.INTER.toString());
+		ifaceInter.setType(Interface.Types.INTER.toString());
 
 		ifaceDown.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.name"));
 		ifaceDown.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.port"));
 		ifaceDown.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.vlan").trim()));
 		ifaceDown.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.ipaddress"));
 		ifaceDown.setTemplateName(VCPETemplate.DOWN2_INTERFACE_LOCAL);
-		ifaceDown.setLabelName(Interface.Types.DOWN.toString());
+		ifaceDown.setType(Interface.Types.DOWN.toString());
 
 		ifaceUp.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.name"));
 		ifaceUp.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.port"));
 		ifaceUp.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.vlan").trim()));
 		ifaceUp.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.ipaddress"));
 		ifaceUp.setTemplateName(VCPETemplate.UP2_INTERFACE_LOCAL);
-		ifaceUp.setLabelName(Interface.Types.UP.toString());
+		ifaceUp.setType(Interface.Types.UP.toString());
 
 		vcpeNetwork.setLogicalRouterMaster(logicalRouterMaster);
 		vcpeNetwork.setLogicalRouterBackup(logicalRouterBackup);
@@ -113,13 +113,13 @@ public class TemplateUtils {
 		ifaceClient1.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.client.name"));
 		ifaceClient1.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.client.port"));
 		ifaceClient1.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.client.vlan").trim()));
-		ifaceClient1.setLabelName(Interface.Types.CLIENT.toString());
+		ifaceClient1.setType(Interface.Types.CLIENT.toString());
 		ifaceClient1.setTemplateName(VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 
 		ifaceClient2.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.client.name"));
 		ifaceClient2.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.client.port"));
 		ifaceClient2.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.client.vlan").trim()));
-		ifaceClient2.setLabelName(Interface.Types.CLIENT.toString());
+		ifaceClient2.setType(Interface.Types.CLIENT.toString());
 		ifaceClient2.setTemplateName(VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
 		bod.setIfaceClient(ifaceClient1);

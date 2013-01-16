@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.opennaas.gui.vcpe.bos.VCPENetworkBO;
+import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.opennaas.gui.vcpe.utils.model.TemplateUtils;
@@ -48,6 +49,8 @@ public class VCPENetworkController {
 		LOGGER.debug("home");
 		try {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			PhysicalInfrastructure physicalInfrastructure = vcpeNetworkBO.getPhysicalInfrastructure("vcpe.template");
+			model.addAttribute("physicalInfrastructure", physicalInfrastructure);
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.list.message.error", null, locale));
