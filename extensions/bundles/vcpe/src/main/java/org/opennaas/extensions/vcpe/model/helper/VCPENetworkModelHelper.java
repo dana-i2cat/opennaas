@@ -375,4 +375,23 @@ public class VCPENetworkModelHelper {
 
 		return elements;
 	}
+
+	/**
+	 * 
+	 * @param iface
+	 * @param name
+	 * @param vlan
+	 * @param ipAddress
+	 * @param physicalInterfaceName
+	 * @param port
+	 * @return iface updated with given parameters
+	 */
+	public static Interface updateInterface(Interface iface, String name, long vlan, String ipAddress, String physicalInterfaceName, int port) {
+		iface.setName(name);
+		iface.setIpAddress(ipAddress);
+		iface.setVlan(vlan);
+		iface.setPhysicalInterfaceName(physicalInterfaceName);
+		iface.setPort(port);
+		return iface;
+	}
 }
