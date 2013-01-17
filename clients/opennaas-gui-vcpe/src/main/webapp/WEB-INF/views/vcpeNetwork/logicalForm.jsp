@@ -65,7 +65,7 @@
 								<label>${item.type} Backup</label><br>
 								<div class="ui-widget-content config_content">
 								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
-								 <form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
+								<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].type" />
 								<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].name" cssErrorClass="error">
 									<form:label for="logicalRouterBackup.interfaces[${vs.index}].port" path="logicalRouterBackup.interfaces[${vs.index}].port" cssErrorClass="error">
 										<spring:message code="interface.name" />
@@ -144,11 +144,41 @@
 						<div id="lr_master">
 							<h3 class="${VCPENetwork.vrrp.priorityMaster > VCPENetwork.vrrp.priorityBackup ? 'lr_active' : 'lr_inactive'}">
 								<spring:message code="vcpenetwork.lrmaster"/>
+								<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}" varStatus="vs" var="item">											
+									<c:choose>
+										<c:when test="${item.type == 'Loopback'}">
+											<div>
+<%-- 												<form:label for="logicalRouterMaster.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error"> --%>
+<%-- 													<spring:message code="interface.name" /> --%>
+<%-- 												</form:label> --%>
+<%-- 												<form:input path="logicalRouterMaster.interfaces[${vs.index}].name" size="13"  /> --%>
+<%-- 												<form:errors path="logicalRouterMaster.interfaces[${vs.index}].name" size="13" /> --%>
+												
+												<form:label path="logicalRouterMaster.interfaces[${vs.index}].name" >${item.name}</form:label>
+											</div>		
+										</c:when>
+									</c:choose>
+								</c:forEach>
 							</h3>
 						</div>
 						<div id="lr_backup">
 							<h3 class="${VCPENetwork.vrrp.priorityMaster < VCPENetwork.vrrp.priorityBackup ? 'lr_active' : 'lr_inactive'}">
 								<spring:message code="vcpenetwork.lrbackup"/>
+								<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}" varStatus="vs" var="item">											
+									<c:choose>
+										<c:when test="${item.type == 'Loopback'}">
+											<div>
+<%-- 												<form:label for="logicalRouterBackup.interfaces[${vs.index}].name" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error"> --%>
+<%-- 													<spring:message code="interface.name" /> --%>
+<%-- 												</form:label> --%>
+<%-- 												<form:input path="logicalRouterBackup.interfaces[${vs.index}].name" size="13"  /> --%>
+<%-- 												<form:errors path="logicalRouterBackup.interfaces[${vs.index}].name" size="13" /> --%>
+												
+												<form:label path="logicalRouterBackup.interfaces[${vs.index}].name" >${item.name}</form:label>
+											</div>		
+										</c:when>
+									</c:choose>
+								</c:forEach>
 							</h3>
 						</div>
 						<div>
