@@ -133,6 +133,18 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return phySuggestion;
 	}
 
+	/**
+	 * @return
+	 * @throws VCPENetworkManagerException
+	 */
+	@Override
+	public VCPENetworkModel getLogicalInfrastructureSuggestion(String templateType, VCPENetworkModel physical) throws VCPENetworkManagerException {
+
+		ITemplate template = TemplateSelector.getTemplate(templateType);
+		VCPENetworkModel suggestion = template.getLogicalInfrastructureSuggestion(physical);
+		return suggestion;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

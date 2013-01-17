@@ -24,4 +24,6 @@ public interface ITemplate {
 
 	public VCPENetworkModel getPhysicalInfrastructureSuggestion() throws VCPENetworkManagerException;
 
+	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) throws VCPENetworkManagerException;
+
 }
