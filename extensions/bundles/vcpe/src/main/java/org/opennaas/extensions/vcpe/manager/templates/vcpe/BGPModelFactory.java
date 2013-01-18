@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vcpe.manager.templates;
+package org.opennaas.extensions.vcpe.manager.templates.vcpe;
 
 import java.io.File;
 import java.io.FileInputStream;
