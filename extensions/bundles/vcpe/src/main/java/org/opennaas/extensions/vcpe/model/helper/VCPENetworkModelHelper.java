@@ -42,6 +42,45 @@ public class VCPENetworkModelHelper {
 		return links;
 	}
 
+	public static List<Router> getRouters(List<? extends VCPENetworkElement> elements) {
+		List<Router> routers = new ArrayList<Router>();
+		if (elements == null)
+			return routers;
+
+		for (VCPENetworkElement element : elements) {
+			if (element instanceof Router) {
+				routers.add((Router) element);
+			}
+		}
+		return routers;
+	}
+
+	public static List<Domain> getDomains(List<? extends VCPENetworkElement> elements) {
+		List<Domain> domains = new ArrayList<Domain>();
+		if (elements == null)
+			return domains;
+
+		for (VCPENetworkElement element : elements) {
+			if (element instanceof Domain) {
+				domains.add((Domain) element);
+			}
+		}
+		return domains;
+	}
+
+	public static List<Interface> getInterfaces(List<? extends VCPENetworkElement> elements) {
+		List<Interface> ifaces = new ArrayList<Interface>();
+		if (elements == null)
+			return ifaces;
+
+		for (VCPENetworkElement element : elements) {
+			if (element instanceof Interface) {
+				ifaces.add((Interface) element);
+			}
+		}
+		return ifaces;
+	}
+
 	public static VCPENetworkModel generateSampleModel() {
 
 		List<VCPENetworkElement> phy = generatePhysicalSampleModel();
