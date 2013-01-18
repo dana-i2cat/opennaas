@@ -29,6 +29,7 @@ import org.opennaas.extensions.vcpe.model.VRRP;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 /**
+ * @author Isart Canyameres Gimenez (i2cat Foundation)
  * @author Jordi
  */
 public class Template implements ITemplate {
@@ -109,7 +110,7 @@ public class Template implements ITemplate {
 
 		VCPENetworkModel generated = generateLogicalElements();
 		VCPENetworkModel mappedFromProperties = suggestor.getSuggestionForLogicalModel(generated);
-		VCPENetworkModel mappedWithPhy = mapLogicalAndPhysical(physicalInfrastructure, mappedFromProperties);
+		VCPENetworkModel mappedWithPhy = mapLogicalAndPhysical(phy, mappedFromProperties);
 		// TODO MUST CHECK MAPPED ELEMENTS EXIST IN PHYSICAL INFRASTRUCTURE
 		return mappedWithPhy;
 	}
