@@ -173,15 +173,15 @@ public class VCPENetworkBO {
 	 * @throws RestServiceException
 	 */
 	public VCPENetwork getSuggestVCPENetwork(PhysicalInfrastructure physical) throws RestServiceException {
-		// VCPENetwork vcpeNetwork = new VCPENetwork();
+		VCPENetwork vcpeNetwork = new VCPENetwork();
+		vcpeNetwork.setTemplateType(physical.getTemplateType());
+		vcpeNetwork.setLogicalRouterMaster(getLogicalRouterfromPhysical(physical.getPhysicalRouterMaster()));
+		vcpeNetwork.setLogicalRouterBackup(getLogicalRouterfromPhysical(physical.getPhysicalRouterBackup()));
+		return templateUtils.getDefaultVCPENetwork(vcpeNetwork);
+		// VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
+		// VCPENetwork vcpeNetwork = VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
 		// vcpeNetwork.setTemplateType(physical.getTemplateType());
-		// vcpeNetwork.setLogicalRouterMaster(getLogicalRouterfromPhysical(physical.getPhysicalRouterMaster()));
-		// vcpeNetwork.setLogicalRouterBackup(getLogicalRouterfromPhysical(physical.getPhysicalRouterBackup()));
-		// templateUtils.getDefaultVCPENetwork(vcpeNetwork);
-		VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
-		VCPENetwork vcpeNetwork = VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
-		// vcpeNetwork.setTemplateType(physical.getTemplateType());
-		return vcpeNetwork;
+		// return vcpeNetwork;
 
 	}
 
