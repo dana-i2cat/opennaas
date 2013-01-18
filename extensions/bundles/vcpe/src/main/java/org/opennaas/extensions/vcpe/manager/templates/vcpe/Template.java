@@ -314,9 +314,11 @@ public class Template implements ITemplate {
 		// Notice these logical interfaces are not inside a router object (by now)
 		Interface up1other = new Interface();
 		Interface up2other = new Interface();
+		Interface corelo = new Interface();
 
 		up1other.setTemplateName(VCPETemplate.UP1_INTERFACE_PEER);
 		up2other.setTemplateName(VCPETemplate.UP2_INTERFACE_PEER);
+		corelo.setTemplateName(VCPETemplate.CORE_LO_INTERFACE);
 
 		// LINKS
 
@@ -361,6 +363,7 @@ public class Template implements ITemplate {
 		elements.addAll(bodInterfaces);
 		elements.add(up1other);
 		elements.add(up2other);
+		elements.add(corelo);
 		elements.add(linkInter);
 		elements.addAll(linkInter.getImplementedBy());
 		elements.add(linkdown1);
@@ -542,6 +545,7 @@ public class Template implements ITemplate {
 		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.CORE_PHY_ROUTER);
 		core.getInterfaces().add((Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.UP1_INTERFACE_PEER));
 		core.getInterfaces().add((Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.UP2_INTERFACE_PEER));
+		core.getInterfaces().add((Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.CORE_LO_INTERFACE));
 
 		// put bod logical interfaces into bod
 		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.AUTOBAHN);
