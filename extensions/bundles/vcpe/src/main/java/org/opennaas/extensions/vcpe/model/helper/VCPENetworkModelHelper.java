@@ -42,6 +42,45 @@ public class VCPENetworkModelHelper {
 		return links;
 	}
 
+	public static List<Router> getRouters(List<? extends VCPENetworkElement> elements) {
+		List<Router> routers = new ArrayList<Router>();
+		if (elements == null)
+			return routers;
+
+		for (VCPENetworkElement element : elements) {
+			if (element instanceof Router) {
+				routers.add((Router) element);
+			}
+		}
+		return routers;
+	}
+
+	public static List<Domain> getDomains(List<? extends VCPENetworkElement> elements) {
+		List<Domain> domains = new ArrayList<Domain>();
+		if (elements == null)
+			return domains;
+
+		for (VCPENetworkElement element : elements) {
+			if (element instanceof Domain) {
+				domains.add((Domain) element);
+			}
+		}
+		return domains;
+	}
+
+	public static List<Interface> getInterfaces(List<? extends VCPENetworkElement> elements) {
+		List<Interface> ifaces = new ArrayList<Interface>();
+		if (elements == null)
+			return ifaces;
+
+		for (VCPENetworkElement element : elements) {
+			if (element instanceof Interface) {
+				ifaces.add((Interface) element);
+			}
+		}
+		return ifaces;
+	}
+
 	public static VCPENetworkModel generateSampleModel() {
 
 		List<VCPENetworkElement> phy = generatePhysicalSampleModel();
@@ -374,5 +413,24 @@ public class VCPENetworkModelHelper {
 		elements.addAll(autobahn.getInterfaces());
 
 		return elements;
+	}
+
+	/**
+	 * 
+	 * @param iface
+	 * @param name
+	 * @param vlan
+	 * @param ipAddress
+	 * @param physicalInterfaceName
+	 * @param port
+	 * @return iface updated with given parameters
+	 */
+	public static Interface updateInterface(Interface iface, String name, long vlan, String ipAddress, String physicalInterfaceName, int port) {
+		iface.setName(name);
+		iface.setIpAddress(ipAddress);
+		iface.setVlan(vlan);
+		iface.setPhysicalInterfaceName(physicalInterfaceName);
+		iface.setPort(port);
+		return iface;
 	}
 }
