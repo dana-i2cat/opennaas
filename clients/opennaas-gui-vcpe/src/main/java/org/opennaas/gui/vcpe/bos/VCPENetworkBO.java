@@ -15,7 +15,7 @@ import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService;
 import org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService;
-import org.opennaas.gui.vcpe.utils.model.OpennasBeanUtils;
+import org.opennaas.gui.vcpe.utils.model.OpennaasBeanUtils;
 import org.opennaas.gui.vcpe.utils.model.TemplateUtils;
 import org.opennaas.gui.vcpe.utils.model.VCPEBeanUtils;
 import org.springframework.beans.BeanUtils;
@@ -46,7 +46,7 @@ public class VCPENetworkBO {
 	 */
 	public String create(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
-		return vcpeNetworkService.logicalForm(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		return vcpeNetworkService.logicalForm(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class VCPENetworkBO {
 	 */
 	public Boolean updateIps(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update Ip's of VCPENetwork");
-		return builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		return builderService.updateIpsVCPENetwork(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class VCPENetworkBO {
 	 */
 	public Boolean updateVRRPIp(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update VRRP Ip of VCPENetwork");
-		return builderService.updateVRRPIp(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		return builderService.updateVRRPIp(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class VCPENetworkBO {
 	 */
 	public VCPENetwork changeVRRPPriority(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("change the Priority VRRP of VCPENetwork");
-		VCPENetworkModel openNaasModel = builderService.changeVRRPPriority(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		VCPENetworkModel openNaasModel = builderService.changeVRRPPriority(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 		return VCPEBeanUtils.getVCPENetwork(openNaasModel);
 	}
 
@@ -166,17 +166,23 @@ public class VCPENetworkBO {
 	}
 
 	/**
-	 * Get a suggest VCPENetwork from physical + logical
+	 * Get a suggest VCPENetwork
 	 * 
 	 * @param physical
 	 * @return VCPENetwork
+	 * @throws RestServiceException
 	 */
-	public VCPENetwork getSuggestVCPENetwork(PhysicalInfrastructure physical) {
-		VCPENetwork vcpeNetwork = new VCPENetwork();
-		vcpeNetwork.setTemplateType(physical.getTemplateType());
-		vcpeNetwork.setLogicalRouterMaster(getLogicalRouterfromPhysical(physical.getPhysicalRouterMaster()));
-		vcpeNetwork.setLogicalRouterBackup(getLogicalRouterfromPhysical(physical.getPhysicalRouterBackup()));
-		return templateUtils.getDefaultVCPENetwork(vcpeNetwork);
+	public VCPENetwork getSuggestVCPENetwork(PhysicalInfrastructure physical) throws RestServiceException {
+		// VCPENetwork vcpeNetwork = new VCPENetwork();
+		// vcpeNetwork.setTemplateType(physical.getTemplateType());
+		// vcpeNetwork.setLogicalRouterMaster(getLogicalRouterfromPhysical(physical.getPhysicalRouterMaster()));
+		// vcpeNetwork.setLogicalRouterBackup(getLogicalRouterfromPhysical(physical.getPhysicalRouterBackup()));
+		// templateUtils.getDefaultVCPENetwork(vcpeNetwork);
+		VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
+		VCPENetwork vcpeNetwork = VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
+		// vcpeNetwork.setTemplateType(physical.getTemplateType());
+		return vcpeNetwork;
+
 	}
 
 	/**
