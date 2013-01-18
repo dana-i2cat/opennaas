@@ -105,10 +105,12 @@ public class Template implements ITemplate {
 	@Override
 	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) {
 
+		VCPENetworkModel phy = generateAndMapPhysicalElements(physicalInfrastructure);
+
 		VCPENetworkModel generated = generateLogicalElements();
 		// TODO suggested mapping should be more intelligent, not properties driven
 		VCPENetworkModel mappedFromProperties = mapLogicalElementsFromProperties(generated, props);
-		VCPENetworkModel mappedWithPhy = mapLogicalAndPhysical(physicalInfrastructure, mappedFromProperties);
+		VCPENetworkModel mappedWithPhy = mapLogicalAndPhysical(phy, mappedFromProperties);
 		// TODO MUST CHECK MAPPED ELEMENTS EXIST IN PHYSICAL INFRASTRUCTURE
 		return mappedWithPhy;
 	}
@@ -170,8 +172,8 @@ public class Template implements ITemplate {
 		Interface up1 = new Interface();
 		up1.setTemplateName(VCPETemplate.UP1_PHY_INTERFACE_LOCAL);
 
-		Interface client1 = new Interface();
-		client1.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		// Interface client1 = new Interface();
+		// client1.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 
 		Interface lo1 = new Interface();
 		lo1.setTemplateName(VCPETemplate.LO1_PHY_INTERFACE);
@@ -201,8 +203,8 @@ public class Template implements ITemplate {
 		Interface up2 = new Interface();
 		up2.setTemplateName(VCPETemplate.UP2_PHY_INTERFACE_LOCAL);
 
-		Interface client2 = new Interface();
-		client2.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		// Interface client2 = new Interface();
+		// client2.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
 		Interface lo2 = new Interface();
 		lo2.setTemplateName(VCPETemplate.LO2_PHY_INTERFACE);
@@ -222,8 +224,8 @@ public class Template implements ITemplate {
 		autobahnInterfaces.add(inter2other);
 		autobahnInterfaces.add(down1other);
 		autobahnInterfaces.add(down2other);
-		autobahnInterfaces.add(client1);
-		autobahnInterfaces.add(client2);
+		// autobahnInterfaces.add(client1);
+		// autobahnInterfaces.add(client2);
 		autobahn.setInterfaces(autobahnInterfaces);
 
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
@@ -295,12 +297,17 @@ public class Template implements ITemplate {
 		Interface down2other = new Interface();
 		Interface client1other = new Interface();
 		Interface client2other = new Interface();
+		Interface client1otherPhy = new Interface();
+		Interface client2otherPhy = new Interface();
+
 		bodInterfaces.add(inter1other);
 		bodInterfaces.add(down1other);
 		bodInterfaces.add(inter2other);
 		bodInterfaces.add(down2other);
 		bodInterfaces.add(client1other);
 		bodInterfaces.add(client2other);
+		bodInterfaces.add(client1otherPhy);
+		bodInterfaces.add(client2otherPhy);
 
 		inter1other.setTemplateName(VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
 		down1other.setTemplateName(VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
@@ -308,6 +315,8 @@ public class Template implements ITemplate {
 		down2other.setTemplateName(VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
 		client1other.setTemplateName(VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 		client2other.setTemplateName(VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+		client1otherPhy.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		client2otherPhy.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
 		// noc network interface
 		// Notice these logical interfaces are not inside a router object (by now)
@@ -617,21 +626,21 @@ public class Template implements ITemplate {
 
 		// TODO update ALL elements with data in inputModel (everything may have changed)
 
-		// select client1 interface using inputModel
-		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
-				VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
-
-		Interface client1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
-		client1.setName(inputClient1.getName());
-		client1.setPhysicalInterfaceName(inputClient1.getPhysicalInterfaceName());
-
-		// select client2 interface using inputModel
-		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
-				VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
-
-		Interface client2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
-		client2.setName(inputClient2.getName());
-		client2.setPhysicalInterfaceName(inputClient2.getPhysicalInterfaceName());
+		// // select client1 interface using inputModel
+		// Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+		// VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		//
+		// Interface client1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		// client1.setName(inputClient1.getName());
+		// client1.setPhysicalInterfaceName(inputClient1.getPhysicalInterfaceName());
+		//
+		// // select client2 interface using inputModel
+		// Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+		// VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		//
+		// Interface client2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		// client2.setName(inputClient2.getName());
+		// client2.setPhysicalInterfaceName(inputClient2.getPhysicalInterfaceName());
 
 		return model;
 	}
@@ -715,6 +724,23 @@ public class Template implements ITemplate {
 				client1input.getPhysicalInterfaceName(), client1input.getPort());
 		updateInterface(client2, client2input.getName(), client2input.getVlan(), client2input.getIpAddress(),
 				client2input.getPhysicalInterfaceName(), client2input.getPort());
+
+		// set client physical interfaces
+		// select client1 interface using inputModel
+		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+				VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+
+		Interface client1phy = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		client1phy.setName(inputClient1.getName());
+		client1phy.setPhysicalInterfaceName(inputClient1.getPhysicalInterfaceName());
+
+		// select client2 interface using inputModel
+		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+				VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+
+		Interface client2phy = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		client2phy.setName(inputClient2.getName());
+		client2phy.setPhysicalInterfaceName(inputClient2.getPhysicalInterfaceName());
 
 		// VRRP
 		if (inputModel.getVrrp().getGroup() != null)

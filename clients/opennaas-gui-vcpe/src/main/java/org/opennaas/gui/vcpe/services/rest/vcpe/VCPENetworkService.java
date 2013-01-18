@@ -122,7 +122,7 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
-	 * Call a rest service to the Physical Infrastructure
+	 * Call a rest service to get the Physical Infrastructure
 	 * 
 	 * @return the physical infrastructure
 	 * @throws RestServiceException
@@ -130,18 +130,40 @@ public class VCPENetworkService extends GenericRestService {
 	public VCPENetworkModel getPhysicalInfrastructure(String templateType) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling getPhyInfrastructureSuggestion VCPENetworkManager service");
+			LOGGER.info("Calling getPhyInfrastructure VCPENetworkManager service");
 			String url = getURL("vcpenetwork/getPhyInfrastructureSuggestion?templateType=" + templateType);
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
-			LOGGER.info("PhysicalInfrastructure recovered");
+			LOGGER.info("Physical Infrastructure recovered");
 		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
 		return checkResponse(response) ? response.getEntity(VCPENetworkModel.class) : null;
+	}
 
+	/**
+	 * Call a rest service to get the Logical Infrastructure
+	 * 
+	 * @return the logical infrastructure
+	 * @throws RestServiceException
+	 */
+	public VCPENetworkModel getLogicalInfrastructure(VCPENetworkModel physicalInfrastructure) throws RestServiceException {
+		ClientResponse response = null;
+		try {
+			LOGGER.info("Calling getLogicalInfrastructureSuggestion VCPENetworkManager service");
+			String url = getURL("vcpenetwork/getLogicalInfrastructureSuggestion");
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML)
+					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, physicalInfrastructure);
+			LOGGER.info("Logical Infrastructure recovered");
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return checkResponse(response) ? response.getEntity(VCPENetworkModel.class) : null;
 	}
 
 	/**

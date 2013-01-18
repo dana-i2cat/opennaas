@@ -67,7 +67,7 @@ public class VCPEBeanUtils {
 	}
 
 	/**
-	 * Convert a OpenNaaS model to a GUI VCPEPhysicalNetwork model
+	 * Convert a OpenNaaS model to a GUI PhysicalInfrastructure
 	 * 
 	 * @param openNaasModel
 	 * @return VCPENetwork
@@ -94,7 +94,7 @@ public class VCPEBeanUtils {
 	 * @param physicalRouterCore
 	 * @return
 	 */
-	private static PhysicalRouter getPhysicalRouter(org.opennaas.extensions.vcpe.model.Router phyRouterIn) {
+	public static PhysicalRouter getPhysicalRouter(org.opennaas.extensions.vcpe.model.Router phyRouterIn) {
 		PhysicalRouter phyRouterOut = new PhysicalRouter();
 		if (phyRouterIn != null) {
 			phyRouterOut.setName(phyRouterIn.getName());

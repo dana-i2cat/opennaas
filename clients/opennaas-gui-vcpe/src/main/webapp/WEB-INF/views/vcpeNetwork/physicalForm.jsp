@@ -30,6 +30,7 @@
 												<form:label path="physicalRouterCore.interfaces[${vs.index}].name" >${item.name}</form:label>
 												<form:hidden path="physicalRouterCore.interfaces[${vs.index}].name"/>										
 												<form:hidden path="physicalRouterCore.interfaces[${vs.index}].type"/>		
+												<form:hidden path="physicalRouterCore.interfaces[${vs.index}].templateName"/>													
 											</div>		
 										</c:when>
 									</c:choose>
@@ -51,6 +52,7 @@
 									<form:label path="physicalRouterMaster.interfaces[${vs.index}].name" >${item.name}</form:label>
 									<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].name"/>
 									<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].type"/>
+									<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].templateName"/>			
 								</div>		
 							</c:when>
 						</c:choose>
@@ -68,6 +70,7 @@
 									<form:label path="physicalRouterBackup.interfaces[${vs.index}].name" >${item.name}</form:label>
 									<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].name"/>								
 									<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].type"/>	
+									<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].templateName"/>	
 								</div>		
 							</c:when>
 						</c:choose>
@@ -87,6 +90,7 @@
 										<form:label path="physicalRouterMaster.interfaces[${vs.index}].name" >${item.name}</form:label>
 										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].name"/>
 										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].type"/>
+										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].templateName"/>
 									</div>		
 								</c:when>
 							</c:choose>
@@ -106,6 +110,7 @@
 										<form:label path="physicalRouterBackup.interfaces[${vs.index}].name" >${item.name}</form:label>
 										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].name"/>
 										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].type"/>
+										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].templateName"/>										
 									</div>		
 								</c:when>
 							</c:choose>
@@ -126,6 +131,7 @@
 										<form:label path="physicalRouterMaster.interfaces[${vs.index}].name" >${item.name}</form:label>
 										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].name"/>
 										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].type"/>
+										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].templateName"/>
 									</div>		
 								</c:when>
 							</c:choose>
@@ -143,6 +149,7 @@
 										<form:label path="physicalRouterMaster.interfaces[${vs.index}].name" >${item.name}</form:label>
 										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].name"/>
 										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].type"/>
+										<form:hidden path="physicalRouterMaster.interfaces[${vs.index}].templateName"/>
 									</div>		
 								</c:when>
 							</c:choose>
@@ -160,6 +167,7 @@
 										<form:label path="physicalRouterBackup.interfaces[${vs.index}].name" >${item.name}</form:label>
 										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].name"/>
 										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].type"/>								
+										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].templateName"/>
 									</div>		
 								</c:when>
 							</c:choose>
@@ -177,6 +185,7 @@
 										<form:label path="physicalRouterBackup.interfaces[${vs.index}].name" >${item.name}</form:label>
 										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].name"/>
 										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].type"/>										
+										<form:hidden path="physicalRouterBackup.interfaces[${vs.index}].templateName"/>
 									</div>		
 								</c:when>
 							</c:choose>

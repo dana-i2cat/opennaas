@@ -26,13 +26,13 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 public class VCPENetworkManager implements IVCPENetworkManager {
 
 	public static final String	RESOURCE_VCPENET_TYPE	= "vcpenet";
-
 	private VCPEManagerModel	model;
 
+	/**
+	 * @throws IOException
+	 */
 	public VCPENetworkManager() throws IOException {
-
 		initModel();
-
 	}
 
 	@Override
@@ -122,25 +122,23 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	}
 
 	/**
-	 * @return
+	 * @return the physical infrastructure
 	 * @throws VCPENetworkManagerException
 	 */
 	@Override
-	public VCPENetworkModel getPhyInfrastructureSuggestion(String templateType) throws VCPENetworkManagerException {
-
+	public VCPENetworkModel getPhysicalInfrastructureSuggestion(String templateType) throws VCPENetworkManagerException {
 		ITemplate template = TemplateSelector.getTemplate(templateType);
 		VCPENetworkModel phySuggestion = template.getPhysicalInfrastructureSuggestion();
 		return phySuggestion;
 	}
 
 	/**
-	 * @return
+	 * @return a suggestion of the logical infrastructure
 	 * @throws VCPENetworkManagerException
 	 */
 	@Override
-	public VCPENetworkModel getLogicalInfrastructureSuggestion(String templateType, VCPENetworkModel physical) throws VCPENetworkManagerException {
-
-		ITemplate template = TemplateSelector.getTemplate(templateType);
+	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physical) throws VCPENetworkManagerException {
+		ITemplate template = TemplateSelector.getTemplate(physical.getTemplateType());
 		VCPENetworkModel suggestion = template.getLogicalInfrastructureSuggestion(physical);
 		return suggestion;
 	}
@@ -391,8 +389,10 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 
 	// TODO this method should go to the Bootstrapper and VCPENetworkManager to be a Resource
 	// TODO the IOException thrown would then prevent the resource to start
+	/**
+	 * @throws IOException
+	 */
 	private void initModel() throws IOException {
-
 		VCPEManagerModel model = new VCPEManagerModel();
 		PhysicalInfrastructureLoader loader = new PhysicalInfrastructureLoader();
 		model.setPhysicalInfrastructure(loader.loadPhysicalInfrastructure());
