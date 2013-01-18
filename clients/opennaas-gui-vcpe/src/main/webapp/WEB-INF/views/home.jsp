@@ -8,13 +8,13 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-<div>
-	<img src="<c:url value="/resources/images/templates/vcpe.gif" />"  title="VCPE" height="332" width="300" alt="VCPE">
-	VCPE	
-</div>
+<!-- <div> -->
+<%-- 	<img src="<c:url value="/resources/images/templates/vcpe.gif" />"  title="VCPE" height="332" width="300" alt="VCPE"> --%>
+<!-- 	VCPE	 -->
+<!-- </div> -->
 
 
-<div>
-	<img src="<c:url value="/resources/images/templates/vcpe.gif" />" title="UNI-C" height="332" width="300" alt="VCPE"  />
-	UNI-C
-</div>
+<!-- <div> -->
+<%-- 	<img src="<c:url value="/resources/images/templates/vcpe.gif" />" title="UNI-C" height="332" width="300" alt="VCPE"  /> --%>
+<!-- 	UNI-C -->
+<!-- </div> -->
