@@ -978,13 +978,17 @@ public class Template implements ITemplate {
 		params.clientASNumber = bgp.getClientASNumber();
 		params.remoteASNum = bgp.getNocASNumber();
 
-		params.loAddr1 = "193.1.190.141/30"; // TODO get this from GUI
-		params.upRemoteAddr1 = "193.1.190.134/30"; // TODO get this from GUI
+		params.loAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO1_INTERFACE))
+				.getIpAddress();
+		params.upRemoteAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER))
+				.getIpAddress();
 		params.interAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_LOCAL))
 				.getIpAddress();
 
-		params.loAddr2 = "193.1.190.145/30"; // TODO get this from GUI
-		params.upRemoteAddr2 = "193.1.190.130/30"; // TODO get this from GUI
+		params.loAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO2_INTERFACE))
+				.getIpAddress();
+		params.upRemoteAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER))
+				.getIpAddress();
 		params.interAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_LOCAL))
 				.getIpAddress();
 
