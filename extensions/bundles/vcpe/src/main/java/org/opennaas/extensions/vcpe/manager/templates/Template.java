@@ -306,7 +306,7 @@ public class Template implements ITemplate {
 		bodInterfaces.add(down2other);
 		bodInterfaces.add(client1other);
 		bodInterfaces.add(client2other);
-		bodInterfaces.add(client2otherPhy);
+		bodInterfaces.add(client1otherPhy);
 		bodInterfaces.add(client2otherPhy);
 
 		inter1other.setTemplateName(VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
@@ -315,8 +315,8 @@ public class Template implements ITemplate {
 		down2other.setTemplateName(VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
 		client1other.setTemplateName(VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 		client2other.setTemplateName(VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
-		client1other.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
-		client2other.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		client1otherPhy.setTemplateName(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+		client2otherPhy.setTemplateName(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
 		// noc network interface
 		// Notice these logical interfaces are not inside a router object (by now)
