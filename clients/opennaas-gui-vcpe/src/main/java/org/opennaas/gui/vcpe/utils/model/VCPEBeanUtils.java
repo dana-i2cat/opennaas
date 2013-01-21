@@ -163,7 +163,9 @@ public class VCPEBeanUtils {
 			outIface.setType(Interface.Types.INTER.toString());
 		} else if (templateName.equals(VCPETemplate.CORE_PHY_LO_INTERFACE)
 				|| templateName.equals(VCPETemplate.LO1_PHY_INTERFACE)
-				|| templateName.equals(VCPETemplate.LO2_PHY_INTERFACE)) {
+				|| templateName.equals(VCPETemplate.LO2_PHY_INTERFACE)
+				|| templateName.equals(VCPETemplate.LO1_INTERFACE)
+				|| templateName.equals(VCPETemplate.LO2_INTERFACE)) {
 			outIface.setType(Interface.Types.LOOPBACK.toString());
 		} else {
 			outIface.setType(Interface.Types.CLIENT.toString());

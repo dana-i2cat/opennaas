@@ -12,14 +12,20 @@
 
 <ul id="_menu">
 	<sec:authorize access="hasRole('ROLE_NOC')">
-		<li>
-			<a href="<c:url value="/secure/noc/vcpeNetwork/physical" />">
-				<spring:message code="menu.create" />
-			</a>
-		</li>
-		<li class="ui-icon ui-icon-circle-plus" style="margin-top: 4px; margin-left: 4px;">
-			Icon
-		</li>
+		<li><a href="#"><spring:message code="menu.create" /></a>
+			<ul>
+				<li>
+					<a href="<c:url value="/secure/noc/vcpeNetwork/physical?templateType=template.vcpe" />">
+						<spring:message code="menu.vcpe" />
+					</a>
+				</li>
+				<li>
+					<a class="link_confirm" href="<c:url value="/secure/noc/vcpeNetwork/physical?templateType=template.unic" />">
+						<spring:message code="menu.unic" />
+					</a>
+				</li>
+			</ul>
+		</li>	
 		<hr/>
 	</sec:authorize>
 	
@@ -46,7 +52,11 @@
 						</a>
 					</li>
 				</sec:authorize>
-			</ul></li>
+			</ul>
+		</li>
+		<li class="ui-icon ui-icon-circle-plus" style="margin-top: 4px; margin-left: 4px;">
+			Icon
+		</li>
 	</c:forEach>
 </ul>
 
