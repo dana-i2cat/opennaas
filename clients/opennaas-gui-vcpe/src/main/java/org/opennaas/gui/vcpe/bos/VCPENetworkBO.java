@@ -16,7 +16,6 @@ import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService;
 import org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService;
 import org.opennaas.gui.vcpe.utils.model.OpennaasBeanUtils;
-import org.opennaas.gui.vcpe.utils.model.TemplateUtils;
 import org.opennaas.gui.vcpe.utils.model.VCPEBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class VCPENetworkBO {
 
 	private static final Logger			LOGGER	= Logger.getLogger(VCPENetworkBO.class);
-
-	@Autowired
-	private TemplateUtils				templateUtils;
 
 	@Autowired
 	private VCPENetworkService			vcpeNetworkService;
@@ -173,16 +169,10 @@ public class VCPENetworkBO {
 	 * @throws RestServiceException
 	 */
 	public VCPENetwork getSuggestVCPENetwork(PhysicalInfrastructure physical) throws RestServiceException {
-		VCPENetwork vcpeNetwork = new VCPENetwork();
+		VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
+		VCPENetwork vcpeNetwork = VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
 		vcpeNetwork.setTemplateType(physical.getTemplateType());
-		vcpeNetwork.setLogicalRouterMaster(getLogicalRouterfromPhysical(physical.getPhysicalRouterMaster()));
-		vcpeNetwork.setLogicalRouterBackup(getLogicalRouterfromPhysical(physical.getPhysicalRouterBackup()));
-		return templateUtils.getDefaultVCPENetwork(vcpeNetwork);
-		// VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
-		// VCPENetwork vcpeNetwork = VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
-		// vcpeNetwork.setTemplateType(physical.getTemplateType());
-		// return vcpeNetwork;
-
+		return vcpeNetwork;
 	}
 
 	/**

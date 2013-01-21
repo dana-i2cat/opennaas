@@ -54,6 +54,9 @@
 				</sec:authorize>
 			</ul>
 		</li>
+		<li class="ui-icon ui-icon-circle-plus" style="margin-top: 4px; margin-left: 4px;">
+			Icon
+		</li>
 	</c:forEach>
 </ul>
 
