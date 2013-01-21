@@ -67,11 +67,8 @@
 		</property>
 	</bean>
 
-	<!--Template for VCPENetwork  -->
-	<util:properties id="templateProperties" location="classpath:template.properties"/>
 
 	<!-- OpenNaas Beans-->
-	<bean id="templateUtils" class="org.opennaas.gui.vcpe.utils.model.TemplateUtils" />	
 	<bean id="vcpeNetworkBO" class="org.opennaas.gui.vcpe.bos.VCPENetworkBO" />
 	<bean id="vcpeNetworkService" class="org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService" />	
 	<bean id="builderService" class="org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService" />
