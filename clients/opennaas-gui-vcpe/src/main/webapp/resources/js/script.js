@@ -80,7 +80,7 @@ function updateHeader() {
  * @param iface
  * @param port
  */
-function isInterfaceFree(vcpeId, iface, port) {
+function isInterfaceFree(vcpeId, iface, port, message) {
 	$.ajax({
 		type : "GET",
 		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId="
@@ -97,21 +97,21 @@ function isInterfaceFree(vcpeId, iface, port) {
 				// Add the new tooltip, error classes and disable inputs
 				$(iface)
 						.after(
-								"<div id='tooltip'>The Interface is not available</div>");
+								"<div id='tooltip'>" + message + "</div>");
 				iface.className = 'error';
 				port.className = 'error';
 				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
+				$("#tooltip").show("fade", {}, 200);
 				$("#tooltip").click(function() {
 					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
+					$(this).hide("fade", {}, 200);
 					$(this).remove();
 				});
 			} else {
 				// Case available, revert changes
 				iface.className = '';
 				port.className = '';
-				$("#tooltip").hide("fade", {}, 400);
+				$("#tooltip").hide("fade", {}, 200);
 				$("#tooltip").remove();
 			}
 		}
@@ -124,7 +124,7 @@ function isInterfaceFree(vcpeId, iface, port) {
  * @param vcpeId
  * @param ip
  */
-function isIPFree(vcpeId, ip) {
+function isIPFree(vcpeId, ip, message) {
 	$.ajax({
 		type : "GET",
 		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId="
@@ -137,19 +137,19 @@ function isIPFree(vcpeId, ip) {
 				// Add the new tooltip, error classes and disable inputs
 				$(ip)
 						.after(
-								"<div id='tooltip'>The IP Address is not available</div>");
+								"<div id='tooltip'>" + message + "</div>");
 				ip.className = 'error';
 				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
+				$("#tooltip").show("fade", {}, 200);
 				$("#tooltip").click(function() {
 					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
+					$(this).hide("fade", {}, 200);
 					$(this).remove();
 				});
 			} else {
 				// Case available, revert changes
 				ip.className = '';
-				$("#tooltip").hide("fade", {}, 400);
+				$("#tooltip").hide("fade", {}, 200);
 				$("#tooltip").remove();
 	
 			}
@@ -164,7 +164,7 @@ function isIPFree(vcpeId, ip) {
  * @param vcpeId
  * @param vlan
  */
-function isVLANFree(vcpeId, vlan, ifaceName) {
+function isVLANFree(vcpeId, vlan, ifaceName, message) {
 	$.ajax({
 		type : "GET",
 		url : "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId
@@ -176,19 +176,19 @@ function isVLANFree(vcpeId, vlan, ifaceName) {
 				$("#tooltip").remove();
 				// Add the new tooltip, error classes and disable inputs
 				$(vlan).after(
-						"<div id='tooltip'>The VLAN is not available</div>");
+						"<div id='tooltip'>" + message + "</div>");
 				vlan.className = 'error';
 				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
+				$("#tooltip").show("fade", {}, 200);
 				$("#tooltip").click(function() {
 					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
+					$(this).hide("fade", {}, 200);
 					$(this).remove();
 				});
 			} else {
 				// Case available, revert changes
 				vlan.className = '';
-				$("#tooltip").hide("fade", {}, 400);
+				$("#tooltip").hide("fade", {}, 200);
 				$("#tooltip").remove();
 			}
 		}
