@@ -600,6 +600,7 @@ public class Template implements ITemplate {
 		String router1id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0];
 
 		Properties props1 = (Properties) bgpProps.clone();
+		props1.setProperty("as.asnum", bgpParams.clientASNumber);
 		props1.setProperty("bgp.routerid", router1id); // no mask
 
 		props1.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
@@ -636,6 +637,7 @@ public class Template implements ITemplate {
 		String router2id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0];
 
 		Properties props2 = (Properties) bgpProps.clone();
+		props2.setProperty("as.asnum", bgpParams.clientASNumber);
 		props2.setProperty("bgp.routerid", router2id); // no mask
 
 		props2.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
