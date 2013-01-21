@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -59,11 +60,11 @@ public class VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/physical")
-	public String getPhysicalForm(Model model, Locale locale) {
+	public String getPhysicalForm(@RequestParam("templateType") String templateType, Model model, Locale locale) {
 		LOGGER.debug("home");
 		try {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-			model.addAttribute(vcpeNetworkBO.getPhysicalInfrastructure("vcpe.template"));
+			model.addAttribute(vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.list.message.error", null, locale));
