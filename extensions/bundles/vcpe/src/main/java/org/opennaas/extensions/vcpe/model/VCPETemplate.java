@@ -27,6 +27,8 @@ public class VCPETemplate {
 	public static final String	UP2_PHY_INTERFACE_LOCAL			= TEMPLATE_NS + ".cpe2.up.phy.iface.local";
 	public static final String	LO2_PHY_INTERFACE				= TEMPLATE_NS + ".cpe2.lo.phy.iface";
 
+	public static final String	CORE_LO_INTERFACE				= TEMPLATE_NS + ".core.lo.iface";
+
 	public static final String	VCPE1_ROUTER					= TEMPLATE_NS + ".vcpe1.router";
 	public static final String	INTER1_INTERFACE_LOCAL			= TEMPLATE_NS + ".vcpe1.inter.iface.local";
 	public static final String	INTER1_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe1.inter.iface.other";
