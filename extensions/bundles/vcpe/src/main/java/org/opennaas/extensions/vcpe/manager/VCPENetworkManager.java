@@ -156,9 +156,11 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			List<IResource> vcpes = manager.listResourcesByType(RESOURCE_VCPENET_TYPE);
 			for (IResource vcpe : vcpes) {
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
-					for (Interface iface : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Interface.class)) {
-						if (ifaceName.equals(iface.getPhysicalInterfaceName()) && vlan.equals(String.valueOf(iface.getVlan()))) {
-							isFree = false;
+					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
+						for (Interface iface : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Interface.class)) {
+							if (ifaceName.equals(iface.getPhysicalInterfaceName()) && vlan.equals(String.valueOf(iface.getVlan()))) {
+								isFree = false;
+							}
 						}
 					}
 				}
