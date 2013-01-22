@@ -7,9 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.math.IntRange;
+import org.apache.commons.lang.math.LongRange;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.extensions.vcpe.Activator;
+import org.opennaas.extensions.vcpe.manager.IVCPENetworkManager;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
+import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
@@ -23,12 +29,14 @@ public class VCPETemplateSuggestor {
 
 	private static final String			PROPERTIES_PATH		= "/templates/template.properties";
 
-	private Properties					props;
-
 	/**
 	 * Maps TemplateName to properties name.
 	 */
 	private static Map<String, String>	propertiesNameMap	= new HashMap<String, String>();
+
+	private Properties					props;
+
+	private IVCPENetworkManager			vcpeManager;
 
 	static {
 
@@ -96,8 +104,12 @@ public class VCPETemplateSuggestor {
 			props = new Properties();
 			props.load(this.getClass().getResourceAsStream(PROPERTIES_PATH));
 
+			vcpeManager = loadVCPEManager();
+
 		} catch (IOException e) {
-			throw new VCPENetworkManagerException("Failed to initialize template suggestor");
+			throw new VCPENetworkManagerException("Failed to initialize template suggestor." + e.getMessage());
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException("Failed to initialize template suggestor." + e.getMessage());
 		}
 	}
 
@@ -120,7 +132,11 @@ public class VCPETemplateSuggestor {
 	 */
 	public VCPENetworkModel getSuggestionForLogicalModel(VCPENetworkModel logicalModel) {
 		// TODO suggested mapping should be more intelligent, not properties driven
-		return mapLogicalElementsFromProperties(logicalModel);
+		VCPENetworkModel updated = mapLogicalElementsFromProperties(logicalModel);
+		updated = suggestVLANs(updated);
+		updated = suggestUnits(updated);
+		return updated;
+
 	}
 
 	private VCPENetworkModel mapPhysicalElementsFromProperties(VCPENetworkModel model) {
@@ -249,4 +265,176 @@ public class VCPETemplateSuggestor {
 		return iface;
 
 	}
+
+	/**
+	 * Suggest and assign vlans for logical interfaces in given model.
+	 * 
+	 * @param model
+	 * @return
+	 */
+	private VCPENetworkModel suggestVLANs(VCPENetworkModel model) {
+
+		// TODO It may happen that each link has different vlan ranges.
+		LongRange vlanRange = getVLANRange();
+
+		// Logical Router 1
+		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		for (Interface iface : vcpe1.getInterfaces()) {
+			if (!iface.getTemplateName().equals(VCPETemplate.LO1_INTERFACE))
+				iface.setVlan(suggestVLAN(vcpe1, iface, vlanRange));
+		}
+
+		// Logical Router 2
+		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		for (Interface iface : vcpe2.getInterfaces()) {
+			if (!iface.getTemplateName().equals(VCPETemplate.LO2_INTERFACE))
+				iface.setVlan(suggestVLAN(vcpe2, iface, vlanRange));
+		}
+
+		// BoD
+		updateIfaceVLANFromLink((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_LINK_LOCAL));
+		updateIfaceVLANFromLink((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_LINK_LOCAL));
+		updateIfaceVLANFromLink((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_LOCAL));
+		updateIfaceVLANFromLink((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_LOCAL));
+		// Should not suggest vlan for client interfaces.
+		// Normally each client will have an assigned vlan (or set of vlans) and the NOC should select between the assigned ones.
+
+		// NOC network
+		updateIfaceVLANFromLink((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_LINK));
+		updateIfaceVLANFromLink((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_LINK));
+
+		return model;
+	}
+
+	private VCPENetworkModel suggestUnits(VCPENetworkModel model) {
+
+		// Suggestion strategy:
+		// Try to assign the same unit as vlan (if it is free)
+		// In interfaces without vlan, or with unit matching vlan already used, assign first unit that isFree.
+
+		IntRange unitRange = new IntRange(1, 4094);
+
+		// Logical Router 1
+		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		for (Interface iface : vcpe1.getInterfaces()) {
+			if (iface.getTemplateName().equals(VCPETemplate.LO1_INTERFACE))
+				iface.setPort(suggestInterfaceUnit(vcpe1, iface, unitRange));
+			else
+				iface.setPort(suggestInterfaceUnit(vcpe1, iface, unitRange, Long.valueOf(iface.getVlan()).intValue()));
+		}
+
+		// Logical Router 2
+		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		for (Interface iface : vcpe2.getInterfaces()) {
+			if (iface.getTemplateName().equals(VCPETemplate.LO2_INTERFACE))
+				iface.setPort(suggestInterfaceUnit(vcpe2, iface, unitRange));
+			else
+				iface.setPort(suggestInterfaceUnit(vcpe2, iface, unitRange, Long.valueOf(iface.getVlan()).intValue()));
+		}
+
+		// BoD
+		Interface bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
+		bodIface.setPort(suggestInterfaceUnit(vcpe2, bodIface, unitRange, Long.valueOf(bodIface.getVlan()).intValue()));
+
+		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
+		bodIface.setPort(suggestInterfaceUnit(vcpe2, bodIface, unitRange, Long.valueOf(bodIface.getVlan()).intValue()));
+
+		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
+		bodIface.setPort(suggestInterfaceUnit(vcpe2, bodIface, unitRange, Long.valueOf(bodIface.getVlan()).intValue()));
+
+		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
+		bodIface.setPort(suggestInterfaceUnit(vcpe2, bodIface, unitRange, Long.valueOf(bodIface.getVlan()).intValue()));
+
+		// NOC network
+		Interface upIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER);
+		upIface.setPort(suggestInterfaceUnit(vcpe2, upIface, unitRange, Long.valueOf(upIface.getVlan()).intValue()));
+
+		upIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER);
+		upIface.setPort(suggestInterfaceUnit(vcpe2, upIface, unitRange, Long.valueOf(upIface.getVlan()).intValue()));
+
+		return model;
+	}
+
+	/**
+	 * 
+	 * @param router
+	 * @param iface
+	 * @param vlanRange
+	 * @return first vlan in vlanRange that is free in given interface of given router.
+	 */
+	private long suggestVLAN(Router router, Interface iface, LongRange vlanRange) {
+		for (long vlan : vlanRange.toArray()) {
+			if (getVCPENetworkManager().isVLANFree(null, Long.toString(vlan), iface.getPhysicalInterfaceName())) {
+				return vlan;
+			}
+		}
+		return 0L;
+	}
+
+	/**
+	 * 
+	 * @param router
+	 * @param iface
+	 * @param unitRange
+	 * @param desired
+	 *            preferred unit number. This will be the returned value in case it is free.
+	 * @return desired unit if it is free in given interface of given router. Otherwise, first unit in unitRange that is free in given interface of
+	 *         given router.
+	 */
+	private int suggestInterfaceUnit(Router router, Interface iface, IntRange unitRange, int desired) {
+
+		if (getVCPENetworkManager().isInterfaceFree(null, iface.getPhysicalInterfaceName() + "." + desired))
+			return desired;
+
+		return suggestInterfaceUnit(router, iface, unitRange);
+	}
+
+	/**
+	 * 
+	 * @param router
+	 * @param iface
+	 * @param unitRange
+	 * @return first unit in unitRange that is free in given interface of given router.
+	 */
+	private int suggestInterfaceUnit(Router router, Interface iface, IntRange unitRange) {
+		for (int unitNum : unitRange.toArray()) {
+			if (getVCPENetworkManager().isInterfaceFree(null, iface.getPhysicalInterfaceName() + "." + unitNum)) {
+				return unitNum;
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Sets iface vlan according to the other endpoint of given link.
+	 * 
+	 * @param iface
+	 * @param link
+	 */
+	private void updateIfaceVLANFromLink(Interface iface, Link link) {
+		if (link.getSource().equals(iface))
+			iface.setVlan(link.getSink().getVlan());
+		else
+			iface.setVlan(link.getSource().getVlan());
+	}
+
+	private LongRange getVLANRange() {
+		// TODO read from config file
+		return new LongRange(1, 4094);
+	}
+
+	private IVCPENetworkManager getVCPENetworkManager() {
+		return vcpeManager;
+	}
+
+	private IVCPENetworkManager loadVCPEManager() throws ActivatorException {
+		return Activator.getVCPEManagerService();
+	}
+
 }
