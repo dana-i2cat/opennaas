@@ -5,12 +5,14 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({ LogicalRouter.class, PhysicalRouter.class })
 public class Router extends VCPENetworkElement {
 
 	@XmlIDREF
-	private List<Interface>	interfaces;
+	protected List<Interface>	interfaces;
 
 	public List<Interface> getInterfaces() {
 		return interfaces;

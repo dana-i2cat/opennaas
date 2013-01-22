@@ -563,6 +563,15 @@ public class Template implements ITemplate {
 		bod.getInterfaces().add(
 				(Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN));
 
+		// Assign logical routers to physical ones
+		Router phyRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.CPE1_PHY_ROUTER);
+		LogicalRouter logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.VCPE1_ROUTER);
+		logRouter.setPhysicalRouter(phyRouter);
+
+		phyRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.CPE2_PHY_ROUTER);
+		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.VCPE2_ROUTER);
+		logRouter.setPhysicalRouter(phyRouter);
+
 		return logicalInfrastructure;
 	}
 
