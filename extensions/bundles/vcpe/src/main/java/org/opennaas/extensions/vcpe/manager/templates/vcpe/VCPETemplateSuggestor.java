@@ -395,7 +395,7 @@ public class VCPETemplateSuggestor {
 
 		for (long vlan : vlanRange.toArray()) {
 			if (!isAlreadySuggestedVlan(phyRouter, iface, vlan, suggestedVLANs)) {
-				if (getVCPENetworkManager().isVLANFree(null, Long.toString(vlan), iface.getPhysicalInterfaceName())) {
+				if (getVCPENetworkManager().isVLANFree(null, phyRouter.getName(), Long.toString(vlan), iface.getPhysicalInterfaceName())) {
 					suggestedVlan = vlan;
 					break;
 				}
@@ -427,7 +427,7 @@ public class VCPETemplateSuggestor {
 			int desired) {
 
 		if (!isAlreadySuggestedUnit(phyElement, iface, desired, suggestedUnits)) {
-			if (getVCPENetworkManager().isInterfaceFree(null, iface.getPhysicalInterfaceName() + "." + desired)) {
+			if (getVCPENetworkManager().isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + desired)) {
 
 				if (suggestedUnits.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
 					suggestedUnits.get(generatePhysicalInterfaceKey(phyElement, iface)).add(desired);
@@ -453,7 +453,7 @@ public class VCPETemplateSuggestor {
 	 */
 	private int suggestInterfaceUnit(VCPENetworkElement phyElement, Interface iface, IntRange unitRange, Map<String, List<Integer>> suggestedUnits) {
 		for (int unitNum : unitRange.toArray()) {
-			if (getVCPENetworkManager().isInterfaceFree(null, iface.getPhysicalInterfaceName() + "." + unitNum)) {
+			if (getVCPENetworkManager().isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + unitNum)) {
 				return unitNum;
 			}
 		}

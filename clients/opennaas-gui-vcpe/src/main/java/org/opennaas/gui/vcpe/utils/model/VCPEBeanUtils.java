@@ -42,9 +42,9 @@ public class VCPEBeanUtils {
 		modelOut.setTemplateType(modelIn.getTemplateType());
 
 		// Logical Routers
-		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouterMaster = (org.opennaas.extensions.vcpe.model.LogicalRouter) VCPENetworkModelHelper
 				.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
-		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouterBackup = (org.opennaas.extensions.vcpe.model.LogicalRouter) VCPENetworkModelHelper
 				.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
 		modelOut.setLogicalRouterMaster(getLogicalRouter(logicalRouterMaster));
 		modelOut.setLogicalRouterBackup(getLogicalRouter(logicalRouterBackup));
@@ -116,7 +116,7 @@ public class VCPEBeanUtils {
 	 * @param inLR
 	 * @return
 	 */
-	public static LogicalRouter getLogicalRouter(org.opennaas.extensions.vcpe.model.Router lrIn) {
+	public static LogicalRouter getLogicalRouter(org.opennaas.extensions.vcpe.model.LogicalRouter lrIn) {
 		LogicalRouter lrOut = new LogicalRouter();
 		if (lrIn != null) {
 			lrOut.setName(lrIn.getName());
@@ -129,6 +129,7 @@ public class VCPEBeanUtils {
 				interfaces.add(inter);
 			}
 		}
+		lrOut.setPhysicalRouter(getPhysicalRouter(lrIn.getPhysicalRouter()));
 		return lrOut;
 	}
 
