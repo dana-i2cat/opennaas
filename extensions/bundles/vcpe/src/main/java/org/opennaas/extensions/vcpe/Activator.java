@@ -6,6 +6,7 @@ import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.extensions.vcpe.manager.IVCPENetworkManager;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -38,6 +39,11 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	public static IProtocolManager getProtocolManagerService() throws ActivatorException {
 		log.debug("Calling ProtocolSessionManagerService");
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
+	}
+
+	public static IVCPENetworkManager getVCPEManagerService() throws ActivatorException {
+		log.debug("Calling VCPEManagerService");
+		return (IVCPENetworkManager) getServiceFromRegistry(context, IVCPENetworkManager.class.getName());
 	}
 
 }

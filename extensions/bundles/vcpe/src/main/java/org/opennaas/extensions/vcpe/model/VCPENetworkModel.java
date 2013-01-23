@@ -34,7 +34,7 @@ public class VCPENetworkModel implements IModel {
 	private BGP							bgp;
 	private VRRP						vrrp;
 	private boolean						created;
-	private List<VCPENetworkElement>	elements;
+	private List<VCPENetworkElement>	elements			= new ArrayList<VCPENetworkElement>();
 
 	/**
 	 * @return the id

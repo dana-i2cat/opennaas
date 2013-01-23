@@ -27,10 +27,14 @@ public class IsFreeChecker {
 	 * Check if a VLAN in an interface is free in VCPE. <br>
 	 * Check in all Domains and check in all Logical Routers
 	 * 
-	 * @param vcpeId of the VLAN
-	 * @param routerName of the VLAN
-	 * @param vlan to check
-	 * @param ifaceName of the VLAN
+	 * @param vcpeId
+	 *            of the VLAN
+	 * @param routerName
+	 *            of the VLAN
+	 * @param vlan
+	 *            to check
+	 * @param ifaceName
+	 *            of the VLAN
 	 * @return true if the VLAN is free, otherwise false
 	 * @throws VCPENetworkManagerException
 	 */
@@ -43,8 +47,10 @@ public class IsFreeChecker {
 			for (IResource vcpe : vcpes) {
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
-					if (isFree = isVLANFreeInDomains(vcpe, ifaceName, vlan)) {
-						isFree = isVLANFreeInLRs(vcpe, router, ifaceName, vlan);
+					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
+						if (isFree = isVLANFreeInDomains(vcpe, ifaceName, vlan)) {
+							isFree = isVLANFreeInLRs(vcpe, router, ifaceName, vlan);
+						}
 					}
 				}
 			}
@@ -57,10 +63,14 @@ public class IsFreeChecker {
 	/**
 	 * Check if a VLAN is free in the Logical Routers of a VCPE
 	 * 
-	 * @param vcpe who has the LR's
-	 * @param routerName of the VLAN to check
-	 * @param ifaceName of the VLAN to check
-	 * @param vlan to check
+	 * @param vcpe
+	 *            who has the LR's
+	 * @param routerName
+	 *            of the VLAN to check
+	 * @param ifaceName
+	 *            of the VLAN to check
+	 * @param vlan
+	 *            to check
 	 * @return true if the VLAN is free, otherwise false
 	 */
 	public boolean isVLANFreeInLRs(IResource vcpe, String routerName, String ifaceName, String vlan) {
@@ -83,9 +93,12 @@ public class IsFreeChecker {
 	/**
 	 * Check if a VLAN is free in the Domains of a VCPE
 	 * 
-	 * @param vcpe who has the Domains
-	 * @param ifaceName of the VLAN to check
-	 * @param vlan to check
+	 * @param vcpe
+	 *            who has the Domains
+	 * @param ifaceName
+	 *            of the VLAN to check
+	 * @param vlan
+	 *            to check
 	 * @return true if the VLAN is free, otherwise false
 	 */
 	public boolean isVLANFreeInDomains(IResource vcpe, String ifaceName, String vlan) {
@@ -105,9 +118,12 @@ public class IsFreeChecker {
 	 * Check if a Interface is free in VCPE. <br>
 	 * Check in all Domains and check in all Logical Routers
 	 * 
-	 * @param vcpeId of the Interface
-	 * @param routerName of the Interface
-	 * @param ifaceName interface to check
+	 * @param vcpeId
+	 *            of the Interface
+	 * @param routerName
+	 *            of the Interface
+	 * @param ifaceName
+	 *            interface to check
 	 * @return true if the interface is free, otherwise false
 	 * @throws VCPENetworkManagerException
 	 */
@@ -120,8 +136,10 @@ public class IsFreeChecker {
 			for (IResource vcpe : vcpes) {
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
-					if (isFree = isInterfaceFreeInDomains(vcpe, ifaceName)) {
-						isFree = isInterfaceFreeInLRs(vcpe, router, ifaceName);
+					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
+						if (isFree = isInterfaceFreeInDomains(vcpe, ifaceName)) {
+							isFree = isInterfaceFreeInLRs(vcpe, router, ifaceName);
+						}
 					}
 				}
 			}
@@ -134,9 +152,12 @@ public class IsFreeChecker {
 	/**
 	 * Check if an Interface is free in the Logical Routers of a VCPE
 	 * 
-	 * @param vcpe who has the LR's
-	 * @param routerName of the Interface to check
-	 * @param Interface to check
+	 * @param vcpe
+	 *            who has the LR's
+	 * @param routerName
+	 *            of the Interface to check
+	 * @param Interface
+	 *            to check
 	 * @return true if the VLAN is free, otherwise false
 	 */
 	public boolean isInterfaceFreeInLRs(IResource vcpe, String routerName, String ifaceName) {
@@ -158,8 +179,10 @@ public class IsFreeChecker {
 	/**
 	 * Check if a Interface is free in the Domains of a VCPE
 	 * 
-	 * @param vcpe who has the Domains
-	 * @param ifaceName interface to check
+	 * @param vcpe
+	 *            who has the Domains
+	 * @param ifaceName
+	 *            interface to check
 	 * @return true if the interface is free, otherwise false
 	 */
 	public boolean isInterfaceFreeInDomains(IResource vcpe, String ifaceName) {
@@ -178,9 +201,12 @@ public class IsFreeChecker {
 	 * Check if an IP is free in VCPE. <br>
 	 * Check in all Logical Routers
 	 * 
-	 * @param vcpeId of the IP to check
-	 * @param routerName of the IP to check
-	 * @param ip to check
+	 * @param vcpeId
+	 *            of the IP to check
+	 * @param routerName
+	 *            of the IP to check
+	 * @param ip
+	 *            to check
 	 * @return true if the ip is free, otherwise false
 	 * @throws VCPENetworkManagerException
 	 */
@@ -193,13 +219,15 @@ public class IsFreeChecker {
 			for (IResource vcpe : vcpes) {
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
-					// get all routers
-					for (LogicalRouter logicalRouter : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class)) {
-						// check in the same router only
-						if (logicalRouter.getPhysicalRouter().getName().equals(routerName)) {
-							for (Interface iface : filter(logicalRouter.getInterfaces(), Interface.class)) {
-								if (ip.equals(iface.getIpAddress())) {
-									isFree = false;
+					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
+						// get all routers
+						for (LogicalRouter logicalRouter : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class)) {
+							// check in the same router only
+							if (logicalRouter.getPhysicalRouter().getName().equals(routerName)) {
+								for (Interface iface : filter(logicalRouter.getInterfaces(), Interface.class)) {
+									if (ip.equals(iface.getIpAddress())) {
+										isFree = false;
+									}
 								}
 							}
 						}
