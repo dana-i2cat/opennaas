@@ -563,6 +563,15 @@ public class Template implements ITemplate {
 		bod.getInterfaces().add(
 				(Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN));
 
+		// Assign logical routers to physical ones
+		Router phyRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.CPE1_PHY_ROUTER);
+		LogicalRouter logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.VCPE1_ROUTER);
+		logRouter.setPhysicalRouter(phyRouter);
+
+		phyRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.CPE2_PHY_ROUTER);
+		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, VCPETemplate.VCPE2_ROUTER);
+		logRouter.setPhysicalRouter(phyRouter);
+
 		return logicalInfrastructure;
 	}
 
@@ -573,13 +582,17 @@ public class Template implements ITemplate {
 		params.clientASNumber = bgp.getClientASNumber();
 		params.remoteASNum = bgp.getNocASNumber();
 
-		params.loAddr1 = "193.1.190.141/30"; // TODO get this from GUI
-		params.upRemoteAddr1 = "193.1.190.134/30"; // TODO get this from GUI
+		params.loAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO1_INTERFACE))
+				.getIpAddress();
+		params.upRemoteAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER))
+				.getIpAddress();
 		params.interAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_LOCAL))
 				.getIpAddress();
 
-		params.loAddr2 = "193.1.190.145/30"; // TODO get this from GUI
-		params.upRemoteAddr2 = "193.1.190.130/30"; // TODO get this from GUI
+		params.loAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO2_INTERFACE))
+				.getIpAddress();
+		params.upRemoteAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER))
+				.getIpAddress();
 		params.interAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_LOCAL))
 				.getIpAddress();
 
@@ -596,6 +609,7 @@ public class Template implements ITemplate {
 		String router1id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0];
 
 		Properties props1 = (Properties) bgpProps.clone();
+		props1.setProperty("as.asnum", bgpParams.clientASNumber);
 		props1.setProperty("bgp.routerid", router1id); // no mask
 
 		props1.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
@@ -632,6 +646,7 @@ public class Template implements ITemplate {
 		String router2id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0];
 
 		Properties props2 = (Properties) bgpProps.clone();
+		props2.setProperty("as.asnum", bgpParams.clientASNumber);
 		props2.setProperty("bgp.routerid", router2id); // no mask
 
 		props2.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
