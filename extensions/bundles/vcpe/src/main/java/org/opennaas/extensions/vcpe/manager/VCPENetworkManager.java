@@ -148,7 +148,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public Boolean isVLANFree(String vcpeId, String router, String vlan, String ifaceName) throws VCPENetworkManagerException {
-		return new IsFreeChecker().isVLANFree(vcpeId, router, vlan, ifaceName);
+		return IsFreeChecker.isVLANFree(vcpeId, router, vlan, ifaceName);
 	}
 
 	/*
@@ -158,7 +158,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public Boolean isInterfaceFree(String vcpeId, String router, String ifaceName) throws VCPENetworkManagerException {
-		return new IsFreeChecker().isInterfaceFree(vcpeId, router, ifaceName);
+		return IsFreeChecker.isInterfaceFree(vcpeId, router, ifaceName);
 	}
 
 	/*
@@ -168,7 +168,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public Boolean isIPFree(String vcpeId, String router, String ip) throws VCPENetworkManagerException {
-		return new IsFreeChecker().isIPFree(vcpeId, router, ip);
+		return IsFreeChecker.isIPFree(vcpeId, router, ip);
 	}
 
 	/**
