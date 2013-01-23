@@ -80,11 +80,14 @@ function updateHeader() {
  * @param iface
  * @param port
  */
-function isInterfaceFree(vcpeId, iface, port, message) {
+function isInterfaceFree(vcpeId, router, iface, port, message) {
 	$.ajax({
 		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId="
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?" 
+				+ "vcpeId="
 				+ vcpeId
+				+ "&router="
+				+ router				
 				+ "&iface="
 				+ iface.value
 				+ "&port="
@@ -124,11 +127,16 @@ function isInterfaceFree(vcpeId, iface, port, message) {
  * @param vcpeId
  * @param ip
  */
-function isIPFree(vcpeId, ip, message) {
+function isIPFree(vcpeId, router, ip, message) {
 	$.ajax({
 		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId="
-				+ vcpeId + "&ip=" + ip.value,
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?" 
+				+"vcpeId="
+				+ vcpeId 
+				+ "&router="
+				+ router	
+				+ "&ip=" 
+				+ ip.value,
 		success : function(data) {
 			if (data == 'false') {
 				// Case not available
@@ -164,11 +172,18 @@ function isIPFree(vcpeId, ip, message) {
  * @param vcpeId
  * @param vlan
  */
-function isVLANFree(vcpeId, vlan, ifaceName, message) {
+function isVLANFree(vcpeId, router, vlan, ifaceName, message) {
 	$.ajax({
 		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId
-				+ "&vlan=" + vlan.value + "&ifaceName=" + ifaceName.value,
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?" 
+				+ "vcpeId=" 
+				+ vcpeId
+				+ "&router="
+				+ router	
+				+ "&vlan=" 
+				+ vlan.value 
+				+ "&ifaceName=" 
+				+ ifaceName.value,
 		success : function(data) {
 			if (data == 'false') {
 				// Case not available
