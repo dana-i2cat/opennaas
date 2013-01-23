@@ -1,7 +1,5 @@
 package org.opennaas.extensions.vcpe.manager;
 
-import static com.google.common.collect.Iterables.filter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +15,10 @@ import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
-import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
@@ -149,50 +147,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isVLANFree(java.lang.String)
 	 */
 	@Override
-	public Boolean isVLANFree(String vcpeId, String vlan, String ifaceName) throws VCPENetworkManagerException {
-		boolean isFree = true;
-		try {
-			IResourceManager manager = Activator.getResourceManagerService();
-			List<IResource> vcpes = manager.listResourcesByType(RESOURCE_VCPENET_TYPE);
-			for (IResource vcpe : vcpes) {
-				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
-					for (Interface iface : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Interface.class)) {
-						if (ifaceName.equals(iface.getPhysicalInterfaceName()) && vlan.equals(String.valueOf(iface.getVlan()))) {
-							isFree = false;
-						}
-					}
-				}
-			}
-		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException("Can't check the VLAN: " + vlan);
-		}
-		return isFree;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isIPFree(java.lang.String)
-	 */
-	@Override
-	public Boolean isIPFree(String vcpeId, String ip) throws VCPENetworkManagerException {
-		boolean isFree = true;
-		try {
-			IResourceManager manager = Activator.getResourceManagerService();
-			List<IResource> vcpes = manager.listResourcesByType(RESOURCE_VCPENET_TYPE);
-			for (IResource vcpe : vcpes) {
-				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
-					for (Interface iface : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Interface.class)) {
-						if (ip.equals(iface.getIpAddress())) {
-							isFree = false;
-						}
-					}
-				}
-			}
-		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException("Can't check the IP: " + ip);
-		}
-		return isFree;
+	public Boolean isVLANFree(String vcpeId, String router, String vlan, String ifaceName) throws VCPENetworkManagerException {
+		return new IsFreeChecker().isVLANFree(vcpeId, router, vlan, ifaceName);
 	}
 
 	/*
@@ -201,24 +157,18 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isInterfaceFree(java.lang.String)
 	 */
 	@Override
-	public Boolean isInterfaceFree(String vcpeId, String ifaceIn) throws VCPENetworkManagerException {
-		boolean isFree = true;
-		try {
-			IResourceManager manager = Activator.getResourceManagerService();
-			List<IResource> vcpes = manager.listResourcesByType(RESOURCE_VCPENET_TYPE);
-			for (IResource vcpe : vcpes) {
-				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
-					for (Interface iface : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Interface.class)) {
-						if (ifaceIn.equals(iface.getName())) {
-							isFree = false;
-						}
-					}
-				}
-			}
-		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException("Can't check the interface: " + ifaceIn);
-		}
-		return isFree;
+	public Boolean isInterfaceFree(String vcpeId, String router, String ifaceName) throws VCPENetworkManagerException {
+		return new IsFreeChecker().isInterfaceFree(vcpeId, router, ifaceName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#isIPFree(java.lang.String)
+	 */
+	@Override
+	public Boolean isIPFree(String vcpeId, String router, String ip) throws VCPENetworkManagerException {
+		return new IsFreeChecker().isIPFree(vcpeId, router, ip);
 	}
 
 	/**
