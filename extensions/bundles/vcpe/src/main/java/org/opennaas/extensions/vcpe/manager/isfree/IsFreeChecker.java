@@ -38,7 +38,7 @@ public class IsFreeChecker {
 	 * @return true if the VLAN is free, otherwise false
 	 * @throws VCPENetworkManagerException
 	 */
-	public Boolean isVLANFree(String vcpeId, String router, String vlan, String ifaceName) throws VCPENetworkManagerException {
+	public static Boolean isVLANFree(String vcpeId, String router, String vlan, String ifaceName) throws VCPENetworkManagerException {
 		boolean isFree = true;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();
@@ -73,7 +73,7 @@ public class IsFreeChecker {
 	 *            to check
 	 * @return true if the VLAN is free, otherwise false
 	 */
-	public boolean isVLANFreeInLRs(IResource vcpe, String routerName, String ifaceName, String vlan) {
+	public static boolean isVLANFreeInLRs(IResource vcpe, String routerName, String ifaceName, String vlan) {
 		boolean isFree = true;
 		for (LogicalRouter logicalRouter : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class)) {
 			// check in the same router only.
@@ -101,7 +101,7 @@ public class IsFreeChecker {
 	 *            to check
 	 * @return true if the VLAN is free, otherwise false
 	 */
-	public boolean isVLANFreeInDomains(IResource vcpe, String ifaceName, String vlan) {
+	public static boolean isVLANFreeInDomains(IResource vcpe, String ifaceName, String vlan) {
 		boolean isFree = true;
 		for (Domain domain : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Domain.class)) {
 			for (Interface iface : filter(domain.getInterfaces(), Interface.class)) {
@@ -127,7 +127,7 @@ public class IsFreeChecker {
 	 * @return true if the interface is free, otherwise false
 	 * @throws VCPENetworkManagerException
 	 */
-	public Boolean isInterfaceFree(String vcpeId, String router, String ifaceName) throws VCPENetworkManagerException {
+	public static Boolean isInterfaceFree(String vcpeId, String router, String ifaceName) throws VCPENetworkManagerException {
 		boolean isFree = true;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();
@@ -160,7 +160,7 @@ public class IsFreeChecker {
 	 *            to check
 	 * @return true if the VLAN is free, otherwise false
 	 */
-	public boolean isInterfaceFreeInLRs(IResource vcpe, String routerName, String ifaceName) {
+	public static boolean isInterfaceFreeInLRs(IResource vcpe, String routerName, String ifaceName) {
 		boolean isFree = true;
 		for (LogicalRouter logicalRouter : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class)) {
 			// check in the same router only.
@@ -185,7 +185,7 @@ public class IsFreeChecker {
 	 *            interface to check
 	 * @return true if the interface is free, otherwise false
 	 */
-	public boolean isInterfaceFreeInDomains(IResource vcpe, String ifaceName) {
+	public static boolean isInterfaceFreeInDomains(IResource vcpe, String ifaceName) {
 		boolean isFree = true;
 		for (Domain domain : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Domain.class)) {
 			for (Interface iface : filter(domain.getInterfaces(), Interface.class)) {
@@ -210,7 +210,7 @@ public class IsFreeChecker {
 	 * @return true if the ip is free, otherwise false
 	 * @throws VCPENetworkManagerException
 	 */
-	public Boolean isIPFree(String vcpeId, String routerName, String ip) throws VCPENetworkManagerException {
+	public static Boolean isIPFree(String vcpeId, String routerName, String ip) throws VCPENetworkManagerException {
 		boolean isFree = true;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();

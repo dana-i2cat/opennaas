@@ -9,10 +9,8 @@ import java.util.Properties;
 
 import org.apache.commons.lang.math.IntRange;
 import org.apache.commons.lang.math.LongRange;
-import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.extensions.vcpe.Activator;
-import org.opennaas.extensions.vcpe.manager.IVCPENetworkManager;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
+import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
@@ -37,8 +35,6 @@ public class VCPETemplateSuggestor {
 	private static Map<String, String>	propertiesNameMap	= new HashMap<String, String>();
 
 	private Properties					props;
-
-	private IVCPENetworkManager			vcpeManager;
 
 	static {
 
@@ -106,11 +102,7 @@ public class VCPETemplateSuggestor {
 			props = new Properties();
 			props.load(this.getClass().getResourceAsStream(PROPERTIES_PATH));
 
-			vcpeManager = loadVCPEManager();
-
 		} catch (IOException e) {
-			throw new VCPENetworkManagerException("Failed to initialize template suggestor." + e.getMessage());
-		} catch (ActivatorException e) {
 			throw new VCPENetworkManagerException("Failed to initialize template suggestor." + e.getMessage());
 		}
 	}
@@ -395,7 +387,7 @@ public class VCPETemplateSuggestor {
 
 		for (long vlan : vlanRange.toArray()) {
 			if (!isAlreadySuggestedVlan(phyRouter, iface, vlan, suggestedVLANs)) {
-				if (getVCPENetworkManager().isVLANFree(null, phyRouter.getName(), Long.toString(vlan), iface.getPhysicalInterfaceName())) {
+				if (IsFreeChecker.isVLANFree(null, phyRouter.getName(), Long.toString(vlan), iface.getPhysicalInterfaceName())) {
 					suggestedVlan = vlan;
 					break;
 				}
@@ -427,7 +419,7 @@ public class VCPETemplateSuggestor {
 			int desired) {
 
 		if (!isAlreadySuggestedUnit(phyElement, iface, desired, suggestedUnits)) {
-			if (getVCPENetworkManager().isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + desired)) {
+			if (IsFreeChecker.isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + desired)) {
 
 				if (suggestedUnits.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
 					suggestedUnits.get(generatePhysicalInterfaceKey(phyElement, iface)).add(desired);
@@ -453,7 +445,7 @@ public class VCPETemplateSuggestor {
 	 */
 	private int suggestInterfaceUnit(VCPENetworkElement phyElement, Interface iface, IntRange unitRange, Map<String, List<Integer>> suggestedUnits) {
 		for (int unitNum : unitRange.toArray()) {
-			if (getVCPENetworkManager().isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + unitNum)) {
+			if (IsFreeChecker.isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + unitNum)) {
 				return unitNum;
 			}
 		}
@@ -516,13 +508,4 @@ public class VCPETemplateSuggestor {
 		// TODO read from config file
 		return new LongRange(1, 4094);
 	}
-
-	private IVCPENetworkManager getVCPENetworkManager() {
-		return vcpeManager;
-	}
-
-	private IVCPENetworkManager loadVCPEManager() throws ActivatorException {
-		return Activator.getVCPEManagerService();
-	}
-
 }
