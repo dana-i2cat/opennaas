@@ -13,8 +13,8 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.Activator;
-import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
-import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
+import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability;
 import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
@@ -230,9 +230,9 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			resource = Activator.getResourceManagerService()
 					.getResourceById(vcpeNetworkModel.getId());
 			// Execute the capability and generate the real environment
-			IVCPENetworkBuilder vcpeNetworkBuilder = (IVCPENetworkBuilder) resource
-					.getCapabilityByInterface(IVCPENetworkBuilder.class);
-			vcpeNetworkBuilder.buildVCPENetwork(model);
+			IVCPENetworkBuilderCapability vcpeNetworkBuilderCapability = (IVCPENetworkBuilderCapability) resource
+					.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
+			vcpeNetworkBuilderCapability.buildVCPENetwork(model);
 		} catch (Exception e) {
 			if (resource != null) {
 				stopResource(vcpeNetworkModel.getId());
@@ -294,9 +294,9 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		try {
 			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
 			// Execute the capability and destroy the real enviroment
-			IVCPENetworkBuilder vcpeNetworkBuilder = (IVCPENetworkBuilder) resource
-					.getCapabilityByInterface(IVCPENetworkBuilder.class);
-			vcpeNetworkBuilder.destroyVCPENetwork();
+			IVCPENetworkBuilderCapability vcpeNetworkBuilderCapability = (IVCPENetworkBuilderCapability) resource
+					.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
+			vcpeNetworkBuilderCapability.destroyVCPENetwork();
 		} catch (Exception e) {
 			stopResource(vcpeNetworkId);
 			removeResource(vcpeNetworkId);
@@ -332,7 +332,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	private CapabilityDescriptor getBuilderCapability() {
 		CapabilityDescriptor desc = new CapabilityDescriptor();
 		Information info = new Information();
-		info.setType(VCPENetworkBuilder.CAPABILITY_TYPE);
+		info.setType(VCPENetworkBuilderCapability.CAPABILITY_TYPE);
 		desc.setCapabilityInformation(info);
 		return desc;
 	}

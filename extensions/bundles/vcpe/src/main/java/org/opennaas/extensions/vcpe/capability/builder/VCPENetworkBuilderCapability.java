@@ -48,9 +48,9 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
-public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetworkBuilder {
+public class VCPENetworkBuilderCapability extends AbstractCapability implements IVCPENetworkBuilderCapability {
 
-	Log							log				= LogFactory.getLog(VCPENetworkBuilder.class);
+	Log							log				= LogFactory.getLog(VCPENetworkBuilderCapability.class);
 
 	public static final String	CAPABILITY_TYPE	= "vcpenet_builder";
 	private String				resourceId;
@@ -59,7 +59,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 * @param descriptor
 	 * @param resourceId
 	 */
-	public VCPENetworkBuilder(CapabilityDescriptor descriptor, String resourceId) {
+	public VCPENetworkBuilderCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
 	}
@@ -71,7 +71,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IVCPENetworkBuilder.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IVCPENetworkBuilderCapability.class.getName());
 		setState(State.ACTIVE);
 	}
 
@@ -120,7 +120,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#buildVCPENetwork(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * @see
+	 * org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability#buildVCPENetwork(org.opennaas.extensions.vcpe.model.VCPENetworkModel
+	 * )
 	 */
 	@Override
 	public VCPENetworkModel buildVCPENetwork(VCPENetworkModel desiredScenario) throws CapabilityException {
@@ -138,7 +140,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#destroyVCPENetwork()
+	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability#destroyVCPENetwork()
 	 */
 	@Override
 	public void destroyVCPENetwork() throws CapabilityException {
@@ -156,7 +158,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#updateIps(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * @see
+	 * org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability#updateIps(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
 	public void updateIps(VCPENetworkModel updatedModel) throws CapabilityException {
@@ -220,7 +223,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#updateVRRPIp(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * @see org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability#updateVRRPIp(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
 	public void updateVRRPIp(VCPENetworkModel vcpeModel) throws CapabilityException {
@@ -258,7 +261,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#changeVRRPPriority(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability#changeVRRPPriority(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
 	public VCPENetworkModel changeVRRPPriority(VCPENetworkModel model) throws CapabilityException {
