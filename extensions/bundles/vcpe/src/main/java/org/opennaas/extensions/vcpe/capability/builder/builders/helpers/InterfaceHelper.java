@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.capability.builder.helpers;
+package org.opennaas.extensions.vcpe.capability.builder.builders.helpers;
 
 import java.util.List;
 

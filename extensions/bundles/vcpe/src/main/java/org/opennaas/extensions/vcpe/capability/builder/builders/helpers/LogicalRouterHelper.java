@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.capability.builder.helpers;
+package org.opennaas.extensions.vcpe.capability.builder.builders.helpers;
 
 import java.util.List;
 
@@ -79,7 +79,7 @@ public class LogicalRouterHelper extends GenericHelper {
 	 * @throws ProtocolException
 	 * @throws ResourceException
 	 */
-	public static void registerContexts(Router physical, Router logical) throws ProtocolException, ResourceException {
+	public static void copyContextPhysicaltoLogical(Router physical, Router logical) throws ProtocolException, ResourceException {
 		IProtocolSessionManager phyPSM = getProtocolManager().getProtocolSessionManager(
 				getResourceManager().getIdentifierFromResourceName("router", physical.getName()).getId());
 

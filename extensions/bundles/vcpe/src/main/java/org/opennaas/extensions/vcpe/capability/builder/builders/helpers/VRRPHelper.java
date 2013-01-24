@@ -1,12 +1,10 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.capability.builder.helpers;
+package org.opennaas.extensions.vcpe.capability.builder.builders.helpers;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.router.capability.vrrp.IVRRPCapability;
@@ -28,8 +26,6 @@ import org.opennaas.extensions.vcpe.model.VRRP;
  */
 public class VRRPHelper extends GenericHelper {
 
-	private static final Log	LOGGER	= LogFactory.getLog(VRRPHelper.class);
-
 	/**
 	 * Configure VRRP
 	 * 
@@ -38,8 +34,6 @@ public class VRRPHelper extends GenericHelper {
 	 * @throws ResourceException
 	 */
 	public static void configureVRRP(IResource resource, VCPENetworkModel model) throws ResourceException {
-		LOGGER.debug("Configuring VRRP");
-
 		// obtain VRRP from VCPENetworkModel
 		VRRP vrrp = model.getVrrp();
 
@@ -68,7 +62,6 @@ public class VRRPHelper extends GenericHelper {
 	 */
 	public void unconfigureVRRP(IResource resource, VCPENetworkModel model) throws ResourceException {
 		// TODO
-		LOGGER.debug("Unconfiguring VRRP");
 	}
 
 	/**
@@ -111,5 +104,4 @@ public class VRRPHelper extends GenericHelper {
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapabilityByInterface(VRRPCapability.class);
 		vrrpCapability.configureVRRP(vrrpProtocolEndpoint);
 	}
-
 }
