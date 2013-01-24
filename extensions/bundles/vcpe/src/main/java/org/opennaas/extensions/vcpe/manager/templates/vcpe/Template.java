@@ -15,7 +15,6 @@ import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
-import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -36,7 +35,7 @@ public class Template implements ITemplate {
 
 	private static final String		BGP_TEMPLATE	= "/templates/bgpModel1.properties";
 
-	private String					templateType	= TemplateSelector.VCPE_TEMPLATE;
+	private String					templateType	= ITemplate.SP_VCPE_TEMPLATE;
 
 	private Properties				bgpProps;
 	private VCPETemplateSuggestor	suggestor;

@@ -15,6 +15,7 @@
 <div id="logicalForm" >
 	<form:form modelAttribute="VCPENetwork" action="${action}" method="post">
 		<form:hidden path="id" />
+		<form:hidden path="templateType" />		
 		<form:hidden path="logicalRouterMaster.name" />
 		<form:hidden path="logicalRouterMaster.templateName" />
 		<form:hidden path="logicalRouterBackup.name" />
@@ -525,15 +526,6 @@
 						<br>
 						<form:errors path="name" />
 					</div>					
-					<div class="field">
-						<form:label for="templateType" path="templateType" cssErrorClass="error">
-							<spring:message code="vcpenetwork.templateType" />
-						</form:label>
-						<form:select path="templateType">
-							<form:option value="vcpe.template">VCPE Template </form:option>
-						</form:select>
-						<form:errors path="templateType" />
-					</div>
 				</div>
 				<!--  IP range -->
 				<div id="client_config" class="ui-widget-content">			
