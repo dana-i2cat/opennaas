@@ -4,7 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.opennaas.extensions.vcpe.manager.templates.vcpe.Template;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SingleProviderTemplate;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.LogicalRouter;
@@ -16,11 +16,11 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class TemplateTest {
 
-	Template	template;
+	SingleProviderTemplate	template;
 
 	@Before
 	public void initTemplate() {
-		template = new Template();
+		template = new SingleProviderTemplate();
 	}
 
 	@Test

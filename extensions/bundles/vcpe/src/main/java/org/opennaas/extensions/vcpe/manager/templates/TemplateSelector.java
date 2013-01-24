@@ -4,7 +4,7 @@
 package org.opennaas.extensions.vcpe.manager.templates;
 
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
-import org.opennaas.extensions.vcpe.manager.templates.vcpe.Template;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SingleProviderTemplate;
 
 /**
  * @author Jordi
@@ -19,9 +19,9 @@ public class TemplateSelector {
 	 * @throws VCPENetworkManagerException
 	 */
 	public static ITemplate getTemplate(String templateId) throws VCPENetworkManagerException {
-		ITemplate iTemplate = new Template();
+		ITemplate iTemplate = new SingleProviderTemplate();
 		if (templateId.equals(ITemplate.SP_VCPE_TEMPLATE)) {
-			iTemplate = new Template();
+			iTemplate = new SingleProviderTemplate();
 		}
 		return iTemplate;
 	}
