@@ -24,7 +24,7 @@
 	</service>
 	
 	<!-- Build capability factories -->
-	<bean id="vcpeBuilderCapabilityFactory" class="org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderFactory">
+	<bean id="vcpeBuilderCapabilityFactory" class="org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapabilityFactory">
 		<property name="type" value="vcpenet_builder"/>
 	</bean>
 	
