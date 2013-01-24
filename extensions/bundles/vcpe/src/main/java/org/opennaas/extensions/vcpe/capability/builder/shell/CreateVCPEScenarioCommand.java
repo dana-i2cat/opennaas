@@ -10,7 +10,7 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Command(scope = "vcpenet", name = "create", description = "Create a vCPE network scenario from given model")
@@ -30,7 +30,7 @@ public class CreateVCPEScenarioCommand extends GenericKarafCommand {
 		String xml = fileToString(modelPath);
 		VCPENetworkModel desiredScenario = (VCPENetworkModel) ObjectSerializer.fromXml(xml, VCPENetworkModel.class);
 
-		IVCPENetworkBuilder capability = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		IVCPENetworkBuilderCapability capability = (IVCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		capability.buildVCPENetwork(desiredScenario);
 
 		return null;

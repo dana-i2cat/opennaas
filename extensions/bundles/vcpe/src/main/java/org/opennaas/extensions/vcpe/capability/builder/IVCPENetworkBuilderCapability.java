@@ -11,7 +11,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Path("/")
-public interface IVCPENetworkBuilder extends ICapability {
+public interface IVCPENetworkBuilderCapability extends ICapability {
 
 	/**
 	 * Build the VCPENetworkModel from the desired scenario
