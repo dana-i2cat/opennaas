@@ -23,7 +23,7 @@ public class StaticRouteHelper extends GenericHelper {
 	 * @param nextHopIpAddress
 	 * @throws ResourceException
 	 */
-	public static void setStaticRoute(Router router, VCPENetworkModel model, String ipRange, String nextHopIpAddress)
+	public static void setStaticRoute(Router router, VCPENetworkModel model, String ipRange, String nextHopIpAddress, boolean isDiscard)
 			throws ResourceException {
 		IResource routerResource = getResourceManager().getResource(
 				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
@@ -35,7 +35,7 @@ public class StaticRouteHelper extends GenericHelper {
 		}
 
 		IStaticRouteCapability capability = (IStaticRouteCapability) routerResource.getCapabilityByInterface(IStaticRouteCapability.class);
-		capability.createStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress, "true");
+		capability.createStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress, String.valueOf(isDiscard));
 	}
 
 	/**

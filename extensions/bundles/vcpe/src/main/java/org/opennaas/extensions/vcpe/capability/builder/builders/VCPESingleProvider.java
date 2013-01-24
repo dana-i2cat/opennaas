@@ -362,14 +362,14 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 
 		String nextHopIpAddress = "";
 
-		StaticRouteHelper.setStaticRoute(lr1, model, ipRange, nextHopIpAddress);
+		StaticRouteHelper.setStaticRoute(lr1, model, ipRange, nextHopIpAddress, true);
 
 		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER);
 		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
 		String nextHopIpAddress2 = addressAndMask2[0];
 
-		StaticRouteHelper.setStaticRoute(lr2, model, ipRange, nextHopIpAddress2);
+		StaticRouteHelper.setStaticRoute(lr2, model, ipRange, nextHopIpAddress2, true);
 	}
 
 	/**
