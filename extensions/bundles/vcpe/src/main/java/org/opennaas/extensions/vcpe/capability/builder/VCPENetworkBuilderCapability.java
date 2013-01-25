@@ -135,8 +135,8 @@ public class VCPENetworkBuilderCapability extends AbstractCapability implements 
 	public void destroyVCPENetwork() throws CapabilityException {
 		log.info("Destroy a VCPENetwork");
 		try {
-			if (((VCPENetworkModel) resource.getModel()).isCreated()) {
-				throw new CapabilityException("VCPE already created");
+			if (!((VCPENetworkModel) resource.getModel()).isCreated()) {
+				throw new CapabilityException("VCPE has not been created");
 			}
 			VCPENetworkModel model = (VCPENetworkModel) resource.getModel();
 			IVCPENetworkBuilder builder = VCPENetworkBuilderFactory.getBuilder(model.getTemplateType());
