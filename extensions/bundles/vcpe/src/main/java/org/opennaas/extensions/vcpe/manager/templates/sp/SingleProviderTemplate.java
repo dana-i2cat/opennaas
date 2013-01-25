@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.manager.templates.vcpe;
+package org.opennaas.extensions.vcpe.manager.templates.sp;
 
 import static com.google.common.collect.Iterables.filter;
 
@@ -15,7 +15,6 @@ import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
-import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -32,11 +31,11 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
  * @author Isart Canyameres Gimenez (i2cat Foundation)
  * @author Jordi
  */
-public class Template implements ITemplate {
+public class SingleProviderTemplate implements ITemplate {
 
 	private static final String		BGP_TEMPLATE	= "/templates/bgpModel1.properties";
 
-	private String					templateType	= TemplateSelector.VCPE_TEMPLATE;
+	private String					templateType	= ITemplate.SP_VCPE_TEMPLATE;
 
 	private Properties				bgpProps;
 	private VCPETemplateSuggestor	suggestor;
@@ -45,7 +44,7 @@ public class Template implements ITemplate {
 	 * @throws VCPENetworkManagerException
 	 * 
 	 */
-	public Template() throws VCPENetworkManagerException {
+	public SingleProviderTemplate() throws VCPENetworkManagerException {
 		try {
 			suggestor = new VCPETemplateSuggestor();
 

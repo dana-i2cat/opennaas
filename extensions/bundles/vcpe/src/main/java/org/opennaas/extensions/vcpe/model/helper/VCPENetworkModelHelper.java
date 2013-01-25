@@ -3,7 +3,7 @@ package org.opennaas.extensions.vcpe.model.helper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
+import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
@@ -95,7 +95,7 @@ public class VCPENetworkModelHelper {
 		model.setElements(all);
 
 		model.setClientIpRange("192.0.2.0/24");
-		model.setTemplateType(TemplateSelector.VCPE_TEMPLATE);
+		model.setTemplateType(ITemplate.SP_VCPE_TEMPLATE);
 		model.setName("vcpeNet1");
 
 		return model;

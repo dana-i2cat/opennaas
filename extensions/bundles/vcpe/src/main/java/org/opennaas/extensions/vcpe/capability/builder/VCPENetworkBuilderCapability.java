@@ -28,7 +28,8 @@ import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.VCPEToRouterModelTranslator;
-import org.opennaas.extensions.vcpe.capability.builder.builders.VCPESingleProvider;
+import org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.capability.builder.builders.VCPENetworkBuilderFactory;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.GenericHelper;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Router;
@@ -118,7 +119,8 @@ public class VCPENetworkBuilderCapability extends AbstractCapability implements 
 			if (((VCPENetworkModel) resource.getModel()).isCreated()) {
 				throw new CapabilityException("VCPE already created");
 			}
-			return new VCPESingleProvider().build(resource, desiredScenario);
+			IVCPENetworkBuilder builder = VCPENetworkBuilderFactory.getBuilder(desiredScenario.getTemplateType());
+			return builder.build(resource, desiredScenario);
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
@@ -133,10 +135,12 @@ public class VCPENetworkBuilderCapability extends AbstractCapability implements 
 	public void destroyVCPENetwork() throws CapabilityException {
 		log.info("Destroy a VCPENetwork");
 		try {
-			if (((VCPENetworkModel) resource.getModel()).isCreated()) {
-				throw new CapabilityException("VCPE already created");
+			if (!((VCPENetworkModel) resource.getModel()).isCreated()) {
+				throw new CapabilityException("VCPE has not been created");
 			}
-			new VCPESingleProvider().destroy(resource, (VCPENetworkModel) resource.getModel());
+			VCPENetworkModel model = (VCPENetworkModel) resource.getModel();
+			IVCPENetworkBuilder builder = VCPENetworkBuilderFactory.getBuilder(model.getTemplateType());
+			builder.destroy(resource, model);
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
