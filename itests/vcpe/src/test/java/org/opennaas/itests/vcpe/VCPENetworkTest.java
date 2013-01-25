@@ -21,7 +21,8 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.vcpe.helper.VCPENetworkDescriptorHelper;
-import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
+import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.ops4j.pax.exam.Option;
@@ -145,14 +146,14 @@ public class VCPENetworkTest {
 
 	public void createVCPENetScenario(IResource resource) throws ResourceException {
 
-		IVCPENetworkBuilder cap = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		IVCPENetworkBuilderCapability cap = (VCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		cap.buildVCPENetwork(VCPENetworkModelHelper.generateSampleModel());
 
 	}
 
 	public void destroyVCPENetScenario(IResource resource) throws ResourceException {
 
-		IVCPENetworkBuilder cap = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		IVCPENetworkBuilderCapability cap = (IVCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		cap.destroyVCPENetwork();
 
 	}

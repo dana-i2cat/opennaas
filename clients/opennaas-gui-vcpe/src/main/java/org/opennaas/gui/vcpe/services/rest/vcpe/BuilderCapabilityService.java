@@ -32,7 +32,7 @@ public class BuilderCapabilityService extends GenericRestService {
 	public Boolean updateIpsVCPENetwork(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling update ips VCPENetworkBuilder service");
+			LOGGER.info("Calling update ips VCPENetworkBuilderCapability service");
 			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/updateIps");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
@@ -56,7 +56,7 @@ public class BuilderCapabilityService extends GenericRestService {
 	public Boolean updateVRRPIp(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling update vrrp ip VCPENetworkBuilder service");
+			LOGGER.info("Calling update vrrp ip VCPENetworkBuilderCapability service");
 			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/updateVRRPIp");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
@@ -80,7 +80,7 @@ public class BuilderCapabilityService extends GenericRestService {
 	public VCPENetworkModel changeVRRPPriority(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling change priority vrrp VCPENetworkBuilder service");
+			LOGGER.info("Calling change priority vrrp VCPENetworkBuilderCapability service");
 			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/changeVRRPPriority");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
