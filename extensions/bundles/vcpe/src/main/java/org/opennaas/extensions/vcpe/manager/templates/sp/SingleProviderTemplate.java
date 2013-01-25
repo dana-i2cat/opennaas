@@ -108,10 +108,11 @@ public class SingleProviderTemplate implements ITemplate {
 		VCPENetworkModel phy = generateAndMapPhysicalElements(physicalInfrastructure);
 
 		VCPENetworkModel generated = generateLogicalElements();
-		VCPENetworkModel mappedFromProperties = suggestor.getSuggestionForLogicalModel(generated);
-		VCPENetworkModel mappedWithPhy = mapLogicalAndPhysical(phy, mappedFromProperties);
+		VCPENetworkModel mappedWithPhy = mapLogicalAndPhysical(phy, generated);
+		VCPENetworkModel suggested = suggestor.getSuggestionForLogicalModel(mappedWithPhy);
+
 		// TODO MUST CHECK MAPPED ELEMENTS EXIST IN PHYSICAL INFRASTRUCTURE
-		return mappedWithPhy;
+		return suggested;
 	}
 
 	// FIXME TEMPORAL METHOD. REMOVE WHEN REFACTOR IS FINISHED
