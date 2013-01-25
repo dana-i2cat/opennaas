@@ -479,7 +479,7 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 	}
 
 	/**
-	 * Get the resource anager
+	 * Get the resource manager
 	 * 
 	 * @return
 	 * @throws ResourceException
