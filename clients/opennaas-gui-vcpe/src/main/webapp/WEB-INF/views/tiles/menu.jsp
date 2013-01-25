@@ -15,12 +15,12 @@
 		<li><a href="#"><spring:message code="menu.create" /></a>
 			<ul>
 				<li>
-					<a href="<c:url value="/secure/noc/vcpeNetwork/physical?templateType=template.vcpe" />">
+					<a href="<c:url value="/secure/noc/vcpeNetwork/physical?templateType=sp_vcpe" />">
 						<spring:message code="menu.vcpe" />
 					</a>
 				</li>
 				<li>
-					<a class="link_confirm" href="<c:url value="/secure/noc/vcpeNetwork/physical?templateType=template.unic" />">
+					<a class="link_confirm" href="<c:url value="/secure/noc/vcpeNetwork/physical?templateType=mp_vcpe" />">
 						<spring:message code="menu.unic" />
 					</a>
 				</li>

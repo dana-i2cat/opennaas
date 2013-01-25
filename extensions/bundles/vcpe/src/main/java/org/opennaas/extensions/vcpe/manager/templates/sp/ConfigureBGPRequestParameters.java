@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vcpe.manager.templates.vcpe;
+package org.opennaas.extensions.vcpe.manager.templates.sp;
 
 import java.util.List;
 
