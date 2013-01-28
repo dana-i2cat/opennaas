@@ -103,8 +103,10 @@ public class VCPENetworkTest {
 		}
 
 	}
+	
+	
 
-	public IResource createResource() throws ResourceException {
+	private IResource createResource() throws ResourceException {
 
 		ResourceDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
 				resourceName,
@@ -125,7 +127,7 @@ public class VCPENetworkTest {
 
 	}
 
-	public void startResource() throws ResourceException {
+	private void startResource() throws ResourceException {
 		Assert.assertNotNull(resourceRepo);
 		List<IResource> resources = resourceRepo.listResources();
 		Assert.assertFalse(resources.isEmpty());
@@ -144,14 +146,14 @@ public class VCPENetworkTest {
 		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
 	}
 
-	public void createVCPENetScenario(IResource resource) throws ResourceException {
+	private void createVCPENetScenario(IResource resource) throws ResourceException {
 
 		IVCPENetworkBuilderCapability cap = (VCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		cap.buildVCPENetwork(VCPENetworkModelHelper.generateSampleModel());
 
 	}
 
-	public void destroyVCPENetScenario(IResource resource) throws ResourceException {
+	private void destroyVCPENetScenario(IResource resource) throws ResourceException {
 
 		IVCPENetworkBuilderCapability cap = (IVCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		cap.destroyVCPENetwork();
