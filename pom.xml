@@ -362,6 +362,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.commons-lang</artifactId>
+				<version>${commons.lang.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.velocity</artifactId>
 				<version>${servicemix.velocity.version}</version>
 			</dependency>

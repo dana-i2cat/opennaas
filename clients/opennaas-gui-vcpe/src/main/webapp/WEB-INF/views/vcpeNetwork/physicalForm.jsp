@@ -205,6 +205,7 @@
 			</div>
 			<!-- End client -->
 		</div>
+		
 		<input id="submitButton" class="button" type="submit" value="<spring:message code="buttons.next"/>" />
 	</form:form>
 </sec:authorize>

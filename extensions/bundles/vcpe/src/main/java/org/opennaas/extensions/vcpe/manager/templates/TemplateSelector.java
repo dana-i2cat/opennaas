@@ -4,14 +4,12 @@
 package org.opennaas.extensions.vcpe.manager.templates;
 
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
-import org.opennaas.extensions.vcpe.manager.templates.vcpe.Template;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SingleProviderTemplate;
 
 /**
  * @author Jordi
  */
 public class TemplateSelector {
-
-	public static final String	VCPE_TEMPLATE	= "vcpe.template";
 
 	/**
 	 * Return the correct ITemplate from the templateId
@@ -21,10 +19,14 @@ public class TemplateSelector {
 	 * @throws VCPENetworkManagerException
 	 */
 	public static ITemplate getTemplate(String templateId) throws VCPENetworkManagerException {
-		ITemplate iTemplate = new Template();
-		if (templateId.equals(VCPE_TEMPLATE)) {
-			iTemplate = new Template();
+		ITemplate iTemplate = null;
+		if (templateId.equals(ITemplate.SP_VCPE_TEMPLATE)) {
+			iTemplate = new SingleProviderTemplate();
 		}
+		
+		if (iTemplate == null)
+			throw new VCPENetworkManagerException("Failed to get template. Unknown templateId: " + templateId);
+		
 		return iTemplate;
 	}
 }

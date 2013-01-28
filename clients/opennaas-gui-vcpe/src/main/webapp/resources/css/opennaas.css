@@ -85,6 +85,50 @@ h1 {
 	min-width: 115px;
 }
 
+/* Template styles
+----------------------------------*/
+.template {
+	float:left;
+	height:90px;
+	cursor: pointer;
+}
+#selectable .ui-selecting {
+	background: #FECA40; 
+}
+#selectable .ui-selected {
+	background: #F39814; color: white; 
+}
+#selectable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+#selectable li {
+	margin-right: 3px;
+	padding: 5px;
+	font-size: 10px;
+	width: 360px;
+	min-height: 410px;
+	float: left
+}
+#selectable .title {
+	font-size: 12px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+#selectable .description {
+	margin-bottom: 10px;
+}
+#selectable .template_image {
+    background-color: white;
+    border: 1px solid #DDDDDD;
+    padding-top: 5px;
+    text-align: center;
+    width: 358px;
+}
+
+
 /* Home styles
 ----------------------------------*/
 .button {
@@ -148,6 +192,11 @@ h1 {
 
 #submitButton {
 	margin-top: 15px;
+	float: right;
+}
+
+#selectTemplateButton {
+	clear: both;
 	float: right;
 }
 
