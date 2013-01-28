@@ -15,6 +15,8 @@ import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
 import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability;
+import org.opennaas.extensions.vcpe.capability.ip.VCPEIPCapability;
+import org.opennaas.extensions.vcpe.capability.vrrp.VCPEVRRPCapability;
 import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
@@ -320,6 +322,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		// Capability Builder
 		List<CapabilityDescriptor> capabs = new ArrayList<CapabilityDescriptor>();
 		capabs.add(getBuilderCapability());
+		capabs.add(getVRRPCapability());
+		capabs.add(getIPCapability());
 		descriptor.setCapabilityDescriptors(capabs);
 		return descriptor;
 	}
@@ -330,9 +334,37 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @return CapabilityDescriptor
 	 */
 	private CapabilityDescriptor getBuilderCapability() {
+		return getCapabilityDescriptor(VCPENetworkBuilderCapability.CAPABILITY_TYPE);
+	}
+
+	/**
+	 * Get the VRRP capability of the VCPENetwork
+	 * 
+	 * @return CapabilityDescriptor
+	 */
+	private CapabilityDescriptor getVRRPCapability() {
+		return getCapabilityDescriptor(VCPEVRRPCapability.CAPABILITY_TYPE);
+	}
+
+	/**
+	 * Get the VRRP capability of the VCPENetwork
+	 * 
+	 * @return CapabilityDescriptor
+	 */
+	private CapabilityDescriptor getIPCapability() {
+		return getCapabilityDescriptor(VCPEIPCapability.CAPABILITY_TYPE);
+	}
+
+	/**
+	 * Creates a CapabilityDescriptor for a capability of given capabilityType
+	 * 
+	 * @param capabilityType
+	 * @return CapabilityDescriptor
+	 */
+	private CapabilityDescriptor getCapabilityDescriptor(String capabilityType) {
 		CapabilityDescriptor desc = new CapabilityDescriptor();
 		Information info = new Information();
-		info.setType(VCPENetworkBuilderCapability.CAPABILITY_TYPE);
+		info.setType(capabilityType);
 		desc.setCapabilityInformation(info);
 		return desc;
 	}
