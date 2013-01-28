@@ -8,15 +8,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.router.capability.bgp.BGPCapability;
 import org.opennaas.extensions.router.capability.bgp.IBGPCapability;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.AutobahnHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.GenericHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.IPHelper;
@@ -46,7 +43,7 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 	 */
 	@Override
 	public VCPENetworkModel build(IResource vcpe, VCPENetworkModel desiredScenario) throws ResourceException {
-		log.info("Build a vCPE Network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
+		log.info("Build a vCPE single provider network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
 
 		// Create and execute autobahn links
 		createExternalLinks(vcpe, desiredScenario);
@@ -158,8 +155,8 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 		log.info("Execute autobahn");
 		try {
 			Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
-			IResource autobahn = getResourceManager().getResource(
-					getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
+			IResource autobahn = GenericHelper.getResourceManager().getResource(
+					GenericHelper.getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
 			GenericHelper.executeQueue(autobahn);
 		} catch (ProtocolException e) {
 			throw new ResourceException(e);
@@ -198,10 +195,10 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 			Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
 			Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
 
-			IResource phyResource1 = getResourceManager().getResource(
-					getResourceManager().getIdentifierFromResourceName("router", phy1.getName()));
-			IResource phyResource2 = getResourceManager().getResource(
-					getResourceManager().getIdentifierFromResourceName("router", phy2.getName()));
+			IResource phyResource1 = GenericHelper.getResourceManager().getResource(
+					GenericHelper.getResourceManager().getIdentifierFromResourceName("router", phy1.getName()));
+			IResource phyResource2 = GenericHelper.getResourceManager().getResource(
+					GenericHelper.getResourceManager().getIdentifierFromResourceName("router", phy2.getName()));
 
 			GenericHelper.executeQueue(phyResource1);
 			GenericHelper.executeQueue(phyResource2);
@@ -232,8 +229,8 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 			throw new ResourceException("Failed to start logical louters", e);
 		}
 
-		getResourceManager().startResource(getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
-		getResourceManager().startResource(getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+		GenericHelper.getResourceManager().startResource(GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+		GenericHelper.getResourceManager().startResource(GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
 	}
 
 	/**
@@ -292,10 +289,10 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 			Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
 			Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
-			IResource lrResource1 = getResourceManager().getResource(
-					getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
-			IResource lrResource2 = getResourceManager().getResource(
-					getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+			IResource lrResource1 = GenericHelper.getResourceManager().getResource(
+					GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+			IResource lrResource2 = GenericHelper.getResourceManager().getResource(
+					GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
 
 			GenericHelper.executeQueue(lrResource1);
 			GenericHelper.executeQueue(lrResource2);
@@ -329,10 +326,10 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
 		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
-		IResource router1Resource = getResourceManager().getResource(
-				getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
-		IResource router2Resource = getResourceManager().getResource(
-				getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+		IResource router1Resource = GenericHelper.getResourceManager().getResource(
+				GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+		IResource router2Resource = GenericHelper.getResourceManager().getResource(
+				GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
 
 		IBGPCapability capability1 = (IBGPCapability) router1Resource.getCapabilityByInterface(BGPCapability.class);
 		capability1.configureBGP(model.getBgp().getBgpConfigForMaster());
@@ -396,8 +393,8 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
 		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
 
-		getResourceManager().stopResource(getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
-		getResourceManager().stopResource(getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+		GenericHelper.getResourceManager().stopResource(GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+		GenericHelper.getResourceManager().stopResource(GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
 	}
 
 	/**
@@ -476,20 +473,6 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 
 		LogicalRouterHelper.removeLRFromRM(lr1);
 		LogicalRouterHelper.removeLRFromRM(lr2);
-	}
-
-	/**
-	 * Get the resource manager
-	 * 
-	 * @return
-	 * @throws ResourceException
-	 */
-	private IResourceManager getResourceManager() throws ResourceException {
-		try {
-			return Activator.getResourceManagerService();
-		} catch (ActivatorException e) {
-			throw new ResourceException("Could not find ResourceManager", e);
-		}
 	}
 
 }
