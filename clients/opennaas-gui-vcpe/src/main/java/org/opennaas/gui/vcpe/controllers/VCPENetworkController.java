@@ -276,7 +276,7 @@ public class VCPENetworkController {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.updateVRRPIp.message.error", null, locale));
 		}
-		return "updateIpsVCPENetwork";
+		return "logicalForm";
 	}
 
 	/**
