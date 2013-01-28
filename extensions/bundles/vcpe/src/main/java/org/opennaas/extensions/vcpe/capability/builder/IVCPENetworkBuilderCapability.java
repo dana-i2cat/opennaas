@@ -35,15 +35,4 @@ public interface IVCPENetworkBuilderCapability extends ICapability {
 	@POST
 	public void destroyVCPENetwork() throws CapabilityException;
 
-	/**
-	 * Update the Ip's of the VCPENetworkModel
-	 * 
-	 * @param vcpeNetworkModel
-	 * @throws CapabilityException
-	 */
-	@Path("/updateIps")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void updateIps(VCPENetworkModel vcpeNetworkModel) throws CapabilityException;
-
 }

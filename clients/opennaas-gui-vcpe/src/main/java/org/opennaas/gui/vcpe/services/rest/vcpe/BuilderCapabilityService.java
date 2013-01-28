@@ -33,7 +33,7 @@ public class BuilderCapabilityService extends GenericRestService {
 		ClientResponse response = null;
 		try {
 			LOGGER.info("Calling update ips VCPENetworkBuilderCapability service");
-			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/updateIps");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_ip/updateIps");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
