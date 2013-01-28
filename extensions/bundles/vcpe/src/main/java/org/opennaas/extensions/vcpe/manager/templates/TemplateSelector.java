@@ -19,10 +19,14 @@ public class TemplateSelector {
 	 * @throws VCPENetworkManagerException
 	 */
 	public static ITemplate getTemplate(String templateId) throws VCPENetworkManagerException {
-		ITemplate iTemplate = new SingleProviderTemplate();
+		ITemplate iTemplate = null;
 		if (templateId.equals(ITemplate.SP_VCPE_TEMPLATE)) {
 			iTemplate = new SingleProviderTemplate();
 		}
+		
+		if (iTemplate == null)
+			throw new VCPENetworkManagerException("Failed to get template. Unknown templateId: " + templateId);
+		
 		return iTemplate;
 	}
 }
