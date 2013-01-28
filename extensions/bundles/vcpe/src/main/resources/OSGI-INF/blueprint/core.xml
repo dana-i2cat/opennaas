@@ -27,6 +27,9 @@
 	<bean id="vcpeBuilderCapabilityFactory" class="org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapabilityFactory">
 		<property name="type" value="vcpenet_builder"/>
 	</bean>
+	<bean id="vcpeVRRPCapabilityFactory" class="org.opennaas.extensions.vcpe.capability.vrrp.VCPEVRRPCapabilityFactory">
+		<property name="type" value="vcpenet_vrrp"/>
+	</bean>
 	
 	<!-- Build the bootstrapper -->
 	<bean id="vCPENetBootstrapperFactory" class="org.opennaas.extensions.vcpe.repository.VCPENetBootstrapperFactory"/>
@@ -48,6 +51,12 @@
 	<service ref="vcpeBuilderCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<entry key="capability" value="vcpenet_builder"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	<service ref="vcpeVRRPCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="vcpenet_vrrp"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>

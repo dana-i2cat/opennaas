@@ -15,6 +15,7 @@ import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
 import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability;
+import org.opennaas.extensions.vcpe.capability.vrrp.VCPEVRRPCapability;
 import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
@@ -320,6 +321,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		// Capability Builder
 		List<CapabilityDescriptor> capabs = new ArrayList<CapabilityDescriptor>();
 		capabs.add(getBuilderCapability());
+		capabs.add(getVRRPCapability());
 		descriptor.setCapabilityDescriptors(capabs);
 		return descriptor;
 	}
@@ -333,6 +335,19 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		CapabilityDescriptor desc = new CapabilityDescriptor();
 		Information info = new Information();
 		info.setType(VCPENetworkBuilderCapability.CAPABILITY_TYPE);
+		desc.setCapabilityInformation(info);
+		return desc;
+	}
+
+	/**
+	 * Get the VRRP capability of the VCPENetwork
+	 * 
+	 * @return CapabilityDescriptor
+	 */
+	private CapabilityDescriptor getVRRPCapability() {
+		CapabilityDescriptor desc = new CapabilityDescriptor();
+		Information info = new Information();
+		info.setType(VCPEVRRPCapability.CAPABILITY_TYPE);
 		desc.setCapabilityInformation(info);
 		return desc;
 	}
