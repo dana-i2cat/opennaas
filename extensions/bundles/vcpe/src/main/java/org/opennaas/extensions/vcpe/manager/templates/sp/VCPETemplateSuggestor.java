@@ -402,15 +402,7 @@ public class VCPETemplateSuggestor {
 				}
 			}
 		}
-
-		if (suggestedVLANs.containsKey(generatePhysicalInterfaceKey(phyRouter, iface))) {
-			suggestedVLANs.get(generatePhysicalInterfaceKey(phyRouter, iface)).add(suggestedVlan);
-		} else {
-			List<Long> ifaceVlans = new ArrayList<Long>();
-			ifaceVlans.add(suggestedVlan);
-			suggestedVLANs.put(generatePhysicalInterfaceKey(phyRouter, iface), ifaceVlans);
-		}
-
+		markAsSuggestedVlan(phyRouter, iface, suggestedVlan, suggestedVLANs);
 		return suggestedVlan;
 	}
 
@@ -430,15 +422,7 @@ public class VCPETemplateSuggestor {
 
 		if (!isAlreadySuggestedUnit(phyElement, iface, desired, suggestedUnits)) {
 			if (IsFreeChecker.isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + desired)) {
-
-				if (suggestedUnits.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
-					suggestedUnits.get(generatePhysicalInterfaceKey(phyElement, iface)).add(desired);
-				} else {
-					List<Integer> ifaceUnits = new ArrayList<Integer>();
-					ifaceUnits.add(desired);
-					suggestedUnits.put(generatePhysicalInterfaceKey(phyElement, iface), ifaceUnits);
-				}
-
+				markAsSuggestedUnit(phyElement, iface, desired, suggestedUnits);
 				return desired;
 			}
 		}
@@ -455,12 +439,43 @@ public class VCPETemplateSuggestor {
 	 */
 	private int suggestInterfaceUnit(VCPENetworkElement phyElement, Interface iface, int minUnit, int maxUnit,
 			Map<String, List<Integer>> suggestedUnits) {
+		int suggestedUnit = 0;
 		for (int unitNum = minUnit; unitNum <= maxUnit; unitNum++) {
-			if (IsFreeChecker.isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + unitNum)) {
-				return unitNum;
+			if (!isAlreadySuggestedUnit(phyElement, iface, unitNum, suggestedUnits)) {
+				if (IsFreeChecker.isInterfaceFree(null, phyElement.getName(), iface.getPhysicalInterfaceName() + "." + unitNum)) {
+					suggestedUnit = unitNum;
+					break;
+				}
 			}
 		}
-		return 0;
+		markAsSuggestedUnit(phyElement, iface, suggestedUnit, suggestedUnits);
+		return suggestedUnit;
+	}
+
+	private Map<String, List<Integer>> markAsSuggestedUnit(VCPENetworkElement phyElement, Interface iface, int unit,
+			Map<String, List<Integer>> suggestedUnits) {
+
+		if (suggestedUnits.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
+			suggestedUnits.get(generatePhysicalInterfaceKey(phyElement, iface)).add(unit);
+		} else {
+			List<Integer> ifaceUnits = new ArrayList<Integer>();
+			ifaceUnits.add(unit);
+			suggestedUnits.put(generatePhysicalInterfaceKey(phyElement, iface), ifaceUnits);
+		}
+		return suggestedUnits;
+	}
+
+	private Map<String, List<Long>> markAsSuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan,
+			Map<String, List<Long>> suggestedVlans) {
+
+		if (suggestedVlans.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
+			suggestedVlans.get(generatePhysicalInterfaceKey(phyElement, iface)).add(vlan);
+		} else {
+			List<Long> ifaceVlans = new ArrayList<Long>();
+			ifaceVlans.add(vlan);
+			suggestedVlans.put(generatePhysicalInterfaceKey(phyElement, iface), ifaceVlans);
+		}
+		return suggestedVlans;
 	}
 
 	/**
@@ -476,13 +491,7 @@ public class VCPETemplateSuggestor {
 		else
 			iface.setVlan(link.getSource().getVlan());
 
-		if (suggestedVLANs.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
-			suggestedVLANs.get(generatePhysicalInterfaceKey(phyElement, iface)).add(iface.getVlan());
-		} else {
-			List<Long> ifaceVlans = new ArrayList<Long>();
-			ifaceVlans.add(iface.getVlan());
-			suggestedVLANs.put(generatePhysicalInterfaceKey(phyElement, iface), ifaceVlans);
-		}
+		markAsSuggestedVlan(phyElement, iface, iface.getVlan(), suggestedVLANs);
 	}
 
 	private boolean isAlreadySuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan, Map<String, List<Long>> suggestedVLANS) {
