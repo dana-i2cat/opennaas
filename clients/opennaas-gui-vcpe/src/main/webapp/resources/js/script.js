@@ -26,7 +26,8 @@ $(document).ready(function() {
 		bgiframe : true,
 		width : 300,
 		height : 150,
-		autoOpen : false
+		resizable : false,
+		draggable : false
 	});
 
 	$(".link_confirm").click(function(e) {
@@ -415,6 +416,7 @@ $(function() {
 	$("#button11").button();
 	$("#button12").button();
 	$("#submitButton").button();
+	$("#selectTemplateButton").button();
 	$("#updateIpButton").button();
 	$("#waitingButton").button({
 		icons : {
@@ -515,6 +517,38 @@ $(function() {
 
 	$("#radioset").buttonset();
 	$("#radioset2").buttonset();
+	
+	
+	/**
+	 * Template selection
+	 */	
+	$("#selectable").selectable();
+	$("#selectTemplateButton").click(function(event) {
+		
+		if ($('#selectable .ui-selected').attr('id') != undefined) {
+			open: window.open("/opennaas-vcpe/secure/noc/vcpeNetwork/physical?templateType=template." + $('#selectable .ui-selected').attr('id'), "_self");
+		}
+		else {
+			$("#noTemplate").dialog('option', 'buttons', {			
+				"Go back" : function() {
+					$(this).dialog("close");
+				}
+			});
+			$(".ui-dialog-titlebar-close").hide();
+			$("#noTemplate").dialog("open");
+		}
+	});	
+	
+	$("#noTemplate").dialog({
+		autoOpen : false,
+		modal : true,
+		bgiframe : true,
+		width : 300,
+		height : 200,
+		resizable : false,
+		draggable : false
+	});
+	
 });
 
 // Read a page's GET URL variables and return them as an associative array.
