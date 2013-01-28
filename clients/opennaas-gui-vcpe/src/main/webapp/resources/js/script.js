@@ -526,7 +526,7 @@ $(function() {
 	$("#selectTemplateButton").click(function(event) {
 		
 		if ($('#selectable .ui-selected').attr('id') != undefined) {
-			open: window.open("/opennaas-vcpe/secure/noc/vcpeNetwork/physical?templateType=template." + $('#selectable .ui-selected').attr('id'), "_self");
+			open: window.open("/opennaas-vcpe/secure/noc/vcpeNetwork/physical?templateType=" + $('#selectable .ui-selected').attr('id'), "_self");
 		}
 		else {
 			$("#noTemplate").dialog('option', 'buttons', {			

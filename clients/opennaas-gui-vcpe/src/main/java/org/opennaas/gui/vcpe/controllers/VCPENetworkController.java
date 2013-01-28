@@ -64,7 +64,7 @@ public class VCPENetworkController {
 		LOGGER.debug("home");
 		try {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-			model.addAttribute(vcpeNetworkBO.getPhysicalInfrastructure(templateType));
+			model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.list.message.error", null, locale));
