@@ -38,15 +38,9 @@
 		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/logicalForm.jsp" />
 	</definition>
 
-	<definition name="listVCPENetwork" extends="base.definition">
-		<put-attribute name="title" value="List VCPE Network" />
-		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/listVCPENetwork.jsp" />
-	</definition>
-
 	<definition name="updateIpsVCPENetwork" extends="base.definition">
 		<put-attribute name="title" value="Update Ip's VCPE Network" />
 		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/updateIpsForm.jsp" />
 	</definition>
-
 
 </tiles-definitions>

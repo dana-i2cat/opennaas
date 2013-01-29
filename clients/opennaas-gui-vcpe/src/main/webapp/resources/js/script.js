@@ -502,11 +502,13 @@ $(function() {
 	});
 	// English
 	$("#english").click(function(event) {
-		open: window.open("?locale=en_gb", "_self");
+		alert( document.URL );
+		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=en_gb", "_self");
 	});
 	// Spanish
 	$("#spanish").click(function(event) {
-		open: window.open("?locale=es_es", "_self");
+		alert( document.URL );
+		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=es_es", "_self");
 	});
 	// Check language to activate button
 	if ($.getUrlVar('locale') == "es_es") {
