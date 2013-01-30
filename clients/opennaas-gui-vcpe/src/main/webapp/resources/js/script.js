@@ -502,12 +502,10 @@ $(function() {
 	});
 	// English
 	$("#english").click(function(event) {
-		alert( document.URL );
 		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=en_gb", "_self");
 	});
 	// Spanish
 	$("#spanish").click(function(event) {
-		alert( document.URL );
 		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=es_es", "_self");
 	});
 	// Check language to activate button
