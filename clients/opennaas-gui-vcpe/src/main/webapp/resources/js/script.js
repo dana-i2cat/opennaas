@@ -385,7 +385,15 @@ $(function() {
 			collapsible : true,
 			icons : false,
 			heightStyle : "content",
-			active : false
+			active : true,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe_topology").accordion("option", "active");
+				topologyVisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(topologyVisible, bodVisible);
+			}
 		});
 
 		/* Routers */
@@ -1008,6 +1016,7 @@ $(document).ready(function() {
 		
 		$('#name').rules("add", { required: true });
 		$('#clientIpRange').rules("add", { required: true });
+		$('#nocIpRange').rules("add", { required: true });
 		// ============ end validation rules ==================== //
 	}
 	
@@ -1021,10 +1030,3 @@ $(document).ready(function() {
 		// ============ end validation rules ==================== //
 	}
 });
-
-/**
- * Fill the BGP Client Range. Should be the same as the client range
- */
-function fillBgpClientRange (value) {
-	document.getElementById("bgp.clientPrefixes").value = value;
-}
