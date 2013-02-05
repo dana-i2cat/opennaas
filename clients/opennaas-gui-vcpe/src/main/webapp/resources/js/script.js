@@ -385,7 +385,15 @@ $(function() {
 			collapsible : true,
 			icons : false,
 			heightStyle : "content",
-			active : false
+			active : true,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe_topology").accordion("option", "active");
+				topologyVisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(topologyVisible, bodVisible);
+			}
 		});
 
 		/* Routers */
@@ -502,11 +510,11 @@ $(function() {
 	});
 	// English
 	$("#english").click(function(event) {
-		open: window.open("?locale=en_gb", "_self");
+		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=en_gb", "_self");
 	});
 	// Spanish
 	$("#spanish").click(function(event) {
-		open: window.open("?locale=es_es", "_self");
+		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=es_es", "_self");
 	});
 	// Check language to activate button
 	if ($.getUrlVar('locale') == "es_es") {
@@ -1008,6 +1016,7 @@ $(document).ready(function() {
 		
 		$('#name').rules("add", { required: true });
 		$('#clientIpRange').rules("add", { required: true });
+		$('#nocIpRange').rules("add", { required: true });
 		// ============ end validation rules ==================== //
 	}
 	
@@ -1021,10 +1030,3 @@ $(document).ready(function() {
 		// ============ end validation rules ==================== //
 	}
 });
-
-/**
- * Fill the BGP Client Range. Should be the same as the client range
- */
-function fillBgpClientRange (value) {
-	document.getElementById("bgp.clientPrefixes").value = value;
-}

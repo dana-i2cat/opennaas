@@ -39,6 +39,7 @@ public class VCPEBeanUtils {
 		modelOut.setId(modelIn.getId());
 		modelOut.setName(modelIn.getName());
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
+		modelOut.setNocIpRange(modelIn.getNocIpRange());
 		modelOut.setTemplateType(modelIn.getTemplateType());
 
 		// Logical Routers

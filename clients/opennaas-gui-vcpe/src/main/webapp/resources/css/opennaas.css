@@ -460,6 +460,10 @@ h3.lr_inactive {
 	font-size: 12px;
 }
 
+#noc_data {
+	width: 690px;
+}
+
 #client_data {
 	width: 690px;
 }
@@ -501,6 +505,11 @@ h3.lr_inactive {
 #wan {
 	width: 750px;
 }
+
+#wan_logical .noc_data {
+	text-align: center;
+}
+
 #wan_backup {
 	width: 150px;
 	padding: 5px;
