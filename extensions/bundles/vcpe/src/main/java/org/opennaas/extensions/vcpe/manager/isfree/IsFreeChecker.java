@@ -5,6 +5,7 @@ package org.opennaas.extensions.vcpe.manager.isfree;
 
 import static com.google.common.collect.Iterables.filter;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.opennaas.core.resources.ActivatorException;
@@ -239,4 +240,41 @@ public class IsFreeChecker {
 		}
 		return isFree;
 	}
+
+	/**
+	 * Check if a VRRPgroup is free for a VCPE. <br>
+	 * Check in all existent VCPEs
+	 * 
+	 * @param vcpeId
+	 *            of the VCPE vrrpGroup should be assigned
+	 * @param vrrpGroup
+	 *            to be assigned
+	 * @return true if given vrrpGroup is free, otherwise false
+	 * @throws VCPENetworkManagerException
+	 */
+	public static Boolean isVRRPGroupFree(String vcpeId, String vrrpGroup) throws VCPENetworkManagerException {
+		boolean isFree = true;
+		try {
+			IResourceManager manager = Activator.getResourceManagerService();
+			// get all vcpe resources
+			List<IResource> vcpes = manager.listResourcesByType(VCPENetworkManager.RESOURCE_VCPENET_TYPE);
+			// check only if is not busy by other vcpe
+			Iterator<IResource> vcpes_it = vcpes.iterator();
+			IResource vcpe;
+			while (vcpes_it.hasNext() && isFree) {
+				vcpe = vcpes_it.next();
+				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
+					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
+						if (((VCPENetworkModel) vcpe.getModel()).getVrrp().getGroup().equals(Integer.parseInt(vrrpGroup))) {
+							isFree = false;
+						}
+					}
+				}
+			}
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException("Can't check the VRRPGroup: " + vrrpGroup);
+		}
+		return isFree;
+	}
+
 }
