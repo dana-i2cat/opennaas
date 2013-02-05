@@ -131,7 +131,8 @@ public class VCPETemplateSuggestor {
 		// TODO suggested mapping should be more intelligent, not properties driven
 		VCPENetworkModel updated = mapLogicalElementsFromProperties(logicalModel);
 		updated = suggestVLANs(updated);
-		updated = suggestUnits(updated);
+		updated = suggestUnits(updated); // reads suggested VLANS
+		updated = suggestVRRP(updated); // reads suggested VLANS
 		return updated;
 
 	}
@@ -522,5 +523,39 @@ public class VCPETemplateSuggestor {
 			ifaceKey = iface.getPhysicalInterfaceName();
 		}
 		return ifaceKey;
+	}
+
+	private VCPENetworkModel suggestVRRP(VCPENetworkModel model) {
+		// priority parameters are read from config file (properties)
+		// ip addresses are read from properties (although this may change in the future)
+		model.getVrrp().setGroup(suggestVRRPGroup(model));
+		return model;
+	}
+
+	/**
+	 * 
+	 * @param model
+	 * @return suggested VCPEGroup, or null if there is no available vrrpGroup.
+	 */
+	private Integer suggestVRRPGroup(VCPENetworkModel model) {
+		boolean found = false;
+		// There is commonly one vrrpGroup per vlan (as there is one gw per LAN)
+		// VRRPGroup is commonly assigned the vlan tag
+		// So here, for VRRPGroup, we use vlan tag of the client LAN. That is, vlan of down interfaces
+		// (using master one, as down vlans may differ between master and backup)
+		Integer vrrpGroup = null;
+		long vlanTag = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_LOCAL)).getVlan();
+		if (IsFreeChecker.isVRRPGroupFree(model.getId(), String.valueOf(vlanTag))) {
+			vrrpGroup = Long.valueOf(vlanTag).intValue();
+			found = true;
+		}
+
+		for (int i = 1; i < MAX_VLAN && !found; i++) {
+			if (IsFreeChecker.isVRRPGroupFree(model.getId(), String.valueOf(i))) {
+				vrrpGroup = i;
+				found = true;
+			}
+		}
+		return vrrpGroup;
 	}
 }
