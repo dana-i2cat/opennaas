@@ -115,8 +115,10 @@ public class VCPETemplateSuggestor {
 	 * @param physicalModel
 	 *            containing ALL physical elements in the template
 	 * @return physicalModel populated with suggested values
+	 * @throws VCPENetworkManagerException
+	 *             if failed to suggest a valid vcpe physical model
 	 */
-	public VCPENetworkModel getSuggestionForPhysicalModel(VCPENetworkModel physicalModel) {
+	public VCPENetworkModel getSuggestionForPhysicalModel(VCPENetworkModel physicalModel) throws VCPENetworkManagerException {
 		// TODO suggested mapping should be more intelligent, not properties driven
 		return mapPhysicalElementsFromProperties(physicalModel);
 	}
@@ -126,8 +128,10 @@ public class VCPETemplateSuggestor {
 	 * @param logicalModel
 	 *            containing ALL logical and physical elements in the template
 	 * @return logicalModel populated with a suggested values
+	 * @throws VCPENetworkManagerException
+	 *             if failed to suggest a valid vcpe logical model
 	 */
-	public VCPENetworkModel getSuggestionForLogicalModel(VCPENetworkModel logicalModel) {
+	public VCPENetworkModel getSuggestionForLogicalModel(VCPENetworkModel logicalModel) throws VCPENetworkManagerException {
 		// TODO suggested mapping should be more intelligent, not properties driven
 		VCPENetworkModel updated = mapLogicalElementsFromProperties(logicalModel);
 		updated = suggestVLANs(updated);
@@ -270,7 +274,7 @@ public class VCPETemplateSuggestor {
 	 * @param model
 	 * @return
 	 */
-	private VCPENetworkModel suggestVLANs(VCPENetworkModel model) {
+	private VCPENetworkModel suggestVLANs(VCPENetworkModel model) throws VCPENetworkManagerException {
 
 		/*
 		 * Key: physical interface name. Value: vlans assigned to key.
@@ -388,11 +392,17 @@ public class VCPETemplateSuggestor {
 	 * 
 	 * @param router
 	 * @param iface
-	 * @param vlanRange
+	 * @param minVlan
+	 *            in vlanRange
+	 * @param maxVlan
+	 *            in vlanRange
 	 * @param suggestedVLANS
 	 * @return first vlan in vlanRange that is free in given interface of given router, and it's not in given suggestedVLANs
+	 * @throws VCPENetworkManagerException
+	 *             if there is no available vlan in specified vlanRange
 	 */
-	private long suggestVLAN(Router phyRouter, Interface iface, long minVlan, long maxVlan, Map<String, List<Long>> suggestedVLANs) {
+	private long suggestVLAN(Router phyRouter, Interface iface, long minVlan, long maxVlan, Map<String, List<Long>> suggestedVLANs)
+			throws VCPENetworkManagerException {
 
 		long suggestedVlan = 0L;
 		for (long vlan = minVlan; vlan <= maxVlan; vlan++) {
@@ -403,6 +413,10 @@ public class VCPETemplateSuggestor {
 				}
 			}
 		}
+		if (suggestedVlan == 0L)
+			throw new VCPENetworkManagerException("Unable to find an available vlan for interface " + generatePhysicalInterfaceKey(
+					phyRouter, iface));
+
 		markAsSuggestedVlan(phyRouter, iface, suggestedVlan, suggestedVLANs);
 		return suggestedVlan;
 	}
@@ -525,10 +539,20 @@ public class VCPETemplateSuggestor {
 		return ifaceKey;
 	}
 
-	private VCPENetworkModel suggestVRRP(VCPENetworkModel model) {
+	/**
+	 * 
+	 * @param model
+	 * @return given model with suggested vrrp values.
+	 * @throws VCPENetworkManagerException
+	 *             if failed to suggest a valid vrrp configuration.
+	 */
+	private VCPENetworkModel suggestVRRP(VCPENetworkModel model) throws VCPENetworkManagerException {
 		// priority parameters are read from config file (properties)
 		// ip addresses are read from properties (although this may change in the future)
+
 		model.getVrrp().setGroup(suggestVRRPGroup(model));
+		if (model.getVrrp().getGroup() == null)
+			throw new VCPENetworkManagerException("Fail to suggest valid VRRP configuration. Unable to find an available VRRP group");
 		return model;
 	}
 

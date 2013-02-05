@@ -102,7 +102,7 @@ public class SingleProviderTemplate implements ITemplate {
 	}
 
 	@Override
-	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) {
+	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) throws VCPENetworkManagerException {
 
 		// complete physicalInfrastructure
 		VCPENetworkModel phy = generateAndMapPhysicalElements(physicalInfrastructure);
