@@ -24,7 +24,17 @@
 
 		<!-- WAN -->
 		<div id="wan_logical">
-			<h2><spring:message code="vcpenetwork.wan"/></h2>			
+			<h2><spring:message code="vcpenetwork.wan"/></h2>
+			<!-- Noc IP range -->
+			<div id="client_data" class="ui-widget-content noc_data">
+				<form:label for="nocIpRange" path="nocIpRange" cssErrorClass="error">
+					<spring:message code="vcpenetwork.nocIpRange" />
+				</form:label>
+				<br />
+				<form:input path="nocIpRange" size="20" />
+				<br>
+				<form:errors path="nocIpRange" />				
+			</div>
 		</div>	
 		<!-- Up Interfaces -->
 		<div id="up_interfaces">
@@ -130,7 +140,7 @@
 								<spring:message code="bgp.clientPrefixes" />
 							</form:label>
 							<br />
-							<form:input path="bgp.clientPrefixes" size="16" readonly="true"/>
+							<form:input path="bgp.clientPrefixes" size="16" />
 							<br />		
 							<form:errors path="bgp.clientPrefixes" size="8" />
 						</div>
@@ -534,7 +544,7 @@
 							<spring:message code="vcpenetwork.clientIpRange" />
 						</form:label>
 						<br />
-						<form:input path="clientIpRange" size="20" onchange="fillBgpClientRange(this.value)"/>
+						<form:input path="clientIpRange" size="20" />
 						<br>
 						<form:errors path="clientIpRange" />
 					</div>				

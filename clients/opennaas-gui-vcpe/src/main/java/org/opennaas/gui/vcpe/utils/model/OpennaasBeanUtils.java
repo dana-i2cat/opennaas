@@ -40,8 +40,10 @@ public class OpennaasBeanUtils {
 		modelOut.setName(modelIn.getName());
 		// Template
 		modelOut.setTemplateType(modelIn.getTemplateType());
-		// IP Range
+		// Client IP Range
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
+		// NOC IP Range
+		modelOut.setNocIpRange(modelIn.getNocIpRange());
 		// BGP
 		if (modelIn.getBgp() != null) {
 			modelOut.setBgp(getBGP(modelIn.getBgp()));
