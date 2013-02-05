@@ -49,8 +49,8 @@ public class IsFreeChecker {
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
-						if (isFree = isVLANFreeInDomains(vcpe, ifaceName, vlan)) {
-							isFree = isVLANFreeInLRs(vcpe, router, ifaceName, vlan);
+						if (isFree = isFree && isVLANFreeInDomains(vcpe, ifaceName, vlan)) {
+							isFree = isFree && isVLANFreeInLRs(vcpe, router, ifaceName, vlan);
 						}
 					}
 				}
@@ -138,8 +138,8 @@ public class IsFreeChecker {
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
-						if (isFree = isInterfaceFreeInDomains(vcpe, ifaceName)) {
-							isFree = isInterfaceFreeInLRs(vcpe, router, ifaceName);
+						if (isFree = isFree && isInterfaceFreeInDomains(vcpe, ifaceName)) {
+							isFree = isFree && isInterfaceFreeInLRs(vcpe, router, ifaceName);
 						}
 					}
 				}
