@@ -45,30 +45,41 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 	public VCPENetworkModel build(IResource vcpe, VCPENetworkModel desiredScenario) throws ResourceException {
 		log.info("Build a vCPE single provider network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
 
-		// Create and execute autobahn links
-		createExternalLinks(vcpe, desiredScenario);
-		executeAutobahn(desiredScenario);
+		boolean linksCreated = false;
+		boolean lrsCreated = false;
 
-		// Create logical routers in physical and start
-		createLogicalRouters(vcpe, desiredScenario);
-		executePhysicalRouters(desiredScenario);
-		startLogicalRouters(vcpe, desiredScenario);
+		try {
+			// Create and execute autobahn links
+			createExternalLinks(vcpe, desiredScenario);
+			executeAutobahn(desiredScenario);
+			linksCreated = true;
 
-		// Configure subinterfaces
-		createSubInterfaces(vcpe, desiredScenario);
-		assignIPAddresses(vcpe, desiredScenario);
-		executeLogicalRouters(desiredScenario);
+			// Create logical routers in physical and start
+			createLogicalRouters(vcpe, desiredScenario);
+			executePhysicalRouters(desiredScenario);
+			lrsCreated = true;
+			startLogicalRouters(vcpe, desiredScenario);
 
-		// Configure routing protocols
-		configureEGP(vcpe, desiredScenario);
-		configureVRRP(vcpe, desiredScenario);
-		executeLogicalRouters(desiredScenario);
+			// Configure subinterfaces
+			createSubInterfaces(vcpe, desiredScenario);
+			assignIPAddresses(vcpe, desiredScenario);
+			executeLogicalRouters(desiredScenario);
 
-		// TODO return created model, not the desired one
-		vcpe.setModel(desiredScenario);
-		((VCPENetworkModel) vcpe.getModel()).setCreated(true);
+			// Configure routing protocols
+			configureEGP(vcpe, desiredScenario);
+			configureVRRP(vcpe, desiredScenario);
+			executeLogicalRouters(desiredScenario);
 
-		return (VCPENetworkModel) vcpe.getModel();
+			// TODO return created model, not the desired one
+			vcpe.setModel(desiredScenario);
+			((VCPENetworkModel) vcpe.getModel()).setCreated(true);
+
+			return (VCPENetworkModel) vcpe.getModel();
+
+		} catch (ResourceException e) {
+			destroy(vcpe, desiredScenario, lrsCreated, linksCreated);
+			throw e;
+		}
 	}
 
 	/*
@@ -78,19 +89,30 @@ public class VCPESingleProvider implements IVCPENetworkBuilder {
 	 */
 	@Override
 	public VCPENetworkModel destroy(IResource vcpe, VCPENetworkModel currentScenario) throws ResourceException {
+		return destroy(vcpe, currentScenario, true, true);
+	}
+
+	private VCPENetworkModel destroy(IResource vcpe, VCPENetworkModel currentScenario, boolean destroyLRs, boolean destroyLinks)
+			throws ResourceException {
 		log.info("Destroy a vCPE Network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
 
-		// Destroy logical routers and this will destroy
-		// their subinterfaces and routing protocols
-		stopLogicalRouters(vcpe, currentScenario);
-		removeLogicalRouters(vcpe, currentScenario);
-		executePhysicalRouters(currentScenario);
+		if (destroyLRs) {
+			// Destroy logical routers and this will destroy
+			// their subinterfaces and routing protocols
+			stopLogicalRouters(vcpe, currentScenario);
+			removeLogicalRouters(vcpe, currentScenario);
+			executePhysicalRouters(currentScenario);
+		}
 
-		// Destroy autobahn links
-		destroyExternalLinks(vcpe, currentScenario);
-		executeAutobahn(currentScenario);
+		if (destroyLinks) {
+			// Destroy autobahn links
+			destroyExternalLinks(vcpe, currentScenario);
+			executeAutobahn(currentScenario);
+		}
 
-		removeResources(currentScenario);
+		if (destroyLRs) {
+			removeResources(currentScenario);
+		}
 
 		// return the model after deleting all LR and subInterfaces from it
 		VCPENetworkModel model = new VCPENetworkModel();
