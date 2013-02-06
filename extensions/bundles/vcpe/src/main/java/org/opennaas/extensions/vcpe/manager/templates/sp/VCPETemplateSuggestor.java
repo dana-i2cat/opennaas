@@ -231,6 +231,7 @@ public class VCPETemplateSuggestor {
 
 		// VCPE
 		model.setClientIpRange(props.getProperty("vcpenetwork.client.iprange").trim());
+		model.setNocIpRange(props.getProperty("vcpenetwork.noc.iprange").trim());
 
 		return model;
 	}
