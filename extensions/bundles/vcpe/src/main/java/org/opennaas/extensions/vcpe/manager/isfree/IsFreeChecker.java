@@ -45,12 +45,15 @@ public class IsFreeChecker {
 			IResourceManager manager = Activator.getResourceManagerService();
 			// check with all vcpe resources
 			List<IResource> vcpes = manager.listResourcesByType(VCPENetworkManager.RESOURCE_VCPENET_TYPE);
-			for (IResource vcpe : vcpes) {
+			Iterator<IResource> vcpe_it = vcpes.iterator();
+			IResource vcpe;
+			while (vcpe_it.hasNext() && isFree) {
+				vcpe = vcpe_it.next();
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
-						if (isFree = isVLANFreeInDomains(vcpe, ifaceName, vlan)) {
-							isFree = isVLANFreeInLRs(vcpe, router, ifaceName, vlan);
+						if (isFree = isFree && isVLANFreeInDomains(vcpe, ifaceName, vlan)) {
+							isFree = isFree && isVLANFreeInLRs(vcpe, router, ifaceName, vlan);
 						}
 					}
 				}
@@ -76,11 +79,17 @@ public class IsFreeChecker {
 	 */
 	public static boolean isVLANFreeInLRs(IResource vcpe, String routerName, String ifaceName, String vlan) {
 		boolean isFree = true;
-		for (LogicalRouter logicalRouter : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class)) {
+		Iterator<LogicalRouter> it = filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class).iterator();
+		LogicalRouter logicalRouter;
+		while (it.hasNext() && isFree) {
+			logicalRouter = it.next();
 			// check in the same router only.
 			// same vlan and interface in different logical router isn't an error
 			if (logicalRouter.getPhysicalRouter().getName().equals(routerName)) {
-				for (Interface iface : filter(logicalRouter.getInterfaces(), Interface.class)) {
+				Iterator<Interface> ifaces_it = filter(logicalRouter.getInterfaces(), Interface.class).iterator();
+				Interface iface;
+				while (ifaces_it.hasNext() && isFree) {
+					iface = ifaces_it.next();
 					if (ifaceName.equals(iface.getPhysicalInterfaceName())
 							&& vlan.equals(String.valueOf(iface.getVlan()))) {
 						isFree = false;
@@ -104,8 +113,12 @@ public class IsFreeChecker {
 	 */
 	public static boolean isVLANFreeInDomains(IResource vcpe, String ifaceName, String vlan) {
 		boolean isFree = true;
-		for (Domain domain : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Domain.class)) {
-			for (Interface iface : filter(domain.getInterfaces(), Interface.class)) {
+		Iterator<Domain> it = filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Domain.class).iterator();
+		while (it.hasNext() && isFree) {
+			Iterator<Interface> ifaces_it = filter(it.next().getInterfaces(), Interface.class).iterator();
+			Interface iface;
+			while (ifaces_it.hasNext() && isFree) {
+				iface = ifaces_it.next();
 				if (ifaceName.equals(iface.getPhysicalInterfaceName())
 						&& vlan.equals(String.valueOf(iface.getVlan()))) {
 					isFree = false;
@@ -134,12 +147,15 @@ public class IsFreeChecker {
 			IResourceManager manager = Activator.getResourceManagerService();
 			// check with all vcpe resources
 			List<IResource> vcpes = manager.listResourcesByType(VCPENetworkManager.RESOURCE_VCPENET_TYPE);
-			for (IResource vcpe : vcpes) {
+			Iterator<IResource> vcpe_it = vcpes.iterator();
+			IResource vcpe;
+			while (vcpe_it.hasNext() && isFree) {
+				vcpe = vcpe_it.next();
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
-						if (isFree = isInterfaceFreeInDomains(vcpe, ifaceName)) {
-							isFree = isInterfaceFreeInLRs(vcpe, router, ifaceName);
+						if (isFree = isFree && isInterfaceFreeInDomains(vcpe, ifaceName)) {
+							isFree = isFree && isInterfaceFreeInLRs(vcpe, router, ifaceName);
 						}
 					}
 				}
@@ -163,12 +179,16 @@ public class IsFreeChecker {
 	 */
 	public static boolean isInterfaceFreeInLRs(IResource vcpe, String routerName, String ifaceName) {
 		boolean isFree = true;
-		for (LogicalRouter logicalRouter : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class)) {
+		Iterator<LogicalRouter> it = filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class).iterator();
+		LogicalRouter logicalRouter;
+		while (it.hasNext() && isFree) {
+			logicalRouter = it.next();
 			// check in the same router only.
 			// same interface in different logical router isn't an error
 			if (logicalRouter.getPhysicalRouter().getName().equals(routerName)) {
-				for (Interface iface : filter(logicalRouter.getInterfaces(), Interface.class)) {
-					if (ifaceName.equals(iface.getName())) {
+				Iterator<Interface> ifaces_it = filter(logicalRouter.getInterfaces(), Interface.class).iterator();
+				while (ifaces_it.hasNext() && isFree) {
+					if (ifaceName.equals(ifaces_it.next().getName())) {
 						isFree = false;
 					}
 				}
@@ -188,9 +208,11 @@ public class IsFreeChecker {
 	 */
 	public static boolean isInterfaceFreeInDomains(IResource vcpe, String ifaceName) {
 		boolean isFree = true;
-		for (Domain domain : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Domain.class)) {
-			for (Interface iface : filter(domain.getInterfaces(), Interface.class)) {
-				if (ifaceName.equals(iface.getName())) {
+		Iterator<Domain> it = filter(((VCPENetworkModel) vcpe.getModel()).getElements(), Domain.class).iterator();
+		while (it.hasNext() && isFree) {
+			Iterator<Interface> ifaces_it = filter(it.next().getInterfaces(), Interface.class).iterator();
+			while (ifaces_it.hasNext() && isFree) {
+				if (ifaceName.equals(ifaces_it.next().getName())) {
 					isFree = false;
 				}
 			}
@@ -217,16 +239,23 @@ public class IsFreeChecker {
 			IResourceManager manager = Activator.getResourceManagerService();
 			// get all vcpe resources
 			List<IResource> vcpes = manager.listResourcesByType(VCPENetworkManager.RESOURCE_VCPENET_TYPE);
-			for (IResource vcpe : vcpes) {
+			Iterator<IResource> vcpe_it = vcpes.iterator();
+			IResource vcpe;
+			while (vcpe_it.hasNext() && isFree) {
+				vcpe = vcpe_it.next();
 				// check only if is not busy by other vcpe
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
 						// get all routers
-						for (LogicalRouter logicalRouter : filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class)) {
+						Iterator<LogicalRouter> lrs_it = filter(((VCPENetworkModel) vcpe.getModel()).getElements(), LogicalRouter.class).iterator();
+						LogicalRouter logicalRouter;
+						while (lrs_it.hasNext() && isFree) {
+							logicalRouter = lrs_it.next();
 							// check in the same router only
 							if (logicalRouter.getPhysicalRouter().getName().equals(routerName)) {
-								for (Interface iface : filter(logicalRouter.getInterfaces(), Interface.class)) {
-									if (ip.equals(iface.getIpAddress())) {
+								Iterator<Interface> ifaces_it = filter(logicalRouter.getInterfaces(), Interface.class).iterator();
+								while (ifaces_it.hasNext() && isFree) {
+									if (ip.equals(ifaces_it.next().getIpAddress())) {
 										isFree = false;
 									}
 								}
