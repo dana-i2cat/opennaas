@@ -71,6 +71,7 @@ public class SingleProviderTemplate implements ITemplate {
 		model.setId(initialModel.getId());
 		model.setName(initialModel.getName());
 		model.setClientIpRange(initialModel.getClientIpRange());
+		model.setNocIpRange(initialModel.getNocIpRange());
 		model.setTemplateType(initialModel.getTemplateType());
 
 		// FIXME TEMPORAL CODE. REMOVE WHEN REFACTOR IS COMPLETED. initialModel will be a complete model.
