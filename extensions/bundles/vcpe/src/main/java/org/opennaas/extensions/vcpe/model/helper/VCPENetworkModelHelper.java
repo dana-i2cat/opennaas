@@ -433,4 +433,21 @@ public class VCPENetworkModelHelper {
 		iface.setPort(port);
 		return iface;
 	}
+
+	/**
+	 * Sets iface vlan according to the other endpoint of given link.
+	 * 
+	 * @param iface
+	 *            to update
+	 * @param link
+	 *            to get vlan from
+	 */
+	public static long updateIfaceVLANFromLink(Interface iface, Link link) {
+		if (link.getSource().equals(iface))
+			iface.setVlan(link.getSink().getVlan());
+		else
+			iface.setVlan(link.getSource().getVlan());
+
+		return iface.getVlan();
+	}
 }

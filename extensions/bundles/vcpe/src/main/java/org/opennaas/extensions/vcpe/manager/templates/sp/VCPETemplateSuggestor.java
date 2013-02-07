@@ -497,17 +497,15 @@ public class VCPETemplateSuggestor {
 	/**
 	 * Sets iface vlan according to the other endpoint of given link.
 	 * 
+	 * @param phyElement
 	 * @param iface
 	 * @param link
 	 * @param suggestedVLANS
 	 */
 	private void updateIfaceVLANFromLink(VCPENetworkElement phyElement, Interface iface, Link link, Map<String, List<Long>> suggestedVLANs) {
-		if (link.getSource().equals(iface))
-			iface.setVlan(link.getSink().getVlan());
-		else
-			iface.setVlan(link.getSource().getVlan());
+		long vlan = VCPENetworkModelHelper.updateIfaceVLANFromLink(iface, link);
 
-		markAsSuggestedVlan(phyElement, iface, iface.getVlan(), suggestedVLANs);
+		markAsSuggestedVlan(phyElement, iface, vlan, suggestedVLANs);
 	}
 
 	private boolean isAlreadySuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan, Map<String, List<Long>> suggestedVLANS) {
