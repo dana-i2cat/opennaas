@@ -517,7 +517,7 @@ public class SingleProviderTemplate implements ITemplate {
 
 		// VRRP
 		if (inputModel.getVrrp().getGroup() != null)
-			model.getVrrp().setGroup(inputModel.getVrrp().getGroup()); // TODO MUST CHANGE BETWEEN VCPEs
+			model.getVrrp().setGroup(inputModel.getVrrp().getGroup());
 		if (inputModel.getVrrp().getPriorityMaster() != null)
 			model.getVrrp().setPriorityMaster(inputModel.getVrrp().getPriorityMaster());
 		if (inputModel.getVrrp().getPriorityBackup() != null)
@@ -533,8 +533,48 @@ public class SingleProviderTemplate implements ITemplate {
 		if (inputModel.getBgp().getCustomerPrefixes() != null && !inputModel.getBgp().getCustomerPrefixes().isEmpty())
 			model.getBgp().setCustomerPrefixes(inputModel.getBgp().getCustomerPrefixes());
 
-		// TODO mapDependantLogicalElements(model);
+		mapDependantLogicalElements(model);
 
+		return model;
+	}
+
+	private VCPENetworkModel mapDependantLogicalElements(VCPENetworkModel model) {
+		// vlans of direct links should be equal
+		model = updateInterfacesVlanFromLinks(model);
+		return model;
+	}
+
+	private VCPENetworkModel updateInterfacesVlanFromLinks(VCPENetworkModel model) {
+		List<Interface> allIfaces = VCPENetworkModelHelper.getInterfaces(model.getElements());
+		List<Interface> toUpdate = new ArrayList<Interface>(6);
+
+		toUpdate.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, VCPETemplate.INTER1_INTERFACE_AUTOBAHN));
+		toUpdate.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, VCPETemplate.INTER2_INTERFACE_AUTOBAHN));
+
+		toUpdate.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN));
+		toUpdate.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN));
+
+		// TODO Question: should the appl be able to modify up peer vlans (they are in core router)???
+		toUpdate.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, VCPETemplate.UP1_INTERFACE_PEER));
+		toUpdate.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(allIfaces, VCPETemplate.UP2_INTERFACE_PEER));
+
+		List<Link> allLinks = VCPENetworkModelHelper.getLinks(model.getElements());
+		List<Link> toUpdateLinks = new ArrayList<Link>(6);
+		toUpdateLinks.add((Link) VCPENetworkModelHelper.getElementByTemplateName(allLinks, VCPETemplate.INTER1_LINK_LOCAL));
+		toUpdateLinks.add((Link) VCPENetworkModelHelper.getElementByTemplateName(allLinks, VCPETemplate.INTER2_LINK_LOCAL));
+		toUpdateLinks.add((Link) VCPENetworkModelHelper.getElementByTemplateName(allLinks, VCPETemplate.DOWN1_LINK_LOCAL));
+		toUpdateLinks.add((Link) VCPENetworkModelHelper.getElementByTemplateName(allLinks, VCPETemplate.DOWN2_LINK_LOCAL));
+		// TODO Question: should the appl be able to modify up peer vlans???
+		toUpdateLinks.add((Link) VCPENetworkModelHelper.getElementByTemplateName(allLinks, VCPETemplate.UP1_LINK));
+		toUpdateLinks.add((Link) VCPENetworkModelHelper.getElementByTemplateName(allLinks, VCPETemplate.UP2_LINK));
+
+		for (Link link : toUpdateLinks) {
+			if (toUpdate.contains(link.getSource())) {
+				VCPENetworkModelHelper.updateIfaceVLANFromLink(link.getSource(), link);
+			} else {
+				VCPENetworkModelHelper.updateIfaceVLANFromLink(link.getSink(), link);
+			}
+		}
 		return model;
 	}
 
