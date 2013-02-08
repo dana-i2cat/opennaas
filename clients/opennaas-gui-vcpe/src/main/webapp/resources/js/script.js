@@ -26,7 +26,8 @@ $(document).ready(function() {
 		bgiframe : true,
 		width : 300,
 		height : 150,
-		autoOpen : false
+		resizable : false,
+		draggable : false
 	});
 
 	$(".link_confirm").click(function(e) {
@@ -80,11 +81,14 @@ function updateHeader() {
  * @param iface
  * @param port
  */
-function isInterfaceFree(vcpeId, iface, port) {
+function isInterfaceFree(vcpeId, router, iface, port, message) {
 	$.ajax({
 		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?vcpeId="
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isInterfaceFree?" 
+				+ "vcpeId="
 				+ vcpeId
+				+ "&router="
+				+ router				
 				+ "&iface="
 				+ iface.value
 				+ "&port="
@@ -97,21 +101,21 @@ function isInterfaceFree(vcpeId, iface, port) {
 				// Add the new tooltip, error classes and disable inputs
 				$(iface)
 						.after(
-								"<div id='tooltip'>The Interface is not available</div>");
+								"<div id='tooltip'>" + message + "</div>");
 				iface.className = 'error';
 				port.className = 'error';
 				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
+				$("#tooltip").show("fade", {}, 200);
 				$("#tooltip").click(function() {
 					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
+					$(this).hide("fade", {}, 200);
 					$(this).remove();
 				});
 			} else {
 				// Case available, revert changes
 				iface.className = '';
 				port.className = '';
-				$("#tooltip").hide("fade", {}, 400);
+				$("#tooltip").hide("fade", {}, 200);
 				$("#tooltip").remove();
 			}
 		}
@@ -124,11 +128,16 @@ function isInterfaceFree(vcpeId, iface, port) {
  * @param vcpeId
  * @param ip
  */
-function isIPFree(vcpeId, ip) {
+function isIPFree(vcpeId, router, ip, message) {
 	$.ajax({
 		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?vcpeId="
-				+ vcpeId + "&ip=" + ip.value,
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isIPFree?" 
+				+"vcpeId="
+				+ vcpeId 
+				+ "&router="
+				+ router	
+				+ "&ip=" 
+				+ ip.value,
 		success : function(data) {
 			if (data == 'false') {
 				// Case not available
@@ -137,19 +146,19 @@ function isIPFree(vcpeId, ip) {
 				// Add the new tooltip, error classes and disable inputs
 				$(ip)
 						.after(
-								"<div id='tooltip'>The IP Address is not available</div>");
+								"<div id='tooltip'>" + message + "</div>");
 				ip.className = 'error';
 				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
+				$("#tooltip").show("fade", {}, 200);
 				$("#tooltip").click(function() {
 					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
+					$(this).hide("fade", {}, 200);
 					$(this).remove();
 				});
 			} else {
 				// Case available, revert changes
 				ip.className = '';
-				$("#tooltip").hide("fade", {}, 400);
+				$("#tooltip").hide("fade", {}, 200);
 				$("#tooltip").remove();
 	
 			}
@@ -164,11 +173,18 @@ function isIPFree(vcpeId, ip) {
  * @param vcpeId
  * @param vlan
  */
-function isVLANFree(vcpeId, vlan, ifaceName) {
+function isVLANFree(vcpeId, router, vlan, ifaceName, message) {
 	$.ajax({
 		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?vcpeId=" + vcpeId
-				+ "&vlan=" + vlan.value + "&ifaceName=" + ifaceName.value,
+		url : "/opennaas-vcpe/secure/vcpeNetwork/isVLANFree?" 
+				+ "vcpeId=" 
+				+ vcpeId
+				+ "&router="
+				+ router	
+				+ "&vlan=" 
+				+ vlan.value 
+				+ "&ifaceName=" 
+				+ ifaceName.value,
 		success : function(data) {
 			if (data == 'false') {
 				// Case not available
@@ -176,19 +192,19 @@ function isVLANFree(vcpeId, vlan, ifaceName) {
 				$("#tooltip").remove();
 				// Add the new tooltip, error classes and disable inputs
 				$(vlan).after(
-						"<div id='tooltip'>The VLAN is not available</div>");
+						"<div id='tooltip'>" + message + "</div>");
 				vlan.className = 'error';
 				// Show the tooltip
-				$("#tooltip").show("fade", {}, 400);
+				$("#tooltip").show("fade", {}, 200);
 				$("#tooltip").click(function() {
 					// On click hide tooltip
-					$(this).hide("fade", {}, 400);
+					$(this).hide("fade", {}, 200);
 					$(this).remove();
 				});
 			} else {
 				// Case available, revert changes
 				vlan.className = '';
-				$("#tooltip").hide("fade", {}, 400);
+				$("#tooltip").hide("fade", {}, 200);
 				$("#tooltip").remove();
 			}
 		}
@@ -225,7 +241,7 @@ $(function() {
 		 */
 		/* WAN */
 		$("#wan").accordion({
-			collapsible : true,
+			collapsible : false,
 			icons : false,
 			heightStyle : "content",
 			active : false,
@@ -275,8 +291,8 @@ $(function() {
 		});
 	}
 
-	// only apply accordion styles when createVCPENetwork.jsp is loaded
-	if ($("#createVCPENetwork").length) {
+	// only apply accordion styles when logicalForm.jsp is loaded
+	if ($("#logicalForm").length) {
 		jsPlumbNecessary = true;
 		/* vCPE client block */
 		$("#vcpe").accordion({
@@ -369,7 +385,15 @@ $(function() {
 			collapsible : true,
 			icons : false,
 			heightStyle : "content",
-			active : false
+			active : true,
+			beforeActivate : function() {
+				clearJSPlumbStuff();
+			},
+			activate : function(event, ui) {
+				var active = $("#vcpe_topology").accordion("option", "active");
+				topologyVisible = !(typeof active == 'boolean' && active == false);
+				setJSPlumbStuff(topologyVisible, bodVisible);
+			}
 		});
 
 		/* Routers */
@@ -400,6 +424,7 @@ $(function() {
 	$("#button11").button();
 	$("#button12").button();
 	$("#submitButton").button();
+	$("#selectTemplateButton").button();
 	$("#updateIpButton").button();
 	$("#waitingButton").button({
 		icons : {
@@ -485,11 +510,11 @@ $(function() {
 	});
 	// English
 	$("#english").click(function(event) {
-		open: window.open("?locale=en_gb", "_self");
+		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=en_gb", "_self");
 	});
 	// Spanish
 	$("#spanish").click(function(event) {
-		open: window.open("?locale=es_es", "_self");
+		open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=es_es", "_self");
 	});
 	// Check language to activate button
 	if ($.getUrlVar('locale') == "es_es") {
@@ -500,6 +525,38 @@ $(function() {
 
 	$("#radioset").buttonset();
 	$("#radioset2").buttonset();
+	
+	
+	/**
+	 * Template selection
+	 */	
+	$("#selectable").selectable();
+	$("#selectTemplateButton").click(function(event) {
+		
+		if ($('#selectable .ui-selected').attr('id') != undefined) {
+			open: window.open("/opennaas-vcpe/secure/noc/vcpeNetwork/physical?templateType=" + $('#selectable .ui-selected').attr('id'), "_self");
+		}
+		else {
+			$("#noTemplate").dialog('option', 'buttons', {			
+				"Go back" : function() {
+					$(this).dialog("close");
+				}
+			});
+			$(".ui-dialog-titlebar-close").hide();
+			$("#noTemplate").dialog("open");
+		}
+	});	
+	
+	$("#noTemplate").dialog({
+		autoOpen : false,
+		modal : true,
+		bgiframe : true,
+		width : 300,
+		height : 200,
+		resizable : false,
+		draggable : false
+	});
+	
 });
 
 // Read a page's GET URL variables and return them as an associative array.
@@ -567,35 +624,35 @@ function setJSPlumbHome() {
 // set jsPlumb stuff
 function setJSPlumbStuff(topologyVisible, bodVisible) {
 	// WAN -- UP master & backup
-	addConnection("wan_logical", "up_master", "createVCPENetwork", 0.268, 1,
+	addConnection("wan_logical", "up_master", "logicalForm", 0.268, 1,
 			0.5, 0, false);
-	addConnection("wan_logical", "up_backup", "createVCPENetwork", 0.738, 1,
+	addConnection("wan_logical", "up_backup", "logicalForm", 0.738, 1,
 			0.5, 0, false);
 
 	if (topologyVisible) {
 		// UP master & backup -- LR master & backup
-		addConnection("up_master", "lr_master", "createVCPENetwork", 0.5, 1,
+		addConnection("up_master", "lr_master", "logicalForm", 0.5, 1,
 				0.425, 0, true);
-		addConnection("up_backup", "lr_backup", "createVCPENetwork", 0.5, 1,
+		addConnection("up_backup", "lr_backup", "logicalForm", 0.5, 1,
 				0.59, 0, true);
 
 		// CLIENT DOWN master & backup -- CLIENT master & backup
 		addConnection("client_master", "client_down_master",
-				"createVCPENetwork", 0.5, 1, 0.5, 0, true);
+				"logicalForm", 0.5, 1, 0.5, 0, true);
 		addConnection("client_backup", "client_down_backup",
-				"createVCPENetwork", 0.5, 1, 0.5, 0, true);
+				"logicalForm", 0.5, 1, 0.5, 0, true);
 	} else {
 		// UP master & backup -- vCPE
-		addConnection("up_master", "vcpe_topology", "createVCPENetwork", 0.5,
+		addConnection("up_master", "vcpe_topology", "logicalForm", 0.5,
 				1, 0.248, 0, true);
-		addConnection("up_backup", "vcpe_topology", "createVCPENetwork", 0.5,
+		addConnection("up_backup", "vcpe_topology", "logicalForm", 0.5,
 				1, 0.758, 0, true);
 
 		// vCPE -- CLIENT master & backup
 		addConnection("vcpe_topology", "client_down_master",
-				"createVCPENetwork", 0.16, 1, 0.5, 0, true);
+				"logicalForm", 0.16, 1, 0.5, 0, true);
 		addConnection("vcpe_topology", "client_down_backup",
-				"createVCPENetwork", 0.84, 1, 0.5, 0, true);
+				"logicalForm", 0.84, 1, 0.5, 0, true);
 	}
 
 	// LR master & backup -- CLIENT DOWN master & backup, down & inter
@@ -610,34 +667,34 @@ function setJSPlumbStuff(topologyVisible, bodVisible) {
 
 	if (bodVisible && topologyVisible) {
 		// inter master & backup -- BoD inter
-		addConnection("inter_master", "bod_inter", "createVCPENetwork", 0.5,
+		addConnection("inter_master", "bod_inter", "logicalForm", 0.5,
 				1, 0.13, 0, true);
-		addConnection("inter_backup", "bod_inter", "createVCPENetwork", 0.5,
+		addConnection("inter_backup", "bod_inter", "logicalForm", 0.5,
 				1, 0.84, 0, true);
 	} else if (bodVisible && !topologyVisible) {
 		// inter master & backup -- CLIENT master & backup
 		addConnection("vcpe_topology", "bod_inter",
-				"createVCPENetwork", 0.385, 1, 0.12, 0, true);
+				"logicalForm", 0.385, 1, 0.12, 0, true);
 		addConnection("vcpe_topology", "bod_inter",
-				"createVCPENetwork", 0.615, 1, 0.85, 0, true);
+				"logicalForm", 0.615, 1, 0.85, 0, true);
 	} else if (!bodVisible && topologyVisible) {
 		// inter master & backup -- BoD
-		addConnection("inter_master", "bod", "createVCPENetwork", 0.5,
+		addConnection("inter_master", "bod", "logicalForm", 0.5,
 				1, 0.395, 0, true);
-		addConnection("inter_backup", "bod", "createVCPENetwork", 0.5,
+		addConnection("inter_backup", "bod", "logicalForm", 0.5,
 				1, 0.605, 0, true);
 	} else {
 		// vCPE -- bod
 		addConnection("vcpe_topology", "bod",
-				"createVCPENetwork", 0.385, 1, 0.395, 0, true);
+				"logicalForm", 0.385, 1, 0.395, 0, true);
 		addConnection("vcpe_topology", "bod",
-				"createVCPENetwork", 0.615, 1, 0.605, 0, true);
+				"logicalForm", 0.615, 1, 0.605, 0, true);
 	}
 
 	// CLIENT DOWN master & backup -- CLIENT
-	addConnection("client_down_master", "client", "createVCPENetwork", 0.5, 1,
+	addConnection("client_down_master", "client", "logicalForm", 0.5, 1,
 			0.187, 0, false);
-	addConnection("client_down_backup", "client", "createVCPENetwork", 0.5, 1,
+	addConnection("client_down_backup", "client", "logicalForm", 0.5, 1,
 			0.812, 0, false);
 }
 
@@ -784,7 +841,7 @@ $(function() {
 			jsPlumb.importDefaults({
 				ConnectorZIndex : 50
 			});
-			if ($("#createVCPENetwork").length) {
+			if ($("#logicalForm").length) {
 				setJSPlumbStuff(topologyVisible, bodVisible);
 			} else if ($("#home_body").length) {
 				setJSPlumbHome();
@@ -825,7 +882,7 @@ $(function() {
 });
 
 function resizeWindow(e) {
-	if ($("#createVCPENetwork").length) {
+	if ($("#logicalForm").length) {
 		clearJSPlumbStuff();
 		setJSPlumbStuff(topologyVisible, bodVisible);
 	} else if ($("#home_body").length) {
@@ -840,13 +897,13 @@ var validIPAddressSubnetMaskRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2
 
 $(document).ready(function() {
 	// only apply when create view or update IPs view are loaded
-	if($("#createVCPENetwork").length || $("#updateIPs").length) {
+	if($("#logicalForm").length || $("#updateIPs").length) {
 		// apply firewall table style
 		$("#firewallTable").styleTable();
 		
 		// get submit button
 		var button = null;
-		if($("#createVCPENetwork").length) {
+		if($("#logicalForm").length) {
 			button = $("#submitButton");
 		} else if($("#updateIPs").length) {
 			button = $("#updateIpButton");
@@ -911,54 +968,55 @@ $(document).ready(function() {
 	}
 	
 	// create view form validation rules
-	if($("#createVCPENetwork").length) {
+	if($("#logicalForm").length) {
 		// ============ begin validation rules ==================== //	
 		$('#logicalRouterMaster\\.interfaces2\\.name').rules("add", { required: true });
-		$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true });
+		$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterMaster\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterMaster\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterBackup\\.interfaces2\\.name').rules("add", { required: true });
-		$('#logicalRouterBackup\\.interfaces2\\.port').rules("add", { required: true });
+		$('#logicalRouterBackup\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterBackup\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterBackup\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#bgp\\.clientASNumber').rules("add", { required: true });
-		$('#bgp\\.nocASNumber').rules("add", { required: true });
+		$('#bgp\\.nocASNumber').rules("add", { required: true, min: 0, max: 4294967295 });
 		$('#bgp\\.clientPrefixes').rules("add", { required: true });
 	
 		$('#logicalRouterMaster\\.interfaces1\\.name').rules("add", { required: true });
-		$('#logicalRouterMaster\\.interfaces1\\.port').rules("add", { required: true });
+		$('#logicalRouterMaster\\.interfaces1\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterMaster\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterMaster\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterMaster\\.interfaces0\\.name').rules("add", { required: true });
-		$('#logicalRouterMaster\\.interfaces0\\.port').rules("add", { required: true });
+		$('#logicalRouterMaster\\.interfaces0\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterMaster\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterMaster\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterBackup\\.interfaces0\\.name').rules("add", { required: true });
-		$('#logicalRouterBackup\\.interfaces0\\.port').rules("add", { required: true });
+		$('#logicalRouterBackup\\.interfaces0\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterBackup\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterBackup\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#logicalRouterBackup\\.interfaces1\\.name').rules("add", { required: true });
-		$('#logicalRouterBackup\\.interfaces1\\.port').rules("add", { required: true });
+		$('#logicalRouterBackup\\.interfaces1\\.port').rules("add", { required: true, min: 0 });
 		$('#logicalRouterBackup\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterBackup\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#bod\\.ifaceClient\\.name').rules("add", { required: true, maxlength: 25 });
-		$('#bod\\.ifaceClient\\.port').rules("add", { required: true });
+		$('#bod\\.ifaceClient\\.port').rules("add", { required: true, min: 0, max: 4094 });
 		$('#bod\\.ifaceClient\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#bod\\.ifaceClientBackup\\.name').rules("add", { required: true });
-		$('#bod\\.ifaceClientBackup\\.port').rules("add", { required: true });
+		$('#bod\\.ifaceClientBackup\\.port').rules("add", { required: true, min: 0 });
 		$('#bod\\.ifaceClientBackup\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
 		
 		$('#vrrp\\.virtualIPAddress').rules("add", { custom_regex: validIPAddressRegExp, required: true });
 		
 		$('#name').rules("add", { required: true });
 		$('#clientIpRange').rules("add", { required: true });
+		$('#nocIpRange').rules("add", { required: true });
 		// ============ end validation rules ==================== //
 	}
 	
@@ -972,10 +1030,3 @@ $(document).ready(function() {
 		// ============ end validation rules ==================== //
 	}
 });
-
-/**
- * Fill the BGP Client Range. Should be the same as the client range
- */
-function fillBgpClientRange (value) {
-	document.getElementById("bgp.clientPrefixes").value = value;
-}

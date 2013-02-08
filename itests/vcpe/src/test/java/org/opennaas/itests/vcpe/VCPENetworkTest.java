@@ -21,7 +21,8 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.vcpe.helper.VCPENetworkDescriptorHelper;
-import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
+import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.ops4j.pax.exam.Option;
@@ -102,8 +103,10 @@ public class VCPENetworkTest {
 		}
 
 	}
+	
+	
 
-	public IResource createResource() throws ResourceException {
+	private IResource createResource() throws ResourceException {
 
 		ResourceDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
 				resourceName,
@@ -124,7 +127,7 @@ public class VCPENetworkTest {
 
 	}
 
-	public void startResource() throws ResourceException {
+	private void startResource() throws ResourceException {
 		Assert.assertNotNull(resourceRepo);
 		List<IResource> resources = resourceRepo.listResources();
 		Assert.assertFalse(resources.isEmpty());
@@ -143,16 +146,16 @@ public class VCPENetworkTest {
 		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
 	}
 
-	public void createVCPENetScenario(IResource resource) throws ResourceException {
+	private void createVCPENetScenario(IResource resource) throws ResourceException {
 
-		IVCPENetworkBuilder cap = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		IVCPENetworkBuilderCapability cap = (VCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		cap.buildVCPENetwork(VCPENetworkModelHelper.generateSampleModel());
 
 	}
 
-	public void destroyVCPENetScenario(IResource resource) throws ResourceException {
+	private void destroyVCPENetScenario(IResource resource) throws ResourceException {
 
-		IVCPENetworkBuilder cap = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		IVCPENetworkBuilderCapability cap = (IVCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		cap.destroyVCPENetwork();
 
 	}

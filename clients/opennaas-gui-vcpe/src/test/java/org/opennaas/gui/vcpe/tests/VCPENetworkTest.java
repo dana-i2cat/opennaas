@@ -2,6 +2,7 @@ package org.opennaas.gui.vcpe.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -12,6 +13,7 @@ import javax.validation.ValidatorFactory;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.VRRP;
 
@@ -40,7 +42,7 @@ public class VCPENetworkTest {
 		interface1.setPort("");
 		interface1.setIpAddress("193.1.190.133");
 		interface1.setVlan(5000);
-		interface1.setLabelName(null);
+		interface1.setType(null);
 		interface1.setTemplateName(null);
 
 		Set<ConstraintViolation<Interface>> constraintViolations =
@@ -64,7 +66,7 @@ public class VCPENetworkTest {
 		interface1.setPort("12");
 		interface1.setIpAddress("193.1.190.133/30");
 		interface1.setVlan(12);
-		interface1.setLabelName(null);
+		interface1.setType(null);
 		interface1.setTemplateName(null);
 
 		Set<ConstraintViolation<Interface>> constraintViolations =
@@ -110,5 +112,46 @@ public class VCPENetworkTest {
 		// no validation errors
 		assertEquals(0, constraintViolations.size());
 		log.debug("End testing vrrpIsValid.");
+	}
+
+	@Test
+	public void bgpIsNotValid() {
+		log.debug("Testing bgpIsNotValid...");
+
+		BGP bgp = new BGP();
+		bgp.setClientASNumber("-1");
+		bgp.setNocASNumber("4294967296");
+		ArrayList<String> clientPrefixes = new ArrayList<String>();
+		bgp.setClientPrefixes(clientPrefixes);
+
+		Set<ConstraintViolation<BGP>> constraintViolations =
+				validator.validate(bgp);
+
+		assertEquals(3, constraintViolations.size());
+		for (ConstraintViolation<BGP> constraintViolation : constraintViolations) {
+			log.debug("Invalid param = '" + constraintViolation.getPropertyPath()
+					+ "', value = '" + constraintViolation.getInvalidValue()
+					+ "', error = " + constraintViolation.getMessage());
+		}
+		log.debug("End testing bgpIsNotValid.");
+	}
+
+	@Test
+	public void bgpIsValid() {
+		log.debug("Testing bgpIsValid...");
+
+		BGP bgp = new BGP();
+		bgp.setClientASNumber("65535");
+		bgp.setNocASNumber("4294967295");
+		ArrayList<String> clientPrefixes = new ArrayList<String>();
+		clientPrefixes.add("193.1.190.128/26");
+		bgp.setClientPrefixes(clientPrefixes);
+
+		Set<ConstraintViolation<BGP>> constraintViolations =
+				validator.validate(bgp);
+
+		// no validation errors
+		assertEquals(0, constraintViolations.size());
+		log.debug("End testing bgpIsValid.");
 	}
 }

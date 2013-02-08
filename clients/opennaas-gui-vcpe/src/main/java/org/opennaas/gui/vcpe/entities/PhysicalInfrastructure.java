@@ -1,60 +1,78 @@
-/**
- * 
- */
 package org.opennaas.gui.vcpe.entities;
 
 /**
  * @author Jordi
  */
+import javax.validation.Valid;
+
 public class PhysicalInfrastructure {
 
-	private PhysicalRouter	coreRouter;
-	private PhysicalRouter	phyRouterMaster;
-	private PhysicalRouter	phyRouterBackup;
+	private String			templateType;
+	@Valid
+	private PhysicalRouter	physicalRouterMaster;
+	@Valid
+	private PhysicalRouter	physicalRouterBackup;
+	@Valid
+	private PhysicalRouter	physicalRouterCore;
 
 	/**
-	 * @return the coreRouter
+	 * @return the templateType
 	 */
-	public PhysicalRouter getCoreRouter() {
-		return coreRouter;
+	public String getTemplateType() {
+		return templateType;
 	}
 
 	/**
-	 * @param coreRouter
-	 *            the coreRouter to set
+	 * @param templateType
+	 *            the templateType to set
 	 */
-	public void setCoreRouter(PhysicalRouter coreRouter) {
-		this.coreRouter = coreRouter;
+	public void setTemplateType(String templateType) {
+		this.templateType = templateType;
 	}
 
 	/**
-	 * @return the phyRouterMaster
+	 * @return the physicalRouterMaster
 	 */
-	public PhysicalRouter getPhyRouterMaster() {
-		return phyRouterMaster;
+	public PhysicalRouter getPhysicalRouterMaster() {
+		return physicalRouterMaster;
 	}
 
 	/**
-	 * @param phyRouterMaster
-	 *            the phyRouterMaster to set
+	 * @param physicalRouterMaster
+	 *            the physicalRouterMaster to set
 	 */
-	public void setPhyRouterMaster(PhysicalRouter phyRouterMaster) {
-		this.phyRouterMaster = phyRouterMaster;
+	public void setPhysicalRouterMaster(PhysicalRouter physicalRouterMaster) {
+		this.physicalRouterMaster = physicalRouterMaster;
 	}
 
 	/**
-	 * @return the phyRouterBackup
+	 * @return the physicalRouterBackup
 	 */
-	public PhysicalRouter getPhyRouterBackup() {
-		return phyRouterBackup;
+	public PhysicalRouter getPhysicalRouterBackup() {
+		return physicalRouterBackup;
 	}
 
 	/**
-	 * @param phyRouterBackup
-	 *            the phyRouterBackup to set
+	 * @param physicalRouterBackup
+	 *            the physicalRouterBackup to set
 	 */
-	public void setPhyRouterBackup(PhysicalRouter phyRouterBackup) {
-		this.phyRouterBackup = phyRouterBackup;
+	public void setPhysicalRouterBackup(PhysicalRouter physicalRouterBackup) {
+		this.physicalRouterBackup = physicalRouterBackup;
+	}
+
+	/**
+	 * @return the physicalRouterCore
+	 */
+	public PhysicalRouter getPhysicalRouterCore() {
+		return physicalRouterCore;
+	}
+
+	/**
+	 * @param physicalRouterCore
+	 *            the physicalRouterCore to set
+	 */
+	public void setPhysicalRouterCore(PhysicalRouter physicalRouterCore) {
+		this.physicalRouterCore = physicalRouterCore;
 	}
 
 }

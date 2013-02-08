@@ -13,7 +13,7 @@ import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService;
 import org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService;
-import org.opennaas.gui.vcpe.utils.model.OpennasBeanUtils;
+import org.opennaas.gui.vcpe.utils.model.OpennaasBeanUtils;
 import org.opennaas.gui.vcpe.utils.model.VCPEBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,7 +39,7 @@ public class VCPENetworkBO {
 	 */
 	public String create(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
-		return vcpeNetworkService.createVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		return vcpeNetworkService.logicalForm(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
@@ -84,10 +84,9 @@ public class VCPENetworkBO {
 	 * @return the physical infrastructure
 	 * @throws RestServiceException
 	 */
-	public PhysicalInfrastructure getPhysicalInfrastructure() throws RestServiceException {
+	public PhysicalInfrastructure getPhysicalInfrastructure(String templateType) throws RestServiceException {
 		LOGGER.debug("get the physical infrastructure");
-		return VCPEBeanUtils
-				.getPhysicalInfrastructure(vcpeNetworkService.getPhysicalInfrastructure());
+		return VCPEBeanUtils.getPhysicalInfrastructure(vcpeNetworkService.getPhysicalInfrastructure(templateType));
 	}
 
 	/**
@@ -99,7 +98,7 @@ public class VCPENetworkBO {
 	 */
 	public Boolean updateIps(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update Ip's of VCPENetwork");
-		return builderService.updateIpsVCPENetwork(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		return builderService.updateIpsVCPENetwork(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
@@ -111,7 +110,7 @@ public class VCPENetworkBO {
 	 */
 	public Boolean updateVRRPIp(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("update VRRP Ip of VCPENetwork");
-		return builderService.updateVRRPIp(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		return builderService.updateVRRPIp(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 	}
 
 	/**
@@ -123,40 +122,60 @@ public class VCPENetworkBO {
 	 */
 	public VCPENetwork changeVRRPPriority(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("change the Priority VRRP of VCPENetwork");
-		VCPENetworkModel openNaasModel = builderService.changeVRRPPriority(OpennasBeanUtils.getVCPENetwork(vcpeNetwork));
+		VCPENetworkModel openNaasModel = builderService.changeVRRPPriority(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
 		return VCPEBeanUtils.getVCPENetwork(openNaasModel);
 	}
 
 	/**
+	 * @param vcpeId
+	 * @param router
 	 * @param vlan
 	 * @param ifaceName
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isVLANFree(String vcpeId, String vlan, String ifaceName) throws RestServiceException {
+	public Boolean isVLANFree(String vcpeId, String router, String vlan, String ifaceName) throws RestServiceException {
 		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the ifaceName: " + ifaceName + ". The vcpeID: " + vcpeId);
-		return vcpeNetworkService.isVLANFree(vcpeId, vlan, ifaceName);
+		return vcpeNetworkService.isVLANFree(vcpeId, router, vlan, ifaceName);
 	}
 
 	/**
+	 * @param vcpeId
+	 * @param router
 	 * @param ip
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isIPFree(String vcpeId, String ip) throws RestServiceException {
+	public Boolean isIPFree(String vcpeId, String router, String ip) throws RestServiceException {
 		LOGGER.debug("check if the IP: " + ip + " is free. The vcpeID: " + vcpeId);
-		return vcpeNetworkService.isIPFree(vcpeId, ip);
+		return vcpeNetworkService.isIPFree(vcpeId, router, ip);
 	}
 
 	/**
+	 * @param vcpeId
+	 * @param router
 	 * @param iface
 	 * @param port
 	 * @return true if is free
 	 * @throws RestServiceException
 	 */
-	public Boolean isInterfaceFree(String vcpeId, String iface, String port) throws RestServiceException {
+	public Boolean isInterfaceFree(String vcpeId, String router, String iface, String port) throws RestServiceException {
 		LOGGER.debug("check if the Interface: " + iface + "." + port + "is free. The vcpeID: " + vcpeId);
-		return vcpeNetworkService.isInterfaceFree(vcpeId, iface, port);
+		return vcpeNetworkService.isInterfaceFree(vcpeId, router, iface, port);
+	}
+
+	/**
+	 * Get a suggest VCPENetwork
+	 * 
+	 * @param physical
+	 * @return VCPENetwork
+	 * @throws RestServiceException
+	 */
+	public VCPENetwork getSuggestVCPENetwork(PhysicalInfrastructure physical) throws RestServiceException {
+		VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
+		VCPENetwork vcpeNetwork = VCPEBeanUtils.getVCPENetwork(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
+		vcpeNetwork.setTemplateType(physical.getTemplateType());
+		return vcpeNetwork;
 	}
 
 	/**
@@ -170,5 +189,4 @@ public class VCPENetworkBO {
 		}
 		return listModelOut;
 	}
-
 }

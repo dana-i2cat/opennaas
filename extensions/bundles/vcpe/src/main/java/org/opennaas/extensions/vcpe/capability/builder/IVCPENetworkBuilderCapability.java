@@ -11,7 +11,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Path("/")
-public interface IVCPENetworkBuilder extends ICapability {
+public interface IVCPENetworkBuilderCapability extends ICapability {
 
 	/**
 	 * Build the VCPENetworkModel from the desired scenario
@@ -34,39 +34,5 @@ public interface IVCPENetworkBuilder extends ICapability {
 	@Path("/destroy")
 	@POST
 	public void destroyVCPENetwork() throws CapabilityException;
-
-	/**
-	 * Update the Ip's of the VCPENetworkModel
-	 * 
-	 * @param vcpeNetworkModel
-	 * @throws CapabilityException
-	 */
-	@Path("/updateIps")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void updateIps(VCPENetworkModel vcpeNetworkModel) throws CapabilityException;
-
-	/**
-	 * Update the VRRP virtual ip address
-	 * 
-	 * @param model
-	 * @throws CapabilityException
-	 */
-	@Path("/updateVRRPIp")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void updateVRRPIp(VCPENetworkModel model) throws CapabilityException;
-
-	/**
-	 * Change the priority VRRP
-	 * 
-	 * @param model
-	 * @return
-	 * @throws CapabilityException
-	 */
-	@Path("/changeVRRPPriority")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public VCPENetworkModel changeVRRPPriority(VCPENetworkModel model) throws CapabilityException;
 
 }

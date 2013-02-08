@@ -32,8 +32,8 @@ public class BuilderCapabilityService extends GenericRestService {
 	public Boolean updateIpsVCPENetwork(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling update ips VCPENetworkBuilder service");
-			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/updateIps");
+			LOGGER.info("Calling update ips VCPENetworkBuilderCapability service");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_ip/updateIps");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
@@ -56,8 +56,8 @@ public class BuilderCapabilityService extends GenericRestService {
 	public Boolean updateVRRPIp(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling update vrrp ip VCPENetworkBuilder service");
-			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/updateVRRPIp");
+			LOGGER.info("Calling update vrrp ip VCPENetworkBuilderCapability service");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_vrrp/updateVRRPIp");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
@@ -80,8 +80,8 @@ public class BuilderCapabilityService extends GenericRestService {
 	public VCPENetworkModel changeVRRPPriority(VCPENetworkModel request) throws RestServiceException {
 		ClientResponse response = null;
 		try {
-			LOGGER.info("Calling change priority vrrp VCPENetworkBuilder service");
-			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_builder/changeVRRPPriority");
+			LOGGER.info("Calling change priority vrrp VCPENetworkBuilderCapability service");
+			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_vrrp/changeVRRPPriority");
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)

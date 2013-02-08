@@ -4,6 +4,11 @@ public class VCPETemplate {
 
 	public static final String	TEMPLATE_NS						= "org.opennaas.extensions.vcpe.template.1";
 
+	public static final String	CORE_PHY_ROUTER					= TEMPLATE_NS + ".core.phy.router";
+	public static final String	CORE_PHY_INTERFACE_MASTER		= TEMPLATE_NS + ".core.master.phy.iface.local";
+	public static final String	CORE_PHY_INTERFACE_BKP			= TEMPLATE_NS + ".core.backup.phy.iface.local";
+	public static final String	CORE_PHY_LO_INTERFACE			= TEMPLATE_NS + ".core.lo.phy.iface";
+
 	public static final String	CPE1_PHY_ROUTER					= TEMPLATE_NS + ".cpe1.phy.router";
 	public static final String	INTER1_PHY_INTERFACE_LOCAL		= TEMPLATE_NS + ".cpe1.inter.phy.iface.local";
 	public static final String	INTER1_PHY_INTERFACE_AUTOBAHN	= TEMPLATE_NS + ".cpe1.inter.phy.iface.other";
@@ -11,6 +16,7 @@ public class VCPETemplate {
 	public static final String	DOWN1_PHY_INTERFACE_AUTOBAHN	= TEMPLATE_NS + ".cpe1.down.phy.iface.local.other";
 	public static final String	CLIENT1_PHY_INTERFACE_AUTOBAHN	= TEMPLATE_NS + ".cpe1.client.phy.iface.other";
 	public static final String	UP1_PHY_INTERFACE_LOCAL			= TEMPLATE_NS + ".cpe1.up.phy.iface.local";
+	public static final String	LO1_PHY_INTERFACE				= TEMPLATE_NS + ".cpe1.lo.phy.iface";
 
 	public static final String	CPE2_PHY_ROUTER					= TEMPLATE_NS + ".cpe2.phy.router";
 	public static final String	INTER2_PHY_INTERFACE_LOCAL		= TEMPLATE_NS + ".cpe2.inter.phy.iface.local";
@@ -19,6 +25,9 @@ public class VCPETemplate {
 	public static final String	DOWN2_PHY_INTERFACE_AUTOBAHN	= TEMPLATE_NS + ".cpe2.down.phy.iface.local.other";
 	public static final String	CLIENT2_PHY_INTERFACE_AUTOBAHN	= TEMPLATE_NS + ".cpe2.client.phy.iface.other";
 	public static final String	UP2_PHY_INTERFACE_LOCAL			= TEMPLATE_NS + ".cpe2.up.phy.iface.local";
+	public static final String	LO2_PHY_INTERFACE				= TEMPLATE_NS + ".cpe2.lo.phy.iface";
+
+	public static final String	CORE_LO_INTERFACE				= TEMPLATE_NS + ".core.lo.iface";
 
 	public static final String	VCPE1_ROUTER					= TEMPLATE_NS + ".vcpe1.router";
 	public static final String	INTER1_INTERFACE_LOCAL			= TEMPLATE_NS + ".vcpe1.inter.iface.local";
@@ -27,7 +36,7 @@ public class VCPETemplate {
 	public static final String	DOWN1_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe1.down.iface.other";
 	public static final String	UP1_INTERFACE_LOCAL				= TEMPLATE_NS + ".vcpe1.up.iface.local";
 	public static final String	UP1_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe1.up.iface.other";
-	public static final String	LO1_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe1.lo.iface";
+	public static final String	LO1_INTERFACE					= TEMPLATE_NS + ".vcpe1.lo.iface";
 
 	public static final String	VCPE2_ROUTER					= TEMPLATE_NS + ".vcpe2.router";
 	public static final String	INTER2_INTERFACE_LOCAL			= TEMPLATE_NS + ".vcpe2.inter.iface.local";
@@ -36,7 +45,7 @@ public class VCPETemplate {
 	public static final String	DOWN2_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe2.down.iface.other";
 	public static final String	UP2_INTERFACE_LOCAL				= TEMPLATE_NS + ".vcpe2.up.iface.local";
 	public static final String	UP2_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe2.up.iface.other";
-	public static final String	LO2_INTERFACE_PEER				= TEMPLATE_NS + ".vcpe2.lo.iface";
+	public static final String	LO2_INTERFACE					= TEMPLATE_NS + ".vcpe2.lo.iface";
 
 	public static final String	CLIENT1_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe1.client.iface.other";
 	public static final String	CLIENT2_INTERFACE_AUTOBAHN		= TEMPLATE_NS + ".vcpe2.client.iface.other";
