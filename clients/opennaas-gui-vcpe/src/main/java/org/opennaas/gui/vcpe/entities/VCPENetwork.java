@@ -23,6 +23,8 @@ public class VCPENetwork {
 	private LogicalRouter	logicalRouterBackup;
 	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/(\\d{1}|[0-2]{1}\\d{1}|3[0-2])$", message = "{message.error.field.format.ipandmask}")
 	private String			clientIpRange;
+	@Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/(\\d{1}|[0-2]{1}\\d{1}|3[0-2])$", message = "{message.error.field.format.ipandmask}")
+	private String			nocIpRange;
 	@Valid
 	private BGP				bgp;
 	@Valid
@@ -46,8 +48,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -61,8 +62,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -76,8 +76,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param templateType
-	 *            the templateType to set
+	 * @param templateType the templateType to set
 	 */
 	public void setTemplateType(String templateType) {
 		this.templateType = templateType;
@@ -91,8 +90,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param logicalRouterMaster
-	 *            the logicalRouterMaster to set
+	 * @param logicalRouterMaster the logicalRouterMaster to set
 	 */
 	public void setLogicalRouterMaster(LogicalRouter logicalRouterMaster) {
 		this.logicalRouterMaster = logicalRouterMaster;
@@ -106,8 +104,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param logicalRouterBackup
-	 *            the logicalRouterBackup to set
+	 * @param logicalRouterBackup the logicalRouterBackup to set
 	 */
 	public void setLogicalRouterBackup(LogicalRouter logicalRouterBackup) {
 		this.logicalRouterBackup = logicalRouterBackup;
@@ -121,11 +118,24 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param clientIpRange
-	 *            the clientIpRange to set
+	 * @param clientIpRange the clientIpRange to set
 	 */
 	public void setClientIpRange(String clientIpRange) {
 		this.clientIpRange = clientIpRange;
+	}
+
+	/**
+	 * @return the nocIpRange
+	 */
+	public String getNocIpRange() {
+		return nocIpRange;
+	}
+
+	/**
+	 * @param nocIpRange the nocIpRange to set
+	 */
+	public void setNocIpRange(String nocIpRange) {
+		this.nocIpRange = nocIpRange;
 	}
 
 	/**
@@ -136,8 +146,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param links
-	 *            the links to set
+	 * @param links the links to set
 	 */
 	public void setLinks(List<Link> links) {
 		this.links = links;
@@ -151,8 +160,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param bgp
-	 *            the bgp to set
+	 * @param bgp the bgp to set
 	 */
 	public void setBgp(BGP bgp) {
 		this.bgp = bgp;
@@ -166,8 +174,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param bod
-	 *            the bod to set
+	 * @param bod the bod to set
 	 */
 	public void setBod(BoD bod) {
 		this.bod = bod;
@@ -181,8 +188,7 @@ public class VCPENetwork {
 	}
 
 	/**
-	 * @param vrrp
-	 *            the vrrp to set
+	 * @param vrrp the vrrp to set
 	 */
 	public void setVrrp(VRRP vrrp) {
 		this.vrrp = vrrp;

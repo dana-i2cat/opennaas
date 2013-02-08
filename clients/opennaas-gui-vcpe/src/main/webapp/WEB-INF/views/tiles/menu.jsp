@@ -11,18 +11,6 @@
 
 
 <ul id="_menu">
-	<sec:authorize access="hasRole('ROLE_NOC')">
-		<li>
-			<a href="<c:url value="/secure/noc/vcpeNetwork/create" />">
-				<spring:message code="menu.create" />
-			</a>
-		</li>
-		<li class="ui-icon ui-icon-circle-plus" style="margin-top: 4px; margin-left: 4px;">
-			Icon
-		</li>
-		<hr/>
-	</sec:authorize>
-	
 	<c:forEach varStatus="vs" items="${vcpeNetworkList}">
 		<li><a href="#">${vcpeNetworkList[vs.index].name}</a>
 			<ul>
@@ -46,7 +34,8 @@
 						</a>
 					</li>
 				</sec:authorize>
-			</ul></li>
+			</ul>
+		</li>
 	</c:forEach>
 </ul>
 

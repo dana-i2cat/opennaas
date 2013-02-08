@@ -4,7 +4,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
 
 @Command(scope = "vcpenet", name = "destroy", description = "Descroy a vCPE network scenario")
 public class DestroyVCPEScenarioCommand extends GenericKarafCommand {
@@ -17,7 +17,7 @@ public class DestroyVCPEScenarioCommand extends GenericKarafCommand {
 
 		IResource resource = getResourceFromFriendlyName(resourceId);
 
-		IVCPENetworkBuilder capability = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		IVCPENetworkBuilderCapability capability = (IVCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		capability.destroyVCPENetwork();
 
 		return null;

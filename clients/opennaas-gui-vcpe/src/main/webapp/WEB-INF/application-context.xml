@@ -50,6 +50,12 @@
 		<property name="cacheSeconds" value="0" />
 	</bean>
 
+	<!-- Application Message Bundle -->
+	<bean id="configSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/config" />
+		<property name="cacheSeconds" value="0" />
+	</bean>
+
 	<!-- Log4j file configuration -->	
 	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
@@ -61,11 +67,8 @@
 		</property>
 	</bean>
 
-	<!--Template for VCPENetwork  -->
-	<util:properties id="templateProperties" location="classpath:template.properties"/>
 
 	<!-- OpenNaas Beans-->
-	<bean id="templateUtils" class="org.opennaas.gui.vcpe.utils.model.TemplateUtils" />	
 	<bean id="vcpeNetworkBO" class="org.opennaas.gui.vcpe.bos.VCPENetworkBO" />
 	<bean id="vcpeNetworkService" class="org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService" />	
 	<bean id="builderService" class="org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService" />
