@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.manager.templates.sp;
+package org.opennaas.extensions.vcpe.manager.templates.mp;
 
 import static com.google.common.collect.Iterables.filter;
 
@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
+import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplateSuggestor;
 import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -575,109 +575,11 @@ public class MultipleProviderTemplate implements ITemplate {
 		return logicalInfrastructure;
 	}
 
-	private ConfigureBGPRequestParameters generateBGPParameters(VCPENetworkModel model) {
-		BGP bgp = model.getBgp();
-		ConfigureBGPRequestParameters params = new ConfigureBGPRequestParameters();
-		params.clientIPRanges = bgp.getCustomerPrefixes();
-		params.clientASNumber = bgp.getClientASNumber();
-		params.remoteASNum = bgp.getNocASNumber();
-
-		params.loAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO1_INTERFACE))
-				.getIpAddress();
-		params.upRemoteAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER))
-				.getIpAddress();
-		params.interAddr1 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_LOCAL))
-				.getIpAddress();
-
-		params.loAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.LO2_INTERFACE))
-				.getIpAddress();
-		params.upRemoteAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER))
-				.getIpAddress();
-		params.interAddr2 = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_LOCAL))
-				.getIpAddress();
-
-		return params;
-	}
-
 	private BGP generateBGPConfig(VCPENetworkModel initialModel) {
 
 		BGP bgp = initialModel.getBgp();
 
-		ConfigureBGPRequestParameters bgpParams = generateBGPParameters(initialModel);
-
-		// FACTORY 1
-		String router1id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0];
-
-		Properties props1 = (Properties) bgpProps.clone();
-		props1.setProperty("as.asnum", bgpParams.clientASNumber);
-		props1.setProperty("bgp.routerid", router1id); // no mask
-
-		props1.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
-		props1.setProperty("bgp.group.0.session.0.peeras", bgpParams.remoteASNum);
-		props1.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr1)[0]); // no
-																																				// mask
-		props1.setProperty("bgp.group.1.peeras", bgpParams.clientASNumber);
-		props1.setProperty("bgp.group.1.session.0.peeras", bgpParams.clientASNumber);
-		props1.setProperty("bgp.group.1.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.interAddr2)[0]); // no mask
-
-		// prefixes
-		props1.setProperty("prefixlist.2.prefixes.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
-		props1.setProperty("prefixlist.2.prefix." + 0, IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0] + "/32");
-		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
-			props1.setProperty("prefixlist.2.prefix." + (i + 1), bgp.getCustomerPrefixes().get(i));
-		}
-
-		// policies
-		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
-		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
-		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address",
-				IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr1)[0] + "/32");
-		props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
-		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
-			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
-			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".address", bgp.getCustomerPrefixes().get(i));
-			props1.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".option", "exact");
-		}
-
-		BGPModelFactory factory1 = new BGPModelFactory(props1);
-		bgp.setBgpConfigForMaster(factory1.createRouterWithBGP());
-
-		// FACTORY 2
-		String router2id = IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0];
-
-		Properties props2 = (Properties) bgpProps.clone();
-		props2.setProperty("as.asnum", bgpParams.clientASNumber);
-		props2.setProperty("bgp.routerid", router2id); // no mask
-
-		props2.setProperty("bgp.group.0.peeras", bgpParams.remoteASNum);
-		props2.setProperty("bgp.group.0.session.0.peeras", bgpParams.remoteASNum);
-		props2.setProperty("bgp.group.0.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.upRemoteAddr2)[0]); // no
-																																				// mask
-		props2.setProperty("bgp.group.1.peeras", bgpParams.clientASNumber);
-		props2.setProperty("bgp.group.1.session.0.peeras", bgpParams.clientASNumber);
-		props2.setProperty("bgp.group.1.session.0.peername", IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.interAddr1)[0]); // no mask
-
-		// prefixes
-		props2.setProperty("prefixlist.2.prefixes.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
-		props2.setProperty("prefixlist.2.prefix." + 0, IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0] + "/32");
-		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
-			props2.setProperty("prefixlist.2.prefix." + (i + 1), bgp.getCustomerPrefixes().get(i));
-		}
-
-		// policies
-		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entries.size", Integer.toString(bgp.getCustomerPrefixes().size() + 1));
-		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".type", "routeFilterEntry");
-		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".address",
-				IPUtilsHelper.composedIPAddressToIPAddressAndMask(bgpParams.loAddr2)[0] + "/32");
-		props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + 0 + ".option", "exact");
-		for (int i = 0; i < bgp.getCustomerPrefixes().size(); i++) {
-			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".type", "routeFilterEntry");
-			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".address", bgp.getCustomerPrefixes().get(i));
-			props2.setProperty("policy.0.rule.0.condition.0.filterlist.0.entry." + (i + 1) + ".option", "exact");
-		}
-
-		BGPModelFactory factory2 = new BGPModelFactory(props2);
-		bgp.setBgpConfigForBackup(factory2.createRouterWithBGP());
+		// TODO ADD LOGIC HERE
 
 		return bgp;
 	}

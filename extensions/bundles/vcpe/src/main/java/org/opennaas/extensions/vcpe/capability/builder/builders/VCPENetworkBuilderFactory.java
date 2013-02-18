@@ -4,6 +4,8 @@
 package org.opennaas.extensions.vcpe.capability.builder.builders;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.vcpe.capability.builder.builders.mp.VCPEMultipleProvider;
+import org.opennaas.extensions.vcpe.capability.builder.builders.sp.VCPESingleProvider;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 
 /**
