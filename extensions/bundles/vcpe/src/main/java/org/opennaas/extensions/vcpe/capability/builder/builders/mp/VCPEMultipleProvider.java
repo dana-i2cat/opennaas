@@ -22,12 +22,12 @@ import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.Interfac
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.LogicalRouterHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.StaticRouteHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.VRRPHelper;
+import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 /**

@@ -20,9 +20,9 @@ import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.GenericHelper;
+import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPEVRRPCapability extends AbstractCapability implements IVCPEVRRPCapability {

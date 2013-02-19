@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
+import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 
 public class VCPENetworkModelHelper {
 

@@ -14,6 +14,7 @@ import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
+import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplate;
 import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplateSuggestor;
 import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
@@ -23,7 +24,6 @@ import org.opennaas.extensions.vcpe.model.LogicalRouter;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.VRRP;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 

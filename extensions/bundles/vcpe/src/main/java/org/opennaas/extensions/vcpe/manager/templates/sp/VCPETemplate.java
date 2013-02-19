@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vcpe.model;
+package org.opennaas.extensions.vcpe.manager.templates.sp;
 
 public class VCPETemplate {
 
