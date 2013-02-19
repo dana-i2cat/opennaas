@@ -6,9 +6,9 @@ package org.opennaas.gui.vcpe.utils.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
@@ -58,9 +58,9 @@ public class OpennaasBeanUtils {
 		// Core Router
 		org.opennaas.extensions.vcpe.model.Router routerCore = getPhysicalRouter(modelIn.getRouterCore());
 		// LogicalRouters
-		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
+		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = getLROpennaas(modelIn.getName(), SPTemplateConstants.VCPE1_ROUTER,
 				modelIn.getLogicalRouterMaster());
-		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
+		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = getLROpennaas(modelIn.getName(), SPTemplateConstants.VCPE2_ROUTER,
 				modelIn.getLogicalRouterBackup());
 
 		elements.add(routerCore);
@@ -171,13 +171,13 @@ public class OpennaasBeanUtils {
 		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Routers Master
 		org.opennaas.extensions.vcpe.model.Router physicalRouterMaster = getPhysicalRouter(modelIn.getPhysicalRouterMaster());
-		physicalRouterMaster.setTemplateName(VCPETemplate.CPE1_PHY_ROUTER);
+		physicalRouterMaster.setTemplateName(SPTemplateConstants.CPE1_PHY_ROUTER);
 		// Routers Backup
 		org.opennaas.extensions.vcpe.model.Router physicalRouterBackup = getPhysicalRouter(modelIn.getPhysicalRouterBackup());
-		physicalRouterMaster.setTemplateName(VCPETemplate.CPE2_PHY_ROUTER);
+		physicalRouterMaster.setTemplateName(SPTemplateConstants.CPE2_PHY_ROUTER);
 		// Routers Core
 		org.opennaas.extensions.vcpe.model.Router physicalRouterCore = getPhysicalRouter(modelIn.getPhysicalRouterBackup());
-		physicalRouterMaster.setTemplateName(VCPETemplate.CORE_PHY_ROUTER);
+		physicalRouterMaster.setTemplateName(SPTemplateConstants.CORE_PHY_ROUTER);
 
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		elements.add(physicalRouterMaster);
