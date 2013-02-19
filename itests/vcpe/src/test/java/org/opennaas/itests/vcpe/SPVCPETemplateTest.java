@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.extensions.vcpe.manager.templates.sp.SingleProviderTemplate;
-import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplate;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
@@ -120,178 +120,178 @@ public class SPVCPETemplateTest {
 
 	private void checkModelHasAllPhysicalElements(VCPENetworkModel model) {
 
-		Router router = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_ROUTER);
+		Router router = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CORE_PHY_ROUTER);
 		Assert.assertNotNull(router);
 		Assert.assertTrue(router.getInterfaces().size() >= 3);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.CORE_PHY_LO_INTERFACE));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.CORE_PHY_INTERFACE_MASTER));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.CORE_PHY_INTERFACE_BKP));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.CORE_PHY_LO_INTERFACE));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.CORE_PHY_INTERFACE_MASTER));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.CORE_PHY_INTERFACE_BKP));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(router.getInterfaces()));
 
-		router = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
+		router = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE1_PHY_ROUTER);
 		Assert.assertNotNull(router);
 		Assert.assertTrue(router.getInterfaces().size() >= 4);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.INTER1_PHY_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.DOWN1_PHY_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.UP1_PHY_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.LO1_PHY_INTERFACE));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.INTER1_PHY_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.DOWN1_PHY_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.UP1_PHY_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.LO1_PHY_INTERFACE));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(router.getInterfaces()));
 
-		router = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
+		router = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE2_PHY_ROUTER);
 		Assert.assertNotNull(router);
 		Assert.assertTrue(router.getInterfaces().size() >= 4);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.INTER2_PHY_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.DOWN2_PHY_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.UP2_PHY_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.LO2_PHY_INTERFACE));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.INTER2_PHY_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.DOWN2_PHY_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.UP2_PHY_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.LO2_PHY_INTERFACE));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(router.getInterfaces()));
 
-		Domain domain = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
+		Domain domain = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
 		Assert.assertNotNull(domain);
 		Assert.assertTrue(domain.getInterfaces().size() >= 6);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.INTER1_PHY_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.DOWN1_PHY_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.INTER2_PHY_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.DOWN2_PHY_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.CLIENT1_PHY_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.CLIENT1_PHY_INTERFACE_AUTOBAHN));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(domain.getInterfaces()));
 
 	}
 
 	private void checkModelHasAllLogicalElements(VCPENetworkModel model) {
 
-		LogicalRouter router = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		LogicalRouter router = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
 		Assert.assertNotNull(router);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.INTER1_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.DOWN1_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.UP1_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.LO1_INTERFACE));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.INTER1_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.DOWN1_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.UP1_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.LO1_INTERFACE));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(router.getInterfaces()));
 
-		router = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		router = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 		Assert.assertNotNull(router);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.INTER2_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.DOWN2_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.UP2_INTERFACE_LOCAL));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), VCPETemplate.LO2_INTERFACE));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.INTER2_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.DOWN2_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.UP2_INTERFACE_LOCAL));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(router.getInterfaces(), SPTemplateConstants.LO2_INTERFACE));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(router.getInterfaces()));
 
-		Domain domain = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
+		Domain domain = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
 		Assert.assertNotNull(domain);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.INTER1_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.DOWN1_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.INTER2_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.DOWN2_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(domain.getInterfaces(), SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(domain.getInterfaces()));
 
-		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_ROUTER);
+		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CORE_PHY_ROUTER);
 		Assert.assertNotNull(core);
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(), VCPETemplate.CORE_LO_INTERFACE));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(), VCPETemplate.UP1_INTERFACE_PEER));
-		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(), VCPETemplate.UP2_INTERFACE_PEER));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(), SPTemplateConstants.CORE_LO_INTERFACE));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(), SPTemplateConstants.UP1_INTERFACE_PEER));
+		Assert.assertNotNull(VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(), SPTemplateConstants.UP2_INTERFACE_PEER));
 		Assert.assertTrue(VCPENetworkModelHelper.getInterfaces(model.getElements()).containsAll(core.getInterfaces()));
 
 		// test all links are in place
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_LINK)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_LINK)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_LINK_LOCAL)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK_AUTOBAHN)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_LINK_LOCAL)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_LOCAL)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_AUTOBAHN)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_LOCAL)));
-		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_AUTOBAHN)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_LINK)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_LINK)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_LINK_LOCAL)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK_AUTOBAHN)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_LINK_LOCAL)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_LOCAL)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_AUTOBAHN)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_LOCAL)));
+		Assert.assertTrue(links.contains((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_AUTOBAHN)));
 
-		Link link = (Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK);
+		Link link = (Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK);
 		Assert.assertNotNull(link);
 		Assert.assertTrue(link.getImplementedBy().contains(
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_LINK_LOCAL)));
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_LINK_LOCAL)));
 		Assert.assertTrue(link.getImplementedBy().contains(
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK_AUTOBAHN)));
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK_AUTOBAHN)));
 		Assert.assertTrue(link.getImplementedBy().contains(
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_LINK_LOCAL)));
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_LINK_LOCAL)));
 
-		link = (Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK);
+		link = (Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK);
 		Assert.assertNotNull(link);
 		Assert.assertTrue(link.getImplementedBy().contains(
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_LOCAL)));
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_LOCAL)));
 		Assert.assertTrue(link.getImplementedBy().contains(
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_AUTOBAHN)));
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_AUTOBAHN)));
 
-		link = (Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK);
+		link = (Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK);
 		Assert.assertNotNull(link);
 		Assert.assertTrue(link.getImplementedBy().contains(
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_LOCAL)));
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_LOCAL)));
 		Assert.assertTrue(link.getImplementedBy().contains(
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_AUTOBAHN)));
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_AUTOBAHN)));
 
 		// test link interfaces
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_LINK_LOCAL)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_LINK_LOCAL)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_LINK_LOCAL)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_LINK_LOCAL)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK_AUTOBAHN)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER_LINK_AUTOBAHN)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK_AUTOBAHN)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER_LINK_AUTOBAHN)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_LINK_LOCAL)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_LINK_LOCAL)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_LINK_LOCAL)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_LINK_LOCAL)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_LOCAL)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_LOCAL)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_LOCAL)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_LOCAL)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_AUTOBAHN)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_AUTOBAHN)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_AUTOBAHN)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_AUTOBAHN)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_LOCAL)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_LOCAL)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_LOCAL)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_LOCAL)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_AUTOBAHN)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_AUTOBAHN)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_AUTOBAHN)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_AUTOBAHN)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_LINK)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_LINK)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_LINK)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_INTERFACE_PEER),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_LINK)).getSink());
 
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_LOCAL),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_LINK)).getSource());
-		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER),
-				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_LINK)).getSink());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_INTERFACE_LOCAL),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_LINK)).getSource());
+		Assert.assertEquals(VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_INTERFACE_PEER),
+				((Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_LINK)).getSink());
 
 		// TODO test VRRP and BGP are set
 

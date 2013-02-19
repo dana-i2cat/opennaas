@@ -10,7 +10,7 @@ import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplate;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
@@ -113,7 +113,7 @@ public class VCPEToRouterModelTranslator {
 		Link ltLink = null;
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 		for (Link link : links) {
-			if (link.getType().equals(VCPETemplate.LINK_TYPE_LT)) {
+			if (link.getType().equals(SPTemplateConstants.LINK_TYPE_LT)) {
 				if (link.getSource().equals(iface) || link.getSink().equals(iface)) {
 					ltLink = link;
 					break;

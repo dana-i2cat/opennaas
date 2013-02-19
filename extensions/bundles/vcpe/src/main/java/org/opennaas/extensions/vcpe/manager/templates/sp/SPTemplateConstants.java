@@ -1,6 +1,6 @@
 package org.opennaas.extensions.vcpe.manager.templates.sp;
 
-public class VCPETemplate {
+public class SPTemplateConstants {
 
 	public static final String	TEMPLATE_NS						= "org.opennaas.extensions.vcpe.template.1";
 

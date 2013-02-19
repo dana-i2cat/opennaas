@@ -18,7 +18,7 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.VCPEToRouterModelTranslator;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.GenericHelper;
-import org.opennaas.extensions.vcpe.manager.templates.sp.VCPETemplate;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
@@ -144,8 +144,8 @@ public class VCPEIPCapability extends AbstractCapability implements IVCPEIPCapab
 	 * @throws ProtocolException
 	 */
 	private void executePhysicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE1_PHY_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE2_PHY_ROUTER);
 
 		IResource phyResource1 = GenericHelper.getResourceManager().getResource(
 				GenericHelper.getResourceManager().getIdentifierFromResourceName("router", phy1.getName()));
@@ -162,8 +162,8 @@ public class VCPEIPCapability extends AbstractCapability implements IVCPEIPCapab
 	 * @throws ProtocolException
 	 */
 	private void executeLogicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 
 		IResource lrResource1 = GenericHelper.getResourceManager().getResource(
 				GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
