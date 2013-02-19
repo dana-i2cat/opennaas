@@ -227,10 +227,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	private Boolean build(VCPENetworkModel vcpeNetworkModel) {
 		IResource resource = null;
 		try {
-			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateType());
-			VCPENetworkModel model = template.buildModel(vcpeNetworkModel);
 			resource = Activator.getResourceManagerService()
 					.getResourceById(vcpeNetworkModel.getId());
+
+			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateType());
+			VCPENetworkModel model = template.buildModel(vcpeNetworkModel);
+
 			// Execute the capability and generate the real environment
 			IVCPENetworkBuilderCapability vcpeNetworkBuilderCapability = (IVCPENetworkBuilderCapability) resource
 					.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
