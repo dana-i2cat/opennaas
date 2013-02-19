@@ -33,8 +33,7 @@ public class Interface {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -48,8 +47,7 @@ public class Interface {
 	}
 
 	/**
-	 * @param port
-	 *            the port to set
+	 * @param port the port to set
 	 */
 	public void setPort(String port) {
 		this.port = port;
@@ -63,8 +61,7 @@ public class Interface {
 	}
 
 	/**
-	 * @param ipAddress
-	 *            the ipAddress to set
+	 * @param ipAddress the ipAddress to set
 	 */
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
@@ -78,8 +75,7 @@ public class Interface {
 	}
 
 	/**
-	 * @param vlan
-	 *            the vlan to set
+	 * @param vlan the vlan to set
 	 */
 	public void setVlan(Integer vlan) {
 		this.vlan = vlan;
@@ -93,8 +89,7 @@ public class Interface {
 	}
 
 	/**
-	 * @param type
-	 *            the type to set
+	 * @param type the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -108,8 +103,7 @@ public class Interface {
 	}
 
 	/**
-	 * @param templateName
-	 *            the templateName to set
+	 * @param templateName the templateName to set
 	 */
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
@@ -142,7 +136,7 @@ public class Interface {
 	 * @author Jordi
 	 */
 	public enum Types {
-		INTER("Inter"), UP("Up"), DOWN("Down"), CLIENT("Client"), LOOPBACK("Loopback");
+		INTER("Inter"), UP("Up"), DOWN("Down"), LOOPBACK("Loopback"), WAN("Wan"), OTHER("Other");
 
 		private final String	text;
 
