@@ -47,8 +47,12 @@ public class VCPEBeanUtils {
 				.getElementByTemplateName(modelIn, VCPETemplate.VCPE1_ROUTER);
 		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouterBackup = (org.opennaas.extensions.vcpe.model.LogicalRouter) VCPENetworkModelHelper
 				.getElementByTemplateName(modelIn, VCPETemplate.VCPE2_ROUTER);
+		org.opennaas.extensions.vcpe.model.Router logicalRouterCore = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, VCPETemplate.CORE_PHY_ROUTER);
+
 		modelOut.setLogicalRouterMaster(getLogicalRouter(logicalRouterMaster));
 		modelOut.setLogicalRouterBackup(getLogicalRouter(logicalRouterBackup));
+		modelOut.setRouterCore(getPhysicalRouter(logicalRouterCore));
 
 		// BGP
 		BGP bgp = getBGP(modelIn.getBgp());
@@ -164,13 +168,17 @@ public class VCPEBeanUtils {
 				|| templateName.equals(VCPETemplate.INTER2_PHY_INTERFACE_LOCAL)) {
 			outIface.setType(Interface.Types.INTER.toString());
 		} else if (templateName.equals(VCPETemplate.CORE_PHY_LO_INTERFACE)
+				|| templateName.equals(VCPETemplate.CORE_LO_INTERFACE)
 				|| templateName.equals(VCPETemplate.LO1_PHY_INTERFACE)
 				|| templateName.equals(VCPETemplate.LO2_PHY_INTERFACE)
 				|| templateName.equals(VCPETemplate.LO1_INTERFACE)
 				|| templateName.equals(VCPETemplate.LO2_INTERFACE)) {
 			outIface.setType(Interface.Types.LOOPBACK.toString());
+		} else if (templateName.equals(VCPETemplate.UP1_INTERFACE_PEER)
+				|| templateName.equals(VCPETemplate.UP2_INTERFACE_PEER)) {
+			outIface.setType(Interface.Types.WAN.toString());
 		} else {
-			outIface.setType(Interface.Types.CLIENT.toString());
+			outIface.setType(Interface.Types.OTHER.toString());
 		}
 		return outIface;
 	}
