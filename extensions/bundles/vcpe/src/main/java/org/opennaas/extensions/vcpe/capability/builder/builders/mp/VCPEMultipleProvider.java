@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.capability.builder.builders;
+package org.opennaas.extensions.vcpe.capability.builder.builders.mp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.router.capability.bgp.BGPCapability;
 import org.opennaas.extensions.router.capability.bgp.IBGPCapability;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
+import org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.AutobahnHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.GenericHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.IPHelper;
@@ -32,87 +33,67 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 /**
  * @author Jordi
  */
-public class VCPESingleProvider implements IVCPENetworkBuilder {
+public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 
-	private Log	log	= LogFactory.getLog(VCPESingleProvider.class);
+	private Log	log	= LogFactory.getLog(VCPEMultipleProvider.class);
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#build(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#build(org.opennaas.core.resources.IResource,
+	 * org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
 	public VCPENetworkModel build(IResource vcpe, VCPENetworkModel desiredScenario) throws ResourceException {
-		log.info("Build a vCPE single provider network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
+		log.info("Build a vCPE multiple provider network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
 
-		boolean linksCreated = false;
-		boolean lrsCreated = false;
+		// Create and execute autobahn links
+		createExternalLinks(vcpe, desiredScenario);
+		executeAutobahn(desiredScenario);
 
-		try {
-			// Create and execute autobahn links
-			createExternalLinks(vcpe, desiredScenario);
-			executeAutobahn(desiredScenario);
-			linksCreated = true;
+		// Create logical routers in physical and start
+		createLogicalRouters(vcpe, desiredScenario);
+		executePhysicalRouters(desiredScenario);
+		startLogicalRouters(vcpe, desiredScenario);
 
-			// Create logical routers in physical and start
-			createLogicalRouters(vcpe, desiredScenario);
-			executePhysicalRouters(desiredScenario);
-			lrsCreated = true;
-			startLogicalRouters(vcpe, desiredScenario);
+		// Configure subinterfaces
+		createSubInterfaces(vcpe, desiredScenario);
+		assignIPAddresses(vcpe, desiredScenario);
+		executeLogicalRouters(desiredScenario);
 
-			// Configure subinterfaces
-			createSubInterfaces(vcpe, desiredScenario);
-			assignIPAddresses(vcpe, desiredScenario);
-			executeLogicalRouters(desiredScenario);
+		// Configure routing protocols
+		configureVRRP(vcpe, desiredScenario);
+		executeLogicalRouters(desiredScenario);
 
-			// Configure routing protocols
-			configureEGP(vcpe, desiredScenario);
-			configureVRRP(vcpe, desiredScenario);
-			executeLogicalRouters(desiredScenario);
+		// TODO return created model, not the desired one
+		vcpe.setModel(desiredScenario);
+		((VCPENetworkModel) vcpe.getModel()).setCreated(true);
 
-			// TODO return created model, not the desired one
-			vcpe.setModel(desiredScenario);
-			((VCPENetworkModel) vcpe.getModel()).setCreated(true);
+		return (VCPENetworkModel) vcpe.getModel();
 
-			return (VCPENetworkModel) vcpe.getModel();
-
-		} catch (ResourceException e) {
-			destroy(vcpe, desiredScenario, lrsCreated, linksCreated);
-			throw e;
-		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#destroy()
+	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#destroy(org.opennaas.core.resources.IResource,
+	 * org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
 	public VCPENetworkModel destroy(IResource vcpe, VCPENetworkModel currentScenario) throws ResourceException {
-		return destroy(vcpe, currentScenario, true, true);
-	}
-
-	private VCPENetworkModel destroy(IResource vcpe, VCPENetworkModel currentScenario, boolean destroyLRs, boolean destroyLinks)
-			throws ResourceException {
 		log.info("Destroy a vCPE Network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
 
-		if (destroyLRs) {
-			// Destroy logical routers and this will destroy
-			// their subinterfaces and routing protocols
-			stopLogicalRouters(vcpe, currentScenario);
-			removeLogicalRouters(vcpe, currentScenario);
-			executePhysicalRouters(currentScenario);
-		}
+		// Destroy logical routers and this will destroy
+		// their subinterfaces and routing protocols
+		stopLogicalRouters(vcpe, currentScenario);
+		removeLogicalRouters(vcpe, currentScenario);
+		executePhysicalRouters(currentScenario);
 
-		if (destroyLinks) {
-			// Destroy autobahn links
-			destroyExternalLinks(vcpe, currentScenario);
-			executeAutobahn(currentScenario);
-		}
+		// Destroy autobahn links
+		destroyExternalLinks(vcpe, currentScenario);
+		executeAutobahn(currentScenario);
 
-		if (destroyLRs) {
-			removeResources(currentScenario);
-		}
+		removeResources(currentScenario);
 
 		// return the model after deleting all LR and subInterfaces from it
 		VCPENetworkModel model = new VCPENetworkModel();
