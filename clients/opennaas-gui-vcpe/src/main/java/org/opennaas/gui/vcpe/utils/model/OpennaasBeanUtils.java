@@ -55,16 +55,21 @@ public class OpennaasBeanUtils {
 		// Elements
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		modelOut.setElements(elements);
+		// Core Router
+		org.opennaas.extensions.vcpe.model.Router routerCore = getPhysicalRouter(modelIn.getRouterCore());
 		// LogicalRouters
 		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE1_ROUTER,
 				modelIn.getLogicalRouterMaster());
 		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = getLROpennaas(modelIn.getName(), VCPETemplate.VCPE2_ROUTER,
 				modelIn.getLogicalRouterBackup());
+
+		elements.add(routerCore);
 		elements.add(logicalRouterMaster);
 		elements.add(logicalRouterBackup);
 		// Add interfaces to elements
 		elements.addAll(logicalRouterMaster.getInterfaces());
 		elements.addAll(logicalRouterBackup.getInterfaces());
+		elements.addAll(routerCore.getInterfaces());
 		// Add interfaces BoD
 		if (modelIn.getBod() != null) {
 			elements.add(getLogicalInterface(modelIn.getBod().getIfaceClient()));

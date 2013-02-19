@@ -18,6 +18,8 @@ public class VCPENetwork {
 	@NotBlank(message = "{message.error.field.mandatory}")
 	private String			templateType;
 	@Valid
+	private PhysicalRouter	routerCore;
+	@Valid
 	private LogicalRouter	logicalRouterMaster;
 	@Valid
 	private LogicalRouter	logicalRouterBackup;
@@ -94,6 +96,20 @@ public class VCPENetwork {
 	 */
 	public void setLogicalRouterMaster(LogicalRouter logicalRouterMaster) {
 		this.logicalRouterMaster = logicalRouterMaster;
+	}
+
+	/**
+	 * @return the routerCore
+	 */
+	public PhysicalRouter getRouterCore() {
+		return routerCore;
+	}
+
+	/**
+	 * @param routerCore the routerCore to set
+	 */
+	public void setRouterCore(PhysicalRouter routerCore) {
+		this.routerCore = routerCore;
 	}
 
 	/**

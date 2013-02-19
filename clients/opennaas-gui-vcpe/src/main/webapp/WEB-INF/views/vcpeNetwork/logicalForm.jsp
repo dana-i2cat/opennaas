@@ -1,39 +1,122 @@
-
-<%@page contentType="text/html;charset=UTF-8"%>
-<%@page pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@ page session="false"%>
+<%@ page import="org.opennaas.extensions.vcpe.model.VCPETemplate;"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
+
 <spring:message  code="message.error.interface.notavailable" var="msgIfaceUsed"/>
 <spring:message  code="message.error.ip.notavailable" var="msgIPUsed"/>
 <spring:message  code="message.error.vlan.notavailable" var="msgmsgVLANUsed"/>
 
+<c:set var="UP1_INTERFACE_PEER"  value='<%= VCPETemplate.UP1_INTERFACE_PEER %>' />
+<c:set var="UP2_INTERFACE_PEER"  value='<%= VCPETemplate.UP2_INTERFACE_PEER %>' />
+
 <div id="logicalForm" >
 	<form:form modelAttribute="VCPENetwork" action="${action}" method="post">
 		<form:hidden path="id" />
-		<form:hidden path="templateType" />		
+		<form:hidden path="templateType" />	
+		<form:hidden path="routerCore.name" />	
+		<form:hidden path="routerCore.templateName" />	
 		<form:hidden path="logicalRouterMaster.name" />
 		<form:hidden path="logicalRouterMaster.templateName" />
 		<form:hidden path="logicalRouterBackup.name" />
 		<form:hidden path="logicalRouterBackup.templateName" />
 		<!-- Graphical view -->
-
 		<!-- WAN -->
 		<div id="wan_logical">
+			<c:forEach items="${VCPENetwork.routerCore.interfaces}" varStatus="vs" var="item">				
+				<c:choose>
+					<c:when test="${item.type == 'Other' || item.type == 'Loopback'}">
+						<form:hidden path="routerCore.interfaces[${vs.index}].templateName" />
+						<form:hidden path="routerCore.interfaces[${vs.index}].type" />
+						<form:hidden path="routerCore.interfaces[${vs.index}].name" />
+					</c:when>
+				</c:choose>
+			</c:forEach>
 			<h2><spring:message code="vcpenetwork.wan"/></h2>
-			<!-- Noc IP range -->
-			<div id="client_data" class="ui-widget-content noc_data">
-				<form:label for="nocIpRange" path="nocIpRange" cssErrorClass="error">
-					<spring:message code="vcpenetwork.nocIpRange" />
-				</form:label>
-				<br />
-				<form:input path="nocIpRange" size="20" />
-				<br>
-				<form:errors path="nocIpRange" />				
+			<!-- Noc IP range -->			
+			<div id=client_data class="ui-widget-content noc_data">
+				<div class="field">
+					<c:forEach items="${VCPENetwork.routerCore.interfaces}" varStatus="vs" var="item">				
+						<c:choose>
+							<c:when test="${item.templateName == UP1_INTERFACE_PEER}">
+								<label>${item.type} Master</label><br>
+								<div class="ui-widget-content config_content">
+									<form:hidden path="routerCore.interfaces[${vs.index}].templateName" />
+									<form:hidden path="routerCore.interfaces[${vs.index}].type" />
+									<form:label for="routerCore.interfaces[${vs.index}].name" path="routerCore.interfaces[${vs.index}].name" cssErrorClass="error">
+										<form:label for="routerCore.interfaces[${vs.index}].port" path="routerCore.interfaces[${vs.index}].port" cssErrorClass="error">
+											<spring:message code="interface.name" />
+										</form:label>
+									</form:label>
+									<form:input path="routerCore.interfaces[${vs.index}].name" size="8" readonly="true" />.
+									<form:errors path="routerCore.interfaces[${vs.index}].name" size="8" />
+									<form:input path="routerCore.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+									<form:errors path="routerCore.interfaces[${vs.index}].port" size="3" />
+									<br>
+									<form:label for="routerCore.interfaces[${vs.index}].ipAddress" path="routerCore.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+										<spring:message code="interface.ipAddress" />
+									</form:label>
+									<form:input path="routerCore.interfaces[${vs.index}].ipAddress" size="13"  />
+									<form:errors path="routerCore.interfaces[${vs.index}].ipAddress" size="13" />
+									<form:label for="routerCore.interfaces[${vs.index}].vlan" path="routerCore.interfaces[${vs.index}].vlan" cssErrorClass="error">
+										<spring:message code="interface.vlan" />
+									</form:label>
+									<form:input path="routerCore.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+									<form:errors path="routerCore.interfaces[${vs.index}].vlan" size="3" />
+								</div>
+							</c:when>
+						</c:choose>				
+					</c:forEach>
+				</div>	
+				<div class="field">				
+					<form:label for="nocIpRange" path="nocIpRange" cssErrorClass="error">
+						<spring:message code="vcpenetwork.nocIpRange" />
+					</form:label>
+					<div class="ui-widget-content config_content">			
+						<form:input path="nocIpRange" size="20" />
+						<br>
+						<form:errors path="nocIpRange" />
+					</div>
+				</div>
+				<div class="field">
+					<c:forEach items="${VCPENetwork.routerCore.interfaces}" varStatus="vs" var="item">					
+						<c:choose>
+							<c:when test="${item.templateName == UP2_INTERFACE_PEER}">	
+								<label>${item.type} Backup</label><br>
+								<div class="ui-widget-content config_content">
+									<form:hidden path="routerCore.interfaces[${vs.index}].templateName" />
+									<form:hidden path="routerCore.interfaces[${vs.index}].type" />
+									<form:label for="routerCore.interfaces[${vs.index}].name" path="routerCore.interfaces[${vs.index}].name" cssErrorClass="error">
+										<form:label for="routerCore.interfaces[${vs.index}].port" path="routerCore.interfaces[${vs.index}].port" cssErrorClass="error">
+											<spring:message code="interface.name" />
+										</form:label>
+									</form:label>
+									<form:input path="routerCore.interfaces[${vs.index}].name" size="8" readonly="true" />.
+									<form:errors path="routerCore.interfaces[${vs.index}].name" size="8" />
+									<form:input path="routerCore.interfaces[${vs.index}].port" readonly="true" size="3"  />
+									<form:errors path="routerCore.interfaces[${vs.index}].port" size="3" />
+									<br>
+									<form:label for="routerCore.interfaces[${vs.index}].ipAddress" path="routerCore.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
+										<spring:message code="interface.ipAddress" />
+									</form:label>
+									<form:input path="routerCore.interfaces[${vs.index}].ipAddress" size="13"  />
+									<form:errors path="routerCore.interfaces[${vs.index}].ipAddress" size="13" />
+									<form:label for="routerCore.interfaces[${vs.index}].vlan" path="routerCore.interfaces[${vs.index}].vlan" cssErrorClass="error">
+										<spring:message code="interface.vlan" />
+									</form:label>
+									<form:input path="routerCore.interfaces[${vs.index}].vlan" size="3"  readonly="true"  />
+									<form:errors path="routerCore.interfaces[${vs.index}].vlan" size="3" />
+								</div>
+							</c:when>
+						</c:choose>				
+					</c:forEach>
+				</div>
 			</div>
 		</div>	
 		<!-- Up Interfaces -->
