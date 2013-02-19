@@ -435,6 +435,24 @@ public class VCPENetworkModelHelper {
 	}
 
 	/**
+	 * @param id
+	 * @param templateName
+	 * @param type
+	 * @param source
+	 * @param sink
+	 * @return
+	 */
+	public static Link createLink(String id, String templateName, String type, Interface source, Interface sink) {
+		Link link = new Link();
+		link.setId(id);
+		link.setTemplateName(templateName);
+		link.setType(type);
+		link.setSource(source);
+		link.setSink(sink);
+		return link;
+	}
+
+	/**
 	 * Sets iface vlan according to the other endpoint of given link.
 	 * 
 	 * @param iface

@@ -32,11 +32,11 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
  */
 public class SingleProviderTemplate implements ITemplate {
 
-	private static final String		BGP_TEMPLATE	= "/templates/bgpModel1.properties";
+	private static final String	BGP_TEMPLATE	= "/templates/bgpModel1.properties";
 
-	private String					templateType	= ITemplate.SP_VCPE_TEMPLATE;
+	private String				templateType	= ITemplate.SP_VCPE_TEMPLATE;
 
-	private Properties				bgpProps;
+	private Properties			bgpProps;
 	private SPTemplateSuggestor	suggestor;
 
 	/**
@@ -324,34 +324,44 @@ public class SingleProviderTemplate implements ITemplate {
 		// LINKS
 
 		// Inter links
-		Link linkInter1local = getLink(null, SPTemplateConstants.INTER1_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH, inter1, inter1other);
-		Link linkInter1other = getLink(null, SPTemplateConstants.INTER_LINK_AUTOBAHN, SPTemplateConstants.LINK_TYPE_AUTOBAHN, inter1other, inter2other);
-		Link linkInter2local = getLink(null, SPTemplateConstants.INTER2_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH, inter2, inter2other);
+		Link linkInter1local = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.INTER1_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH,
+				inter1, inter1other);
+		Link linkInter1other = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.INTER_LINK_AUTOBAHN,
+				SPTemplateConstants.LINK_TYPE_AUTOBAHN, inter1other, inter2other);
+		Link linkInter2local = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.INTER2_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH,
+				inter2, inter2other);
 
 		// Down links
-		Link linkDown1local = getLink(null, SPTemplateConstants.DOWN1_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH, down1, down1other);
-		Link linkDown1other = getLink(null, SPTemplateConstants.DOWN1_LINK_AUTOBAHN, SPTemplateConstants.LINK_TYPE_AUTOBAHN, down1other, client1other);
+		Link linkDown1local = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.DOWN1_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH, down1,
+				down1other);
+		Link linkDown1other = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.DOWN1_LINK_AUTOBAHN,
+				SPTemplateConstants.LINK_TYPE_AUTOBAHN, down1other, client1other);
 
-		Link linkDown2local = getLink(null, SPTemplateConstants.DOWN2_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH, down2, down2other);
-		Link linkDown2other = getLink(null, SPTemplateConstants.DOWN2_LINK_AUTOBAHN, SPTemplateConstants.LINK_TYPE_AUTOBAHN, down2other, client2other);
+		Link linkDown2local = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.DOWN2_LINK_LOCAL, SPTemplateConstants.LINK_TYPE_ETH, down2,
+				down2other);
+		Link linkDown2other = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.DOWN2_LINK_AUTOBAHN,
+				SPTemplateConstants.LINK_TYPE_AUTOBAHN, down2other, client2other);
 
 		// Up links
-		Link linkUp1 = getLink(null, SPTemplateConstants.UP1_LINK, SPTemplateConstants.LINK_TYPE_LT, up1, up1other);
-		Link linkUp2 = getLink(null, SPTemplateConstants.UP2_LINK, SPTemplateConstants.LINK_TYPE_LT, up2, up2other);
+		Link linkUp1 = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.UP1_LINK, SPTemplateConstants.LINK_TYPE_LT, up1, up1other);
+		Link linkUp2 = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.UP2_LINK, SPTemplateConstants.LINK_TYPE_LT, up2, up2other);
 
 		// Virtual links
-		Link linkInter = getLink(null, SPTemplateConstants.INTER_LINK, SPTemplateConstants.LINK_TYPE_VIRTUAL, inter1, inter2);
+		Link linkInter = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.INTER_LINK, SPTemplateConstants.LINK_TYPE_VIRTUAL, inter1,
+				inter2);
 		List<Link> subLinks = new ArrayList<Link>();
 		subLinks.add(linkInter1local);
 		subLinks.add(linkInter1other);
 		subLinks.add(linkInter2local);
 		linkInter.setImplementedBy(subLinks);
-		Link linkdown1 = getLink(null, SPTemplateConstants.DOWN1_LINK, SPTemplateConstants.LINK_TYPE_VIRTUAL, down1, client1other);
+		Link linkdown1 = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.DOWN1_LINK, SPTemplateConstants.LINK_TYPE_VIRTUAL, down1,
+				client1other);
 		subLinks = new ArrayList<Link>();
 		subLinks.add(linkDown1local);
 		subLinks.add(linkDown1other);
 		linkdown1.setImplementedBy(subLinks);
-		Link linkdown2 = getLink(null, SPTemplateConstants.DOWN2_LINK, SPTemplateConstants.LINK_TYPE_VIRTUAL, down2, client2other);
+		Link linkdown2 = VCPENetworkModelHelper.createLink(null, SPTemplateConstants.DOWN2_LINK, SPTemplateConstants.LINK_TYPE_VIRTUAL, down2,
+				client2other);
 		subLinks.add(linkDown2local);
 		subLinks.add(linkDown2other);
 		linkdown2.setImplementedBy(subLinks);
@@ -400,7 +410,8 @@ public class SingleProviderTemplate implements ITemplate {
 		Interface inputClient1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
 				SPTemplateConstants.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 		if (inputClient1 != null) {
-			Interface client1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT1_PHY_INTERFACE_AUTOBAHN);
+			Interface client1 = (Interface) VCPENetworkModelHelper
+					.getElementByTemplateName(model, SPTemplateConstants.CLIENT1_PHY_INTERFACE_AUTOBAHN);
 			client1.setName(inputClient1.getName());
 			client1.setPhysicalInterfaceName(inputClient1.getPhysicalInterfaceName());
 		}
@@ -409,7 +420,8 @@ public class SingleProviderTemplate implements ITemplate {
 		Interface inputClient2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
 				SPTemplateConstants.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 		if (inputClient2 != null) {
-			Interface client2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+			Interface client2 = (Interface) VCPENetworkModelHelper
+					.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 			client2.setName(inputClient2.getName());
 			client2.setPhysicalInterfaceName(inputClient2.getPhysicalInterfaceName());
 		}
@@ -435,8 +447,10 @@ public class SingleProviderTemplate implements ITemplate {
 		Interface lo1input = (Interface) VCPENetworkModelHelper
 				.getElementByTemplateName(vcpe1input.getInterfaces(), SPTemplateConstants.LO1_INTERFACE);
 
-		Interface inter1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe1.getInterfaces(), SPTemplateConstants.INTER1_INTERFACE_LOCAL);
-		Interface down1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe1.getInterfaces(), SPTemplateConstants.DOWN1_INTERFACE_LOCAL);
+		Interface inter1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe1.getInterfaces(),
+				SPTemplateConstants.INTER1_INTERFACE_LOCAL);
+		Interface down1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe1.getInterfaces(),
+				SPTemplateConstants.DOWN1_INTERFACE_LOCAL);
 		Interface up1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe1.getInterfaces(), SPTemplateConstants.UP1_INTERFACE_LOCAL);
 		Interface lo1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe1.getInterfaces(), SPTemplateConstants.LO1_INTERFACE);
 
@@ -471,8 +485,10 @@ public class SingleProviderTemplate implements ITemplate {
 		Interface lo2input = (Interface) VCPENetworkModelHelper
 				.getElementByTemplateName(vcpe2input.getInterfaces(), SPTemplateConstants.LO2_INTERFACE);
 
-		Interface inter2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe2.getInterfaces(), SPTemplateConstants.INTER2_INTERFACE_LOCAL);
-		Interface down2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe2.getInterfaces(), SPTemplateConstants.DOWN2_INTERFACE_LOCAL);
+		Interface inter2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe2.getInterfaces(),
+				SPTemplateConstants.INTER2_INTERFACE_LOCAL);
+		Interface down2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe2.getInterfaces(),
+				SPTemplateConstants.DOWN2_INTERFACE_LOCAL);
 		Interface up2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe2.getInterfaces(), SPTemplateConstants.UP2_INTERFACE_LOCAL);
 		Interface lo2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(vcpe2.getInterfaces(), SPTemplateConstants.LO2_INTERFACE);
 
@@ -494,8 +510,10 @@ public class SingleProviderTemplate implements ITemplate {
 					lo2input.getPort());
 
 		// BOD
-		Interface client1input = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel, SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN);
-		Interface client2input = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel, SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN);
+		Interface client1input = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+				SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN);
+		Interface client2input = (Interface) VCPENetworkModelHelper.getElementByTemplateName(inputModel,
+				SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN);
 
 		Interface client1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN);
 		Interface client2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN);
@@ -584,9 +602,12 @@ public class SingleProviderTemplate implements ITemplate {
 
 		// put up logical interfaces into core router
 		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.CORE_PHY_ROUTER);
-		core.getInterfaces().add((Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.UP1_INTERFACE_PEER));
-		core.getInterfaces().add((Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.UP2_INTERFACE_PEER));
-		core.getInterfaces().add((Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.CORE_LO_INTERFACE));
+		core.getInterfaces().add(
+				(Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.UP1_INTERFACE_PEER));
+		core.getInterfaces().add(
+				(Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.UP2_INTERFACE_PEER));
+		core.getInterfaces().add(
+				(Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.CORE_LO_INTERFACE));
 
 		// put bod logical interfaces into bod
 		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.AUTOBAHN);
@@ -605,7 +626,8 @@ public class SingleProviderTemplate implements ITemplate {
 
 		// Assign logical routers to physical ones
 		Router phyRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.CPE1_PHY_ROUTER);
-		LogicalRouter logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.VCPE1_ROUTER);
+		LogicalRouter logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure,
+				SPTemplateConstants.VCPE1_ROUTER);
 		logRouter.setPhysicalRouter(phyRouter);
 
 		phyRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, SPTemplateConstants.CPE2_PHY_ROUTER);
@@ -720,24 +742,6 @@ public class SingleProviderTemplate implements ITemplate {
 		bgp.setBgpConfigForBackup(factory2.createRouterWithBGP());
 
 		return bgp;
-	}
-
-	/**
-	 * @param id
-	 * @param templateName
-	 * @param type
-	 * @param source
-	 * @param sink
-	 * @return
-	 */
-	private Link getLink(String id, String templateName, String type, Interface source, Interface sink) {
-		Link link = new Link();
-		link.setId(id);
-		link.setTemplateName(templateName);
-		link.setType(type);
-		link.setSource(source);
-		link.setSink(sink);
-		return link;
 	}
 
 	private void checkPhysicalAvailability(List<VCPENetworkElement> toBeChecked, VCPEManagerModel managerModel) throws VCPENetworkManagerException {
