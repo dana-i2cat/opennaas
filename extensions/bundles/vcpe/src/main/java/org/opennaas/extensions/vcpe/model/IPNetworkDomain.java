@@ -1,31 +1,6 @@
 package org.opennaas.extensions.vcpe.model;
 
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlSeeAlso;
-
-@XmlSeeAlso({ IPNetworkDomain.class })
-public class Domain extends VCPENetworkElement {
-
-	@XmlIDREF
-	protected List<Interface>	interfaces;
-
-	public List<Interface> getInterfaces() {
-		return interfaces;
-	}
-
-	public void setInterfaces(List<Interface> interfaces) {
-		this.interfaces = interfaces;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((interfaces == null) ? 0 : interfaces.hashCode());
-		return result;
-	}
+public class IPNetworkDomain extends Domain {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -35,7 +10,7 @@ public class Domain extends VCPENetworkElement {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Domain other = (Domain) obj;
+		IPNetworkDomain other = (IPNetworkDomain) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;

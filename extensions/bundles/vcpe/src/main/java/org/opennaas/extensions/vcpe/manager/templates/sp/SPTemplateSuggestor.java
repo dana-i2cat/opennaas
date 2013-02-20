@@ -16,14 +16,13 @@ import org.opennaas.extensions.vcpe.model.LogicalRouter;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat Foundation)
  */
-public class VCPETemplateSuggestor {
+public class SPTemplateSuggestor {
 
 	private static final String			PROPERTIES_PATH		= "/templates/template.properties";
 
@@ -42,54 +41,54 @@ public class VCPETemplateSuggestor {
 	static {
 
 		// Physical elements
-		propertiesNameMap.put(VCPETemplate.CORE_PHY_ROUTER, "vcpenetwork.routercore");
-		propertiesNameMap.put(VCPETemplate.CORE_PHY_INTERFACE_MASTER, "vcpenetwork.routercore.interface.master");
-		propertiesNameMap.put(VCPETemplate.CORE_PHY_INTERFACE_BKP, "vcpenetwork.routercore.interface.bkp");
-		propertiesNameMap.put(VCPETemplate.CORE_PHY_LO_INTERFACE, "vcpenetwork.routercore.interface.lo");
+		propertiesNameMap.put(SPTemplateConstants.CORE_PHY_ROUTER, "vcpenetwork.routercore");
+		propertiesNameMap.put(SPTemplateConstants.CORE_PHY_INTERFACE_MASTER, "vcpenetwork.routercore.interface.master");
+		propertiesNameMap.put(SPTemplateConstants.CORE_PHY_INTERFACE_BKP, "vcpenetwork.routercore.interface.bkp");
+		propertiesNameMap.put(SPTemplateConstants.CORE_PHY_LO_INTERFACE, "vcpenetwork.routercore.interface.lo");
 
-		propertiesNameMap.put(VCPETemplate.CPE1_PHY_ROUTER, "vcpenetwork.router1");
-		propertiesNameMap.put(VCPETemplate.INTER1_PHY_INTERFACE_LOCAL, "vcpenetwork.router1.interface.inter");
-		propertiesNameMap.put(VCPETemplate.DOWN1_PHY_INTERFACE_LOCAL, "vcpenetwork.router1.interface.down");
-		propertiesNameMap.put(VCPETemplate.UP1_PHY_INTERFACE_LOCAL, "vcpenetwork.router1.interface.up");
-		propertiesNameMap.put(VCPETemplate.LO1_PHY_INTERFACE, "vcpenetwork.router1.interface.lo");
+		propertiesNameMap.put(SPTemplateConstants.CPE1_PHY_ROUTER, "vcpenetwork.router1");
+		propertiesNameMap.put(SPTemplateConstants.INTER1_PHY_INTERFACE_LOCAL, "vcpenetwork.router1.interface.inter");
+		propertiesNameMap.put(SPTemplateConstants.DOWN1_PHY_INTERFACE_LOCAL, "vcpenetwork.router1.interface.down");
+		propertiesNameMap.put(SPTemplateConstants.UP1_PHY_INTERFACE_LOCAL, "vcpenetwork.router1.interface.up");
+		propertiesNameMap.put(SPTemplateConstants.LO1_PHY_INTERFACE, "vcpenetwork.router1.interface.lo");
 
-		propertiesNameMap.put(VCPETemplate.CPE2_PHY_ROUTER, "vcpenetwork.router2");
-		propertiesNameMap.put(VCPETemplate.INTER2_PHY_INTERFACE_LOCAL, "vcpenetwork.router2.interface.inter");
-		propertiesNameMap.put(VCPETemplate.DOWN2_PHY_INTERFACE_LOCAL, "vcpenetwork.router2.interface.down");
-		propertiesNameMap.put(VCPETemplate.UP2_PHY_INTERFACE_LOCAL, "vcpenetwork.router2.interface.up");
-		propertiesNameMap.put(VCPETemplate.LO2_PHY_INTERFACE, "vcpenetwork.router2.interface.lo");
+		propertiesNameMap.put(SPTemplateConstants.CPE2_PHY_ROUTER, "vcpenetwork.router2");
+		propertiesNameMap.put(SPTemplateConstants.INTER2_PHY_INTERFACE_LOCAL, "vcpenetwork.router2.interface.inter");
+		propertiesNameMap.put(SPTemplateConstants.DOWN2_PHY_INTERFACE_LOCAL, "vcpenetwork.router2.interface.down");
+		propertiesNameMap.put(SPTemplateConstants.UP2_PHY_INTERFACE_LOCAL, "vcpenetwork.router2.interface.up");
+		propertiesNameMap.put(SPTemplateConstants.LO2_PHY_INTERFACE, "vcpenetwork.router2.interface.lo");
 
-		propertiesNameMap.put(VCPETemplate.AUTOBAHN, "vcpenetwork.bod");
-		propertiesNameMap.put(VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router1.interface.inter.other");
-		propertiesNameMap.put(VCPETemplate.DOWN1_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router1.interface.down.other");
-		propertiesNameMap.put(VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router2.interface.inter.other");
-		propertiesNameMap.put(VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router2.interface.down.other");
-		propertiesNameMap.put(VCPETemplate.CLIENT1_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router1.interface.client");
-		propertiesNameMap.put(VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router2.interface.client");
+		propertiesNameMap.put(SPTemplateConstants.AUTOBAHN, "vcpenetwork.bod");
+		propertiesNameMap.put(SPTemplateConstants.INTER1_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router1.interface.inter.other");
+		propertiesNameMap.put(SPTemplateConstants.DOWN1_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router1.interface.down.other");
+		propertiesNameMap.put(SPTemplateConstants.INTER2_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router2.interface.inter.other");
+		propertiesNameMap.put(SPTemplateConstants.DOWN2_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router2.interface.down.other");
+		propertiesNameMap.put(SPTemplateConstants.CLIENT1_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router1.interface.client");
+		propertiesNameMap.put(SPTemplateConstants.CLIENT2_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router2.interface.client");
 
 		// Logical elements
-		propertiesNameMap.put(VCPETemplate.UP1_INTERFACE_PEER, "vcpenetwork.logicalrouter1.interface.up.other"); // matching CORE_PHY_INTERFACE_MASTER
-		propertiesNameMap.put(VCPETemplate.UP2_INTERFACE_PEER, "vcpenetwork.logicalrouter2.interface.up.other"); // matching CORE_PHY_INTERFACE_BKP
-		propertiesNameMap.put(VCPETemplate.CORE_LO_INTERFACE, "vcpenetwork.routercore.interface.lo");
+		propertiesNameMap.put(SPTemplateConstants.UP1_INTERFACE_PEER, "vcpenetwork.logicalrouter1.interface.up.other"); // matching CORE_PHY_INTERFACE_MASTER
+		propertiesNameMap.put(SPTemplateConstants.UP2_INTERFACE_PEER, "vcpenetwork.logicalrouter2.interface.up.other"); // matching CORE_PHY_INTERFACE_BKP
+		propertiesNameMap.put(SPTemplateConstants.CORE_LO_INTERFACE, "vcpenetwork.routercore.interface.lo");
 
-		propertiesNameMap.put(VCPETemplate.VCPE1_ROUTER, "vcpenetwork.logicalrouter1");
-		propertiesNameMap.put(VCPETemplate.INTER1_INTERFACE_LOCAL, "vcpenetwork.logicalrouter1.interface.inter");
-		propertiesNameMap.put(VCPETemplate.DOWN1_INTERFACE_LOCAL, "vcpenetwork.logicalrouter1.interface.down");
-		propertiesNameMap.put(VCPETemplate.UP1_INTERFACE_LOCAL, "vcpenetwork.logicalrouter1.interface.up");
-		propertiesNameMap.put(VCPETemplate.LO1_INTERFACE, "vcpenetwork.logicalrouter1.interface.lo");
+		propertiesNameMap.put(SPTemplateConstants.VCPE1_ROUTER, "vcpenetwork.logicalrouter1");
+		propertiesNameMap.put(SPTemplateConstants.INTER1_INTERFACE_LOCAL, "vcpenetwork.logicalrouter1.interface.inter");
+		propertiesNameMap.put(SPTemplateConstants.DOWN1_INTERFACE_LOCAL, "vcpenetwork.logicalrouter1.interface.down");
+		propertiesNameMap.put(SPTemplateConstants.UP1_INTERFACE_LOCAL, "vcpenetwork.logicalrouter1.interface.up");
+		propertiesNameMap.put(SPTemplateConstants.LO1_INTERFACE, "vcpenetwork.logicalrouter1.interface.lo");
 
-		propertiesNameMap.put(VCPETemplate.VCPE2_ROUTER, "vcpenetwork.logicalrouter2");
-		propertiesNameMap.put(VCPETemplate.INTER2_INTERFACE_LOCAL, "vcpenetwork.logicalrouter2.interface.inter");
-		propertiesNameMap.put(VCPETemplate.DOWN2_INTERFACE_LOCAL, "vcpenetwork.logicalrouter2.interface.down");
-		propertiesNameMap.put(VCPETemplate.UP2_INTERFACE_LOCAL, "vcpenetwork.logicalrouter2.interface.up");
-		propertiesNameMap.put(VCPETemplate.LO2_INTERFACE, "vcpenetwork.logicalrouter2.interface.lo");
+		propertiesNameMap.put(SPTemplateConstants.VCPE2_ROUTER, "vcpenetwork.logicalrouter2");
+		propertiesNameMap.put(SPTemplateConstants.INTER2_INTERFACE_LOCAL, "vcpenetwork.logicalrouter2.interface.inter");
+		propertiesNameMap.put(SPTemplateConstants.DOWN2_INTERFACE_LOCAL, "vcpenetwork.logicalrouter2.interface.down");
+		propertiesNameMap.put(SPTemplateConstants.UP2_INTERFACE_LOCAL, "vcpenetwork.logicalrouter2.interface.up");
+		propertiesNameMap.put(SPTemplateConstants.LO2_INTERFACE, "vcpenetwork.logicalrouter2.interface.lo");
 
-		propertiesNameMap.put(VCPETemplate.INTER1_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter1.interface.inter.other");
-		propertiesNameMap.put(VCPETemplate.DOWN1_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter1.interface.down.other");
-		propertiesNameMap.put(VCPETemplate.INTER2_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter2.interface.inter.other");
-		propertiesNameMap.put(VCPETemplate.DOWN2_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter2.interface.down.other");
-		propertiesNameMap.put(VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter1.interface.client");
-		propertiesNameMap.put(VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter2.interface.client");
+		propertiesNameMap.put(SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter1.interface.inter.other");
+		propertiesNameMap.put(SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter1.interface.down.other");
+		propertiesNameMap.put(SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter2.interface.inter.other");
+		propertiesNameMap.put(SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter2.interface.down.other");
+		propertiesNameMap.put(SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter1.interface.client");
+		propertiesNameMap.put(SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN, "vcpenetwork.logicalrouter2.interface.client");
 
 		propertiesNameMap.put("VRRP", "vcpenetwork.vrrp");
 		propertiesNameMap.put("BGP", "vcpenetwork.bgp");
@@ -100,7 +99,7 @@ public class VCPETemplateSuggestor {
 	 * @throws VCPENetworkManagerException
 	 * 
 	 */
-	public VCPETemplateSuggestor() throws VCPENetworkManagerException {
+	public SPTemplateSuggestor() throws VCPENetworkManagerException {
 		try {
 			props = new Properties();
 			props.load(this.getClass().getResourceAsStream(PROPERTIES_PATH));
@@ -143,29 +142,29 @@ public class VCPETemplateSuggestor {
 
 	private VCPENetworkModel mapPhysicalElementsFromProperties(VCPENetworkModel model) {
 
-		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_ROUTER);
-		core.setName(props.getProperty(propertiesNameMap.get(VCPETemplate.CORE_PHY_ROUTER) + ".name").trim());
+		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CORE_PHY_ROUTER);
+		core.setName(props.getProperty(propertiesNameMap.get(SPTemplateConstants.CORE_PHY_ROUTER) + ".name").trim());
 		for (Interface iface : core.getInterfaces()) {
 			updatePhysicalInterfaceNameFromProperties(iface);
 		}
 
 		// Router1
-		Router r1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
-		r1.setName(props.getProperty(propertiesNameMap.get(VCPETemplate.CPE1_PHY_ROUTER) + ".name").trim());
+		Router r1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE1_PHY_ROUTER);
+		r1.setName(props.getProperty(propertiesNameMap.get(SPTemplateConstants.CPE1_PHY_ROUTER) + ".name").trim());
 		for (Interface iface : r1.getInterfaces()) {
 			updatePhysicalInterfaceNameFromProperties(iface);
 		}
 
 		// Router2
-		Router r2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
-		r2.setName(props.getProperty(propertiesNameMap.get(VCPETemplate.CPE2_PHY_ROUTER) + ".name").trim());
+		Router r2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE2_PHY_ROUTER);
+		r2.setName(props.getProperty(propertiesNameMap.get(SPTemplateConstants.CPE2_PHY_ROUTER) + ".name").trim());
 		for (Interface iface : r2.getInterfaces()) {
 			updatePhysicalInterfaceNameFromProperties(iface);
 		}
 
 		// BoD
-		Domain autobahn = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
-		autobahn.setName(props.getProperty(propertiesNameMap.get(VCPETemplate.AUTOBAHN) + ".name").trim());
+		Domain autobahn = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
+		autobahn.setName(props.getProperty(propertiesNameMap.get(SPTemplateConstants.AUTOBAHN) + ".name").trim());
 		for (Interface iface : autobahn.getInterfaces()) {
 			updatePhysicalInterfaceNameFromProperties(iface);
 		}
@@ -176,27 +175,27 @@ public class VCPETemplateSuggestor {
 	private VCPENetworkModel mapLogicalElementsFromProperties(VCPENetworkModel model) {
 
 		// Logical Router 1
-		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		vcpe1.setName(props.getProperty(propertiesNameMap.get(VCPETemplate.VCPE1_ROUTER) + ".name").trim());
+		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		vcpe1.setName(props.getProperty(propertiesNameMap.get(SPTemplateConstants.VCPE1_ROUTER) + ".name").trim());
 		for (Interface iface : vcpe1.getInterfaces()) {
 			updateInterfaceFromProperties(iface);
 		}
 
 		// Logical Router 2
-		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
-		vcpe2.setName(props.getProperty(propertiesNameMap.get(VCPETemplate.VCPE2_ROUTER) + ".name").trim());
+		Router vcpe2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
+		vcpe2.setName(props.getProperty(propertiesNameMap.get(SPTemplateConstants.VCPE2_ROUTER) + ".name").trim());
 		for (Interface iface : vcpe2.getInterfaces()) {
 			updateInterfaceFromProperties(iface);
 		}
 
 		// BoD
 		List<Interface> bodInterfaces = new ArrayList<Interface>();
-		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN));
-		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN));
-		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN));
-		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN));
-		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN));
-		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN));
+		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT1_INTERFACE_AUTOBAHN));
+		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_INTERFACE_AUTOBAHN));
+		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN));
+		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN));
+		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN));
+		bodInterfaces.add((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN));
 		for (Interface iface : bodInterfaces) {
 			// these interfaces have no ip address,
 			// updateInterfaceFromProperties implementation will set it to null, when ipaddress property is not defined
@@ -204,13 +203,13 @@ public class VCPETemplateSuggestor {
 		}
 
 		// Noc network
-		Interface up1other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER);
+		Interface up1other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_INTERFACE_PEER);
 		updateInterfaceFromProperties(up1other);
 
-		Interface up2other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER);
+		Interface up2other = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_INTERFACE_PEER);
 		updateInterfaceFromProperties(up2other);
 
-		Interface lo = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_LO_INTERFACE);
+		Interface lo = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CORE_LO_INTERFACE);
 		updateInterfaceFromProperties(lo);
 
 		// VRRP
@@ -231,6 +230,7 @@ public class VCPETemplateSuggestor {
 
 		// VCPE
 		model.setClientIpRange(props.getProperty("vcpenetwork.client.iprange").trim());
+		model.setNocIpRange(props.getProperty("vcpenetwork.noc.iprange").trim());
 
 		return model;
 	}
@@ -282,38 +282,38 @@ public class VCPETemplateSuggestor {
 		Map<String, List<Long>> suggestedVLANS = new HashMap<String, List<Long>>();
 
 		// Logical Router 1
-		LogicalRouter vcpe1 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		LogicalRouter vcpe1 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
 		for (Interface iface : vcpe1.getInterfaces()) {
-			if (!iface.getTemplateName().equals(VCPETemplate.LO1_INTERFACE))
+			if (!iface.getTemplateName().equals(SPTemplateConstants.LO1_INTERFACE))
 				iface.setVlan(suggestVLAN(vcpe1.getPhysicalRouter(), iface, MIN_VLAN, MAX_VLAN, suggestedVLANS));
 		}
 
 		// Logical Router 2
-		LogicalRouter vcpe2 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		LogicalRouter vcpe2 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 		for (Interface iface : vcpe2.getInterfaces()) {
-			if (!iface.getTemplateName().equals(VCPETemplate.LO2_INTERFACE))
+			if (!iface.getTemplateName().equals(SPTemplateConstants.LO2_INTERFACE))
 				iface.setVlan(suggestVLAN(vcpe2.getPhysicalRouter(), iface, MIN_VLAN, MAX_VLAN, suggestedVLANS));
 		}
 
 		// BoD
-		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN),
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_LINK_LOCAL), suggestedVLANS);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN),
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_LINK_LOCAL), suggestedVLANS);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN),
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_LINK_LOCAL), suggestedVLANS);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN),
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_LINK_LOCAL), suggestedVLANS);
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
+		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_LINK_LOCAL), suggestedVLANS);
+		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_LINK_LOCAL), suggestedVLANS);
+		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_LOCAL), suggestedVLANS);
+		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_LOCAL), suggestedVLANS);
 		// Should not suggest vlan for client interfaces.
 		// Normally each client will have an assigned vlan (or set of vlans) and the NOC should select between the assigned ones.
 
 		// NOC network
-		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_ROUTER);
-		updateIfaceVLANFromLink(core, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER),
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_LINK), suggestedVLANS);
-		updateIfaceVLANFromLink(core, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER),
-				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_LINK), suggestedVLANS);
+		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CORE_PHY_ROUTER);
+		updateIfaceVLANFromLink(core, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_INTERFACE_PEER),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_LINK), suggestedVLANS);
+		updateIfaceVLANFromLink(core, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_INTERFACE_PEER),
+				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_LINK), suggestedVLANS);
 
 		return model;
 	}
@@ -330,9 +330,9 @@ public class VCPETemplateSuggestor {
 		Map<String, List<Integer>> suggestedUnits = new HashMap<String, List<Integer>>();
 
 		// Logical Router 1
-		LogicalRouter vcpe1 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
+		LogicalRouter vcpe1 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
 		for (Interface iface : vcpe1.getInterfaces()) {
-			if (iface.getTemplateName().equals(VCPETemplate.LO1_INTERFACE))
+			if (iface.getTemplateName().equals(SPTemplateConstants.LO1_INTERFACE))
 				iface.setPort(suggestInterfaceUnit(vcpe1.getPhysicalRouter(), iface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN)
 						.intValue(), suggestedUnits));
 			else
@@ -343,9 +343,9 @@ public class VCPETemplateSuggestor {
 		}
 
 		// Logical Router 2
-		LogicalRouter vcpe2 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		LogicalRouter vcpe2 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 		for (Interface iface : vcpe2.getInterfaces()) {
-			if (iface.getTemplateName().equals(VCPETemplate.LO2_INTERFACE))
+			if (iface.getTemplateName().equals(SPTemplateConstants.LO2_INTERFACE))
 				iface.setPort(suggestInterfaceUnit(vcpe2.getPhysicalRouter(), iface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN)
 						.intValue(), suggestedUnits));
 			else
@@ -356,30 +356,30 @@ public class VCPETemplateSuggestor {
 		}
 
 		// BoD
-		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
-		Interface bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
+		Interface bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN);
 		bodIface.setPort(suggestInterfaceUnit(bod, bodIface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN).intValue(), suggestedUnits,
 				Long.valueOf(bodIface.getVlan()).intValue()));
 
-		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
+		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN);
 		bodIface.setPort(suggestInterfaceUnit(bod, bodIface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN).intValue(), suggestedUnits,
 				Long.valueOf(bodIface.getVlan()).intValue()));
 
-		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
+		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN);
 		bodIface.setPort(suggestInterfaceUnit(bod, bodIface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN).intValue(), suggestedUnits,
 				Long.valueOf(bodIface.getVlan()).intValue()));
 
-		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
+		bodIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN);
 		bodIface.setPort(suggestInterfaceUnit(bod, bodIface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN).intValue(), suggestedUnits,
 				Long.valueOf(bodIface.getVlan()).intValue()));
 
 		// NOC network
-		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CORE_PHY_ROUTER);
-		Interface upIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER);
+		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CORE_PHY_ROUTER);
+		Interface upIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_INTERFACE_PEER);
 		upIface.setPort(suggestInterfaceUnit(core, upIface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN).intValue(), suggestedUnits,
 				Long.valueOf(upIface.getVlan()).intValue()));
 
-		upIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER);
+		upIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_INTERFACE_PEER);
 		upIface.setPort(suggestInterfaceUnit(core, upIface, Long.valueOf(MIN_VLAN).intValue(), Long.valueOf(MAX_VLAN).intValue(), suggestedUnits,
 				Long.valueOf(upIface.getVlan()).intValue()));
 
@@ -496,17 +496,15 @@ public class VCPETemplateSuggestor {
 	/**
 	 * Sets iface vlan according to the other endpoint of given link.
 	 * 
+	 * @param phyElement
 	 * @param iface
 	 * @param link
 	 * @param suggestedVLANS
 	 */
 	private void updateIfaceVLANFromLink(VCPENetworkElement phyElement, Interface iface, Link link, Map<String, List<Long>> suggestedVLANs) {
-		if (link.getSource().equals(iface))
-			iface.setVlan(link.getSink().getVlan());
-		else
-			iface.setVlan(link.getSource().getVlan());
+		long vlan = VCPENetworkModelHelper.updateIfaceVLANFromLink(iface, link);
 
-		markAsSuggestedVlan(phyElement, iface, iface.getVlan(), suggestedVLANs);
+		markAsSuggestedVlan(phyElement, iface, vlan, suggestedVLANs);
 	}
 
 	private boolean isAlreadySuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan, Map<String, List<Long>> suggestedVLANS) {
@@ -568,7 +566,7 @@ public class VCPETemplateSuggestor {
 		// So here, for VRRPGroup, we use vlan tag of the client LAN. That is, vlan of down interfaces
 		// (using master one, as down vlans may differ between master and backup)
 		Integer vrrpGroup = null;
-		long vlanTag = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN1_INTERFACE_LOCAL)).getVlan();
+		long vlanTag = ((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_LOCAL)).getVlan();
 		if (IsFreeChecker.isVRRPGroupFree(model.getId(), String.valueOf(vlanTag))) {
 			vrrpGroup = Long.valueOf(vlanTag).intValue();
 			found = true;

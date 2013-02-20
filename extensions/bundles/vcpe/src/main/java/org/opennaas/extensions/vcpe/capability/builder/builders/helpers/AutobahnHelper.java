@@ -22,12 +22,7 @@ public class AutobahnHelper extends GenericHelper {
 	/**
 	 * Set link capacity to 100 MB/s
 	 */
-	private static final long		CAPACITY	= 100 * 1000000L;
-
-	/**
-	 * Set link endTime to 31/12/2012 12:00h
-	 */
-	private static final DateTime	END_TIME	= new DateTime(2012, 12, 31, 12, 0);
+	private static final long	CAPACITY	= 100 * 1000000L;
 
 	/**
 	 * Create Autobahn Link
@@ -86,12 +81,15 @@ public class AutobahnHelper extends GenericHelper {
 
 		NetworkModel model = (NetworkModel) autobahn.getModel();
 
+		DateTime startDate = DateTime.now();
+		DateTime expirationDate = startDate.plusYears(1);
+
 		RequestConnectionParameters parameters = new RequestConnectionParameters(
 				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(src, model),
 				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(dst, model),
 				CAPACITY,
 				Integer.parseInt(Long.toString(srcVlan)), Integer.parseInt(Long.toString(dstVlan)),
-				DateTime.now(), END_TIME);
+				startDate, expirationDate);
 
 		return parameters;
 	}
