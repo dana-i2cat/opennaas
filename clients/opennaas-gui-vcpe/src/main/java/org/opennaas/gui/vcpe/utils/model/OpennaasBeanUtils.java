@@ -4,7 +4,6 @@
 package org.opennaas.gui.vcpe.utils.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
@@ -12,9 +11,8 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
-import org.opennaas.gui.vcpe.entities.LogicalRouter;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
-import org.opennaas.gui.vcpe.entities.PhysicalRouter;
+import org.opennaas.gui.vcpe.entities.Router;
 import org.opennaas.gui.vcpe.entities.VCPENetwork;
 import org.opennaas.gui.vcpe.entities.VRRP;
 
@@ -57,14 +55,10 @@ public class OpennaasBeanUtils {
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		modelOut.setElements(elements);
 		// Core Router
-		List<String> logicalInterfacesTemplateNames = Arrays.asList(SPTemplateConstants.UP1_INTERFACE_PEER, SPTemplateConstants.UP2_INTERFACE_PEER);
-		org.opennaas.extensions.vcpe.model.Router routerCore = getPhysicalRouterWithSomeLogicalInterfaces(modelIn.getRouterCore(),
-				logicalInterfacesTemplateNames);
+		org.opennaas.extensions.vcpe.model.Router routerCore = getRouterOpennaas(modelIn.getRouterCore());
 		// LogicalRouters
-		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = getLROpennaas(modelIn.getName(), SPTemplateConstants.VCPE1_ROUTER,
-				modelIn.getLogicalRouterMaster());
-		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = getLROpennaas(modelIn.getName(), SPTemplateConstants.VCPE2_ROUTER,
-				modelIn.getLogicalRouterBackup());
+		org.opennaas.extensions.vcpe.model.Router logicalRouterMaster = getRouterOpennaas(modelIn.getLogicalRouterMaster());
+		org.opennaas.extensions.vcpe.model.Router logicalRouterBackup = getRouterOpennaas(modelIn.getLogicalRouterBackup());
 
 		elements.add(routerCore);
 		elements.add(logicalRouterMaster);
@@ -75,60 +69,48 @@ public class OpennaasBeanUtils {
 		elements.addAll(routerCore.getInterfaces());
 		// Add interfaces BoD
 		if (modelIn.getBod() != null) {
-			elements.add(getLogicalInterface(modelIn.getBod().getIfaceClient()));
-			elements.add(getLogicalInterface(modelIn.getBod().getIfaceClientBackup()));
+			elements.add(getInterfaceOpennaas(modelIn.getBod().getIfaceClient()));
+			elements.add(getInterfaceOpennaas(modelIn.getBod().getIfaceClientBackup()));
 		}
 		return modelOut;
 	}
 
 	/**
-	 * Return a OpenNaaS logical router from a GUI logical router
-	 * 
-	 * @param networkName
-	 * @param logicalRouterMaster
-	 * @return LogicalRouter of opennaas model
+	 * @param physicalRouterCore
+	 * @return
 	 */
-	public static org.opennaas.extensions.vcpe.model.Router getLROpennaas(String networkName, String templateName, LogicalRouter lrIn) {
-		org.opennaas.extensions.vcpe.model.Router lrOut = new org.opennaas.extensions.vcpe.model.Router();
-		lrOut.setName(lrIn.getName());
-		lrOut.setTemplateName(templateName);
-		// Interfaces
-		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
-		lrOut.setInterfaces(interfaces);
-		for (int i = 0; i < lrIn.getInterfaces().size(); i++) {
-			interfaces.add(getLogicalInterface(lrIn.getInterfaces().get(i)));
+	public static org.opennaas.extensions.vcpe.model.Router getRouterOpennaas(Router phyRouterIn) {
+		org.opennaas.extensions.vcpe.model.Router phyRouterOut = new org.opennaas.extensions.vcpe.model.Router();
+		if (phyRouterIn != null) {
+			phyRouterOut.setName(phyRouterIn.getName());
+			phyRouterOut.setTemplateName(phyRouterIn.getTemplateName());
+			// Interfaces
+			List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
+			phyRouterOut.setInterfaces(interfaces);
+			for (int i = 0; i < phyRouterIn.getInterfaces().size(); i++) {
+				org.opennaas.extensions.vcpe.model.Interface inter = getInterfaceOpennaas(phyRouterIn.getInterfaces().get(i));
+				interfaces.add(inter);
+			}
 		}
-		return lrOut;
+		return phyRouterOut;
 	}
 
 	/**
-	 * Return a OpenNaaS logical interface from a GUI interface
+	 * Return a OpenNaaS logical interface from a GUI interface<br>
+	 * If is a physical interface -> port = 0 , vlan = 0 and name = physicalInterfaceName
 	 * 
-	 * @param interface1
+	 * @param interface
 	 * @return Interface
 	 */
-	public static org.opennaas.extensions.vcpe.model.Interface getLogicalInterface(Interface inIface) {
+	public static org.opennaas.extensions.vcpe.model.Interface getInterfaceOpennaas(Interface inIface) {
 		org.opennaas.extensions.vcpe.model.Interface outIface = new org.opennaas.extensions.vcpe.model.Interface();
+		// If physical interface name = physicalInterfaceName
 		outIface.setName(inIface.getCompleteName());
 		outIface.setIpAddress(inIface.getIpAddress());
-		outIface.setVlan(inIface.getVlan());
+		outIface.setVlan(inIface.getVlan() != null ? inIface.getVlan() : 0);
 		outIface.setTemplateName(inIface.getTemplateName());
 		outIface.setPhysicalInterfaceName(inIface.getName());
-		outIface.setPort(Integer.parseInt(inIface.getPort()));
-		return outIface;
-	}
-
-	/**
-	 * Return a OpenNaaS physical from a GUI interface
-	 * 
-	 * @param interface1
-	 * @return Interface
-	 */
-	public static org.opennaas.extensions.vcpe.model.Interface getPhysicalInterface(Interface inIface) {
-		org.opennaas.extensions.vcpe.model.Interface outIface = new org.opennaas.extensions.vcpe.model.Interface();
-		outIface.setName(inIface.getName());
-		outIface.setTemplateName(inIface.getTemplateName());
-		outIface.setPhysicalInterfaceName(inIface.getName());
+		outIface.setPort(inIface.getPort() != null ? Integer.parseInt(inIface.getPort()) : 0);
 		return outIface;
 	}
 
@@ -173,14 +155,14 @@ public class OpennaasBeanUtils {
 		VCPENetworkModel modelOut = new VCPENetworkModel();
 		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Routers Master
-		org.opennaas.extensions.vcpe.model.Router physicalRouterMaster = getPhysicalRouter(modelIn.getPhysicalRouterMaster());
+		org.opennaas.extensions.vcpe.model.Router physicalRouterMaster = getRouterOpennaas(modelIn.getPhysicalRouterMaster());
 		physicalRouterMaster.setTemplateName(SPTemplateConstants.CPE1_PHY_ROUTER);
 		// Routers Backup
-		org.opennaas.extensions.vcpe.model.Router physicalRouterBackup = getPhysicalRouter(modelIn.getPhysicalRouterBackup());
-		physicalRouterMaster.setTemplateName(SPTemplateConstants.CPE2_PHY_ROUTER);
+		org.opennaas.extensions.vcpe.model.Router physicalRouterBackup = getRouterOpennaas(modelIn.getPhysicalRouterBackup());
+		physicalRouterBackup.setTemplateName(SPTemplateConstants.CPE2_PHY_ROUTER);
 		// Routers Core
-		org.opennaas.extensions.vcpe.model.Router physicalRouterCore = getPhysicalRouter(modelIn.getPhysicalRouterBackup());
-		physicalRouterMaster.setTemplateName(SPTemplateConstants.CORE_PHY_ROUTER);
+		org.opennaas.extensions.vcpe.model.Router physicalRouterCore = getRouterOpennaas(modelIn.getPhysicalRouterBackup());
+		physicalRouterCore.setTemplateName(SPTemplateConstants.CORE_PHY_ROUTER);
 
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		elements.add(physicalRouterMaster);
@@ -194,48 +176,4 @@ public class OpennaasBeanUtils {
 		return modelOut;
 	}
 
-	/**
-	 * @param physicalRouterCore
-	 * @return
-	 */
-	public static org.opennaas.extensions.vcpe.model.Router getPhysicalRouter(PhysicalRouter phyRouterIn) {
-		org.opennaas.extensions.vcpe.model.Router phyRouterOut = new org.opennaas.extensions.vcpe.model.Router();
-		if (phyRouterIn != null) {
-			phyRouterOut.setName(phyRouterIn.getName());
-			phyRouterOut.setTemplateName(phyRouterIn.getTemplateName());
-			// Interfaces
-			List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
-			phyRouterOut.setInterfaces(interfaces);
-			for (int i = 0; i < phyRouterIn.getInterfaces().size(); i++) {
-				org.opennaas.extensions.vcpe.model.Interface inter = getPhysicalInterface(phyRouterIn.getInterfaces().get(i));
-				interfaces.add(inter);
-			}
-		}
-		return phyRouterOut;
-	}
-
-	/**
-	 * @param physicalRouterCore
-	 * @return
-	 */
-	public static org.opennaas.extensions.vcpe.model.Router getPhysicalRouterWithSomeLogicalInterfaces(PhysicalRouter phyRouterIn,
-			List<String> logicalInterfacesTemplateNames) {
-		org.opennaas.extensions.vcpe.model.Router phyRouterOut = new org.opennaas.extensions.vcpe.model.Router();
-		if (phyRouterIn != null) {
-			phyRouterOut.setName(phyRouterIn.getName());
-			phyRouterOut.setTemplateName(phyRouterIn.getTemplateName());
-			// Interfaces
-			List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
-			phyRouterOut.setInterfaces(interfaces);
-			for (int i = 0; i < phyRouterIn.getInterfaces().size(); i++) {
-				if (logicalInterfacesTemplateNames != null && logicalInterfacesTemplateNames.contains(phyRouterIn.getInterfaces().get(i))) {
-					interfaces.add(getLogicalInterface(phyRouterIn.getInterfaces().get(i)));
-				} else {
-					interfaces.add(getPhysicalInterface(phyRouterIn.getInterfaces().get(i)));
-				}
-
-			}
-		}
-		return phyRouterOut;
-	}
 }
