@@ -433,6 +433,29 @@ public class SingleProviderTemplate implements ITemplate {
 
 		// TODO update ALL elements with data in inputModel (everything may have changed)
 
+		// Core router
+		Router coreinput = (Router) VCPENetworkModelHelper.getElementByTemplateName(inputModel, SPTemplateConstants.CORE_PHY_ROUTER);
+		Router core = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CORE_PHY_ROUTER);
+
+		Interface coremasterinput = (Interface) VCPENetworkModelHelper.getElementByTemplateName(coreinput.getInterfaces(),
+				SPTemplateConstants.UP1_INTERFACE_PEER);
+		Interface coremaster = (Interface) VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(),
+				SPTemplateConstants.UP1_INTERFACE_PEER);
+
+		Interface corebkpinput = (Interface) VCPENetworkModelHelper.getElementByTemplateName(coreinput.getInterfaces(),
+				SPTemplateConstants.UP2_INTERFACE_PEER);
+		Interface corebkp = (Interface) VCPENetworkModelHelper.getElementByTemplateName(core.getInterfaces(),
+				SPTemplateConstants.UP2_INTERFACE_PEER);
+
+		if (coremasterinput != null) {
+			VCPENetworkModelHelper.updateInterface(coremaster, coremasterinput.getName(), coremasterinput.getVlan(), coremasterinput.getIpAddress(),
+					coremasterinput.getPhysicalInterfaceName(), coremasterinput.getPort());
+		}
+		if (corebkpinput != null) {
+			VCPENetworkModelHelper.updateInterface(corebkp, corebkpinput.getName(), corebkpinput.getVlan(), corebkpinput.getIpAddress(),
+					corebkpinput.getPhysicalInterfaceName(), corebkpinput.getPort());
+		}
+
 		// LR1
 		Router vcpe1input = (Router) VCPENetworkModelHelper.getElementByTemplateName(inputModel, SPTemplateConstants.VCPE1_ROUTER);
 		Router vcpe1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
