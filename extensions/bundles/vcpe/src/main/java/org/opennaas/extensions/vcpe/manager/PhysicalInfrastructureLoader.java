@@ -31,7 +31,7 @@ public class PhysicalInfrastructureLoader {
 		return props;
 	}
 
-	private VCPEPhysicalInfrastructure loadPhysicalInfrastuctureFromProperties(Properties props) {
+	public VCPEPhysicalInfrastructure loadPhysicalInfrastuctureFromProperties(Properties props) {
 
 		List<Interface> allIfaces = new ArrayList<Interface>();
 
