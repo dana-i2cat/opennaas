@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
+import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -14,7 +16,7 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class PhysicalInfrastructureLoader {
 
-	private static final String	PROPERTIES_PATH	= "/templates/phyInfrastructure.properties";
+	private static final String	CONFIGURATION_ID	= "org.opennaas.extensions.vcpe.manager.phyinfrastructure";
 
 	public VCPEPhysicalInfrastructure loadPhysicalInfrastructure() throws IOException {
 		Properties props = loadProperties();
@@ -22,8 +24,10 @@ public class PhysicalInfrastructureLoader {
 	}
 
 	private Properties loadProperties() throws IOException {
-		Properties props = new Properties();
-		props.load(this.getClass().getResourceAsStream(PROPERTIES_PATH));
+		Properties props = ConfigurationAdminUtil.getProperties(Activator.getContext(), CONFIGURATION_ID);
+		if (props == null)
+			throw new IOException("Failed to load physicalInfrastructure configuration file " + CONFIGURATION_ID);
+
 		return props;
 	}
 

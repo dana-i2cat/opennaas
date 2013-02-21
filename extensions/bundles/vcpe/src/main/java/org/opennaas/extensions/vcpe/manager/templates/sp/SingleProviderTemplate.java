@@ -32,7 +32,7 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
  */
 public class SingleProviderTemplate implements ITemplate {
 
-	private static final String	BGP_TEMPLATE	= "/templates/bgpModel1.properties";
+	private static final String	BGP_TEMPLATE	= "/templates/sp/bgpModel.properties";
 
 	private String				templateType	= ITemplate.SP_VCPE_TEMPLATE;
 
