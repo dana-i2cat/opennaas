@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page pageEncoding="UTF-8"%>
 <%@ page session="false"%>
-<%@ page import="org.opennaas.extensions.vcpe.model.VCPETemplate;"%>
+<%@ page import="org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -13,8 +13,8 @@
 <spring:message  code="message.error.ip.notavailable" var="msgIPUsed"/>
 <spring:message  code="message.error.vlan.notavailable" var="msgmsgVLANUsed"/>
 
-<c:set var="UP1_INTERFACE_PEER"  value='<%= VCPETemplate.UP1_INTERFACE_PEER %>' />
-<c:set var="UP2_INTERFACE_PEER"  value='<%= VCPETemplate.UP2_INTERFACE_PEER %>' />
+<c:set var="UP1_INTERFACE_PEER"  value='<%= SPTemplateConstants.UP1_INTERFACE_PEER %>' />
+<c:set var="UP2_INTERFACE_PEER"  value='<%= SPTemplateConstants.UP2_INTERFACE_PEER %>' />
 
 <div id="logicalForm" >
 	<form:form modelAttribute="VCPENetwork" action="${action}" method="post">

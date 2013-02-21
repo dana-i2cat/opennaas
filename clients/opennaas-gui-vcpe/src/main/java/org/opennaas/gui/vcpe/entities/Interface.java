@@ -110,10 +110,10 @@ public class Interface {
 	}
 
 	/**
-	 * @return
+	 * @return the name + port
 	 */
 	public String getCompleteName() {
-		return getName() + "." + getPort();
+		return getPort() != null ? getName() + "." + getPort() : getName();
 	}
 
 	/**
