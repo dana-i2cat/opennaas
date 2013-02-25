@@ -16,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Jordi
@@ -36,25 +33,6 @@ public abstract class VCPENetworkController {
 	protected ReloadableResourceBundleMessageSource	messageSource;
 
 	/**
-	 * Redirect to home
-	 * 
-	 * @param model
-	 * @param locale
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/home")
-	public String home(Model model, Locale locale) {
-		LOGGER.debug("home");
-		try {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.list.message.error", null, locale));
-		}
-		return "home";
-	}
-
-	/**
 	 * Redirect to the physical view
 	 * 
 	 * @param templateType
@@ -62,7 +40,6 @@ public abstract class VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/physical")
 	public String getPhysicalForm(@RequestParam("templateType") String templateType, Model model, Locale locale) {
 		LOGGER.debug("home");
 		try {
@@ -73,80 +50,6 @@ public abstract class VCPENetworkController {
 					.getMessage("vcpenetwork.list.message.error", null, locale));
 		}
 		return "physicalForm";
-	}
-
-	/**
-	 * Check if the VLAN is free in the environment
-	 * 
-	 * @param vcpeId
-	 * @param router
-	 * @param vlan
-	 * @param ifaceName
-	 * @param model
-	 * @param locale
-	 * @return true if is free
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isVLANFree")
-	public @ResponseBody
-	String isVLANFree(String vcpeId, String router, String vlan, String ifaceName, Model model, Locale locale) {
-		LOGGER.debug("Check if the VLAN: " + vlan + " is free in the ifaceName: " + ifaceName + ". The vcpeID: " + vcpeId);
-		Boolean isFree = false;
-		try {
-			isFree = vcpeNetworkBO.isVLANFree(vcpeId, router, vlan, ifaceName);
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
-		}
-		return isFree.toString();
-	}
-
-	/**
-	 * Check if the IP is free in the environment
-	 * 
-	 * @param vcpeId
-	 * @param router
-	 * @param ip
-	 * @param model
-	 * @param locale
-	 * @return true if is free
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isIPFree")
-	public @ResponseBody
-	String isIPFree(String vcpeId, String router, String ip, Model model, Locale locale) {
-		LOGGER.debug("Check if the IP: " + ip + " is free. The vcpeID: " + vcpeId);
-		Boolean isFree = false;
-		try {
-			isFree = vcpeNetworkBO.isIPFree(vcpeId, router, ip);
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.check.ip.message.error", null, locale));
-		}
-		return isFree.toString();
-	}
-
-	/**
-	 * Check if the Interface is free in the environment
-	 * 
-	 * @param vcpeId
-	 * @param router
-	 * @param iface
-	 * @param port
-	 * @param model
-	 * @param locale
-	 * @return true if is free
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/isInterfaceFree")
-	public @ResponseBody
-	String isInterfaceFree(String vcpeId, String router, String iface, String port, Model model, Locale locale) {
-		LOGGER.debug("Check if the Interface: " + iface + "." + port + " is free. The vcpeID: " + vcpeId);
-		Boolean isFree = false;
-		try {
-			isFree = vcpeNetworkBO.isInterfaceFree(vcpeId, router, iface, port);
-		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.check.interface.message.error", null, locale));
-		}
-		return isFree.toString();
 	}
 
 	/**
@@ -169,19 +72,6 @@ public abstract class VCPENetworkController {
 			model.addAttribute("action", new String("create"));
 		}
 		return "logicalForm";
-	}
-
-	/**
-	 * Handle the Exception and subclasses
-	 * 
-	 * @param ex
-	 * @param request
-	 * @return
-	 */
-	@ExceptionHandler(Exception.class)
-	public String exception(Exception ex, HttpServletRequest request) {
-		request.setAttribute("exception", ex.getMessage());
-		return "exception";
 	}
 
 	/**
@@ -293,4 +183,16 @@ public abstract class VCPENetworkController {
 		return "home";
 	}
 
+	/**
+	 * Handle the Exception and subclasses
+	 * 
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(Exception.class)
+	public String exception(Exception ex, HttpServletRequest request) {
+		request.setAttribute("exception", ex.getMessage());
+		return "exception";
+	}
 }
