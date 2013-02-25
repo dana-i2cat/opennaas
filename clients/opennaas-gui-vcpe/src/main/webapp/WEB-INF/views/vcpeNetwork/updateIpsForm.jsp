@@ -13,7 +13,7 @@
 
 
 <div id="updateIPs">
-	<form:form modelAttribute="VCPENetwork" action="updateIps" method="post">
+	<form:form modelAttribute="logicalInfrastructure" action="updateIps" method="post">
 		<form:hidden path="id" />
 		<form:hidden path="name" />
 		<form:hidden path="templateType" />
@@ -22,10 +22,12 @@
 		<form:hidden path="logicalRouterMaster.templateName"/>
 		<form:hidden path="logicalRouterBackup.name"/>
 		<form:hidden path="logicalRouterBackup.templateName"/>
+		<form:hidden path="routerCore.name"/>
+		<form:hidden path="routerCore.templateName"/>
 	
 		<div id="vcpe">
 			<div>				
-				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}" varStatus="vs" var="item">	
+				<c:forEach items="${logicalInfrastructure.logicalRouterMaster.interfaces}" varStatus="vs" var="item">	
 					<c:choose>
 						<c:when test="${item.type == 'Up'}">																						
 							<form:hidden path="logicalRouterMaster.interfaces[${vs.index}].templateName" />
@@ -37,10 +39,19 @@
 						</c:when>
 					</c:choose>		
 				</c:forEach>
+				<c:forEach items="${logicalInfrastructure.routerCore.interfaces}" varStatus="vs" var="item">																											
+					<form:hidden path="routerCore.interfaces[${vs.index}].templateName" />
+					<form:hidden path="routerCore.interfaces[${vs.index}].name" />
+					<form:hidden path="routerCore.interfaces[${vs.index}].type" />
+					<form:hidden path="routerCore.interfaces[${vs.index}].port" />
+					<form:hidden path="routerCore.interfaces[${vs.index}].vlan" />																					
+					<form:hidden path="routerCore.interfaces[${vs.index}].ipAddress" />																
+				</c:forEach>
+			
 			</div>
 			
 			<div>				
-				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
+				<c:forEach items="${logicalInfrastructure.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
 						<c:when test="${item.type == 'Up'}">																						
 							<form:hidden path="logicalRouterBackup.interfaces[${vs.index}].templateName" />
@@ -62,7 +73,7 @@
 							
 				
 			<div id="client_master_box" class="ui-widget-content">				
-				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}"	varStatus="vs" var="item">	
+				<c:forEach items="${logicalInfrastructure.logicalRouterMaster.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
 						<c:when test="${item.type == 'Down'}">
 							<div class="input">
@@ -85,7 +96,7 @@
 			</div>	
 			
 			<div id="inter_master_box" class="ui-widget-content">				
-				<c:forEach items="${VCPENetwork.logicalRouterMaster.interfaces}"	varStatus="vs" var="item">	
+				<c:forEach items="${logicalInfrastructure.logicalRouterMaster.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
 						<c:when test="${item.type == 'Inter'}">
 							<div class="input">
@@ -99,7 +110,7 @@
 								<form:label for="logicalRouterMaster.interfaces[${vs.index}].ipAddress" path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" cssErrorClass="error_field">
 									<spring:message code="interface.ipAddress" />
 								</form:label>
-								<form:input path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', '${VCPENetwork.logicalRouterMaster.physicalRouter.name}', this.value, '${ipUsed}');" />
+								<form:input path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${logicalInfrastructure.id}', '${logicalInfrastructure.logicalRouterMaster.physicalRouter.name}', this.value, '${ipUsed}');" />
 								<form:errors path="logicalRouterMaster.interfaces[${vs.index}].ipAddress" size="13" />														
 							</div>
 						</c:when>
@@ -108,7 +119,7 @@
 			</div>	
 				
 			<div id="inter_backup_box" class="ui-widget-content">				
-				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
+				<c:forEach items="${logicalInfrastructure.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
 						<c:when test="${item.type == 'Inter'}">
 							<div class="input">
@@ -122,7 +133,7 @@
 								<form:label for="logicalRouterBackup.interfaces[${vs.index}].ipAddress" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error_field">
 									<spring:message code="interface.ipAddress" />
 								</form:label>
-								<form:input path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', '${VCPENetwork.logicalRouterBackup.physicalRouter.name}', this.value, '${ipUsed}');" />
+								<form:input path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${logicalInfrastructure.id}', '${logicalInfrastructure.logicalRouterBackup.physicalRouter.name}', this.value, '${ipUsed}');" />
 								<form:errors path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" />														
 							</div>
 						</c:when>
@@ -131,7 +142,7 @@
 			</div>
 			
 			<div id="client_backup_box" class="ui-widget-content">				
-				<c:forEach items="${VCPENetwork.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
+				<c:forEach items="${logicalInfrastructure.logicalRouterBackup.interfaces}"	varStatus="vs" var="item">	
 					<c:choose>
 						<c:when test="${item.type == 'Down'}">
 							<div class="input">
@@ -145,7 +156,7 @@
 								<form:label for="logicalRouterBackup.interfaces[${vs.index}].ipAddress" path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" cssErrorClass="error_field">
 									<spring:message code="interface.ipAddress" />
 								</form:label>
-								<form:input path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${VCPENetwork.id}', '${VCPENetwork.logicalRouterBackup.physicalRouter.name}', this.value, '${ipUsed}');" />
+								<form:input path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" onchange="isIPFree('${logicalInfrastructure.id}', '${logicalInfrastructure.logicalRouterBackup.physicalRouter.name}', this.value, '${ipUsed}');" />
 								<form:errors path="logicalRouterBackup.interfaces[${vs.index}].ipAddress" size="13" />														
 							</div>
 						</c:when>
