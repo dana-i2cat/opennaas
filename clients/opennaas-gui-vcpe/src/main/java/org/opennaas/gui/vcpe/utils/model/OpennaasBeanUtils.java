@@ -12,7 +12,7 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalInfrastructure;
-import org.opennaas.gui.vcpe.entities.MultipleProviderPhysical;
+import org.opennaas.gui.vcpe.entities.MultipleProviderLogical;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.Router;
 import org.opennaas.gui.vcpe.entities.SingleProviderLogical;
@@ -38,7 +38,7 @@ public class OpennaasBeanUtils {
 		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
 			modelOut = getVCPENetworkFromSP((SingleProviderLogical) modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
-			modelOut = getVCPENetworkFromMP((MultipleProviderPhysical) modelIn);
+			modelOut = getVCPENetworkFromMP((MultipleProviderLogical) modelIn);
 		}
 		return modelOut;
 	}
@@ -103,7 +103,7 @@ public class OpennaasBeanUtils {
 	 * @param vcpeNetwork
 	 * @return CreateVCPENetRequest
 	 */
-	public static VCPENetworkModel getVCPENetworkFromMP(MultipleProviderPhysical modelIn) {
+	public static VCPENetworkModel getVCPENetworkFromMP(MultipleProviderLogical modelIn) {
 		// TODO Auto-generated method stub
 
 		return null;
