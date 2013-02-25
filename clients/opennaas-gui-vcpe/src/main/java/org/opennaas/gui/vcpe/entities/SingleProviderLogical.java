@@ -8,15 +8,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.NotBlank;
+public class SingleProviderLogical extends LogicalInfrastructure {
 
-public class VCPENetwork {
-
-	private String			id;
-	@NotBlank(message = "{message.error.field.mandatory}")
-	private String			name;
-	@NotBlank(message = "{message.error.field.mandatory}")
-	private String			templateType;
 	@Valid
 	private PhysicalRouter	routerCore;
 	@Valid
@@ -33,55 +26,12 @@ public class VCPENetwork {
 	private BoD				bod;
 	@Valid
 	private VRRP			vrrp;
-
 	private List<Link>		links;
 
 	/**
 	 * Default constructor
 	 */
-	public VCPENetwork() {
-	}
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the templateType
-	 */
-	public String getTemplateType() {
-		return templateType;
-	}
-
-	/**
-	 * @param templateType the templateType to set
-	 */
-	public void setTemplateType(String templateType) {
-		this.templateType = templateType;
+	public SingleProviderLogical() {
 	}
 
 	/**
