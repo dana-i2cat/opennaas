@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
+import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.model.Domain;
@@ -24,17 +26,17 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
  */
 public class SPTemplateSuggestor {
 
-	private static final String			PROPERTIES_PATH		= "/templates/template.properties";
+	private static final String			SUGGESTOR_CONFIGURATION_ID	= "org.opennaas.extensions.vcpe.manager.templates.sp.suggestor";
 
 	// TODO read from config file
 	// TODO It may happen that each link has different vlan ranges.
-	private static final long			MIN_VLAN			= 1L;
-	private static final long			MAX_VLAN			= 4094L;
+	private static final long			MIN_VLAN					= 1L;
+	private static final long			MAX_VLAN					= 4094L;
 
 	/**
 	 * Maps TemplateName to properties name.
 	 */
-	private static Map<String, String>	propertiesNameMap	= new HashMap<String, String>();
+	private static Map<String, String>	propertiesNameMap			= new HashMap<String, String>();
 
 	private Properties					props;
 
@@ -67,8 +69,10 @@ public class SPTemplateSuggestor {
 		propertiesNameMap.put(SPTemplateConstants.CLIENT2_PHY_INTERFACE_AUTOBAHN, "vcpenetwork.router2.interface.client");
 
 		// Logical elements
-		propertiesNameMap.put(SPTemplateConstants.UP1_INTERFACE_PEER, "vcpenetwork.logicalrouter1.interface.up.other"); // matching CORE_PHY_INTERFACE_MASTER
-		propertiesNameMap.put(SPTemplateConstants.UP2_INTERFACE_PEER, "vcpenetwork.logicalrouter2.interface.up.other"); // matching CORE_PHY_INTERFACE_BKP
+		propertiesNameMap.put(SPTemplateConstants.UP1_INTERFACE_PEER, "vcpenetwork.logicalrouter1.interface.up.other"); // matching
+																														// CORE_PHY_INTERFACE_MASTER
+		propertiesNameMap.put(SPTemplateConstants.UP2_INTERFACE_PEER, "vcpenetwork.logicalrouter2.interface.up.other"); // matching
+																														// CORE_PHY_INTERFACE_BKP
 		propertiesNameMap.put(SPTemplateConstants.CORE_LO_INTERFACE, "vcpenetwork.routercore.interface.lo");
 
 		propertiesNameMap.put(SPTemplateConstants.VCPE1_ROUTER, "vcpenetwork.logicalrouter1");
@@ -101,12 +105,13 @@ public class SPTemplateSuggestor {
 	 */
 	public SPTemplateSuggestor() throws VCPENetworkManagerException {
 		try {
-			props = new Properties();
-			props.load(this.getClass().getResourceAsStream(PROPERTIES_PATH));
-
+			props = ConfigurationAdminUtil.getProperties(Activator.getContext(), SUGGESTOR_CONFIGURATION_ID);
 		} catch (IOException e) {
 			throw new VCPENetworkManagerException("Failed to initialize template suggestor." + e.getMessage());
 		}
+		if (props == null)
+			throw new VCPENetworkManagerException("Failed to initialize template suggestor." + "Unable to obtain configuration " +
+					SUGGESTOR_CONFIGURATION_ID);
 	}
 
 	/**
@@ -297,13 +302,17 @@ public class SPTemplateSuggestor {
 
 		// BoD
 		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN),
+		updateIfaceVLANFromLink(bod,
+				(Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_INTERFACE_AUTOBAHN),
 				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_LINK_LOCAL), suggestedVLANS);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN),
+		updateIfaceVLANFromLink(bod,
+				(Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_INTERFACE_AUTOBAHN),
 				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_LINK_LOCAL), suggestedVLANS);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN),
+		updateIfaceVLANFromLink(bod,
+				(Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_INTERFACE_AUTOBAHN),
 				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN1_LINK_LOCAL), suggestedVLANS);
-		updateIfaceVLANFromLink(bod, (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN),
+		updateIfaceVLANFromLink(bod,
+				(Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_INTERFACE_AUTOBAHN),
 				(Link) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_LINK_LOCAL), suggestedVLANS);
 		// Should not suggest vlan for client interfaces.
 		// Normally each client will have an assigned vlan (or set of vlans) and the NOC should select between the assigned ones.
