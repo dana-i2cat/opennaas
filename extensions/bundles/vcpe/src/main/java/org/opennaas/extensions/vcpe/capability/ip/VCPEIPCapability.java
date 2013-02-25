@@ -108,10 +108,13 @@ public class VCPEIPCapability extends AbstractCapability implements IVCPEIPCapab
 		// launch commands
 		try {
 			for (Router router : filter(updatedModel.getElements(), Router.class)) {
-				for (Interface iface : router.getInterfaces()) {
-					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(currentModel, iface.getTemplateName());
-					if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
-						setIP(router, outDatedIface, iface.getIpAddress(), currentModel);
+				if (router.getTemplateName().equals(SPTemplateConstants.VCPE1_ROUTER)
+						|| router.getTemplateName().equals(SPTemplateConstants.VCPE2_ROUTER)) {
+					for (Interface iface : router.getInterfaces()) {
+						Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(currentModel, iface.getTemplateName());
+						if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
+							setIP(router, outDatedIface, iface.getIpAddress(), currentModel);
+						}
 					}
 				}
 			}
@@ -130,9 +133,12 @@ public class VCPEIPCapability extends AbstractCapability implements IVCPEIPCapab
 		// update IP addresses in model
 		for (Router router : filter(updatedModel.getElements(), Router.class)) {
 			for (Interface iface : router.getInterfaces()) {
-				Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(currentModel, iface.getTemplateName());
-				if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
-					outDatedIface.setIpAddress(iface.getIpAddress());
+				if (router.getTemplateName().equals(SPTemplateConstants.VCPE1_ROUTER)
+						|| router.getTemplateName().equals(SPTemplateConstants.VCPE2_ROUTER)) {
+					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(currentModel, iface.getTemplateName());
+					if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
+						outDatedIface.setIpAddress(iface.getIpAddress());
+					}
 				}
 			}
 		}
