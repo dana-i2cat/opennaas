@@ -4,6 +4,6 @@ package org.opennaas.gui.vcpe.entities;
  * @author Jordi
  */
 
-public class MultipleProviderPhysical extends LogicalInfrastructure {
+public class MultipleProviderPhysical extends PhysicalInfrastructure {
 
 }
