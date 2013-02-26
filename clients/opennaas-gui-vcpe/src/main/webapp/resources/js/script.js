@@ -337,8 +337,8 @@ $(function() {
 		});
 	}
 	
-	// only apply accordion styles when logicalForm.jsp is loaded
-	if ($("#logicalForm").length) {
+	// only apply accordion styles when splogicalForm.jsp is loaded
+	if ($("#splogicalForm").length) {
 		jsPlumbNecessary = true;
 		/* vCPE client block */
 		$("#vcpe").accordion({
@@ -674,35 +674,35 @@ function setJSPlumbSPPhysical() {
 // set jsPlumb stuff
 function setJSPlumbSPLogical(topologyVisible, bodVisible) {
 	// WAN -- UP master & backup
-	addConnection("wan_logical", "up_master", "logicalForm", 0.268, 1,
+	addConnection("wan_logical", "up_master", "splogicalForm", 0.268, 1,
 			0.5, 0, false);
-	addConnection("wan_logical", "up_backup", "logicalForm", 0.738, 1,
+	addConnection("wan_logical", "up_backup", "splogicalForm", 0.738, 1,
 			0.5, 0, false);
 
 	if (topologyVisible) {
 		// UP master & backup -- LR master & backup
-		addConnection("up_master", "lr_master", "logicalForm", 0.5, 1,
+		addConnection("up_master", "lr_master", "splogicalForm", 0.5, 1,
 				0.425, 0, true);
-		addConnection("up_backup", "lr_backup", "logicalForm", 0.5, 1,
+		addConnection("up_backup", "lr_backup", "splogicalForm", 0.5, 1,
 				0.59, 0, true);
 
 		// CLIENT DOWN master & backup -- CLIENT master & backup
 		addConnection("client_master", "client_down_master",
-				"logicalForm", 0.5, 1, 0.5, 0, true);
+				"splogicalForm", 0.5, 1, 0.5, 0, true);
 		addConnection("client_backup", "client_down_backup",
-				"logicalForm", 0.5, 1, 0.5, 0, true);
+				"splogicalForm", 0.5, 1, 0.5, 0, true);
 	} else {
 		// UP master & backup -- vCPE
-		addConnection("up_master", "vcpe_topology", "logicalForm", 0.5,
+		addConnection("up_master", "vcpe_topology", "splogicalForm", 0.5,
 				1, 0.248, 0, true);
-		addConnection("up_backup", "vcpe_topology", "logicalForm", 0.5,
+		addConnection("up_backup", "vcpe_topology", "splogicalForm", 0.5,
 				1, 0.758, 0, true);
 
 		// vCPE -- CLIENT master & backup
 		addConnection("vcpe_topology", "client_down_master",
-				"logicalForm", 0.16, 1, 0.5, 0, true);
+				"splogicalForm", 0.16, 1, 0.5, 0, true);
 		addConnection("vcpe_topology", "client_down_backup",
-				"logicalForm", 0.84, 1, 0.5, 0, true);
+				"splogicalForm", 0.84, 1, 0.5, 0, true);
 	}
 
 	// LR master & backup -- CLIENT DOWN master & backup, down & inter
@@ -717,34 +717,34 @@ function setJSPlumbSPLogical(topologyVisible, bodVisible) {
 
 	if (bodVisible && topologyVisible) {
 		// inter master & backup -- BoD inter
-		addConnection("inter_master", "bod_inter", "logicalForm", 0.5,
+		addConnection("inter_master", "bod_inter", "splogicalForm", 0.5,
 				1, 0.13, 0, true);
-		addConnection("inter_backup", "bod_inter", "logicalForm", 0.5,
+		addConnection("inter_backup", "bod_inter", "splogicalForm", 0.5,
 				1, 0.84, 0, true);
 	} else if (bodVisible && !topologyVisible) {
 		// inter master & backup -- CLIENT master & backup
 		addConnection("vcpe_topology", "bod_inter",
-				"logicalForm", 0.385, 1, 0.12, 0, true);
+				"splogicalForm", 0.385, 1, 0.12, 0, true);
 		addConnection("vcpe_topology", "bod_inter",
-				"logicalForm", 0.615, 1, 0.85, 0, true);
+				"splogicalForm", 0.615, 1, 0.85, 0, true);
 	} else if (!bodVisible && topologyVisible) {
 		// inter master & backup -- BoD
-		addConnection("inter_master", "bod", "logicalForm", 0.5,
+		addConnection("inter_master", "bod", "splogicalForm", 0.5,
 				1, 0.395, 0, true);
-		addConnection("inter_backup", "bod", "logicalForm", 0.5,
+		addConnection("inter_backup", "bod", "splogicalForm", 0.5,
 				1, 0.605, 0, true);
 	} else {
 		// vCPE -- bod
 		addConnection("vcpe_topology", "bod",
-				"logicalForm", 0.385, 1, 0.395, 0, true);
+				"splogicalForm", 0.385, 1, 0.395, 0, true);
 		addConnection("vcpe_topology", "bod",
-				"logicalForm", 0.615, 1, 0.605, 0, true);
+				"splogicalForm", 0.615, 1, 0.605, 0, true);
 	}
 
 	// CLIENT DOWN master & backup -- CLIENT
-	addConnection("client_down_master", "client", "logicalForm", 0.5, 1,
+	addConnection("client_down_master", "client", "splogicalForm", 0.5, 1,
 			0.187, 0, false);
-	addConnection("client_down_backup", "client", "logicalForm", 0.5, 1,
+	addConnection("client_down_backup", "client", "splogicalForm", 0.5, 1,
 			0.812, 0, false);
 }
 
@@ -931,7 +931,7 @@ $(function() {
 			jsPlumb.importDefaults({
 				ConnectorZIndex : 50
 			});
-			if ($("#logicalForm").length) {
+			if ($("#splogicalForm").length) {
 				setJSPlumbSPLogical(topologyVisible, bodVisible);
 			} else if ($("#sp_physical").length) {
 				setJSPlumbSPPhysical();
@@ -974,7 +974,7 @@ $(function() {
 });
 
 function resizeWindow(e) {
-	if ($("#logicalForm").length) {
+	if ($("#splogicalForm").length) {
 		clearJSPlumbSPLogical();
 		setJSPlumbSPLogical(topologyVisible, bodVisible);
 	} else if ($("#sp_physical").length) {
@@ -992,13 +992,13 @@ var validIPAddressSubnetMaskRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2
 
 $(document).ready(function() {
 	// only apply when create view or update IPs view are loaded
-	if($("#logicalForm").length || $("#updateIPs").length) {
+	if($("#splogicalForm").length || $("#updateIPs").length) {
 		// apply firewall table style
 		$("#firewallTable").styleTable();
 		
 		// get submit button
 		var button = null;
-		if($("#logicalForm").length) {
+		if($("#splogicalForm").length) {
 			button = $("#submitButton");
 		} else if($("#updateIPs").length) {
 			button = $("#updateIpButton");
@@ -1063,7 +1063,7 @@ $(document).ready(function() {
 	}
 	
 	// create view form validation rules
-	if($("#logicalForm").length) {
+	if($("#splogicalForm").length) {
 		// ============ begin validation rules ==================== //	
 		$('#logicalRouterMaster\\.interfaces2\\.name').rules("add", { required: true });
 		$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
