@@ -14,10 +14,13 @@ import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
+import org.opennaas.gui.vcpe.entities.MultipleProviderPhysical;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.PhysicalRouter;
-import org.opennaas.gui.vcpe.entities.VCPENetwork;
+import org.opennaas.gui.vcpe.entities.SingleProviderLogical;
+import org.opennaas.gui.vcpe.entities.SingleProviderPhysical;
 import org.opennaas.gui.vcpe.entities.VRRP;
+import org.opennaas.gui.vcpe.enums.Template;
 
 /**
  * This class provides the methods to convert VCPE GUI beans to OpenNaaS beans
@@ -32,8 +35,24 @@ public class VCPEBeanUtils {
 	 * @param openNaasModel
 	 * @return VCPENetwork
 	 */
-	public static VCPENetwork getVCPENetwork(VCPENetworkModel modelIn) {
-		VCPENetwork modelOut = new VCPENetwork();
+	public static SingleProviderLogical getLogicalInfrastructure(VCPENetworkModel modelIn) {
+		SingleProviderLogical modelOut = null;
+		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
+			modelOut = getSingleProviderLogical(modelIn);
+		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
+			modelOut = getMultipleProviderLogical();
+		}
+		return modelOut;
+	}
+
+	/**
+	 * Get the logical infrastructure of a single provider
+	 * 
+	 * @param modelIn
+	 * @return
+	 */
+	private static SingleProviderLogical getSingleProviderLogical(VCPENetworkModel modelIn) {
+		SingleProviderLogical modelOut = new SingleProviderLogical();
 
 		// Network dates
 		modelOut.setId(modelIn.getId());
@@ -72,13 +91,48 @@ public class VCPEBeanUtils {
 	}
 
 	/**
+	 * Get the logical infrastructure of a multiple provider
+	 * 
+	 * @return VCPENetwork
+	 */
+	private static SingleProviderLogical getMultipleProviderLogical() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
 	 * Convert a OpenNaaS model to a GUI PhysicalInfrastructure
 	 * 
 	 * @param openNaasModel
 	 * @return VCPENetwork
 	 */
 	public static PhysicalInfrastructure getPhysicalInfrastructure(VCPENetworkModel modelIn) {
-		PhysicalInfrastructure modelOut = new PhysicalInfrastructure();
+		PhysicalInfrastructure modelOut = null;
+		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
+			modelOut = getSingleProviderPhysical(modelIn);
+		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
+			modelOut = getMultipleProviderPhysical();
+		}
+		return modelOut;
+	}
+
+	/**
+	 * Get the physical infrastructure of a multiple provider
+	 * 
+	 * @return PhysicalInfrastructure
+	 */
+	private static PhysicalInfrastructure getMultipleProviderPhysical() {
+		return new MultipleProviderPhysical();
+	}
+
+	/**
+	 * Get the physical infrastructure of a single provider
+	 * 
+	 * @param modelIn
+	 * @return PhysicalInfrastructure
+	 */
+	private static PhysicalInfrastructure getSingleProviderPhysical(VCPENetworkModel modelIn) {
+		SingleProviderPhysical modelOut = new SingleProviderPhysical();
 		modelOut.setTemplateType(modelIn.getTemplateType());
 		// Routers
 		org.opennaas.extensions.vcpe.model.Router physicalRouterMaster = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
@@ -91,7 +145,6 @@ public class VCPEBeanUtils {
 		modelOut.setPhysicalRouterMaster(getPhysicalRouter(physicalRouterMaster));
 		modelOut.setPhysicalRouterBackup(getPhysicalRouter(physicalRouterBackup));
 		modelOut.setPhysicalRouterCore(getPhysicalRouter(physicalRouterCore));
-
 		return modelOut;
 	}
 
@@ -99,7 +152,7 @@ public class VCPEBeanUtils {
 	 * @param physicalRouterCore
 	 * @return
 	 */
-	public static PhysicalRouter getPhysicalRouter(org.opennaas.extensions.vcpe.model.Router phyRouterIn) {
+	private static PhysicalRouter getPhysicalRouter(org.opennaas.extensions.vcpe.model.Router phyRouterIn) {
 		PhysicalRouter phyRouterOut = new PhysicalRouter();
 		if (phyRouterIn != null) {
 			phyRouterOut.setName(phyRouterIn.getName());
@@ -121,7 +174,7 @@ public class VCPEBeanUtils {
 	 * @param inLR
 	 * @return
 	 */
-	public static LogicalRouter getLogicalRouter(org.opennaas.extensions.vcpe.model.LogicalRouter lrIn) {
+	private static LogicalRouter getLogicalRouter(org.opennaas.extensions.vcpe.model.LogicalRouter lrIn) {
 		LogicalRouter lrOut = new LogicalRouter();
 		if (lrIn != null) {
 			lrOut.setName(lrIn.getName());
@@ -143,7 +196,7 @@ public class VCPEBeanUtils {
 	 * @param interface1
 	 * @return
 	 */
-	public static Interface getInterface(org.opennaas.extensions.vcpe.model.Interface interfaceIn) {
+	private static Interface getInterface(org.opennaas.extensions.vcpe.model.Interface interfaceIn) {
 		Interface outIface = new Interface();
 		outIface.setName(interfaceIn.getPhysicalInterfaceName());
 		outIface.setTemplateName(interfaceIn.getTemplateName());
@@ -189,7 +242,7 @@ public class VCPEBeanUtils {
 	 * @param links
 	 * @return list of links
 	 */
-	public static List<Link> getLinks(List<org.opennaas.extensions.vcpe.model.Link> inLinks) {
+	private static List<Link> getLinks(List<org.opennaas.extensions.vcpe.model.Link> inLinks) {
 		List<Link> outLinks = new ArrayList<Link>();
 		for (int i = 0; i < inLinks.size(); i++) {
 			outLinks.add(getLink(inLinks.get(i)));
@@ -203,7 +256,7 @@ public class VCPEBeanUtils {
 	 * @param link
 	 * @return a link
 	 */
-	public static Link getLink(org.opennaas.extensions.vcpe.model.Link inLink) {
+	private static Link getLink(org.opennaas.extensions.vcpe.model.Link inLink) {
 		Link outlink = new Link();
 		outlink.setId(inLink.getId());
 		outlink.setType(inLink.getType());
@@ -225,7 +278,7 @@ public class VCPEBeanUtils {
 	 * 
 	 * @return BoD
 	 */
-	public static BoD getBoD(VCPENetworkModel modelIn) {
+	private static BoD getBoD(VCPENetworkModel modelIn) {
 		BoD bod = new BoD();
 		// Interfaces
 		Interface ifaceClient = getInterface((org.opennaas.extensions.vcpe.model.Interface) VCPENetworkModelHelper
@@ -254,7 +307,7 @@ public class VCPEBeanUtils {
 	 * @param bgp
 	 * @return bgp entity
 	 */
-	public static BGP getBGP(org.opennaas.extensions.vcpe.model.BGP bgpIn) {
+	private static BGP getBGP(org.opennaas.extensions.vcpe.model.BGP bgpIn) {
 		BGP bgpOut = new BGP();
 		if (bgpIn != null) {
 			bgpOut.setClientASNumber(bgpIn.getClientASNumber());
@@ -272,7 +325,7 @@ public class VCPEBeanUtils {
 	 * @param vrrp
 	 * @return
 	 */
-	public static VRRP getVRRP(org.opennaas.extensions.vcpe.model.VRRP vrrpIn) {
+	private static VRRP getVRRP(org.opennaas.extensions.vcpe.model.VRRP vrrpIn) {
 		VRRP vrrpOut = new VRRP();
 		if (vrrpIn != null) {
 			vrrpOut.setVirtualIPAddress(vrrpIn.getVirtualIPAddress());
