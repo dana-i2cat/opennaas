@@ -11,7 +11,7 @@
 	<form:form modelAttribute="physicalInfrastructure" action="logical" method="post">
 		<form:hidden  path="templateType"/>
 			<!-- Graphical view -->
-			<div id="mp_physical">	
+			<div id="mpPhysicalForm">	
 				<!-- Routers -->
 				<div id="network_wan1">
 					<h3><spring:message code="mp.physical.wan1"/></h3>
