@@ -234,7 +234,7 @@ $(function() {
 	});
 
 	// accordion styles when physical sp is loaded
-	if ($("#sp_physical").length) {
+	if ($("#spPhysicalForm").length) {
 		jsPlumbNecessary = true;
 		/**
 		 * Home view
@@ -294,7 +294,7 @@ $(function() {
 	}
 
 	// accordion styles when physical sp is loaded
-	if ($("#mp_physical").length) {
+	if ($("#mpPhysicalForm").length) {
 		jsPlumbNecessary = true;
 		
 		/* MP Physical view */
@@ -337,8 +337,8 @@ $(function() {
 		});
 	}
 	
-	// only apply accordion styles when logicalForm.jsp is loaded
-	if ($("#logicalForm").length) {
+	// only apply accordion styles when spLogicalForm.jsp is loaded
+	if ($("#spLogicalForm").length) {
 		jsPlumbNecessary = true;
 		/* vCPE client block */
 		$("#vcpe").accordion({
@@ -634,37 +634,37 @@ $.extend({
 function setJSPlumbSPPhysical() {
 
 	// WAN -- WAN master & backup
-	addConnection("wan", "wan_master", "sp_physical", 0.302, 1, 0.5, 0, false);
-	addConnection("wan", "wan_backup", "sp_physical", 0.7, 1, 0.5, 0, false);
+	addConnection("wan", "wan_master", "spPhysicalForm", 0.302, 1, 0.5, 0, false);
+	addConnection("wan", "wan_backup", "spPhysicalForm", 0.7, 1, 0.5, 0, false);
 
 	// WAN master & backup -- router master & backup
-	addConnection("wan_master", "cpe_master", "sp_physical", 0.5, 1, 0.6, 0,
+	addConnection("wan_master", "cpe_master", "spPhysicalForm", 0.5, 1, 0.6, 0,
 			false);
-	addConnection("wan_backup", "cpe_backup", "sp_physical", 0.5, 1, 0.4, 0,
+	addConnection("wan_backup", "cpe_backup", "spPhysicalForm", 0.5, 1, 0.4, 0,
 			false);
 
 	// router master -- client master & inter master
-	addConnection("cpe_master", "cpe_client_master", "sp_physical", 0.22, 1, 0.5,
+	addConnection("cpe_master", "cpe_client_master", "spPhysicalForm", 0.22, 1, 0.5,
 			0, false);
-	addConnection("cpe_master", "cpe_inter_master", "sp_physical", 0.83, 1, 0.5,
+	addConnection("cpe_master", "cpe_inter_master", "spPhysicalForm", 0.83, 1, 0.5,
 			0, false);
 
 	// router master -- client master & inter master
-	addConnection("cpe_backup", "cpe_inter_backup", "sp_physical", 0.18, 1, 0.5,
+	addConnection("cpe_backup", "cpe_inter_backup", "spPhysicalForm", 0.18, 1, 0.5,
 			0, false);
-	addConnection("cpe_backup", "cpe_client_backup", "sp_physical", 0.78, 1, 0.5,
+	addConnection("cpe_backup", "cpe_client_backup", "spPhysicalForm", 0.78, 1, 0.5,
 			0, false);
 
 	// client master & backup -- client
-	addConnection("cpe_client_master", "cpe_client", "sp_physical", 0.5, 1,
+	addConnection("cpe_client_master", "cpe_client", "spPhysicalForm", 0.5, 1,
 			0.165, 0, false);
-	addConnection("cpe_client_backup", "cpe_client", "sp_physical", 0.5, 1,
+	addConnection("cpe_client_backup", "cpe_client", "spPhysicalForm", 0.5, 1,
 			0.845, 0, false);
 
 	// inter master & backup -- bod
-	addConnection("cpe_inter_master", "cpe_bod", "sp_physical", 0.5, 1, 0.39, 0,
+	addConnection("cpe_inter_master", "cpe_bod", "spPhysicalForm", 0.5, 1, 0.39, 0,
 			false);
-	addConnection("cpe_inter_backup", "cpe_bod", "sp_physical", 0.5, 1, 0.615, 0,
+	addConnection("cpe_inter_backup", "cpe_bod", "spPhysicalForm", 0.5, 1, 0.615, 0,
 			false);
 }
 
@@ -674,77 +674,77 @@ function setJSPlumbSPPhysical() {
 // set jsPlumb stuff
 function setJSPlumbSPLogical(topologyVisible, bodVisible) {
 	// WAN -- UP master & backup
-	addConnection("wan_logical", "up_master", "logicalForm", 0.268, 1,
+	addConnection("wan_logical", "up_master", "spLogicalForm", 0.268, 1,
 			0.5, 0, false);
-	addConnection("wan_logical", "up_backup", "logicalForm", 0.738, 1,
+	addConnection("wan_logical", "up_backup", "spLogicalForm", 0.738, 1,
 			0.5, 0, false);
 
 	if (topologyVisible) {
 		// UP master & backup -- LR master & backup
-		addConnection("up_master", "lr_master", "logicalForm", 0.5, 1,
+		addConnection("up_master", "lr_master", "spLogicalForm", 0.5, 1,
 				0.425, 0, true);
-		addConnection("up_backup", "lr_backup", "logicalForm", 0.5, 1,
+		addConnection("up_backup", "lr_backup", "spLogicalForm", 0.5, 1,
 				0.59, 0, true);
 
 		// CLIENT DOWN master & backup -- CLIENT master & backup
 		addConnection("client_master", "client_down_master",
-				"logicalForm", 0.5, 1, 0.5, 0, true);
+				"spLogicalForm", 0.5, 1, 0.5, 0, true);
 		addConnection("client_backup", "client_down_backup",
-				"logicalForm", 0.5, 1, 0.5, 0, true);
+				"spLogicalForm", 0.5, 1, 0.5, 0, true);
 	} else {
 		// UP master & backup -- vCPE
-		addConnection("up_master", "vcpe_topology", "logicalForm", 0.5,
+		addConnection("up_master", "vcpe_topology", "spLogicalForm", 0.5,
 				1, 0.248, 0, true);
-		addConnection("up_backup", "vcpe_topology", "logicalForm", 0.5,
+		addConnection("up_backup", "vcpe_topology", "spLogicalForm", 0.5,
 				1, 0.758, 0, true);
 
 		// vCPE -- CLIENT master & backup
 		addConnection("vcpe_topology", "client_down_master",
-				"logicalForm", 0.16, 1, 0.5, 0, true);
+				"spLogicalForm", 0.16, 1, 0.5, 0, true);
 		addConnection("vcpe_topology", "client_down_backup",
-				"logicalForm", 0.84, 1, 0.5, 0, true);
+				"spLogicalForm", 0.84, 1, 0.5, 0, true);
 	}
 
 	// LR master & backup -- CLIENT DOWN master & backup, down & inter
 	addConnection("lr_master", "client_master", "vcpe_routers", 0.2, 1, 0.5, 0,
 			false);
-	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.79, 1, 0.5,
+	addConnection("lr_backup", "client_backup", "vcpe_routers", 0.78, 1, 0.5,
 			0, false);
 	addConnection("lr_master", "inter_master", "vcpe_routers", 0.76, 1, 0.5, 0,
 			false);
-	addConnection("lr_backup", "inter_backup", "vcpe_routers", 0.24, 1, 0.5, 0,
+	addConnection("lr_backup", "inter_backup", "vcpe_routers", 0.23, 1, 0.5, 0,
 			false);
 
 	if (bodVisible && topologyVisible) {
 		// inter master & backup -- BoD inter
-		addConnection("inter_master", "bod_inter", "logicalForm", 0.5,
+		addConnection("inter_master", "bod_inter", "spLogicalForm", 0.5,
 				1, 0.13, 0, true);
-		addConnection("inter_backup", "bod_inter", "logicalForm", 0.5,
+		addConnection("inter_backup", "bod_inter", "spLogicalForm", 0.5,
 				1, 0.84, 0, true);
 	} else if (bodVisible && !topologyVisible) {
 		// inter master & backup -- CLIENT master & backup
 		addConnection("vcpe_topology", "bod_inter",
-				"logicalForm", 0.385, 1, 0.12, 0, true);
+				"spLogicalForm", 0.385, 1, 0.12, 0, true);
 		addConnection("vcpe_topology", "bod_inter",
-				"logicalForm", 0.615, 1, 0.85, 0, true);
+				"spLogicalForm", 0.615, 1, 0.85, 0, true);
 	} else if (!bodVisible && topologyVisible) {
 		// inter master & backup -- BoD
-		addConnection("inter_master", "bod", "logicalForm", 0.5,
+		addConnection("inter_master", "bod", "spLogicalForm", 0.5,
 				1, 0.395, 0, true);
-		addConnection("inter_backup", "bod", "logicalForm", 0.5,
+		addConnection("inter_backup", "bod", "spLogicalForm", 0.5,
 				1, 0.605, 0, true);
 	} else {
 		// vCPE -- bod
 		addConnection("vcpe_topology", "bod",
-				"logicalForm", 0.385, 1, 0.395, 0, true);
+				"spLogicalForm", 0.385, 1, 0.395, 0, true);
 		addConnection("vcpe_topology", "bod",
-				"logicalForm", 0.615, 1, 0.605, 0, true);
+				"spLogicalForm", 0.615, 1, 0.605, 0, true);
 	}
 
 	// CLIENT DOWN master & backup -- CLIENT
-	addConnection("client_down_master", "client", "logicalForm", 0.5, 1,
+	addConnection("client_down_master", "client", "spLogicalForm", 0.5, 1,
 			0.187, 0, false);
-	addConnection("client_down_backup", "client", "logicalForm", 0.5, 1,
+	addConnection("client_down_backup", "client", "spLogicalForm", 0.5, 1,
 			0.812, 0, false);
 }
 
@@ -849,12 +849,12 @@ function clearJSPlumbSPPhysical() {
 //set jsPlumb physical view
 function setJSPlumbMPPhysical() {
 	// network wan1 -> up1 router interface
-	addConnection("network_wan1", "iface_router_up1", "mp_physical", 0.485, 1, 0.5, 0, false);
-	addConnection("network_wan2", "iface_router_up2", "mp_physical", 0.485, 1, 0.5, 0, false);
-	addConnection("iface_router_up1", "phy_router", "mp_physical", 0.5, 1, 0.31, 0.03, false);
-	addConnection("iface_router_up2", "phy_router", "mp_physical", 0.5, 1, 0.884, 0.03, false);
-	addConnection("phy_router", "iface_router_down", "mp_physical", 0.612, 0.975, 0.5, 0, false);
-	addConnection("iface_router_down", "network_client", "mp_physical", 0.5, 1, 0.505, 0.1, false);
+	addConnection("network_wan1", "iface_router_up1", "mpPhysicalForm", 0.485, 1, 0.5, 0, false);
+	addConnection("network_wan2", "iface_router_up2", "mpPhysicalForm", 0.485, 1, 0.5, 0, false);
+	addConnection("iface_router_up1", "phy_router", "mpPhysicalForm", 0.5, 1, 0.31, 0.03, false);
+	addConnection("iface_router_up2", "phy_router", "mpPhysicalForm", 0.5, 1, 0.884, 0.03, false);
+	addConnection("phy_router", "iface_router_down", "mpPhysicalForm", 0.612, 0.975, 0.5, 0, false);
+	addConnection("iface_router_down", "network_client", "mpPhysicalForm", 0.5, 1, 0.505, 0.1, false);
 }
 
 //clear all jsPlumb stuff
@@ -931,11 +931,11 @@ $(function() {
 			jsPlumb.importDefaults({
 				ConnectorZIndex : 50
 			});
-			if ($("#logicalForm").length) {
+			if ($("#spLogicalForm").length) {
 				setJSPlumbSPLogical(topologyVisible, bodVisible);
-			} else if ($("#sp_physical").length) {
+			} else if ($("#spPhysicalForm").length) {
 				setJSPlumbSPPhysical();
-			} else if ($("#mp_physical").length) {
+			} else if ($("#mpPhysicalForm").length) {
 				setJSPlumbMPPhysical();
 			} 
 		});
@@ -974,13 +974,13 @@ $(function() {
 });
 
 function resizeWindow(e) {
-	if ($("#logicalForm").length) {
+	if ($("#spLogicalForm").length) {
 		clearJSPlumbSPLogical();
 		setJSPlumbSPLogical(topologyVisible, bodVisible);
-	} else if ($("#sp_physical").length) {
+	} else if ($("#spPhysicalForm").length) {
 		clearJSPlumbSPLogical();
 		setJSPlumbSPPhysical();
-	} else if ($("#mp_physical").length) {
+	} else if ($("#mpPhysicalForm").length) {
 		clearJSPlumbMPLogical();
 		setJSPlumbMPPhysical();
 	}
@@ -992,13 +992,13 @@ var validIPAddressSubnetMaskRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2
 
 $(document).ready(function() {
 	// only apply when create view or update IPs view are loaded
-	if($("#logicalForm").length || $("#updateIPs").length) {
+	if($("#spLogicalForm").length || $("#updateIPs").length) {
 		// apply firewall table style
 		$("#firewallTable").styleTable();
 		
 		// get submit button
 		var button = null;
-		if($("#logicalForm").length) {
+		if($("#spLogicalForm").length) {
 			button = $("#submitButton");
 		} else if($("#updateIPs").length) {
 			button = $("#updateIpButton");
@@ -1063,7 +1063,7 @@ $(document).ready(function() {
 	}
 	
 	// create view form validation rules
-	if($("#logicalForm").length) {
+	if($("#spLogicalForm").length) {
 		// ============ begin validation rules ==================== //	
 		$('#logicalRouterMaster\\.interfaces2\\.name').rules("add", { required: true });
 		$('#logicalRouterMaster\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
