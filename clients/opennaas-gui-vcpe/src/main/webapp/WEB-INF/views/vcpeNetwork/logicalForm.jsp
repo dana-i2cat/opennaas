@@ -15,7 +15,7 @@
 <c:set var="UP1_INTERFACE_PEER"  value='<%= SPTemplateConstants.UP1_INTERFACE_PEER %>' />
 <c:set var="UP2_INTERFACE_PEER"  value='<%= SPTemplateConstants.UP2_INTERFACE_PEER %>' />
 
-<div id="splogicalForm" >
+<div id="spLogicalForm" >
 	<form:form modelAttribute="logicalInfrastructure" action="${action}" method="post">
 		<form:hidden path="id" />
 		<form:hidden path="templateType" />	
