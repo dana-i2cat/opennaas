@@ -14,10 +14,11 @@ import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
+import org.opennaas.gui.vcpe.entities.MultipleProviderPhysical;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.PhysicalRouter;
-import org.opennaas.gui.vcpe.entities.SingleProviderPhysical;
 import org.opennaas.gui.vcpe.entities.SingleProviderLogical;
+import org.opennaas.gui.vcpe.entities.SingleProviderPhysical;
 import org.opennaas.gui.vcpe.entities.VRRP;
 import org.opennaas.gui.vcpe.enums.Template;
 
@@ -121,8 +122,7 @@ public class VCPEBeanUtils {
 	 * @return PhysicalInfrastructure
 	 */
 	private static PhysicalInfrastructure getMultipleProviderPhysical() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MultipleProviderPhysical();
 	}
 
 	/**

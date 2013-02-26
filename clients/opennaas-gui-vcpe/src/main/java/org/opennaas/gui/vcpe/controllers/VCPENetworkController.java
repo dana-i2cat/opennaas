@@ -41,7 +41,7 @@ public abstract class VCPENetworkController {
 	 * @return
 	 */
 	public String getPhysicalForm(@RequestParam("templateType") String templateType, Model model, Locale locale) {
-		LOGGER.debug("home");
+		LOGGER.debug("get the Physical Form");
 		try {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));

@@ -13,7 +13,7 @@
 		<form:hidden  path="physicalRouterMaster.name"/>
 		<form:hidden  path="physicalRouterBackup.name"/>
 		<!-- Graphical view -->
-		<div id="home_body">
+		<div id="sp_physical">
 			<!-- WAN -->
 			<div id="wan">
 				<h2><spring:message code="physical.wan"/></h2>

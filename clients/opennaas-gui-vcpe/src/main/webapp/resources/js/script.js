@@ -233,8 +233,8 @@ $(function() {
 		active : true
 	});
 
-	// only apply accordion styles when home.jsp is loaded
-	if ($("#home_body").length) {
+	// accordion styles when physical sp is loaded
+	if ($("#sp_physical").length) {
 		jsPlumbNecessary = true;
 		/**
 		 * Home view
@@ -246,10 +246,10 @@ $(function() {
 			heightStyle : "content",
 			active : false,
 			beforeActivate : function() {
-				clearJSPlumbHome();
+				clearJSPlumbSPPhysical();
 			},
 			activate : function() {
-				setJSPlumbHome();
+				setJSPlumbSPPhysical();
 			}
 		});
 
@@ -289,8 +289,54 @@ $(function() {
 			heightStyle : "content",
 			active : false
 		});
+		
+
 	}
 
+	// accordion styles when physical sp is loaded
+	if ($("#mp_physical").length) {
+		jsPlumbNecessary = true;
+		
+		/* MP Physical view */
+		$("#network_wan1").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+
+		/* MP Physical view */
+		$("#network_wan2").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+		
+		$("#network_client").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+		
+		$("#phy_router").accordion({
+			collapsible : false,
+			beforeActivate : function() {
+				clearJSPlumbMPPhysical();
+			},
+			activate : function() {
+				setJSPlumbMPPhysical();
+			},
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+	}
+	
 	// only apply accordion styles when logicalForm.jsp is loaded
 	if ($("#logicalForm").length) {
 		jsPlumbNecessary = true;
@@ -311,7 +357,7 @@ $(function() {
 			heightStyle : "content",
 			active : false,
 			beforeActivate : function() {
-				clearJSPlumbStuff();
+				clearJSPlumbSPLogical();
 			},
 			activate : function(event, ui) {
 				var active = $("#bod").accordion("option", "active");
@@ -321,7 +367,7 @@ $(function() {
 				} else {
 					$("#bod").css('zIndex', 100);
 				}
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				setJSPlumbSPLogical(topologyVisible, bodVisible);
 			}
 		});
 
@@ -332,10 +378,10 @@ $(function() {
 			heightStyle : "content",
 			active : false,
 			beforeActivate : function() {
-				clearJSPlumbStuff();
+				clearJSPlumbSPLogical();
 			},
 			activate : function() {
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				setJSPlumbSPLogical(topologyVisible, bodVisible);
 			}
 		});
 
@@ -346,10 +392,10 @@ $(function() {
 			heightStyle : "content",
 			active : false,
 			beforeActivate : function() {
-				clearJSPlumbStuff();
+				clearJSPlumbSPLogical();
 			},
 			activate : function() {
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				setJSPlumbSPLogical(topologyVisible, bodVisible);
 			}
 		});
 
@@ -359,10 +405,10 @@ $(function() {
 			heightStyle : "content",
 			active : false,
 			beforeActivate : function() {
-				clearJSPlumbStuff();
+				clearJSPlumbSPLogical();
 			},
 			activate : function() {
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				setJSPlumbSPLogical(topologyVisible, bodVisible);
 			}
 		});
 
@@ -372,12 +418,12 @@ $(function() {
 			heightStyle : "content",
 			active : false,
 			beforeActivate : function() {
-				clearJSPlumbStuff();
+				clearJSPlumbSPLogical();
 			},
 			activate : function(event, ui) {
 				var active = $("#vcpe_topology").accordion("option", "active");
 				topologyVisible = !(typeof active == 'boolean' && active == false);
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				setJSPlumbSPLogical(topologyVisible, bodVisible);
 			}
 		});
 
@@ -387,12 +433,12 @@ $(function() {
 			heightStyle : "content",
 			active : true,
 			beforeActivate : function() {
-				clearJSPlumbStuff();
+				clearJSPlumbSPLogical();
 			},
 			activate : function(event, ui) {
 				var active = $("#vcpe_topology").accordion("option", "active");
 				topologyVisible = !(typeof active == 'boolean' && active == false);
-				setJSPlumbStuff(topologyVisible, bodVisible);
+				setJSPlumbSPLogical(topologyVisible, bodVisible);
 			}
 		});
 
@@ -585,40 +631,40 @@ $.extend({
  * jsPlumb home
  */
 // set jsPlumb stuff
-function setJSPlumbHome() {
+function setJSPlumbSPPhysical() {
 
 	// WAN -- WAN master & backup
-	addConnection("wan", "wan_master", "home_body", 0.302, 1, 0.5, 0, false);
-	addConnection("wan", "wan_backup", "home_body", 0.7, 1, 0.5, 0, false);
+	addConnection("wan", "wan_master", "sp_physical", 0.302, 1, 0.5, 0, false);
+	addConnection("wan", "wan_backup", "sp_physical", 0.7, 1, 0.5, 0, false);
 
 	// WAN master & backup -- router master & backup
-	addConnection("wan_master", "cpe_master", "home_body", 0.5, 1, 0.6, 0,
+	addConnection("wan_master", "cpe_master", "sp_physical", 0.5, 1, 0.6, 0,
 			false);
-	addConnection("wan_backup", "cpe_backup", "home_body", 0.5, 1, 0.4, 0,
+	addConnection("wan_backup", "cpe_backup", "sp_physical", 0.5, 1, 0.4, 0,
 			false);
 
 	// router master -- client master & inter master
-	addConnection("cpe_master", "cpe_client_master", "home_body", 0.22, 1, 0.5,
+	addConnection("cpe_master", "cpe_client_master", "sp_physical", 0.22, 1, 0.5,
 			0, false);
-	addConnection("cpe_master", "cpe_inter_master", "home_body", 0.83, 1, 0.5,
+	addConnection("cpe_master", "cpe_inter_master", "sp_physical", 0.83, 1, 0.5,
 			0, false);
 
 	// router master -- client master & inter master
-	addConnection("cpe_backup", "cpe_inter_backup", "home_body", 0.18, 1, 0.5,
+	addConnection("cpe_backup", "cpe_inter_backup", "sp_physical", 0.18, 1, 0.5,
 			0, false);
-	addConnection("cpe_backup", "cpe_client_backup", "home_body", 0.78, 1, 0.5,
+	addConnection("cpe_backup", "cpe_client_backup", "sp_physical", 0.78, 1, 0.5,
 			0, false);
 
 	// client master & backup -- client
-	addConnection("cpe_client_master", "cpe_client", "home_body", 0.5, 1,
+	addConnection("cpe_client_master", "cpe_client", "sp_physical", 0.5, 1,
 			0.165, 0, false);
-	addConnection("cpe_client_backup", "cpe_client", "home_body", 0.5, 1,
+	addConnection("cpe_client_backup", "cpe_client", "sp_physical", 0.5, 1,
 			0.845, 0, false);
 
 	// inter master & backup -- bod
-	addConnection("cpe_inter_master", "cpe_bod", "home_body", 0.5, 1, 0.39, 0,
+	addConnection("cpe_inter_master", "cpe_bod", "sp_physical", 0.5, 1, 0.39, 0,
 			false);
-	addConnection("cpe_inter_backup", "cpe_bod", "home_body", 0.5, 1, 0.615, 0,
+	addConnection("cpe_inter_backup", "cpe_bod", "sp_physical", 0.5, 1, 0.615, 0,
 			false);
 }
 
@@ -626,7 +672,7 @@ function setJSPlumbHome() {
  * jsPlumb create and view
  */
 // set jsPlumb stuff
-function setJSPlumbStuff(topologyVisible, bodVisible) {
+function setJSPlumbSPLogical(topologyVisible, bodVisible) {
 	// WAN -- UP master & backup
 	addConnection("wan_logical", "up_master", "logicalForm", 0.268, 1,
 			0.5, 0, false);
@@ -736,7 +782,7 @@ function addConnection(origin, destination, parent, originAnchorX,
 }
 
 // clear all jsPlumb stuff
-function clearJSPlumbStuff() {
+function clearJSPlumbSPLogical() {
 	jsPlumb.deleteEveryEndpoint();
 	jsPlumb.detachAllConnections();
 
@@ -772,7 +818,47 @@ function clearJSPlumbStuff() {
 }
 
 // clear all jsPlumb stuff
-function clearJSPlumbHome() {
+function clearJSPlumbSPPhysical() {
+	jsPlumb.deleteEveryEndpoint();
+	jsPlumb.detachAllConnections();
+
+	// remove all overlays of each connection
+	if (intra_topology_connections != null) {
+		var connection = null;
+		while ((connection = intra_topology_connections.pop()) != null) {
+			connection.removeAllOverlays();
+		}
+	}
+
+	if (extra_topology_connections != null) {
+		var connection = null;
+		while ((connection = extra_topology_connections.pop()) != null) {
+			connection.removeAllOverlays();
+		}
+	}
+
+	// detach all endpoints
+	if (intra_topology_endpoints != null) {
+		var endpoint = null;
+		while ((endpoint = intra_topology_endpoints.pop()) != null) {
+			endpoint.detachAll();
+		}
+	}
+}
+
+//set jsPlumb physical view
+function setJSPlumbMPPhysical() {
+	// network wan1 -> up1 router interface
+	addConnection("network_wan1", "iface_router_up1", "mp_physical", 0.485, 1, 0.5, 0, false);
+	addConnection("network_wan2", "iface_router_up2", "mp_physical", 0.485, 1, 0.5, 0, false);
+	addConnection("iface_router_up1", "phy_router", "mp_physical", 0.5, 1, 0.31, 0.03, false);
+	addConnection("iface_router_up2", "phy_router", "mp_physical", 0.5, 1, 0.884, 0.03, false);
+	addConnection("phy_router", "iface_router_down", "mp_physical", 0.612, 0.975, 0.5, 0, false);
+	addConnection("iface_router_down", "network_client", "mp_physical", 0.5, 1, 0.505, 0.1, false);
+}
+
+//clear all jsPlumb stuff
+function clearJSPlumbMPPhysical() {
 	jsPlumb.deleteEveryEndpoint();
 	jsPlumb.detachAllConnections();
 
@@ -846,10 +932,12 @@ $(function() {
 				ConnectorZIndex : 50
 			});
 			if ($("#logicalForm").length) {
-				setJSPlumbStuff(topologyVisible, bodVisible);
-			} else if ($("#home_body").length) {
-				setJSPlumbHome();
-			}
+				setJSPlumbSPLogical(topologyVisible, bodVisible);
+			} else if ($("#sp_physical").length) {
+				setJSPlumbSPPhysical();
+			} else if ($("#mp_physical").length) {
+				setJSPlumbMPPhysical();
+			} 
 		});
 		
 		$(window).bind("resize", resizeWindow);
@@ -887,11 +975,14 @@ $(function() {
 
 function resizeWindow(e) {
 	if ($("#logicalForm").length) {
-		clearJSPlumbStuff();
-		setJSPlumbStuff(topologyVisible, bodVisible);
-	} else if ($("#home_body").length) {
-		clearJSPlumbStuff();
-		setJSPlumbHome();
+		clearJSPlumbSPLogical();
+		setJSPlumbSPLogical(topologyVisible, bodVisible);
+	} else if ($("#sp_physical").length) {
+		clearJSPlumbSPLogical();
+		setJSPlumbSPPhysical();
+	} else if ($("#mp_physical").length) {
+		clearJSPlumbMPLogical();
+		setJSPlumbMPPhysical();
 	}
 }
 

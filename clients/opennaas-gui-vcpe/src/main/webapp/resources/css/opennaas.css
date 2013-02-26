@@ -3,7 +3,7 @@ OpenNaaS Custom CSS
 ----------------------------------------------------------------------- */
 
 /* Common styles */
-h1 {	
+h1 {
 	color: #7E7E7E;
 }
 
@@ -72,7 +72,6 @@ h1 {
 	float: left;
 }
 
-
 /* Menu styles
 ----------------------------------*/
 #_menu {
@@ -88,22 +87,27 @@ h1 {
 /* Template styles
 ----------------------------------*/
 .template {
-	float:left;
-	height:90px;
+	float: left;
+	height: 90px;
 	cursor: pointer;
 }
+
 #selectable .ui-selecting {
-	background: #FECA40; 
+	background: #FECA40;
 }
+
 #selectable .ui-selected {
-	background: #F39814; color: white; 
+	background: #F39814;
+	color: white;
 }
+
 #selectable {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	overflow: auto;
 }
+
 #selectable li {
 	margin-right: 3px;
 	padding: 5px;
@@ -112,22 +116,24 @@ h1 {
 	min-height: 410px;
 	float: left
 }
+
 #selectable .title {
 	font-size: 12px;
 	font-weight: bold;
 	margin-bottom: 5px;
 }
+
 #selectable .description {
 	margin-bottom: 10px;
 }
-#selectable .template_image {
-    background-color: white;
-    border: 1px solid #DDDDDD;
-    padding-top: 5px;
-    text-align: center;
-    width: 358px;
-}
 
+#selectable .template_image {
+	background-color: white;
+	border: 1px solid #DDDDDD;
+	padding-top: 5px;
+	text-align: center;
+	width: 358px;
+}
 
 /* Home styles
 ----------------------------------*/
@@ -138,13 +144,13 @@ h1 {
 .ui-widget-overlay {
 	opacity: .80 !important;
 	/* Make sure to change both of these, as IE only sees the second one */
-	filter: alpha(opacity =     80) !important;
+	filter: alpha(opacity =         80) !important;
 	background-color: rgb(50, 50, 50) !important;
 	/* This will make it darker */
 }
 
 ​ /* Login styles
-----------------------------------*/  
+----------------------------------*/    
 .ui-menu {
 	width: 150px;
 }
@@ -211,7 +217,7 @@ h1 {
 	clear: both;
 }
 
-#up_backup, #up_master {
+#up_backup,#up_master {
 	width: 150px;
 	padding: 10px 5px 5px 5px;
 	margin-left: 120px;
@@ -245,7 +251,7 @@ h1 {
 #cpe_bod {
 	position: relative;
 	z-index: 100;
-	margin-bottom: 15px;	
+	margin-bottom: 15px;
 }
 
 #client_master {
@@ -263,7 +269,6 @@ h1 {
 	margin-left: 22px;
 }
 
-
 #client_backup,#inter_master,#inter_backup {
 	display: inline-block;
 	width: 140px;
@@ -272,7 +277,7 @@ h1 {
 	margin-bottom: 15px;
 }
 
-#inter_master_box, #inter_backup_box, #client_backup_box{
+#inter_master_box,#inter_backup_box,#client_backup_box {
 	display: inline-block;
 	width: 148px;
 	padding: 10px 0 0 10px;
@@ -280,7 +285,6 @@ h1 {
 	margin-bottom: 15px;
 	margin-left: 15px;
 }
-
 
 #client_down_master {
 	width: 150px;
@@ -301,7 +305,6 @@ h1 {
 	float: left;
 }
 
-
 #client_down_master input {
 	font-size: 10px !important;
 }
@@ -315,11 +318,12 @@ h1 {
 	width: 100%;
 	clear: both;
 }
+
 #vcpe_routers {
 	text-align: center;
 }
 
-#lr_master, #lr_backup {
+#lr_master,#lr_backup {
 	display: inline-block;
 	width: 280px;
 	margin-left: 10px;
@@ -330,13 +334,13 @@ h1 {
 
 h3.lr_active {
 	border: 1px solid #dddddd !important;
-	background: #e6efd7  50% top repeat-x !important;
+	background: #e6efd7 50% top repeat-x !important;
 	color: #2f4f4f !important;
 }
 
 h3.lr_active {
 	border: 1px solid #dddddd !important;
-	background: #e6efd7  50% top repeat-x !important;
+	background: #e6efd7 50% top repeat-x !important;
 	color: #2f4f4f !important;
 }
 
@@ -350,7 +354,7 @@ h3.lr_inactive {
 	margin-top: 15px;
 }
 
-#bod_master, #bod_inter, #bod_backup {
+#bod_master,#bod_inter,#bod_backup {
 	position: relative;
 	z-index: 100;
 	min-width: 200px;
@@ -418,22 +422,21 @@ h3.lr_inactive {
 	font-size: 11px;
 }
 
-
 .fields {
-	display: inline-block; 
-	padding-top: 15px; 
+	display: inline-block;
+	padding-top: 15px;
 	text-align: center;
 }
 
 .field {
-	width: 100%; 
-	display: inline-block; 
+	width: 100%;
+	display: inline-block;
 	width: 150px;
 }
 
 .field {
-	width: 100%; 
-	display: inline-table; 
+	width: 100%;
+	display: inline-table;
 	width: 150px;
 }
 
@@ -441,8 +444,9 @@ h3.lr_inactive {
 	position: relative;
 	z-index: 100;
 }
+
 #bgp_data {
-	width: 635px; 	
+	width: 635px;
 	font-size: 12px;
 }
 
@@ -450,13 +454,14 @@ h3.lr_inactive {
 	position: relative;
 	z-index: 100;
 }
+
 #vrrp_data {
-	width: 636px; 	
+	width: 636px;
 	font-size: 12px;
 }
 
 #vrrp_data_box {
-	width: 645px; 	
+	width: 645px;
 	font-size: 12px;
 }
 
@@ -478,21 +483,21 @@ h3.lr_inactive {
 
 #firewallTable {
 	margin-top: 5px;
-	width: 650px;	
+	width: 650px;
 }
 
-#firewallTable th, #firewallTable td {
-	width: 50px; 
-	padding-left: 5px;	
+#firewallTable th,#firewallTable td {
+	width: 50px;
+	padding-left: 5px;
 }
 
 .fwButton {
 	text-align: center;
 }
 
-/* Home styles
+/* Physical view - Single Provider 
 ----------------------------------*/
-#cpe_master, #cpe_backup {
+#cpe_master,#cpe_backup {
 	display: inline-block;
 	width: 280px;
 	margin-left: 60px;
@@ -548,7 +553,7 @@ h3.lr_inactive {
 	margin-left: 5px;
 }
 
-#cpe_client_backup,#cpe_inter_master,#cpe_inter_backup {
+#cpe_client_backup,#cpe_inter_master,#cpe_inter_backup, #phy_router {
 	display: inline-block;
 	width: 150px;
 	padding: 5px;
@@ -562,9 +567,78 @@ h3.lr_inactive {
 	font-size: 10px !important;
 }
 
+/* Physical view - Multiple Provider 
+----------------------------------*/
+#network_wan1,#network_wan2,#network_client {
+	display: inline-block;
+	width: 280px;
+	margin-left: 60px;
+	margin-right: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	clear: both;
+}
+
+#network_wan1 #config,#network_wan2 #config,#network_client #config {
+	height: 70px !important;
+}
+
+#network_client {
+	margin-left: 240px !important;
+}
+
+#network_client #config {
+	padding-left: 10px !important;
+}
+
+#iface_router_up1 {
+	width: 150px;
+	padding: 5px;
+	float: left;
+	margin-left: 115px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#iface_router_up2 {
+	width: 150px;
+	padding: 5px;
+	float: left;
+	margin-left: 190px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#iface_router_down {
+	width: 150px;
+	padding: 5px 5px 5px 6px;
+	float: left;
+	margin-left: 300px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#phy_router {
+	text-align: center;
+	display: inline-block;
+	width: 485px;
+	padding: 5px 5px 5px 125px;
+	margin-left: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#phy_router #config {
+	margin-left: 85px;
+	height: 40px !important;
+	width: 265px !important;
+}
+
 /* Other styles
 ----------------------------------*/
-
 #tooltip {
 	display: none;
 	position: absolute;
