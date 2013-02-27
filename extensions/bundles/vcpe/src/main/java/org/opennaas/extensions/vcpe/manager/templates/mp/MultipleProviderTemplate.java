@@ -13,13 +13,17 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
  */
 public class MultipleProviderTemplate implements ITemplate {
 
-	private String	templateType	= ITemplate.MP_VCPE_TEMPLATE;
+	private String				templateType	= ITemplate.MP_VCPE_TEMPLATE;
+
+	private MPTemplateSuggestor	suggestor;
 
 	/**
 	 * @throws VCPENetworkManagerException
 	 * 
 	 */
 	public MultipleProviderTemplate() throws VCPENetworkManagerException {
+		suggestor = new MPTemplateSuggestor();
+		suggestor.initialize();
 	}
 
 	public String getTemplateType() {
@@ -39,14 +43,24 @@ public class MultipleProviderTemplate implements ITemplate {
 
 	@Override
 	public VCPENetworkModel getPhysicalInfrastructureSuggestion() throws VCPENetworkManagerException {
-		// TODO Auto-generated method stub
-		throw new VCPENetworkManagerException("Unsupported Operation");
+
+		VCPENetworkModel generated = MPTemplateModelBuilder.generatePhysicalElements();
+		VCPENetworkModel suggestion = suggestor.getSuggestionForPhysicalModel(generated);
+		return suggestion;
 	}
 
 	@Override
 	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) {
-		// TODO Auto-generated method stub
-		throw new VCPENetworkManagerException("Unsupported Operation");
+		// assuming given physicalInfrastructure is complete
+		return getLogicalInfrastructureSuggestionFromCompletePhysical(physicalInfrastructure);
+	}
+
+	private VCPENetworkModel getLogicalInfrastructureSuggestionFromCompletePhysical(VCPENetworkModel physicalInfrastructure) {
+		VCPENetworkModel generatedLogical = MPTemplateModelBuilder.generateLogicalElements();
+		VCPENetworkModel suggestedLogical = suggestor.getSuggestionForLogicalModel(physicalInfrastructure, generatedLogical);
+		VCPENetworkModel completeSuggestion = MPTemplateModelBuilder.mapLogicalAndPhysical(physicalInfrastructure, suggestedLogical);
+
+		return completeSuggestion;
 	}
 
 }

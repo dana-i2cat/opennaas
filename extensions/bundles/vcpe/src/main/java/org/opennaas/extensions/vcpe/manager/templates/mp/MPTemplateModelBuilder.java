@@ -170,12 +170,9 @@ public class MPTemplateModelBuilder {
 	 * 
 	 * @param physicalInfrastructure
 	 * @param logicalInfrastructure
-	 * @return given logialInfrasctucture updated with all elements in physicalInfrastructure and with new relationships added.
+	 * @return given logialInfrastructure updated with all elements in physicalInfrastructure and with new relationships added.
 	 */
 	public static VCPENetworkModel mapLogicalAndPhysical(VCPENetworkModel physicalInfrastructure, VCPENetworkModel logicalInfrastructure) {
-
-		// put all physical elements in logicalInfrastructure
-		logicalInfrastructure.getElements().addAll(physicalInfrastructure.getElements());
 
 		// Assign logical routers to physical ones
 		Router phyRouter;
@@ -183,15 +180,30 @@ public class MPTemplateModelBuilder {
 
 		phyRouter = (Router) VCPENetworkModelHelper.getElementByTemplateName(physicalInfrastructure, TemplateConstants.ROUTER_1_PHY);
 
-		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, TemplateConstants.LR_1_ROUTER);
+		List<Router> routersInLogical = VCPENetworkModelHelper.getRouters(logicalInfrastructure.getElements());
+
+		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(routersInLogical, TemplateConstants.LR_1_ROUTER);
 		logRouter.setPhysicalRouter(phyRouter);
 
-		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, TemplateConstants.LR_2_ROUTER);
+		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(routersInLogical, TemplateConstants.LR_2_ROUTER);
 		logRouter.setPhysicalRouter(phyRouter);
 
-		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(logicalInfrastructure, TemplateConstants.LR_CLIENT_ROUTER);
+		logRouter = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(routersInLogical, TemplateConstants.LR_CLIENT_ROUTER);
 		logRouter.setPhysicalRouter(phyRouter);
 
+		return joinModels(physicalInfrastructure, logicalInfrastructure);
+	}
+
+	/**
+	 * Joins given models into one
+	 * 
+	 * @param physicalInfrastructure
+	 * @param logicalInfrastructure
+	 * @return given logialInfrastructure updated with all elements in physicalInfrastructure
+	 */
+	public static VCPENetworkModel joinModels(VCPENetworkModel physicalInfrastructure, VCPENetworkModel logicalInfrastructure) {
+		// put all physical elements in logicalInfrastructure
+		logicalInfrastructure.getElements().addAll(physicalInfrastructure.getElements());
 		return logicalInfrastructure;
 	}
 
