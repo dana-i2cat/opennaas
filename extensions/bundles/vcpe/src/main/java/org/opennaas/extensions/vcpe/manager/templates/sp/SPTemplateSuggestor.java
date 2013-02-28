@@ -11,6 +11,8 @@ import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
+import org.opennaas.extensions.vcpe.manager.templates.common.SuggestedValues;
+import org.opennaas.extensions.vcpe.manager.templates.common.VLANSuggestor;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
@@ -281,23 +283,20 @@ public class SPTemplateSuggestor {
 	 */
 	private VCPENetworkModel suggestVLANs(VCPENetworkModel model) throws VCPENetworkManagerException {
 
-		/*
-		 * Key: physical interface name. Value: vlans assigned to key.
-		 */
-		Map<String, List<Long>> suggestedVLANS = new HashMap<String, List<Long>>();
+		SuggestedValues suggestedVLANS = new SuggestedValues();
 
 		// Logical Router 1
 		LogicalRouter vcpe1 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
 		for (Interface iface : vcpe1.getInterfaces()) {
 			if (!iface.getTemplateName().equals(SPTemplateConstants.LO1_INTERFACE))
-				iface.setVlan(suggestVLAN(vcpe1.getPhysicalRouter(), iface, MIN_VLAN, MAX_VLAN, suggestedVLANS));
+				iface.setVlan(VLANSuggestor.suggestVLAN(vcpe1.getPhysicalRouter(), iface, suggestedVLANS));
 		}
 
 		// Logical Router 2
 		LogicalRouter vcpe2 = (LogicalRouter) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 		for (Interface iface : vcpe2.getInterfaces()) {
 			if (!iface.getTemplateName().equals(SPTemplateConstants.LO2_INTERFACE))
-				iface.setVlan(suggestVLAN(vcpe2.getPhysicalRouter(), iface, MIN_VLAN, MAX_VLAN, suggestedVLANS));
+				iface.setVlan(VLANSuggestor.suggestVLAN(vcpe2.getPhysicalRouter(), iface, suggestedVLANS));
 		}
 
 		// BoD
@@ -396,42 +395,6 @@ public class SPTemplateSuggestor {
 	}
 
 	/**
-	 * Returns first vlan in vlanRange that is free in given interface of given router, and it's not in given suggestedVLANs. After this call,
-	 * returned vlan is already included in suggestedVLANs.
-	 * 
-	 * @param router
-	 * @param iface
-	 * @param minVlan
-	 *            in vlanRange
-	 * @param maxVlan
-	 *            in vlanRange
-	 * @param suggestedVLANS
-	 * @return first vlan in vlanRange that is free in given interface of given router, and it's not in given suggestedVLANs
-	 * @throws VCPENetworkManagerException
-	 *             if there is no available vlan in specified vlanRange
-	 */
-	private long suggestVLAN(Router phyRouter, Interface iface, long minVlan, long maxVlan, Map<String, List<Long>> suggestedVLANs)
-			throws VCPENetworkManagerException {
-
-		long suggestedVlan = 0L;
-		for (long vlan = minVlan; vlan <= maxVlan; vlan++) {
-			if (!isAlreadySuggestedVlan(phyRouter, iface, vlan, suggestedVLANs)) {
-				if (IsFreeChecker.isVLANFree(null, phyRouter.getName(), Long.toString(vlan), iface.getPhysicalInterfaceName())) {
-					suggestedVlan = vlan;
-					break;
-				}
-			}
-		}
-		if (suggestedVlan == 0L)
-			throw new VCPENetworkManagerException(
-					"Unable to find an available vlan for interface " + VCPENetworkModelHelper.generatePhysicalInterfaceKey(
-							phyRouter, iface));
-
-		markAsSuggestedVlan(phyRouter, iface, suggestedVlan, suggestedVLANs);
-		return suggestedVlan;
-	}
-
-	/**
 	 * 
 	 * @param router
 	 * @param iface
@@ -490,19 +453,6 @@ public class SPTemplateSuggestor {
 		return suggestedUnits;
 	}
 
-	private Map<String, List<Long>> markAsSuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan,
-			Map<String, List<Long>> suggestedVlans) {
-
-		if (suggestedVlans.containsKey(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface))) {
-			suggestedVlans.get(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)).add(vlan);
-		} else {
-			List<Long> ifaceVlans = new ArrayList<Long>();
-			ifaceVlans.add(vlan);
-			suggestedVlans.put(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface), ifaceVlans);
-		}
-		return suggestedVlans;
-	}
-
 	/**
 	 * Sets iface vlan according to the other endpoint of given link.
 	 * 
@@ -511,19 +461,10 @@ public class SPTemplateSuggestor {
 	 * @param link
 	 * @param suggestedVLANS
 	 */
-	private void updateIfaceVLANFromLink(VCPENetworkElement phyElement, Interface iface, Link link, Map<String, List<Long>> suggestedVLANs) {
+	private void updateIfaceVLANFromLink(VCPENetworkElement phyElement, Interface iface, Link link, SuggestedValues suggestedVLANs) {
 		long vlan = VCPENetworkModelHelper.updateIfaceVLANFromLink(iface, link);
 
-		markAsSuggestedVlan(phyElement, iface, vlan, suggestedVLANs);
-	}
-
-	private boolean isAlreadySuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan, Map<String, List<Long>> suggestedVLANS) {
-
-		if (suggestedVLANS.containsKey(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)) &&
-				suggestedVLANS.get(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)).contains(vlan))
-			return true;
-
-		return false;
+		suggestedVLANs.markAsSuggested(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface), Long.valueOf(vlan).intValue());
 	}
 
 	private boolean isAlreadySuggestedUnit(VCPENetworkElement phyElement, Interface iface, int unit, Map<String, List<Integer>> suggestedUnits) {
