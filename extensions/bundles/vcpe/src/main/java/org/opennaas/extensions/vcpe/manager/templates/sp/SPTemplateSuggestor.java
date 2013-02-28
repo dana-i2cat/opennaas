@@ -423,8 +423,9 @@ public class SPTemplateSuggestor {
 			}
 		}
 		if (suggestedVlan == 0L)
-			throw new VCPENetworkManagerException("Unable to find an available vlan for interface " + generatePhysicalInterfaceKey(
-					phyRouter, iface));
+			throw new VCPENetworkManagerException(
+					"Unable to find an available vlan for interface " + VCPENetworkModelHelper.generatePhysicalInterfaceKey(
+							phyRouter, iface));
 
 		markAsSuggestedVlan(phyRouter, iface, suggestedVlan, suggestedVLANs);
 		return suggestedVlan;
@@ -479,12 +480,12 @@ public class SPTemplateSuggestor {
 	private Map<String, List<Integer>> markAsSuggestedUnit(VCPENetworkElement phyElement, Interface iface, int unit,
 			Map<String, List<Integer>> suggestedUnits) {
 
-		if (suggestedUnits.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
-			suggestedUnits.get(generatePhysicalInterfaceKey(phyElement, iface)).add(unit);
+		if (suggestedUnits.containsKey(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface))) {
+			suggestedUnits.get(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)).add(unit);
 		} else {
 			List<Integer> ifaceUnits = new ArrayList<Integer>();
 			ifaceUnits.add(unit);
-			suggestedUnits.put(generatePhysicalInterfaceKey(phyElement, iface), ifaceUnits);
+			suggestedUnits.put(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface), ifaceUnits);
 		}
 		return suggestedUnits;
 	}
@@ -492,12 +493,12 @@ public class SPTemplateSuggestor {
 	private Map<String, List<Long>> markAsSuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan,
 			Map<String, List<Long>> suggestedVlans) {
 
-		if (suggestedVlans.containsKey(generatePhysicalInterfaceKey(phyElement, iface))) {
-			suggestedVlans.get(generatePhysicalInterfaceKey(phyElement, iface)).add(vlan);
+		if (suggestedVlans.containsKey(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface))) {
+			suggestedVlans.get(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)).add(vlan);
 		} else {
 			List<Long> ifaceVlans = new ArrayList<Long>();
 			ifaceVlans.add(vlan);
-			suggestedVlans.put(generatePhysicalInterfaceKey(phyElement, iface), ifaceVlans);
+			suggestedVlans.put(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface), ifaceVlans);
 		}
 		return suggestedVlans;
 	}
@@ -518,8 +519,8 @@ public class SPTemplateSuggestor {
 
 	private boolean isAlreadySuggestedVlan(VCPENetworkElement phyElement, Interface iface, long vlan, Map<String, List<Long>> suggestedVLANS) {
 
-		if (suggestedVLANS.containsKey(generatePhysicalInterfaceKey(phyElement, iface)) &&
-				suggestedVLANS.get(generatePhysicalInterfaceKey(phyElement, iface)).contains(vlan))
+		if (suggestedVLANS.containsKey(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)) &&
+				suggestedVLANS.get(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)).contains(vlan))
 			return true;
 
 		return false;
@@ -527,23 +528,11 @@ public class SPTemplateSuggestor {
 
 	private boolean isAlreadySuggestedUnit(VCPENetworkElement phyElement, Interface iface, int unit, Map<String, List<Integer>> suggestedUnits) {
 
-		if (suggestedUnits.containsKey(generatePhysicalInterfaceKey(phyElement, iface)) &&
-				suggestedUnits.get(generatePhysicalInterfaceKey(phyElement, iface)).contains(unit))
+		if (suggestedUnits.containsKey(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)) &&
+				suggestedUnits.get(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, iface)).contains(unit))
 			return true;
 
 		return false;
-	}
-
-	private String generatePhysicalInterfaceKey(VCPENetworkElement phyElement, Interface iface) {
-		String ifaceKey;
-		if (phyElement instanceof Router) {
-			ifaceKey = phyElement.getName() + ":" + iface.getPhysicalInterfaceName();
-		} else if (phyElement instanceof Domain) {
-			ifaceKey = phyElement.getName() + ":" + iface.getPhysicalInterfaceName();
-		} else {
-			ifaceKey = iface.getPhysicalInterfaceName();
-		}
-		return ifaceKey;
 	}
 
 	/**
