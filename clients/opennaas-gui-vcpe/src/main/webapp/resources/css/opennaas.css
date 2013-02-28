@@ -569,18 +569,34 @@ h3.lr_inactive {
 
 /* Physical view - Multiple Provider 
 ----------------------------------*/
-#network_wan1,#network_wan2,#network_client {
+#network_wan1 {
     clear: both;
     display: inline-block;
     margin-bottom: 15px;
-    margin-left: 91px;
+    margin-left: 85px;
     margin-right: 32px;
     margin-top: 15px;
     width: 248px;
 }
 
+#network_wan2 {
+	clear: both;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-left: 40px;
+    margin-right: 30px;
+    margin-top: 15px;
+    width: 250px;
+}
+
 #network_client {
-	margin-left: 278px !important;
+    clear: both;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-left: 250px;
+    margin-right: 32px;
+    margin-top: 15px;
+    width: 250px;
 }
 
 #network_wan1 #config,#network_wan2 #config,#network_client #config {
@@ -591,7 +607,7 @@ h3.lr_inactive {
 	width: 150px;
 	padding: 5px;
 	float: left;
-	margin-left: 115px;
+	margin-left: 100px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
@@ -601,7 +617,7 @@ h3.lr_inactive {
 	width: 150px;
 	padding: 5px;
 	float: left;
-	margin-left: 190px;
+	margin-left: 160px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
@@ -609,9 +625,9 @@ h3.lr_inactive {
 
 #iface_router_down {
 	width: 150px;
-	padding: 5px 5px 5px 6px;
+	padding: 5px;
 	float: left;
-	margin-left: 300px;
+	margin-left: 265px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
@@ -621,10 +637,14 @@ h3.lr_inactive {
 	text-align: center;
 	display: inline-block;
 	width: 485px;
-	padding: 5px 5px 5px 125px;
-	margin-left: 5px;
+	padding: 5px 5px 5px 0px;
+	margin-left: 100px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+}
+
+#phy_router .ui-accordion-content {
+	height: 150px;
 }
 
 #phy_router #config {
