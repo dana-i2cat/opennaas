@@ -62,19 +62,6 @@ $(document).ready(function() {
 });
 
 /**
- * Ajax Sample Method that updates the header of a view
- */
-function updateHeader() {
-	$.ajax({
-		type : "GET",
-		url : "/opennaas-vcpe/secure/vcpeNetwork/getAjax",
-		success : function(data) {
-			$('#ajaxUpdate').html(data);
-		}
-	});
-}
-
-/**
  * Ajax call to check if the interface is free in the environment
  * 
  * @param vcpeId
@@ -456,6 +443,92 @@ $(function() {
 		});
 	}
 
+	// accordion styles when physical sp is loaded
+	if ($("#mpLogicalForm").length) {
+		jsPlumbNecessary = true;
+	
+		/* MP Physical view */
+		
+		$("#vcpe_mp_logical").accordion({
+			collapsible : true,
+			active: false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			},
+			beforeActivate : function() {
+				clearJSPlumbMPLogical();
+			},
+			activate : function() {
+				setJSPlumbMPLogical(topologyVisible, bodVisible);
+			}
+		});
+		
+		$("#network_client").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+		
+		/* MP Physical view */
+		$("#network_wan1").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+
+		/* MP Physical view */
+		$("#network_wan2").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+		
+		$("#iface_router_up2").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+		
+		$("#iface_router_down").accordion({
+			collapsible : false,
+			heightStyle : "content",
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+		
+		$("#lrprovider1").accordion({
+			collapsible : false,
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+
+		$("#lrprovider2").accordion({
+			collapsible : false,
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+
+		$("#lrclient").accordion({
+			collapsible : false,
+			icons : {
+				activeHeader : "ui-icon-check"
+			}
+		});
+		
+	}
+	
 	/* Buttons */
 	$("#button1").button();
 	$("#button2").button();
@@ -848,7 +921,6 @@ function clearJSPlumbSPPhysical() {
 
 //set jsPlumb physical view
 function setJSPlumbMPPhysical() {
-	// network wan1 -> up1 router interface
 	addConnection("network_wan1", "iface_router_up1", "mpPhysicalForm", 0.485, 1, 0.5, 0, false);
 	addConnection("network_wan2", "iface_router_up2", "mpPhysicalForm", 0.485, 1, 0.5, 0, false);
 	addConnection("iface_router_up1", "phy_router", "mpPhysicalForm", 0.5, 1, 0.31, 0.03, false);
@@ -857,8 +929,76 @@ function setJSPlumbMPPhysical() {
 	addConnection("iface_router_down", "network_client", "mpPhysicalForm", 0.5, 1, 0.505, 0.1, false);
 }
 
-//clear all jsPlumb stuff
+//clear all jsPlumb physical
 function clearJSPlumbMPPhysical() {
+	jsPlumb.deleteEveryEndpoint();
+	jsPlumb.detachAllConnections();
+
+	// remove all overlays of each connection
+	if (intra_topology_connections != null) {
+		var connection = null;
+		while ((connection = intra_topology_connections.pop()) != null) {
+			connection.removeAllOverlays();
+		}
+	}
+
+	if (extra_topology_connections != null) {
+		var connection = null;
+		while ((connection = extra_topology_connections.pop()) != null) {
+			connection.removeAllOverlays();
+		}
+	}
+
+	// detach all endpoints
+	if (intra_topology_endpoints != null) {
+		var endpoint = null;
+		while ((endpoint = intra_topology_endpoints.pop()) != null) {
+			endpoint.detachAll();
+		}
+	}
+}
+
+//set jsPlumb logical view
+function setJSPlumbMPLogical() {
+	if($('#vcpe_mp_logical').children().hasClass('ui-state-active')) {
+		addConnection("network_wan1", "iface_down_netprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("network_wan2", "iface_down_netprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		
+		addConnection("iface_down_netprovider1", "iface_up_lrprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("iface_down_netprovider2", "iface_up_lrprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		
+		addConnection("iface_up_lrprovider1", "lrprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0.06, false);
+		addConnection("iface_up_lrprovider2", "lrprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0.06, false);
+		
+		addConnection("lrprovider1", "iface_lrprovider1_down", "mpLogicalForm", 0.5, 0.96, 0.5, 0.01, false);
+		addConnection("lrprovider2", "iface_lrprovider2_down", "mpLogicalForm", 0.5, 0.96, 0.5, 0.01, false);
+		
+		addConnection("iface_lrprovider1_down", "iface_client_up1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("iface_lrprovider2_down", "iface_client_up2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		
+		addConnection("iface_client_up1", "lrclient", "mpLogicalForm", 0.80, 1, 0.43, 0.06, false);
+		addConnection("iface_client_up2", "lrclient", "mpLogicalForm", 0.2, 1, 0.95, 0.06, false);
+		
+		addConnection("lrclient", "iface_client_down", "mpLogicalForm", 0.69, 0.965, 0.5, 0.0, false);	
+		
+		addConnection("iface_client_down", "iface_up_netclient", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("iface_up_netclient", "network_client", "mpLogicalForm", 0.5, 1, 0.5, 0.01, false);
+	}
+	else {
+		addConnection("network_wan1", "iface_down_netprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("network_wan2", "iface_down_netprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+
+		addConnection("iface_down_netprovider1", "vcpe_mp_logical", "mpLogicalForm", 0.5, 1, 0.258, 0.09, false);
+		addConnection("iface_down_netprovider2", "vcpe_mp_logical", "mpLogicalForm", 0.5, 1, 0.723, 0.09, false);
+		
+		addConnection("vcpe_mp_logical", "iface_up_netclient", "mpLogicalForm", 0.49, 1, 0.5, 0, false);
+		addConnection("iface_up_netclient", "network_client", "mpLogicalForm", 0.5, 1, 0.5, 0.01, false);
+	}
+	
+}
+
+//clear all jsPlumb logical
+function clearJSPlumbMPLogical() {
 	jsPlumb.deleteEveryEndpoint();
 	jsPlumb.detachAllConnections();
 
@@ -937,6 +1077,8 @@ $(function() {
 				setJSPlumbSPPhysical();
 			} else if ($("#mpPhysicalForm").length) {
 				setJSPlumbMPPhysical();
+			} else if ($("#mpLogicalForm").length) {
+				setJSPlumbMPLogical();
 			} 
 		});
 		
@@ -981,8 +1123,11 @@ function resizeWindow(e) {
 		clearJSPlumbSPLogical();
 		setJSPlumbSPPhysical();
 	} else if ($("#mpPhysicalForm").length) {
-		clearJSPlumbMPLogical();
+		clearJSPlumbMPPhysical();
 		setJSPlumbMPPhysical();
+	} else if ($("#mpLogicalForm").length) {
+		clearJSPlumbMPLogical();
+		setJSPlumbMPLogical();
 	}
 }
 
