@@ -136,7 +136,7 @@ public class Interface {
 	 * @author Jordi
 	 */
 	public enum Types {
-		INTER("Inter"), UP("Up"), DOWN("Down"), LOOPBACK("Loopback"), WAN("Wan"), OTHER("Other");
+		INTER("Inter"), UP("Up"), DOWN("Down"), LOOPBACK("Loopback"), LOGICALTUNNEL("Logicaltunnel"), WAN("Wan"), OTHER("Other");
 
 		private final String	text;
 
