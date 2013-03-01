@@ -19,7 +19,7 @@ public class IPNetworkDomain extends Domain {
 		return iPAddressRanges;
 	}
 
-	public void setIPAddressRange(List<String> iPAddressRanges) {
+	public void setIPAddressRanges(List<String> iPAddressRanges) {
 		this.iPAddressRanges = iPAddressRanges;
 	}
 
