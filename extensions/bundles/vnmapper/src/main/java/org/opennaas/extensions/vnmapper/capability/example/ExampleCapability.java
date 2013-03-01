@@ -1,5 +1,7 @@
 package org.opennaas.extensions.vnmapper.capability.example;
 
+import java.util.ArrayList;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -11,23 +13,6 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
-import org.opennaas.core.resources.capability.ICapability;
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceManager;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceManager;
-import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.Device;
-import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.NetworkModel;
-import java.util.*;
-
 /**
  * 
  * @author Elisabeth Rigol
@@ -35,7 +20,7 @@ import java.util.*;
  */
 public class ExampleCapability extends AbstractCapability implements IExampleCapability {
 
-	public static String	CAPABILITY_TYPE	= "example";
+	public static String	CAPABILITY_TYPE	= "vnmapping";
 
 	Log						log				= LogFactory.getLog(ExampleCapability.class);
 
@@ -45,7 +30,7 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 
 		super(descriptor);
 		this.resourceId = resourceId;
-		log.debug("Built new Example Capability");
+		log.debug("Built new VNMapping Capability");
 	}
 
 	@Override
@@ -92,48 +77,46 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 	 * 
 	 */
 	@Override
-	public String sayHello(String VNRequest,InPNetwork net) throws CapabilityException {
+	public String sayHello(String VNRequest, InPNetwork net) throws CapabilityException {
 
-                
+		// //// run the matching and mapping/////
+		// Global.rowNum=8;
+		// Global.cellNum=8;
+		Global.pathChoice = 1;
+		Global.maxPathLinksNum = 5;
+		// Global.staticNet=1;
+		// Global.staticVNT=1;
+		Global.stepsMax = 100;
+		// //
+		// InPNetwork net=new InPNetwork();
+		// net=net.readPNetworkFromXMLFile("src\\marketplace\\network.xml");
+		// net.printNetwork();
+		// //
+		VNTRequest vnt = new VNTRequest();
+		vnt = vnt.readVNTRequestFromXMLFile(VNRequest);
+		vnt.printVNTNetwork();
 
-                ////// run the matching and mapping/////
-                //Global.rowNum=8;
-                //Global.cellNum=8;
-                Global.pathChoice=1;
-                Global.maxPathLinksNum=5;
-                //Global.staticNet=1;
-                //Global.staticVNT=1;
-                Global.stepsMax=100;
-                ////
-                //InPNetwork net=new InPNetwork();    
-                //net=net.readPNetworkFromXMLFile("src\\marketplace\\network.xml");
-                //net.printNetwork();
-                ////
-                VNTRequest vnt=new VNTRequest();
-                vnt=vnt.readVNTRequestFromXMLFile(VNRequest);
-                vnt.printVNTNetwork();
-                
-                try {
-            
-        
-                    VNTMapper mapper=new VNTMapper();
-                    MappingResult mres=new MappingResult();
-                    ArrayList<ArrayList > matchingResult=new ArrayList<ArrayList >();
-                    int matchingRes = mapper.matchVirtualNetwork(vnt, net, matchingResult); 
-                    if(matchingRes==1)
-                      {
-                        System.out.println("successful Matching");
-                        InPNetwork temp = (InPNetwork)ObjectCopier.deepCopy(net);
-                        int result=mapper.VNTMapping(vnt, temp, 0, matchingResult, 3, mres); 
-                        if(result==1)
-                         {
-                           System.out.println("successful Mapping");
-                           mres.print();
-                         }
-                    
-                     }
-                }catch(Exception e){System.out.println("Exception");}
-                
+		try {
+
+			VNTMapper mapper = new VNTMapper();
+			MappingResult mres = new MappingResult();
+			ArrayList<ArrayList> matchingResult = new ArrayList<ArrayList>();
+			int matchingRes = mapper.matchVirtualNetwork(vnt, net, matchingResult);
+			if (matchingRes == 1)
+			{
+				System.out.println("successful Matching");
+				InPNetwork temp = (InPNetwork) ObjectCopier.deepCopy(net);
+				int result = mapper.VNTMapping(vnt, temp, 0, matchingResult, 3, mres);
+				if (result == 1)
+				{
+					System.out.println("successful Mapping");
+					mres.print();
+				}
+
+			}
+		} catch (Exception e) {
+			System.out.println("Exception");
+		}
 
 		return "Hello " + VNRequest;
 	}

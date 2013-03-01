@@ -23,7 +23,7 @@
          <property name="persistenceUnit" value="ResourceCore"/>
     </bean>
 	<bean id="sampleresourceRepository" class="org.opennaas.extensions.vnmapper.repository.sampleResourceRepository" init-method="init">
-		<argument value="sampleresource"/>
+		<argument value="vnmapper"/>
 		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 		<property name="resourceBootstrapperFactory" ref="sampleresourceBootstrapperFactory"/>
 	</bean>
@@ -33,7 +33,7 @@
 	</reference-list>
 	<service ref="sampleresourceRepository" interface="org.opennaas.core.resources.IResourceRepository">
 		<service-properties>
-			<entry key="type" value="sampleresource"/>
+			<entry key="type" value="vnmapper"/>
 			<entry key="version" value="1.0.0"/>
 		</service-properties>
 	</service>
@@ -43,7 +43,7 @@
 
 	<!-- Factory that creates protocol capabilities -->
 	<bean id="exampleCapabilityFactory" class="org.opennaas.extensions.vnmapper.capability.example.ExampleCapabilityFactory">
-		<property name="type" value="example"/>
+		<property name="type" value="vnmapping"/>
 	</bean>
 	<!-- Command completers -->
 	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
@@ -51,14 +51,14 @@
 	<service ref="exampleCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="example"/>
+			<entry key="capability" value="vnmapping"/>
 			<entry key="capability.model" value="dummy"/>
 			<entry key="capability.version" value="1.0"/>
 		</service-properties>
 	</service>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
-		<command name="example/sayHello">
+		<command name="vnmapping/mapvn">
 			<action class="org.opennaas.extensions.vnmapper.capability.example.shell.ExampleCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
