@@ -68,6 +68,6 @@
 		
 		<module>webservice</module>
 		
-<!--  	<module>sampleresource</module> -->	
+		<module>sampleresource</module>
 	</modules>
 </project>
