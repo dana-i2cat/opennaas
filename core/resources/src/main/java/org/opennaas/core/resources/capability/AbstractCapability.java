@@ -1,5 +1,6 @@
 package org.opennaas.core.resources.capability;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -14,6 +15,7 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.profile.IProfile;
@@ -338,19 +340,26 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 */
 	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
 			String ifaceName, Dictionary<String, String> props) throws CapabilityException {
-		if (props != null) {
-			// Rest
-			props.put("service.exported.interfaces", "*");
-			props.put("service.exported.configs", "org.apache.cxf.rs");
-			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
-
-			// Soap
-			// props.put("service.exported.interfaces", "*");
-			// props.put("org.apache.cxf.ws.databinding", "jaxb");
-			// props.put("service.exported.configs", "org.apache.cxf.ws");
-			// props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
+		try {
+			ConfigurationAdminUtil configurationAdmin = new ConfigurationAdminUtil(bundleContext);
+			String url = configurationAdmin.getProperty("org.opennaas", "ws.rest.url");
+			if (props != null) {
+				// Rest
+				props.put("service.exported.interfaces", "*");
+				props.put("service.exported.configs", "org.apache.cxf.rs");
+				props.put("org.apache.cxf.ws.address", url + "/" + resourceType + "/" + resourceName + "/" + capabilityName);
+			}
+			log.info("Registering ws in url: " + props.get("org.apache.cxf.ws.address"));
+			registration = bundleContext.registerService(ifaceName, this, props);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
 		}
-		return registration = bundleContext.registerService(ifaceName, this, props);
+		return registration;
+	}
+
+	protected void unregisterService() {
+		if (registration != null)
+			registration.unregister();
 	}
 
 	/**

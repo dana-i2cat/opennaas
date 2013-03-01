@@ -1,0 +1,581 @@
+/* -----------------------------------------------------------------------
+OpenNaaS Custom CSS
+----------------------------------------------------------------------- */
+
+/* Common styles */
+h1 {	
+	color: #7E7E7E;
+}
+
+/* Layout styles
+----------------------------------*/
+.container #menu {
+	float: left;
+	width: 200px;
+	margin-top: 0px;
+}
+
+.container #body {
+	float: left;
+	width: 750px;
+	min-height: 300px;
+}
+
+.container #footer {
+	margin: 0px auto 0px auto;
+	width: 500px;
+}
+
+/* Header styles
+----------------------------------*/
+#header_logo {
+	float: left;
+	width: 150px;
+}
+
+#header_title {
+	margin-left: 150px;
+	margin-top: 30px;
+	float: left;
+}
+
+#header_user {
+	margin-top: 10px;
+	float: right;
+	border: 0;
+	background: white none;
+}
+
+#header_menu {
+	clear: both;
+	height: 31px;
+}
+
+#languages {
+	float: right;
+	margin-right: 3px;
+}
+
+.languageText {
+	font-size: 11px;
+}
+
+#home {
+	float: left;
+}
+
+#username {
+	float: left;
+}
+
+#user_icon {
+	float: left;
+}
+
+
+/* Menu styles
+----------------------------------*/
+#_menu {
+	width: 175px;
+	min-height: 300px;
+	z-index: 1000;
+}
+
+#_menu ul {
+	min-width: 115px;
+}
+
+/* Template styles
+----------------------------------*/
+.template {
+	float:left;
+	height:90px;
+	cursor: pointer;
+}
+#selectable .ui-selecting {
+	background: #FECA40; 
+}
+#selectable .ui-selected {
+	background: #F39814; color: white; 
+}
+#selectable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+#selectable li {
+	margin-right: 3px;
+	padding: 5px;
+	font-size: 10px;
+	width: 360px;
+	min-height: 410px;
+	float: left
+}
+#selectable .title {
+	font-size: 12px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+#selectable .description {
+	margin-bottom: 10px;
+}
+#selectable .template_image {
+    background-color: white;
+    border: 1px solid #DDDDDD;
+    padding-top: 5px;
+    text-align: center;
+    width: 358px;
+}
+
+
+/* Home styles
+----------------------------------*/
+.button {
+	width: 100px;
+}
+
+.ui-widget-overlay {
+	opacity: .80 !important;
+	/* Make sure to change both of these, as IE only sees the second one */
+	filter: alpha(opacity =     80) !important;
+	background-color: rgb(50, 50, 50) !important;
+	/* This will make it darker */
+}
+
+​ /* Login styles
+----------------------------------*/  
+.ui-menu {
+	width: 150px;
+}
+
+#login {
+	width: 260px;
+	height: 50px;
+	margin: 50px auto 0px auto;
+}
+
+/* Create and Edit styles
+----------------------------------
+#logicalForm {
+	font-size: 10px;
+}
+
+#logicalForm {
+	font-size: 10px;
+}
+
+#logicalForm h2 {
+	font-size: 16px;
+}
+
+#logicalForm h3 {
+	font-size: 13px;
+}
+
+#logicalForm label {
+	font-size: 11px;
+}
+*/
+#vcpe {
+	clear: both;
+}
+
+#client {
+	clear: both;
+}
+
+#client_box {
+	clear: both;
+	font-size: 11px;
+}
+
+#submitButton {
+	margin-top: 15px;
+	float: right;
+}
+
+#selectTemplateButton {
+	clear: both;
+	float: right;
+}
+
+#updateIpButton {
+	margin-top: 15px;
+	float: right;
+}
+
+#up_interfaces {
+	text-align: center;
+	width: 100%;
+	clear: both;
+}
+
+#up_backup, #up_master {
+	width: 150px;
+	padding: 10px 5px 5px 5px;
+	margin-left: 120px;
+	margin-right: 70px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	float: left;
+	font-size: 12px !important;
+}
+
+#up_master input {
+	font-size: 10px !important;
+}
+
+#up_backup input {
+	font-size: 10px !important;
+}
+
+#id_client_backup,#id_client_master {
+	width: 150px;
+	padding: 10px 0 0 10px;
+	float: left;
+	margin-left: 10px;
+}
+
+#vcpe_interfaces {
+	text-align: center;
+	width: 100%;
+}
+
+#cpe_bod {
+	position: relative;
+	z-index: 100;
+	margin-bottom: 15px;	
+}
+
+#client_master {
+	display: inline-block;
+	width: 140px;
+	padding: 5px;
+	clear: both;
+}
+
+#client_master_box {
+	display: inline-block;
+	width: 148px;
+	padding: 10px 0 0 10px;
+	clear: both;
+	margin-left: 22px;
+}
+
+
+#client_backup,#inter_master,#inter_backup {
+	display: inline-block;
+	width: 140px;
+	padding: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#inter_master_box, #inter_backup_box, #client_backup_box{
+	display: inline-block;
+	width: 148px;
+	padding: 10px 0 0 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 15px;
+}
+
+
+#client_down_master {
+	width: 150px;
+	padding: 5px 5px 5px 5px;
+	margin-left: 60px;
+	margin-right: 70px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	float: left;
+}
+
+#client_down_backup {
+	width: 150px;
+	padding: 5px 5px 5px 5px;
+	margin-left: 236px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	float: left;
+}
+
+
+#client_down_master input {
+	font-size: 10px !important;
+}
+
+#client_down_backup input {
+	font-size: 10px !important;
+}
+
+#client_interfaces {
+	text-align: center;
+	width: 100%;
+	clear: both;
+}
+#vcpe_routers {
+	text-align: center;
+}
+
+#lr_master, #lr_backup {
+	display: inline-block;
+	width: 280px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+h3.lr_active {
+	border: 1px solid #dddddd !important;
+	background: #e6efd7  50% top repeat-x !important;
+	color: #2f4f4f !important;
+}
+
+h3.lr_active {
+	border: 1px solid #dddddd !important;
+	background: #e6efd7  50% top repeat-x !important;
+	color: #2f4f4f !important;
+}
+
+h3.lr_inactive {
+	border: 1px solid #dddddd !important;
+	color: #2f4f4f !important;
+}
+
+#bod {
+	position: relative;
+	margin-top: 15px;
+}
+
+#bod_master, #bod_inter, #bod_backup {
+	position: relative;
+	z-index: 100;
+	min-width: 200px;
+	min-height: 80px;
+	text-align: center;
+	padding: 10px 5px;
+}
+
+#bod_buttons {
+	margin-top: 15px;
+}
+
+#bod_inputs {
+	margin-top: 5px;
+}
+
+#bod_master {
+	float: left;
+	margin: 15px 30px 15px -10px;
+}
+
+#bod_inter {
+	float: left;
+	margin: 15px 0px;
+}
+
+#bod_backup {
+	float: right;
+	margin: 15px -15px 15px 0px;
+}
+
+#config {
+	width: 200px;
+	height: 20px;
+	float: left;
+	margin: 0 10px 10px 0;
+	z-index: inherit;
+	padding: 10px 0 10px 0;
+	font-size: 12px !important;
+	text-align: center;
+}
+
+#client_config {
+	width: 208px;
+	height: 110px;
+	padding: 5px;
+	float: left;
+	margin: 10px 0px 10px 7px;
+	font-size: 11px;
+}
+
+#client_config_box {
+	width: 325px;
+	height: 60px;
+	padding: 5px;
+	float: left;
+	margin: 10px 10px 10px 0;
+}
+
+#client_config_firewall {
+	width: 673px;
+	padding: 5px;
+	clear: both;
+	margin: 0 10px 10px 0;
+	font-size: 11px;
+}
+
+
+.fields {
+	display: inline-block; 
+	padding-top: 15px; 
+	text-align: center;
+}
+
+.field {
+	width: 100%; 
+	display: inline-block; 
+	width: 150px;
+}
+
+.field {
+	width: 100%; 
+	display: inline-table; 
+	width: 150px;
+}
+
+#bgp {
+	position: relative;
+	z-index: 100;
+}
+#bgp_data {
+	width: 635px; 	
+	font-size: 12px;
+}
+
+#vrrp {
+	position: relative;
+	z-index: 100;
+}
+#vrrp_data {
+	width: 636px; 	
+	font-size: 12px;
+}
+
+#vrrp_data_box {
+	width: 645px; 	
+	font-size: 12px;
+}
+
+#noc_data {
+	width: 690px;
+}
+
+#client_data {
+	width: 690px;
+}
+
+#client_data_box {
+	width: 700px;
+}
+
+#ospf_info {
+	margin-top: 5px;
+}
+
+#firewallTable {
+	margin-top: 5px;
+	width: 650px;	
+}
+
+#firewallTable th, #firewallTable td {
+	width: 50px; 
+	padding-left: 5px;	
+}
+
+.fwButton {
+	text-align: center;
+}
+
+/* Home styles
+----------------------------------*/
+#cpe_master, #cpe_backup {
+	display: inline-block;
+	width: 280px;
+	margin-left: 60px;
+	margin-right: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	clear: both;
+}
+
+#wan {
+	width: 750px;
+}
+
+#wan_logical .noc_data {
+	text-align: center;
+}
+
+#wan_backup {
+	width: 150px;
+	padding: 5px;
+	float: left;
+	margin-left: 135px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#wan_master {
+	width: 150px;
+	padding: 5px;
+	float: left;
+	margin-left: 146px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#cpe_interfaces {
+	text-align: center;
+	width: 100%;
+}
+
+#cpe_core {
+	width: 280px;
+	margin-left: 202px;
+}
+
+#cpe_client_master {
+	display: inline-block;
+	width: 150px;
+	padding: 5px;
+	clear: both;
+	margin-left: 5px;
+}
+
+#cpe_client_backup,#cpe_inter_master,#cpe_inter_backup {
+	display: inline-block;
+	width: 150px;
+	padding: 5px;
+	margin-left: 5px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.config_content {
+	padding: 10px 0 10px 0;
+	font-size: 10px !important;
+}
+
+/* Other styles
+----------------------------------*/
+
+#tooltip {
+	display: none;
+	position: absolute;
+	cursor: pointer;
+	display: none;
+	border: solid 1px #eee;
+	padding: 10px;
+	margin-left: 5px;
+	margin-top: -4px;
+	background: #FBE3E4;
+	color: #8a1f11;
+	border-color: #FBC2C4;
+	z-index: 1000;
+}

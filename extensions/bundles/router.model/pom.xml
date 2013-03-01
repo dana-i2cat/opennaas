@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.14</version>
+		<version>0.17</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.router.model</artifactId>
@@ -18,6 +18,10 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.guava-osgi</groupId>
+			<artifactId>guava-osgi</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -57,7 +61,7 @@
 						<Import-Package>!org.opennaas.extensions.router.model.*,
 							org.springmodules.*;version="0.8",org.slf4j;version="1.5.6",*</Import-Package>
 						<Export-Package>org.opennaas.extensions.router.model;version="${project.version}"</Export-Package>-->
-						<Import-Package>!org.opennaas.extensions.router.model.*,org.slf4j,*</Import-Package>
+						<Import-Package>org.slf4j,*</Import-Package>
 						<Export-Package>org.opennaas.extensions.router.model;version="${project.version}",
 							org.opennaas.extensions.router.model.*;version="${project.version}"
 						</Export-Package>

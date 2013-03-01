@@ -419,9 +419,7 @@ public class QueueManager extends AbstractCapability implements
 
 			// the profiles will not be cloned
 			newResourceDescriptor.setProfileId("");
-			// we delete chassis capability, a logical resource can't create new
-			// logical devices or new interfaces
-			newResourceDescriptor.removeCapabilityDescriptor("chassis");
+
 			// Wet set the resource name
 			newResourceDescriptor.getInformation().setName(nameResource);
 

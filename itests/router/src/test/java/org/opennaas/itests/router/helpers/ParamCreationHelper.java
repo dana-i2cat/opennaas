@@ -22,6 +22,8 @@ import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.VLANEndpoint;
+import org.opennaas.extensions.router.model.VRRPGroup;
+import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class ParamCreationHelper {
@@ -282,6 +284,33 @@ public class ParamCreationHelper {
 		lrModel.setName(lrName);
 		lrModel.setElementName(lrName);
 		return lrModel;
+	}
+
+	public static VRRPGroup newParamsVRRPGroupWithOneEndpoint(String virtualIPAddress, String interfaceName, String interfaceIPAddress,
+			String interfaceSubnetMask) {
+		// VRRPGroup
+		VRRPGroup vrrpGroup = new VRRPGroup();
+		vrrpGroup.setVrrpName(201);
+		vrrpGroup.setVirtualIPAddress(virtualIPAddress);
+
+		// VRRPProtocolEndpoint
+		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint1.setPriority(100);
+		vrrProtocolEndpoint1.setService(vrrpGroup);
+
+		// IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
+		ipProtocolEndpoint1.setIPv4Address(interfaceIPAddress);
+		ipProtocolEndpoint1.setSubnetMask(interfaceSubnetMask);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
+
+		// EthernetPort
+		EthernetPort eth1 = new EthernetPort();
+		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth1.setName(interfaceName);
+		ipProtocolEndpoint1.addLogiaclPort(eth1);
+
+		return vrrpGroup;
 	}
 
 }

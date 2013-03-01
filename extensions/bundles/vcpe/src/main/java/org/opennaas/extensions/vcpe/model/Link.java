@@ -94,10 +94,10 @@ public class Link extends VCPENetworkElement {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (nameInTemplate == null) {
-			if (other.nameInTemplate != null)
+		if (templateName == null) {
+			if (other.templateName != null)
 				return false;
-		} else if (!nameInTemplate.equals(other.nameInTemplate))
+		} else if (!templateName.equals(other.templateName))
 			return false;
 		if (id == null) {
 			if (other.id != null)

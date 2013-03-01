@@ -40,8 +40,8 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 
 	private VCPENetworkModel createEmptyModel(Resource resource) {
 		VCPENetworkModel model = new VCPENetworkModel();
-		model.setVcpeNetworkId(resource.getResourceIdentifier().getId());
-		model.setVcpeNetworkName(resource.getResourceDescriptor().getInformation().getName());
+		model.setId(resource.getResourceIdentifier().getId());
+		model.setName(resource.getResourceDescriptor().getInformation().getName());
 		model.setCreated(false);
 		return model;
 	}

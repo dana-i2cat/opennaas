@@ -1,0 +1,241 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.opennaas</groupId>
+		<artifactId>org.opennaas.clients</artifactId>
+		<version>0.17</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.opennaas.gui.vcpe</artifactId>
+	<packaging>war</packaging>
+	<name>OpenNaas :: GUI :: Virtual CPE</name>
+	<url>http://maven.apache.org</url>
+
+	<dependencies>
+		<!--  Spring -->
+		<!-- Core utilities used by other modules.
+		    Define this if you use Spring Utility APIs 
+		    (org.springframework.core.*/org.springframework.util.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-core</artifactId>
+		</dependency>
+		<!-- Expression Language (depends on spring-core)
+		    Define this if you use Spring Expression APIs 
+		    (org.springframework.expression.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-expression</artifactId>
+		</dependency>
+		<!-- Bean Factory and JavaBeans utilities (depends on spring-core)
+		    Define this if you use Spring Bean APIs 
+		    (org.springframework.beans.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-beans</artifactId>
+		</dependency>
+		<!-- Aspect Oriented Programming (AOP) Framework 
+		    (depends on spring-core, spring-beans)
+		    Define this if you use Spring AOP APIs 
+		    (org.springframework.aop.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-aop</artifactId>
+		</dependency>
+		<!-- Application Context 
+		    (depends on spring-core, spring-expression, spring-aop, spring-beans)
+		    This is the central artifact for Spring's Dependency Injection Container
+		    and is generally always defined-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		</dependency>
+		<!-- Various Application Context utilities, including EhCache, JavaMail, Quartz, 
+		    and Freemarker integration
+		    Define this if you need any of these integrations-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		</dependency>
+		<!-- Transaction Management Abstraction 
+		    (depends on spring-core, spring-beans, spring-aop, spring-context)
+		    Define this if you use Spring Transactions or DAO Exception Hierarchy
+		    (org.springframework.transaction.*/org.springframework.dao.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-tx</artifactId>
+		</dependency>
+		<!-- Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA and iBatis.
+		    (depends on spring-core, spring-beans, spring-context, spring-tx)
+		    Define this if you need ORM (org.springframework.orm.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-orm</artifactId>
+		</dependency>
+		<!-- Object-to-XML Mapping (OXM) abstraction and integration with JAXB, JiBX, 
+		    Castor, XStream, and XML Beans.
+		    (depends on spring-core, spring-beans, spring-context)
+		    Define this if you need OXM (org.springframework.oxm.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-oxm</artifactId>
+		</dependency>
+		<!-- Contains core authentication and access-contol classes and interfaces, 
+			remoting support and basic provisioning APIs. -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-core</artifactId>
+ 		</dependency> 
+ 		<!-- Contains filters and related web-security infrastructure code. 
+ 			Anything with a servlet API dependency. You'll need it if you require Spring Security 
+ 			web authentication services and URL-based access-control. -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-web</artifactId>
+  		</dependency>
+  		<!-- Contains the security namespace parsing code. 
+  			You need it if you are using the Spring Security XML namespace for configuration. 
+  			The main package is org.springframework.security.config. 
+  			None of the classes are intended for direct use in an application. --> 
+  		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-config</artifactId>
+  		</dependency>
+  		<!-- Spring Security has its own taglib which provides basic support for accessing 
+  			security information and applying security constraints in JSPs. -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+		</dependency>
+		<!-- Web application development utilities applicable to both Servlet and 
+		    Portlet Environments 
+		    (depends on spring-core, spring-beans, spring-context)
+		    Define this if you use Spring MVC, or wish to use Struts, JSF, or another
+		    web framework with Spring (org.springframework.web.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		</dependency>
+		<!-- Spring MVC for Servlet Environments 
+		    (depends on spring-core, spring-beans, spring-context, spring-web)
+		    Define this if you use Spring MVC with a Servlet Container such as 
+		    Apache Tomcat (org.springframework.web.servlet.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<!-- Spring MVC for Portlet Environments 
+		    (depends on spring-core, spring-beans, spring-context, spring-web)
+		    Define this if you use Spring MVC with a Portlet Container 
+		    (org.springframework.web.portlet.*)-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc-portlet</artifactId>
+		</dependency>
+		<!-- Support for testing Spring applications with tools such as JUnit and TestNG
+		    This artifact is generally always defined with a 'test' scope for the 
+		    integration testing framework and unit testing stubs-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<!--  JSR 303 with Hibernate Validator -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		<!--  Joda Time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-jsptags</artifactId>
+			<scope>runtime</scope>
+		</dependency>	
+		<!-- Logging -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<!-- Jersey Client -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+		</dependency>
+		<!-- Tiles -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+		</dependency>
+		<!-- OpenNaaS -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>org.osgi.foundation</artifactId>
+					<groupId>org.apache.felix</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.vcpe</artifactId>
+		</dependency>
+		<!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<finalName>opennaas-vcpe</finalName>
+	</build>
+	
+</project>

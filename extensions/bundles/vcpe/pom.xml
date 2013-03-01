@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.14</version>
+		<version>0.17</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.vcpe</artifactId>
@@ -29,6 +29,14 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.vrrp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.bgp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
