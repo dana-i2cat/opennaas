@@ -6,6 +6,7 @@ package org.opennaas.gui.vcpe.utils.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.vcpe.manager.templates.mp.TemplateConstants;
 import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
@@ -111,7 +112,7 @@ public class VCPEBeanUtils {
 		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
 			modelOut = getSingleProviderPhysical(modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
-			modelOut = getMultipleProviderPhysical();
+			modelOut = getMultipleProviderPhysical(modelIn);
 		}
 		return modelOut;
 	}
@@ -119,10 +120,18 @@ public class VCPEBeanUtils {
 	/**
 	 * Get the physical infrastructure of a multiple provider
 	 * 
+	 * @param modelIn
 	 * @return PhysicalInfrastructure
 	 */
-	private static PhysicalInfrastructure getMultipleProviderPhysical() {
-		return new MultipleProviderPhysical();
+	private static PhysicalInfrastructure getMultipleProviderPhysical(VCPENetworkModel modelIn) {
+		MultipleProviderPhysical modelOut = new MultipleProviderPhysical();
+		modelOut.setTemplateType(modelIn.getTemplateType());
+		// Routers
+		org.opennaas.extensions.vcpe.model.Router physicalRouterMaster = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.ROUTER_1_PHY);
+
+		modelOut.setPhysicalRouter(getPhysicalRouter(physicalRouterMaster));
+		return modelOut;
 	}
 
 	/**
@@ -208,16 +217,20 @@ public class VCPEBeanUtils {
 		if (templateName.equals(SPTemplateConstants.DOWN1_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.DOWN2_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.DOWN1_PHY_INTERFACE_LOCAL)
-				|| templateName.equals(SPTemplateConstants.DOWN2_PHY_INTERFACE_LOCAL)) {
+				|| templateName.equals(SPTemplateConstants.DOWN2_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_DOWN)) {
 			outIface.setType(Interface.Types.DOWN.toString());
 		} else if (templateName.equals(SPTemplateConstants.UP1_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.UP2_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.UP1_PHY_INTERFACE_LOCAL)
-				|| templateName.equals(SPTemplateConstants.UP2_PHY_INTERFACE_LOCAL)) {
+				|| templateName.equals(SPTemplateConstants.UP2_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_UP1)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_UP2)) {
 			outIface.setType(Interface.Types.UP.toString());
 		} else if (templateName.equals(SPTemplateConstants.INTER1_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.INTER2_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.INTER1_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(SPTemplateConstants.INTER2_PHY_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.INTER2_PHY_INTERFACE_LOCAL)) {
 			outIface.setType(Interface.Types.INTER.toString());
 		} else if (templateName.equals(SPTemplateConstants.CORE_PHY_LO_INTERFACE)
@@ -225,8 +238,11 @@ public class VCPEBeanUtils {
 				|| templateName.equals(SPTemplateConstants.LO1_PHY_INTERFACE)
 				|| templateName.equals(SPTemplateConstants.LO2_PHY_INTERFACE)
 				|| templateName.equals(SPTemplateConstants.LO1_INTERFACE)
-				|| templateName.equals(SPTemplateConstants.LO2_INTERFACE)) {
+				|| templateName.equals(SPTemplateConstants.LO2_INTERFACE)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_LO)) {
 			outIface.setType(Interface.Types.LOOPBACK.toString());
+		} else if (templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_LT)) {
+			outIface.setType(Interface.Types.LOGICALTUNNEL.toString());
 		} else if (templateName.equals(SPTemplateConstants.UP1_INTERFACE_PEER)
 				|| templateName.equals(SPTemplateConstants.UP2_INTERFACE_PEER)) {
 			outIface.setType(Interface.Types.WAN.toString());
