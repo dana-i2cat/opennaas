@@ -1,15 +1,13 @@
 package org.opennaas.extensions.vcpe.manager.templates.common;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.math.IntRange;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
-
-import com.google.common.primitives.Ints;
 
 public class UnitSuggestor {
 
@@ -59,8 +57,14 @@ public class UnitSuggestor {
 	 * @return
 	 */
 	private static List<Integer> getUnits(VCPENetworkElement phyElement, Interface phyIface) {
-		IntRange vlanRange = new IntRange(1, 4095);
-		return Ints.asList(vlanRange.toArray());
+		int min = 1;
+		int max = 4095;
+
+		List<Integer> vlans = new ArrayList<Integer>(max - min + 1);
+		for (int i = min; i <= max; i++) {
+			vlans.add(i);
+		}
+		return vlans;
 	}
 
 }
