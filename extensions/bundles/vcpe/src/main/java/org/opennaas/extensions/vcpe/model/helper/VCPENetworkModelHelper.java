@@ -434,6 +434,16 @@ public class VCPENetworkModelHelper {
 		return iface;
 	}
 
+	public static Interface copyInterface(Interface iface, Interface other) {
+		iface.setTemplateName(other.getTemplateName());
+		iface.setName(other.getName());
+		iface.setIpAddress(other.getIpAddress());
+		iface.setVlan(other.getVlan());
+		iface.setPhysicalInterfaceName(other.getPhysicalInterfaceName());
+		iface.setPort(other.getPort());
+		return iface;
+	}
+
 	/**
 	 * @param id
 	 * @param templateName
