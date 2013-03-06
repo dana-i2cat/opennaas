@@ -21,6 +21,7 @@
 				<h3>${logicalInfrastructure.providerNetwork1.name}</h3>
 				<div>			
 					<div id="config" class="ui-widget-content">
+						<form:hidden path="providerNetwork1.templateName" />
 						<form:label for="providerNetwork1.ASNumber" path="providerNetwork1.ASNumber" cssErrorClass="error">
 							<spring:message code="network.ASNumber" />
 						</form:label>
@@ -522,6 +523,7 @@
 						<form:errors path="name" />
 					</div>	
 					<div id="config" class="ui-widget-content">
+						<form:hidden path="clientNetwork.templateName" />
 						<form:label for="clientNetwork.ASNumber" path="clientNetwork.ASNumber" cssErrorClass="error">
 							<spring:message code="network.ASNumber" />
 						</form:label>
