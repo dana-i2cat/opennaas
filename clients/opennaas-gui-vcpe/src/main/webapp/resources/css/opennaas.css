@@ -655,6 +655,56 @@ h3.lr_inactive {
 
 /* Logical view - Multiple Provider
 ----------------------------------*/
+#mp_logical_name {
+    float: left;
+    margin-bottom: 14px;
+    margin-right: 70px;
+    margin-top: 15px;
+    padding: 5px;
+    text-align: left;
+    width: 153px;
+}
+
+#mp_logical_name  {
+	background: none !important;
+	background-image: none !important;
+}
+
+#network_wan1_logical {
+    clear: both;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-left: 82px;
+    margin-right: 32px;
+    margin-top: 15px;
+    width: 248px;
+}
+
+#network_wan2_logical {
+	clear: both;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-left: 87px;
+    margin-right: 30px;
+    margin-top: 15px;
+    width: 250px;
+}
+
+#network_client_logical {
+    clear: both;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-left: 160px;
+    margin-right: 32px;
+    margin-top: 15px;
+    width: 485px;
+}
+
+#network_wan1_logical #config,#network_wan2_logical #config,#network_client_logical #config {
+	height: 70px !important;
+}
+
+
 #vcpe_mp_logical {
 	display: inline-block;
 	width: 800px;
@@ -662,26 +712,22 @@ h3.lr_inactive {
 	padding: 0px !important;
 }
 
-#network_client_logical {
-	margin-left: 280px !important;
-}
-
-#network_wan1_logical #config,#network_wan2_logical #config,#network_client_logical #config {
-	height: 70px !important;
-}
-
 #lrprovider1 {
 	display: inline-block;
 	margin-bottom: 15px;
-	margin-left: 17px;
+	margin-left: 10px;
 	margin-top: 15px;
 	padding: 5px;
 	text-align: center;
 	width: 310px;
 }
 
+#lrprovider1 h3 {
+	text-align: left;
+}
+
 #lrprovider1 .ui-accordion-content {
-	height: 60px;
+	height: 95px;
 }
 
 #lrprovider2 {
@@ -694,93 +740,101 @@ h3.lr_inactive {
 	width: 310px;
 }
 
+#lrprovider2 h3 {
+	text-align: left;
+}
+
 #lrprovider2 .ui-accordion-content {
-	height: 60px;
+	height: 95px;
 }
 
 #lrclient {
 	display: inline-block;
 	margin-bottom: 15px;
-	margin-left: 0px;
+	margin-left: -140px;
 	margin-top: 15px;
-	padding: 5px 5px 5px 210px;
+	padding: 5px 5px 5px 5px;
 	text-align: center;
 	width: 310px;
 }
 
+#lrclient h3 {
+	text-align: left;
+}
+
 #lrclient .ui-accordion-content {
-	height: 60px;
+	height: 95px;
 }
 
 #iface_up_lrprovider1,#iface_lrprovider1_down {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin-left: 95px;
+	margin-left: 75px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
 }
 
 #iface_down_netprovider1 {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin-left: 135px;
+	margin-left: 115px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
 }
 
 #iface_down_netprovider2 {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin-left: 210px;
+	margin-left: 190px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
 }
 
 #iface_up_lrprovider2,#iface_lrprovider2_down {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin-left: 210px;
+	margin-left: 190px;
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
 }
 
 #iface_client_up1 {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin: 15px 75px 15px 95px;
+	margin: 15px 75px 15px 75px;
 	text-align: center;
 }
 
 #iface_client_up2 {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin: 15px 0px 0px 135px;
+	margin: 15px 0px 0px 115px;
 	text-align: center;
 }
 
 #iface_client_down {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin: 15px 75px 15px 280px;
+	margin: 15px 75px 15px 260px;
 	text-align: center;
 }
 
 #iface_up_netclient {
-	width: 150px;
+	width: 170px;
 	padding: 5px;
 	float: left;
-	margin: 15px 0px 15px 320px;
+	margin: 15px 0px 15px 305px;
 	text-align: center;
 }
 

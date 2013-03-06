@@ -63,7 +63,7 @@ public abstract class VCPENetworkController {
 	public String getLogicalForm(PhysicalInfrastructure physical, Model model, Locale locale) {
 		LOGGER.debug("form to create a VCPENetwork");
 		try {
-			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getSuggestVCPENetwork(physical));
+			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getLogicalInfrastructure(physical));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
