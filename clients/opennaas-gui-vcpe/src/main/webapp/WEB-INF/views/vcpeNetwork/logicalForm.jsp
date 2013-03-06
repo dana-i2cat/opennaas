@@ -8,14 +8,13 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<%-- <c:choose> --%>
-<%-- 	<c:when test="${physicalInfrastructure.templateType == 'sp_vcpe'}"> --%>
-<%-- 		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp/logicalForm.jsp" />	 --%>
-<%-- 	</c:when> --%>
-<%-- 	<c:otherwise> --%>
-<%-- 		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/mp/logicalForm.jsp" />				 --%>
-<%-- 	</c:otherwise> --%>
-<%-- </c:choose> --%>
+<c:choose>
+	<c:when test="${logicalInfrastructure.templateType == 'sp_vcpe'}">
+		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp/logicalForm.jsp" />	
+	</c:when>
+	<c:otherwise>
+		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/mp/logicalForm.jsp" />				
+	</c:otherwise>
+</c:choose>
 
-<%-- <c:import url="${subpage}" /> --%>
-<c:import url="/WEB-INF/views/vcpeNetwork/mp/logicalForm.jsp" />
+<c:import url="${subpage}" />

@@ -285,8 +285,7 @@ $(function() {
 		jsPlumbNecessary = true;
 		
 		$("#vcpe_mp_physical").accordion({
-			collapsible : true,
-			active: true,
+			collapsible : false,
 			heightStyle : "content",
 			icons : {
 				activeHeader : "ui-icon-check"
@@ -479,7 +478,7 @@ $(function() {
 			}
 		});
 		
-		$("#network_client").accordion({
+		$("#network_client_logical").accordion({
 			collapsible : false,
 			heightStyle : "content",
 			icons : {
@@ -488,7 +487,7 @@ $(function() {
 		});
 		
 		/* MP Physical view */
-		$("#network_wan1").accordion({
+		$("#network_wan1_logical").accordion({
 			collapsible : false,
 			heightStyle : "content",
 			icons : {
@@ -497,7 +496,7 @@ $(function() {
 		});
 
 		/* MP Physical view */
-		$("#network_wan2").accordion({
+		$("#network_wan2_logical").accordion({
 			collapsible : false,
 			heightStyle : "content",
 			icons : {
@@ -982,39 +981,39 @@ function clearJSPlumbMPPhysical() {
 
 //set jsPlumb logical view
 function setJSPlumbMPLogical() {
-	if($('#vcpe_mp_logical').children().hasClass('ui-state-active')) {
-		addConnection("network_wan1", "iface_down_netprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
-		addConnection("network_wan2", "iface_down_netprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+	if($('#vcpe_mp_logical').children().hasClass('ui-state-active')) {	
+		addConnection("network_wan1_logical", "iface_down_netprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("network_wan2_logical", "iface_down_netprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
 		
 		addConnection("iface_down_netprovider1", "iface_up_lrprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
 		addConnection("iface_down_netprovider2", "iface_up_lrprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
 		
-		addConnection("iface_up_lrprovider1", "lrprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0.06, false);
-		addConnection("iface_up_lrprovider2", "lrprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0.06, false);
+		addConnection("iface_up_lrprovider1", "lrprovider1", "mpLogicalForm", 0.5, 1, 0.485, 0.05, false);
+		addConnection("iface_up_lrprovider2", "lrprovider2", "mpLogicalForm", 0.5, 1, 0.49, 0.05, false);
 		
-		addConnection("lrprovider1", "iface_lrprovider1_down", "mpLogicalForm", 0.5, 0.96, 0.5, 0.01, false);
-		addConnection("lrprovider2", "iface_lrprovider2_down", "mpLogicalForm", 0.5, 0.96, 0.5, 0.01, false);
+		addConnection("lrprovider1", "iface_lrprovider1_down", "mpLogicalForm", 0.49, 0.96, 0.5, 0.01, false);
+		addConnection("lrprovider2", "iface_lrprovider2_down", "mpLogicalForm", 0.49, 0.96, 0.5, 0.01, false);
 		
 		addConnection("iface_lrprovider1_down", "iface_client_up1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
 		addConnection("iface_lrprovider2_down", "iface_client_up2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
 		
-		addConnection("iface_client_up1", "lrclient", "mpLogicalForm", 0.80, 1, 0.43, 0.06, false);
-		addConnection("iface_client_up2", "lrclient", "mpLogicalForm", 0.2, 1, 0.95, 0.06, false);
+		addConnection("iface_client_up1", "lrclient", "mpLogicalForm", 0.80, 1, 0.093, 0.055, false);
+		addConnection("iface_client_up2", "lrclient", "mpLogicalForm", 0.2, 1, 0.910, 0.055, false);
 		
-		addConnection("lrclient", "iface_client_down", "mpLogicalForm", 0.69, 0.965, 0.5, 0.0, false);	
+		addConnection("lrclient", "iface_client_down", "mpLogicalForm", 0.5, 0.965, 0.5, 0.0, false);	
 		
-		addConnection("iface_client_down", "iface_up_netclient", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
-		addConnection("iface_up_netclient", "network_client", "mpLogicalForm", 0.5, 1, 0.5, 0.01, false);
+		addConnection("iface_client_down", "iface_up_netclient", "mpLogicalForm", 0.52, 1, 0.5, 0, false);
+		addConnection("iface_up_netclient", "network_client_logical", "mpLogicalForm", 0.5, 1, 0.487, 0.015, false);
 	}
 	else {
-		addConnection("network_wan1", "iface_down_netprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
-		addConnection("network_wan2", "iface_down_netprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("network_wan1_logical", "iface_down_netprovider1", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
+		addConnection("network_wan2_logical", "iface_down_netprovider2", "mpLogicalForm", 0.5, 1, 0.5, 0, false);
 
-		addConnection("iface_down_netprovider1", "vcpe_mp_logical", "mpLogicalForm", 0.5, 1, 0.258, 0.09, false);
-		addConnection("iface_down_netprovider2", "vcpe_mp_logical", "mpLogicalForm", 0.5, 1, 0.723, 0.09, false);
+		addConnection("iface_down_netprovider1", "vcpe_mp_logical", "mpLogicalForm", 0.5, 1, 0.245, 0.09, false);
+		addConnection("iface_down_netprovider2", "vcpe_mp_logical", "mpLogicalForm", 0.5, 1, 0.71, 0.09, false);
 		
-		addConnection("vcpe_mp_logical", "iface_up_netclient", "mpLogicalForm", 0.49, 1, 0.5, 0, false);
-		addConnection("iface_up_netclient", "network_client", "mpLogicalForm", 0.5, 1, 0.5, 0.01, false);
+		addConnection("vcpe_mp_logical", "iface_up_netclient", "mpLogicalForm", 0.483, 1, 0.50, 0, false);
+		addConnection("iface_up_netclient", "network_client_logical", "mpLogicalForm", 0.5, 1, 0.487, 0.015, false);
 	}
 	
 }
