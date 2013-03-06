@@ -5,7 +5,11 @@ package org.opennaas.extensions.vcpe.manager.templates.mp;
 
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
+import org.opennaas.extensions.vcpe.model.IPNetworkDomain;
+import org.opennaas.extensions.vcpe.model.Interface;
+import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 /**
  * @author Isart Canyameres Gimenez (i2cat Foundation)
@@ -31,14 +35,16 @@ public class MultipleProviderTemplate implements ITemplate {
 	}
 
 	/**
-	 * Generate the model
 	 * 
-	 * @return VCPENetworkModel
+	 * @param initialModel
+	 *            model with user preferences. It MAY not be a complete model.
+	 * @return complete model with all required values.
 	 */
 	@Override
-	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) throws VCPENetworkManagerException {
-		// TODO Auto-generated method stub
-		throw new VCPENetworkManagerException("Unsupported Operation");
+	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) {
+		VCPENetworkModel model = MPTemplateModelBuilder.generateModel();
+		model = partialCopy(initialModel, model);
+		return model;
 	}
 
 	@Override
@@ -50,7 +56,7 @@ public class MultipleProviderTemplate implements ITemplate {
 	}
 
 	@Override
-	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) {
+	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) throws VCPENetworkManagerException {
 		// assuming given physicalInfrastructure is complete
 		return getLogicalInfrastructureSuggestionFromCompletePhysical(physicalInfrastructure);
 	}
@@ -61,6 +67,23 @@ public class MultipleProviderTemplate implements ITemplate {
 		VCPENetworkModel completeSuggestion = MPTemplateModelBuilder.mapLogicalAndPhysical(physicalInfrastructure, suggestedLogical);
 
 		return completeSuggestion;
+	}
+
+	private VCPENetworkModel partialCopy(VCPENetworkModel source, VCPENetworkModel destination) {
+		VCPENetworkElement dstElement;
+		for (VCPENetworkElement srcElement : source.getElements()) {
+			dstElement = VCPENetworkModelHelper.getElementByTemplateName(destination.getElements(), srcElement.getTemplateName());
+			if (dstElement != null) {
+				dstElement.setName(srcElement.getName());
+				if (srcElement instanceof Interface && dstElement instanceof Interface) {
+					VCPENetworkModelHelper.copyInterface((Interface) dstElement, (Interface) srcElement);
+				} else if (srcElement instanceof IPNetworkDomain && dstElement instanceof IPNetworkDomain) {
+					((IPNetworkDomain) dstElement).setASNumber(((IPNetworkDomain) srcElement).getASNumber());
+					((IPNetworkDomain) dstElement).setIPAddressRanges(((IPNetworkDomain) srcElement).getIPAddressRanges());
+				}
+			}
+		}
+		return destination;
 	}
 
 }
