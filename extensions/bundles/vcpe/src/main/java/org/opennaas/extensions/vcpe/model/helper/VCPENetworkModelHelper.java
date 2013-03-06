@@ -468,4 +468,23 @@ public class VCPENetworkModelHelper {
 
 		return iface.getVlan();
 	}
+
+	/**
+	 * 
+	 * @param phyElement
+	 * @param iface
+	 * @return
+	 */
+	public static String generatePhysicalInterfaceKey(VCPENetworkElement phyElement, Interface iface) {
+		String ifaceKey;
+		if (phyElement instanceof Router) {
+			ifaceKey = phyElement.getName() + ":" + iface.getPhysicalInterfaceName();
+		} else if (phyElement instanceof Domain) {
+			ifaceKey = phyElement.getName() + ":" + iface.getPhysicalInterfaceName();
+		} else {
+			ifaceKey = iface.getPhysicalInterfaceName();
+		}
+		return ifaceKey;
+	}
+
 }

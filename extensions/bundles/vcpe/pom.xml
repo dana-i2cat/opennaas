@@ -80,6 +80,9 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.vcpe.Activator</Bundle-Activator>
+						<Export-Package>
+							org.opennaas.extensions.vcpe.*;version="${project.version}"
+						</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
