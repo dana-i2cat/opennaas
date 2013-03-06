@@ -65,7 +65,7 @@ public class VCPENetworkBO {
 	public SingleProviderLogical getById(String vcpeNetworkId) throws RestServiceException {
 		LOGGER.debug("get a VCPENetwork with id: " + vcpeNetworkId);
 		VCPENetworkModel openNaasModel = vcpeNetworkService.getVCPENetworkById(vcpeNetworkId);
-		return VCPEBeanUtils.getLogicalInfrastructure(openNaasModel);
+		return (SingleProviderLogical) VCPEBeanUtils.getLogicalInfrastructure(openNaasModel);
 	}
 
 	/**
@@ -88,6 +88,20 @@ public class VCPENetworkBO {
 	public PhysicalInfrastructure getPhysicalInfrastructure(String templateType) throws RestServiceException {
 		LOGGER.debug("get the physical infrastructure");
 		return VCPEBeanUtils.getPhysicalInfrastructure(vcpeNetworkService.getPhysicalInfrastructure(templateType));
+	}
+
+	/**
+	 * Get a suggest VCPENetwork
+	 * 
+	 * @param physical
+	 * @return VCPENetwork
+	 * @throws RestServiceException
+	 */
+	public LogicalInfrastructure getLogicalInfrastructure(PhysicalInfrastructure physical) throws RestServiceException {
+		VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
+		LogicalInfrastructure vcpeNetwork = VCPEBeanUtils.getLogicalInfrastructure(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
+		vcpeNetwork.setTemplateType(physical.getTemplateType());
+		return vcpeNetwork;
 	}
 
 	/**
@@ -124,7 +138,7 @@ public class VCPENetworkBO {
 	public SingleProviderLogical changeVRRPPriority(SingleProviderLogical vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("change the Priority VRRP of VCPENetwork");
 		VCPENetworkModel openNaasModel = builderService.changeVRRPPriority(OpennaasBeanUtils.getVCPENetwork(vcpeNetwork));
-		return VCPEBeanUtils.getLogicalInfrastructure(openNaasModel);
+		return (SingleProviderLogical) VCPEBeanUtils.getLogicalInfrastructure(openNaasModel);
 	}
 
 	/**
@@ -166,27 +180,13 @@ public class VCPENetworkBO {
 	}
 
 	/**
-	 * Get a suggest VCPENetwork
-	 * 
-	 * @param physical
-	 * @return VCPENetwork
-	 * @throws RestServiceException
-	 */
-	public SingleProviderLogical getSuggestVCPENetwork(PhysicalInfrastructure physical) throws RestServiceException {
-		VCPENetworkModel physicalOpennaas = OpennaasBeanUtils.getPhysicalInfrastructure(physical);
-		SingleProviderLogical vcpeNetwork = VCPEBeanUtils.getLogicalInfrastructure(vcpeNetworkService.getLogicalInfrastructure(physicalOpennaas));
-		vcpeNetwork.setTemplateType(physical.getTemplateType());
-		return vcpeNetwork;
-	}
-
-	/**
 	 * @param allVCPENetworks
 	 * @return
 	 */
 	private List<SingleProviderLogical> getListVCPENetworkGUI(List<VCPENetworkModel> listModelIn) {
 		List<SingleProviderLogical> listModelOut = new ArrayList<SingleProviderLogical>();
 		for (int i = 0; i < listModelIn.size(); i++) {
-			listModelOut.add(VCPEBeanUtils.getLogicalInfrastructure(listModelIn.get(i)));
+			listModelOut.add((SingleProviderLogical) VCPEBeanUtils.getLogicalInfrastructure(listModelIn.get(i)));
 		}
 		return listModelOut;
 	}

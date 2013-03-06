@@ -10,11 +10,11 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class LogicalInfrastructure {
 
-	private String	id;
+	protected String	id;
 	@NotBlank(message = "{message.error.field.mandatory}")
-	private String	name;
+	protected String	name;
 	@NotBlank(message = "{message.error.field.mandatory}")
-	private String	templateType;
+	protected String	templateType;
 
 	/**
 	 * @return the id

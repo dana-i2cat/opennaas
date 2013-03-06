@@ -14,6 +14,8 @@
 <sec:authorize access="hasRole('ROLE_NOC')">
 	<form:form modelAttribute="physicalInfrastructure" action="logical" method="post">
 		<form:hidden  path="templateType"/>
+		<form:hidden  path="physicalRouter.name"/>
+		<form:hidden  path="physicalRouter.templateName"/>
 		<!-- Graphical view -->
 		<div id="mpPhysicalForm">	
 			<!-- Routers -->
@@ -37,7 +39,8 @@
 									<c:when test="${item.templateName == ROUTER_1_PHY_IFACE_UP1}">
 											<div>
 												<form:label path="physicalRouter.interfaces[${vs.index}].name" >${item.name}</form:label>									
-												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>		
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].name"/>		
 												<form:hidden path="physicalRouter.interfaces[${vs.index}].templateName"/>													
 											</div>		
 										</c:when>
@@ -55,7 +58,8 @@
 										<c:when test="${item.templateName == ROUTER_1_PHY_IFACE_UP2}">
 											<div>
 												<form:label path="physicalRouter.interfaces[${vs.index}].name" >${item.name}</form:label>									 
-												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>		
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].name"/>			
 												<form:hidden path="physicalRouter.interfaces[${vs.index}].templateName"/>													
 											</div>		
 										</c:when>
@@ -76,7 +80,8 @@
 											<c:when test="${item.type == 'Loopback'}">
 												<div>
 													<form:label path="physicalRouter.interfaces[${vs.index}].name" >${item.name}</form:label>									
-													<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>		
+													<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>	
+													<form:hidden path="physicalRouter.interfaces[${vs.index}].name"/>		
 													<form:hidden path="physicalRouter.interfaces[${vs.index}].templateName"/>													
 												</div>		
 											</c:when>
@@ -92,7 +97,8 @@
 										<c:when test="${item.type == 'Logicaltunnel'}">
 											<div>
 												<form:label path="physicalRouter.interfaces[${vs.index}].name" >${item.name}</form:label>									
-												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>		
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].name"/>		
 												<form:hidden path="physicalRouter.interfaces[${vs.index}].templateName"/>													
 											</div>		
 										</c:when>
@@ -113,7 +119,8 @@
 											<div>
 												<b><spring:message code="interface"/>:&nbsp;</b>
 												<form:label path="physicalRouter.interfaces[${vs.index}].name" >${item.name}</form:label>								
-												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>		
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].type"/>
+												<form:hidden path="physicalRouter.interfaces[${vs.index}].name"/>		
 												<form:hidden path="physicalRouter.interfaces[${vs.index}].templateName"/>													
 											</div>		
 										</c:when>

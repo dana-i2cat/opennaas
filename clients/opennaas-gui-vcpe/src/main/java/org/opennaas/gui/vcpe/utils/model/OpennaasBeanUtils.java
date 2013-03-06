@@ -6,13 +6,17 @@ package org.opennaas.gui.vcpe.utils.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.vcpe.manager.templates.mp.TemplateConstants;
 import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
+import org.opennaas.extensions.vcpe.model.IPNetworkDomain;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.LogicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.MultipleProviderLogical;
+import org.opennaas.gui.vcpe.entities.MultipleProviderPhysical;
+import org.opennaas.gui.vcpe.entities.Network;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.Router;
 import org.opennaas.gui.vcpe.entities.SingleProviderLogical;
@@ -44,12 +48,10 @@ public class OpennaasBeanUtils {
 	}
 
 	/**
-	 * Get params to call the ws to create the VCPENetwork enviroment
+	 * Get params to call the ws to create the SP VCPENetwork enviroment
 	 * 
-	 * @param vcpeNetworkId
-	 * 
-	 * @param vcpeNetwork
-	 * @return CreateVCPENetRequest
+	 * @param modelIn
+	 * @return
 	 */
 	public static VCPENetworkModel getVCPENetworkFromSP(SingleProviderLogical modelIn) {
 		VCPENetworkModel modelOut = new VCPENetworkModel();
@@ -96,17 +98,52 @@ public class OpennaasBeanUtils {
 	}
 
 	/**
-	 * Get params to call the ws to create the VCPENetwork enviroment
+	 * Get params to call the ws to create the MP VCPENetwork enviroment
 	 * 
-	 * @param vcpeNetworkId
-	 * 
-	 * @param vcpeNetwork
-	 * @return CreateVCPENetRequest
+	 * @param modelIn
+	 * @return
 	 */
 	public static VCPENetworkModel getVCPENetworkFromMP(MultipleProviderLogical modelIn) {
-		// TODO Auto-generated method stub
+		VCPENetworkModel modelOut = new VCPENetworkModel();
+		// Id
+		modelOut.setId(modelIn.getId());
+		// Name
+		modelOut.setName(modelIn.getName());
+		// Template
+		modelOut.setTemplateType(modelIn.getTemplateType());
 
-		return null;
+		// Elements
+		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
+		modelOut.setElements(elements);
+
+		// Networks
+		org.opennaas.extensions.vcpe.model.IPNetworkDomain providerNetwork1 = getNetworkOpennaas(modelIn.getProviderNetwork1());
+		org.opennaas.extensions.vcpe.model.IPNetworkDomain providerNetwork2 = getNetworkOpennaas(modelIn.getProviderNetwork2());
+		org.opennaas.extensions.vcpe.model.IPNetworkDomain clientNetwork = getNetworkOpennaas(modelIn.getClientNetwork());
+
+		elements.add(providerNetwork1);
+		elements.add(providerNetwork2);
+		elements.add(clientNetwork);
+
+		// LogicalRouters
+		org.opennaas.extensions.vcpe.model.Router providerLR1 = getRouterOpennaas(modelIn.getProviderLR1());
+		org.opennaas.extensions.vcpe.model.Router providerLR2 = getRouterOpennaas(modelIn.getProviderLR2());
+		org.opennaas.extensions.vcpe.model.Router clientRouter = getRouterOpennaas(modelIn.getClientLR());
+
+		elements.add(providerLR1);
+		elements.add(providerLR2);
+		elements.add(clientRouter);
+
+		// Add interfaces to elements
+		elements.addAll(providerNetwork1.getInterfaces());
+		elements.addAll(providerNetwork2.getInterfaces());
+		elements.addAll(clientNetwork.getInterfaces());
+
+		elements.addAll(providerLR1.getInterfaces());
+		elements.addAll(providerLR2.getInterfaces());
+		elements.addAll(clientRouter.getInterfaces());
+
+		return modelOut;
 	}
 
 	/**
@@ -120,7 +157,7 @@ public class OpennaasBeanUtils {
 		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
 			modelOut = getSingleProviderPhysical((SingleProviderPhysical) modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
-			modelOut = getMultipleProviderPhysical();
+			modelOut = getMultipleProviderPhysical((MultipleProviderPhysical) modelIn);
 		}
 		return modelOut;
 	}
@@ -128,11 +165,23 @@ public class OpennaasBeanUtils {
 	/**
 	 * Convert a GUI model to a Opennaas physical multiple provider model
 	 * 
+	 * @param modelIn
+	 * 
 	 * @return
 	 */
-	private static VCPENetworkModel getMultipleProviderPhysical() {
-		// TODO Auto-generated method stub
-		return null;
+	private static VCPENetworkModel getMultipleProviderPhysical(MultipleProviderPhysical modelIn) {
+		VCPENetworkModel modelOut = new VCPENetworkModel();
+		modelOut.setTemplateType(modelIn.getTemplateType());
+		// Router phy
+		org.opennaas.extensions.vcpe.model.Router physicalRouter = getRouterOpennaas(modelIn.getPhysicalRouter());
+		physicalRouter.setTemplateName(TemplateConstants.ROUTER_1_PHY);
+
+		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
+		elements.add(physicalRouter);
+		elements.addAll(physicalRouter.getInterfaces());
+		modelOut.setElements(elements);
+
+		return modelOut;
 	}
 
 	/**
@@ -164,6 +213,24 @@ public class OpennaasBeanUtils {
 		modelOut.setElements(elements);
 
 		return modelOut;
+	}
+
+	/**
+	 * @param providerNetwork1
+	 * @return
+	 */
+	private static IPNetworkDomain getNetworkOpennaas(Network inNetwork) {
+		IPNetworkDomain outNetwork = new IPNetworkDomain();
+		outNetwork.setName(inNetwork.getName());
+		outNetwork.setTemplateName(inNetwork.getTemplateName());
+		outNetwork.setASNumber(inNetwork.getASNumber());
+		outNetwork.setIPAddressRanges(inNetwork.getiPAddressRanges());
+
+		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
+		interfaces.add(getInterfaceOpennaas(inNetwork.getNetworkInterface()));
+		outNetwork.setInterfaces(interfaces);
+
+		return outNetwork;
 	}
 
 	/**
