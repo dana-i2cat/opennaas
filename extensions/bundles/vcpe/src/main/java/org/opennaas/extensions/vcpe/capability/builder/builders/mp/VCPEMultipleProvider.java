@@ -5,7 +5,9 @@ package org.opennaas.extensions.vcpe.capability.builder.builders.mp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -145,7 +147,12 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 
 	private void startLogicalRouters(IResource vcpe, VCPENetworkModel desiredScenario) throws ResourceException {
 		IResourceManager rm = GenericHelper.getResourceManager();
-		for (Router router : getLogicalRouters(desiredScenario)) {
+		for (LogicalRouter router : getLogicalRouters(desiredScenario)) {
+			try {
+				LogicalRouterHelper.copyContextPhysicaltoLogical(router.getPhysicalRouter(), router);
+			} catch (ProtocolException e) {
+				throw new ResourceException("Failed to start logical louters", e);
+			}
 			rm.startResource(rm.getIdentifierFromResourceName("router", router.getName()));
 		}
 	}
@@ -153,7 +160,10 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	private void stopLogicalRouters(IResource vcpe, VCPENetworkModel desiredScenario) throws ResourceException {
 		IResourceManager rm = GenericHelper.getResourceManager();
 		for (Router router : getLogicalRouters(desiredScenario)) {
-			rm.stopResource(rm.getIdentifierFromResourceName("router", router.getName()));
+			IResourceIdentifier id = rm.getIdentifierFromResourceName("router", router.getName());
+			if (rm.getResource(id).getState().equals(State.ACTIVE)) {
+				rm.stopResource(id);
+			}
 		}
 	}
 
