@@ -434,6 +434,16 @@ public class VCPENetworkModelHelper {
 		return iface;
 	}
 
+	public static Interface copyInterface(Interface iface, Interface other) {
+		iface.setTemplateName(other.getTemplateName());
+		iface.setName(other.getName());
+		iface.setIpAddress(other.getIpAddress());
+		iface.setVlan(other.getVlan());
+		iface.setPhysicalInterfaceName(other.getPhysicalInterfaceName());
+		iface.setPort(other.getPort());
+		return iface;
+	}
+
 	/**
 	 * @param id
 	 * @param templateName
@@ -468,4 +478,23 @@ public class VCPENetworkModelHelper {
 
 		return iface.getVlan();
 	}
+
+	/**
+	 * 
+	 * @param phyElement
+	 * @param iface
+	 * @return
+	 */
+	public static String generatePhysicalInterfaceKey(VCPENetworkElement phyElement, Interface iface) {
+		String ifaceKey;
+		if (phyElement instanceof Router) {
+			ifaceKey = phyElement.getName() + ":" + iface.getPhysicalInterfaceName();
+		} else if (phyElement instanceof Domain) {
+			ifaceKey = phyElement.getName() + ":" + iface.getPhysicalInterfaceName();
+		} else {
+			ifaceKey = iface.getPhysicalInterfaceName();
+		}
+		return ifaceKey;
+	}
+
 }

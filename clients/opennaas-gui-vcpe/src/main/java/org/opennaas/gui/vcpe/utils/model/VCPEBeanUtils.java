@@ -6,15 +6,20 @@ package org.opennaas.gui.vcpe.utils.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.vcpe.manager.templates.mp.TemplateConstants;
 import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
+import org.opennaas.extensions.vcpe.model.IPNetworkDomain;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.opennaas.gui.vcpe.entities.BGP;
 import org.opennaas.gui.vcpe.entities.BoD;
 import org.opennaas.gui.vcpe.entities.Interface;
 import org.opennaas.gui.vcpe.entities.Link;
+import org.opennaas.gui.vcpe.entities.LogicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.LogicalRouter;
+import org.opennaas.gui.vcpe.entities.MultipleProviderLogical;
 import org.opennaas.gui.vcpe.entities.MultipleProviderPhysical;
+import org.opennaas.gui.vcpe.entities.Network;
 import org.opennaas.gui.vcpe.entities.PhysicalInfrastructure;
 import org.opennaas.gui.vcpe.entities.PhysicalRouter;
 import org.opennaas.gui.vcpe.entities.SingleProviderLogical;
@@ -35,13 +40,51 @@ public class VCPEBeanUtils {
 	 * @param openNaasModel
 	 * @return VCPENetwork
 	 */
-	public static SingleProviderLogical getLogicalInfrastructure(VCPENetworkModel modelIn) {
-		SingleProviderLogical modelOut = null;
+	public static LogicalInfrastructure getLogicalInfrastructure(VCPENetworkModel modelIn) {
+		LogicalInfrastructure modelOut = null;
 		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
 			modelOut = getSingleProviderLogical(modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
-			modelOut = getMultipleProviderLogical();
+			modelOut = getMultipleProviderLogical(modelIn);
 		}
+		return modelOut;
+	}
+
+	/**
+	 * @param modelIn
+	 * @return
+	 */
+	private static MultipleProviderLogical getMultipleProviderLogical(VCPENetworkModel modelIn) {
+		MultipleProviderLogical modelOut = new MultipleProviderLogical();
+
+		// VCPE info
+		modelOut.setName(modelIn.getName());
+		modelOut.setTemplateType(modelIn.getTemplateType());
+
+		// Networks
+		org.opennaas.extensions.vcpe.model.IPNetworkDomain providerNetwork1 = (org.opennaas.extensions.vcpe.model.IPNetworkDomain) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.WAN1);
+		org.opennaas.extensions.vcpe.model.IPNetworkDomain providerNetwork2 = (org.opennaas.extensions.vcpe.model.IPNetworkDomain) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.WAN2);
+		org.opennaas.extensions.vcpe.model.IPNetworkDomain clientNetwork = (org.opennaas.extensions.vcpe.model.IPNetworkDomain) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.LAN_CLIENT);
+
+		modelOut.setProviderNetwork1(getNetwork(providerNetwork1));
+		modelOut.setProviderNetwork2(getNetwork(providerNetwork2));
+		modelOut.setClientNetwork(getNetwork(clientNetwork));
+
+		// Logical Routers
+		org.opennaas.extensions.vcpe.model.LogicalRouter providerLR1 = (org.opennaas.extensions.vcpe.model.LogicalRouter) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.LR_1_ROUTER);
+		org.opennaas.extensions.vcpe.model.LogicalRouter providerLR2 = (org.opennaas.extensions.vcpe.model.LogicalRouter) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.LR_2_ROUTER);
+		org.opennaas.extensions.vcpe.model.LogicalRouter clientLR = (org.opennaas.extensions.vcpe.model.LogicalRouter) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.LR_CLIENT_ROUTER);
+
+		modelOut.setProviderLR1(getLogicalRouter(providerLR1));
+		modelOut.setProviderLR2(getLogicalRouter(providerLR2));
+		modelOut.setClientLR(getLogicalRouter(clientLR));
+
 		return modelOut;
 	}
 
@@ -91,16 +134,6 @@ public class VCPEBeanUtils {
 	}
 
 	/**
-	 * Get the logical infrastructure of a multiple provider
-	 * 
-	 * @return VCPENetwork
-	 */
-	private static SingleProviderLogical getMultipleProviderLogical() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
 	 * Convert a OpenNaaS model to a GUI PhysicalInfrastructure
 	 * 
 	 * @param openNaasModel
@@ -111,7 +144,7 @@ public class VCPEBeanUtils {
 		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
 			modelOut = getSingleProviderPhysical(modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
-			modelOut = getMultipleProviderPhysical();
+			modelOut = getMultipleProviderPhysical(modelIn);
 		}
 		return modelOut;
 	}
@@ -119,10 +152,18 @@ public class VCPEBeanUtils {
 	/**
 	 * Get the physical infrastructure of a multiple provider
 	 * 
+	 * @param modelIn
 	 * @return PhysicalInfrastructure
 	 */
-	private static PhysicalInfrastructure getMultipleProviderPhysical() {
-		return new MultipleProviderPhysical();
+	private static PhysicalInfrastructure getMultipleProviderPhysical(VCPENetworkModel modelIn) {
+		MultipleProviderPhysical modelOut = new MultipleProviderPhysical();
+		modelOut.setTemplateType(modelIn.getTemplateType());
+		// Routers
+		org.opennaas.extensions.vcpe.model.Router physicalRouterMaster = (org.opennaas.extensions.vcpe.model.Router) VCPENetworkModelHelper
+				.getElementByTemplateName(modelIn, TemplateConstants.ROUTER_1_PHY);
+
+		modelOut.setPhysicalRouter(getPhysicalRouter(physicalRouterMaster));
+		return modelOut;
 	}
 
 	/**
@@ -146,6 +187,20 @@ public class VCPEBeanUtils {
 		modelOut.setPhysicalRouterBackup(getPhysicalRouter(physicalRouterBackup));
 		modelOut.setPhysicalRouterCore(getPhysicalRouter(physicalRouterCore));
 		return modelOut;
+	}
+
+	/**
+	 * @param providerNetwork1
+	 * @return
+	 */
+	private static Network getNetwork(IPNetworkDomain networkIn) {
+		Network networkOut = new Network();
+		networkOut.setName(networkIn.getName());
+		networkOut.setTemplateName(networkIn.getTemplateName());
+		networkOut.setASNumber(networkIn.getASNumber());
+		networkOut.setNetworkInterface(getInterface(networkIn.getInterfaces().get(0)));
+		networkOut.setiPAddressRanges(networkIn.getIPAddressRanges());
+		return networkOut;
 	}
 
 	/**
@@ -208,12 +263,22 @@ public class VCPEBeanUtils {
 		if (templateName.equals(SPTemplateConstants.DOWN1_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.DOWN2_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.DOWN1_PHY_INTERFACE_LOCAL)
-				|| templateName.equals(SPTemplateConstants.DOWN2_PHY_INTERFACE_LOCAL)) {
+				|| templateName.equals(SPTemplateConstants.DOWN2_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_DOWN)
+				|| templateName.equals(TemplateConstants.LR_1_IFACE_DOWN)
+				|| templateName.equals(TemplateConstants.LR_2_IFACE_DOWN)
+				|| templateName.equals(TemplateConstants.LR_CLIENT_IFACE_DOWN)) {
 			outIface.setType(Interface.Types.DOWN.toString());
 		} else if (templateName.equals(SPTemplateConstants.UP1_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.UP2_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.UP1_PHY_INTERFACE_LOCAL)
-				|| templateName.equals(SPTemplateConstants.UP2_PHY_INTERFACE_LOCAL)) {
+				|| templateName.equals(SPTemplateConstants.UP2_PHY_INTERFACE_LOCAL)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_UP1)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_UP2)
+				|| templateName.equals(TemplateConstants.LR_1_IFACE_UP)
+				|| templateName.equals(TemplateConstants.LR_2_IFACE_UP)
+				|| templateName.equals(TemplateConstants.LR_CLIENT_IFACE_UP1)
+				|| templateName.equals(TemplateConstants.LR_CLIENT_IFACE_UP2)) {
 			outIface.setType(Interface.Types.UP.toString());
 		} else if (templateName.equals(SPTemplateConstants.INTER1_INTERFACE_LOCAL)
 				|| templateName.equals(SPTemplateConstants.INTER2_INTERFACE_LOCAL)
@@ -225,8 +290,14 @@ public class VCPEBeanUtils {
 				|| templateName.equals(SPTemplateConstants.LO1_PHY_INTERFACE)
 				|| templateName.equals(SPTemplateConstants.LO2_PHY_INTERFACE)
 				|| templateName.equals(SPTemplateConstants.LO1_INTERFACE)
-				|| templateName.equals(SPTemplateConstants.LO2_INTERFACE)) {
+				|| templateName.equals(SPTemplateConstants.LO2_INTERFACE)
+				|| templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_LO)
+				|| templateName.equals(TemplateConstants.LR_1_IFACE_LO)
+				|| templateName.equals(TemplateConstants.LR_2_IFACE_LO)
+				|| templateName.equals(TemplateConstants.LR_CLIENT_IFACE_LO)) {
 			outIface.setType(Interface.Types.LOOPBACK.toString());
+		} else if (templateName.equals(TemplateConstants.ROUTER_1_PHY_IFACE_LT)) {
+			outIface.setType(Interface.Types.LOGICALTUNNEL.toString());
 		} else if (templateName.equals(SPTemplateConstants.UP1_INTERFACE_PEER)
 				|| templateName.equals(SPTemplateConstants.UP2_INTERFACE_PEER)) {
 			outIface.setType(Interface.Types.WAN.toString());

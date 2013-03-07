@@ -10,22 +10,38 @@ import java.util.List;
  */
 public class Network {
 
-	private Integer			aSNumber;
+	private String			name;
+	private String			templateName;
+	private String			asNumber;
 	private List<String>	iPAddressRanges;
 	private Interface		networkInterface;
 
 	/**
-	 * @return the aSNumber
+	 * @return the name
 	 */
-	public Integer getaSNumber() {
-		return aSNumber;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param aSNumber the aSNumber to set
+	 * @param name the name to set
 	 */
-	public void setaSNumber(Integer aSNumber) {
-		this.aSNumber = aSNumber;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the aSNumber
+	 */
+	public String getASNumber() {
+		return asNumber;
+	}
+
+	/**
+	 * @param asNumber the asNumber to set
+	 */
+	public void setASNumber(String asNumber) {
+		this.asNumber = asNumber;
 	}
 
 	/**
@@ -54,6 +70,20 @@ public class Network {
 	 */
 	public void setNetworkInterface(Interface networkInterface) {
 		this.networkInterface = networkInterface;
+	}
+
+	/**
+	 * @return the templateName
+	 */
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	/**
+	 * @param templateName the templateName to set
+	 */
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
 	}
 
 }
