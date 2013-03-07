@@ -83,6 +83,9 @@ public class MultipleProviderTemplate implements ITemplate {
 	 * @return destination updated with values in source.
 	 */
 	private VCPENetworkModel partialCopy(VCPENetworkModel source, VCPENetworkModel destination) {
+		destination.setName(source.getName());
+		destination.setId(source.getId());
+
 		VCPENetworkElement dstElement;
 		for (VCPENetworkElement srcElement : source.getElements()) {
 			dstElement = VCPENetworkModelHelper.getElementByTemplateName(destination.getElements(), srcElement.getTemplateName());
