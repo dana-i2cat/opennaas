@@ -7,9 +7,12 @@ import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.model.IPNetworkDomain;
 import org.opennaas.extensions.vcpe.model.Interface;
+import org.opennaas.extensions.vcpe.model.LogicalRouter;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author Isart Canyameres Gimenez (i2cat Foundation)
@@ -42,8 +45,10 @@ public class MultipleProviderTemplate implements ITemplate {
 	 */
 	@Override
 	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) {
+
 		VCPENetworkModel model = MPTemplateModelBuilder.generateModel();
 		model = partialCopy(initialModel, model);
+		model = hierarchicalLRnames(model);
 		return model;
 	}
 
@@ -69,6 +74,14 @@ public class MultipleProviderTemplate implements ITemplate {
 		return completeSuggestion;
 	}
 
+	/**
+	 * Copies data in elements from given source to elements in given destination with same templateName. No element is created within this method.
+	 * Does not copy references to other elements (interfaces, physicalRouter, etc.)
+	 * 
+	 * @param source
+	 * @param destination
+	 * @return destination updated with values in source.
+	 */
 	private VCPENetworkModel partialCopy(VCPENetworkModel source, VCPENetworkModel destination) {
 		VCPENetworkElement dstElement;
 		for (VCPENetworkElement srcElement : source.getElements()) {
@@ -84,6 +97,13 @@ public class MultipleProviderTemplate implements ITemplate {
 			}
 		}
 		return destination;
+	}
+
+	private VCPENetworkModel hierarchicalLRnames(VCPENetworkModel model) {
+		for (LogicalRouter lr : Iterables.filter(VCPENetworkModelHelper.getRouters(model.getElements()), LogicalRouter.class)) {
+			lr.setName(model.getName() + "-" + lr.getName());
+		}
+		return model;
 	}
 
 }
