@@ -2,7 +2,6 @@ package org.opennaas.gui.vcpe.controllers;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -183,16 +181,4 @@ public abstract class VCPENetworkController {
 		return "home";
 	}
 
-	/**
-	 * Handle the Exception and subclasses
-	 * 
-	 * @param ex
-	 * @param request
-	 * @return
-	 */
-	@ExceptionHandler(Exception.class)
-	public String exception(Exception ex, HttpServletRequest request) {
-		request.setAttribute("exception", ex.getMessage());
-		return "exception";
-	}
 }

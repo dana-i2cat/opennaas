@@ -1,3 +1,5 @@
+<%@page import="org.apache.commons.collections.EnumerationUtils"%>
+<%@page import="java.util.Enumeration"%>
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ page session="false" %>
@@ -8,7 +10,7 @@
 
 <html>
 <head>
-	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>Error</title>
 	<link rel="stylesheet" href="<c:url value="/resources/css/screen.css" />" type="text/css">
 	<link rel="stylesheet" href="<c:url value="/resources/css/print.css" />" type="text/css">
@@ -21,18 +23,61 @@
 	<h1>
 		Error page
 	</h1>
+	
+	<c:set var="errorException" value="${requestScope['javax.servlet.error.exception']}"/>	
+	<c:set var="errorExceptionType" value="${requestScope['javax.servlet.error.exception_type']}"/>	
+	<c:set var="errorServletName" value="${requestScope['javax.servlet.error.servlet_name']}"/>
+	<c:set var="errorMessage" value="${requestScope[' javax.servlet.error.message']}"/>
+	<c:set var="errorRequestUri" value="${requestScope['javax.servlet.error.request_uri']}"/>
+	<c:set var="errorExceptionType" value="${requestScope['javax.servlet.error.exception_type']}"/>	
 
 	<h2>Your application has generated an error</h2>
     <h3>Please check for the error given below</h3>
-	<b>Exception message:</b><br> 	    
+	<b>Exception</b><br> 	    
 	<hr>
-	<c:if test="${not empty exception}" >
-		<div class="error">
+	
+	<div class="error">
+	
+		<c:if test="${not empty errorException}" >
+			<c:if test="${not empty errorException.message}" >
+				<span>
+					<b>Exception Message:</b><br> 	  
+					<c:out value="${errorException.message}"/><br/>		
+				</span>
+			</c:if>
+		</c:if>
+	
+		<c:if test="${not empty errorExceptionType}" >
 			<span>
-				<spring:message text="${exception}" />
+				<b>Error exception type:</b><br> 	  
+				<c:out value="${errorExceptionType}"/><br/>	
 			</span>
-		</div>
-	</c:if>
+		</c:if>
+
+		<c:if test="${not empty errorServletName}" >
+			<span>
+				<b>Error servlet name:</b><br> 	  
+				<c:out value="${errorServletName}"/><br/>	
+			</span>
+		</c:if>
+
+		<c:if test="${not empty errorRequestUri}" >
+			<span>
+				<b>Error request URI:</b><br> 	  
+				<c:out value="${errorRequestUri}"/><br/>	
+			</span>
+		</c:if>
+		
+		<c:if test="${not empty errorException}" >
+			<span>
+				<b>Exception Stack Trace:</b><br> 	
+	  			<% 
+					Exception e = (Exception)request.getAttribute("javax.servlet.error.exception");
+					e.printStackTrace(new java.io.PrintWriter(out)); 
+				%> 
+			</span>
+		</c:if>
+	</div>	
 </div>
 </body>
 </html>
