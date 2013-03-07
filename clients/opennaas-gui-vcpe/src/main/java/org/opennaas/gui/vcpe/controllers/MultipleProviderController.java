@@ -2,7 +2,6 @@ package org.opennaas.gui.vcpe.controllers;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -12,7 +11,6 @@ import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -104,17 +102,4 @@ public class MultipleProviderController extends VCPENetworkController {
 		return super.delete(vcpeNetworkId, model, locale);
 	}
 
-	/**
-	 * Handle the Exception and subclasses
-	 * 
-	 * @param ex
-	 * @param request
-	 * @return
-	 */
-	@Override
-	@ExceptionHandler(Exception.class)
-	public String exception(Exception ex, HttpServletRequest request) {
-		request.setAttribute("exception", ex.getMessage());
-		return "exception";
-	}
 }
