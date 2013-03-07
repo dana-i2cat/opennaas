@@ -38,7 +38,7 @@ public class MPTemplateSuggestor {
 	/**
 	 * 
 	 * @param physicalModel
-	 *            containing ALL physical elements in the template
+	 *            containing ALL physical elements in the template, and nothing else
 	 * @return physicalModel populated with suggested values
 	 * @throws VCPENetworkManagerException
 	 *             if failed to suggest a valid vcpe physical model

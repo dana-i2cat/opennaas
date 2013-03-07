@@ -20,9 +20,14 @@ import com.google.common.collect.Iterables;
  */
 public class MultipleProviderTemplate implements ITemplate {
 
-	private String				templateType	= ITemplate.MP_VCPE_TEMPLATE;
+	/**
+	 * FIXME TO BE REMOVED
+	 */
+	private static final boolean	APPLY_WORKAROUND	= true;
 
-	private MPTemplateSuggestor	suggestor;
+	private String					templateType		= ITemplate.MP_VCPE_TEMPLATE;
+
+	private MPTemplateSuggestor		suggestor;
 
 	/**
 	 * @throws VCPENetworkManagerException
@@ -40,11 +45,19 @@ public class MultipleProviderTemplate implements ITemplate {
 	/**
 	 * 
 	 * @param initialModel
-	 *            model with user preferences. It MAY not be a complete model.
+	 *            model with user preferences. It MAY not contain all elements, but MUST contain every configurable element (including physical
+	 *            infrastructure)
 	 * @return complete model with all required values.
 	 */
 	@Override
 	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) {
+
+		// WORKAROUND starts here
+		// When given initialModel does not contain physical elements, this workaround must be executed
+		if (APPLY_WORKAROUND) {
+			initialModel = buildModelWithPhyInfrastructureWorkaround(initialModel);
+		}
+		// WORKAROUND ends here
 
 		VCPENetworkModel model = MPTemplateModelBuilder.generateModel();
 		model = partialCopy(initialModel, model);
@@ -107,6 +120,25 @@ public class MultipleProviderTemplate implements ITemplate {
 			lr.setName(model.getName() + "-" + lr.getName());
 		}
 		return model;
+	}
+
+	/**
+	 * FIXME TO BE REMOVED, part of WORKAROUND
+	 * 
+	 * @param initialModel
+	 *            model with user preferences. Without physicalInfrastructure elements
+	 * @return given initialModel merged with suggested physical one.
+	 */
+	private VCPENetworkModel buildModelWithPhyInfrastructureWorkaround(VCPENetworkModel initialModelLogical) {
+		// Merge initialModelLogical with suggested physical
+		VCPENetworkModel phy = MPTemplateModelBuilder.generatePhysicalElements();
+		phy = suggestor.getSuggestionForPhysicalModel(phy);
+
+		VCPENetworkModel logical = MPTemplateModelBuilder.generateLogicalElements();
+		logical = partialCopy(initialModelLogical, logical);
+
+		VCPENetworkModel logicalWithSuggestedPhysical = MPTemplateModelBuilder.mapLogicalAndPhysical(phy, logical);
+		return logicalWithSuggestedPhysical;
 	}
 
 }
