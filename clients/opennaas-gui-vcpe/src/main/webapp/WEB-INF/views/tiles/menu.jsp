@@ -35,12 +35,15 @@
 					</li>
 				</sec:authorize>
 
+				
 				<sec:authorize access="hasRole('ROLE_CLIENT')">
-					<li>
-						<a href="<c:url value="${url}/updateIpsForm?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="menu.update" />
-						</a>
-					</li>
+					<c:if test="${vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
+						<li>
+							<a href="<c:url value="${url}/updateIpsForm?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">
+								<spring:message code="menu.update" />
+							</a>
+						</li>
+					</c:if>
 				</sec:authorize>
 			</ul>
 		</li>

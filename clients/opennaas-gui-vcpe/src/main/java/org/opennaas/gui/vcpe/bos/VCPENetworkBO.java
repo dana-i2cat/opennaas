@@ -34,8 +34,8 @@ public class VCPENetworkBO {
 	/**
 	 * Create a VCPE Network
 	 * 
-	 * @param vcpeNetwork
-	 * @return the id
+	 * @param logicalInfrastructure
+	 * @return
 	 * @throws RestServiceException
 	 */
 	public String create(LogicalInfrastructure logicalInfrastructure) throws RestServiceException {
@@ -62,19 +62,19 @@ public class VCPENetworkBO {
 	 * @return VCPENetwork
 	 * @throws RestServiceException
 	 */
-	public SingleProviderLogical getById(String vcpeNetworkId) throws RestServiceException {
+	public LogicalInfrastructure getById(String vcpeNetworkId) throws RestServiceException {
 		LOGGER.debug("get a VCPENetwork with id: " + vcpeNetworkId);
 		VCPENetworkModel openNaasModel = vcpeNetworkService.getVCPENetworkById(vcpeNetworkId);
-		return (SingleProviderLogical) VCPEBeanUtils.getLogicalInfrastructure(openNaasModel);
+		return VCPEBeanUtils.getLogicalInfrastructure(openNaasModel);
 	}
 
 	/**
 	 * Get all VCPE Network
 	 * 
-	 * @return List<VCPENetwork>
+	 * @return List<LogicalInfrastructure>
 	 * @throws RestServiceException
 	 */
-	public List<SingleProviderLogical> getAllVCPENetworks() throws RestServiceException {
+	public List<LogicalInfrastructure> getAllVCPENetworks() throws RestServiceException {
 		LOGGER.debug("get all VCPENetwork");
 		return getListVCPENetworkGUI(vcpeNetworkService.getAllVCPENetworks());
 	}
@@ -82,6 +82,7 @@ public class VCPENetworkBO {
 	/**
 	 * Get the physical infrastructure
 	 * 
+	 * @param templateType
 	 * @return the physical infrastructure
 	 * @throws RestServiceException
 	 */
@@ -183,10 +184,10 @@ public class VCPENetworkBO {
 	 * @param allVCPENetworks
 	 * @return
 	 */
-	private List<SingleProviderLogical> getListVCPENetworkGUI(List<VCPENetworkModel> listModelIn) {
-		List<SingleProviderLogical> listModelOut = new ArrayList<SingleProviderLogical>();
+	private List<LogicalInfrastructure> getListVCPENetworkGUI(List<VCPENetworkModel> listModelIn) {
+		List<LogicalInfrastructure> listModelOut = new ArrayList<LogicalInfrastructure>();
 		for (int i = 0; i < listModelIn.size(); i++) {
-			listModelOut.add((SingleProviderLogical) VCPEBeanUtils.getLogicalInfrastructure(listModelIn.get(i)));
+			listModelOut.add(VCPEBeanUtils.getLogicalInfrastructure(listModelIn.get(i)));
 		}
 		return listModelOut;
 	}
