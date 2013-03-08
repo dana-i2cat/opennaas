@@ -11,6 +11,19 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VLANSuggestor {
 
+	public static int suggestVLANWithPreference(VCPENetworkElement phyElement, Interface phyIface, SuggestedValues suggestedVLANs, int preferredVlan)
+			throws VCPENetworkManagerException {
+
+		if (!suggestedVLANs.isAlreadySuggested(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, phyIface), preferredVlan)) {
+			if (IsFreeChecker.isVLANFree(null, phyElement.getName(), Integer.toString(preferredVlan), phyIface.getPhysicalInterfaceName())) {
+				suggestedVLANs.markAsSuggested(VCPENetworkModelHelper.generatePhysicalInterfaceKey(phyElement, phyIface), preferredVlan);
+				return preferredVlan;
+			}
+		}
+
+		return suggestVLAN(phyElement, phyIface, suggestedVLANs);
+	}
+
 	/**
 	 * Returns first vlan in vlanRange that is free in given interface of given router, and it's not in given suggestedVLANs. After this call,
 	 * returned vlan is already included in suggestedVLANs.
