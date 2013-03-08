@@ -16,12 +16,14 @@ import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.GenericH
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.IPHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.InterfaceHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.LogicalRouterHelper;
+import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.StaticRouteHelper;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.LogicalRouter;
 import org.opennaas.extensions.vcpe.model.PhysicalRouter;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+import org.opennaas.extensions.vcpe.model.routing.StaticRouteConfiguration;
 
 import com.google.common.collect.Iterables;
 
@@ -59,9 +61,9 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 			assignIPAddresses(vcpe, desiredScenario);
 			executeLogicalRouters(desiredScenario);
 
-			// TODO Configure routing protocols
-			// configureStaticRoutes(vcpe, desiredScenario);
-			// executeLogicalRouters(desiredScenario);
+			// Configure routing protocols
+			configureStaticRoutes(vcpe, desiredScenario);
+			executeLogicalRouters(desiredScenario);
 
 			// TODO return created model, not the desired one
 			vcpe.setModel(desiredScenario);
@@ -123,8 +125,13 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	}
 
 	private void configureStaticRoutes(IResource vcpe, VCPENetworkModel model) throws ResourceException {
-		// TODO Auto-generated method stub
-		throw new ResourceException("Not implemented operation");
+		for (LogicalRouter lr : getLogicalRouters(model)) {
+			if (lr.getRoutingConfiguration() != null) {
+				for (StaticRouteConfiguration staticRoute : lr.getRoutingConfiguration().getStaticRoutes()) {
+					StaticRouteHelper.setStaticRoute(lr, model, staticRoute.getDestination(), staticRoute.getNextHop(), staticRoute.isDiscard());
+				}
+			}
+		}
 	}
 
 	private void createLogicalRouters(IResource vcpe, VCPENetworkModel model) throws ResourceException {

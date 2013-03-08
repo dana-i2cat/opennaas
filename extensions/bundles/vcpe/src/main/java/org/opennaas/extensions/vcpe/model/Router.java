@@ -7,12 +7,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import org.opennaas.extensions.vcpe.model.routing.RoutingConfiguration;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({ LogicalRouter.class, PhysicalRouter.class })
 public class Router extends VCPENetworkElement {
 
 	@XmlIDREF
-	protected List<Interface>	interfaces;
+	protected List<Interface>		interfaces;
+
+	protected RoutingConfiguration	routingConfiguration;
 
 	public List<Interface> getInterfaces() {
 		return interfaces;
@@ -20,6 +24,14 @@ public class Router extends VCPENetworkElement {
 
 	public void setInterfaces(List<Interface> interfaces) {
 		this.interfaces = interfaces;
+	}
+
+	public RoutingConfiguration getRoutingConfiguration() {
+		return routingConfiguration;
+	}
+
+	public void setRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+		this.routingConfiguration = routingConfiguration;
 	}
 
 	/*
@@ -64,6 +76,12 @@ public class Router extends VCPENetworkElement {
 				return false;
 		} else if (!interfaces.equals(other.interfaces))
 			return false;
+		if (routingConfiguration == null) {
+			if (other.routingConfiguration != null)
+				return false;
+		} else if (!routingConfiguration.equals(other.routingConfiguration))
+			return false;
+
 		return true;
 	}
 
