@@ -221,10 +221,14 @@ public class OpennaasBeanUtils {
 	 */
 	private static IPNetworkDomain getNetworkOpennaas(Network inNetwork) {
 		IPNetworkDomain outNetwork = new IPNetworkDomain();
+
 		outNetwork.setName(inNetwork.getName());
 		outNetwork.setTemplateName(inNetwork.getTemplateName());
 		outNetwork.setASNumber(inNetwork.getASNumber());
-		outNetwork.setIPAddressRanges(inNetwork.getiPAddressRanges());
+
+		List<String> ipAddressRanges = new ArrayList<String>();
+		ipAddressRanges.add(inNetwork.getiPAddressRange());
+		outNetwork.setIPAddressRanges(ipAddressRanges);
 
 		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
 		interfaces.add(getInterfaceOpennaas(inNetwork.getNetworkInterface()));

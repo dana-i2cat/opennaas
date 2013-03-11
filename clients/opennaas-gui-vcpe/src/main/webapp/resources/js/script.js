@@ -1158,30 +1158,29 @@ var validIPAddressSubnetMaskRegExp = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2
 
 $(document).ready(function() {
 	// only apply when create view or update IPs view are loaded
-	if($("#spLogicalForm").length || $("#updateIPs").length) {
+	if($("#spLogicalForm").length || $("#updateIPs").length || $("#mpLogicalForm").length) {
 		// apply firewall table style
 		$("#firewallTable").styleTable();
-		
 		// get submit button
 		var button = null;
-		if($("#spLogicalForm").length) {
+		if($("#spLogicalForm").length || $("#mpLogicalForm").length) {
 			button = $("#submitButton");
 		} else if($("#updateIPs").length) {
 			button = $("#updateIpButton");
 		}
 		// onload disable submit button
 		button.attr("disabled", true);
-		
+
 		// predefined style on BoD div
 		$("#bod").css('zIndex', 100);
-		
+
 		// ============ begin custom validators ==================== //
 		// regex
 		$.validator.addMethod("custom_regex", function(value, element,	regexp) {
 			return this.optional(element) || regexp.test(value);
 		});
 		// ============ end custom validators ==================== //
-		
+
 		// ============ begin validation options ==================== //
 		$("#logicalInfrastructure").validate({
 			showErrors: function(errorMap, errorList) {
@@ -1228,7 +1227,7 @@ $(document).ready(function() {
 		// ============ end validation options ==================== //
 	}
 	
-	// create view form validation rules
+	// create sp view form validation rules
 	if($("#spLogicalForm").length) {
 		// ============ begin validation rules ==================== //	
 		$('#logicalRouterMaster\\.interfaces2\\.name').rules("add", { required: true });
@@ -1289,5 +1288,79 @@ $(document).ready(function() {
 		$('#logicalRouterBackup\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		$('#logicalRouterBackup\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
 		// ============ end validation rules ==================== //
+	} else if($("#mpLogicalForm").length) {
+		// ============ begin validation rules ==================== //	
+		$('#providerNetwork1\\.ASNumber').rules("add", { required: true });
+		$('#providerNetwork1\\.iPAddressRange').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+
+		$('#providerNetwork2\\.ASNumber').rules("add", { required: true });
+		$('#providerNetwork2\\.iPAddressRange').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+
+		$('#clientNetwork\\.ASNumber').rules("add", { required: true });
+		$('#clientNetwork\\.iPAddressRange').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+
+		$('#providerNetwork1\\.networkInterface\\.name').rules("add", { required: true });
+		$('#providerNetwork1\\.networkInterface\\.port').rules("add", { required: true, min: 0 });
+		$('#providerNetwork1\\.networkInterface\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#providerNetwork1\\.networkInterface\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+
+		$('#providerNetwork2\\.networkInterface\\.name').rules("add", { required: true });
+		$('#providerNetwork2\\.networkInterface\\.port').rules("add", { required: true, min: 0 });
+		$('#providerNetwork2\\.networkInterface\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#providerNetwork2\\.networkInterface\\.vlan').rules("add", { required: true, min: 0, max: 4094 });		
+
+		$('#providerLR1\\.interfaces0\\.name').rules("add", { required: true });
+		$('#providerLR1\\.interfaces0\\.port').rules("add", { required: true, min: 0 });
+		$('#providerLR1\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#providerLR1\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+
+		$('#providerLR2\\.interfaces0\\.name').rules("add", { required: true });
+		$('#providerLR2\\.interfaces0\\.port').rules("add", { required: true, min: 0 });
+		$('#providerLR2\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#providerLR2\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+
+		$('#providerLR1\\.interfaces2\\.name').rules("add", { required: true });
+		$('#providerLR1\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
+		$('#providerLR1\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+
+		$('#providerLR2\\.interfaces2\\.name').rules("add", { required: true });
+		$('#providerLR2\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
+		$('#providerLR2\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		
+		$('#providerLR1\\.interfaces1\\.name').rules("add", { required: true });
+		$('#providerLR1\\.interfaces1\\.port').rules("add", { required: true, min: 0 });
+		$('#providerLR1\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#providerLR1\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+		
+		$('#providerLR2\\.interfaces1\\.name').rules("add", { required: true });
+		$('#providerLR2\\.interfaces1\\.port').rules("add", { required: true, min: 0 });
+		$('#providerLR2\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#providerLR2\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+		
+		$('#clientLR\\.interfaces0\\.name').rules("add", { required: true });
+		$('#clientLR\\.interfaces0\\.port').rules("add", { required: true, min: 0 });
+		$('#clientLR\\.interfaces0\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#clientLR\\.interfaces0\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+
+		$('#clientLR\\.interfaces1\\.name').rules("add", { required: true });
+		$('#clientLR\\.interfaces1\\.port').rules("add", { required: true, min: 0 });
+		$('#clientLR\\.interfaces1\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#clientLR\\.interfaces1\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+
+		$('#clientLR\\.interfaces3\\.name').rules("add", { required: true });
+		$('#clientLR\\.interfaces3\\.port').rules("add", { required: true, min: 0 });
+		$('#clientLR\\.interfaces3\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+
+		$('#clientLR\\.interfaces2\\.name').rules("add", { required: true });
+		$('#clientLR\\.interfaces2\\.port').rules("add", { required: true, min: 0 });
+		$('#clientLR\\.interfaces2\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#clientLR\\.interfaces2\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+
+		$('#clientNetwork\\.networkInterface\\.name').rules("add", { required: true });
+		$('#clientNetwork\\.networkInterface\\.port').rules("add", { required: true, min: 0 });
+		$('#clientNetwork\\.networkInterface\\.ipAddress').rules("add", { custom_regex: validIPAddressSubnetMaskRegExp, required: true });
+		$('#clientNetwork\\.networkInterface\\.vlan').rules("add", { required: true, min: 0, max: 4094 });
+
+		$('#name').rules("add", { required: true });
 	}
 });
