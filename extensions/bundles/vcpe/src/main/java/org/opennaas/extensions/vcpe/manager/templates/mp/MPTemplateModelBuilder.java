@@ -13,6 +13,7 @@ import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+import org.opennaas.extensions.vcpe.model.routing.RoutingConfiguration;
 
 public class MPTemplateModelBuilder {
 
@@ -89,6 +90,7 @@ public class MPTemplateModelBuilder {
 		// LogicalRouter 1
 		Router lr1 = new LogicalRouter();
 		lr1.setTemplateName(TemplateConstants.LR_1_ROUTER);
+		lr1.setRoutingConfiguration(new RoutingConfiguration());
 
 		List<Interface> interfaces = new ArrayList<Interface>();
 		lr1.setInterfaces(interfaces);
@@ -103,6 +105,7 @@ public class MPTemplateModelBuilder {
 		// LogicalRouter 2
 		Router lr2 = new LogicalRouter();
 		lr2.setTemplateName(TemplateConstants.LR_2_ROUTER);
+		lr2.setRoutingConfiguration(new RoutingConfiguration());
 
 		interfaces = new ArrayList<Interface>();
 		lr2.setInterfaces(interfaces);
@@ -117,6 +120,7 @@ public class MPTemplateModelBuilder {
 		// Client Logical Router
 		Router lrclient = new LogicalRouter();
 		lrclient.setTemplateName(TemplateConstants.LR_CLIENT_ROUTER);
+		lrclient.setRoutingConfiguration(new RoutingConfiguration());
 
 		interfaces = new ArrayList<Interface>();
 		lrclient.setInterfaces(interfaces);

@@ -3,14 +3,20 @@
  */
 package org.opennaas.extensions.vcpe.manager.templates.mp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.model.IPNetworkDomain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.LogicalRouter;
+import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+import org.opennaas.extensions.vcpe.model.routing.RoutingConfiguration;
+import org.opennaas.extensions.vcpe.model.routing.StaticRouteConfiguration;
 
 import com.google.common.collect.Iterables;
 
@@ -62,6 +68,7 @@ public class MultipleProviderTemplate implements ITemplate {
 		VCPENetworkModel model = MPTemplateModelBuilder.generateModel();
 		model = partialCopy(initialModel, model);
 		model = hierarchicalLRnames(model);
+		model = configureRouting(model);
 		return model;
 	}
 
@@ -141,4 +148,118 @@ public class MultipleProviderTemplate implements ITemplate {
 		return logicalWithSuggestedPhysical;
 	}
 
+	private VCPENetworkModel configureRouting(VCPENetworkModel model) {
+		// reset routing configuration for LRs
+		for (LogicalRouter lr : Iterables.filter(VCPENetworkModelHelper.getRouters(model.getElements()), LogicalRouter.class)) {
+			lr.setRoutingConfiguration(new RoutingConfiguration());
+		}
+
+		configureStaticRoutes(model);
+		return model;
+	}
+
+	/**
+	 * Creates MP-template required static routes in given model.
+	 * 
+	 * Creates following static routes:
+	 * 
+	 * in LR1: <br/>
+	 * static route LAN_CLIENT.getIPAddressRange() next-hop LR_CLIENT_IFACE_UP1.getIPAddress() (through LR_1_IFACE_DOWN) <br/>
+	 * static route 0.0.0.0/0 next-hop WAN1_IFACE_DOWN.getIPAddress() (through LR_1_IFACE_UP) <br/>
+	 * 
+	 * in LR2: <br/>
+	 * static route LAN_CLIENT.getIPAddressRange() next-hop LR_CLIENT_IFACE_UP2.getIPAddress() (through LR_2_IFACE_DOWN) <br/>
+	 * static route 0.0.0.0/0 next-hop WAN2_IFACE_DOWN.getIPAddress() (through LR_2_IFACE_UP) <br/>
+	 * 
+	 * in LR_CLIENT: <br/>
+	 * static route LAN_CLIENT.getIPAddressRange() next-hop LAN_CLIENT_IFACE_UP.getIPAddress() (through LR_CLIENT_IFACE_DOWN) <br/>
+	 * static route WAN1.getIPAddressRange() next-hop LR_1_IFACE_DOWN.getIPAddress() (through LR_CLIENT_IFACE_UP1) <br/>
+	 * static route WAN2.getIPAddressRange() next-hop LR_2_IFACE_DOWN.getIPAddress() (through LR_CLIENT_IFACE_UP2) <br/>
+	 * static route 0.0.0.0/0 next-hop LR_1_IFACE_DOWN.getIPAddress() (through LR_CLIENT_IFACE_UP1) //default provider is WAN1 <br/>
+	 * 
+	 * Documented in issue OPENNAAS-869.
+	 * 
+	 * @param model
+	 * @return given model with required static routes included
+	 */
+	private VCPENetworkModel configureStaticRoutes(VCPENetworkModel model) {
+
+		String allRoutes = "0.0.0.0/0";
+		RoutingConfiguration config;
+
+		List<String> clientIPRanges = ((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LAN_CLIENT))
+				.getIPAddressRanges();
+		List<String> wan1IPRanges = ((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.WAN1))
+				.getIPAddressRanges();
+		List<String> wan2IPRanges = ((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.WAN2))
+				.getIPAddressRanges();
+
+		// LR_1
+		config = ((Router) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_1_ROUTER))
+				.getRoutingConfiguration();
+		config.setStaticRoutes(new ArrayList<StaticRouteConfiguration>(2));
+
+		// static route LAN_CLIENT.getIPAddressRange() next-hop LR_CLIENT_IFACE_UP1.getIPAddress() (through LR_1_IFACE_DOWN)
+		for (String ipRange : clientIPRanges) {
+			config.getStaticRoutes().add(new StaticRouteConfiguration(
+					ipRange,
+					((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_CLIENT_IFACE_UP1)).getIpAddress()
+					, false));
+		}
+		// static route 0.0.0.0/0 next-hop WAN1_IFACE_DOWN.getIPAddress() (through LR_1_IFACE_UP)
+		config.getStaticRoutes().add(new StaticRouteConfiguration(
+				allRoutes,
+				((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.WAN1_IFACE_DOWN)).getIpAddress()
+				, false));
+
+		// LR_2
+		config = ((Router) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_2_ROUTER))
+				.getRoutingConfiguration();
+		config.setStaticRoutes(new ArrayList<StaticRouteConfiguration>(2));
+		// static route LAN_CLIENT.getIPAddressRange() next-hop LR_CLIENT_IFACE_UP2.getIPAddress() (through LR_2_IFACE_DOWN)
+		for (String ipRange : clientIPRanges) {
+			config.getStaticRoutes().add(new StaticRouteConfiguration(
+					ipRange,
+					((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_CLIENT_IFACE_UP2)).getIpAddress()
+					, false));
+		}
+		// static route 0.0.0.0/0 next-hop WAN2_IFACE_DOWN.getIPAddress() (through LR_2_IFACE_UP)
+		config.getStaticRoutes().add(new StaticRouteConfiguration(
+				allRoutes,
+				((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.WAN2_IFACE_DOWN)).getIpAddress()
+				, false));
+
+		// LR_CLIENT
+		config = ((Router) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_CLIENT_ROUTER))
+				.getRoutingConfiguration();
+		config.setStaticRoutes(new ArrayList<StaticRouteConfiguration>(4));
+		// static route LAN_CLIENT.getIPAddressRange() next-hop LAN_CLIENT_IFACE_UP.getIPAddress() (through LR_CLIENT_IFACE_DOWN)
+		for (String ipRange : clientIPRanges) {
+			config.getStaticRoutes().add(new StaticRouteConfiguration(
+					ipRange,
+					((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LAN_CLIENT_IFACE_UP)).getIpAddress()
+					, false));
+		}
+		// static route WAN1.getIPAddressRange() next-hop LR_1_IFACE_DOWN.getIPAddress() (through LR_CLIENT_IFACE_UP1)
+		for (String ipRange : wan1IPRanges) {
+			config.getStaticRoutes().add(new StaticRouteConfiguration(
+					ipRange,
+					((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_1_IFACE_DOWN)).getIpAddress()
+					, false));
+		}
+		// static route WAN2.getIPAddressRange() next-hop LR_2_IFACE_DOWN.getIPAddress() (through LR_CLIENT_IFACE_UP2)
+		for (String ipRange : wan2IPRanges) {
+			config.getStaticRoutes().add(new StaticRouteConfiguration(
+					ipRange,
+					((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_2_IFACE_DOWN)).getIpAddress()
+					, false));
+		}
+		// static route 0.0.0.0/0 next-hop LR_1_IFACE_DOWN.getIPAddress() (through LR_CLIENT_IFACE_UP1) //default provider is WAN1
+		config.getStaticRoutes().add(new StaticRouteConfiguration(
+				allRoutes,
+				((Interface) VCPENetworkModelHelper.getElementByTemplateName(model, TemplateConstants.LR_1_IFACE_DOWN)).getIpAddress()
+				, false));
+
+		return model;
+	}
 }
