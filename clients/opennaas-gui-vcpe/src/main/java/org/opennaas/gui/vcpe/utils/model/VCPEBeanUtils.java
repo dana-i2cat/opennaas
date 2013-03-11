@@ -58,6 +58,7 @@ public class VCPEBeanUtils {
 		MultipleProviderLogical modelOut = new MultipleProviderLogical();
 
 		// VCPE info
+		modelOut.setId(modelIn.getId());
 		modelOut.setName(modelIn.getName());
 		modelOut.setTemplateType(modelIn.getTemplateType());
 
