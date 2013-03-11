@@ -89,19 +89,19 @@ public class MPTemplateSuggestor {
 		phyElement = (Router) VCPENetworkModelHelper.getElementByTemplateName(physicalModel, TemplateConstants.ROUTER_1_PHY);
 		phyIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(physicalModel, TemplateConstants.ROUTER_1_PHY_IFACE_UP1);
 		target = (Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalModel, TemplateConstants.LR_1_IFACE_UP);
-		vlan = VLANSuggestor.suggestVLAN(phyElement, phyIface, suggestedVLANs);
+		vlan = VLANSuggestor.suggestVLANWithPreference(phyElement, phyIface, suggestedVLANs, Long.valueOf(target.getVlan()).intValue());
 		target.setVlan(vlan);
 
 		phyElement = (Router) VCPENetworkModelHelper.getElementByTemplateName(physicalModel, TemplateConstants.ROUTER_1_PHY);
 		phyIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(physicalModel, TemplateConstants.ROUTER_1_PHY_IFACE_UP2);
 		target = (Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalModel, TemplateConstants.LR_2_IFACE_UP);
-		vlan = VLANSuggestor.suggestVLAN(phyElement, phyIface, suggestedVLANs);
+		vlan = VLANSuggestor.suggestVLANWithPreference(phyElement, phyIface, suggestedVLANs, Long.valueOf(target.getVlan()).intValue());
 		target.setVlan(vlan);
 
 		phyElement = (Router) VCPENetworkModelHelper.getElementByTemplateName(physicalModel, TemplateConstants.ROUTER_1_PHY);
 		phyIface = (Interface) VCPENetworkModelHelper.getElementByTemplateName(physicalModel, TemplateConstants.ROUTER_1_PHY_IFACE_DOWN);
 		target = (Interface) VCPENetworkModelHelper.getElementByTemplateName(logicalModel, TemplateConstants.LR_CLIENT_IFACE_DOWN);
-		vlan = VLANSuggestor.suggestVLAN(phyElement, phyIface, suggestedVLANs);
+		vlan = VLANSuggestor.suggestVLANWithPreference(phyElement, phyIface, suggestedVLANs, Long.valueOf(target.getVlan()).intValue());
 		target.setVlan(vlan);
 
 		// update other endpoints of links with same vlans
