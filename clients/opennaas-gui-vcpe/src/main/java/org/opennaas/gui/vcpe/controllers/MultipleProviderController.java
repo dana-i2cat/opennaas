@@ -11,6 +11,7 @@ import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,33 +39,37 @@ public class MultipleProviderController extends VCPENetworkController {
 	}
 
 	/**
-	 * Redirect to the form to create a single provider VCPENetwork
+	 * Redirect to the form to create a multiple provider VCPENetwork
 	 * 
 	 * @param model
+	 * @param physical
+	 * @param locale
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/logical")
-	public String getLogicalForm(MultipleProviderPhysical physical, Model model, Locale locale) {
+	public String getLogicalForm(@ModelAttribute("physicalInfrastructure") MultipleProviderPhysical physical, Model model, Locale locale) {
 		return super.getLogicalForm(physical, model, locale);
 	}
 
 	/**
-	 * Create a VCPE Network
+	 * Create a multiple provider VCPE Network
 	 * 
 	 * @param logical
 	 * @param result
+	 * @param model
 	 * @return
 	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/create")
-	public String create(@Valid MultipleProviderLogical logical, BindingResult result, Model model, Locale locale) {
+	public String create(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical, BindingResult result, Model model,
+			Locale locale) {
 		return super.create(logical, result, model, locale);
 	}
 
 	/**
-	 * Edit a VCPE Network
+	 * Edit a multiple provider VCPE Network
 	 * 
-	 * @param vcpeNetwork
+	 * @param vcpeNetworkId
 	 * @param result
 	 * @return
 	 */
@@ -75,7 +80,7 @@ public class MultipleProviderController extends VCPENetworkController {
 	}
 
 	/**
-	 * Update a VCPE Network
+	 * Update a multiple provider VCPE Network
 	 * 
 	 * @param singleProviderLogical
 	 * @param result
@@ -84,12 +89,13 @@ public class MultipleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/update")
-	public String update(@Valid MultipleProviderLogical logical, BindingResult result, Model model, Locale locale) {
+	public String update(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
+			BindingResult result, Model model, Locale locale) {
 		return super.update(logical, result, model, locale);
 	}
 
 	/**
-	 * Delete a VCPE Network
+	 * Delete a multiple provider VCPE Network
 	 * 
 	 * @param vcpeNetworkId
 	 * @param model

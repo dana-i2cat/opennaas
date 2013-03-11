@@ -2,8 +2,6 @@ package org.opennaas.gui.vcpe.controllers;
 
 import java.util.Locale;
 
-import javax.validation.Valid;
-
 import org.apache.log4j.Logger;
 import org.opennaas.gui.vcpe.bos.VCPENetworkBO;
 import org.opennaas.gui.vcpe.entities.LogicalInfrastructure;
@@ -14,7 +12,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Jordi
@@ -38,16 +35,18 @@ public abstract class VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	public String getPhysicalForm(@RequestParam("templateType") String templateType, Model model, Locale locale) {
+	public String getPhysicalForm(String templateType, Model model, Locale locale) {
 		LOGGER.debug("get the Physical Form");
+		String view = "physicalForm";
 		try {
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 		} catch (RestServiceException e) {
+			view = "home";
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.list.message.error", null, locale));
 		}
-		return "physicalForm";
+		return view;
 	}
 
 	/**
@@ -60,16 +59,17 @@ public abstract class VCPENetworkController {
 	 */
 	public String getLogicalForm(PhysicalInfrastructure physical, Model model, Locale locale) {
 		LOGGER.debug("form to create a VCPENetwork");
+		String view = "logicalForm";
 		try {
 			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getLogicalInfrastructure(physical));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute("action", new String("create"));
 		} catch (RestServiceException e) {
+			view = "physicalForm";
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
-		} finally {
-			model.addAttribute("action", new String("create"));
 		}
-		return "logicalForm";
+		return view;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public abstract class VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	protected String create(@Valid LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
+	protected String create(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("add entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {
@@ -135,7 +135,7 @@ public abstract class VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	protected String update(@Valid LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
+	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("update entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {

@@ -11,6 +11,7 @@ import org.opennaas.gui.vcpe.services.rest.RestServiceException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,7 @@ public class SingleProviderController extends VCPENetworkController {
 	private static final Logger	LOGGER	= Logger.getLogger(SingleProviderController.class);
 
 	/**
-	 * Redirect to the physical view
+	 * Redirect to the single provider physical view
 	 * 
 	 * @param templateType
 	 * @param model
@@ -44,12 +45,12 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/logical")
-	public String getLogicalForm(SingleProviderPhysical physical, Model model, Locale locale) {
+	public String getLogicalForm(@ModelAttribute("physicalInfrastructure") SingleProviderPhysical physical, Model model, Locale locale) {
 		return super.getLogicalForm(physical, model, locale);
 	}
 
 	/**
-	 * Create a VCPE Network
+	 * Create a single provider VCPE Network
 	 * 
 	 * @param logical
 	 * @param result
@@ -57,12 +58,13 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/create")
-	public String create(@Valid SingleProviderLogical logical, BindingResult result, Model model, Locale locale) {
+	public String create(@Valid @ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			BindingResult result, Model model, Locale locale) {
 		return super.create(logical, result, model, locale);
 	}
 
 	/**
-	 * Edit a VCPE Network
+	 * Edit a single provider VCPE Network
 	 * 
 	 * @param vcpeNetwork
 	 * @param result
@@ -75,7 +77,7 @@ public class SingleProviderController extends VCPENetworkController {
 	}
 
 	/**
-	 * Update a VCPE Network
+	 * Update a single provider VCPE Network
 	 * 
 	 * @param logical
 	 * @param result
@@ -84,12 +86,13 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/update")
-	public String update(@Valid SingleProviderLogical logical, BindingResult result, Model model, Locale locale) {
+	public String update(@Valid @ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			BindingResult result, Model model, Locale locale) {
 		return super.update(logical, result, model, locale);
 	}
 
 	/**
-	 * Delete a VCPE Network
+	 * Delete a single provider VCPE Network
 	 * 
 	 * @param vcpeNetworkId
 	 * @param model
@@ -145,7 +148,7 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/updateIps")
-	public String updateIps(SingleProviderLogical logical, Model model, Locale locale) {
+	public String updateIps(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical, Model model, Locale locale) {
 		return updateIpsSecure(logical, model, locale);
 	}
 
@@ -158,7 +161,7 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/updateIps")
-	public String updateIpsSecure(SingleProviderLogical logical, Model model, Locale locale) {
+	public String updateIpsSecure(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical, Model model, Locale locale) {
 		LOGGER.debug("update Ips of VCPENetwork: " + logical);
 		try {
 			vcpeNetworkBO.updateIps(logical);
@@ -183,7 +186,8 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/updateVRRPIp")
-	public String updateVRRPIpClient(SingleProviderLogical logical, Model model, Locale locale) throws RestServiceException {
+	public String updateVRRPIpClient(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			Model model, Locale locale) throws RestServiceException {
 		return updateVRRPIp(logical, model, locale);
 	}
 
@@ -197,7 +201,8 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/updateVRRPIp")
-	public String updateVRRPIp(SingleProviderLogical logical, Model model, Locale locale) throws RestServiceException {
+	public String updateVRRPIp(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			Model model, Locale locale) throws RestServiceException {
 		LOGGER.debug("update VRRP ip of VCPENetwork: " + logical);
 		try {
 			vcpeNetworkBO.updateVRRPIp(logical);
@@ -221,7 +226,8 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/changeVRRPPriority")
-	public String changeVRRPPriority(SingleProviderLogical logical, Model model, Locale locale) {
+	public String changeVRRPPriority(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			Model model, Locale locale) {
 		LOGGER.debug("change priority VRRP of VCPENetwork: " + logical);
 		try {
 			model.addAttribute("action", "update");
