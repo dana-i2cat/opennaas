@@ -1168,8 +1168,6 @@ $(document).ready(function() {
 		} else if($("#updateIPs").length) {
 			button = $("#updateIpButton");
 		}
-		// onload disable submit button
-		button.attr("disabled", true);
 
 		// predefined style on BoD div
 		$("#bod").css('zIndex', 100);
