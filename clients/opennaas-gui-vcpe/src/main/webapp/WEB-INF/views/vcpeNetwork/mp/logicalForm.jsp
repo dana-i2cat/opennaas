@@ -28,11 +28,11 @@
 						<form:input path="providerNetwork1.ASNumber" size="8"/>
 						<form:errors path="providerNetwork1.ASNumber" size="8" /><br>
 						
-						<form:label for="providerNetwork1.iPAddressRanges[0]" path="providerNetwork1.iPAddressRanges[0]" cssErrorClass="error">
+						<form:label for="providerNetwork1.iPAddressRange" path="providerNetwork1.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input path="providerNetwork1.iPAddressRanges[0]" size="8"/>
-						<form:errors path="providerNetwork1.iPAddressRanges[0]" size="8" />
+						<form:input path="providerNetwork1.iPAddressRange" size="8"/>
+						<form:errors path="providerNetwork1.iPAddressRange" size="8" />
 					</div>		
 				</div>
 			</div>
@@ -48,11 +48,11 @@
 						<form:input path="providerNetwork2.ASNumber" size="8"/>
 						<form:errors path="providerNetwork2.ASNumber" size="8" /><br>
 						
-						<form:label for="providerNetwork2.iPAddressRanges[0]" path="providerNetwork2.iPAddressRanges[0]" cssErrorClass="error">
+						<form:label for="providerNetwork2.iPAddressRange" path="providerNetwork2.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input path="providerNetwork2.iPAddressRanges[0]" size="8"/>
-						<form:errors path="providerNetwork2.iPAddressRanges[0]" size="8" />
+						<form:input path="providerNetwork2.iPAddressRange" size="8"/>
+						<form:errors path="providerNetwork2.iPAddressRange" size="8" />
 					</div>		
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 						<form:label for="providerNetwork1.networkInterface.vlan" path="providerNetwork1.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
 						</form:label>
-						<form:input path="providerNetwork1.networkInterface.vlan" size="3" readonly="true"  />
+						<form:input path="providerNetwork1.networkInterface.vlan" size="3"  />
 						<form:errors path="providerNetwork1.networkInterface.vlan" size="3" />
 						
 					</div>		
@@ -115,7 +115,7 @@
 						<form:label for="providerNetwork2.networkInterface.vlan" path="providerNetwork2.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
 						</form:label>
-						<form:input path="providerNetwork2.networkInterface.vlan" size="3" readonly="true"  />
+						<form:input path="providerNetwork2.networkInterface.vlan" size="3"  />
 						<form:errors path="providerNetwork2.networkInterface.vlan" size="3" />
 					</div>		
 				</div>										
@@ -139,9 +139,9 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="providerLR1.interfaces[${vs.index}].name" size="8" readonly="true" />.
+										<form:input path="providerLR1.interfaces[${vs.index}].name" size="8" />.
 										<form:errors path="providerLR1.interfaces[${vs.index}].name" size="8" />
-										<form:input path="providerLR1.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+										<form:input path="providerLR1.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="providerLR1.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="providerLR1.interfaces[${vs.index}].ipAddress" path="providerLR1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -153,7 +153,7 @@
 										<form:label for="providerLR1.interfaces[${vs.index}].vlan" path="providerLR1.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="providerLR1.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+										<form:input path="providerLR1.interfaces[${vs.index}].vlan" size="3"  />
 										<form:errors path="providerLR1.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
@@ -173,9 +173,9 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="providerLR2.interfaces[${vs.index}].name" size="8" readonly="true" />.
+										<form:input path="providerLR2.interfaces[${vs.index}].name" size="8" />.
 										<form:errors path="providerLR2.interfaces[${vs.index}].name" size="8" />
-										<form:input path="providerLR2.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+										<form:input path="providerLR2.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="providerLR2.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="providerLR2.interfaces[${vs.index}].ipAddress" path="providerLR2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -187,7 +187,7 @@
 										<form:label for="providerLR2.interfaces[${vs.index}].vlan" path="providerLR2.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="providerLR2.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+										<form:input path="providerLR2.interfaces[${vs.index}].vlan" size="3"  />
 										<form:errors path="providerLR2.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
@@ -213,9 +213,9 @@
 													<spring:message code="interface.name" />
 												</form:label>
 											</form:label>
-											<form:input path="providerLR1.interfaces[${vs.index}].name" size="8" readonly="true" />.
+											<form:input path="providerLR1.interfaces[${vs.index}].name" size="8" />.
 											<form:errors path="providerLR1.interfaces[${vs.index}].name" size="8" />
-											<form:input path="providerLR1.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+											<form:input path="providerLR1.interfaces[${vs.index}].port" size="3"    />
 											<form:errors path="providerLR1.interfaces[${vs.index}].port" size="3" />
 											<br>
 											<form:label for="providerLR1.interfaces[${vs.index}].ipAddress" path="providerLR1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -248,9 +248,9 @@
 													<spring:message code="interface.name" />
 												</form:label>
 											</form:label>
-											<form:input path="providerLR2.interfaces[${vs.index}].name" size="8" readonly="true" />.
+											<form:input path="providerLR2.interfaces[${vs.index}].name" size="8" />.
 											<form:errors path="providerLR2.interfaces[${vs.index}].name" size="8" />
-											<form:input path="providerLR2.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+											<form:input path="providerLR2.interfaces[${vs.index}].port" size="3"    />
 											<form:errors path="providerLR2.interfaces[${vs.index}].port" size="3" />
 											<br>
 											<form:label for="providerLR2.interfaces[${vs.index}].ipAddress" path="providerLR2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -278,9 +278,9 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="providerLR1.interfaces[${vs.index}].name" size="8" readonly="true" />.
+										<form:input path="providerLR1.interfaces[${vs.index}].name" size="8" />.
 										<form:errors path="providerLR1.interfaces[${vs.index}].name" size="8" />
-										<form:input path="providerLR1.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+										<form:input path="providerLR1.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="providerLR1.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="providerLR1.interfaces[${vs.index}].ipAddress" path="providerLR1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -292,7 +292,7 @@
 										<form:label for="providerLR1.interfaces[${vs.index}].vlan" path="providerLR1.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="providerLR1.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+										<form:input path="providerLR1.interfaces[${vs.index}].vlan" size="3"  />
 										<form:errors path="providerLR1.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
@@ -313,9 +313,9 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="providerLR2.interfaces[${vs.index}].name" size="8" readonly="true" />.
+										<form:input path="providerLR2.interfaces[${vs.index}].name" size="8" />.
 										<form:errors path="providerLR2.interfaces[${vs.index}].name" size="8" />
-										<form:input path="providerLR2.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+										<form:input path="providerLR2.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="providerLR2.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="providerLR2.interfaces[${vs.index}].ipAddress" path="providerLR2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -327,7 +327,7 @@
 										<form:label for="providerLR2.interfaces[${vs.index}].vlan" path="providerLR2.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="providerLR2.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+										<form:input path="providerLR2.interfaces[${vs.index}].vlan" size="3"  />
 										<form:errors path="providerLR2.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
@@ -348,9 +348,9 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" readonly="true" />.
+										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" />.
 										<form:errors path="clientLR.interfaces[${vs.index}].name" size="8" />
-										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="clientLR.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -362,7 +362,7 @@
 										<form:label for="clientLR.interfaces[${vs.index}].vlan" path="clientLR.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3"  />
 										<form:errors path="clientLR.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
@@ -383,9 +383,9 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" readonly="true" />.
+										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" />.
 										<form:errors path="clientLR.interfaces[${vs.index}].name" size="8" />
-										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="clientLR.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -397,7 +397,7 @@
 										<form:label for="clientLR.interfaces[${vs.index}].vlan" path="clientLR.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3"  />
 										<form:errors path="clientLR.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
@@ -423,9 +423,9 @@
 													<spring:message code="interface.name" />
 												</form:label>
 											</form:label>
-											<form:input path="clientLR.interfaces[${vs.index}].name" size="8" readonly="true" />.
+											<form:input path="clientLR.interfaces[${vs.index}].name" size="8" />.
 											<form:errors path="clientLR.interfaces[${vs.index}].name" size="8" />
-											<form:input path="clientLR.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+											<form:input path="clientLR.interfaces[${vs.index}].port" size="3"    />
 											<form:errors path="clientLR.interfaces[${vs.index}].port" size="3" />
 											<br>
 											<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -453,9 +453,9 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" readonly="true" />.
+										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" />.
 										<form:errors path="clientLR.interfaces[${vs.index}].name" size="8" />
-										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"  readonly="true"   />
+										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="clientLR.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
@@ -467,7 +467,7 @@
 										<form:label for="clientLR.interfaces[${vs.index}].vlan" path="clientLR.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3" readonly="true"  />
+										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3"  />
 										<form:errors path="clientLR.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
@@ -503,7 +503,7 @@
 						<form:label for="clientNetwork.networkInterface.vlan" path="clientNetwork.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
 						</form:label>
-						<form:input path="clientNetwork.networkInterface.vlan" size="3" readonly="true"  />
+						<form:input path="clientNetwork.networkInterface.vlan" size="3"  />
 						<form:errors path="clientNetwork.networkInterface.vlan" size="3" />
 					</div>		
 				</div>										
@@ -530,11 +530,11 @@
 						<form:input path="clientNetwork.ASNumber" size="8"/>
 						<form:errors path="clientNetwork.ASNumber" size="8" /><br>
 						
-						<form:label for="clientNetwork.iPAddressRanges[0]" path="clientNetwork.iPAddressRanges[0]" cssErrorClass="error">
+						<form:label for="clientNetwork.iPAddressRange" path="clientNetwork.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input path="clientNetwork.iPAddressRanges[0]" size="8"/>
-						<form:errors path="clientNetwork.iPAddressRanges[0]" size="8" />
+						<form:input path="clientNetwork.iPAddressRange" size="8"/>
+						<form:errors path="clientNetwork.iPAddressRange" size="8" />
 					</div>		
 				</div>		
 			</div>

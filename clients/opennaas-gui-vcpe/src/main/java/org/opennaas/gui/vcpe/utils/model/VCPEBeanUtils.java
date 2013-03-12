@@ -200,7 +200,7 @@ public class VCPEBeanUtils {
 		networkOut.setTemplateName(networkIn.getTemplateName());
 		networkOut.setASNumber(networkIn.getASNumber());
 		networkOut.setNetworkInterface(getInterface(networkIn.getInterfaces().get(0)));
-		networkOut.setiPAddressRanges(networkIn.getIPAddressRanges());
+		networkOut.setiPAddressRange(networkIn.getIPAddressRanges().get(0));
 		return networkOut;
 	}
 
