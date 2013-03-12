@@ -22,6 +22,7 @@
 				<div>			
 					<div id="config" class="ui-widget-content">
 						<form:hidden path="providerNetwork1.templateName" />
+						<form:hidden path="providerNetwork1.name" />
 						<form:label for="providerNetwork1.ASNumber" path="providerNetwork1.ASNumber" cssErrorClass="error">
 							<spring:message code="network.ASNumber" />
 						</form:label>
@@ -42,6 +43,7 @@
 				<div>			
 					<div id="config" class="ui-widget-content">
 						<form:hidden path="providerNetwork2.templateName" />
+						<form:hidden path="providerNetwork2.name" />
 						<form:label for="providerNetwork2.ASNumber" path="providerNetwork2.ASNumber" cssErrorClass="error">
 							<spring:message code="network.ASNumber" />
 						</form:label>
@@ -524,6 +526,7 @@
 					</div>	
 					<div id="config" class="ui-widget-content">
 						<form:hidden path="clientNetwork.templateName" />
+						<form:hidden path="clientNetwork.name" />
 						<form:label for="clientNetwork.ASNumber" path="clientNetwork.ASNumber" cssErrorClass="error">
 							<spring:message code="network.ASNumber" />
 						</form:label>
