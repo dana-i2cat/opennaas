@@ -20,10 +20,10 @@
 		<div id="mpPhysicalForm">	
 			<!-- Routers -->
 			<div id="network_wan1">
-				<h3><spring:message code="mp.physical.wan1"/></h3>
+				<h3><spring:message code="physical.mp.wan1"/></h3>
 			</div>
 			<div id="network_wan2">
-				<h3><spring:message code="mp.physical.wan2"/></h3>
+				<h3><spring:message code="physical.mp.wan2"/></h3>
 			</div>
 				
 			<div id="vcpe_mp_physical">	
@@ -70,10 +70,10 @@
 					</div>
 					<!-- Router -->
 					<div id="phy_router">
-						<h3><spring:message code="mp.physical.physicalrouter"/>: ${physicalInfrastructure.physicalRouter.name}</h3>
+						<h3><spring:message code="physical.mp.physicalrouter"/>: ${physicalInfrastructure.physicalRouter.name}</h3>
 						<div>			
 							<div id="config" class="ui-widget-content">
-								<b><spring:message code="mp.physical.loopback"/></b><br>
+								<b><spring:message code="physical.mp.loopback"/></b><br>
 								<div class="ui-widget-content config_content">	
 									<c:forEach items="${physicalInfrastructure.physicalRouter.interfaces}" varStatus="vs" var="item">											
 										<c:choose>
@@ -90,7 +90,7 @@
 								</div>
 							</div>		
 							<div id="config" class="ui-widget-content">
-								<b><spring:message code="mp.physical.logicaltunnel"/></b><br>
+								<b><spring:message code="physical.mp.logicaltunnel"/></b><br>
 								<div class="ui-widget-content config_content">	
 								<c:forEach items="${physicalInfrastructure.physicalRouter.interfaces}" varStatus="vs" var="item">											
 									<c:choose>
@@ -132,7 +132,7 @@
 				</div>
 			</div>
 		<div id="network_client">
-			<h3><spring:message code="mp.physical.client"/></h3>
+			<h3><spring:message code="physical.mp.client"/></h3>
 		</div>
 	</div>
 

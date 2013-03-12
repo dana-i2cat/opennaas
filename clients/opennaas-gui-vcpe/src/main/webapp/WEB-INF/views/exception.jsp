@@ -11,7 +11,7 @@
 <html>
 <head>
 	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>Error</title>
+	<title><spring:message code="exception.title" /></title>
 	<link rel="stylesheet" href="<c:url value="/resources/css/screen.css" />" type="text/css">
 	<link rel="stylesheet" href="<c:url value="/resources/css/print.css" />" type="text/css">
 	<!--[if lt IE 8]>
@@ -21,7 +21,7 @@
 <body>
 <div class="container">  
 	<h1>
-		Error page
+		<spring:message code="exception.title2" />
 	</h1>
 	
 	<c:set var="errorException" value="${requestScope['javax.servlet.error.exception']}"/>	
@@ -31,9 +31,9 @@
 	<c:set var="errorRequestUri" value="${requestScope['javax.servlet.error.request_uri']}"/>
 	<c:set var="errorExceptionType" value="${requestScope['javax.servlet.error.exception_type']}"/>	
 
-	<h2>Your application has generated an error</h2>
-    <h3>Please check for the error given below</h3>
-	<b>Exception</b><br> 	    
+	<h2><spring:message code="exception.message1" /></h2>
+    <h3><spring:message code="exception.message2" /></h3>
+	<b><spring:message code="exception.message3" /></b><br> 	    
 	<hr>
 	
 	<div class="error">
