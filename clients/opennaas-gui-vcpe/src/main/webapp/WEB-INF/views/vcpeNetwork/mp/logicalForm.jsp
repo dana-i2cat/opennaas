@@ -1,7 +1,7 @@
-<%@ page import="org.opennaas.extensions.vcpe.manager.templates.mp.TemplateConstants;"%>
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ page session="false"%>
+<%@ page import="org.opennaas.extensions.vcpe.manager.templates.mp.TemplateConstants;"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -290,12 +290,6 @@
 										</form:label>
 										<form:input path="providerLR1.interfaces[${vs.index}].ipAddress" size="13"  />
 										<form:errors path="providerLR1.interfaces[${vs.index}].ipAddress" size="13" />
-										<br>
-										<form:label for="providerLR1.interfaces[${vs.index}].vlan" path="providerLR1.interfaces[${vs.index}].vlan" cssErrorClass="error">
-											<spring:message code="interface.vlan" />
-										</form:label>
-										<form:input path="providerLR1.interfaces[${vs.index}].vlan" size="3"  />
-										<form:errors path="providerLR1.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
 							</c:choose>				
@@ -325,12 +319,6 @@
 										</form:label>
 										<form:input path="providerLR2.interfaces[${vs.index}].ipAddress" size="13"  />
 										<form:errors path="providerLR2.interfaces[${vs.index}].ipAddress" size="13" />
-										<br>
-										<form:label for="providerLR2.interfaces[${vs.index}].vlan" path="providerLR2.interfaces[${vs.index}].vlan" cssErrorClass="error">
-											<spring:message code="interface.vlan" />
-										</form:label>
-										<form:input path="providerLR2.interfaces[${vs.index}].vlan" size="3"  />
-										<form:errors path="providerLR2.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
 							</c:choose>				
@@ -360,12 +348,6 @@
 										</form:label>
 										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="13"  />
 										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="13" />
-										<br>
-										<form:label for="clientLR.interfaces[${vs.index}].vlan" path="clientLR.interfaces[${vs.index}].vlan" cssErrorClass="error">
-											<spring:message code="interface.vlan" />
-										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3"  />
-										<form:errors path="clientLR.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
 							</c:choose>				
@@ -385,8 +367,8 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" />.
-										<form:errors path="clientLR.interfaces[${vs.index}].name" size="8" />
+										<form:input path="clientLR.interfaces[${vs.index}].name" size="18" />.
+										<form:errors path="clientLR.interfaces[${vs.index}].name" size="18" />
 										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="clientLR.interfaces[${vs.index}].port" size="3" />
 										<br>
@@ -395,12 +377,6 @@
 										</form:label>
 										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="13"  />
 										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="13" />
-										<br>
-										<form:label for="clientLR.interfaces[${vs.index}].vlan" path="clientLR.interfaces[${vs.index}].vlan" cssErrorClass="error">
-											<spring:message code="interface.vlan" />
-										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].vlan" size="3"  />
-										<form:errors path="clientLR.interfaces[${vs.index}].vlan" size="3" />
 									</div>
 								</c:when>
 							</c:choose>				
