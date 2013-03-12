@@ -16,10 +16,10 @@
 		<div id="spPhysicalForm">
 			<!-- WAN -->
 			<div id="wan">
-				<h2><spring:message code="physical.wan"/></h2>
+				<h2><spring:message code="physical.sp.wan"/></h2>
 				<div style="=width:780px;">
 					<div id="cpe_core">
-						<h3><spring:message code="physical.routerCore"/>: ${physicalInfrastructure.physicalRouterCore.name}</h3>
+						<h3><spring:message code="physical.sp.routerCore"/>: ${physicalInfrastructure.physicalRouterCore.name}</h3>
 						<div>
 							<div id="config" class="ui-widget-content">
 								<c:forEach items="${physicalInfrastructure.physicalRouterCore.interfaces}" varStatus="vs" var="item">											
@@ -42,7 +42,7 @@
 			</div>	
 			<!-- WAN Interfaces -->
 			<div id="wan_master" class="ui-widget-content">	
-				<label><spring:message code="physical.routerMaster.up"/></label>
+				<label><spring:message code="physical.sp.routerMaster.up"/></label>
 				<div class="ui-widget-content config_content">								
 					<c:forEach items="${physicalInfrastructure.physicalRouterMaster.interfaces}" varStatus="vs" var="item">											
 						<c:choose>
@@ -60,7 +60,7 @@
 				</div>										
 			</div>
 			<div id="wan_backup" class="ui-widget-content">				
-				<label><spring:message code="physical.routerBackup.up"/></label>
+				<label><spring:message code="physical.sp.routerBackup.up"/></label>
 				<div class="ui-widget-content config_content">
 					<c:forEach items="${physicalInfrastructure.physicalRouterBackup.interfaces}" varStatus="vs" var="item">											
 						<c:choose>
@@ -79,7 +79,7 @@
 			</div>
 			<!-- Routers -->
 			<div id="cpe_master">
-				<h3><spring:message code="physical.routerMaster"/>: ${physicalInfrastructure.physicalRouterMaster.name}</h3>
+				<h3><spring:message code="physical.sp.routerMaster"/>: ${physicalInfrastructure.physicalRouterMaster.name}</h3>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<c:forEach items="${physicalInfrastructure.physicalRouterMaster.interfaces}" varStatus="vs" var="item">											
@@ -99,7 +99,7 @@
 				</div>
 			</div>
 			<div id="cpe_backup">
-				<h3><spring:message code="physical.routerBackup"/>: ${physicalInfrastructure.physicalRouterBackup.name}</h3>
+				<h3><spring:message code="physical.sp.routerBackup"/>: ${physicalInfrastructure.physicalRouterBackup.name}</h3>
 				<div>
 					<div id="config" class="ui-widget-content">
 						<c:forEach items="${physicalInfrastructure.physicalRouterBackup.interfaces}" varStatus="vs" var="item">											
@@ -121,7 +121,7 @@
 			<!-- VCPE Interfaces -->
 			<div id="cpe_interfaces">
 				<div id="cpe_client_master" class="ui-widget-content">				
-				<label><spring:message code="physical.routerMaster.down"/></label>
+				<label><spring:message code="physical.sp.routerMaster.down"/></label>
 					<div class="ui-widget-content config_content">
 						<c:forEach items="${physicalInfrastructure.physicalRouterMaster.interfaces}" varStatus="vs" var="item">											
 							<c:choose>
@@ -139,7 +139,7 @@
 					</div>	
 				</div>
 				<div id="cpe_inter_master" class="ui-widget-content">
-				<label><spring:message code="physical.routerMaster.inter"/></label>
+				<label><spring:message code="physical.sp.routerMaster.inter"/></label>
 					<div class="ui-widget-content config_content">
 						<c:forEach items="${physicalInfrastructure.physicalRouterMaster.interfaces}" varStatus="vs" var="item">											
 							<c:choose>
@@ -157,7 +157,7 @@
 					</div>
 				</div>
 				<div id="cpe_inter_backup" class="ui-widget-content">
-				<label><spring:message code="physical.routerBackup.inter"/></label>
+				<label><spring:message code="physical.sp.routerBackup.inter"/></label>
 					<div class="ui-widget-content config_content">
 						<c:forEach items="${physicalInfrastructure.physicalRouterBackup.interfaces}" varStatus="vs" var="item">											
 							<c:choose>
@@ -175,7 +175,7 @@
 					</div>
 				</div>
 				<div id="cpe_client_backup" class="ui-widget-content">
-				<label><spring:message code="physical.routerBackup.down"/></label>
+				<label><spring:message code="physical.sp.routerBackup.down"/></label>
 					<div class="ui-widget-content config_content">
 						<c:forEach items="${physicalInfrastructure.physicalRouterBackup.interfaces}" varStatus="vs" var="item">											
 							<c:choose>
