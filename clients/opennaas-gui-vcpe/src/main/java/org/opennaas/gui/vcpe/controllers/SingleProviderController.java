@@ -210,6 +210,7 @@ public class SingleProviderController extends VCPENetworkController {
 			Model model, Locale locale) {
 		LOGGER.debug("update VRRP ip of VCPENetwork: " + logical);
 		try {
+			model.addAttribute("action", "update");
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			vcpeNetworkBO.updateVRRPIp(logical);
 			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(logical.getId()));
