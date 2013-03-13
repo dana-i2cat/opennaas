@@ -51,6 +51,7 @@ $(document).ready(function() {
 		$form.attr("action", action);
 		$("#dialog").dialog('option', 'buttons', {
 			"Confirm" : function() {
+				$("#pleaseWait").dialog("open");
 				$form.submit();
 			},
 			"Cancel" : function() {
