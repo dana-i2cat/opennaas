@@ -62,7 +62,7 @@ public class MultipleProviderController extends VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/create")
 	public String create(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical, BindingResult result, Model model,
-			Locale locale) {
+			Locale locale) throws RestServiceException {
 		return super.create(logical, result, model, locale);
 	}
 
@@ -87,10 +87,11 @@ public class MultipleProviderController extends VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
+	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/update")
 	public String update(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
-			BindingResult result, Model model, Locale locale) {
+			BindingResult result, Model model, Locale locale) throws RestServiceException {
 		return super.update(logical, result, model, locale);
 	}
 
@@ -101,10 +102,11 @@ public class MultipleProviderController extends VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
+	 * @throws RestServiceException
 	 */
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/multipleProvider/delete")
-	public String delete(String vcpeNetworkId, Model model, Locale locale) {
+	public String delete(String vcpeNetworkId, Model model, Locale locale) throws RestServiceException {
 		return super.delete(vcpeNetworkId, model, locale);
 	}
 
