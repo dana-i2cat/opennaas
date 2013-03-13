@@ -61,8 +61,8 @@ public abstract class VCPENetworkController {
 		LOGGER.debug("form to create a VCPENetwork");
 		String view = "logicalForm";
 		try {
-			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getLogicalInfrastructure(physical));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getLogicalInfrastructure(physical));
 			model.addAttribute("action", new String("create"));
 		} catch (RestServiceException e) {
 			view = "physicalForm";
@@ -80,8 +80,10 @@ public abstract class VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
+	 * @throws RestServiceException
 	 */
-	protected String create(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
+	protected String create(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale)
+			throws RestServiceException {
 		LOGGER.debug("add entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {
@@ -95,11 +97,12 @@ public abstract class VCPENetworkController {
 						.getMessage("vcpenetwork.create.message.error.fields", null, locale));
 				model.addAttribute("action", new String("create"));
 			}
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 			model.addAttribute("action", new String("create"));
+		} finally {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		}
 		return "logicalForm";
 	}
@@ -134,8 +137,10 @@ public abstract class VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
+	 * @throws RestServiceException
 	 */
-	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
+	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale)
+			throws RestServiceException {
 		LOGGER.debug("update entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {
@@ -145,7 +150,6 @@ public abstract class VCPENetworkController {
 				String vcpeNetworkId = vcpeNetworkBO.create(logicalInfrastructure);
 				model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
 				model.addAttribute("infoMsg", messageSource.getMessage("vcpenetwork.update.message.info", null, locale));
-				model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			} else {
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.update.message.error.fields", null, locale));
@@ -154,6 +158,7 @@ public abstract class VCPENetworkController {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.update.message.error", null, locale) + ": " + e.getMessage());
 		} finally {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("action", new String("update"));
 		}
 		return "logicalForm";
@@ -166,17 +171,19 @@ public abstract class VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
+	 * @throws RestServiceException
 	 */
-	protected String delete(String vcpeNetworkId, Model model, Locale locale) {
+	protected String delete(String vcpeNetworkId, Model model, Locale locale) throws RestServiceException {
 		LOGGER.debug("delete entity with id: " + vcpeNetworkId);
 		try {
 			vcpeNetworkBO.delete(vcpeNetworkId);
 			model.addAttribute("infoMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.info", null, locale));
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.error", null, locale));
+		} finally {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		}
 		return "home";
 	}
