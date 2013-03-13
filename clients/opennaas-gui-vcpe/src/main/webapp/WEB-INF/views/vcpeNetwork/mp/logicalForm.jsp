@@ -32,7 +32,7 @@
 						<form:label for="providerNetwork1.iPAddressRange" path="providerNetwork1.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input class="input_ip" path="providerNetwork1.iPAddressRange" size="18" />
+						<form:input path="providerNetwork1.iPAddressRange" size="18" />
 						<form:errors path="providerNetwork1.iPAddressRange" size="18" />
 					</div>		
 				</div>
