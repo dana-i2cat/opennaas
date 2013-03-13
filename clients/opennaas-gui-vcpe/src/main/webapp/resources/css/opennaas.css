@@ -431,13 +431,13 @@ h3.lr_inactive {
 .field {
 	width: 100%;
 	display: inline-block;
-	width: 150px;
+	width: 270px;
 }
 
 .field {
 	width: 100%;
 	display: inline-table;
-	width: 150px;
+	width: 175px;
 }
 
 #bgp {
