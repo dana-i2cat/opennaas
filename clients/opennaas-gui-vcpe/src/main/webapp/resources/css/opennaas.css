@@ -748,6 +748,10 @@ h3.lr_inactive {
 	height: 95px;
 }
 
+.input_ip {
+	width: auto;
+}
+
 #lrclient {
 	display: inline-block;
 	margin-bottom: 15px;
@@ -766,7 +770,7 @@ h3.lr_inactive {
 	height: 95px;
 }
 
-#iface_up_lrprovider1,#iface_lrprovider1_down {
+#iface_up_lrprovider1, #iface_lrprovider1_down {
 	width: 170px;
 	padding: 5px;
 	float: left;
@@ -784,6 +788,30 @@ h3.lr_inactive {
 	margin-top: 15px;
 	margin-bottom: 15px;
 	text-align: center;
+}
+
+#iface_down_netprovider1 .config_content , 
+#iface_down_netprovider2 .config_content ,
+#iface_up_netclient .config_content {
+	font-size: 10px !important;
+}
+
+#iface_down_netprovider1 .config_content input, 
+#iface_down_netprovider2 .config_content input,
+#iface_up_netclient .config_content input {
+	font-size: 1em;
+}
+
+#network_wan1_logical #config, 
+#network_wan2_logical #config,
+#network_client_logical #config {
+	font-size: 10px !important;
+}
+
+#network_wan1_logical input,
+#network_wan2_logical input,
+#network_client_logical input {
+	font-size: 1em;
 }
 
 #iface_down_netprovider2 {

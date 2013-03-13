@@ -32,8 +32,8 @@
 						<form:label for="providerNetwork1.iPAddressRange" path="providerNetwork1.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input path="providerNetwork1.iPAddressRange" size="8"/>
-						<form:errors path="providerNetwork1.iPAddressRange" size="8" />
+						<form:input class="input_ip" path="providerNetwork1.iPAddressRange" size="18" />
+						<form:errors path="providerNetwork1.iPAddressRange" size="18" />
 					</div>		
 				</div>
 			</div>
@@ -53,8 +53,8 @@
 						<form:label for="providerNetwork2.iPAddressRange" path="providerNetwork2.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input path="providerNetwork2.iPAddressRange" size="8"/>
-						<form:errors path="providerNetwork2.iPAddressRange" size="8" />
+						<form:input path="providerNetwork2.iPAddressRange" size="18"/>
+						<form:errors path="providerNetwork2.iPAddressRange" size="18" />
 					</div>		
 				</div>
 			</div>
@@ -79,8 +79,8 @@
 						<form:label for="providerNetwork1.networkInterface.ipAddress" path="providerNetwork1.networkInterface.ipAddress" cssErrorClass="error">
 							<spring:message code="interface.ipAddress" />
 						</form:label>
-						<form:input path="providerNetwork1.networkInterface.ipAddress" size="13"  />
-						<form:errors path="providerNetwork1.networkInterface.ipAddress" size="13" />
+						<form:input path="providerNetwork1.networkInterface.ipAddress" size="18"  />
+						<form:errors path="providerNetwork1.networkInterface.ipAddress" size="18" />
 						<br>
 						<form:label for="providerNetwork1.networkInterface.vlan" path="providerNetwork1.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
@@ -111,8 +111,8 @@
 						<form:label for="providerNetwork2.networkInterface.ipAddress" path="providerNetwork2.networkInterface.ipAddress" cssErrorClass="error">
 							<spring:message code="interface.ipAddress" />
 						</form:label>
-						<form:input path="providerNetwork2.networkInterface.ipAddress" size="13"  />
-						<form:errors path="providerNetwork2.networkInterface.ipAddress" size="13" />
+						<form:input path="providerNetwork2.networkInterface.ipAddress" size="18"  />
+						<form:errors path="providerNetwork2.networkInterface.ipAddress" size="18" />
 						<br>
 						<form:label for="providerNetwork2.networkInterface.vlan" path="providerNetwork2.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
@@ -149,8 +149,8 @@
 										<form:label for="providerLR1.interfaces[${vs.index}].ipAddress" path="providerLR1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="providerLR1.interfaces[${vs.index}].ipAddress" size="13"  />
-										<form:errors path="providerLR1.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="providerLR1.interfaces[${vs.index}].ipAddress" size="18"  />
+										<form:errors path="providerLR1.interfaces[${vs.index}].ipAddress" size="18" />
 										<br>
 										<form:label for="providerLR1.interfaces[${vs.index}].vlan" path="providerLR1.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
@@ -183,8 +183,8 @@
 										<form:label for="providerLR2.interfaces[${vs.index}].ipAddress" path="providerLR2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="providerLR2.interfaces[${vs.index}].ipAddress" size="13"  />
-										<form:errors path="providerLR2.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="providerLR2.interfaces[${vs.index}].ipAddress" size="18"  />
+										<form:errors path="providerLR2.interfaces[${vs.index}].ipAddress" size="18" />
 										<br>
 										<form:label for="providerLR2.interfaces[${vs.index}].vlan" path="providerLR2.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
@@ -223,8 +223,8 @@
 											<form:label for="providerLR1.interfaces[${vs.index}].ipAddress" path="providerLR1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 												<spring:message code="interface.ipAddress" />
 											</form:label>
-											<form:input path="providerLR1.interfaces[${vs.index}].ipAddress" size="13"  />
-											<form:errors path="providerLR1.interfaces[${vs.index}].ipAddress" size="13" />
+											<form:input path="providerLR1.interfaces[${vs.index}].ipAddress" size="18"  />
+											<form:errors path="providerLR1.interfaces[${vs.index}].ipAddress" size="18" />
 										</div>
 									</c:when>
 								</c:choose>				
@@ -258,8 +258,8 @@
 											<form:label for="providerLR2.interfaces[${vs.index}].ipAddress" path="providerLR2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 												<spring:message code="interface.ipAddress" />
 											</form:label>
-											<form:input path="providerLR2.interfaces[${vs.index}].ipAddress" size="13"  />
-											<form:errors path="providerLR2.interfaces[${vs.index}].ipAddress" size="13" />
+											<form:input path="providerLR2.interfaces[${vs.index}].ipAddress" size="18"  />
+											<form:errors path="providerLR2.interfaces[${vs.index}].ipAddress" size="18" />
 										</div>
 									</c:when>
 								</c:choose>				
@@ -288,8 +288,8 @@
 										<form:label for="providerLR1.interfaces[${vs.index}].ipAddress" path="providerLR1.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="providerLR1.interfaces[${vs.index}].ipAddress" size="13"  />
-										<form:errors path="providerLR1.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="providerLR1.interfaces[${vs.index}].ipAddress" size="18"  />
+										<form:errors path="providerLR1.interfaces[${vs.index}].ipAddress" size="18" />
 									</div>
 								</c:when>
 							</c:choose>				
@@ -317,8 +317,8 @@
 										<form:label for="providerLR2.interfaces[${vs.index}].ipAddress" path="providerLR2.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="providerLR2.interfaces[${vs.index}].ipAddress" size="13"  />
-										<form:errors path="providerLR2.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="providerLR2.interfaces[${vs.index}].ipAddress" size="18"  />
+										<form:errors path="providerLR2.interfaces[${vs.index}].ipAddress" size="18" />
 									</div>
 								</c:when>
 							</c:choose>				
@@ -346,8 +346,8 @@
 										<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="13"  />
-										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="18"  />
+										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="18" />
 									</div>
 								</c:when>
 							</c:choose>				
@@ -367,16 +367,16 @@
 												<spring:message code="interface.name" />
 											</form:label>
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].name" size="18" />.
-										<form:errors path="clientLR.interfaces[${vs.index}].name" size="18" />
+										<form:input path="clientLR.interfaces[${vs.index}].name" size="8" />.
+										<form:errors path="clientLR.interfaces[${vs.index}].name" size="8" />
 										<form:input path="clientLR.interfaces[${vs.index}].port" size="3"    />
 										<form:errors path="clientLR.interfaces[${vs.index}].port" size="3" />
 										<br>
 										<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="13"  />
-										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="18"  />
+										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="18" />
 									</div>
 								</c:when>
 							</c:choose>				
@@ -409,8 +409,8 @@
 											<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 												<spring:message code="interface.ipAddress" />
 											</form:label>
-											<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="13"  />
-											<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="13" />
+											<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="18"  />
+											<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="18" />
 										</div>
 									</c:when>
 								</c:choose>				
@@ -439,8 +439,8 @@
 										<form:label for="clientLR.interfaces[${vs.index}].ipAddress" path="clientLR.interfaces[${vs.index}].ipAddress" cssErrorClass="error">
 											<spring:message code="interface.ipAddress" />
 										</form:label>
-										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="13"  />
-										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="13" />
+										<form:input path="clientLR.interfaces[${vs.index}].ipAddress" size="18"  />
+										<form:errors path="clientLR.interfaces[${vs.index}].ipAddress" size="18" />
 										<br>
 										<form:label for="clientLR.interfaces[${vs.index}].vlan" path="clientLR.interfaces[${vs.index}].vlan" cssErrorClass="error">
 											<spring:message code="interface.vlan" />
@@ -475,8 +475,8 @@
 						<form:label for="clientNetwork.networkInterface.ipAddress" path="clientNetwork.networkInterface.ipAddress" cssErrorClass="error">
 							<spring:message code="interface.ipAddress" />
 						</form:label>
-						<form:input path="clientNetwork.networkInterface.ipAddress" size="13"  />
-						<form:errors path="clientNetwork.networkInterface.ipAddress" size="13" />
+						<form:input path="clientNetwork.networkInterface.ipAddress" size="18"  />
+						<form:errors path="clientNetwork.networkInterface.ipAddress" size="18" />
 						<br>
 						<form:label for="clientNetwork.networkInterface.vlan" path="clientNetwork.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
@@ -512,8 +512,8 @@
 						<form:label for="clientNetwork.iPAddressRange" path="clientNetwork.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input path="clientNetwork.iPAddressRange" size="8"/>
-						<form:errors path="clientNetwork.iPAddressRange" size="8" />
+						<form:input path="clientNetwork.iPAddressRange" size="18"/>
+						<form:errors path="clientNetwork.iPAddressRange" size="18" />
 					</div>		
 				</div>		
 			</div>
