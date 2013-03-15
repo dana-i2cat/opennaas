@@ -2,6 +2,7 @@ package org.opennaas.gui.vcpe.controllers;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -62,8 +63,8 @@ public class MultipleProviderController extends VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/create")
 	public String create(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical, BindingResult result, Model model,
-			Locale locale) throws RestServiceException {
-		return super.create(logical, result, model, locale);
+			Locale locale, HttpSession session) {
+		return super.create(logical, result, model, locale, session);
 	}
 
 	/**
@@ -91,7 +92,7 @@ public class MultipleProviderController extends VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/update")
 	public String update(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
-			BindingResult result, Model model, Locale locale) throws RestServiceException {
+			BindingResult result, Model model, Locale locale) {
 		return super.update(logical, result, model, locale);
 	}
 
@@ -106,8 +107,8 @@ public class MultipleProviderController extends VCPENetworkController {
 	 */
 	@Override
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/multipleProvider/delete")
-	public String delete(String vcpeNetworkId, Model model, Locale locale) throws RestServiceException {
-		return super.delete(vcpeNetworkId, model, locale);
+	public String delete(String vcpeNetworkId, Model model, Locale locale, HttpSession session) {
+		return super.delete(vcpeNetworkId, model, locale, session);
 	}
 
 }
