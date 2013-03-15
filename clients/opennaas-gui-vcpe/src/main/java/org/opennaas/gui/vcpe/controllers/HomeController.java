@@ -2,6 +2,8 @@ package org.opennaas.gui.vcpe.controllers;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.opennaas.gui.vcpe.bos.VCPENetworkBO;
 import org.opennaas.gui.vcpe.services.rest.RestServiceException;
@@ -34,10 +36,10 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/home")
-	public String home(Model model, Locale locale) {
+	public String home(Model model, Locale locale, HttpSession session) {
 		LOGGER.debug("home");
 		try {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+			session.setAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.list.message.error", null, locale));
