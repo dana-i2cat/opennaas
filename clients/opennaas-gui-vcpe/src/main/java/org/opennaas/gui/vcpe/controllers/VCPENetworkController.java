@@ -2,6 +2,8 @@ package org.opennaas.gui.vcpe.controllers;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.opennaas.gui.vcpe.bos.VCPENetworkBO;
 import org.opennaas.gui.vcpe.entities.LogicalInfrastructure;
@@ -39,7 +41,6 @@ public abstract class VCPENetworkController {
 		LOGGER.debug("get the Physical Form");
 		String view = "physicalForm";
 		try {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 		} catch (RestServiceException e) {
 			view = "home";
@@ -61,7 +62,6 @@ public abstract class VCPENetworkController {
 		LOGGER.debug("form to create a VCPENetwork");
 		String view = "logicalForm";
 		try {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getLogicalInfrastructure(physical));
 			model.addAttribute("action", new String("create"));
 		} catch (RestServiceException e) {
@@ -80,29 +80,23 @@ public abstract class VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
-	 * @throws RestServiceException
 	 */
-	protected String create(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale)
-			throws RestServiceException {
+	protected String create(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale, HttpSession session) {
 		LOGGER.debug("add entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {
 				String vcpeNetworkId = vcpeNetworkBO.create(logicalInfrastructure);
 				model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
-				model.addAttribute("infoMsg", messageSource
-						.getMessage("vcpenetwork.create.message.info", null, locale));
+				model.addAttribute("infoMsg", messageSource.getMessage("vcpenetwork.create.message.info", null, locale));
 				model.addAttribute("action", new String("update"));
+				session.setAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			} else {
-				model.addAttribute("errorMsg", messageSource
-						.getMessage("vcpenetwork.create.message.error.fields", null, locale));
+				model.addAttribute("errorMsg", messageSource.getMessage("vcpenetwork.create.message.error.fields", null, locale));
 				model.addAttribute("action", new String("create"));
 			}
 		} catch (RestServiceException e) {
-			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
+			model.addAttribute("errorMsg", messageSource.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 			model.addAttribute("action", new String("create"));
-		} finally {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		}
 		return "logicalForm";
 	}
@@ -118,7 +112,6 @@ public abstract class VCPENetworkController {
 	protected String edit(String vcpeNetworkId, Model model, Locale locale) {
 		LOGGER.debug("edit entity with id: " + vcpeNetworkId);
 		try {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
@@ -137,17 +130,17 @@ public abstract class VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
-	 * @throws RestServiceException
 	 */
-	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale)
-			throws RestServiceException {
+	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("update entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {
 				LOGGER.debug("removing the old environment");
 				vcpeNetworkBO.delete(logicalInfrastructure.getId());
+
 				LOGGER.debug("create the new environment");
 				String vcpeNetworkId = vcpeNetworkBO.create(logicalInfrastructure);
+
 				model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
 				model.addAttribute("infoMsg", messageSource.getMessage("vcpenetwork.update.message.info", null, locale));
 			} else {
@@ -158,7 +151,6 @@ public abstract class VCPENetworkController {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.update.message.error", null, locale) + ": " + e.getMessage());
 		} finally {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("action", new String("update"));
 		}
 		return "logicalForm";
@@ -171,19 +163,17 @@ public abstract class VCPENetworkController {
 	 * @param model
 	 * @param locale
 	 * @return
-	 * @throws RestServiceException
 	 */
-	protected String delete(String vcpeNetworkId, Model model, Locale locale) throws RestServiceException {
+	protected String delete(String vcpeNetworkId, Model model, Locale locale, HttpSession session) {
 		LOGGER.debug("delete entity with id: " + vcpeNetworkId);
 		try {
 			vcpeNetworkBO.delete(vcpeNetworkId);
+			session.setAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 			model.addAttribute("infoMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.info", null, locale));
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.error", null, locale));
-		} finally {
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		}
 		return "home";
 	}
