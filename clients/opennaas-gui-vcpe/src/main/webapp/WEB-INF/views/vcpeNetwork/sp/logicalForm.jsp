@@ -603,7 +603,7 @@
 						<form:errors path="vrrp.virtualIPAddress" size="20" />
 						<br>
 						<c:if test="${action == 'update'}">
-							<input id="button10" class="button" type="submit" value="<spring:message code="buttons.change"/>" formaction="updateVRRPIp"/>
+							<input id="button10" class="button_confirm" type="submit" value="<spring:message code="buttons.change"/>" formaction="updateVRRPIp"/>
 						</c:if>
 					</div>
 				</div>			
