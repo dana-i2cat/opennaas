@@ -12,6 +12,7 @@
 <c:set var="ROUTER_1_PHY_IFACE_UP2"  value='<%= TemplateConstants.ROUTER_1_PHY_IFACE_UP2 %>' />
 
 <sec:authorize access="hasRole('ROLE_NOC')">
+	<h2 id="vcpe_title"><spring:message code="physical.mp.title"/></h2>
 	<form:form modelAttribute="physicalInfrastructure" action="logical" method="post">
 		<form:hidden  path="templateType"/>
 		<form:hidden  path="physicalRouter.name"/>
