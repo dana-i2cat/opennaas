@@ -8,6 +8,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authorize access="hasRole('ROLE_NOC')">
+	<h2 id="vcpe_title"><spring:message code="physical.sp.title"/></h2>
 	<form:form modelAttribute="physicalInfrastructure" action="logical" method="post">
 		<form:hidden  path="templateType"/>
 		<form:hidden  path="physicalRouterMaster.name"/>
