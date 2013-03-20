@@ -82,6 +82,7 @@ h1 {
 
 #_menu ul {
 	min-width: 115px;
+	z-index: 1;
 }
 
 /* Template styles
@@ -513,6 +514,7 @@ h3.lr_inactive {
 
 #wan_logical .noc_data {
 	text-align: center;
+	z-index: 0;
 }
 
 #wan_backup {
