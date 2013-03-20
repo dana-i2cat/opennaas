@@ -15,7 +15,9 @@
 <c:set var="UP1_INTERFACE_PEER"  value='<%= SPTemplateConstants.UP1_INTERFACE_PEER %>' />
 <c:set var="UP2_INTERFACE_PEER"  value='<%= SPTemplateConstants.UP2_INTERFACE_PEER %>' />
 
+<h2 id="vcpe_title"><spring:message code="logical.sp.title"/></h2>
 <div id="spLogicalForm" >
+
 	<form:form modelAttribute="logicalInfrastructure" action="${action}" method="post">
 		<form:hidden path="id" />
 		<form:hidden path="templateType" />	
@@ -603,7 +605,7 @@
 						<form:errors path="vrrp.virtualIPAddress" size="20" />
 						<br>
 						<c:if test="${action == 'update'}">
-							<input id="button10" class="button" type="submit" value="<spring:message code="buttons.change"/>" formaction="updateVRRPIp"/>
+							<input id="button10" class="button_confirm" type="submit" value="<spring:message code="buttons.change"/>" formaction="updateVRRPIp"/>
 						</c:if>
 					</div>
 				</div>			

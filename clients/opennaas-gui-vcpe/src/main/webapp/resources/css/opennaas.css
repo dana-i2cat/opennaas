@@ -162,30 +162,26 @@ h1 {
 	margin: 50px auto 0px auto;
 }
 
-/* Create and Edit styles
-----------------------------------
-#spLogicalForm {
-	font-size: 10px;
-}
 
-#spLogicalForm {
-	font-size: 10px;
-}
 
-#spLogicalForm h2 {
-	font-size: 16px;
-}
-
-#spLogicalForm h3 {
-	font-size: 13px;
-}
-
-#spLogicalForm label {
-	font-size: 11px;
-}
-*/
 #vcpe {
 	clear: both;
+}
+
+#vcpe_title {
+    color: rgb(126, 126, 126);
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 1.75em;
+    text-align: center;
+    background-color: rgb(238, 238, 238);
+    background-image: url("ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png");
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    background-size: auto auto;
+    border-color: rgb(221, 221, 221);
+    border-style: solid;
+    border-width: 1px;
 }
 
 #client {

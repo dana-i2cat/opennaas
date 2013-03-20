@@ -125,6 +125,15 @@ public class VCPEVRRPCapability extends AbstractCapability implements IVCPEVRRPC
 			GenericHelper.executeQueue(router1);
 			GenericHelper.executeQueue(router2);
 
+			// Update the IP address in the model
+			IResource vcpeResource = GenericHelper.getResourceManager().getResourceById(resourceId);
+			VCPENetworkModel vcpeNetworkModel = (VCPENetworkModel) vcpeResource.getModel();
+			if (vcpeNetworkModel != null) {
+				if (vcpeNetworkModel.getVrrp() != null) {
+					vcpeNetworkModel.getVrrp().setVirtualIPAddress(vcpeModel.getVrrp().getVirtualIPAddress());
+				}
+			}
+
 		} catch (Exception e) {
 			throw new CapabilityException(e);
 		}
