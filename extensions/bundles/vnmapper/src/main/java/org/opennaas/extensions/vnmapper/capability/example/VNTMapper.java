@@ -330,7 +330,9 @@ public class VNTMapper
   
        //// select the current virtual node       
        int currentVNodeId=-1;  
-       currentVNodeId=chooseNextVNode(VNTNodeMappingArray,sortedVNodesSet);
+
+       //currentVNodeId=chooseNextVNode(VNTNodeMappingArray,sortedVNodesSet);
+         currentVNodeId=chooseNextVNodeMod(VNTNodeMappingArray);
 
       if(currentVNodeId!=-1){
 
@@ -486,6 +488,23 @@ public class VNTMapper
            int vid = Integer.valueOf(sortedVNodesSet.get(i).toString());
            if (VNTNodeMappingArray.get(vid).chosenRealNode == -1)
                currentVNodeId = vid;
+       }
+
+       return currentVNodeId;
+   }
+
+ ///// the next method is modified from the above method to select the next virtual node who has the maximum number of connection to the already mapped vnodes
+   public int chooseNextVNodeMod(ArrayList<VNTNodeMappingCell> VNTNodeMappingArray)
+   {
+       int currentVNodeId=-1;
+       int temp=-1;
+       for (int i = 0; (i < (int)VNTNodeMappingArray.size()); i++)
+       {
+          //  int vid = Integer.valueOf(VNTNodeMappingArray.get(i).toString());
+           if ((VNTNodeMappingArray.get(i).connectionsNum>temp) && (VNTNodeMappingArray.get(i).chosenRealNode == -1))
+           {  temp=VNTNodeMappingArray.get(i).connectionsNum;
+               currentVNodeId=VNTNodeMappingArray.get(i).vid;
+           } 
        }
 
        return currentVNodeId;
