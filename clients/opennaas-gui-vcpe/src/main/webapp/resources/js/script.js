@@ -35,7 +35,8 @@ $(document).ready(function() {
 		var theHREF = $(this).attr("href");
 		$("#dialog").dialog('option', 'buttons', {
 			"Confirm" : function() {
-				window.location.href = theHREF;
+				$("#pleaseWait").dialog("open");
+				window.location.reload(theHREF);
 			},
 			"Cancel" : function() {
 				$(this).dialog("close");
