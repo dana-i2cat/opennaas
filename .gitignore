@@ -1,0 +1,10 @@
+*.class
+*.swp
+.classpath
+.project
+.settings/
+.svn/
+.metadata
+.DS_Store
+target/
+
