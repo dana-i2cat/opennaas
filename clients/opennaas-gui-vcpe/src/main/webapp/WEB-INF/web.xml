@@ -38,6 +38,11 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/views/exception.jsp</location>
+    </error-page>
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
