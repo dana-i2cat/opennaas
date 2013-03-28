@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.vcpe.capability.builder.builders;
+package org.opennaas.extensions.vcpe.capability.builder.builders.sp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.router.capability.bgp.BGPCapability;
 import org.opennaas.extensions.router.capability.bgp.IBGPCapability;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
+import org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.AutobahnHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.GenericHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.IPHelper;
@@ -21,78 +22,98 @@ import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.Interfac
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.LogicalRouterHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.StaticRouteHelper;
 import org.opennaas.extensions.vcpe.capability.builder.builders.helpers.VRRPHelper;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 /**
  * @author Jordi
  */
-public class VCPEMultipleProvider implements IVCPENetworkBuilder {
+public class VCPESingleProvider implements IVCPENetworkBuilder {
 
-	private Log	log	= LogFactory.getLog(VCPEMultipleProvider.class);
+	private Log	log	= LogFactory.getLog(VCPESingleProvider.class);
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#build(org.opennaas.core.resources.IResource,
-	 * org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#build(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
 	public VCPENetworkModel build(IResource vcpe, VCPENetworkModel desiredScenario) throws ResourceException {
-		log.info("Build a vCPE multiple provider network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
+		log.info("Build a vCPE single provider network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
 
-		// Create and execute autobahn links
-		createExternalLinks(vcpe, desiredScenario);
-		executeAutobahn(desiredScenario);
+		boolean linksCreated = false;
+		boolean lrsCreated = false;
 
-		// Create logical routers in physical and start
-		createLogicalRouters(vcpe, desiredScenario);
-		executePhysicalRouters(desiredScenario);
-		startLogicalRouters(vcpe, desiredScenario);
+		try {
+			// Create and execute autobahn links
+			createExternalLinks(vcpe, desiredScenario);
+			executeAutobahn(desiredScenario);
+			linksCreated = true;
 
-		// Configure subinterfaces
-		createSubInterfaces(vcpe, desiredScenario);
-		assignIPAddresses(vcpe, desiredScenario);
-		executeLogicalRouters(desiredScenario);
+			// Create logical routers in physical and start
+			createLogicalRouters(vcpe, desiredScenario);
+			executePhysicalRouters(desiredScenario);
+			lrsCreated = true;
+			startLogicalRouters(vcpe, desiredScenario);
 
-		// Configure routing protocols
-		configureVRRP(vcpe, desiredScenario);
-		executeLogicalRouters(desiredScenario);
+			// Configure subinterfaces
+			createSubInterfaces(vcpe, desiredScenario);
+			assignIPAddresses(vcpe, desiredScenario);
+			executeLogicalRouters(desiredScenario);
 
-		// TODO return created model, not the desired one
-		vcpe.setModel(desiredScenario);
-		((VCPENetworkModel) vcpe.getModel()).setCreated(true);
+			// Configure routing protocols
+			configureEGP(vcpe, desiredScenario);
+			configureVRRP(vcpe, desiredScenario);
+			executeLogicalRouters(desiredScenario);
 
-		return (VCPENetworkModel) vcpe.getModel();
+			// TODO return created model, not the desired one
+			vcpe.setModel(desiredScenario);
+			((VCPENetworkModel) vcpe.getModel()).setCreated(true);
 
+			return (VCPENetworkModel) vcpe.getModel();
+
+		} catch (ResourceException e) {
+			destroy(vcpe, desiredScenario, lrsCreated, linksCreated);
+			throw e;
+		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#destroy(org.opennaas.core.resources.IResource,
-	 * org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * @see org.opennaas.extensions.vcpe.capability.builder.builders.IVCPENetworkBuilder#destroy()
 	 */
 	@Override
 	public VCPENetworkModel destroy(IResource vcpe, VCPENetworkModel currentScenario) throws ResourceException {
+		return destroy(vcpe, currentScenario, true, true);
+	}
+
+	private VCPENetworkModel destroy(IResource vcpe, VCPENetworkModel currentScenario, boolean destroyLRs, boolean destroyLinks)
+			throws ResourceException {
 		log.info("Destroy a vCPE Network of the resource: " + ((VCPENetworkModel) vcpe.getModel()).getId());
 
-		// Destroy logical routers and this will destroy
-		// their subinterfaces and routing protocols
-		stopLogicalRouters(vcpe, currentScenario);
-		removeLogicalRouters(vcpe, currentScenario);
-		executePhysicalRouters(currentScenario);
+		if (destroyLRs) {
+			// Destroy logical routers and this will destroy
+			// their subinterfaces and routing protocols
+			stopLogicalRouters(vcpe, currentScenario);
+			removeLogicalRouters(vcpe, currentScenario);
+			executePhysicalRouters(currentScenario);
+		}
 
-		// Destroy autobahn links
-		destroyExternalLinks(vcpe, currentScenario);
-		executeAutobahn(currentScenario);
+		if (destroyLinks) {
+			// Destroy autobahn links
+			destroyExternalLinks(vcpe, currentScenario);
+			executeAutobahn(currentScenario);
+		}
 
-		removeResources(currentScenario);
+		if (destroyLRs) {
+			removeResources(currentScenario);
+		}
 
 		// return the model after deleting all LR and subInterfaces from it
 		VCPENetworkModel model = new VCPENetworkModel();
@@ -116,12 +137,12 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 
 		// inter link
-		Link inter = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.INTER_LINK);
+		Link inter = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, SPTemplateConstants.INTER_LINK);
 		long interSrcVlan = inter.getSource().getVlan();
 		long interDstVlan = inter.getSink().getVlan();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_PHY_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_PHY_INTERFACE_AUTOBAHN);
 
 		// // down1 link
 		// Link down1 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN1_LINK);
@@ -134,14 +155,14 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 		// createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
 		// down 2 link
-		Link down2 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN2_LINK);
+		Link down2 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, SPTemplateConstants.DOWN2_LINK);
 		long down2SrcVlan = down2.getSource().getVlan();
 		long down2DstVlan = down2.getSink().getVlan();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
-		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
 
 		AutobahnHelper.createAutobahnLink(model, bod, interSrc, interDst, interSrcVlan, interDstVlan);
 		AutobahnHelper.createAutobahnLink(model, bod, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
@@ -156,7 +177,7 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	private void executeAutobahn(VCPENetworkModel model) throws ResourceException {
 		log.info("Execute autobahn");
 		try {
-			Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
+			Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
 			IResource autobahn = GenericHelper.getResourceManager().getResource(
 					GenericHelper.getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
 			GenericHelper.executeQueue(autobahn);
@@ -174,13 +195,13 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 */
 	private void createLogicalRouters(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
 		log.info("Create the logical routers");
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE1_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.CPE1_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.VCPE1_ROUTER);
 
 		LogicalRouterHelper.createLR(phy1, lr1, desiredScenario);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE2_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.CPE2_PHY_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.VCPE2_ROUTER);
 
 		LogicalRouterHelper.createLR(phy2, lr2, desiredScenario);
 	}
@@ -194,8 +215,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	private void executePhysicalRouters(VCPENetworkModel model) throws ResourceException {
 		log.info("Create the physical routers");
 		try {
-			Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
-			Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
+			Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE1_PHY_ROUTER);
+			Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE2_PHY_ROUTER);
 
 			IResource phyResource1 = GenericHelper.getResourceManager().getResource(
 					GenericHelper.getResourceManager().getIdentifierFromResourceName("router", phy1.getName()));
@@ -219,10 +240,10 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 */
 	private void startLogicalRouters(IResource vcpe, VCPENetworkModel model) throws ResourceException {
 		log.info("Start logical routers");
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE1_PHY_ROUTER);
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CPE2_PHY_ROUTER);
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE1_PHY_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CPE2_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 
 		try {
 			LogicalRouterHelper.copyContextPhysicaltoLogical(phy1, lr1);
@@ -244,14 +265,14 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 */
 	private void createSubInterfaces(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
 		log.info("Create the subtinterfaces");
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE1_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.VCPE1_ROUTER);
 
 		List<Interface> ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr1.getInterfaces());
 
 		InterfaceHelper.createInterfaces(lr1, ifaces, desiredScenario);
 
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE2_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.VCPE2_ROUTER);
 
 		ifaces = new ArrayList<Interface>();
 		ifaces.addAll(lr2.getInterfaces());
@@ -268,8 +289,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 */
 	private void assignIPAddresses(IResource vcpe, VCPENetworkModel model) throws ResourceException {
 		log.info("Assign the ip addresses");
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 
 		for (Interface iface : lr1.getInterfaces()) {
 			IPHelper.setIP(lr1, iface, model);
@@ -288,8 +309,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	private void executeLogicalRouters(VCPENetworkModel model) throws ResourceException {
 		log.info("Execute the logical routers");
 		try {
-			Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-			Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+			Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+			Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 
 			IResource lrResource1 = GenericHelper.getResourceManager().getResource(
 					GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
@@ -325,8 +346,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 */
 	private void configureBGP(VCPENetworkModel model) throws ResourceException {
 		log.info("Create BGP");
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 
 		IResource router1Resource = GenericHelper.getResourceManager().getResource(
 				GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
@@ -352,8 +373,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 */
 	private void configureStaticRoutes(IResource vcpe, VCPENetworkModel model) throws ResourceException {
 		log.info("Configure the logical routers");
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP1_INTERFACE_PEER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		Interface iface1 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP1_INTERFACE_PEER);
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
@@ -363,8 +384,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 
 		StaticRouteHelper.setStaticRoute(lr1, model, ipRange, nextHopIpAddress, true);
 
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
-		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.UP2_INTERFACE_PEER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
+		Interface iface2 = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.UP2_INTERFACE_PEER);
 		String[] addressAndMask2 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface2.getIpAddress());
 		String nextHopIpAddress2 = addressAndMask2[0];
 
@@ -392,8 +413,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 */
 	private void stopLogicalRouters(IResource vcpe, VCPENetworkModel model) throws ResourceException {
 		log.info("Stop the logical routers");
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 
 		GenericHelper.getResourceManager().stopResource(GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
 		GenericHelper.getResourceManager().stopResource(GenericHelper.getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
@@ -407,13 +428,13 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	 * @throws ResourceException
 	 */
 	private void removeLogicalRouters(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
-		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE1_PHY_ROUTER);
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE1_ROUTER);
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.CPE1_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.VCPE1_ROUTER);
 
 		LogicalRouterHelper.removeLR(phy1, lr1, desiredScenario);
 
-		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.CPE2_PHY_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, VCPETemplate.VCPE2_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.CPE2_PHY_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(desiredScenario, SPTemplateConstants.VCPE2_ROUTER);
 
 		LogicalRouterHelper.removeLR(phy2, lr2, desiredScenario);
 	}
@@ -430,12 +451,12 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 
 		// inter link
-		Link inter = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.INTER_LINK);
+		Link inter = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, SPTemplateConstants.INTER_LINK);
 		long interSrcVlan = inter.getSource().getVlan();
 		long interDstVlan = inter.getSink().getVlan();
 
-		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER1_PHY_INTERFACE_AUTOBAHN);
-		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.INTER2_PHY_INTERFACE_AUTOBAHN);
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER1_PHY_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.INTER2_PHY_INTERFACE_AUTOBAHN);
 
 		// down1 link
 		// Link down1 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN1_LINK);
@@ -448,14 +469,14 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 		// destroyAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
 		// down 2 link
-		Link down2 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, VCPETemplate.DOWN2_LINK);
+		Link down2 = (Link) VCPENetworkModelHelper.getElementByTemplateName(links, SPTemplateConstants.DOWN2_LINK);
 		long down2SrcVlan = down2.getSource().getVlan();
 		long down2DstVlan = down2.getSink().getVlan();
 
-		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.DOWN2_PHY_INTERFACE_AUTOBAHN);
-		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.CLIENT2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.DOWN2_PHY_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.CLIENT2_PHY_INTERFACE_AUTOBAHN);
 
-		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.AUTOBAHN);
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.AUTOBAHN);
 
 		AutobahnHelper.destroyAutobahnLink(model, bod, interSrc, interDst, interSrcVlan, interDstVlan);
 		AutobahnHelper.destroyAutobahnLink(model, bod, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
@@ -470,8 +491,8 @@ public class VCPEMultipleProvider implements IVCPENetworkBuilder {
 	private void removeResources(VCPENetworkModel model) throws ResourceException {
 		log.info("Remove resources");
 
-		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE1_ROUTER);
-		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, VCPETemplate.VCPE2_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByTemplateName(model, SPTemplateConstants.VCPE2_ROUTER);
 
 		LogicalRouterHelper.removeLRFromRM(lr1);
 		LogicalRouterHelper.removeLRFromRM(lr2);

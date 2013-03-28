@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.17</version>
+		<version>0.18</version>
 	</parent>
 
 	<packaging>pom</packaging>

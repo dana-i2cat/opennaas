@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
@@ -24,6 +26,8 @@ import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
+
+	private Log					log						= LogFactory.getLog(VCPENetworkManager.class);
 
 	public static final String	RESOURCE_VCPENET_TYPE	= "vcpenet";
 	private VCPEManagerModel	model;
@@ -51,6 +55,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public String create(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException {
+		log.info("Creating new VCPE: " + vcpeNetworkModel.getName());
 		// Create the resource
 		IResource resource = createResource(vcpeNetworkModel.getName());
 		vcpeNetworkModel.setId(resource.getResourceIdentifier().getId());
@@ -68,6 +73,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public Boolean remove(String vcpeNetworkId) throws VCPENetworkManagerException {
+		log.info("Removing VCPE: " + vcpeNetworkId);
 		boolean isRemoved = true;
 		// Destroy environment
 		destroy(vcpeNetworkId);
@@ -180,6 +186,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @return the resource
 	 */
 	private IResource createResource(String vcpeNetworkName) {
+		log.debug("Creating new VCPE resource: " + vcpeNetworkName);
 		IResource resource = null;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();
@@ -201,6 +208,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @return true if the resource has been started
 	 */
 	private Boolean startResource(String vcpeNetworId) {
+		log.debug("Starting VCPE resource: " + vcpeNetworId);
 		IResource resource = null;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();
@@ -225,12 +233,15 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @return true if the environment has been created
 	 */
 	private Boolean build(VCPENetworkModel vcpeNetworkModel) {
+		log.debug("Building VCPE resource: " + vcpeNetworkModel.getName());
 		IResource resource = null;
 		try {
-			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateType());
-			VCPENetworkModel model = template.buildModel(vcpeNetworkModel);
 			resource = Activator.getResourceManagerService()
 					.getResourceById(vcpeNetworkModel.getId());
+
+			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateType());
+			VCPENetworkModel model = template.buildModel(vcpeNetworkModel);
+
 			// Execute the capability and generate the real environment
 			IVCPENetworkBuilderCapability vcpeNetworkBuilderCapability = (IVCPENetworkBuilderCapability) resource
 					.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
@@ -253,6 +264,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @return true if the resource has been stopped
 	 */
 	private Boolean stopResource(String vcpeNetworkId) {
+		log.debug("Stopping VCPE resource: " + vcpeNetworkId);
 		IResource resource = null;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();
@@ -272,6 +284,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @return true if the resource has been removed
 	 */
 	private Boolean removeResource(String vcpeNetworkId) {
+		log.debug("Removing VCPE resource: " + vcpeNetworkId);
 		IResource resource = null;
 		try {
 			IResourceManager manager = Activator.getResourceManagerService();
@@ -292,6 +305,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @throws VCPENetworkManagerException
 	 */
 	private Boolean destroy(String vcpeNetworkId) {
+		log.debug("Destroying VCPE resource: " + vcpeNetworkId);
 		IResource resource = null;
 		try {
 			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
