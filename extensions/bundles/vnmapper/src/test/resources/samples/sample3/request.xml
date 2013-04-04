@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Triangle toplogy with user assigned node mapping -->
+<!--
+It shows that user can specificity which physical node he wants to host the virtual nodes by fill the <pnodeID> tag, then the algorithm will find the shortest path among these assigned nodes.
+-->
 <VNRequest>
   <VNode>
     <id>0</id>

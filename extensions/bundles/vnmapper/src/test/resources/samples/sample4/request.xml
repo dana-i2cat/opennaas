@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- A link plus a triangle topology -->
+<!--
+It contains a link with two nodes and a triangle with 3 nodes. In this example, we did not specificity which physical node to host the virtual nodes, and the algorithm will select the node and shortest path automatically.
+-->
 <VNRequest>
   <VNode>
     <id>0</id>

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Sample topology file representing a network with 3 routers forming a triangle.
+-->
 <ns1:RDF xmlns:ns1="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns2="http://www.science.uva.nl/research/sne/ndl#" xmlns:ns4="http://www.science.uva.nl/research/sne/ndl/domain#">
   <ns2:Device>
     <ns2:hasInterface ns1:resource="#router:junos20:em0.0"/>
