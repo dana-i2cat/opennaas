@@ -5,6 +5,7 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
+import org.opennaas.extensions.vnmapper.capability.example.MappingResult;
 import org.opennaas.extensions.vnmapper.capability.example.VNTRequest;
 
 /**
@@ -31,8 +32,9 @@ public class ExampleCommand extends GenericKarafCommand {
 
 			IResource resource = getResourceFromFriendlyName(resourceName);
 			ExampleCapability capab = (ExampleCapability) resource.getCapabilityByType(ExampleCapability.CAPABILITY_TYPE);
-			capab.sayHello(vnt);
+			MappingResult mappingResult = capab.sayHello(vnt);
 
+			System.out.println(mappingResult.toString());
 		} catch (Exception e) {
 			printError("Error greeting from resource " + resourceName);
 			printError(e);

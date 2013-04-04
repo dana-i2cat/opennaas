@@ -14,48 +14,6 @@ import java.util.List;
  */
 
 // / the next class is to store the result of mapping/reserved resources on nodes and links
-class MappingResult
-{
-	public ArrayList								nodes				= new ArrayList();
-	public ArrayList								vnodes				= new ArrayList();
-	public ArrayList<ArrayList>						links				= new ArrayList<ArrayList>();
-	public ArrayList<ArrayList<VNTLinkMappingCell>>	VNTLinkMappingArray	= new ArrayList<ArrayList<VNTLinkMappingCell>>();
-	public int										providerID;
-	public int										cost;
-
-	public void print() {
-		System.out.println("Mapping Result: ");
-		System.out.println("vnodes: ");
-		for (int i = 0; i < vnodes.size(); i++)
-		{
-			System.out.println(i + "--" + Integer.valueOf(vnodes.get(i).toString()));
-		}
-		System.out.println("vlinks: ");
-		for (int i = 0; i < (int) VNTLinkMappingArray.size(); i++) {
-			for (int j = 0; j < (int) VNTLinkMappingArray.get(i).size(); j++)
-			{
-				if (VNTLinkMappingArray.get(i).get(j).isMapped == 1)
-				{
-					if (i < j) {
-						System.out.print(i + "--" + j + ":");
-						VNTLinkMappingArray.get(i).get(j).resultPath.node1Id = Integer.valueOf(vnodes.get(i).toString());
-						VNTLinkMappingArray.get(i).get(j).resultPath.node2Id = Integer.valueOf(vnodes.get(j).toString());
-						VNTLinkMappingArray.get(i).get(j).resultPath.printPath();
-						System.out.println();
-					}
-					else
-					{
-						System.out.print(j + "--" + i + ":");
-						VNTLinkMappingArray.get(j).get(i).resultPath.node1Id = Integer.valueOf(vnodes.get(j).toString());
-						VNTLinkMappingArray.get(j).get(i).resultPath.node2Id = Integer.valueOf(vnodes.get(i).toString());
-						VNTLinkMappingArray.get(j).get(i).resultPath.printPath();
-						System.out.println();
-					}
-				}
-			}
-		}
-	}
-}
 
 // / the next two classes are used to store information during the mapping process
 class VNTLinkMappingCell

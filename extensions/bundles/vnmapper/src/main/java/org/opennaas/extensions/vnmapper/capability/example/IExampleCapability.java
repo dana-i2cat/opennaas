@@ -14,6 +14,6 @@ public interface IExampleCapability extends ICapability {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public void sayHello(VNTRequest request) throws CapabilityException;
+	public MappingResult sayHello(VNTRequest request) throws CapabilityException;
 
 }

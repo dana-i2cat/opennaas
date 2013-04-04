@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:RDF xmlns:ns1="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns2="http://www.science.uva.nl/research/sne/ndl#" xmlns:ns4="http://www.science.uva.nl/research/sne/ndl/domain#">
+  <ns2:Device>
+    <ns2:hasInterface ns1:resource="#router:junos20:em0.0"/>
+    <ns2:hasInterface ns1:resource="#router:junos20:em1.0"/>
+    <ns2:name>router:junos20</ns2:name>
+  </ns2:Device>
+  <ns2:Device>
+    <ns2:hasInterface ns1:resource="#router:junos30:em0.0"/>
+    <ns2:hasInterface ns1:resource="#router:junos30:em1.0"/>
+    <ns2:name>router:junos30</ns2:name>
+  </ns2:Device>
+  <ns2:Device>
+    <ns2:hasInterface ns1:resource="#router:junos40:em0.0"/>
+    <ns2:hasInterface ns1:resource="#router:junos40:em1.0"/>
+    <ns2:name>router:junos40</ns2:name>
+  </ns2:Device>
+  <ns2:Interface>
+    <ns2:atLayer ns1:resource="#EthernetLayer"/>
+    <ns2:linkTo ns1:resource="#router:junos30:em0.0"/>
+    <ns2:name>router:junos20:em0.0</ns2:name>
+  </ns2:Interface>
+  <ns2:Interface>
+    <ns2:atLayer ns1:resource="#EthernetLayer"/>
+    <ns2:linkTo ns1:resource="#router:junos40:em0.0"/>
+    <ns2:name>router:junos20:em1.0</ns2:name>
+  </ns2:Interface>
+  <ns2:Interface>
+    <ns2:atLayer ns1:resource="#EthernetLayer"/>
+    <ns2:linkTo ns1:resource="#router:junos20:em0.0"/>
+    <ns2:name>router:junos30:em0.0</ns2:name>
+  </ns2:Interface>
+  <ns2:Interface>
+    <ns2:atLayer ns1:resource="#EthernetLayer"/>
+    <ns2:linkTo ns1:resource="#router:junos40:em1.0"/>
+    <ns2:name>router:junos30:em1.0</ns2:name>
+  </ns2:Interface>
+  <ns2:Interface>
+    <ns2:atLayer ns1:resource="#EthernetLayer"/>
+    <ns2:linkTo ns1:resource="#router:junos20:em1.0"/>
+    <ns2:name>router:junos40:em0.0</ns2:name>
+  </ns2:Interface>
+  <ns2:Interface>
+    <ns2:atLayer ns1:resource="#EthernetLayer"/>
+    <ns2:linkTo ns1:resource="#router:junos30:em1.0"/>
+    <ns2:name>router:junos40:em1.0</ns2:name>
+  </ns2:Interface>
+  <ns2:Layer>
+    <ns2:name>EthernetLayer</ns2:name>
+  </ns2:Layer>
+</ns1:RDF>

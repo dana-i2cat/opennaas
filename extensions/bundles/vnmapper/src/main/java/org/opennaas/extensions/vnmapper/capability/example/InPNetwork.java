@@ -45,8 +45,12 @@ class Path implements Serializable
 	public int				delay;
 
 	// /// method to calculate the capacity and delay of a path based on the included links
-	public void printPath() {
-		System.out.print(node1Id + "--");
+	@Override
+	public String toString() {
+
+		String pathString = "";
+		pathString += node1Id + "--";
+		// LOG System.out.print(node1Id + "--");
 		int previous = node1Id;
 		int n1, n2;
 		if ((node1Id == this.links.get(0).node1Id) || (node1Id == this.links.get(0).node2Id))
@@ -58,12 +62,14 @@ class Path implements Serializable
 				// System.out.println(n1+"--"+n2);
 				if (n1 == previous)
 				{
-					System.out.print(n2 + "--");
+					// LOG System.out.print(n2 + "--");
+					pathString += n2 + "--";
 					previous = n2;
 				}
 				else
 				{
-					System.out.print(n1 + "--");
+					pathString += n1 + "--";
+					// LOG System.out.print(n1 + "--");
 					previous = n1;
 				}
 			}
@@ -77,16 +83,19 @@ class Path implements Serializable
 				// System.out.println(n1+"--"+n2);
 				if (n1 == previous)
 				{
-					System.out.print(n2 + "--");
+					pathString += n2 + "--";
+					// LOG System.out.print(n2 + "--");
 					previous = n2;
 				}
 				else
 				{
-					System.out.print(n1 + "--");
+					pathString += n1 + "--";
+					// LOG System.out.print(n1 + "--");
 					previous = n1;
 				}
 			}
 		}
+		return pathString;
 	}
 
 	public void findPathCapacityAndDelay(List<List<PLink>> connections)
@@ -182,26 +191,34 @@ public class InPNetwork implements Serializable
 	public ArrayList<ArrayList>			locations	= new ArrayList<ArrayList>();
 	public int							nodeNum;
 
-	public void printNetwork()
+	@Override
+	public String toString()
 	{
-		System.out.println();
-		System.out.println("Physical Nodes:");
+		String netString = "\n";
+		netString += "Physical Nodes:\n";
+		// LOG System.out.println();
+		// LOG System.out.println("Physical Nodes:");
 		// System.out.println(nodeNum);
 		for (int i = 0; i < nodeNum; i++)
 		{
 			// System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID+ "--" + nodes.get(i).capacity );
-			System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID);
+			// LOG System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID);
+			netString += "node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID + "\n";
 
 		}
 		// System.out.println("------------------------------------------------------------------------------------");
 		// System.out.println("links" + links.size());
-		System.out.println("Physical links:");
+		// LOG System.out.println("Physical links:");
+		netString += "Physical links:\n";
 		for (int i = 0; i < links.size(); i++)
 		{
 			// System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id + " : " + links.get(i).capacity + " , " +
 			// links.get(i).delay);
-			System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id);
+			// System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id);
+			netString += "link : " + links.get(i).node1Id + "--" + links.get(i).node2Id + "\n";
 		}
+
+		return netString;
 	}
 
 	// /// get the adjacent nodes to a node
