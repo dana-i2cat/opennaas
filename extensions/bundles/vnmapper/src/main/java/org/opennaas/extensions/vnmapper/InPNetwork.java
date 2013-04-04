@@ -91,7 +91,7 @@ public class InPNetwork implements Serializable
 		{
 			// System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID+ "--" + nodes.get(i).capacity );
 			// LOG System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID);
-			netString += "node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID + "\n";
+			netString += "node " + nodes.get(i).getId() + "--" + nodes.get(i).getPnodeID() + "\n";
 
 		}
 		// System.out.println("------------------------------------------------------------------------------------");
@@ -103,7 +103,7 @@ public class InPNetwork implements Serializable
 			// System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id + " : " + links.get(i).capacity + " , " +
 			// links.get(i).delay);
 			// System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id);
-			netString += "link : " + links.get(i).node1Id + "--" + links.get(i).node2Id + "\n";
+			netString += "link : " + links.get(i).getNode1Id() + "--" + links.get(i).getNode2Id() + "\n";
 		}
 
 		return netString;
@@ -115,13 +115,13 @@ public class InPNetwork implements Serializable
 		ArrayList res = new ArrayList();
 		for (int i = 0; i < (int) this.links.size(); i++)
 		{
-			if (links.get(i).node1Id == nodeId)
+			if (links.get(i).getNode1Id() == nodeId)
 			{
-				res.add(links.get(i).node2Id);
+				res.add(links.get(i).getNode2Id());
 			}
-			if (links.get(i).node2Id == nodeId)
+			if (links.get(i).getNode2Id() == nodeId)
 			{
-				res.add(links.get(i).node1Id);
+				res.add(links.get(i).getNode1Id());
 			}
 		}
 		return res;
@@ -143,7 +143,7 @@ public class InPNetwork implements Serializable
 
 		for (int i = 0; i < (int) this.links.size(); i++)
 		{
-			if ((this.links.get(i).node1Id == n1) && (this.links.get(i).node2Id == n2))
+			if ((this.links.get(i).getNode1Id() == n1) && (this.links.get(i).getNode2Id() == n2))
 			{
 				res = i;
 			}
@@ -191,7 +191,7 @@ public class InPNetwork implements Serializable
 							n1 = n;
 						}
 
-						if ((this.connections.get(n1).get(n2).capacity >= requiredCapacity) && (this.connections.get(n1).get(n2).delay + passedNodes
+						if ((this.connections.get(n1).get(n2).getCapacity() >= requiredCapacity) && (this.connections.get(n1).get(n2).getDelay() + passedNodes
 								.get(currentPassedNodeIndex).getDelay() <= requiredDelay))
 						{
 
@@ -204,7 +204,7 @@ public class InPNetwork implements Serializable
 								res.setNode2Id(dst);
 								res.setCapacity(requiredCapacity);
 
-								int delay = passedNodes.get(currentPassedNodeIndex).getDelay() + this.connections.get(n1).get(n2).delay;
+								int delay = passedNodes.get(currentPassedNodeIndex).getDelay() + this.connections.get(n1).get(n2).getDelay();
 								res.setDelay(delay);
 								// // now construcing the resulted links
 								int current;
@@ -242,7 +242,7 @@ public class InPNetwork implements Serializable
 									c.setNodeId(n);
 									int linkNum = passedNodes.get(currentPassedNodeIndex).getLinkNum() + 1;
 									c.setLinkNum(linkNum);
-									int delay = this.connections.get(n1).get(n2).delay + passedNodes.get(currentPassedNodeIndex).getDelay();
+									int delay = this.connections.get(n1).get(n2).getDelay() + passedNodes.get(currentPassedNodeIndex).getDelay();
 									c.setDelay(delay);
 									c.setPrev(passedNodes.get(currentPassedNodeIndex));
 									passedNodes.add(c);
@@ -295,14 +295,14 @@ public class InPNetwork implements Serializable
 					n1 = n;
 				}
 				if ((cells.get(curNode).getLinkNum() + 1 < maxLinkNum) || (n == dst))
-					if ((this.connections.get(n1).get(n2).capacity >= requiredCapacity) && (this.connections.get(n1).get(n2).delay + cells
+					if ((this.connections.get(n1).get(n2).getCapacity() >= requiredCapacity) && (this.connections.get(n1).get(n2).getDelay() + cells
 							.get(curNode).getDelay() <= requiredDelay))
 					{
-						if ((cells.get(n).getPassed() != 1) && (cells.get(n).getRemaining() < this.connections.get(n1).get(n2).capacity - requiredCapacity))
+						if ((cells.get(n).getPassed() != 1) && (cells.get(n).getRemaining() < this.connections.get(n1).get(n2).getCapacity() - requiredCapacity))
 						{
-							int remaining = this.connections.get(n1).get(n2).capacity - requiredCapacity;
+							int remaining = this.connections.get(n1).get(n2).getCapacity() - requiredCapacity;
 							cells.get(n).setRemaining(remaining);
-							int delay = this.connections.get(n1).get(n2).delay + cells.get(curNode).getDelay();
+							int delay = this.connections.get(n1).get(n2).getDelay() + cells.get(curNode).getDelay();
 							cells.get(n).setDelay(delay);
 							cells.get(n).setLinkNum(cells.get(curNode).getLinkNum() + 1);
 							cells.get(n).setPrev(curNode);
@@ -375,15 +375,15 @@ public class InPNetwork implements Serializable
 							PNode n = new PNode();
 							Element e = (Element) node;
 							NodeList nodeList = e.getElementsByTagName("id");
-							n.id = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+							n.setId(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
 
 							nodeList = e.getElementsByTagName("pnodeID");
-							n.pnodeID = nodeList.item(0).getChildNodes().item(0).getNodeValue();
+							n.setPnodeID(nodeList.item(0).getChildNodes().item(0).getNodeValue());
 
 							nodeList = e.getElementsByTagName("capacity");
-							n.capacity = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+							n.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
 
-							n.pathNum = 0;
+							n.setPathNum(0);
 							res.nodes.add(n);
 							res.nodeNum++;
 
@@ -416,19 +416,17 @@ public class InPNetwork implements Serializable
 							nodeList = e.getElementsByTagName("node2");
 							int node2 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
 
-							res.connections.get(node1).get(node2).id = 1;
+							res.connections.get(node1).get(node2).setId(1);
 
-							res.connections.get(node1).get(node2).node1Id = node1;
-
-							res.connections.get(node1).get(node2).node2Id = node2;
+							res.connections.get(node1).get(node2).setNode1Id(node1);
+							res.connections.get(node1).get(node2).setNode2Id(node2);
 
 							nodeList = e.getElementsByTagName("capacity");
-							res.connections.get(node1).get(node2).capacity = Integer
-									.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+							res.connections.get(node1).get(node2).setCapacity(Integer
+									.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
 
 							nodeList = e.getElementsByTagName("delay");
-							res.connections.get(node1).get(node2).delay = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-							;
+							res.connections.get(node1).get(node2).setDelay(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
 
 							res.links.add(res.connections.get(node1).get(node2));
 
@@ -445,5 +443,4 @@ public class InPNetwork implements Serializable
 
 		return res;
 	}
-
 }

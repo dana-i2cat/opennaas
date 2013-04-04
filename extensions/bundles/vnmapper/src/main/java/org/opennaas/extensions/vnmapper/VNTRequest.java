@@ -17,13 +17,58 @@ import org.w3c.dom.NodeList;
 
 public class VNTRequest
 {
-	public ArrayList<ArrayList<VLink>>	connections	= new ArrayList<ArrayList<VLink>>();
-	public ArrayList<VNode>				vnodes		= new ArrayList<VNode>();
-	public ArrayList<VLink>				vlinks		= new ArrayList<VLink>();
+	private ArrayList<ArrayList<VLink>>	connections;
+	private ArrayList<VNode>			vnodes;
+	private ArrayList<VLink>			vlinks;
 
-	public int							mappingCost;
+	private int							mappingCost;
+	private int							vnodeNum;
 
-	public int							vnodeNum;
+	public VNTRequest() {
+		connections = new ArrayList<ArrayList<VLink>>();
+		vnodes = new ArrayList<VNode>();
+		vlinks = new ArrayList<VLink>();
+	}
+
+	public ArrayList<ArrayList<VLink>> getConnections() {
+		return connections;
+	}
+
+	public void setConnections(ArrayList<ArrayList<VLink>> connections) {
+		this.connections = connections;
+	}
+
+	public ArrayList<VNode> getVnodes() {
+		return vnodes;
+	}
+
+	public void setVnodes(ArrayList<VNode> vnodes) {
+		this.vnodes = vnodes;
+	}
+
+	public ArrayList<VLink> getVlinks() {
+		return vlinks;
+	}
+
+	public void setVlinks(ArrayList<VLink> vlinks) {
+		this.vlinks = vlinks;
+	}
+
+	public int getMappingCost() {
+		return mappingCost;
+	}
+
+	public void setMappingCost(int mappingCost) {
+		this.mappingCost = mappingCost;
+	}
+
+	public int getVnodeNum() {
+		return vnodeNum;
+	}
+
+	public void setVnodeNum(int vnodeNum) {
+		this.vnodeNum = vnodeNum;
+	}
 
 	// / get the adjacent vnodes to a vnode
 	public ArrayList getAdjacentVNodes(int nodeId)

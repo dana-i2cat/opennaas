@@ -147,10 +147,10 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 
 		for (int i = 0; i < devices.size(); i++) {
 			PNode n = new PNode();
-			n.id = i;
-			n.pnodeID = devices.get(i).getName();
-			n.capacity = 16;
-			n.pathNum = 0;
+			n.setId(i);
+			n.setPnodeID(devices.get(i).getName());
+			n.setCapacity(16);
+			n.setPathNum(0);
 			net.getNodes().add(n);
 			net.setNodeNum(net.getNodeNum() + 1);
 		}
@@ -177,15 +177,15 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 
 			if ((node1 != -1) && (node2 != -1))
 			{
-				net.getConnections().get(node1).get(node2).id = 1;
+				net.getConnections().get(node1).get(node2).setId(1);
 
-				net.getConnections().get(node1).get(node2).node1Id = node1;
+				net.getConnections().get(node1).get(node2).setNode1Id(node1);
 
-				net.getConnections().get(node1).get(node2).node2Id = node2;
+				net.getConnections().get(node1).get(node2).setNode2Id(node2);
 
-				net.getConnections().get(node1).get(node2).capacity = 100;
+				net.getConnections().get(node1).get(node2).setCapacity(100);
 
-				net.getConnections().get(node1).get(node2).delay = 1;
+				net.getConnections().get(node1).get(node2).setDelay(1);
 
 				net.getLinks().add(net.getConnections().get(node1).get(node2));
 			} else

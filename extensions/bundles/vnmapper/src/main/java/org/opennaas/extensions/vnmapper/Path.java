@@ -11,12 +11,16 @@ public class Path implements Serializable {
 	private int					id;
 	private int					node1Id;
 	private int					node2Id;
-	private ArrayList<PLink>	links				= new ArrayList<PLink>();
+	private ArrayList<PLink>	links;
 	private int					capacity;
 	private int					maxCapacity;
 	private int					delay;
 
 	// /// method to calculate the capacity and delay of a path based on the included links
+
+	public Path() {
+		links = new ArrayList<PLink>();
+	}
 
 	public int getId() {
 		return id;
@@ -84,20 +88,20 @@ public class Path implements Serializable {
 		for (int i = 0; i < (int) this.links.size(); i++)
 		{
 
-			n1 = this.links.get(i).node1Id;
-			n2 = this.links.get(i).node2Id;
+			n1 = this.links.get(i).getNode1Id();
+			n2 = this.links.get(i).getNode2Id();
 			if (n2 < n1) {
 				n3 = n2;
 				n2 = n1;
 				n1 = n3;
 			}
-			if (connections.get(n1).get(n2).capacity < minCapacity)
-				minCapacity = connections.get(n1).get(n2).capacity;
+			if (connections.get(n1).get(n2).getCapacity() < minCapacity)
+				minCapacity = connections.get(n1).get(n2).getCapacity();
 
-			if (connections.get(n1).get(n2).capacity > maxCapacity)
-				maxCapacity = connections.get(n1).get(n2).capacity;
+			if (connections.get(n1).get(n2).getCapacity() > maxCapacity)
+				maxCapacity = connections.get(n1).get(n2).getCapacity();
 
-			delay = delay + links.get(i).delay;
+			delay = delay + links.get(i).getDelay();
 		}
 		this.capacity = minCapacity;
 
@@ -127,12 +131,12 @@ public class Path implements Serializable {
 		// LOG System.out.print(node1Id + "--");
 		int previous = node1Id;
 		int n1, n2;
-		if ((node1Id == this.links.get(0).node1Id) || (node1Id == this.links.get(0).node2Id))
+		if ((node1Id == this.links.get(0).getNode1Id()) || (node1Id == this.links.get(0).getNode2Id()))
 		{
 			for (int i = 0; i < (int) this.links.size(); i++)
 			{
-				n1 = this.links.get(i).node1Id;
-				n2 = this.links.get(i).node2Id;
+				n1 = this.links.get(i).getNode1Id();
+				n2 = this.links.get(i).getNode2Id();
 				// System.out.println(n1+"--"+n2);
 				if (n1 == previous)
 				{
@@ -152,8 +156,8 @@ public class Path implements Serializable {
 		{
 			for (int i = (int) this.links.size() - 1; i >= 0; i--)
 			{
-				n1 = this.links.get(i).node1Id;
-				n2 = this.links.get(i).node2Id;
+				n1 = this.links.get(i).getNode1Id();
+				n2 = this.links.get(i).getNode2Id();
 				// System.out.println(n1+"--"+n2);
 				if (n1 == previous)
 				{

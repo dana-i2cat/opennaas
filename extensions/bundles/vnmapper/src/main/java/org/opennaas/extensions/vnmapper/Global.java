@@ -74,18 +74,18 @@ public class Global
 	{
 		System.out.println("Mapping Result: ");
 		System.out.println("Nodes: ");
-		for (int i = 0; i < mres.nodes.size(); i++)
+		for (int i = 0; i < mres.getNodes().size(); i++)
 		{
-			int t = Integer.valueOf(mres.nodes.get(i).toString());
+			int t = Integer.valueOf(mres.getNodes().get(i).toString());
 			if (t > 0)
 				System.out.println(i + " : " + t);
 		}
 		System.out.println("Links: ");
 
-		for (int i = 0; i < mres.links.size(); i++)
-			for (int j = 0; j < mres.links.get(i).size(); j++)
+		for (int i = 0; i < mres.getLinks().size(); i++)
+			for (int j = 0; j < mres.getLinks().get(i).size(); j++)
 			{
-				int t = Integer.valueOf(mres.links.get(i).get(j).toString());
+				int t = Integer.valueOf(mres.getLinks().get(i).get(j).toString());
 				if (t > 0)
 					System.out.println(i + "-" + j + " : " + t);
 			}

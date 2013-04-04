@@ -3,12 +3,70 @@ package org.opennaas.extensions.vnmapper;
 import java.util.ArrayList;
 
 public class MappingResult {
-	public ArrayList								nodes				= new ArrayList();
-	public ArrayList								vnodes				= new ArrayList();
-	public ArrayList<ArrayList>						links				= new ArrayList<ArrayList>();
-	public ArrayList<ArrayList<VNTLinkMappingCell>>	VNTLinkMappingArray	= new ArrayList<ArrayList<VNTLinkMappingCell>>();
-	public int										providerID;
-	public int										cost;
+
+	private ArrayList									nodes;
+	private ArrayList									vnodes;
+	private ArrayList<ArrayList>						links;
+	private ArrayList<ArrayList<VNTLinkMappingCell>>	VNTLinkMappingArray;
+	private int											providerID;
+	private int											cost;
+
+	public MappingResult() {
+
+		nodes = new ArrayList();
+		vnodes = new ArrayList();
+		links = new ArrayList<ArrayList>();
+		VNTLinkMappingArray = new ArrayList<ArrayList<VNTLinkMappingCell>>();
+
+	}
+
+	public ArrayList getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(ArrayList nodes) {
+		this.nodes = nodes;
+	}
+
+	public ArrayList getVnodes() {
+		return vnodes;
+	}
+
+	public void setVnodes(ArrayList vnodes) {
+		this.vnodes = vnodes;
+	}
+
+	public ArrayList<ArrayList> getLinks() {
+		return links;
+	}
+
+	public void setLinks(ArrayList<ArrayList> links) {
+		this.links = links;
+	}
+
+	public ArrayList<ArrayList<VNTLinkMappingCell>> getVNTLinkMappingArray() {
+		return VNTLinkMappingArray;
+	}
+
+	public void setVNTLinkMappingArray(ArrayList<ArrayList<VNTLinkMappingCell>> vNTLinkMappingArray) {
+		VNTLinkMappingArray = vNTLinkMappingArray;
+	}
+
+	public int getProviderID() {
+		return providerID;
+	}
+
+	public void setProviderID(int providerID) {
+		this.providerID = providerID;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
 
 	@Override
 	public String toString() {

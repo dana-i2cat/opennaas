@@ -26,12 +26,12 @@ public class VNTMapper
 		ArrayList degrees = new ArrayList();
 		ArrayList res = new ArrayList();
 
-		for (int i = 0; i < v.vnodeNum; i++)
+		for (int i = 0; i < v.getVnodeNum(); i++)
 			degrees.add(0);
 		;
-		for (int i = 0; i < v.vnodeNum; i++) {
-			for (int j = 0; j < v.vnodeNum; j++) {
-				if ((v.connections.get(i).get(j).getId() == 1))
+		for (int i = 0; i < v.getVnodeNum(); i++) {
+			for (int j = 0; j < v.getVnodeNum(); j++) {
+				if ((v.getConnections().get(i).get(j).getId() == 1))
 				{
 					int d1 = Integer.valueOf(degrees.get(i).toString());
 					int d2 = Integer.valueOf(degrees.get(j).toString());
@@ -47,7 +47,7 @@ public class VNTMapper
 
 		res.add(0);
 		int u;
-		for (int i = 1; i < v.vnodeNum; i++) {
+		for (int i = 1; i < v.getVnodeNum(); i++) {
 			u = 0;
 
 			while (((Integer.valueOf((degrees.get(Integer.valueOf(res.get(u).toString()))).toString())) >= (Integer
@@ -109,13 +109,13 @@ public class VNTMapper
 		int requiredD;
 		Path p = new Path();
 		if (v1id < v2id) {
-			requiredB = v.connections.get(v1id).get(v2id).getCapacity();
-			requiredD = v.connections.get(v1id).get(v2id).getDelay();
+			requiredB = v.getConnections().get(v1id).get(v2id).getCapacity();
+			requiredD = v.getConnections().get(v1id).get(v2id).getDelay();
 
 		} else {
 
-			requiredB = v.connections.get(v2id).get(v1id).getCapacity();
-			requiredD = v.connections.get(v2id).get(v1id).getDelay();
+			requiredB = v.getConnections().get(v2id).get(v1id).getCapacity();
+			requiredD = v.getConnections().get(v2id).get(v1id).getDelay();
 
 		}
 
@@ -148,7 +148,7 @@ public class VNTMapper
 			// / pointer to the previous virtual node in the way to map the virtual node
 			ArrayList<VNTNodeMappingCell> VNTNodeMappingArray = new ArrayList<VNTNodeMappingCell>();
 			ArrayList sortedVNodesSet = new ArrayList();
-			for (int i = 0; i < (int) v.vnodes.size(); i++) {
+			for (int i = 0; i < (int) v.getVnodes().size(); i++) {
 				VNTNodeMappingCell vNodeCell = new VNTNodeMappingCell();
 				vNodeCell.setVid(i);
 				vNodeCell.setPossibleRealNodes(nodesMapping.get(vNodeCell.getVid()));
@@ -165,9 +165,9 @@ public class VNTMapper
 			// / initializing the array to store the current status of each virtual link (if its been mapped or not yet)
 			ArrayList<ArrayList<VNTLinkMappingCell>> VNTLinkMappingArray = new ArrayList<ArrayList<VNTLinkMappingCell>>();
 
-			for (int i = 0; i < (int) v.vnodeNum; i++) {
+			for (int i = 0; i < (int) v.getVnodeNum(); i++) {
 				VNTLinkMappingArray.add(new ArrayList<VNTLinkMappingCell>());
-				for (int j = 0; j < v.vnodeNum; j++)
+				for (int j = 0; j < v.getVnodeNum(); j++)
 				{
 					VNTLinkMappingArray.get(i).add(new VNTLinkMappingCell());
 				}
@@ -190,70 +190,76 @@ public class VNTMapper
 				// / initialize mappingResult///
 				for (int u1 = 0; u1 < net.getNodeNum(); u1++)
 				{
-					mappingResult.nodes.add(0);
-					mappingResult.links.add(new ArrayList());
+					mappingResult.getNodes().add(0);
+					mappingResult.getLinks().add(new ArrayList());
 					for (int u2 = 0; u2 < net.getNodeNum(); u2++)
 					{
-						mappingResult.links.get(u1).add(0);
+						mappingResult.getLinks().get(u1).add(0);
 					}
 				}
-				for (int u1 = 0; u1 < v.vnodeNum; u1++)
+				for (int u1 = 0; u1 < v.getVnodeNum(); u1++)
 				{
-					mappingResult.vnodes.add(0);
+					mappingResult.getVnodes().add(0);
 				}
 				int nodeCosts = 0;
 				int linkCosts = 0;
-				for (int i = 0; i < v.vnodes.size(); i++)
+				for (int i = 0; i < v.getVnodes().size(); i++)
 				{
-					nodeCosts = nodeCosts + v.vnodes.get(i).getCapacity();
+					nodeCosts = nodeCosts + v.getVnodes().get(i).getCapacity();
 					int chosen = VNTNodeMappingArray.get(i).getChosenRealNode();
 					if (chosen != -1)
 					{
-						mappingResult.nodes.remove(chosen);
-						mappingResult.nodes.add(chosen, v.vnodes.get(i).getCapacity());
-						mappingResult.vnodes.remove(i);
-						mappingResult.vnodes.add(i, chosen);
+						mappingResult.getNodes().remove(chosen);
+						mappingResult.getNodes().add(chosen, v.getVnodes().get(i).getCapacity());
+						mappingResult.getVnodes().remove(i);
+						mappingResult.getVnodes().add(i, chosen);
 					}
 				}
-				mappingResult.VNTLinkMappingArray = VNTLinkMappingArray;
+				mappingResult.setVNTLinkMappingArray(VNTLinkMappingArray);
 				for (int i = 0; i < (int) VNTLinkMappingArray.size(); i++) {
 					for (int j = 0; j < (int) VNTLinkMappingArray.get(i).size(); j++)
 					{
 						if (VNTLinkMappingArray.get(i).get(j).getIsMapped() == 1)
 						{
 							if (i < j) {
-								linkCosts = linkCosts + v.connections.get(i).get(j).getCapacity() * VNTLinkMappingArray.get(i).get(j).getResultPath()
+								linkCosts = linkCosts + v.getConnections().get(i).get(j).getCapacity() * VNTLinkMappingArray.get(i).get(j)
+										.getResultPath()
 										.getLinks()
 										.size();
 
 								for (int u = 0; u < VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().size(); u++)
 								{
-									int temp = Integer.valueOf(mappingResult.links
-											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node1Id)
-											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node2Id).toString());
-									temp += v.connections.get(i).get(j).getCapacity();
-									mappingResult.links.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node1Id).remove(
-											VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node2Id);
-									mappingResult.links.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node1Id).add(
-											VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node2Id, temp);
+									int temp = Integer.valueOf(mappingResult.getLinks()
+											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode1Id())
+											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode2Id()).toString());
+									temp += v.getConnections().get(i).get(j).getCapacity();
+									mappingResult.getLinks().get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode1Id())
+											.remove(
+													VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode2Id());
+									mappingResult.getLinks().get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode1Id())
+											.add(
+													VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode2Id(), temp);
 								}
 								// /
 							} else
 							{
-								linkCosts = linkCosts + v.connections.get(j).get(i).getCapacity() * VNTLinkMappingArray.get(j).get(i).getResultPath()
+								linkCosts = linkCosts + v.getConnections().get(j).get(i).getCapacity() * VNTLinkMappingArray.get(j).get(i)
+										.getResultPath()
 										.getLinks()
 										.size();
 								// /
 								for (int u = 0; u < VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().size(); u++)
 								{
-									int temp = Integer.valueOf(mappingResult.links
-											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node1Id)
-											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node2Id).toString());
-									temp += v.connections.get(j).get(i).getCapacity();
-									mappingResult.links.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node1Id).remove(
-											VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node2Id);
-									mappingResult.links.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node1Id).add(
-											VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).node2Id, temp);
+									int temp = Integer.valueOf(mappingResult.getLinks()
+											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode1Id())
+											.get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode2Id()).toString());
+									temp += v.getConnections().get(j).get(i).getCapacity();
+									mappingResult.getLinks().get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode1Id())
+											.remove(
+													VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode2Id());
+									mappingResult.getLinks().get(VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode1Id())
+											.add(
+													VNTLinkMappingArray.get(i).get(j).getResultPath().getLinks().get(u).getNode2Id(), temp);
 
 									// mappingResult.links[VNTLinkMappingArray.get(i).get(j).resultPath.links[u].node1Id][VNTLinkMappingArray.get(i).get(j).resultPath.links[u].node2Id]
 									// += v.connections.get(j).get(i).capacity;
@@ -264,7 +270,7 @@ public class VNTMapper
 					}
 				}
 
-				mappingResult.cost = nodeCosts + linkCosts;
+				mappingResult.setCost(nodeCosts + linkCosts);
 
 			}
 
@@ -335,7 +341,8 @@ public class VNTMapper
 						if (VNTNodeMappingArray.get(k).getChosenRealNode() != -1)
 						{
 							// / check if there is virtual link between VNTNodeMappingArray[i].vid and currentVNode
-							if ((v.connections.get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId).getId() != -1) || (v.connections
+							if ((v.getConnections().get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId).getId() != -1) || (v
+									.getConnections()
 									.get(currentVNodeId).get(VNTNodeMappingArray.get(k).getVid()).getId() != -1))
 							// / now try to map the virtual link
 							{
@@ -353,13 +360,13 @@ public class VNTMapper
 
 									linksMappingRes = 1;
 									int requiredLinkCapacity;
-									if (v.connections.get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId).getId() != -1) {
-										requiredLinkCapacity = v.connections.get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId)
+									if (v.getConnections().get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId).getId() != -1) {
+										requiredLinkCapacity = v.getConnections().get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId)
 												.getCapacity();
 										VNTLinkMappingArray.get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId).setResultPath(resultedPath);
 										VNTLinkMappingArray.get(VNTNodeMappingArray.get(k).getVid()).get(currentVNodeId).setIsMapped(1);
 									} else {
-										requiredLinkCapacity = v.connections.get(currentVNodeId).get(VNTNodeMappingArray.get(k).getVid())
+										requiredLinkCapacity = v.getConnections().get(currentVNodeId).get(VNTNodeMappingArray.get(k).getVid())
 												.getCapacity();
 										VNTLinkMappingArray.get(currentVNodeId).get(VNTNodeMappingArray.get(k).getVid()).setResultPath(resultedPath);
 										VNTLinkMappingArray.get(currentVNodeId).get(VNTNodeMappingArray.get(k).getVid()).setIsMapped(1);
@@ -367,14 +374,15 @@ public class VNTMapper
 									for (int u = 0; u < (int) resultedPath.getLinks().size(); u++)
 									{
 										int n1, n2, n3;
-										n1 = resultedPath.getLinks().get(u).node1Id;
-										n2 = resultedPath.getLinks().get(u).node2Id;
+										n1 = resultedPath.getLinks().get(u).getNode1Id();
+										n2 = resultedPath.getLinks().get(u).getNode2Id();
 										if (n2 < n1) {
 											n3 = n2;
 											n2 = n1;
 											n1 = n3;
 										}
-										net.getConnections().get(n1).get(n2).capacity = net.getConnections().get(n1).get(n2).capacity - requiredLinkCapacity;
+										net.getConnections().get(n1).get(n2)
+												.setCapacity(net.getConnections().get(n1).get(n2).getCapacity() - requiredLinkCapacity);
 									}
 
 								}
@@ -385,8 +393,9 @@ public class VNTMapper
 					if (linksMappingRes == 1) // /mapping of virtual links is done successfully
 					{
 						// / changing the availability of the selected pnode
-						net.getNodes().get(currentRealNode).capacity = net.getNodes().get(currentRealNode).capacity - v.vnodes.get(currentVNodeId)
-								.getCapacity();
+						net.getNodes().get(currentRealNode).setCapacity(net.getNodes().get(currentRealNode).getCapacity() - v.getVnodes()
+								.get(currentVNodeId)
+								.getCapacity());
 						// / add the current vnode to the mapped vnodes
 						mappedVNTNodes.add(currentVNodeId);
 
@@ -397,16 +406,16 @@ public class VNTMapper
 
 						// / check if the whole VNT is mapped after this operation
 						mappingFinish = 1;
-						if (mappedVNTNodes.size() < v.vnodeNum)
+						if (mappedVNTNodes.size() < v.getVnodeNum())
 							mappingFinish = 0;
 
 						// / updated the number of connections to the already mapped vnodes
-						for (int u = 0; u < v.vnodeNum; u++)
+						for (int u = 0; u < v.getVnodeNum(); u++)
 						{
-							if ((u < currentVNodeId) && (v.connections.get(u).get(currentVNodeId).getId() != -1))
+							if ((u < currentVNodeId) && (v.getConnections().get(u).get(currentVNodeId).getId() != -1))
 							{
 								VNTNodeMappingArray.get(u).incrementConnectionsNum();
-							} else if ((u > currentVNodeId) && (v.connections.get(currentVNodeId).get(u).getId() != -1))
+							} else if ((u > currentVNodeId) && (v.getConnections().get(currentVNodeId).get(u).getId() != -1))
 							{
 								VNTNodeMappingArray.get(u).incrementConnectionsNum();
 							}
@@ -423,13 +432,13 @@ public class VNTMapper
 								selectedRealNodes.remove(currentRealNode);
 								Global.stepsNum++;
 								// System.out.println("steps = "+Global.stepsNum);
-								for (int u = 0; u < v.vnodeNum; u++)
+								for (int u = 0; u < v.getVnodeNum(); u++)
 								{
-									if ((u < currentVNodeId) && (v.connections.get(u).get(currentVNodeId).getId() != -1))
+									if ((u < currentVNodeId) && (v.getConnections().get(u).get(currentVNodeId).getId() != -1))
 									{
 										VNTNodeMappingArray.get(u).decrementConnectionsNum();
 									}
-									else if ((u > currentVNodeId) && (v.connections.get(currentVNodeId).get(u).getId() != -1))
+									else if ((u > currentVNodeId) && (v.getConnections().get(currentVNodeId).get(u).getId() != -1))
 									{
 										VNTNodeMappingArray.get(u).decrementConnectionsNum();
 									}
@@ -507,7 +516,7 @@ public class VNTMapper
 			for (int i = 0; i < possibleRealNodes.size(); i++)
 			{
 				if ((realNode < Integer.valueOf(possibleRealNodes.get(i).toString())) && (net.getConnections().get(realNode).get(
-						Integer.valueOf(possibleRealNodes.get(i).toString())).id != -1))
+						Integer.valueOf(possibleRealNodes.get(i).toString())).getId() != -1))
 				{
 					int temp = Integer.valueOf(connectionNum.get(Integer.valueOf(possibleRealNodes.get(i).toString())).toString());
 					temp++;
@@ -515,7 +524,7 @@ public class VNTMapper
 					connectionNum.add(Integer.valueOf(possibleRealNodes.get(i).toString()), temp);
 				}
 				if ((realNode > Integer.valueOf(possibleRealNodes.get(i).toString())) && (net.getConnections().get(
-						Integer.valueOf(possibleRealNodes.get(i).toString())).get(realNode).id != -1))
+						Integer.valueOf(possibleRealNodes.get(i).toString())).get(realNode).getId() != -1))
 				{
 					int temp = Integer.valueOf(connectionNum.get(Integer.valueOf(possibleRealNodes.get(i).toString())).toString());
 					temp++;
@@ -552,7 +561,7 @@ public class VNTMapper
 		int realNode;
 		ArrayList capacityDifference = new ArrayList();
 		// capacityDifference.Capacity=net.nodeNum;
-		int requiredCapacity = v.vnodes.get(currentVNodeId).getCapacity();
+		int requiredCapacity = v.getVnodes().get(currentVNodeId).getCapacity();
 		for (int k = 0; k < net.getNodeNum(); k++)
 		{
 			capacityDifference.add(-1);
@@ -561,7 +570,7 @@ public class VNTMapper
 		{
 			capacityDifference.remove(Integer.valueOf(possibleRealNodes.get(i).toString()));
 			capacityDifference.add(Integer.valueOf(possibleRealNodes.get(i).toString()),
-					net.getNodes().get(Integer.valueOf(possibleRealNodes.get(i).toString())).capacity - requiredCapacity);
+					net.getNodes().get(Integer.valueOf(possibleRealNodes.get(i).toString())).getCapacity() - requiredCapacity);
 
 		}
 
@@ -602,10 +611,11 @@ public class VNTMapper
 		for (int i = 0; i < (int) net.getNodes().size(); i++)
 		{
 
-			if (((v.vnodes.get(vid).getPnodeID() != "") && (v.vnodes.get(vid).getPnodeID().equals(net.getNodes().get(i).pnodeID))) || (v.vnodes
+			if (((v.getVnodes().get(vid).getPnodeID() != "") && (v.getVnodes().get(vid).getPnodeID().equals(net.getNodes().get(i).getPnodeID()))) || (v
+					.getVnodes()
 					.get(vid).getPnodeID().equals("-")))
 			{
-				if ((net.getNodes().get(i).capacity >= v.vnodes.get(vid).getCapacity()))
+				if ((net.getNodes().get(i).getCapacity() >= v.getVnodes().get(vid).getCapacity()))
 				{
 					res.add(i);
 				}
@@ -619,7 +629,7 @@ public class VNTMapper
 		int t = 1;
 		// // create a set to store the vnodes that have one matched pnodes///
 		IntSet oneMatchedPnodes = new IntSet();
-		for (int i = 0; (i < (int) v.vnodes.size()) && (t == 1); i++) {
+		for (int i = 0; (i < (int) v.getVnodes().size()) && (t == 1); i++) {
 			ArrayList s;
 			s = matchVirtualNode(v, i, net);
 			if (s.size() == 0)
@@ -644,15 +654,15 @@ public class VNTMapper
 	// // the next method is used to release the resources allocated for a VNT
 	public static InPNetwork freeVNT(InPNetwork net, MappingResult mappingResult)
 	{
-		for (int k = 0; k < mappingResult.nodes.size(); k++)
+		for (int k = 0; k < mappingResult.getNodes().size(); k++)
 		{
-			net.getNodes().get(k).capacity += Integer.valueOf(mappingResult.nodes.get(k).toString());
+			net.getNodes().get(k).increaseCapacity(Integer.valueOf(mappingResult.getNodes().get(k).toString()));
 		}
-		for (int k = 0; k < mappingResult.links.size(); k++)
+		for (int k = 0; k < mappingResult.getLinks().size(); k++)
 		{
-			for (int k2 = 0; k2 < mappingResult.links.get(k).size(); k2++)
+			for (int k2 = 0; k2 < mappingResult.getLinks().get(k).size(); k2++)
 			{
-				net.getConnections().get(k).get(k2).capacity += Integer.valueOf(mappingResult.links.get(k).get(k2).toString());
+				net.getConnections().get(k).get(k2).increaseCapacity(Integer.valueOf(mappingResult.getLinks().get(k).get(k2).toString()));
 			}
 		}
 		return net;
@@ -662,15 +672,15 @@ public class VNTMapper
 	public InPNetwork allocateVNT(InPNetwork net, MappingResult mappingResult)
 	{
 
-		for (int k = 0; k < mappingResult.nodes.size(); k++)
+		for (int k = 0; k < mappingResult.getNodes().size(); k++)
 		{
-			net.getNodes().get(k).capacity -= Integer.valueOf(mappingResult.nodes.get(k).toString());
+			net.getNodes().get(k).decreaseCapacity(Integer.valueOf(mappingResult.getNodes().get(k).toString()));
 		}
-		for (int k = 0; k < mappingResult.links.size(); k++)
+		for (int k = 0; k < mappingResult.getLinks().size(); k++)
 		{
-			for (int k2 = 0; k2 < mappingResult.links.get(k).size(); k2++)
+			for (int k2 = 0; k2 < mappingResult.getLinks().get(k).size(); k2++)
 			{
-				net.getConnections().get(k).get(k2).capacity -= Integer.valueOf(mappingResult.links.get(k).get(k2).toString());
+				net.getConnections().get(k).get(k2).decreaseCapacity(Integer.valueOf(mappingResult.getLinks().get(k).get(k2).toString()));
 			}
 		}
 

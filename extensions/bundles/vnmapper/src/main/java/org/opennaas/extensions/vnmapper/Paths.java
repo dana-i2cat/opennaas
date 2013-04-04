@@ -8,7 +8,11 @@ public class Paths {
 
 	private int				node1Id;
 	private int				node2Id;
-	private ArrayList<Path>	paths	= new ArrayList<Path>();
+	private ArrayList<Path>	paths;
+
+	public Paths() {
+		paths = new ArrayList<Path>();
+	}
 
 	public int getNode1Id() {
 		return node1Id;
