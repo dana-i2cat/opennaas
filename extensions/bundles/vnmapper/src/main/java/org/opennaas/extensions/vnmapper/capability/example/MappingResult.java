@@ -15,6 +15,7 @@ public class MappingResult {
 
 		String mappingString = "";
 		mappingString += "Mapping Result: \n";
+		mappingString += "vnodes: \n";
 		// LOG System.out.println("Mapping Result: ");
 		// LOG System.out.println("vnodes: ");
 		for (int i = 0; i < vnodes.size(); i++)

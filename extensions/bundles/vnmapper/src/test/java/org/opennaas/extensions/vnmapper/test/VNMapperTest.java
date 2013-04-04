@@ -25,9 +25,16 @@ import org.opennaas.extensions.vnmapper.capability.example.VNTRequest;
 
 public class VNMapperTest {
 
-	private final static String	REQUEST_1_URL	= "/samples/sample1/request.xml";
-	private final static String	TOPOLOGY_1_URL	= "/samples/sample1/topology.xml";
-	private final static String	RESULT_1_URL	= "/samples/sample1/output.karaf";
+	private final static String	TOPOLOGY_FILE	= "topology.xml";
+	private final static String	REQUEST_FILE	= "request.xml";
+	private final static String	RESULT_FILE		= "output.karaf";
+
+	private final static String	SAMPLE_1_URL	= "/samples/sample1/";
+	private final static String	SAMPLE_2_URL	= "/samples/sample2/";
+	private final static String	SAMPLE_3_URL	= "/samples/sample3/";
+	private final static String	SAMPLE_4_URL	= "/samples/sample4/";
+	private final static String	SAMPLE_5_URL	= "/samples/sample5/";
+	private final static String	SAMPLE_6_URL	= "/samples/sample6/";
 
 	private ExampleCapability	capab;
 	private VNTRequest			vnt;
@@ -37,11 +44,11 @@ public class VNMapperTest {
 	public void setUp() {
 
 		String resourceId = "1234";
+
 		Information capabilityInformation = new Information();
 		capabilityInformation.setType(ExampleCapability.CAPABILITY_TYPE);
 
 		CapabilityDescriptor descriptor = new CapabilityDescriptor();
-
 		descriptor.setCapabilityInformation(capabilityInformation);
 		capab = new ExampleCapability(descriptor, resourceId);
 
@@ -53,16 +60,106 @@ public class VNMapperTest {
 	@Test
 	public void sample1Test() throws IOException, SerializationException, ResourceException {
 
-		String file = this.getClass().getResource(REQUEST_1_URL).getPath();
+		String file = this.getClass().getResource(SAMPLE_1_URL + REQUEST_FILE).getPath();
 		loadRequestFromFile(file);
-		loadNetworkTopologyFromFile(TOPOLOGY_1_URL);
+		loadNetworkTopologyFromFile(SAMPLE_1_URL + TOPOLOGY_FILE);
 
 		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
 		MappingResult result = capab.executeAlgorithm(vnt, net);
 
 		String resultString = result.toString();
 
-		String expectedResult = textFileToString(RESULT_1_URL);
+		String expectedResult = textFileToString(SAMPLE_1_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample2Test() throws IOException, SerializationException, ResourceException {
+
+		String file = this.getClass().getResource(SAMPLE_2_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_2_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		String resultString = result.toString();
+
+		String expectedResult = textFileToString(SAMPLE_2_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample3Test() throws IOException, SerializationException, ResourceException {
+
+		String file = this.getClass().getResource(SAMPLE_3_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_3_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		String resultString = result.toString();
+
+		String expectedResult = textFileToString(SAMPLE_3_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample4Test() throws IOException, SerializationException, ResourceException {
+
+		String file = this.getClass().getResource(SAMPLE_4_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_4_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		String resultString = result.toString();
+
+		String expectedResult = textFileToString(SAMPLE_4_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample5Test() throws IOException, SerializationException, ResourceException {
+
+		String file = this.getClass().getResource(SAMPLE_5_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_5_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		String resultString = result.toString();
+
+		String expectedResult = textFileToString(SAMPLE_5_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample6Test() throws IOException, SerializationException, ResourceException {
+
+		String file = this.getClass().getResource(SAMPLE_6_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_6_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		String resultString = result.toString();
+
+		String expectedResult = textFileToString(SAMPLE_6_URL + RESULT_FILE);
 
 		Assert.assertEquals(expectedResult, resultString);
 

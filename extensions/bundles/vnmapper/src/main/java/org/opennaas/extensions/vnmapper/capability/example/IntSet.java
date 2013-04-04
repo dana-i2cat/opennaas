@@ -3,170 +3,173 @@
  * and open the template in the editor.
  */
 package org.opennaas.extensions.vnmapper.capability.example;
-import java.util.*;
+
+import java.util.AbstractSet;
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
 /**
- *
+ * 
  * @author ahammaa
  */
 
-public class IntSet extends AbstractSet<Integer> 
-        implements java.io.Serializable {
+public class IntSet extends AbstractSet<Integer>
+		implements java.io.Serializable {
 
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * The bitset that contains the non-negative intergers in this set (include 0).
-     */
-    private final BitSet bitSet;
+	private static final long	serialVersionUID	= 1L;
 
-    /**
-     * Creates a new, empty set of {@code int} values.
-     */
-    public IntSet() {
-        this(new BitSet());
-    }
+	/**
+	 * The bitset that contains the non-negative intergers in this set (include 0).
+	 */
+	private final BitSet		bitSet;
 
-    /**
-     * Creates a new set backed by the provided bitset.
-     *
-     * @see #wrap(BitSet)
-     */
-    private IntSet(BitSet bitSet) {
-        this.bitSet = bitSet;
-    }
+	/**
+	 * Creates a new, empty set of {@code int} values.
+	 */
+	public IntSet() {
+		this(new BitSet());
+	}
 
-    /**
-     * Creates a new set containing all of the specified {@code int} values.
-     */
-    public IntSet(Collection<Integer> ints) {
-        this();
-        for (Integer i : ints)
-            bitSet.set(i);
-    }
+	/**
+	 * Creates a new set backed by the provided bitset.
+	 * 
+	 * @see #wrap(BitSet)
+	 */
+	private IntSet(BitSet bitSet) {
+		this.bitSet = bitSet;
+	}
 
-    public boolean add(Integer i) {
-        return add(i.intValue());
-    }
+	/**
+	 * Creates a new set containing all of the specified {@code int} values.
+	 */
+	public IntSet(Collection<Integer> ints) {
+		this();
+		for (Integer i : ints)
+			bitSet.set(i);
+	}
 
-    public boolean add(int i) {
-        if (i < 0)
-            throw new IllegalArgumentException(
-                "Cannot store negative values in an IntSet");
-        boolean isPresent = bitSet.get(i);
-        bitSet.set(i);
-        return !isPresent;
-    }
+	public boolean add(Integer i) {
+		return add(i.intValue());
+	}
 
-    /**
-     * Adds to this set all of the elements that are contained in the specified
-     * {@code IntSet} if not already present, using an {@code IntSet}-optimized
-     * process.
-     */
-    public boolean addAll(IntSet ints) {
-        int oldSize = size();
-        bitSet.or(ints.bitSet);
-        return oldSize != size();
-    }
+	public boolean add(int i) {
+		if (i < 0)
+			throw new IllegalArgumentException(
+					"Cannot store negative values in an IntSet");
+		boolean isPresent = bitSet.get(i);
+		bitSet.set(i);
+		return !isPresent;
+	}
 
-    public boolean contains(Integer i) {
-        return contains(i.intValue());
-    }
+	/**
+	 * Adds to this set all of the elements that are contained in the specified {@code IntSet} if not already present, using an {@code IntSet}
+	 * -optimized process.
+	 */
+	public boolean addAll(IntSet ints) {
+		int oldSize = size();
+		bitSet.or(ints.bitSet);
+		return oldSize != size();
+	}
 
-    public boolean contains(int i) {
-        return i >= 0 && bitSet.get(i);
-    }
+	public boolean contains(Integer i) {
+		return contains(i.intValue());
+	}
 
-    public boolean isEmpty() {
-        return bitSet.isEmpty();
-    }
+	public boolean contains(int i) {
+		return i >= 0 && bitSet.get(i);
+	}
 
-    public Iterator<Integer> iterator() {
-        return new BitSetIterator();
-    }
+	public boolean isEmpty() {
+		return bitSet.isEmpty();
+	}
 
-    public boolean remove(Integer i) {
-        return remove(i.intValue());
-    }
-    
-    public boolean remove(int i) {
-        if (i < 0)
-            return false;
-        boolean isPresent = bitSet.get(i);
-        if (isPresent)
-            bitSet.set(i, false);
-        return isPresent;  
-    }
+	public Iterator<Integer> iterator() {
+		return new BitSetIterator();
+	}
 
-    /**
-     * Removes from this set all of the elements that are contained in the
-     * specified {@code IntSet} using an {@code IntSet}-optimized process.
-     */
-    public boolean removeAll(IntSet ints) {
-        int oldSize = size();
-        bitSet.andNot(ints.bitSet);
-        return oldSize != size();
-    }
+	public boolean remove(Integer i) {
+		return remove(i.intValue());
+	}
 
-    /**
-     * Retains only the elements in this set that are contained in the specified
-     * {@code IntSet} using an {@code IntSet}-optimized process.
-     */
-    public boolean retainAll(IntSet ints) {
-        int oldSize = size();
-        bitSet.and(ints.bitSet);
-        return oldSize != size();
-    }
+	public boolean remove(int i) {
+		if (i < 0)
+			return false;
+		boolean isPresent = bitSet.get(i);
+		if (isPresent)
+			bitSet.set(i, false);
+		return isPresent;
+	}
 
-    public int size() {
-        return bitSet.cardinality();
-    }
+	/**
+	 * Removes from this set all of the elements that are contained in the specified {@code IntSet} using an {@code IntSet}-optimized process.
+	 */
+	public boolean removeAll(IntSet ints) {
+		int oldSize = size();
+		bitSet.andNot(ints.bitSet);
+		return oldSize != size();
+	}
 
-    /**
-     * Wraps the provided {@code BitSet} as a {@link Set} returning the result.
-     * Any changes to the set will be reflected in {@code b} and vice-versa.
-     */
-    public static Set<Integer> wrap(BitSet b) {
-        return new IntSet(b);
-    }
+	/**
+	 * Retains only the elements in this set that are contained in the specified {@code IntSet} using an {@code IntSet}-optimized process.
+	 */
+	public boolean retainAll(IntSet ints) {
+		int oldSize = size();
+		bitSet.and(ints.bitSet);
+		return oldSize != size();
+	}
 
-    /**
-     * An iterator over the integers in the backing {@code BitSet}.
-     */
-    private class BitSetIterator implements Iterator<Integer> {
+	public int size() {
+		return bitSet.cardinality();
+	}
 
-        int next = -1;
-        int cur = -1;
+	/**
+	 * Wraps the provided {@code BitSet} as a {@link Set} returning the result. Any changes to the set will be reflected in {@code b} and vice-versa.
+	 */
+	public static Set<Integer> wrap(BitSet b) {
+		return new IntSet(b);
+	}
 
-        public BitSetIterator() {
-            advance();
-        }
+	/**
+	 * An iterator over the integers in the backing {@code BitSet}.
+	 */
+	private class BitSetIterator implements Iterator<Integer> {
 
-        private void advance() {
-            if (next < -1)
-                return;
-            next = bitSet.nextSetBit(next + 1);
-            // Keep track of when we finally go off the end
-            if (next == -1)
-                next = -2;
-        }
-        
-        public boolean hasNext() {
-            return next >= 0;
-        }
+		int	next	= -1;
+		int	cur		= -1;
 
-        public Integer next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            cur = next;
-            advance();
-            return cur;
-        }
+		public BitSetIterator() {
+			advance();
+		}
 
-        public void remove() {            
-            if (cur == -1)
-                throw new IllegalStateException("Item already removed");
-            bitSet.set(cur, false);
-            cur = -1;
-        }
-    }
+		private void advance() {
+			if (next < -1)
+				return;
+			next = bitSet.nextSetBit(next + 1);
+			// Keep track of when we finally go off the end
+			if (next == -1)
+				next = -2;
+		}
+
+		public boolean hasNext() {
+			return next >= 0;
+		}
+
+		public Integer next() {
+			if (!hasNext())
+				throw new NoSuchElementException();
+			cur = next;
+			advance();
+			return cur;
+		}
+
+		public void remove() {
+			if (cur == -1)
+				throw new IllegalStateException("Item already removed");
+			bitSet.set(cur, false);
+			cur = -1;
+		}
+	}
 }

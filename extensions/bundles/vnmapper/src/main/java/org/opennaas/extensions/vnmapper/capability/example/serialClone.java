@@ -4,38 +4,41 @@
  */
 package org.opennaas.extensions.vnmapper.capability.example;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-    
- class ObjectCopier {
-  public static Object deepCopy(Object original) throws IOException 
-       {
-      ObjectInputStream ois;
-      ObjectOutputStream oos;
-      ByteArrayInputStream bais;
-      ByteArrayOutputStream baos;
-      byte [] data;
-      Object copy=null;
+class ObjectCopier {
+	public static Object deepCopy(Object original) throws IOException
+	{
+		ObjectInputStream ois;
+		ObjectOutputStream oos;
+		ByteArrayInputStream bais;
+		ByteArrayOutputStream baos;
+		byte[] data;
+		Object copy = null;
 
-      // write object to bytes
-      baos = new ByteArrayOutputStream();
-      oos = new ObjectOutputStream(baos);
-      oos.writeObject(original);
-      oos.close();
+		// write object to bytes
+		baos = new ByteArrayOutputStream();
+		oos = new ObjectOutputStream(baos);
+		oos.writeObject(original);
+		oos.close();
 
-      // get the bytes
-      data = baos.toByteArray();
+		// get the bytes
+		data = baos.toByteArray();
 
-      // construct an object from the bytes
-      
-      bais = new ByteArrayInputStream(data);
-      ois = new ObjectInputStream(bais);
-      try{
-      copy = ois.readObject();
-      }catch (Exception e){}
-      ois.close();
-      
-      return copy;
-   }
+		// construct an object from the bytes
+
+		bais = new ByteArrayInputStream(data);
+		ois = new ObjectInputStream(bais);
+		try {
+			copy = ois.readObject();
+		} catch (Exception e) {
+		}
+		ois.close();
+
+		return copy;
+	}
 }
-
