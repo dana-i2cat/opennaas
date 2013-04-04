@@ -20,6 +20,14 @@ import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.vnmapper.Global;
+import org.opennaas.extensions.vnmapper.InPNetwork;
+import org.opennaas.extensions.vnmapper.MappingResult;
+import org.opennaas.extensions.vnmapper.ObjectCopier;
+import org.opennaas.extensions.vnmapper.PLink;
+import org.opennaas.extensions.vnmapper.PNode;
+import org.opennaas.extensions.vnmapper.VNTMapper;
+import org.opennaas.extensions.vnmapper.VNTRequest;
 
 /**
  * 
@@ -143,14 +151,14 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 			n.pnodeID = devices.get(i).getName();
 			n.capacity = 16;
 			n.pathNum = 0;
-			net.nodes.add(n);
-			net.nodeNum++;
+			net.getNodes().add(n);
+			net.setNodeNum(net.getNodeNum() + 1);
 		}
 
-		for (int i = 0; i < net.nodeNum; i++) {
-			net.connections.add(new ArrayList<PLink>());
-			for (int j = 0; j < net.nodeNum; j++) {
-				net.connections.get(i).add(new PLink());
+		for (int i = 0; i < net.getNodeNum(); i++) {
+			net.getConnections().add(new ArrayList<PLink>());
+			for (int j = 0; j < net.getNodeNum(); j++) {
+				net.getConnections().get(i).add(new PLink());
 			}
 		}
 
@@ -169,17 +177,17 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 
 			if ((node1 != -1) && (node2 != -1))
 			{
-				net.connections.get(node1).get(node2).id = 1;
+				net.getConnections().get(node1).get(node2).id = 1;
 
-				net.connections.get(node1).get(node2).node1Id = node1;
+				net.getConnections().get(node1).get(node2).node1Id = node1;
 
-				net.connections.get(node1).get(node2).node2Id = node2;
+				net.getConnections().get(node1).get(node2).node2Id = node2;
 
-				net.connections.get(node1).get(node2).capacity = 100;
+				net.getConnections().get(node1).get(node2).capacity = 100;
 
-				net.connections.get(node1).get(node2).delay = 1;
+				net.getConnections().get(node1).get(node2).delay = 1;
 
-				net.links.add(net.connections.get(node1).get(node2));
+				net.getLinks().add(net.getConnections().get(node1).get(node2));
 			} else
 
 				System.out.println("Error: couldn't find end point of a link");

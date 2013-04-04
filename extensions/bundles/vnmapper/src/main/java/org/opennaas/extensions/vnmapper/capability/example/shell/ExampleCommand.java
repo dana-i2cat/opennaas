@@ -4,9 +4,9 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.vnmapper.MappingResult;
+import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
-import org.opennaas.extensions.vnmapper.capability.example.MappingResult;
-import org.opennaas.extensions.vnmapper.capability.example.VNTRequest;
 
 /**
  * 

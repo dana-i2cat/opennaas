@@ -17,11 +17,11 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
+import org.opennaas.extensions.vnmapper.Global;
+import org.opennaas.extensions.vnmapper.InPNetwork;
+import org.opennaas.extensions.vnmapper.MappingResult;
+import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
-import org.opennaas.extensions.vnmapper.capability.example.Global;
-import org.opennaas.extensions.vnmapper.capability.example.InPNetwork;
-import org.opennaas.extensions.vnmapper.capability.example.MappingResult;
-import org.opennaas.extensions.vnmapper.capability.example.VNTRequest;
 
 public class VNMapperTest {
 
