@@ -29,4 +29,9 @@ public class VNMapperInput {
 		this.request = request;
 	}
 
+	@Override
+	public String toString() {
+		return net.toString() + "\n" + request.toString() + "\n";
+	}
+
 }

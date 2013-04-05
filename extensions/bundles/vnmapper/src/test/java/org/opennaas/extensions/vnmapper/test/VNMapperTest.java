@@ -24,6 +24,8 @@ import org.opennaas.extensions.vnmapper.InPNetwork;
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
+import org.opennaas.extensions.vnmapper.capability.example.VNMapperInput;
+import org.opennaas.extensions.vnmapper.capability.example.VNMapperOutput;
 import org.xml.sax.SAXException;
 
 public class VNMapperTest {
@@ -70,7 +72,10 @@ public class VNMapperTest {
 		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
 		MappingResult result = capab.executeAlgorithm(vnt, net);
 
-		String resultString = result.toString();
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
 
 		String expectedResult = textFileToString(SAMPLE_1_URL + RESULT_FILE);
 
@@ -88,7 +93,10 @@ public class VNMapperTest {
 		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
 		MappingResult result = capab.executeAlgorithm(vnt, net);
 
-		String resultString = result.toString();
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
 
 		String expectedResult = textFileToString(SAMPLE_2_URL + RESULT_FILE);
 
@@ -106,7 +114,10 @@ public class VNMapperTest {
 		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
 		MappingResult result = capab.executeAlgorithm(vnt, net);
 
-		String resultString = result.toString();
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
 
 		String expectedResult = textFileToString(SAMPLE_3_URL + RESULT_FILE);
 
@@ -124,7 +135,10 @@ public class VNMapperTest {
 		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
 		MappingResult result = capab.executeAlgorithm(vnt, net);
 
-		String resultString = result.toString();
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
 
 		String expectedResult = textFileToString(SAMPLE_4_URL + RESULT_FILE);
 
@@ -142,7 +156,10 @@ public class VNMapperTest {
 		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
 		MappingResult result = capab.executeAlgorithm(vnt, net);
 
-		String resultString = result.toString();
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
 
 		String expectedResult = textFileToString(SAMPLE_5_URL + RESULT_FILE);
 
@@ -160,7 +177,10 @@ public class VNMapperTest {
 		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
 		MappingResult result = capab.executeAlgorithm(vnt, net);
 
-		String resultString = result.toString();
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
 
 		String expectedResult = textFileToString(SAMPLE_6_URL + RESULT_FILE);
 
@@ -175,6 +195,7 @@ public class VNMapperTest {
 
 	private void loadNetworkTopologyFromFile(String url) throws IOException, SerializationException, ResourceException {
 
+		networkModel = null;
 		String xmlTopology = textFileToString(url);
 		NetworkTopology networkTopology = (NetworkTopology) ObjectSerializer.fromXml(xmlTopology, NetworkTopology.class);
 

@@ -38,21 +38,8 @@ public class ExampleCommand extends GenericKarafCommand {
 			VNState matchingState = capabOutput.getResult().getMatchingState();
 			VNState mappingState = capabOutput.getResult().getMappingState();
 
-			System.out.println(capabOutput.getMapperInput().getNet().toString());
-			System.out.println(capabOutput.getMapperInput().getRequest().toString());
+			System.out.println(capabOutput.toString());
 
-			if (!matchingState.equals(VNState.SUCCESSFUL))
-				System.out.println("Unsuccessful matching");
-			else if (matchingState.equals(VNState.SUCCESSFUL) && !mappingState.equals(VNState.SUCCESSFUL)) {
-				System.out.println("Successful Matching");
-				System.out.println("Unsucessful Mapping");
-
-			}
-			else {
-				System.out.println("Successful Matching");
-				System.out.println("Sucessful Mapping");
-				System.out.println(capabOutput.getResult().toString());
-			}
 		} catch (Exception e) {
 			printError("Error greeting from resource " + resourceName);
 			printError(e);

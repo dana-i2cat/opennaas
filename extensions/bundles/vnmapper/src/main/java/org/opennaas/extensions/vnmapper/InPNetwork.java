@@ -24,14 +24,16 @@ import org.xml.sax.SAXException;
  * @author ahammaa
  */
 
-public class InPNetwork implements Serializable
-{
-	private ArrayList<ArrayList<PLink>>	connections	= new ArrayList<ArrayList<PLink>>();
-	private ArrayList<PNode>			nodes		= new ArrayList<PNode>();
-	private ArrayList<PLink>			links		= new ArrayList<PLink>();
+public class InPNetwork implements Serializable {
 
-	private ArrayList<ArrayList<Paths>>	allPaths	= new ArrayList<ArrayList<Paths>>();
-	private ArrayList<ArrayList>		locations	= new ArrayList<ArrayList>();
+	private static final long			serialVersionUID	= -6318751318197152995L;
+
+	private ArrayList<ArrayList<PLink>>	connections			= new ArrayList<ArrayList<PLink>>();
+	private ArrayList<PNode>			nodes				= new ArrayList<PNode>();
+	private ArrayList<PLink>			links				= new ArrayList<PLink>();
+
+	private ArrayList<ArrayList<Paths>>	allPaths			= new ArrayList<ArrayList<Paths>>();
+	private ArrayList<ArrayList>		locations			= new ArrayList<ArrayList>();
 	private int							nodeNum;
 
 	public ArrayList<ArrayList<PLink>> getConnections() {
@@ -85,7 +87,7 @@ public class InPNetwork implements Serializable
 	@Override
 	public String toString()
 	{
-		String netString = "\n";
+		String netString = "";
 		netString += "Physical Nodes:\n";
 		// System.out.println(nodeNum);
 		for (int i = 0; i < nodeNum; i++)
