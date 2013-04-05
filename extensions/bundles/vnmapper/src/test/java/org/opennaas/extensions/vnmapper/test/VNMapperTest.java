@@ -1,0 +1,221 @@
+package org.opennaas.extensions.vnmapper.test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.ObjectSerializer;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.SerializationException;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
+import org.opennaas.extensions.vnmapper.Global;
+import org.opennaas.extensions.vnmapper.InPNetwork;
+import org.opennaas.extensions.vnmapper.MappingResult;
+import org.opennaas.extensions.vnmapper.VNTRequest;
+import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
+import org.opennaas.extensions.vnmapper.capability.example.VNMapperInput;
+import org.opennaas.extensions.vnmapper.capability.example.VNMapperOutput;
+import org.xml.sax.SAXException;
+
+public class VNMapperTest {
+
+	private final static String	TOPOLOGY_FILE	= "topology.xml";
+	private final static String	REQUEST_FILE	= "request.xml";
+	private final static String	RESULT_FILE		= "output.karaf";
+
+	private final static String	SAMPLE_1_URL	= "/samples/sample1/";
+	private final static String	SAMPLE_2_URL	= "/samples/sample2/";
+	private final static String	SAMPLE_3_URL	= "/samples/sample3/";
+	private final static String	SAMPLE_4_URL	= "/samples/sample4/";
+	private final static String	SAMPLE_5_URL	= "/samples/sample5/";
+	private final static String	SAMPLE_6_URL	= "/samples/sample6/";
+
+	private ExampleCapability	capab;
+	private VNTRequest			vnt;
+	private IModel				networkModel;
+
+	@Before
+	public void setUp() {
+
+		String resourceId = "1234";
+
+		Information capabilityInformation = new Information();
+		capabilityInformation.setType(ExampleCapability.CAPABILITY_TYPE);
+
+		CapabilityDescriptor descriptor = new CapabilityDescriptor();
+		descriptor.setCapabilityInformation(capabilityInformation);
+		capab = new ExampleCapability(descriptor, resourceId);
+
+		Global.pathChoice = 1;
+		Global.maxPathLinksNum = 5;
+		Global.stepsMax = 100;
+	}
+
+	@Test
+	public void sample1Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		String file = this.getClass().getResource(SAMPLE_1_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_1_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
+
+		String expectedResult = textFileToString(SAMPLE_1_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample2Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		String file = this.getClass().getResource(SAMPLE_2_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_2_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
+
+		String expectedResult = textFileToString(SAMPLE_2_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample3Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		String file = this.getClass().getResource(SAMPLE_3_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_3_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
+
+		String expectedResult = textFileToString(SAMPLE_3_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample4Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		String file = this.getClass().getResource(SAMPLE_4_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_4_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
+
+		String expectedResult = textFileToString(SAMPLE_4_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample5Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		String file = this.getClass().getResource(SAMPLE_5_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_5_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
+
+		String expectedResult = textFileToString(SAMPLE_5_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	@Test
+	public void sample6Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		String file = this.getClass().getResource(SAMPLE_6_URL + REQUEST_FILE).getPath();
+		loadRequestFromFile(file);
+		loadNetworkTopologyFromFile(SAMPLE_6_URL + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+		MappingResult result = capab.executeAlgorithm(vnt, net);
+
+		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		String resultString = output.toString();
+
+		String expectedResult = textFileToString(SAMPLE_6_URL + RESULT_FILE);
+
+		Assert.assertEquals(expectedResult, resultString);
+
+	}
+
+	private void loadRequestFromFile(String url) throws ResourceException, ParserConfigurationException, SAXException, IOException {
+		vnt = new VNTRequest();
+		vnt = vnt.readVNTRequestFromXMLFile(url);
+	}
+
+	private void loadNetworkTopologyFromFile(String url) throws IOException, SerializationException, ResourceException {
+
+		networkModel = null;
+		String xmlTopology = textFileToString(url);
+		NetworkTopology networkTopology = (NetworkTopology) ObjectSerializer.fromXml(xmlTopology, NetworkTopology.class);
+
+		ResourceDescriptor descriptor = new ResourceDescriptor();
+		descriptor.setNetworkTopology(networkTopology);
+
+		networkModel = NetworkMapperDescriptorToModel.descriptorToModel(descriptor);
+
+	}
+
+	private String textFileToString(String fileLocation) throws IOException {
+		String fileString = "";
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(getClass().getResourceAsStream(fileLocation)));
+		String line;
+		while ((line = br.readLine()) != null) {
+			fileString += line += "\n";
+		}
+		br.close();
+		return fileString;
+	}
+
+}
