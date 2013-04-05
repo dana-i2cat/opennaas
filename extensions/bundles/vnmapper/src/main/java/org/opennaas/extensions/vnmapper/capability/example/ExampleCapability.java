@@ -27,6 +27,7 @@ import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.ObjectCopier;
 import org.opennaas.extensions.vnmapper.PLink;
 import org.opennaas.extensions.vnmapper.PNode;
+import org.opennaas.extensions.vnmapper.VNState;
 import org.opennaas.extensions.vnmapper.VNTMapper;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 
@@ -218,15 +219,24 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 		int matchingRes = mapper.matchVirtualNetwork(request, net, matchingResult);
 		if (matchingRes == 1)
 		{
+			mres.setMatchingState(VNState.SUCCESSFUL);
 			log.info("Successful Matching");
 			InPNetwork temp = (InPNetwork) ObjectCopier.deepCopy(net);
 			int result = mapper.VNTMapping(request, temp, 0, matchingResult, 3, mres);
 			if (result == 1)
 			{
 				log.info("Successful Mapping");
+				mres.setMappingState(VNState.SUCCESSFUL);
+
 				log.info(mres.toString());
+			} else {
+				log.info("Unsuccessful Mapping");
+				mres.setMappingState(VNState.ERROR);
 			}
 
+		} else {
+			log.info("Unsuccessful Matching");
+			mres.setMatchingState(VNState.ERROR);
 		}
 		return mres;
 

@@ -11,13 +11,33 @@ public class MappingResult {
 	private int											providerID;
 	private int											cost;
 
+	private VNState										mappingState;
+	private VNState										matchingState;
+
 	public MappingResult() {
 
 		nodes = new ArrayList();
 		vnodes = new ArrayList();
 		links = new ArrayList<ArrayList>();
 		VNTLinkMappingArray = new ArrayList<ArrayList<VNTLinkMappingCell>>();
+		mappingState = VNState.SKIPPED;
+		matchingState = VNState.SKIPPED;
+	}
 
+	public VNState getMappingState() {
+		return mappingState;
+	}
+
+	public void setMappingState(VNState mappingState) {
+		this.mappingState = mappingState;
+	}
+
+	public VNState getMatchingState() {
+		return matchingState;
+	}
+
+	public void setMatchingState(VNState matchingState) {
+		this.matchingState = matchingState;
 	}
 
 	public ArrayList getNodes() {
