@@ -87,7 +87,7 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 		}
 	}
 
-	public MappingResult sayHello(VNTRequest request) throws CapabilityException {
+	public VNMapperOutput sayHello(VNTRequest request) throws CapabilityException {
 
 		try {
 			// //// run the matching and mapping/////
@@ -104,8 +104,11 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 			// net.printNetwork();
 			// //
 			InPNetwork net = getInPNetwork();
+			VNMapperInput input = new VNMapperInput(net, request);
 
-			return executeAlgorithm(request, net);
+			MappingResult result = executeAlgorithm(request, net);
+
+			return new VNMapperOutput(result, input);
 		} catch (IOException io) {
 			log.error("Error maping request - ", io);
 			throw new CapabilityException(io);
