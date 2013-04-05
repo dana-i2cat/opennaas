@@ -4,12 +4,15 @@ import java.io.Serializable;
 
 public class PLink implements Serializable
 {
-	private int	id;
-	private int	node1Id;
-	private int	node2Id;
-	private int	capacity;
+
+	private static final long	serialVersionUID	= 431218195208732854L;
+
+	private int					id;
+	private int					node1Id;
+	private int					node2Id;
+	private int					capacity;
 	// public int availableCapacity;
-	private int	delay;
+	private int					delay;
 
 	public PLink()
 	{

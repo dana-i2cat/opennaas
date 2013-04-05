@@ -83,7 +83,7 @@ public class Path implements Serializable {
 		int minCapacity, delay;
 		minCapacity = 1000000;
 		delay = 0;
-		maxCapacity = 0;
+		this.maxCapacity = 0;
 		int n1, n2, n3;
 		for (int i = 0; i < (int) this.links.size(); i++)
 		{
@@ -98,14 +98,13 @@ public class Path implements Serializable {
 			if (connections.get(n1).get(n2).getCapacity() < minCapacity)
 				minCapacity = connections.get(n1).get(n2).getCapacity();
 
-			if (connections.get(n1).get(n2).getCapacity() > maxCapacity)
-				maxCapacity = connections.get(n1).get(n2).getCapacity();
+			if (connections.get(n1).get(n2).getCapacity() > this.maxCapacity)
+				this.maxCapacity = connections.get(n1).get(n2).getCapacity();
 
 			delay = delay + links.get(i).getDelay();
 		}
 		this.capacity = minCapacity;
 
-		this.maxCapacity = maxCapacity;
 		this.delay = delay;
 	}
 

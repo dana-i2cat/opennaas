@@ -22,11 +22,11 @@ public class VNTMapper {
 	Log	log	= LogFactory.getLog(VNTMapper.class);
 
 	// // the next method sorts the virtual nodes based on nodes degrees
-	public ArrayList vNodesSorting(VNTRequest v)
+	public ArrayList<Integer> vNodesSorting(VNTRequest v)
 	{
 		// cout<<"------------------------------sorting based on virtual nodes degrees---------------------------------"<<endl;
-		ArrayList degrees = new ArrayList();
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> degrees = new ArrayList<Integer>();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 
 		for (int i = 0; i < v.getVnodeNum(); i++)
 			degrees.add(0);
@@ -72,10 +72,10 @@ public class VNTMapper {
 	}
 
 	// // the next method sorts the virtual nodes based on the number of candidate physical nodes
-	public ArrayList vNodesCandidatePNodesSorting(ArrayList<VNTNodeMappingCell> VNTNodeMappingArray)
+	public ArrayList<Integer> vNodesCandidatePNodesSorting(ArrayList<VNTNodeMappingCell> VNTNodeMappingArray)
 	{
 		// cout<<"------------------------------sorting based on candidate physical nodes number---------------------------------"<<endl;
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		int j = 0;
 		for (int y = 0; y < VNTNodeMappingArray.size(); y++)
 		{
@@ -314,7 +314,7 @@ public class VNTMapper {
 
 			// // sort the possible candidate physical nodes
 			if (Global.PNodeChoice == 1) { // / cost reduction
-				ArrayList node = sortRealNode1(v, net, currentVNodeId,
+				ArrayList<Integer> node = sortRealNode1(v, net, currentVNodeId,
 						VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes(), selectedRealNodes);
 				VNTNodeMappingArray.get(currentVNodeId).setPossibleRealNodes(node);
 			}
@@ -505,10 +505,10 @@ public class VNTMapper {
 	}
 
 	// /// the next method is used to sort the possible real nodes based on the connections number with the selected real nodes.
-	ArrayList sortRealNode1(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList possibleRealNodes, IntSet selectedRealNodes)
+	ArrayList<Integer> sortRealNode1(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList<Integer> possibleRealNodes, IntSet selectedRealNodes)
 	{
 		int realNode;
-		ArrayList connectionNum = new ArrayList();
+		ArrayList<Integer> connectionNum = new ArrayList<Integer>();
 		for (int y = 0; y < net.getNodeNum(); y++)
 		{
 			connectionNum.add(0);
@@ -560,10 +560,9 @@ public class VNTMapper {
 		return possibleRealNodes;
 	}
 
-	ArrayList sortRealNode2(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList possibleRealNodes, IntSet selectedRealNodes)
+	ArrayList<Integer> sortRealNode2(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList<Integer> possibleRealNodes, IntSet selectedRealNodes)
 	{
 		// // sort the possible real nodes based on the connections number with the selected real nodes.
-		int realNode;
 		ArrayList capacityDifference = new ArrayList();
 		// capacityDifference.Capacity=net.nodeNum;
 		int requiredCapacity = v.getVnodes().get(currentVNodeId).getCapacity();
@@ -610,9 +609,9 @@ public class VNTMapper {
 
 	// // the next method is used to match the capacity and location of a virtual node
 
-	public ArrayList matchVirtualNode(VNTRequest v, int vid, InPNetwork net)
+	public ArrayList<Integer> matchVirtualNode(VNTRequest v, int vid, InPNetwork net)
 	{
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < (int) net.getNodes().size(); i++)
 		{
 
