@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -22,6 +24,7 @@ import org.opennaas.extensions.vnmapper.InPNetwork;
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
+import org.xml.sax.SAXException;
 
 public class VNMapperTest {
 
@@ -58,7 +61,7 @@ public class VNMapperTest {
 	}
 
 	@Test
-	public void sample1Test() throws IOException, SerializationException, ResourceException {
+	public void sample1Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
 		String file = this.getClass().getResource(SAMPLE_1_URL + REQUEST_FILE).getPath();
 		loadRequestFromFile(file);
@@ -76,7 +79,7 @@ public class VNMapperTest {
 	}
 
 	@Test
-	public void sample2Test() throws IOException, SerializationException, ResourceException {
+	public void sample2Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
 		String file = this.getClass().getResource(SAMPLE_2_URL + REQUEST_FILE).getPath();
 		loadRequestFromFile(file);
@@ -94,7 +97,7 @@ public class VNMapperTest {
 	}
 
 	@Test
-	public void sample3Test() throws IOException, SerializationException, ResourceException {
+	public void sample3Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
 		String file = this.getClass().getResource(SAMPLE_3_URL + REQUEST_FILE).getPath();
 		loadRequestFromFile(file);
@@ -112,7 +115,7 @@ public class VNMapperTest {
 	}
 
 	@Test
-	public void sample4Test() throws IOException, SerializationException, ResourceException {
+	public void sample4Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
 		String file = this.getClass().getResource(SAMPLE_4_URL + REQUEST_FILE).getPath();
 		loadRequestFromFile(file);
@@ -130,7 +133,7 @@ public class VNMapperTest {
 	}
 
 	@Test
-	public void sample5Test() throws IOException, SerializationException, ResourceException {
+	public void sample5Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
 		String file = this.getClass().getResource(SAMPLE_5_URL + REQUEST_FILE).getPath();
 		loadRequestFromFile(file);
@@ -148,7 +151,7 @@ public class VNMapperTest {
 	}
 
 	@Test
-	public void sample6Test() throws IOException, SerializationException, ResourceException {
+	public void sample6Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
 		String file = this.getClass().getResource(SAMPLE_6_URL + REQUEST_FILE).getPath();
 		loadRequestFromFile(file);
@@ -165,7 +168,7 @@ public class VNMapperTest {
 
 	}
 
-	private void loadRequestFromFile(String url) throws ResourceException {
+	private void loadRequestFromFile(String url) throws ResourceException, ParserConfigurationException, SAXException, IOException {
 		vnt = new VNTRequest();
 		vnt = vnt.readVNTRequestFromXMLFile(url);
 	}

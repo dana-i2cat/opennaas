@@ -1,5 +1,6 @@
 package org.opennaas.extensions.vnmapper.capability.example;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,22 +89,27 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 
 	public MappingResult sayHello(VNTRequest request) throws CapabilityException {
 
-		// //// run the matching and mapping/////
-		// Global.rowNum=8;
-		// Global.cellNum=8;
-		Global.pathChoice = 1;
-		Global.maxPathLinksNum = 5;
-		// Global.staticNet=1;
-		// Global.staticVNT=1;
-		Global.stepsMax = 100;
-		// //
-		// InPNetwork net=new InPNetwork();
-		// net=net.readPNetworkFromXMLFile("src\\marketplace\\network.xml");
-		// net.printNetwork();
-		// //
-		InPNetwork net = getInPNetwork();
+		try {
+			// //// run the matching and mapping/////
+			// Global.rowNum=8;
+			// Global.cellNum=8;
+			Global.pathChoice = 1;
+			Global.maxPathLinksNum = 5;
+			// Global.staticNet=1;
+			// Global.staticVNT=1;
+			Global.stepsMax = 100;
+			// //
+			// InPNetwork net=new InPNetwork();
+			// net=net.readPNetworkFromXMLFile("src\\marketplace\\network.xml");
+			// net.printNetwork();
+			// //
+			InPNetwork net = getInPNetwork();
 
-		return executeAlgorithm(request, net);
+			return executeAlgorithm(request, net);
+		} catch (IOException io) {
+			log.error("Error maping request - ", io);
+			throw new CapabilityException(io);
+		}
 
 	}
 
@@ -132,6 +138,7 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 			// /// generate the network object
 
 			return net;
+
 		} catch (ActivatorException ae) {
 			throw new CapabilityException(ae);
 		}
@@ -139,6 +146,8 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 	}
 
 	public InPNetwork getInPNetworkFromNetworkTopology(IModel networkModel) {
+
+		log.debug("Building InPNetwork from NetworkTopology.");
 
 		List<Link> links = NetworkModelHelper.getLinks((NetworkModel) networkModel);
 		List<Device> devices = NetworkModelHelper.getDevices((NetworkModel) networkModel);
@@ -190,37 +199,33 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 				net.getLinks().add(net.getConnections().get(node1).get(node2));
 			} else
 
-				System.out.println("Error: couldn't find end point of a link");
+				log.error("Error: couldn't find end point of a link");
 		}
+
+		log.info("InPNetwork built : \n" + net.toString());
+
 		return net;
 	}
 
-	public MappingResult executeAlgorithm(VNTRequest request, InPNetwork net) {
+	public MappingResult executeAlgorithm(VNTRequest request, InPNetwork net) throws IOException {
 
-		try {
-
-			VNTMapper mapper = new VNTMapper();
-			MappingResult mres = new MappingResult();
-			ArrayList<ArrayList> matchingResult = new ArrayList<ArrayList>();
-			int matchingRes = mapper.matchVirtualNetwork(request, net, matchingResult);
-			if (matchingRes == 1)
+		VNTMapper mapper = new VNTMapper();
+		MappingResult mres = new MappingResult();
+		ArrayList<ArrayList> matchingResult = new ArrayList<ArrayList>();
+		int matchingRes = mapper.matchVirtualNetwork(request, net, matchingResult);
+		if (matchingRes == 1)
+		{
+			log.info("Successful Matching");
+			InPNetwork temp = (InPNetwork) ObjectCopier.deepCopy(net);
+			int result = mapper.VNTMapping(request, temp, 0, matchingResult, 3, mres);
+			if (result == 1)
 			{
-				System.out.println("successful Matching");
-				InPNetwork temp = (InPNetwork) ObjectCopier.deepCopy(net);
-				int result = mapper.VNTMapping(request, temp, 0, matchingResult, 3, mres);
-				if (result == 1)
-				{
-					System.out.println("successful Mapping");
-					// log mres.print();
-				}
-
+				log.info("Successful Mapping");
+				log.info(mres.toString());
 			}
-			return mres;
-		} catch (Exception e) {
-			// TODO launch exception
-			System.out.println("Exception");
-			return null;
+
 		}
+		return mres;
 
 	}
 }

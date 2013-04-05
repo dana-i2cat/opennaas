@@ -74,14 +74,11 @@ public class MappingResult {
 		String mappingString = "";
 		mappingString += "Mapping Result: \n";
 		mappingString += "vnodes: \n";
-		// LOG System.out.println("Mapping Result: ");
-		// LOG System.out.println("vnodes: ");
+
 		for (int i = 0; i < vnodes.size(); i++)
 		{
-			// LOG System.out.println(i + "--" + Integer.valueOf(vnodes.get(i).toString()));
 			mappingString += i + "--" + Integer.valueOf(vnodes.get(i).toString()) + "\n";
 		}
-		// LOG System.out.println("vlinks: ");
 		mappingString += "vlinks: \n";
 		for (int i = 0; i < (int) VNTLinkMappingArray.size(); i++) {
 			for (int j = 0; j < (int) VNTLinkMappingArray.get(i).size(); j++)
@@ -89,23 +86,19 @@ public class MappingResult {
 				if (VNTLinkMappingArray.get(i).get(j).getIsMapped() == 1)
 				{
 					if (i < j) {
-						// LOG System.out.print(i + "--" + j + ":");
 						mappingString += i + "--" + j + ":";
 						VNTLinkMappingArray.get(i).get(j).getResultPath().setNode1Id(Integer.valueOf(vnodes.get(i).toString()));
 						VNTLinkMappingArray.get(i).get(j).getResultPath().setNode2Id(Integer.valueOf(vnodes.get(j).toString()));
 						mappingString += VNTLinkMappingArray.get(i).get(j).getResultPath().toString();
-						// LOG System.out.println();
 						mappingString += "\n";
 					}
 					else
 					{
 						mappingString += j + "--" + i + ":";
-						// System.out.print(j + "--" + i + ":");
 						VNTLinkMappingArray.get(j).get(i).getResultPath().setNode1Id(Integer.valueOf(vnodes.get(j).toString()));
 						VNTLinkMappingArray.get(j).get(i).getResultPath().setNode2Id(Integer.valueOf(vnodes.get(i).toString()));
 						mappingString += VNTLinkMappingArray.get(j).get(i).getResultPath().toString();
 						mappingString += "\n";
-						// LOG System.out.println();
 					}
 				}
 			}

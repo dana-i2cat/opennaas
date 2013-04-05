@@ -5,16 +5,19 @@
 package org.opennaas.extensions.vnmapper;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * 
@@ -84,25 +87,20 @@ public class InPNetwork implements Serializable
 	{
 		String netString = "\n";
 		netString += "Physical Nodes:\n";
-		// LOG System.out.println();
-		// LOG System.out.println("Physical Nodes:");
 		// System.out.println(nodeNum);
 		for (int i = 0; i < nodeNum; i++)
 		{
 			// System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID+ "--" + nodes.get(i).capacity );
-			// LOG System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID);
 			netString += "node " + nodes.get(i).getId() + "--" + nodes.get(i).getPnodeID() + "\n";
 
 		}
 		// System.out.println("------------------------------------------------------------------------------------");
 		// System.out.println("links" + links.size());
-		// LOG System.out.println("Physical links:");
 		netString += "Physical links:\n";
 		for (int i = 0; i < links.size(); i++)
 		{
 			// System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id + " : " + links.get(i).capacity + " , " +
 			// links.get(i).delay);
-			// System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id);
 			netString += "link : " + links.get(i).getNode1Id() + "--" + links.get(i).getNode2Id() + "\n";
 		}
 
@@ -350,95 +348,90 @@ public class InPNetwork implements Serializable
 		return res;
 	}
 
-	public InPNetwork readPNetworkFromXMLFile(String fileName)
+	public InPNetwork readPNetworkFromXMLFile(String fileName) throws ParserConfigurationException, SAXException, IOException
 	{
 		InPNetwork res = new InPNetwork();
 
-		try {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		File file = new File(fileName);
+		if (file.exists()) {
+			Document doc = db.parse(file);
+			Element docEle = doc.getDocumentElement();
 
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			File file = new File(fileName);
-			if (file.exists()) {
-				Document doc = db.parse(file);
-				Element docEle = doc.getDocumentElement();
+			NodeList theNodes = docEle.getElementsByTagName("Node");
 
-				NodeList theNodes = docEle.getElementsByTagName("Node");
+			if (theNodes != null && theNodes.getLength() > 0) {
+				for (int i = 0; i < theNodes.getLength(); i++) {
 
-				if (theNodes != null && theNodes.getLength() > 0) {
-					for (int i = 0; i < theNodes.getLength(); i++) {
+					Node node = theNodes.item(i);
 
-						Node node = theNodes.item(i);
+					if (node.getNodeType() == Node.ELEMENT_NODE) {
 
-						if (node.getNodeType() == Node.ELEMENT_NODE) {
+						PNode n = new PNode();
+						Element e = (Element) node;
+						NodeList nodeList = e.getElementsByTagName("id");
+						n.setId(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
 
-							PNode n = new PNode();
-							Element e = (Element) node;
-							NodeList nodeList = e.getElementsByTagName("id");
-							n.setId(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+						nodeList = e.getElementsByTagName("pnodeID");
+						n.setPnodeID(nodeList.item(0).getChildNodes().item(0).getNodeValue());
 
-							nodeList = e.getElementsByTagName("pnodeID");
-							n.setPnodeID(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+						nodeList = e.getElementsByTagName("capacity");
+						n.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
 
-							nodeList = e.getElementsByTagName("capacity");
-							n.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+						n.setPathNum(0);
+						res.nodes.add(n);
+						res.nodeNum++;
 
-							n.setPathNum(0);
-							res.nodes.add(n);
-							res.nodeNum++;
-
-						}
-					}
-				} else {
-					System.exit(1);
-				}
-
-				for (int i = 0; i < res.nodeNum; i++) {
-					res.connections.add(new ArrayList<PLink>());
-					for (int j = 0; j < res.nodeNum; j++) {
-						res.connections.get(i).add(new PLink());
 					}
 				}
-
-				NodeList theLinks = docEle.getElementsByTagName("Link");
-
-				if (theLinks != null && theLinks.getLength() > 0) {
-					for (int i = 0; i < theLinks.getLength(); i++) {
-
-						Node link = theLinks.item(i);
-
-						if (link.getNodeType() == Node.ELEMENT_NODE) {
-
-							Element e = (Element) link;
-
-							NodeList nodeList = e.getElementsByTagName("node1");
-							int node1 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-							nodeList = e.getElementsByTagName("node2");
-							int node2 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-
-							res.connections.get(node1).get(node2).setId(1);
-
-							res.connections.get(node1).get(node2).setNode1Id(node1);
-							res.connections.get(node1).get(node2).setNode2Id(node2);
-
-							nodeList = e.getElementsByTagName("capacity");
-							res.connections.get(node1).get(node2).setCapacity(Integer
-									.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
-
-							nodeList = e.getElementsByTagName("delay");
-							res.connections.get(node1).get(node2).setDelay(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
-
-							res.links.add(res.connections.get(node1).get(node2));
-
-						}
-					}
-				} else {
-					System.exit(1);
-				}
-
+			} else {
+				System.exit(1);
 			}
-		} catch (Exception e) {
-			System.out.println(e);
+
+			for (int i = 0; i < res.nodeNum; i++) {
+				res.connections.add(new ArrayList<PLink>());
+				for (int j = 0; j < res.nodeNum; j++) {
+					res.connections.get(i).add(new PLink());
+				}
+			}
+
+			NodeList theLinks = docEle.getElementsByTagName("Link");
+
+			if (theLinks != null && theLinks.getLength() > 0) {
+				for (int i = 0; i < theLinks.getLength(); i++) {
+
+					Node link = theLinks.item(i);
+
+					if (link.getNodeType() == Node.ELEMENT_NODE) {
+
+						Element e = (Element) link;
+
+						NodeList nodeList = e.getElementsByTagName("node1");
+						int node1 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+						nodeList = e.getElementsByTagName("node2");
+						int node2 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+
+						res.connections.get(node1).get(node2).setId(1);
+
+						res.connections.get(node1).get(node2).setNode1Id(node1);
+						res.connections.get(node1).get(node2).setNode2Id(node2);
+
+						nodeList = e.getElementsByTagName("capacity");
+						res.connections.get(node1).get(node2).setCapacity(Integer
+								.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+
+						nodeList = e.getElementsByTagName("delay");
+						res.connections.get(node1).get(node2).setDelay(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+
+						res.links.add(res.connections.get(node1).get(node2));
+
+					}
+				}
+			} else {
+				System.exit(1);
+			}
+
 		}
 
 		return res;

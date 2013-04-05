@@ -8,6 +8,11 @@ public class VLink {
 	private int	capacity;
 	private int	delay;
 
+	public VLink()
+	{
+		id = -1;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -46,11 +51,6 @@ public class VLink {
 
 	public void setDelay(int delay) {
 		this.delay = delay;
-	}
-
-	public VLink()
-	{
-		id = -1;
 	}
 
 }

@@ -128,7 +128,6 @@ public class Path implements Serializable {
 
 		String pathString = "";
 		pathString += node1Id + "--";
-		// LOG System.out.print(node1Id + "--");
 		int previous = node1Id;
 		int n1, n2;
 		if ((node1Id == this.links.get(0).getNode1Id()) || (node1Id == this.links.get(0).getNode2Id()))
@@ -140,14 +139,12 @@ public class Path implements Serializable {
 				// System.out.println(n1+"--"+n2);
 				if (n1 == previous)
 				{
-					// LOG System.out.print(n2 + "--");
 					pathString += n2 + "--";
 					previous = n2;
 				}
 				else
 				{
 					pathString += n1 + "--";
-					// LOG System.out.print(n1 + "--");
 					previous = n1;
 				}
 			}
@@ -162,17 +159,16 @@ public class Path implements Serializable {
 				if (n1 == previous)
 				{
 					pathString += n2 + "--";
-					// LOG System.out.print(n2 + "--");
 					previous = n2;
 				}
 				else
 				{
 					pathString += n1 + "--";
-					// LOG System.out.print(n1 + "--");
 					previous = n1;
 				}
 			}
 		}
+
 		return pathString;
 	}
 }

@@ -8,16 +8,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * 
  * @author ahammaa
  */
 
-// / the next class is to store the result of mapping/reserved resources on nodes and links
-
 // /// the next class is resposible for matching and mapping///
-public class VNTMapper
-{
+public class VNTMapper {
+
+	Log	log	= LogFactory.getLog(VNTMapper.class);
 
 	// // the next method sorts the virtual nodes based on nodes degrees
 	public ArrayList vNodesSorting(VNTRequest v)
@@ -304,7 +306,8 @@ public class VNTMapper
 			try {
 				originalNet = (InPNetwork) ObjectCopier.deepCopy(net);
 			} catch (Exception e) {
-				System.out.println("Exception33 ///");
+				log.error("Exception 33 /// - ", e);
+				log.warn("Ignoring error.");
 			}
 
 			Path resultedPath = new Path();
@@ -328,7 +331,8 @@ public class VNTMapper
 				try { // / at each step we have to go back to the initial net
 					net = (InPNetwork) ObjectCopier.deepCopy(originalNet);
 				} catch (Exception e) {
-					System.out.println("exception44///");
+					log.error("Exception 44 /// - ", e);
+					log.warn("Ignoring error.");
 				}
 
 				// / if currentRealNode has not been selected before
@@ -455,7 +459,8 @@ public class VNTMapper
 				try {
 					net = (InPNetwork) ObjectCopier.deepCopy(originalNet);
 				} catch (Exception e) {
-					System.out.println("Exception555/////");
+					log.error("Exception 555 /// - ", e);
+					log.warn("Ignoring error.");
 				}
 			}
 		}
@@ -702,7 +707,7 @@ public class VNTMapper
 					nets.remove(providerID);
 					nets.add(providerID, net);
 					VNLifetimes.get(i).setWaitingForReleasing(1);
-					System.out.println("VNT Released: " + i + "  from provider " + providerID);
+					log.info("VNT Released: " + i + "  from provider " + providerID);
 				}
 			}
 		}
@@ -724,7 +729,8 @@ public class VNTMapper
 				nets.add(providerID, net);
 
 				VNLifetimes.get(i).setWaitingForReleasing(-1);
-				System.out.println("VNT Released: " + i + "  from provider " + providerID);
+
+				log.info("VNT Released: " + i + "  from provider " + providerID);
 			}
 		}
 
