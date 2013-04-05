@@ -32,6 +32,18 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 	}
 
 	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IExampleCapability.class.getName());
+		super.activate();
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		unregisterService();
+		super.deactivate();
+	}
+
+	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
