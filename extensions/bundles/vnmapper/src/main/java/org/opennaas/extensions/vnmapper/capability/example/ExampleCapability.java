@@ -215,7 +215,7 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 
 		VNTMapper mapper = new VNTMapper();
 		MappingResult mres = new MappingResult();
-		ArrayList<ArrayList> matchingResult = new ArrayList<ArrayList>();
+		ArrayList<ArrayList<Integer>> matchingResult = new ArrayList<ArrayList<Integer>>();
 		int matchingRes = mapper.matchVirtualNetwork(request, net, matchingResult);
 		if (matchingRes == 1)
 		{
