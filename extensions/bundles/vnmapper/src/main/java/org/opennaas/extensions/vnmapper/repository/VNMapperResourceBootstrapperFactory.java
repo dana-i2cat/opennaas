@@ -8,12 +8,12 @@ import org.opennaas.core.resources.IResourceBootstrapperFactory;
  * @author Elisabeth Rigol
  * 
  */
-public class sampleResourceBootstrapperFactory implements IResourceBootstrapperFactory {
+public class VNMapperResourceBootstrapperFactory implements IResourceBootstrapperFactory {
 
 	@Override
 	public IResourceBootstrapper createResourceBootstrapper() {
 
-		return new sampleResourceBootstrapper();
+		return new VNMapperResourceBootstrapper();
 	}
 
 }

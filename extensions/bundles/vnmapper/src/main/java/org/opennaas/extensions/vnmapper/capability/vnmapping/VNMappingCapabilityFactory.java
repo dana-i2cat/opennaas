@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vnmapper.capability.example;
+package org.opennaas.extensions.vnmapper.capability.vnmapping;
 
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
@@ -11,7 +11,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
  * @author Elisabeth Rigol
  * 
  */
-public class ExampleCapabilityFactory extends AbstractCapabilityFactory {
+public class VNMappingCapabilityFactory extends AbstractCapabilityFactory {
 
 	/**
 	 * Create the capability
@@ -19,7 +19,7 @@ public class ExampleCapabilityFactory extends AbstractCapabilityFactory {
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
 
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(ExampleCapability.CAPABILITY_TYPE),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(VNMappingCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
@@ -28,7 +28,7 @@ public class ExampleCapabilityFactory extends AbstractCapabilityFactory {
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
 
-		return new ExampleCapability(capabilityDescriptor, resourceId);
+		return new VNMappingCapability(capabilityDescriptor, resourceId);
 	}
 
 }

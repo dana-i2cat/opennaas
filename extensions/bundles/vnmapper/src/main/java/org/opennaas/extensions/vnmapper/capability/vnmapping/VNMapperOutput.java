@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vnmapper.capability.example;
+package org.opennaas.extensions.vnmapper.capability.vnmapping;
 
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.VNState;

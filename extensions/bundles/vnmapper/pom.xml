@@ -49,10 +49,10 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>org.opennaas.extensions.vnmapper.capability.example.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.vnmapper.capability.vnmapping.Activator</Bundle-Activator>
 						<Import-Package>org.slf4j,*</Import-Package>
 						<Export-Package>
-							org.opennaas.extensions.vnmapper.capability.example;version="${project.version}"
+							org.opennaas.extensions.vnmapper.capability.vnmapping;version="${project.version}"
 						</Export-Package>
 						</instructions>
 				</configuration>
