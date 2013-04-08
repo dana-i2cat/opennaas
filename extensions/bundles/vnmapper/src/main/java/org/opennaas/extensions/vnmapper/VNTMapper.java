@@ -22,11 +22,11 @@ public class VNTMapper {
 	Log	log	= LogFactory.getLog(VNTMapper.class);
 
 	// // the next method sorts the virtual nodes based on nodes degrees
-	public ArrayList vNodesSorting(VNTRequest v)
+	public ArrayList<Integer> vNodesSorting(VNTRequest v)
 	{
 		// cout<<"------------------------------sorting based on virtual nodes degrees---------------------------------"<<endl;
-		ArrayList degrees = new ArrayList();
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> degrees = new ArrayList<Integer>();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 
 		for (int i = 0; i < v.getVnodeNum(); i++)
 			degrees.add(0);
@@ -72,10 +72,10 @@ public class VNTMapper {
 	}
 
 	// // the next method sorts the virtual nodes based on the number of candidate physical nodes
-	public ArrayList vNodesCandidatePNodesSorting(ArrayList<VNTNodeMappingCell> VNTNodeMappingArray)
+	public ArrayList<Integer> vNodesCandidatePNodesSorting(ArrayList<VNTNodeMappingCell> VNTNodeMappingArray)
 	{
 		// cout<<"------------------------------sorting based on candidate physical nodes number---------------------------------"<<endl;
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		int j = 0;
 		for (int y = 0; y < VNTNodeMappingArray.size(); y++)
 		{
@@ -130,12 +130,13 @@ public class VNTMapper {
 	}
 
 	// // the next method is the main method to map a VNT
-	public int VNTMapping(VNTRequest v, InPNetwork net, int steps, ArrayList<ArrayList> nodesMatching, int option, MappingResult mappingResult)
+	public int VNTMapping(VNTRequest v, InPNetwork net, int steps, ArrayList<ArrayList<Integer>> matchingResult, int option,
+			MappingResult mappingResult)
 	{
 		int res = 1;
-		ArrayList<ArrayList> nodesMapping = new ArrayList<ArrayList>();
+		ArrayList<ArrayList<Integer>> nodesMapping = new ArrayList<ArrayList<Integer>>();
 
-		nodesMapping = nodesMatching;
+		nodesMapping = matchingResult;
 
 		for (int i = 0; i < (int) nodesMapping.size(); i++) {
 			if ((int) nodesMapping.get(i).size() == 0) {
@@ -149,7 +150,7 @@ public class VNTMapper {
 			// / the current chosen real node
 			// / pointer to the previous virtual node in the way to map the virtual node
 			ArrayList<VNTNodeMappingCell> VNTNodeMappingArray = new ArrayList<VNTNodeMappingCell>();
-			ArrayList sortedVNodesSet = new ArrayList();
+			ArrayList<Integer> sortedVNodesSet = new ArrayList<Integer>();
 			for (int i = 0; i < (int) v.getVnodes().size(); i++) {
 				VNTNodeMappingCell vNodeCell = new VNTNodeMappingCell();
 				vNodeCell.setVid(i);
@@ -193,7 +194,7 @@ public class VNTMapper {
 				for (int u1 = 0; u1 < net.getNodeNum(); u1++)
 				{
 					mappingResult.getNodes().add(0);
-					mappingResult.getLinks().add(new ArrayList());
+					mappingResult.getLinks().add(new ArrayList<Integer>());
 					for (int u2 = 0; u2 < net.getNodeNum(); u2++)
 					{
 						mappingResult.getLinks().get(u1).add(0);
@@ -288,7 +289,7 @@ public class VNTMapper {
 	// // the next method is resposible for the backtracking job of composing the VNT by mapping the vnodes and vlinks and building the subgraph until
 	// it is equal to the VNT graph
 	public int VNTMappingFunc(VNTRequest v, InPNetwork net, IntSet selectedRealNodes, ArrayList<VNTNodeMappingCell> VNTNodeMappingArray,
-			ArrayList<ArrayList<VNTLinkMappingCell>> VNTLinkMappingArray, ArrayList sortedVNodesSet, IntSet mappedVNTNodes)
+			ArrayList<ArrayList<VNTLinkMappingCell>> VNTLinkMappingArray, ArrayList<Integer> sortedVNodesSet, IntSet mappedVNTNodes)
 	{
 
 		int mappingFinish = 0;
@@ -314,12 +315,12 @@ public class VNTMapper {
 
 			// // sort the possible candidate physical nodes
 			if (Global.PNodeChoice == 1) { // / cost reduction
-				ArrayList node = sortRealNode1(v, net, currentVNodeId,
+				ArrayList<Integer> node = sortRealNode1(v, net, currentVNodeId,
 						VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes(), selectedRealNodes);
 				VNTNodeMappingArray.get(currentVNodeId).setPossibleRealNodes(node);
 			}
 			if (Global.PNodeChoice == 2) { // / load balancing
-				ArrayList node = sortRealNode2(v, net, currentVNodeId,
+				ArrayList<Integer> node = sortRealNode2(v, net, currentVNodeId,
 						VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes(), selectedRealNodes);
 				VNTNodeMappingArray.get(currentVNodeId).setPossibleRealNodes(node);
 			}
@@ -472,7 +473,7 @@ public class VNTMapper {
 	}
 
 	// /// the next method is used to choose the next unmapped vnode
-	public int chooseNextVNode(ArrayList<VNTNodeMappingCell> VNTNodeMappingArray, ArrayList sortedVNodesSet)
+	public int chooseNextVNode(ArrayList<VNTNodeMappingCell> VNTNodeMappingArray, ArrayList<Integer> sortedVNodesSet)
 	{
 		int currentVNodeId = -1;
 		for (int i = 0; (i < (int) sortedVNodesSet.size()) && (currentVNodeId == -1); i++)
@@ -505,16 +506,16 @@ public class VNTMapper {
 	}
 
 	// /// the next method is used to sort the possible real nodes based on the connections number with the selected real nodes.
-	ArrayList sortRealNode1(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList possibleRealNodes, IntSet selectedRealNodes)
+	ArrayList<Integer> sortRealNode1(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList<Integer> possibleRealNodes, IntSet selectedRealNodes)
 	{
 		int realNode;
-		ArrayList connectionNum = new ArrayList();
+		ArrayList<Integer> connectionNum = new ArrayList<Integer>();
 		for (int y = 0; y < net.getNodeNum(); y++)
 		{
 			connectionNum.add(0);
 		}
 
-		Iterator it = selectedRealNodes.iterator();
+		Iterator<Integer> it = selectedRealNodes.iterator();
 		while (it.hasNext())
 		{
 			realNode = Integer.valueOf(it.next().toString());
@@ -560,11 +561,10 @@ public class VNTMapper {
 		return possibleRealNodes;
 	}
 
-	ArrayList sortRealNode2(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList possibleRealNodes, IntSet selectedRealNodes)
+	ArrayList<Integer> sortRealNode2(VNTRequest v, InPNetwork net, int currentVNodeId, ArrayList<Integer> possibleRealNodes, IntSet selectedRealNodes)
 	{
 		// // sort the possible real nodes based on the connections number with the selected real nodes.
-		int realNode;
-		ArrayList capacityDifference = new ArrayList();
+		ArrayList<Integer> capacityDifference = new ArrayList<Integer>();
 		// capacityDifference.Capacity=net.nodeNum;
 		int requiredCapacity = v.getVnodes().get(currentVNodeId).getCapacity();
 		for (int k = 0; k < net.getNodeNum(); k++)
@@ -610,9 +610,9 @@ public class VNTMapper {
 
 	// // the next method is used to match the capacity and location of a virtual node
 
-	public ArrayList matchVirtualNode(VNTRequest v, int vid, InPNetwork net)
+	public ArrayList<Integer> matchVirtualNode(VNTRequest v, int vid, InPNetwork net)
 	{
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < (int) net.getNodes().size(); i++)
 		{
 
@@ -629,13 +629,13 @@ public class VNTMapper {
 		return res;
 	}
 
-	public int matchVirtualNetwork(VNTRequest v, InPNetwork net, ArrayList<ArrayList> res)
+	public int matchVirtualNetwork(VNTRequest v, InPNetwork net, ArrayList<ArrayList<Integer>> res)
 	{
 		int t = 1;
 		// // create a set to store the vnodes that have one matched pnodes///
 		IntSet oneMatchedPnodes = new IntSet();
 		for (int i = 0; (i < (int) v.getVnodes().size()) && (t == 1); i++) {
-			ArrayList s;
+			ArrayList<Integer> s;
 			s = matchVirtualNode(v, i, net);
 			if (s.size() == 0)
 				t = -1;

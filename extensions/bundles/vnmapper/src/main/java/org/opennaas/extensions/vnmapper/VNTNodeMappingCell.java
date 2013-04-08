@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class VNTNodeMappingCell {
 
-	private int			vid;
-	private ArrayList	possibleRealNodes;
-	private int			chosenRealNode;
-	private int			connectionsNum;	// number of connection to the already mapped vnodes
-	private int			pointer;
+	private int					vid;
+	private ArrayList<Integer>	possibleRealNodes;
+	private int					chosenRealNode;
+	private int					connectionsNum;	// number of connection to the already mapped vnodes
+	private int					pointer;
 
 	public VNTNodeMappingCell() {
-		possibleRealNodes = new ArrayList();
+		possibleRealNodes = new ArrayList<Integer>();
 	}
 
 	public int getVid() {
@@ -22,11 +22,11 @@ public class VNTNodeMappingCell {
 		this.vid = vid;
 	}
 
-	public ArrayList getPossibleRealNodes() {
+	public ArrayList<Integer> getPossibleRealNodes() {
 		return possibleRealNodes;
 	}
 
-	public void setPossibleRealNodes(ArrayList possibleRealNodes) {
+	public void setPossibleRealNodes(ArrayList<Integer> possibleRealNodes) {
 		this.possibleRealNodes = possibleRealNodes;
 	}
 

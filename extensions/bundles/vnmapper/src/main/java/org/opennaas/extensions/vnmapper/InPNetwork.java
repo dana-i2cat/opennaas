@@ -26,15 +26,23 @@ import org.xml.sax.SAXException;
 
 public class InPNetwork implements Serializable {
 
-	private static final long			serialVersionUID	= -6318751318197152995L;
+	private static final long				serialVersionUID	= -6318751318197152995L;
 
-	private ArrayList<ArrayList<PLink>>	connections			= new ArrayList<ArrayList<PLink>>();
-	private ArrayList<PNode>			nodes				= new ArrayList<PNode>();
-	private ArrayList<PLink>			links				= new ArrayList<PLink>();
+	private ArrayList<ArrayList<PLink>>		connections;
+	private ArrayList<PNode>				nodes;
+	private ArrayList<PLink>				links;
 
-	private ArrayList<ArrayList<Paths>>	allPaths			= new ArrayList<ArrayList<Paths>>();
-	private ArrayList<ArrayList>		locations			= new ArrayList<ArrayList>();
-	private int							nodeNum;
+	private ArrayList<ArrayList<Paths>>		allPaths;
+	private ArrayList<ArrayList<Location>>	locations;
+	private int								nodeNum;
+
+	public InPNetwork() {
+		connections = new ArrayList<ArrayList<PLink>>();
+		nodes = new ArrayList<PNode>();
+		allPaths = new ArrayList<ArrayList<Paths>>();
+		locations = new ArrayList<ArrayList<Location>>();
+		links = new ArrayList<PLink>();
+	}
 
 	public ArrayList<ArrayList<PLink>> getConnections() {
 		return connections;
@@ -68,11 +76,11 @@ public class InPNetwork implements Serializable {
 		this.allPaths = allPaths;
 	}
 
-	public ArrayList<ArrayList> getLocations() {
+	public ArrayList<ArrayList<Location>> getLocations() {
 		return locations;
 	}
 
-	public void setLocations(ArrayList<ArrayList> locations) {
+	public void setLocations(ArrayList<ArrayList<Location>> locations) {
 		this.locations = locations;
 	}
 
@@ -110,9 +118,9 @@ public class InPNetwork implements Serializable {
 	}
 
 	// /// get the adjacent nodes to a node
-	public ArrayList getAdjacentNodes(int nodeId)
+	public ArrayList<Integer> getAdjacentNodes(int nodeId)
 	{
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < (int) this.links.size(); i++)
 		{
 			if (links.get(i).getNode1Id() == nodeId)
@@ -172,7 +180,7 @@ public class InPNetwork implements Serializable {
 			t++;
 			if (passedNodes.get(currentPassedNodeIndex).getLinkNum() < maxLinkNum)
 			{
-				ArrayList adjacentNodes = this.getAdjacentNodes(passedNodes.get(currentPassedNodeIndex).getNodeId());
+				ArrayList<Integer> adjacentNodes = this.getAdjacentNodes(passedNodes.get(currentPassedNodeIndex).getNodeId());
 
 				for (int i = 0; i < (int) adjacentNodes.size(); i++)
 				{
@@ -271,7 +279,7 @@ public class InPNetwork implements Serializable {
 		{
 			cells.add(new PathCell2());
 		}
-		ArrayList adjacentNodes = new ArrayList();
+		ArrayList<Integer> adjacentNodes = new ArrayList<Integer>();
 		int curNode = src;
 		int n, n1, n2;
 		cells.get(curNode).setPassed(1);
