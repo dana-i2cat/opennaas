@@ -28,11 +28,11 @@
 				<unit>
 				<name>$param.PortNumber</name>
 				<family>
-					<inet operation="replace">
+					<inet6 operation="replace">
 						<address>
-							<name>$param.ProtocolEndpoint.get(0).getIPv4Address()/$ipUtilsHelper.parseLongToShortIpv4NetMask($param.ProtocolEndpoint.get(0).getSubnetMask())</name>
+							<name>$param.ProtocolEndpoint.get(0).getIPv6Address()/$param.ProtocolEndpoint.get(0).getPrefixLength()</name>
 						</address>
-					</inet>
+					</inet6>
 				</family>
 			</unit>
 		</interface>

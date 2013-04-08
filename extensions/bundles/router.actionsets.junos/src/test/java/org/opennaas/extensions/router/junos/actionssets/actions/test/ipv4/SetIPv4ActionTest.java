@@ -1,20 +1,19 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.test.ipv4;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Action;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Action;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class SetIPv4ActionTest {
-	Log								log	= LogFactory.getLog(GetConfigActionTest.class);
+	Log								log	= LogFactory.getLog(SetIPv4ActionTest.class);
 	private static SetIPv4Action	action;
 	static ActionTestHelper			helper;
 	static ProtocolSessionManager	protocolsessionmanager;

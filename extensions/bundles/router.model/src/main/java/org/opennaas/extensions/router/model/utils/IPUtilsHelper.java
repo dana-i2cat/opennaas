@@ -89,6 +89,7 @@ public class IPUtilsHelper {
 
 		return netmaskResult;
 	}
+	
 
 	public static String parseLongToShortIpv4NetMask(String netmask) {
 		int MAX_MASK = 32;
