@@ -47,6 +47,16 @@ public class LogicalRouter extends Router {
 		if (getClass() != obj.getClass())
 			return false;
 		LogicalRouter other = (LogicalRouter) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (templateName == null) {
+			if (other.templateName != null)
+				return false;
+		} else if (!templateName.equals(other.templateName))
+			return false;
 		if (interfaces == null) {
 			if (other.interfaces != null)
 				return false;

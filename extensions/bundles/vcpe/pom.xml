@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.17</version>
+		<version>0.19-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.vcpe</artifactId>
@@ -80,6 +80,9 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.vcpe.Activator</Bundle-Activator>
+						<Export-Package>
+							org.opennaas.extensions.vcpe.*;version="${project.version}"
+						</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>

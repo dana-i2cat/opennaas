@@ -17,7 +17,7 @@
 		<security:form-login
 				login-page="/auth/login" 
 				authentication-failure-url="/auth/login?error=true" 
-				default-target-url="/secure/home"/>
+				default-target-url="/secure/vcpeNetwork/home"/>
 			
 		<security:logout 
 				invalidate-session="true" 
