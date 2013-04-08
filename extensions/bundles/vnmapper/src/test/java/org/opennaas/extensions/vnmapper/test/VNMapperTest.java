@@ -42,8 +42,12 @@ public class VNMapperTest {
 	private final static String	SAMPLE_6_URL	= "/samples/sample6/";
 
 	private ExampleCapability	capab;
-	private VNTRequest			vnt;
-	private IModel				networkModel;
+
+	class TestInput {
+		InPNetwork	net;
+		VNTRequest	vnt;
+		String		expectedOutput;
+	}
 
 	@Before
 	public void setUp() {
@@ -65,137 +69,115 @@ public class VNMapperTest {
 	@Test
 	public void sample1Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
-		String file = this.getClass().getResource(SAMPLE_1_URL + REQUEST_FILE).getPath();
-		loadRequestFromFile(file);
-		loadNetworkTopologyFromFile(SAMPLE_1_URL + TOPOLOGY_FILE);
+		TestInput testInput = loadTestInput(SAMPLE_1_URL);
 
-		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
-		MappingResult result = capab.executeAlgorithm(vnt, net);
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
 
-		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
 
-		String resultString = output.toString();
-
-		String expectedResult = textFileToString(SAMPLE_1_URL + RESULT_FILE);
-
-		Assert.assertEquals(expectedResult, resultString);
+		Assert.assertEquals(testInput.expectedOutput, output.toString());
 
 	}
 
 	@Test
 	public void sample2Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
-		String file = this.getClass().getResource(SAMPLE_2_URL + REQUEST_FILE).getPath();
-		loadRequestFromFile(file);
-		loadNetworkTopologyFromFile(SAMPLE_2_URL + TOPOLOGY_FILE);
+		TestInput testInput = loadTestInput(SAMPLE_2_URL);
 
-		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
-		MappingResult result = capab.executeAlgorithm(vnt, net);
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
 
-		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
 
-		String resultString = output.toString();
-
-		String expectedResult = textFileToString(SAMPLE_2_URL + RESULT_FILE);
-
-		Assert.assertEquals(expectedResult, resultString);
+		Assert.assertEquals(testInput.expectedOutput, output.toString());
 
 	}
 
 	@Test
 	public void sample3Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
-		String file = this.getClass().getResource(SAMPLE_3_URL + REQUEST_FILE).getPath();
-		loadRequestFromFile(file);
-		loadNetworkTopologyFromFile(SAMPLE_3_URL + TOPOLOGY_FILE);
+		TestInput testInput = loadTestInput(SAMPLE_3_URL);
 
-		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
-		MappingResult result = capab.executeAlgorithm(vnt, net);
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
 
-		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
 
-		String resultString = output.toString();
-
-		String expectedResult = textFileToString(SAMPLE_3_URL + RESULT_FILE);
-
-		Assert.assertEquals(expectedResult, resultString);
+		Assert.assertEquals(testInput.expectedOutput, output.toString());
 
 	}
 
 	@Test
 	public void sample4Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
-		String file = this.getClass().getResource(SAMPLE_4_URL + REQUEST_FILE).getPath();
-		loadRequestFromFile(file);
-		loadNetworkTopologyFromFile(SAMPLE_4_URL + TOPOLOGY_FILE);
+		TestInput testInput = loadTestInput(SAMPLE_4_URL);
 
-		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
-		MappingResult result = capab.executeAlgorithm(vnt, net);
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
 
-		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
 
-		String resultString = output.toString();
-
-		String expectedResult = textFileToString(SAMPLE_4_URL + RESULT_FILE);
-
-		Assert.assertEquals(expectedResult, resultString);
+		Assert.assertEquals(testInput.expectedOutput, output.toString());
 
 	}
 
 	@Test
 	public void sample5Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
-		String file = this.getClass().getResource(SAMPLE_5_URL + REQUEST_FILE).getPath();
-		loadRequestFromFile(file);
-		loadNetworkTopologyFromFile(SAMPLE_5_URL + TOPOLOGY_FILE);
+		TestInput testInput = loadTestInput(SAMPLE_5_URL);
 
-		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
-		MappingResult result = capab.executeAlgorithm(vnt, net);
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
 
-		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
 
-		String resultString = output.toString();
-
-		String expectedResult = textFileToString(SAMPLE_5_URL + RESULT_FILE);
-
-		Assert.assertEquals(expectedResult, resultString);
+		Assert.assertEquals(testInput.expectedOutput, output.toString());
 
 	}
 
 	@Test
 	public void sample6Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
-		String file = this.getClass().getResource(SAMPLE_6_URL + REQUEST_FILE).getPath();
-		loadRequestFromFile(file);
-		loadNetworkTopologyFromFile(SAMPLE_6_URL + TOPOLOGY_FILE);
+		TestInput testInput = loadTestInput(SAMPLE_6_URL);
 
-		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
-		MappingResult result = capab.executeAlgorithm(vnt, net);
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
 
-		VNMapperInput input = new VNMapperInput(net, vnt);
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
 
-		String resultString = output.toString();
-
-		String expectedResult = textFileToString(SAMPLE_6_URL + RESULT_FILE);
-
-		Assert.assertEquals(expectedResult, resultString);
+		Assert.assertEquals(testInput.expectedOutput, output.toString());
 
 	}
 
-	private void loadRequestFromFile(String url) throws ResourceException, ParserConfigurationException, SAXException, IOException {
-		vnt = new VNTRequest();
+	private TestInput loadTestInput(String sampleUrl) throws IOException, SerializationException, ResourceException, ParserConfigurationException,
+			SAXException {
+
+		String file = this.getClass().getResource(sampleUrl + REQUEST_FILE).getPath();
+		VNTRequest vnt = loadRequestFromFile(file);
+		IModel networkModel = loadNetworkTopologyFromFile(sampleUrl + TOPOLOGY_FILE);
+
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+
+		String expectedResult = textFileToString(sampleUrl + RESULT_FILE);
+
+		TestInput input = new TestInput();
+		input.vnt = vnt;
+		input.net = net;
+		input.expectedOutput = expectedResult;
+		return input;
+
+	}
+
+	private VNTRequest loadRequestFromFile(String url) throws ResourceException, ParserConfigurationException, SAXException, IOException {
+		VNTRequest vnt = new VNTRequest();
 		vnt = vnt.readVNTRequestFromXMLFile(url);
+		return vnt;
 	}
 
-	private void loadNetworkTopologyFromFile(String url) throws IOException, SerializationException, ResourceException {
+	private IModel loadNetworkTopologyFromFile(String url) throws IOException, SerializationException, ResourceException {
 
-		networkModel = null;
+		IModel networkModel = null;
 		String xmlTopology = textFileToString(url);
 		NetworkTopology networkTopology = (NetworkTopology) ObjectSerializer.fromXml(xmlTopology, NetworkTopology.class);
 
@@ -203,7 +185,7 @@ public class VNMapperTest {
 		descriptor.setNetworkTopology(networkTopology);
 
 		networkModel = NetworkMapperDescriptorToModel.descriptorToModel(descriptor);
-
+		return networkModel;
 	}
 
 	private String textFileToString(String fileLocation) throws IOException {
