@@ -11,7 +11,7 @@ import org.opennaas.core.resources.SerializationException;
  * @author Elisabeth Rigol
  * 
  */
-public class SampleModel implements IModel {
+public class VNMapperModel implements IModel {
 
 	/**
 	 * 

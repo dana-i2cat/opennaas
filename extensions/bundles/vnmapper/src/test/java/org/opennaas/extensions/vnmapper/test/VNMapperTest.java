@@ -23,9 +23,9 @@ import org.opennaas.extensions.vnmapper.Global;
 import org.opennaas.extensions.vnmapper.InPNetwork;
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.VNTRequest;
-import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
-import org.opennaas.extensions.vnmapper.capability.example.VNMapperInput;
-import org.opennaas.extensions.vnmapper.capability.example.VNMapperOutput;
+import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperInput;
+import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperOutput;
+import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability;
 import org.xml.sax.SAXException;
 
 public class VNMapperTest {
@@ -41,7 +41,7 @@ public class VNMapperTest {
 	private final static String	SAMPLE_5_URL	= "/samples/sample5/";
 	private final static String	SAMPLE_6_URL	= "/samples/sample6/";
 
-	private ExampleCapability	capab;
+	private VNMappingCapability	capab;
 
 	class TestInput {
 		InPNetwork	net;
@@ -55,11 +55,11 @@ public class VNMapperTest {
 		String resourceId = "1234";
 
 		Information capabilityInformation = new Information();
-		capabilityInformation.setType(ExampleCapability.CAPABILITY_TYPE);
+		capabilityInformation.setType(VNMappingCapability.CAPABILITY_TYPE);
 
 		CapabilityDescriptor descriptor = new CapabilityDescriptor();
 		descriptor.setCapabilityInformation(capabilityInformation);
-		capab = new ExampleCapability(descriptor, resourceId);
+		capab = new VNMappingCapability(descriptor, resourceId);
 
 		Global.pathChoice = 1;
 		Global.maxPathLinksNum = 5;

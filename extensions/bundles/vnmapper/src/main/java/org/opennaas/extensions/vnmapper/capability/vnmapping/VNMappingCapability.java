@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vnmapper.capability.example;
+package org.opennaas.extensions.vnmapper.capability.vnmapping;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,15 +36,15 @@ import org.opennaas.extensions.vnmapper.VNTRequest;
  * @author Elisabeth Rigol
  * 
  */
-public class ExampleCapability extends AbstractCapability implements IExampleCapability {
+public class VNMappingCapability extends AbstractCapability implements IVNMappingCapability {
 
 	public static String	CAPABILITY_TYPE	= "vnmapping";
 
-	Log						log				= LogFactory.getLog(ExampleCapability.class);
+	Log						log				= LogFactory.getLog(VNMappingCapability.class);
 
 	private String			resourceId		= "";
 
-	public ExampleCapability(CapabilityDescriptor descriptor, String resourceId) {
+	public VNMappingCapability(CapabilityDescriptor descriptor, String resourceId) {
 
 		super(descriptor);
 		this.resourceId = resourceId;
@@ -88,7 +88,7 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 		}
 	}
 
-	public VNMapperOutput sayHello(VNTRequest request) throws CapabilityException {
+	public VNMapperOutput mapVN(VNTRequest request) throws CapabilityException {
 
 		try {
 			// //// run the matching and mapping/////
