@@ -6,23 +6,23 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.extensions.vnmapper.model.SampleModel;
+import org.opennaas.extensions.vnmapper.model.VNMapperModel;
 
 /**
  * 
  * @author Elisabeth Rigol
  * 
  */
-public class sampleResourceBootstrapper implements IResourceBootstrapper {
+public class VNMapperResourceBootstrapper implements IResourceBootstrapper {
 
-	Log				log	= LogFactory.getLog(sampleResourceBootstrapper.class);
+	Log				log	= LogFactory.getLog(VNMapperResourceBootstrapper.class);
 
 	private IModel	oldModel;
 
 	public void bootstrap(Resource resource) throws ResourceException {
 
 		log.info("Loading bootstrap to start resource...");
-		resource.setModel(new SampleModel());
+		resource.setModel(new VNMapperModel());
 		// Add here all the necessary methods to populate resource model
 		//
 	}
@@ -30,7 +30,7 @@ public class sampleResourceBootstrapper implements IResourceBootstrapper {
 	@Override
 	public void resetModel(Resource resource) throws ResourceException {
 
-		resource.setModel(new SampleModel());
+		resource.setModel(new VNMapperModel());
 	}
 
 	@Override

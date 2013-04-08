@@ -1,26 +1,26 @@
-package org.opennaas.extensions.vnmapper.capability.example.shell;
+package org.opennaas.extensions.vnmapper.capability.vnmapping.shell;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.vnmapper.VNTRequest;
-import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
-import org.opennaas.extensions.vnmapper.capability.example.VNMapperOutput;
+import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperOutput;
+import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability;
 
 /**
  * 
  * @author Elisabeth Rigol
  * 
  */
-@Command(scope = "vnmapping", name = "mapvn", description = "It will say hello.")
-public class ExampleCommand extends GenericKarafCommand {
+@Command(scope = "vnmapping", name = "mapvn", description = "Map a virtual network request.")
+public class MapVNCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id", required = true, multiValued = false)
 	private String	resourceName;
 
-	@Argument(index = 1, name = "userName", description = "The name of the person we will greet.", required = true, multiValued = false)
-	private String	username;
+	@Argument(index = 1, name = "requestURL", description = "Path to the file containing the request.", required = true, multiValued = false)
+	private String	requestFileURL;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -28,16 +28,16 @@ public class ExampleCommand extends GenericKarafCommand {
 		try {
 
 			VNTRequest vnt = new VNTRequest();
-			vnt = vnt.readVNTRequestFromXMLFile(username);
+			vnt = vnt.readVNTRequestFromXMLFile(requestFileURL);
 
 			IResource resource = getResourceFromFriendlyName(resourceName);
-			ExampleCapability capab = (ExampleCapability) resource.getCapabilityByType(ExampleCapability.CAPABILITY_TYPE);
-			VNMapperOutput capabOutput = capab.sayHello(vnt);
+			VNMappingCapability capab = (VNMappingCapability) resource.getCapabilityByType(VNMappingCapability.CAPABILITY_TYPE);
+			VNMapperOutput capabOutput = capab.mapVN(vnt);
 
 			System.out.println(capabOutput.toString());
 
 		} catch (Exception e) {
-			printError("Error greeting from resource " + resourceName);
+			printError("Error mapping with resource " + resourceName);
 			printError(e);
 		} finally {
 			printEndCommand();

@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vnmapper.capability.example;
+package org.opennaas.extensions.vnmapper.capability.vnmapping;
 
 import java.util.Properties;
 
@@ -92,7 +92,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	public static IActionSet getExampleActionSetService(String name, String version) throws ActivatorException {
 
 		try {
-			log.debug("Calling ExampleActionSetService");
+			log.debug("Calling VNMappingActionSetService");
 			return (IActionSet) getServiceFromRegistry(context, createFilterExampleActionSet(name, version));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
