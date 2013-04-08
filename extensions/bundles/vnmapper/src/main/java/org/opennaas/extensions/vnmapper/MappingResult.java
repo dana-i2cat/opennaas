@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class MappingResult {
 
-	private ArrayList									nodes;
-	private ArrayList									vnodes;
-	private ArrayList<ArrayList>						links;
+	private ArrayList<Integer>							nodes;
+	private ArrayList<Integer>							vnodes;
+	private ArrayList<ArrayList<Integer>>				links;
 	private ArrayList<ArrayList<VNTLinkMappingCell>>	VNTLinkMappingArray;
 	private int											providerID;
 	private int											cost;
@@ -16,9 +16,9 @@ public class MappingResult {
 
 	public MappingResult() {
 
-		nodes = new ArrayList();
-		vnodes = new ArrayList();
-		links = new ArrayList<ArrayList>();
+		nodes = new ArrayList<Integer>();
+		vnodes = new ArrayList<Integer>();
+		links = new ArrayList<ArrayList<Integer>>();
 		VNTLinkMappingArray = new ArrayList<ArrayList<VNTLinkMappingCell>>();
 		mappingState = VNState.SKIPPED;
 		matchingState = VNState.SKIPPED;
@@ -40,27 +40,27 @@ public class MappingResult {
 		this.matchingState = matchingState;
 	}
 
-	public ArrayList getNodes() {
+	public ArrayList<Integer> getNodes() {
 		return nodes;
 	}
 
-	public void setNodes(ArrayList nodes) {
+	public void setNodes(ArrayList<Integer> nodes) {
 		this.nodes = nodes;
 	}
 
-	public ArrayList getVnodes() {
+	public ArrayList<Integer> getVnodes() {
 		return vnodes;
 	}
 
-	public void setVnodes(ArrayList vnodes) {
+	public void setVnodes(ArrayList<Integer> vnodes) {
 		this.vnodes = vnodes;
 	}
 
-	public ArrayList<ArrayList> getLinks() {
+	public ArrayList<ArrayList<Integer>> getLinks() {
 		return links;
 	}
 
-	public void setLinks(ArrayList<ArrayList> links) {
+	public void setLinks(ArrayList<ArrayList<Integer>> links) {
 		this.links = links;
 	}
 

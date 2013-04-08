@@ -4,7 +4,6 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.vnmapper.VNState;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.example.ExampleCapability;
 import org.opennaas.extensions.vnmapper.capability.example.VNMapperOutput;
@@ -34,9 +33,6 @@ public class ExampleCommand extends GenericKarafCommand {
 			IResource resource = getResourceFromFriendlyName(resourceName);
 			ExampleCapability capab = (ExampleCapability) resource.getCapabilityByType(ExampleCapability.CAPABILITY_TYPE);
 			VNMapperOutput capabOutput = capab.sayHello(vnt);
-
-			VNState matchingState = capabOutput.getResult().getMatchingState();
-			VNState mappingState = capabOutput.getResult().getMappingState();
 
 			System.out.println(capabOutput.toString());
 

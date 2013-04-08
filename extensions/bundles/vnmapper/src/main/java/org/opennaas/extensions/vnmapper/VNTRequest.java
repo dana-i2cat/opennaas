@@ -79,9 +79,9 @@ public class VNTRequest
 	}
 
 	// / get the adjacent vnodes to a vnode
-	public ArrayList getAdjacentVNodes(int nodeId)
+	public ArrayList<Integer> getAdjacentVNodes(int nodeId)
 	{
-		ArrayList res = new ArrayList();
+		ArrayList<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < (int) this.vlinks.size(); i++)
 		{
 			if (vlinks.get(i).getNode1Id() == nodeId)

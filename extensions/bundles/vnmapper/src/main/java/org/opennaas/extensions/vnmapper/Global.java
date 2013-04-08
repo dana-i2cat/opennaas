@@ -56,7 +56,7 @@ public class Global
 		return getRandInt(nodeMin, nodeMax, r);
 	}
 
-	public static void printMatchingResult(ArrayList<ArrayList> matchingResult)
+	public static void printMatchingResult(ArrayList<ArrayList<Integer>> matchingResult)
 	{
 		for (int i = 0; i < matchingResult.size(); i++)
 		{
@@ -95,7 +95,7 @@ public class Global
 
 	public static void printSet(IntSet s)
 	{
-		Iterator it = s.iterator();
+		Iterator<Integer> it = s.iterator();
 
 		while (it.hasNext())
 		{
