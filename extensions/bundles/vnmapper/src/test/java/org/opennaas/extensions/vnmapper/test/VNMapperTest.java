@@ -3,6 +3,8 @@ package org.opennaas.extensions.vnmapper.test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -24,7 +26,10 @@ import org.opennaas.extensions.vnmapper.InPNetwork;
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.PLink;
 import org.opennaas.extensions.vnmapper.PNode;
+import org.opennaas.extensions.vnmapper.VLink;
+import org.opennaas.extensions.vnmapper.VNState;
 import org.opennaas.extensions.vnmapper.VNTRequest;
+import org.opennaas.extensions.vnmapper.VNode;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperInput;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperOutput;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability;
@@ -237,6 +242,89 @@ public class VNMapperTest {
 
 		Assert.assertEquals(testInput.expectedOutput, output.toString());
 
+	}
+
+	@Test
+	public void overloadVnodeCapacityWithNodesNumTest() throws Exception {
+
+		IModel networkModel = loadNetworkTopologyFromFile(SAMPLE_1_URL + TOPOLOGY_FILE);
+		InPNetwork net = capab.getInPNetworkFromNetworkTopology(networkModel);
+
+		int totalVnodeCapacity = 0;
+		for (PNode node : net.getNodes()) {
+			totalVnodeCapacity += node.getCapacity();
+		}
+
+		VNTRequest request1 = new VNTRequest();
+		// put totalVnodeCapacity+1 nodes in request
+		ArrayList<VNode> vnodes = new ArrayList<VNode>(totalVnodeCapacity + 1);
+		for (int i = 0; i <= totalVnodeCapacity; i++) {
+			VNode n = new VNode();
+			n.setId(i);
+			n.setPnodeID("-");
+			n.setCapacity(1);
+			vnodes.add(n);
+		}
+		request1.setVnodes(vnodes);
+		request1.setVnodeNum(vnodes.size());
+
+		// initialize connections (required for the algorithm)
+		// TODO this should be part of algorithm initialization
+		for (int i = 0; i < request1.getVnodeNum(); i++) {
+			request1.getConnections().add(new ArrayList<VLink>());
+			for (int j = 0; j < request1.getVnodeNum(); j++) {
+				request1.getConnections().get(i).add(new VLink());
+			}
+		}
+
+		MappingResult result = capab.executeAlgorithm(request1, net);
+
+		Assert.assertEquals(VNState.SUCCESSFUL, result.getMatchingState());
+		Assert.assertEquals(VNState.ERROR, result.getMappingState());
+	}
+
+	@Test
+	public void overloadVnodeCapacityWithNodesCapacityTest() throws Exception {
+
+		TestInput testInput = loadTestInput(SAMPLE_1_URL);
+
+		int maxPNodeCapacity = 0;
+		for (PNode node : testInput.net.getNodes()) {
+			if (node.getCapacity() > maxPNodeCapacity)
+				maxPNodeCapacity = node.getCapacity();
+		}
+
+		// get random index [0, size())
+		int randomIndex = new Random(System.nanoTime()).nextInt(testInput.vnt.getVnodes().size());
+
+		testInput.vnt.getVnodes().get(randomIndex).setCapacity(maxPNodeCapacity + 1);
+
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+
+		Assert.assertEquals(VNState.ERROR, result.getMatchingState());
+		Assert.assertEquals(VNState.SKIPPED, result.getMappingState());
+	}
+
+	@Test
+	public void overloadLinkCapacityTest() throws Exception {
+
+		TestInput testInput = loadTestInput(SAMPLE_1_URL);
+
+		int maxPLinkCapacity = 0;
+		for (PLink link : testInput.net.getLinks()) {
+			if (link.getCapacity() > maxPLinkCapacity)
+				maxPLinkCapacity = link.getCapacity();
+		}
+
+		// get random index [0, size())
+		int randomIndex = new Random(System.nanoTime()).nextInt(testInput.vnt.getVlinks().size());
+
+		testInput.vnt.getVlinks().get(randomIndex).setCapacity(maxPLinkCapacity + 10);
+
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+
+		Assert.assertEquals(VNState.SUCCESSFUL, result.getMatchingState());
+		Assert.assertEquals(VNState.ERROR, result.getMappingState());
 	}
 
 	private TestInput loadTestInput(String sampleUrl) throws IOException, SerializationException, ResourceException, ParserConfigurationException,
