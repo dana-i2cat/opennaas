@@ -22,6 +22,8 @@ import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel
 import org.opennaas.extensions.vnmapper.Global;
 import org.opennaas.extensions.vnmapper.InPNetwork;
 import org.opennaas.extensions.vnmapper.MappingResult;
+import org.opennaas.extensions.vnmapper.PLink;
+import org.opennaas.extensions.vnmapper.PNode;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperInput;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperOutput;
@@ -40,6 +42,8 @@ public class VNMapperTest {
 	private final static String	SAMPLE_4_URL	= "/samples/sample4/";
 	private final static String	SAMPLE_5_URL	= "/samples/sample5/";
 	private final static String	SAMPLE_6_URL	= "/samples/sample6/";
+	private final static String	SAMPLE_7_URL	= "/samples/sample7/";
+	private final static String	SAMPLE_8_URL	= "/samples/sample8/";
 
 	private VNMappingCapability	capab;
 
@@ -140,6 +144,90 @@ public class VNMapperTest {
 	public void sample6Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
 
 		TestInput testInput = loadTestInput(SAMPLE_6_URL);
+
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		Assert.assertEquals(testInput.expectedOutput, output.toString());
+
+	}
+
+	/**
+	 * Test with capacities. <br/>
+	 * All physical nodes have vnode capacity = 16 <br/>
+	 * Physical links have following bw capacity: <br/>
+	 * link : 0--1 : 100 <br/>
+	 * link : 0--4 : 200 <br/>
+	 * link : 1--2 : 300 <br/>
+	 * link : 2--3 : 400 <br/>
+	 * link : 2--4 : 500 <br/>
+	 * link : 3--4 : 600 <br/>
+	 * 
+	 * @throws IOException
+	 * @throws SerializationException
+	 * @throws ResourceException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
+	@Test
+	public void sample7Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		TestInput testInput = loadTestInput(SAMPLE_7_URL);
+
+		// set capacities in physical nodes
+		for (PNode node : testInput.net.getNodes()) {
+			node.setCapacity(16);
+		}
+		// set capacities in physical links
+		testInput.net.getConnections().get(0).get(1).setCapacity(100);
+		testInput.net.getConnections().get(0).get(4).setCapacity(200);
+		testInput.net.getConnections().get(1).get(2).setCapacity(300);
+		testInput.net.getConnections().get(2).get(3).setCapacity(400);
+		testInput.net.getConnections().get(2).get(4).setCapacity(500);
+		testInput.net.getConnections().get(3).get(4).setCapacity(600);
+
+		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+
+		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
+		VNMapperOutput output = new VNMapperOutput(result, input);
+
+		// Assert.assertEquals(testInput.expectedOutput, output.toString());
+
+	}
+
+	/**
+	 * Test with capacities. <br/>
+	 * Physical nodes have following vnode capacity: <br/>
+	 * node 0--router0 : 10 <br/>
+	 * node 1--router1 : 11 <br/>
+	 * node 2--router2 : 12 <br/>
+	 * node 3--router3 : 13 <br/>
+	 * node 4--router4 : 14 <br/>
+	 * All physical links have bw capacity = 600 <br/>
+	 * 
+	 * @throws IOException
+	 * @throws SerializationException
+	 * @throws ResourceException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 */
+	@Test
+	public void sample8Test() throws IOException, SerializationException, ResourceException, ParserConfigurationException, SAXException {
+
+		TestInput testInput = loadTestInput(SAMPLE_8_URL);
+
+		// set capacities in physical nodes
+		testInput.net.getNodes().get(0).setCapacity(10);
+		testInput.net.getNodes().get(1).setCapacity(11);
+		testInput.net.getNodes().get(2).setCapacity(12);
+		testInput.net.getNodes().get(3).setCapacity(13);
+		testInput.net.getNodes().get(4).setCapacity(14);
+		// set capacities in physical links
+		for (PLink link : testInput.net.getLinks()) {
+			link.setCapacity(600);
+		}
 
 		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
 
