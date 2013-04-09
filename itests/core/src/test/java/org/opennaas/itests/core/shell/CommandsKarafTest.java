@@ -107,7 +107,7 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 	public void InfoCommandTest() throws Exception {
 		List<String> capabilities = new ArrayList<String>();
 
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 		capabilities.add("queue");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory
@@ -132,7 +132,7 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		Assert.assertTrue(response.get(0).contains("Resource Id: " + resource.getResourceIdentifier().getId()));
-		Assert.assertTrue(response.get(0).contains("Type: ipv4"));
+		Assert.assertTrue(response.get(0).contains("Type: ip"));
 		Assert.assertTrue(response.get(0).contains("Type: queue"));
 
 		resourceManager.stopResource(resource.getResourceIdentifier());
@@ -146,7 +146,7 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 	public void SetAndGetInterfacesCommandTest() {
 		List<String> capabilities = new ArrayList<String>();
 
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 		capabilities.add("queue");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource1", "router", capabilities);
@@ -158,7 +158,7 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 			repository.startResource(resource.getResourceDescriptor().getId());
 
 			List<String> response = executeCommand(
-					"ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
+					"ip:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1/24");
 			// assert command output does not contain ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
 
@@ -184,14 +184,14 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 
 		List<String> capabilities = new ArrayList<String>();
 
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 		capabilities.add("queue");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource2", "router", capabilities);
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
-		IProfile profile1 = createProfile("profile1", "setInterface", "ipv4", "router");
-		IProfile profile2 = createProfile("profile2", "setInterface", "ipv4", "router");
+		IProfile profile1 = createProfile("profile1", "setInterface", "ip", "router");
+		IProfile profile2 = createProfile("profile2", "setInterface", "ip", "router");
 
 		profileManager.addProfile(profile1);
 
@@ -247,13 +247,13 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 
 		List<String> capabilities = new ArrayList<String>();
 
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 		capabilities.add("queue");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource7", "router", capabilities);
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
-		IProfile profile1 = createProfile("profile1", "setIPv4", "ipv4", "router");
+		IProfile profile1 = createProfile("profile1", "setIP", "ip", "router");
 
 		profileManager.addProfile(profile1);
 
@@ -266,16 +266,16 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 		// launch setInterface Action and assert DummyAction is executed instead of original one
 		repository.startResource(resource.getResourceIdentifier().getId());
 
-		List<String> response = executeCommand("ipv4:list " + resourceFriendlyID);
+		List<String> response = executeCommand("ip:list " + resourceFriendlyID);
 
 		// assert command output contains no ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response = executeCommand("ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
+		response = executeCommand("ip:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1/24");
 		// assert command output contains no ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response = executeCommand("ipv4:list " + resourceFriendlyID);
+		response = executeCommand("ip:list " + resourceFriendlyID);
 		// assert command output contains no ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 	}

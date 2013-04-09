@@ -1,8 +1,11 @@
 package org.opennaas.itests.router.shell;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +30,14 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -110,7 +114,7 @@ public class InterfacesIPKarafTest extends AbstractKarafCommandTest
 
 		List<String> capabilities = new ArrayList<String>();
 
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 		capabilities.add("queue");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
@@ -150,7 +154,7 @@ public class InterfacesIPKarafTest extends AbstractKarafCommandTest
 
 		// LO
 
-		List<String> response = executeCommand("ipv4:setIP " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0");
+		List<String> response = executeCommand("ip:setIP " + resourceFriendlyID + " lo0.1 192.168.1.1/24");
 		//
 		// assert command output contains "[ERROR] Configuration for Loopback interface not allowed"
 		// Assert.assertTrue(response.contains("[ERROR] Configuration for Loopback interface not allowed"));
@@ -171,7 +175,7 @@ public class InterfacesIPKarafTest extends AbstractKarafCommandTest
 		testingMethod(inter, subport, newIp, newMask);
 
 		// SET LO
-		List<String> response = executeCommand("ipv4:setIP " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0");
+		List<String> response = executeCommand("ip:setIP " + resourceFriendlyID + " lo0.1 192.168.1.1/24");
 		//
 		// assert command output contains "[ERROR] Configuration for Loopback interface not allowed"
 		Assert.assertTrue(response.get(1).contains("[ERROR] Configuration for Loopback interface not allowed"));
@@ -194,14 +198,15 @@ public class InterfacesIPKarafTest extends AbstractKarafCommandTest
 
 	public void testingMethod(String inter, String subport, String newIp, String newMask) throws Exception {
 		// REFRESH to fill up the model
-		List<String> response = executeCommand("ipv4:list " + resourceFriendlyID);
+		String newMaskFormated = IPUtilsHelper.parseLongToShortIpv4NetMask(newMask);
+		List<String> response = executeCommand("ip:list " + resourceFriendlyID);
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		// Obtain the previous IP/MASK make the rollback of the test
 		List<String> OldIPMask = getOldInterface(resource, inter, subport);
 		// SET NEW IP
 		response = executeCommand(
-				"ipv4:setIP  " + resourceFriendlyID + " " + inter + "." + subport + " " + newIp + " " + newMask);
+				"ip:setIP  " + resourceFriendlyID + " " + inter + "." + subport + " " + newIp + "/" + newMaskFormated);
 		Assert.assertTrue(response.get(1).isEmpty());
 		response = executeCommand("queue:execute  " + resourceFriendlyID);
 		Assert.assertTrue(response.get(1).isEmpty());
@@ -210,7 +215,7 @@ public class InterfacesIPKarafTest extends AbstractKarafCommandTest
 		checkModel(inter, subport, OldIPMask.get(0), OldIPMask.get(1), resource);
 
 		// REFRESH to fill up the model
-		response = executeCommand("ipv4:list " + resourceFriendlyID);
+		response = executeCommand("ip:list " + resourceFriendlyID);
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		// CHECK CHANGES IN THE INTERFACE
@@ -218,13 +223,13 @@ public class InterfacesIPKarafTest extends AbstractKarafCommandTest
 
 		// ROLLBACK OF THE INTERFACE
 		response = executeCommand(
-				"ipv4:setIP  " + resourceFriendlyID + " " + inter + "." + subport + " " + OldIPMask.get(0) + " " + OldIPMask.get(1));
+				"ip:setIP  " + resourceFriendlyID + " " + inter + "." + subport + " " + OldIPMask.get(0) + " " + OldIPMask.get(1));
 		Assert.assertTrue(response.get(1).isEmpty());
 		response = executeCommand("queue:execute  " + resourceFriendlyID);
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		// REFRESH
-		response = executeCommand("ipv4:list " + resourceFriendlyID);
+		response = executeCommand("ip:list " + resourceFriendlyID);
 		Assert.assertTrue(response.get(1).isEmpty());
 		// CHECK THe ROLLBACK IS DONE
 		checkModel(inter, subport, OldIPMask.get(0), OldIPMask.get(1), resource);

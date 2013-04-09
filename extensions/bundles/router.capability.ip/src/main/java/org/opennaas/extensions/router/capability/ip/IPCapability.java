@@ -19,9 +19,9 @@ import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
 
-	public static final String	CAPABILITY_TYPE	= "ipv4";
+	public static final String	CAPABILITY_TYPE	= "ip";
 
-	public final static String	IPv4			= CAPABILITY_TYPE;
+	public final static String	IP				= CAPABILITY_TYPE;
 
 	Log							log				= LogFactory.getLog(IPCapability.class);
 
