@@ -44,4 +44,8 @@ public interface IIPCapability extends ICapability {
 	@Consumes(MediaType.APPLICATION_XML)
 	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException;
 
+	public void setIPv6(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException;
+
+	public void setIP(LogicalDevice logicalDevice, String ipAddress) throws CapabilityException;
+
 }

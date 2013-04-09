@@ -97,25 +97,51 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		log.info("End of setIPv6 call");
 	}
 
-	public void setIP(LogicalDevice iface, String ipAddress, String netPrefix) throws CapabilityException {
+	public void setIP(LogicalDevice iface, String ipAddress) throws CapabilityException {
 		log.info("Start of setIP call");
 
 		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
 
-		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress, netPrefix)) {
-			ipEndpoint.setIPv4Address(ipAddress);
-			ipEndpoint.setSubnetMask(netPrefix);
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+
+			ipEndpoint = buildIPv4ProtocolEndpoint(ipAddress);
 			setIPv4(iface, ipEndpoint);
 
-		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress, netPrefix)) {
-			ipEndpoint.setIPv6Address(ipAddress);
-			ipEndpoint.setPrefixLength(Short.valueOf(netPrefix));
+		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress)) {
+
+			ipEndpoint = buildIPv6ProtocolEndpoint(ipAddress);
 			setIPv6(iface, ipEndpoint);
 		}
 		else
-			throw new CapabilityException("Unvalid ipAddress/mask format.");
+			throw new CapabilityException("Unvalid Address format.");
 
 		log.info("End of setIP call");
+	}
+
+	private IPProtocolEndpoint buildIPv6ProtocolEndpoint(String ipAddress) {
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+
+		String ipv6 = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String preffixLength = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+		ipEndpoint.setIPv6Address(ipv6);
+		ipEndpoint.setPrefixLength(Short.valueOf(preffixLength));
+
+		return ipEndpoint;
+	}
+
+	private IPProtocolEndpoint buildIPv4ProtocolEndpoint(String ipAddress) {
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+
+		String ipv4 = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String netMask = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+		ipEndpoint.setIPv4Address(ipv4);
+		ipEndpoint.setSubnetMask(netMask);
+
+		return ipEndpoint;
 	}
 
 	/*
