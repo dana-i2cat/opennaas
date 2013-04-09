@@ -125,7 +125,13 @@ public class VNTRequest
 						n.setId(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
 						nodeList = e.getElementsByTagName("pnodeID");
 						n.setPnodeID(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-						n.setCapacity(1);
+						nodeList = e.getElementsByTagName("capacity");
+						if (nodeList.item(0) != null && nodeList.item(0).getChildNodes().item(0) != null) {
+							n.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+						} else {
+							// default capacity set to 1
+							n.setCapacity(1);
+						}
 						res.vnodes.add(n);
 						res.vnodeNum++;
 
@@ -162,9 +168,14 @@ public class VNTRequest
 
 						res.connections.get(node1).get(node2).setNode2Id(node2);
 
-						// nodeList = e.getElementsByTagName("capacity");
-						// res.connections.get(node1).get(node2).capacity=Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-						res.connections.get(node1).get(node2).setCapacity(1);
+						nodeList = e.getElementsByTagName("capacity");
+						if (nodeList.item(0) != null && nodeList.item(0).getChildNodes().item(0) != null) {
+							res.connections.get(node1).get(node2)
+									.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+						} else {
+							// default capacity set to 1
+							res.connections.get(node1).get(node2).setCapacity(1);
+						}
 						// nodeList = e.getElementsByTagName("delay");
 						// res.connections.get(node1).get(node2).delay=Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());;
 						res.connections.get(node1).get(node2).setDelay(10000);
@@ -192,6 +203,7 @@ public class VNTRequest
 		// System.out.println(vnodeNum);
 		for (int i = 0; i < vnodeNum; i++)
 		{
+			// vntString += "node " + vnodes.get(i).getId() + " : " + vnodes.get(i).getCapacity() + "\n";
 			vntString += "node " + vnodes.get(i).getId() + "\n";
 			// System.out.println("node " + vnodes.get(i).id + "--" + vnodes.get(i).pnodeID );
 
@@ -200,6 +212,7 @@ public class VNTRequest
 		vntString += "Required Virtual links\n";
 		for (int i = 0; i < vlinks.size(); i++)
 		{
+			// vntString += "link : " + vlinks.get(i).getNode1Id() + "--" + vlinks.get(i).getNode2Id() + " : " + vlinks.get(i).getCapacity() + "\n";
 			vntString += "link : " + vlinks.get(i).getNode1Id() + "--" + vlinks.get(i).getNode2Id() + "\n";
 		}
 
