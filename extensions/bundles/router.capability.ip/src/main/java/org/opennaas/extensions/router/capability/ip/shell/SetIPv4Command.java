@@ -12,7 +12,7 @@ import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
-@Command(scope = "ipv4", name = "setIP", description = "Set an IP address in a given interface of a resource")
+@Command(scope = "ipv4", name = "setIPv4", description = "Set an IP address in a given interface of a resource")
 public class SetIPv4Command extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id, owning the interface", required = true, multiValued = false)
