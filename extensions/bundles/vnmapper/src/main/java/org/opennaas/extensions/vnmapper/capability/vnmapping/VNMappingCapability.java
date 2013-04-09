@@ -94,6 +94,7 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			// //// run the matching and mapping/////
 			// Global.rowNum=8;
 			// Global.cellNum=8;
+			Global.PNodeChoice = 1;
 			Global.pathChoice = 1;
 			Global.maxPathLinksNum = 5;
 			// Global.staticNet=1;
