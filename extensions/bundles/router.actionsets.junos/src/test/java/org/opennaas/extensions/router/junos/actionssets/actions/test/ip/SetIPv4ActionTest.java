@@ -1,4 +1,8 @@
-package org.opennaas.extensions.router.junos.actionssets.actions.test.ipv4;
+package org.opennaas.extensions.router.junos.actionssets.actions.test.ip;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import junit.framework.Assert;
 
@@ -7,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Action;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
@@ -51,6 +56,33 @@ public class SetIPv4ActionTest {
 	public void templateTest() {
 		// this action always have this template as a default
 		Assert.assertEquals("Not accepted param", "/VM_files/configureIPv4.vm", action.getTemplate());
+	}
+
+	@Test
+	public void velocityTemplateTest() {
+		try {
+			action.prepareMessage();
+
+			// read expected message into a String
+			String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/setIPv4.xml"));
+			String actionMessage = XmlHelper.formatXML(action.getVelocityMessage());
+			Assert.assertEquals(expectedMessage, actionMessage);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+	}
+
+	private String textFileToString(String fileLocation) throws IOException {
+		String fileString = "";
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(getClass().getResourceAsStream(fileLocation)));
+		String line;
+		while ((line = br.readLine()) != null) {
+			fileString += line;
+		}
+		br.close();
+		return fileString;
 	}
 
 }

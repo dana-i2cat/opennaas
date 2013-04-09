@@ -6,9 +6,9 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
@@ -19,16 +19,13 @@ public class SetIPv4Command extends GenericKarafCommand {
 	private String	resourceId;
 	@Argument(index = 1, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
 	private String	interfaceName;
-	@Argument(index = 2, name = "ip", description = "A valid IPv4 address : x.x.x.x", required = true, multiValued = false)
-	private String	ipv4;
-
-	@Argument(index = 3, name = "mask", description = "A valid IPv4 mask: x.x.x.x", required = true, multiValued = false)
-	private String	mask;
+	@Argument(index = 2, name = "ip", description = "A valid IPv4 or IPv6 address : x.x.x.x/x or x:x:x:x:x:x:x:x/x", required = true, multiValued = false)
+	private String	ipAddress;
 
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("set Ipv4 address");
+		printInitCommand("set IP address");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -57,20 +54,6 @@ public class SetIPv4Command extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
 
-			/* check if it uses logical router */
-
-			if (!validateIPAddress(ipv4)) {
-				printError("Ip format incorrect. It must be [255..0].[255..0].[255..0].[255..0]");
-				printEndCommand();
-				return null;
-			}
-			if (!validateIPAddress(mask)) {
-				printError("Mask format incorrect. It must be [255..0].[255..0].[255..0].[255..0]");
-				printEndCommand();
-				return null;
-			}
-
-			IPProtocolEndpoint ipProtocolEndpoint = getIPProtocolEndpoint();
 			NetworkPort networkPort = getNetworkPort();
 
 			if (networkPort == null) {
@@ -78,9 +61,17 @@ public class SetIPv4Command extends GenericKarafCommand {
 				printEndCommand();
 				return null;
 			}
-
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
-			ipCapability.setIPv4(networkPort, ipProtocolEndpoint);
+			try {
+				ipCapability.setIP(networkPort, ipAddress);
+			} catch (CapabilityException ce) {
+				printError("Ip format incorrect. It must match one of the following constraints: ");
+				printError("Ipv4: IPv4 Address + Net mask. Example : 144.156.12.1/24");
+				printError("Ipv6: IPv6 Address + Prefix Length. Example: A::43A:B41/64");
+				printEndCommand();
+				return null;
+
+			}
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -94,18 +85,6 @@ public class SetIPv4Command extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
-	}
-
-	/**
-	 * Get the IPProtocolEndpoint
-	 * 
-	 * @return the IPProtocolEndpoint
-	 */
-	private IPProtocolEndpoint getIPProtocolEndpoint() {
-		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address(ipv4);
-		ip.setSubnetMask(mask);
-		return ip;
 	}
 
 	/**
@@ -132,7 +111,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 				networkPort.setPortNumber(port);
 				networkPort.setLinkTechnology(LinkTechnology.OTHER);
 
-				printInfo("[" + networkPort.getName() + "." + networkPort.getPortNumber() + "]  " + ipv4 + " / " + mask);
+				printInfo("[" + networkPort.getName() + "." + networkPort.getPortNumber() + "]  " + ipAddress);
 			} catch (Exception e) {
 				throw e;
 			}

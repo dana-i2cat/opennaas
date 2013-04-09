@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.junos.actionssets.actions.test.ipv4;
+package org.opennaas.extensions.router.junos.actionssets.actions.test.ip;
 
 import java.io.BufferedReader;
 import java.io.IOException;

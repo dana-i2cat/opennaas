@@ -75,13 +75,23 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
 		}
 
-		param.addProtocolEndpoint(ipProtocolEndpoint);
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+		ipEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+		ipEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+
+		param.addProtocolEndpoint(ipEndpoint);
 
 		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, param);
 		queueAction(action);
 		log.info("End of setIPv4 call");
 	}
 
+	@Override
+	public void setIPv6(SetIpAddressRequest request) throws CapabilityException {
+		setIPv6(request.getLogicalDevice(), request.getIpProtocolEndpoint());
+	}
+
+	@Override
 	public void setIPv6(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of setIPv6 call");
 		NetworkPort param = new NetworkPort();
@@ -90,13 +100,18 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			param.setPortNumber(((NetworkPort) iface).getPortNumber());
 			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
 		}
-		param.addProtocolEndpoint(ipProtocolEndpoint);
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+		ipEndpoint.setIPv6Address(ipProtocolEndpoint.getIPv6Address());
+		ipEndpoint.setPrefixLength(ipProtocolEndpoint.getPrefixLength());
+
+		param.addProtocolEndpoint(ipEndpoint);
 
 		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv6, param);
 		queueAction(action);
 		log.info("End of setIPv6 call");
 	}
 
+	@Override
 	public void setIP(LogicalDevice iface, String ipAddress) throws CapabilityException {
 		log.info("Start of setIP call");
 
@@ -118,30 +133,20 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		log.info("End of setIP call");
 	}
 
-	private IPProtocolEndpoint buildIPv6ProtocolEndpoint(String ipAddress) {
+	@Override
+	public void setIP(SetIpAddressRequest request) throws CapabilityException {
+		setIP(request.getLogicalDevice(), request.getIpProtocolEndpoint());
 
-		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
-
-		String ipv6 = IPUtilsHelper.getAddressFromIP(ipAddress);
-		String preffixLength = IPUtilsHelper.getPrefixFromIp(ipAddress);
-
-		ipEndpoint.setIPv6Address(ipv6);
-		ipEndpoint.setPrefixLength(Short.valueOf(preffixLength));
-
-		return ipEndpoint;
 	}
 
-	private IPProtocolEndpoint buildIPv4ProtocolEndpoint(String ipAddress) {
+	@Override
+	public void setIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException {
 
-		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
-
-		String ipv4 = IPUtilsHelper.getAddressFromIP(ipAddress);
-		String netMask = IPUtilsHelper.getPrefixFromIp(ipAddress);
-
-		ipEndpoint.setIPv4Address(ipv4);
-		ipEndpoint.setSubnetMask(netMask);
-
-		return ipEndpoint;
+		if (!ip.getIPv4Address().isEmpty() && !ip.getSubnetMask().isEmpty())
+			setIPv4(logicalDevice, ip);
+		else if (!ip.getIPv6Address().isEmpty())
+			setIPv6(logicalDevice, ip);
+		throw new CapabilityException("IP address not set.");
 	}
 
 	/*
@@ -209,4 +214,29 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		getQueueManager(resourceId).queueAction(action);
 	}
 
+	private IPProtocolEndpoint buildIPv6ProtocolEndpoint(String ipAddress) {
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+
+		String ipv6 = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String preffixLength = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+		ipEndpoint.setIPv6Address(ipv6);
+		ipEndpoint.setPrefixLength(Short.valueOf(preffixLength));
+
+		return ipEndpoint;
+	}
+
+	private IPProtocolEndpoint buildIPv4ProtocolEndpoint(String ipAddress) {
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+
+		String ipv4 = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String netMask = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+		ipEndpoint.setIPv4Address(ipv4);
+		ipEndpoint.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(netMask));
+
+		return ipEndpoint;
+	}
 }
