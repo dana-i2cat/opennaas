@@ -14,6 +14,7 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
@@ -73,14 +74,48 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			param.setPortNumber(((NetworkPort) iface).getPortNumber());
 			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
 		}
-		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
-		ip.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+
 		param.addProtocolEndpoint(ipProtocolEndpoint);
 
 		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, param);
 		queueAction(action);
 		log.info("End of setIPv4 call");
+	}
+
+	public void setIPv6(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
+		log.info("Start of setIPv6 call");
+		NetworkPort param = new NetworkPort();
+		param.setName(iface.getName());
+		if (iface instanceof NetworkPort) {
+			param.setPortNumber(((NetworkPort) iface).getPortNumber());
+			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
+		}
+		param.addProtocolEndpoint(ipProtocolEndpoint);
+
+		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv6, param);
+		queueAction(action);
+		log.info("End of setIPv6 call");
+	}
+
+	public void setIP(LogicalDevice iface, String ipAddress, String netPrefix) throws CapabilityException {
+		log.info("Start of setIP call");
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress, netPrefix)) {
+			ipEndpoint.setIPv4Address(ipAddress);
+			ipEndpoint.setSubnetMask(netPrefix);
+			setIPv4(iface, ipEndpoint);
+
+		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress, netPrefix)) {
+			ipEndpoint.setIPv6Address(ipAddress);
+			ipEndpoint.setPrefixLength(Short.valueOf(netPrefix));
+			setIPv6(iface, ipEndpoint);
+		}
+		else
+			throw new CapabilityException("Unvalid ipAddress/mask format.");
+
+		log.info("End of setIP call");
 	}
 
 	/*
