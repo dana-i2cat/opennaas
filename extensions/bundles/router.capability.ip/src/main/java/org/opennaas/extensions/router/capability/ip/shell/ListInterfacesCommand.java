@@ -72,6 +72,11 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 								if (ipv4 != null && mask != null) {
 									printSymbol(doubleTab + "IP/MASK: " + ipv4 + " / " + mask);
 								}
+								String ipv6 = ((IPProtocolEndpoint) protocolEndpoint).getIPv6Address();
+								Short preffix = ((IPProtocolEndpoint) protocolEndpoint).getPrefixLength();
+								if (ipv6 != null && preffix != null) {
+									printSymbol(doubleTab + "IP/MASK: " + ipv6 + "/" + preffix);
+								}
 							}
 
 						}

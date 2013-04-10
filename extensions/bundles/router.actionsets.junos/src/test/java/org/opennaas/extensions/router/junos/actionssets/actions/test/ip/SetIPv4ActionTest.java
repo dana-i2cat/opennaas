@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Action;
+import org.opennaas.extensions.router.junos.actionssets.actions.ip.SetIPv4Action;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 

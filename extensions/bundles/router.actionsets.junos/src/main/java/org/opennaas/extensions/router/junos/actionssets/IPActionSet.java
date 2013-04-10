@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Action;
-import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv6Action;
-import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetInterfaceDescriptionAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.ip.SetIPv4Action;
+import org.opennaas.extensions.router.junos.actionssets.actions.ip.SetIPv6Action;
+import org.opennaas.extensions.router.junos.actionssets.actions.ip.SetInterfaceDescriptionAction;
 
 public class IPActionSet extends ActionSet {
 	public IPActionSet() {
