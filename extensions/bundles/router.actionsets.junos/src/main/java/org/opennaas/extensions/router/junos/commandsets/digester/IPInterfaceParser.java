@@ -301,11 +301,10 @@ public class IPInterfaceParser extends DigesterEngine {
 	public void setIPv6Address(String ipv6) {
 		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
 		try {
-			// TODO implement a method to convert the mask of an IPv6 address
 			String ip = ipv6.split("/")[0];
 			String shortMask = ipv6.split("/")[1];
-			// ipProtocolEndpoint.setIPv6Address(ip);
-			// ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
+			ipProtocolEndpoint.setIPv6Address(ip);
+			ipProtocolEndpoint.setPrefixLength(Short.valueOf(shortMask));
 
 		} catch (Exception e) {
 			log.error(e.getMessage());

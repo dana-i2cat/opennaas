@@ -5,6 +5,7 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -25,13 +26,19 @@ public class SetIPv6Action extends JunosAction {
 
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
-		// TODO Auto-generated method stub
+		try {
+			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
+			command.initialize();
+			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
+		} catch (Exception e) {
+			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
+		}
+		validateAction(actionResponse);
 
 	}
 
 	@Override
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
-		// TODO Auto-generated method stub
 
 	}
 

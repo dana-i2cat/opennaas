@@ -223,7 +223,8 @@ public class InterfacesIPKarafTest extends AbstractKarafCommandTest
 
 		// ROLLBACK OF THE INTERFACE
 		response = executeCommand(
-				"ip:setIP  " + resourceFriendlyID + " " + inter + "." + subport + " " + OldIPMask.get(0) + " " + OldIPMask.get(1));
+				"ip:setIP  " + resourceFriendlyID + " " + inter + "." + subport + " " + OldIPMask.get(0) + "/" + IPUtilsHelper
+						.parseLongToShortIpv4NetMask(OldIPMask.get(1)));
 		Assert.assertTrue(response.get(1).isEmpty());
 		response = executeCommand("queue:execute  " + resourceFriendlyID);
 		Assert.assertTrue(response.get(1).isEmpty());
