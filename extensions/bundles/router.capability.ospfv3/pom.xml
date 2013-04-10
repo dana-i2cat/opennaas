@@ -4,9 +4,7 @@
     <artifactId>org.opennaas.extensions.bundles</artifactId>
     <groupId>org.opennaas</groupId>
     <version>0.19-SNAPSHOT</version>
-    <relativePath>..</relativePath>
   </parent>
-  <groupId>org.opennaas.extensions.router.capability.ospfv3</groupId>
   <artifactId>org.opennaas.extensions.router.capability.ospfv3</artifactId>
   <packaging>bundle</packaging>
   <name>OpenNaaS :: Router :: OSPFv3 Capability</name>

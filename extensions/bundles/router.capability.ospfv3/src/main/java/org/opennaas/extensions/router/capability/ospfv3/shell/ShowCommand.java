@@ -23,7 +23,7 @@ public class ShowCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Show OSPF configuration");
+		printInitCommand("Show OSPFv3 configuration");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			IOSPFv3Capability ospfCapability = (IOSPFv3Capability) router.getCapabilityByInterface(IOSPFv3Capability.class);
@@ -44,7 +44,7 @@ public class ShowCommand extends GenericKarafCommand {
 
 	private void printOSPFConfiguration(OSPFService ospfService) throws IOException {
 		if (ospfService == null) {
-			printSymbol("OSPF not configured");
+			printSymbol("OSPFv3 not configured");
 			return;
 		}
 

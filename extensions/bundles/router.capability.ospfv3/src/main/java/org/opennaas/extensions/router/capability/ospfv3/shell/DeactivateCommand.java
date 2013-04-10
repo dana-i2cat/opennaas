@@ -16,7 +16,7 @@ public class DeactivateCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("Deactivate OSPF ");
+		printInitCommand("Deactivate OSPFv3 ");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			IOSPFv3Capability ospfCapability = (IOSPFv3Capability) router.getCapabilityByInterface(IOSPFv3Capability.class);
@@ -26,7 +26,7 @@ public class DeactivateCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error deactivating OSPF");
+			printError("Error deactivating OSPFv3");
 			printError(e);
 			printEndCommand();
 			return -1;

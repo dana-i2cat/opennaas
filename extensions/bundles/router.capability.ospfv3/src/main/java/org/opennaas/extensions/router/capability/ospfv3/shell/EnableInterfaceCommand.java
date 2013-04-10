@@ -22,7 +22,7 @@ public class EnableInterfaceCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Enable OSPF on interface(s) ");
+		printInitCommand("Enable OSPFv3 on interface(s) ");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 

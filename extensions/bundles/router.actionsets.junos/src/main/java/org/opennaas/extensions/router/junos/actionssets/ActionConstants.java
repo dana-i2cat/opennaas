@@ -1,12 +1,13 @@
 package org.opennaas.extensions.router.junos.actionssets;
 
 import org.opennaas.extensions.router.capability.bgp.BGPActionSet;
-import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.capability.gretunnel.GRETunnelActionSet;
 import org.opennaas.extensions.router.capability.ip.IPActionSet;
 import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteActionSet;
 import org.opennaas.extensions.router.capability.vrrp.VRRPActionSet;
+import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
+import org.opennaas.extensions.router.capability.ospfv3.OSPFv3ActionSet;
 
 public class ActionConstants {
 
@@ -61,6 +62,19 @@ public class ActionConstants {
 	public static final String	OSPF_REMOVE_AREA					= OSPFActionSet.OSPF_REMOVE_AREA;
 	public static final String	OSPF_ADD_INTERFACE_IN_AREA			= OSPFActionSet.OSPF_ADD_INTERFACE_IN_AREA;
 	public static final String	OSPF_REMOVE_INTERFACE_IN_AREA		= OSPFActionSet.OSPF_REMOVE_INTERFACE_IN_AREA;
+
+	// OSPFv3 actionset
+	public static final String	OSPFv3_CONFIGURE					= OSPFv3ActionSet.OSPFv3_CONFIGURE;
+	public static final String	OSPFv3_CLEAR						= OSPFv3ActionSet.OSPFv3_CLEAR;
+	public static final String	OSPFv3_GET_CONFIGURATION			= OSPFv3ActionSet.OSPFv3_GET_CONFIGURATION;
+	public static final String	OSPFv3_ACTIVATE						= OSPFv3ActionSet.OSPFv3_ACTIVATE;
+	public static final String	OSPFv3_DEACTIVATE					= OSPFv3ActionSet.OSPFv3_DEACTIVATE;
+	public static final String	OSPFv3_ENABLE_INTERFACE				= OSPFv3ActionSet.OSPFv3_ENABLE_INTERFACE;
+	public static final String	OSPFv3_DISABLE_INTERFACE			= OSPFv3ActionSet.OSPFv3_DISABLE_INTERFACE;
+	public static final String	OSPFv3_CONFIGURE_AREA				= OSPFv3ActionSet.OSPFv3_CONFIGURE_AREA;
+	public static final String	OSPFv3_REMOVE_AREA					= OSPFv3ActionSet.OSPFv3_REMOVE_AREA;
+	public static final String	OSPFv3_ADD_INTERFACE_IN_AREA		= OSPFv3ActionSet.OSPFv3_ADD_INTERFACE_IN_AREA;
+	public static final String	OSPFv3_REMOVE_INTERFACE_IN_AREA		= OSPFv3ActionSet.OSPFv3_REMOVE_INTERFACE_IN_AREA;
 
 	// Static Route actionset
 	public static final String	STATIC_ROUTE_CREATE					= StaticRouteActionSet.STATIC_ROUTE_CREATE;
