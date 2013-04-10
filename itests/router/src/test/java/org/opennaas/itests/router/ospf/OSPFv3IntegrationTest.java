@@ -31,7 +31,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
-import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
+import org.opennaas.extensions.router.capability.ospfv3.IOSPFv3Capability;
 import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.itests.helpers.InitializerTestHelper;
@@ -46,17 +46,13 @@ import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-/**
- * @author Jordi
- * @author Adrian Rosello
- */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class OSPFIntegrationTest
+public class OSPFv3IntegrationTest
 {
-	protected static final String	RESOURCE_INFO_NAME	= "OSPF Test";
+	protected static final String	RESOURCE_INFO_NAME	= "OSPFv3 Test";
 
-	protected ICapability			iOSPFCapability;
+	protected ICapability			iOSPFv3Capability;
 	protected IResource				routerResource;
 
 	@Inject
@@ -77,7 +73,7 @@ public class OSPFIntegrationTest
 	private BlueprintContainer		routerRepoService;
 
 	private static final Log		log					= LogFactory
-																.getLog(OSPFIntegrationTest.class);
+																.getLog(OSPFv3IntegrationTest.class);
 
 	@Configuration
 	public static Option[] configuration() {
@@ -111,9 +107,9 @@ public class OSPFIntegrationTest
 	{
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.activateOSPF();
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.activateOSPFv3();
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -132,9 +128,9 @@ public class OSPFIntegrationTest
 	{
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.addInterfacesInOSPFArea(ParamCreationHelper.getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.addInterfacesInOSPFv3Area(ParamCreationHelper.getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
 				ParamCreationHelper.getOSPFArea("0.0.0.0"));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
@@ -154,9 +150,9 @@ public class OSPFIntegrationTest
 	{
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.clearOSPFconfiguration(ParamCreationHelper.getOSPFService("12345678"));
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.clearOSPFv3configuration(ParamCreationHelper.getOSPFv3Service("12345678"));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -174,9 +170,9 @@ public class OSPFIntegrationTest
 			throws IOException, ProtocolException, ResourceException {
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.configureOSPFArea(ParamCreationHelper.getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.configureOSPFv3Area(ParamCreationHelper.getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -193,9 +189,9 @@ public class OSPFIntegrationTest
 	public void configureOSPFTest() throws ResourceException, ProtocolException {
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.configureOSPF(ParamCreationHelper.getOSPFService("12345678"));
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.configureOSPFv3(ParamCreationHelper.getOSPFv3Service("12345678"));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -214,9 +210,9 @@ public class OSPFIntegrationTest
 	{
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.deactivateOSPF();
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.deactivateOSPFv3();
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -234,9 +230,9 @@ public class OSPFIntegrationTest
 			throws ResourceException, ProtocolException {
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.disableOSPFInterfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.disableOSPFv3Interfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -254,9 +250,9 @@ public class OSPFIntegrationTest
 			throws ResourceException, ProtocolException {
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.enableOSPFInterfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.enableOSPFv3Interfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -274,9 +270,9 @@ public class OSPFIntegrationTest
 			throws ResourceException, ProtocolException {
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.getOSPFConfiguration();
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.getOSPFv3Configuration();
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -294,9 +290,9 @@ public class OSPFIntegrationTest
 			throws ResourceException, ProtocolException, IOException, Exception {
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.removeInterfacesInOSPFArea(ParamCreationHelper.getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.removeInterfacesInOSPFv3Area(ParamCreationHelper.getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
 				ParamCreationHelper.getOSPFArea("0.0.0.0"));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
@@ -315,9 +311,9 @@ public class OSPFIntegrationTest
 			throws ResourceException, ProtocolException, IOException {
 		startResource();
 
-		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.OSPF_CAPABILIY_TYPE));
-		ospfCapability.removeOSPFArea(ParamCreationHelper.getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
+		IOSPFv3Capability ospfv3Capability = (IOSPFv3Capability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.OSPFv3_CAPABILITY_TYPE));
+		ospfv3Capability.removeOSPFv3Area(ParamCreationHelper.getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -359,11 +355,11 @@ public class OSPFIntegrationTest
 		// Add OSPF Capability Descriptor
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		CapabilityDescriptor ospfCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.ACTION_NAME,
+		CapabilityDescriptor ospfv3CapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.ACTION_NAME,
 				TestsConstants.CAPABILIY_VERSION,
-				TestsConstants.OSPF_CAPABILIY_TYPE,
+				TestsConstants.OSPFv3_CAPABILITY_TYPE,
 				TestsConstants.CAPABILITY_URI);
-		lCapabilityDescriptors.add(ospfCapabilityDescriptor);
+		lCapabilityDescriptors.add(ospfv3CapabilityDescriptor);
 
 		// Add Queue Capability Descriptor
 		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newQueueCapabilityDescriptor();
