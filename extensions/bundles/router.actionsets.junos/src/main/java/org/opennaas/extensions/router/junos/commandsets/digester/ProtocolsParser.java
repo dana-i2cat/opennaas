@@ -3,18 +3,18 @@ package org.opennaas.extensions.router.junos.commandsets.digester;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSetBase;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
-
-import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.RuleSetBase;
 
 public class ProtocolsParser extends DigesterEngine {
 
@@ -37,6 +37,7 @@ public class ProtocolsParser extends DigesterEngine {
 		@Override
 		public void addRuleInstances(Digester arg0) {
 			addOSPFRuleInstances(arg0);
+			addOSPFv3RuleInstances(arg0);
 			// TODO add other protocol rules (e.g. bgp)
 		}
 
@@ -53,6 +54,21 @@ public class ProtocolsParser extends DigesterEngine {
 			addSetNext("*/protocols/ospf/area/", "addOSPFArea", OSPFArea.class.getName());
 			// OSPFService should be created also when addOSPFArea has not been called
 			addMyRule("*/protocols/ospf", "obtainOSPFService", -1); // -1 specifies we want no parameters
+		}
+
+		private void addOSPFv3RuleInstances(Digester arg0) {
+			// FIXME the path pattern can't be global , must distinguish between
+			// routers
+			addMyRule("*/protocols/ospf3/disable", "setDisabledFlag", 0);
+			addObjectCreate("*/protocols/ospf3/area", OSPFArea.class);
+			addMyRule("*/protocols/ospf3/area/name", "transformAndSetAreaID", 0); // AreaID required a format transformation
+			addObjectCreate("*/protocols/ospf3/area/interface", OSPFProtocolEndpoint.class);
+			addMyRule("*/protocols/ospf3/area/interface/name", "configureOSPFProtocolEndpoint", 0);
+			addMyRule("*/protocols/ospf3/area/interface/disable", "disableOSPFProtocolEndpoint", 0);
+			addSetNext("*/protocols/ospf3/area/interface", "addEndpointInArea");
+			addSetNext("*/protocols/ospf3/area/", "addOSPFv3Area", OSPFArea.class.getName());
+			// OSPFService should be created also when addOSPFArea has not been called
+			addMyRule("*/protocols/ospf3", "obtainOSPFv3Service", -1); // -1 specifies we want no parameters
 		}
 	}
 
@@ -206,4 +222,44 @@ public class ProtocolsParser extends DigesterEngine {
 
 		return ospfService;
 	}
+
+	/**
+	 * Get ospfv3Service or creates it if necessary.
+	 * 
+	 * Created OSPFService has its state setted up, and has already been included in model.
+	 * 
+	 * @return
+	 */
+	public OSPFService obtainOSPFv3Service() {
+		if (ospfService != null) {
+			return ospfService;
+		}
+
+		ospfService = new OSPFService();
+		if (serviceDisabledFlag)
+			ospfService.setEnabledState(EnabledState.DISABLED);
+		else
+			ospfService.setEnabledState(EnabledState.ENABLED);
+
+		ospfService.setAlgorithmType(AlgorithmType.OSPFV3);
+		model.addHostedService(ospfService);
+
+		return ospfService;
+	}
+
+	/**
+	 * Creates required structure in model to store OSPFArea.
+	 * 
+	 * @param ospfArea
+	 */
+	public void addOSPFv3Area(OSPFArea ospfArea) {
+
+		OSPFService ospfService = obtainOSPFv3Service();
+
+		OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
+		areaConfig.setOSPFArea(ospfArea);
+
+		ospfService.addOSPFAreaConfiguration(areaConfig);
+	}
+
 }
