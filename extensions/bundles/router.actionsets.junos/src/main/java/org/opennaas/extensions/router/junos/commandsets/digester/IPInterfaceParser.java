@@ -18,6 +18,7 @@ import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
@@ -292,6 +293,7 @@ public class IPInterfaceParser extends DigesterEngine {
 			String maskIpv4 = IPUtilsHelper.parseShortToLongIpv4NetMask(shortMask);
 			ipProtocolEndpoint.setIPv4Address(ip);
 			ipProtocolEndpoint.setSubnetMask(maskIpv4);
+			ipProtocolEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -305,7 +307,7 @@ public class IPInterfaceParser extends DigesterEngine {
 			String shortMask = ipv6.split("/")[1];
 			ipProtocolEndpoint.setIPv6Address(ip);
 			ipProtocolEndpoint.setPrefixLength(Short.valueOf(shortMask));
-
+			ipProtocolEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}

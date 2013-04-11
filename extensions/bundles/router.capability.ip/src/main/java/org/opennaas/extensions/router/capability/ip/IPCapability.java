@@ -14,6 +14,7 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
@@ -223,6 +224,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		ipEndpoint.setIPv6Address(ipv6);
 		ipEndpoint.setPrefixLength(Short.valueOf(preffixLength));
+		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
 
 		return ipEndpoint;
 	}
@@ -236,6 +238,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		ipEndpoint.setIPv4Address(ipv4);
 		ipEndpoint.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(netMask));
+		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 
 		return ipEndpoint;
 	}
