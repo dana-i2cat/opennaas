@@ -82,6 +82,7 @@ public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capab
 	public void configureOSPFv3(OSPFService ospfService) throws CapabilityException {
 		log.info("Start of configureOSPFv3 call");
 		ospfService.setEnabledState(EnabledState.DISABLED); // mark OSPF as disabled, we are configuring only
+		ospfService.setAlgorithmType(AlgorithmType.OSPFV3);
 		IAction action = createActionAndCheckParams(OSPFv3ActionSet.OSPFv3_CONFIGURE, ospfService);
 		queueAction(action);
 		log.info("End of configureOSPFv3 call");

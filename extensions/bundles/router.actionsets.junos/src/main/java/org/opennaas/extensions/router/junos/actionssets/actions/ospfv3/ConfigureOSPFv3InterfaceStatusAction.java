@@ -18,6 +18,7 @@ import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
@@ -192,6 +193,7 @@ public class ConfigureOSPFv3InterfaceStatusAction extends JunosAction {
 			throw new ActionException("Could not get required information from the model. OSPFService missing");
 
 		OSPFService toReturn = new OSPFService();
+		toReturn.setAlgorithmType(AlgorithmType.OSPFV3);
 
 		// get OSPF area id for each pep to configure
 		OSPFArea tmpArea;
@@ -247,7 +249,9 @@ public class ConfigureOSPFv3InterfaceStatusAction extends JunosAction {
 	private OSPFService getOSPFService(ComputerSystem system) {
 		for (Service service : system.getHostedService()) {
 			if (service instanceof OSPFService) {
-				return (OSPFService) service;
+				if (((OSPFService) service).getAlgorithmType().equals(AlgorithmType.OSPFV3))
+
+					return (OSPFService) service;
 			}
 		}
 		return null;
