@@ -26,6 +26,40 @@ public class ProtocolsParserTest {
 	private Log	log	= LogFactory.getLog(ProtocolsParserTest.class);
 
 	@Test
+	public void testParseOSPFPandOSPFv3Protocols() throws Exception {
+
+		String message = readStringFromFile("/parsers/getConfigWithOSPFandOSPFv3.xml");
+
+		System model = createSampleModelOSPFv3();
+		ProtocolsParser parser = new ProtocolsParser(model);
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		System updatedModel = parser.getModel();
+
+		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
+
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals("There must be two OSPFService", 2, ospfServices.size());
+
+		OSPFService ospfv2Service;
+		OSPFService ospfv3Service;
+
+		if (ospfServices.get(0).getAlgorithmType().equals(AlgorithmType.OSPFV3)) {
+			ospfv3Service = ospfServices.get(0);
+			ospfv2Service = ospfServices.get(1);
+		}
+		else {
+			ospfv3Service = ospfServices.get(1);
+			ospfv2Service = ospfServices.get(0);
+		}
+
+		checkOSPFService(ospfv2Service, AlgorithmType.OSPFV2, "fe-0/3/0.0", "fe-0/3/1.0");
+		checkOSPFService(ospfv3Service, AlgorithmType.OSPFV3, "fe-0/3/2.0", "fe-0/3/3.0");
+
+	}
+
+	@Test
 	public void testParseOSPFv3Protocol() throws Exception {
 
 		String message = readStringFromFile("/parsers/getConfigWithOSPFv3.xml");
@@ -219,5 +253,69 @@ public class ProtocolsParserTest {
 		model.addLogicalDevice(interface2);
 
 		return model;
+	}
+
+	private System createSampleModelOSPFv3() {
+		System model = new ComputerSystem();
+
+		// create interfaces to check OSPFEnpoint is created on them
+		NetworkPort interface1 = new NetworkPort();
+		interface1.setName("fe-0/3/0");
+		interface1.setPortNumber(0);
+
+		NetworkPort interface2 = new NetworkPort();
+		interface2.setName("fe-0/3/1");
+		interface2.setPortNumber(0);
+
+		NetworkPort interface3 = new NetworkPort();
+		interface3.setName("fe-0/3/2");
+		interface3.setPortNumber(0);
+
+		NetworkPort interface4 = new NetworkPort();
+		interface4.setName("fe-0/3/3");
+		interface4.setPortNumber(0);
+
+		model.addLogicalDevice(interface1);
+		model.addLogicalDevice(interface2);
+		model.addLogicalDevice(interface3);
+		model.addLogicalDevice(interface4);
+
+		return model;
+	}
+
+	private void checkOSPFService(OSPFService ospfService, AlgorithmType type, String iface1, String iface2) {
+		Assert.assertEquals("AlgorithmType does not match OSPF version.", type, ospfService.getAlgorithmType());
+		Assert.assertFalse("Service state must have been set in OSPFv2", EnabledState.UNKNOWN.equals(ospfService.getEnabledState()));
+		Assert.assertFalse("Service must have (at least) an area configuration", ospfService.getOSPFAreaConfiguration().isEmpty());
+		OSPFAreaConfiguration ospfAreaConfig = ospfService.getOSPFAreaConfiguration().get(0);
+		Assert.assertNotNull(ospfAreaConfig.getOSPFArea());
+		Assert.assertEquals(0l, ospfAreaConfig.getOSPFArea().getAreaID());
+
+		Assert.assertFalse(ospfAreaConfig.getOSPFArea().getEndpointsInArea().isEmpty());
+		int disabledInterfaceCount = 0;
+
+		Assert.assertEquals("Two OSPFEndpoints must be configured for this Area.", 2, ospfAreaConfig.getOSPFArea().getEndpointsInArea().size());
+		Assert.assertEquals("OSPFEndpoint does not match interface name.", iface1, ospfAreaConfig.getOSPFArea().getEndpointsInArea().get(0)
+				.getName());
+		Assert.assertEquals("OSPFEndpoint does not match interface name.", iface2, ospfAreaConfig.getOSPFArea().getEndpointsInArea().get(1)
+				.getName());
+
+		for (OSPFProtocolEndpointBase ospfEndPointBase : ospfAreaConfig.getOSPFArea().getEndpointsInArea()) {
+			Assert.assertFalse("OSPFEndpoint state must have been set", EnabledState.UNKNOWN.equals(ospfEndPointBase.getEnabledState()));
+			Assert.assertFalse("OSPFEndpoint must be implemented by an existing interface ", ospfEndPointBase.getLogicalPorts().isEmpty());
+
+			if (ospfEndPointBase.getEnabledState().equals(EnabledState.DISABLED))
+				disabledInterfaceCount++;
+
+			// FIXME Unsupported! Right now OSPFEndpoints are not binded (see ProtocolsParser)
+			// Assert.assertFalse("OSPFEndpoint must be binded to existing ProtocolEndpoints",
+			// ospfEndPointBase.getBindedProtocolEndpoints().isEmpty());
+			// for (ProtocolEndpoint pe : ospfEndPointBase.getBindedProtocolEndpoints()) {
+			// Assert.assertTrue("OSPFEndpoint must be binded only to IPProtocolEndpoints",
+			// pe instanceof IPProtocolEndpoint);
+			// }
+		}
+		Assert.assertTrue("There is a disabled interface", disabledInterfaceCount > 0);
+		Assert.assertTrue("Not all interfaces are disabled", disabledInterfaceCount < ospfAreaConfig.getOSPFArea().getEndpointsInArea().size());
 	}
 }

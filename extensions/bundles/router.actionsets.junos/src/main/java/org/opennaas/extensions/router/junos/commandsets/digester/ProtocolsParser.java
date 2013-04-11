@@ -22,6 +22,7 @@ public class ProtocolsParser extends DigesterEngine {
 
 	private boolean		serviceDisabledFlag	= false;
 	private OSPFService	ospfService;
+	private OSPFService	ospfv3Service;
 
 	class ParserRuleSet extends RuleSetBase {
 		private String	prefix	= "";
@@ -218,6 +219,8 @@ public class ProtocolsParser extends DigesterEngine {
 		else
 			ospfService.setEnabledState(EnabledState.ENABLED);
 
+		ospfService.setAlgorithmType(AlgorithmType.OSPFV2);
+
 		model.addHostedService(ospfService);
 
 		return ospfService;
@@ -231,20 +234,19 @@ public class ProtocolsParser extends DigesterEngine {
 	 * @return
 	 */
 	public OSPFService obtainOSPFv3Service() {
-		if (ospfService != null) {
-			return ospfService;
-		}
+		if (ospfv3Service != null)
+			return ospfv3Service;
 
-		ospfService = new OSPFService();
+		ospfv3Service = new OSPFService();
 		if (serviceDisabledFlag)
-			ospfService.setEnabledState(EnabledState.DISABLED);
+			ospfv3Service.setEnabledState(EnabledState.DISABLED);
 		else
-			ospfService.setEnabledState(EnabledState.ENABLED);
+			ospfv3Service.setEnabledState(EnabledState.ENABLED);
 
-		ospfService.setAlgorithmType(AlgorithmType.OSPFV3);
-		model.addHostedService(ospfService);
+		ospfv3Service.setAlgorithmType(AlgorithmType.OSPFV3);
+		model.addHostedService(ospfv3Service);
 
-		return ospfService;
+		return ospfv3Service;
 	}
 
 	/**
