@@ -35,6 +35,7 @@ public class ActionConstants {
 
 	// IP
 	public static final String	SETIPv4								= IPActionSet.SET_IPv4;
+	public static final String	SETIPv6								= IPActionSet.SET_IPv6;
 	public static final String	SETINTERFACEDESCRIPTION				= IPActionSet.SET_INTERFACE_DESCRIPTION;
 
 	// TODO THE SAME NAME FOR THE OTHER LIST LOGICAL ROUTERS

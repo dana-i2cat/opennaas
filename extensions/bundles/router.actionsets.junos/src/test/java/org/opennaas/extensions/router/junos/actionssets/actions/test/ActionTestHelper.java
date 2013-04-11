@@ -83,6 +83,17 @@ public class ActionTestHelper {
 		return eth;
 	}
 
+	public Object newParamsInterfaceEthernetIPv6(String ipv6Address, short prefixLength) {
+		EthernetPort eth = new EthernetPort();
+		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth.setName("fe-0/3/2");
+		IPProtocolEndpoint ip = new IPProtocolEndpoint();
+		ip.setIPv6Address(ipv6Address);
+		ip.setPrefixLength(prefixLength);
+		eth.addProtocolEndpoint(ip);
+		return eth;
+	}
+
 	public Object newParamsGRETunnelService() {
 		GRETunnelService greService = new GRETunnelService();
 		greService.setName("gre-0/1/0");

@@ -1,11 +1,5 @@
 package org.opennaas.extensions.router.capability.ip.shell;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -13,8 +7,13 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 
-@Command(scope = "ipv4", name = "list", description = "List all the interfaces of a given resource.")
+@Command(scope = "ip", name = "list", description = "List all the interfaces of a given resource.")
 public class ListInterfacesCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
@@ -72,6 +71,11 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
 								if (ipv4 != null && mask != null) {
 									printSymbol(doubleTab + "IP/MASK: " + ipv4 + " / " + mask);
+								}
+								String ipv6 = ((IPProtocolEndpoint) protocolEndpoint).getIPv6Address();
+								Short preffix = ((IPProtocolEndpoint) protocolEndpoint).getPrefixLength();
+								if (ipv6 != null && preffix != null) {
+									printSymbol(doubleTab + "IP/MASK: " + ipv6 + "/" + preffix);
 								}
 							}
 

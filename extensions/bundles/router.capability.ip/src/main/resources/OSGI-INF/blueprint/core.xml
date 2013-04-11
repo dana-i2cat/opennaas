@@ -28,13 +28,13 @@
 	
 	<!-- Factory that creates protocol capabilities -->
 	<bean id="ipCapabilityFactory" class="org.opennaas.extensions.router.capability.ip.IPCapabilityFactory">	
-		<property name="type" value="ipv4"/>
+		<property name="type" value="ip"/>
 	</bean>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="ipCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="ipv4"/>
+			<entry key="capability" value="ip"/>
 			<entry key="capability.model" value="junos"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
@@ -43,21 +43,21 @@
 	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
-		<command name="ipv4/list">
+		<command name="ip/list">
 			<action class="org.opennaas.extensions.router.capability.ip.shell.ListInterfacesCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
-		<command name="ipv4/setIP">
-			<action class="org.opennaas.extensions.router.capability.ip.shell.SetIPv4Command"/>
+		<command name="ip/setIP">
+			<action class="org.opennaas.extensions.router.capability.ip.shell.SetIPCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
-		<command name="ipv4/setInterfaceDescription">
+		<command name="ip/setInterfaceDescription">
 			<action class="org.opennaas.extensions.router.capability.ip.shell.SetInterfaceDescriptionCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
