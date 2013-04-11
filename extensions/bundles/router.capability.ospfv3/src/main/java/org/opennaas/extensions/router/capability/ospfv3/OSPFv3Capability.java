@@ -307,9 +307,10 @@ public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capab
 		for (Service service : lServices) {
 			if (service instanceof OSPFService) {
 				OSPFService ospf = (OSPFService) service;
-				if (ospf.getAlgorithmType().equals(AlgorithmType.OSPFV3))
+				if (ospf.getAlgorithmType().equals(AlgorithmType.OSPFV3)) {
 					ospfService = ospf;
-				break;
+					break;
+				}
 			}
 		}
 		log.info("End of showOSPFv3Configuration call");
