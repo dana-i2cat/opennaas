@@ -43,6 +43,28 @@ public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capab
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IOSPFv3Capability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		super.unregisterService();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.opennaas.extensions.router.capability.ospfv3.IOSPFService#activateOSPFv3()
 	 */
 	@Override

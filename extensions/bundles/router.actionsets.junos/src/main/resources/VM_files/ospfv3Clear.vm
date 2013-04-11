@@ -9,7 +9,7 @@
 	#end
 	<protocols>	
 		<ospf3 operation ="delete">
-		</osp3f>
+		</ospf3>
 	</protocols>
 	#if($logicalRouter.equals("true"))
 		</logical-systems>
