@@ -74,6 +74,27 @@ public class ProtocolsParserTest {
 	}
 
 	@Test
+	public void testParseDisabledEmptyOSPFv3() throws Exception {
+		String message = readStringFromFile("/parsers/getConfigWithDisabledEmptyOSPFv3.xml");
+
+		System model = createSampleModel();
+		ProtocolsParser parser = new ProtocolsParser(model);
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		System updatedModel = parser.getModel();
+
+		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals(1, ospfServices.size());
+
+		OSPFService ospfService = (OSPFService) ospfServices.get(0);
+		Assert.assertTrue("Service state must have been set to DISABLED", EnabledState.DISABLED.equals(ospfService.getEnabledState()));
+		Assert.assertTrue("OSPF Service must be v3", ospfService.getAlgorithmType().equals(AlgorithmType.OSPFV3));
+
+	}
+
+	@Test
 	public void testParseOSPFProtocol() throws Exception {
 		String message = readStringFromFile("/parsers/getConfigWithOSPF.xml");
 
