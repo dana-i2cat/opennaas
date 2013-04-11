@@ -119,7 +119,7 @@ public class ChassisKarafCommandsTests extends AbstractKarafCommandTest
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
 		capabilities.add("queue");
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
 

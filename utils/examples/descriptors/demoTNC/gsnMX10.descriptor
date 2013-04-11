@@ -4,9 +4,9 @@
         <capabilityProperty value="junos" name="actionset.name"/>
         <capabilityProperty value="10.10" name="actionset.version"/>
         <information>
-		<description>Manages the configuration of IPv4 addresses on interfaces.</description>
-		<name>IPv4 capability</name>
-		<type>ipv4</type>
+		<description>Manages the configuration of IP addresses on interfaces.</description>
+		<name>IP capability</name>
+		<type>ip</type>
 	</information>
     </capabilityDescriptors>
 
