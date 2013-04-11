@@ -11,6 +11,7 @@ public class TestsConstants {
 	public static final String	GRE_CAPABILITY_TYPE				= "gretunnel";
 	public static final String	IP_CAPABILITY_TYPE				= "ip";
 	public static final String	OSPF_CAPABILIY_TYPE				= "ospf";
+	public static final String	OSPFv3_CAPABILITY_TYPE			= "ospfv3";
 	public static final String	QUEUE_CAPABILIY_TYPE			= "queue";
 	public static final String	STATIC_ROUTE_CAPABILITY_TYPE	= "staticroute";
 	public static final String	VRRP_CAPABILITY_TYPE			= "vrrp";

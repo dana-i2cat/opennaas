@@ -105,6 +105,7 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ip/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.gretunnel/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospfv3/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.staticroute/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.bgp/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.vrrp/${project.version}</bundle>

@@ -5,8 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class RouteCalculationService as well as methods comparable
@@ -89,7 +88,8 @@ public class RouteCalculationService extends NetworkService implements
 		BGPV1,
 		BGPV2,
 		BGPV3,
-		BGPV4
+		BGPV4,
+		OSPFV3
 	}
 
 	private AlgorithmType	algorithmType;
