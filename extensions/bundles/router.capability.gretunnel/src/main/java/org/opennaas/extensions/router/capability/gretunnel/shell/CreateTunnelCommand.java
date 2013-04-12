@@ -7,12 +7,9 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
@@ -73,18 +70,6 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	private GRETunnelService getTunnelService() throws Exception {
 		// Create the GRETunnelService
 
-		IResource router = getResourceFromFriendlyName(resourceId);
-		ComputerSystem model = (ComputerSystem) router.getModel();
-		GREService greService = model.getAllHostedServicesByType(new GREService()).get(0);
-
-		boolean found = false;
-		for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
-			if (pE.getName().equals(interfaceName))
-				found = true;
-		}
-		if (!found)
-			throw new Exception("GRE Interface not available at this router.");
-
 		GRETunnelService greTunnelService = new GRETunnelService();
 
 		greTunnelService.setName(interfaceName);
@@ -101,17 +86,17 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 			throw new CommandException("The tunnel address is not a valid ipv4/ipv6 address.");
 
 		String address = IPUtilsHelper.getAddressFromIP(ipAddress);
-		String preffix = IPUtilsHelper.getPrefixFromIp(ipAddress);
+		String prefix = IPUtilsHelper.getPrefixFromIp(ipAddress);
 
 		// Create the protocol endpoint
 		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
 			greTunnelEndpoint.setIPv4Address(address);
-			greTunnelEndpoint.setSubnetMask(preffix);
+			greTunnelEndpoint.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(prefix));
 			greTunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 		}
 		else {
 			greTunnelEndpoint.setIPv6Address(address);
-			greTunnelEndpoint.setPrefixLength(Short.valueOf(preffix));
+			greTunnelEndpoint.setPrefixLength(Short.valueOf(prefix));
 			greTunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
 		}
 

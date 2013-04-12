@@ -65,12 +65,12 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 		}
 		for (GRETunnelService greTunnelService : lGRETunnelService) {
 			printSymbol("GRE tunnel: " + greTunnelService.getName());
-			printSymbol("Source IP address: " + greTunnelService.getGRETunnelConfiguration().getSourceAddress());
-			printSymbol("Destiny IP address: " + greTunnelService.getGRETunnelConfiguration().getDestinationAddress());
+			printSymbol("\tSource IP address: " + greTunnelService.getGRETunnelConfiguration().getSourceAddress());
+			printSymbol("\tDestiny IP address: " + greTunnelService.getGRETunnelConfiguration().getDestinationAddress());
 			if (!greTunnelService.getProtocolEndpoint().isEmpty()) {
 				for (ProtocolEndpoint pep : greTunnelService.getProtocolEndpoint()) {
 					GRETunnelEndpoint greTunnelEndpoint = (GRETunnelEndpoint) pep;
-					printSymbol("Tunnel IP address: " + getIPTunnelAddress(greTunnelEndpoint));
+					printSymbol("\tTunnel IP address: " + getIPTunnelAddress(greTunnelEndpoint));
 				}
 			}
 			printSymbol(doubleLine);
