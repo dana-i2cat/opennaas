@@ -223,14 +223,18 @@ public class IPInterfaceParser extends DigesterEngine {
 
 					IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) pE;
 					GRETunnelEndpoint gretunnelEndpoint = new GRETunnelEndpoint();
+
 					String ip = ipProtocolEndpoint.getIPv4Address();
-					if (ip != null) {
-						gretunnelEndpoint.setIPv4Address(ip);
+					if (ipProtocolEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+
+						gretunnelEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+						gretunnelEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+						gretunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 					} else {
-						ip = ipProtocolEndpoint.getIPv6Address();
-						gretunnelEndpoint.setIPv6Address(ip);
+						gretunnelEndpoint.setIPv6Address(ipProtocolEndpoint.getIPv6Address());
+						gretunnelEndpoint.setPrefixLength(ipProtocolEndpoint.getPrefixLength());
+						gretunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
 					}
-					gretunnelEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
 
 					gretunnelService.addProtocolEndpoint(gretunnelEndpoint);
 				}
