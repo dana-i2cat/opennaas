@@ -1,0 +1,35 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<interfaces>	
+		<interface>
+			<name>$param.Name</name>
+			<unit operation="replace">
+				<name>$portNumber</name>
+				<tunnel>
+					<source>$param.GRETunnelConfiguration.getSourceAddress()</source>
+					<destination>$param.GRETunnelConfiguration.getDestinationAddress()</destination>
+				</tunnel>
+				<family>
+					<inet/>
+					<inet6>
+						<address>
+							<name>$param.ProtocolEndpoint.get(0).getIPv6Address()/$param.ProtocolEndpoint.get(0).getPrefixLength()</name>
+						</address>
+					</inet6>
+				</family>
+				<copy-tos-to-outer-ip-header/>
+			</unit>
+		</interface>
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
+
