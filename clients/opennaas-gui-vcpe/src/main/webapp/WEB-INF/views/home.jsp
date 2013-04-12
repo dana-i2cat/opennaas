@@ -11,7 +11,7 @@
 			<div class="title"><spring:message code="home.template.sp_vcpe.title"/></div>
 			<div class="description"><spring:message code="home.template.sp_vcpe.description"/></div>
 			<div class="template_image">
-				<img src="<c:url value="/resources/images/templates/sp_vcpe.png" />"  title="VCPE" width="300" alt="Single Provider">
+				<img src="<c:url value="/resources/images/templates/sp_vcpe.png" />"  title="VCPE" width="300" alt="Single Provider - IPv4">
 			</div>
 	</li>
 	<li id="mp_vcpe" class="ui-widget-content template">
@@ -21,6 +21,13 @@
 	 			<img src="<c:url value="/resources/images/templates/mp_vcpe.png" />"  title="UNIC" width="300" alt="Multiple Networks">
 	 		</div>
 	</li>
+	<li id="sp_vcpe_v6" class="ui-widget-content template">
+			<div class="title"><spring:message code="home.template.sp_vcpe_v6.title"/></div>
+			<div class="description"><spring:message code="home.template.sp_vcpe_v6.description"/></div>
+			<div class="template_image">
+				<img src="<c:url value="/resources/images/templates/sp_vcpe_v6.png" />"  title="VCPE" width="300" alt="Single Provider - IPv6">
+			</div>
+	</li> 
 </ol>
 <br>
 <div id="buttonLine">
