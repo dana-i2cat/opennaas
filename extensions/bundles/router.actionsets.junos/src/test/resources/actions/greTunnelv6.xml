@@ -1,0 +1,24 @@
+<configuration>
+	<interfaces>	
+		<interface>
+			<name>gr-0/1/1</name>
+			<unit operation="replace">
+				<name>2</name>
+				<tunnel>
+					<source>147.56.89.62</source>
+					<destination>193.45.23.1</destination>
+				</tunnel>
+				<family>
+					<inet/>
+					<inet6>
+						<address>
+							<name>51:4F3::3A:B1/64</name>
+						</address>
+					</inet6>
+				</family>
+				<copy-tos-to-outer-ip-header/>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>
+
