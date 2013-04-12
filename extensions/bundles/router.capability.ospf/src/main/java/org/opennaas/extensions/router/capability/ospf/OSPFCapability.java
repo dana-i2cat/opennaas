@@ -161,7 +161,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("Start of deactivateOSPF call");
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.DISABLED);
-		service.setAlgorithmType(AlgorithmType.OSPFV3);
+		service.setAlgorithmType(AlgorithmType.OSPFV2);
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_DEACTIVATE, service);
 		queueAction(action);
 		log.info("End of deactivateOSPF call");
