@@ -1,17 +1,17 @@
 shell:echo "INITIALIZE RESOURCES"
 ##Creating heanet resource
 resource:create /home/adrian/heanetM20.descriptor
-protocols:context router:heanetM20 netconf ssh://user:password@hea.net:22/netconf
+protocols:context router:heanetM20 netconf password ssh://user:password@hea.net:22/netconf
 resource:start router:heanetM20
 
 ##Creating GSN resource
 resource:create /home/adrian/gsnMX10.descriptor
-protocols:context router:gsnMX10 netconf ssh://user:password@gsn.hea.net:22/netconf
+protocols:context router:gsnMX10 netconf password ssh://user:password@gsn.hea.net:22/netconf
 resource:start router:gsnMX10
 
 ##Creating UNI-C resource
 resource:create /home/adrian/unicM7i.descriptor
-protocols:context router:unicM7i netconf ssh://user:password@unic.hea.net:22/netconf
+protocols:context router:unicM7i netconf password ssh://user:password@unic.hea.net:22/netconf
 resource:start router:unicM7i
 
 ##Create demo network resource (with empty topology)
@@ -76,14 +76,14 @@ net:l2attach network:networkdemo router:logicalgsn1:ge-1/0/7.60 router:logicalun
 
 shell:echo "SET IP ADDRESSES"
 ##Set ip addresses on router interfaces
-ipv4:setip router:logicalheanet1 ge-0/2/0.80 192.168.1.5 255.255.255.252
-ipv4:setip router:logicalgsn1 ge-1/0/7.59 192.168.1.6 255.255.255.252
-ipv4:setip router:logicalgsn1 ge-1/0/7.60 192.168.1.9 255.255.255.252
-ipv4:setip router:logicalunic1 ge-2/0/1.81 192.168.1.10 255.255.255.252
-ipv4:setip router:logicalunic1 ge-2/0/0.13 192.168.1.13 255.255.255.252
-ipv4:setip router:logicalheanet1 fe-0/3/0.13 192.168.1.14 255.255.255.252
-ipv4:setip router:logicalheanet1 fe-0/3/3.1 193.1.190.250 255.255.255.0
-ipv4:setip router:logicalunic1 ge-2/0/0.12 193.1.190.245 255.255.255.0
+ip:setip router:logicalheanet1 ge-0/2/0.80 192.168.1.5/30
+ip:setip router:logicalgsn1 ge-1/0/7.59 192.168.1.6/30
+ip:setip router:logicalgsn1 ge-1/0/7.60 192.168.1.9/30
+ip:setip router:logicalunic1 ge-2/0/1.81 192.168.1.10/30
+ip:setip router:logicalunic1 ge-2/0/0.13 192.168.1.13/30
+ip:setip router:logicalheanet1 fe-0/3/0.13 192.168.1.14/30
+ip:setip router:logicalheanet1 fe-0/3/3.1 193.1.190.250/24
+ip:setip router:logicalunic1 ge-2/0/0.12 193.1.190.245/24
 queue:execute router:logicalheanet1
 queue:execute router:logicalunic1
 queue:execute router:logicalgsn1

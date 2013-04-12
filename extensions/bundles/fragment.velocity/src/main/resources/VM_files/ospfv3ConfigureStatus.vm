@@ -1,0 +1,24 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<protocols>
+		<ospf3>
+		#if( $param.getEnabledState().toString().equals($disabledState))
+		##this should be called with MERGE operation as default
+		<disable/>
+		#else
+		##this should be called with NONE operation as default
+		<disable operation="delete"></disable>
+		#end
+		</ospf3>
+	</protocols>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
