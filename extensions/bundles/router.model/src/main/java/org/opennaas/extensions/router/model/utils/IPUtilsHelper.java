@@ -136,6 +136,11 @@ public class IPUtilsHelper {
 		return InetAddresses.isInetAddress(ipAddress);
 	}
 
+	public static boolean isIPValidAddress(String ipAddress) {
+
+		return (isIPv4ValidAddress(ipAddress) || isIPv6ValidAddress(ipAddress));
+	}
+
 	public static boolean isIPv4ValidAddress(String ipAddress) {
 
 		if (ipAddress.split("/").length != 2)

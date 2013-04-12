@@ -4,6 +4,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -12,6 +13,8 @@ import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
@@ -25,16 +28,13 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	@Argument(index = 1, name = "interfaceName", description = "GRE interface name", required = true, multiValued = false)
 	private String	interfaceName;
 
-	@Argument(index = 2, name = "ipv4Address", description = "IP of the tunnel", required = true, multiValued = false)
-	private String	ipv4Address;
+	@Argument(index = 2, name = "ipAddress", description = "IP of the tunnel", required = true, multiValued = false)
+	private String	ipAddress;
 
-	@Argument(index = 3, name = "subnetMask", description = "Mask of the tunnel", required = true, multiValued = false)
-	private String	subnetMask;
-
-	@Argument(index = 4, name = "ipSource", description = "IP source address", required = true, multiValued = false)
+	@Argument(index = 3, name = "ipSource", description = "IP source address", required = true, multiValued = false)
 	private String	ipSource;
 
-	@Argument(index = 5, name = "ipDestiny", description = "IP destination address", required = true, multiValued = false)
+	@Argument(index = 4, name = "ipDestiny", description = "IP destination address", required = true, multiValued = false)
 	private String	ipDestiny;
 
 	/*
@@ -95,10 +95,26 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 		greTunnelConfiguration.setDestinationAddress(ipDestiny);
 		greTunnelService.setGRETunnelConfiguration(greTunnelConfiguration);
 
-		// Create the protocol endpoint
 		GRETunnelEndpoint greTunnelEndpoint = new GRETunnelEndpoint();
-		greTunnelEndpoint.setIPv4Address(ipv4Address);
-		greTunnelEndpoint.setSubnetMask(subnetMask);
+
+		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
+			throw new CommandException("The tunnel address is not a valid ipv4/ipv6 address.");
+
+		String address = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String preffix = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+		// Create the protocol endpoint
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+			greTunnelEndpoint.setIPv4Address(address);
+			greTunnelEndpoint.setSubnetMask(preffix);
+			greTunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
+		}
+		else {
+			greTunnelEndpoint.setIPv6Address(address);
+			greTunnelEndpoint.setPrefixLength(Short.valueOf(preffix));
+			greTunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
+		}
+
 		greTunnelService.addProtocolEndpoint(greTunnelEndpoint);
 		return greTunnelService;
 	}

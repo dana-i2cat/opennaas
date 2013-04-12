@@ -32,7 +32,6 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -40,6 +39,8 @@ import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
@@ -172,8 +173,9 @@ public class GRETunnelCapabilityIntegrationTest {
 		ProtocolEndpoint pE = greService.getProtocolEndpoint().get(0);
 		Assert.assertTrue(pE instanceof GRETunnelEndpoint);
 		GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
-		Assert.assertEquals(gE.getIPv4Address(), IPV4_ADDRESS);
-		Assert.assertEquals(gE.getSubnetMask(), SUBNET_MASK);
+		Assert.assertEquals(IPV4_ADDRESS, gE.getIPv4Address());
+		Assert.assertEquals(SUBNET_MASK, gE.getSubnetMask());
+		Assert.assertEquals(ProtocolIFType.IPV4, gE.getProtocolIFType());
 
 	}
 

@@ -21,6 +21,7 @@ import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
@@ -249,6 +250,7 @@ public class ParamCreationHelper {
 		GRETunnelEndpoint gE = new GRETunnelEndpoint();
 		gE.setIPv4Address(ipv4Address);
 		gE.setSubnetMask(subnetMask);
+		gE.setProtocolIFType(ProtocolIFType.IPV6);
 
 		greService.setGRETunnelConfiguration(greConfig);
 		greService.addProtocolEndpoint(gE);

@@ -12,6 +12,7 @@ import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
@@ -83,9 +84,19 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 	 * @return ip/mask
 	 */
 	private String getIPTunnelAddress(GRETunnelEndpoint greTunnelEndpoint) {
-		String ipAddress = greTunnelEndpoint.getIPv4Address();
-		String mask = greTunnelEndpoint.getSubnetMask() != null ?
-				IPUtilsHelper.parseLongToShortIpv4NetMask(greTunnelEndpoint.getSubnetMask()) : null;
-		return (ipAddress != null && mask != null) ? ipAddress + "/" + mask : "";
+
+		String ipAddress;
+		String prefix;
+
+		if (greTunnelEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+			ipAddress = greTunnelEndpoint.getIPv4Address();
+			prefix = greTunnelEndpoint.getSubnetMask() != null ?
+					IPUtilsHelper.parseLongToShortIpv4NetMask(greTunnelEndpoint.getSubnetMask()) : null;
+		} else {
+			ipAddress = greTunnelEndpoint.getIPv6Address();
+			prefix = String.valueOf(greTunnelEndpoint.getPrefixLength());
+		}
+
+		return (ipAddress != null && prefix != null) ? ipAddress + "/" + prefix : "";
 	}
 }

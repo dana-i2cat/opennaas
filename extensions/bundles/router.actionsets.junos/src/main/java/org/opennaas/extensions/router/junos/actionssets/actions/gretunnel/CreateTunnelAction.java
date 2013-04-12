@@ -3,21 +3,25 @@ package org.opennaas.extensions.router.junos.actionssets.actions.gretunnel;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.GRETunnelService;
-import org.opennaas.extensions.router.model.ManagedElement;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GRETunnelEndpoint;
+import org.opennaas.extensions.router.model.GRETunnelService;
+import org.opennaas.extensions.router.model.ManagedElement;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class CreateTunnelAction extends JunosAction {
+
+	private static final String	TEMPLATE_V4		= "/VM_files/createTunnel.vm";
+	private static final String	TEMPLATE_V6		= "/VM_files/createTunnelv6.vm";
 
 	private static final String	NAME_PATTERN	= "gr-(\\d{1}/\\d{1}/\\d*)";
 	private static final String	PORT_PATTERN	= "\\d*";
@@ -30,7 +34,6 @@ public class CreateTunnelAction extends JunosAction {
 
 	public void initialize() {
 		this.setActionID(ActionConstants.CREATETUNNEL);
-		setTemplate("/VM_files/createTunnel.vm");
 		this.protocolName = "netconf";
 	}
 
@@ -57,12 +60,27 @@ public class CreateTunnelAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
+
 		if (params == null)
 			throw new ActionException("Params can't be null for the " + getActionID() + " action.");
+
 		if (!(params instanceof GRETunnelService))
 			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
+
 		if (!checkNamePattern(((GRETunnelService) params).getName()))
 			throw new ActionException("The name of the GRE tunnel must have the following format -> gre.[1..n]");
+
+		GRETunnelService greService = ((GRETunnelService) params);
+		if (greService.getProtocolEndpoint().size() == 0)
+			throw new ActionException("A GRETunnel Endpoint must be configured in the service.");
+
+		if (!(greService.getProtocolEndpoint().get(0) instanceof GRETunnelEndpoint))
+			throw new ActionException("A GRETunnel Endpoint must be configured in the service.");
+
+		if (!(greService.getProtocolEndpoint().get(0).getProtocolIFType().equals(ProtocolIFType.IPV4)) &&
+				!((greService.getProtocolEndpoint().get(0).getProtocolIFType().equals(ProtocolIFType.IPV6))))
+			throw new ActionException("GRETunnel Endpoint must be configured with protocol IPv4 or IPv6.");
+
 		return true;
 	}
 
@@ -70,6 +88,7 @@ public class CreateTunnelAction extends JunosAction {
 	public void prepareMessage() throws ActionException {
 
 		checkParams(params);
+		setTemplate(params);
 		try {
 			IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
 			Map<String, Object> extraParams = new HashMap<String, Object>();
@@ -99,6 +118,18 @@ public class CreateTunnelAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
+	}
+
+	private void setTemplate(Object params) throws ActionException {
+		GRETunnelService service = (GRETunnelService) params;
+		ProtocolIFType type = service.getProtocolEndpoint().get(0).getProtocolIFType();
+		if (type.equals(ProtocolIFType.IPV4))
+			this.template = TEMPLATE_V4;
+		else if (type.equals(ProtocolIFType.IPV6))
+			this.template = TEMPLATE_V6;
+		else
+			throw new ActionException("ProtofolIFType of GRETunnelEndpoint has to be set either to IPv4 or IPv6");
+
 	}
 
 	/**
