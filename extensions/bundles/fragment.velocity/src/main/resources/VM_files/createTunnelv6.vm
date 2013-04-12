@@ -20,7 +20,7 @@
 					<inet/>
 					<inet6>
 						<address>
-							<name>$param.ProtocolEndpoint.get(0).getIPv6Address()/$param.ProtocolEndpoint.get(0).getPreffixLength()</name>
+							<name>$param.ProtocolEndpoint.get(0).getIPv6Address()/$param.ProtocolEndpoint.get(0).getPrefixLength()</name>
 						</address>
 					</inet6>
 				</family>

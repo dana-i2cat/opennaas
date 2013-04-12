@@ -4,6 +4,7 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -40,6 +41,7 @@ import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
@@ -63,10 +65,10 @@ public class GRETunnelCapabilityIntegrationTest {
 																	.getLog(GRETunnelCapabilityIntegrationTest.class);
 
 	protected static final String		TUNNEL_NAME			= "gr-1/0/3.1";
-	protected static final String		IPV4_ADDRESS		= "192.168.32.1";
-	protected static final String		SUBNET_MASK			= "255.255.255.0";
+	protected static final String		IPv4_ADDRESS		= "192.168.32.1/24";
 	protected static final String		IP_SOURCE			= "147.56.89.62";
 	protected static final String		IP_DESTINY			= "193.45.23.1";
+	private static final String			IPv6_ADDRESS		= "2001:43:F3::12/64";
 
 	protected IQueueManagerCapability	queueCapability;
 	protected IGRETunnelCapability		greTunnelCapability;
@@ -109,6 +111,7 @@ public class GRETunnelCapabilityIntegrationTest {
 				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
+				openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -120,7 +123,7 @@ public class GRETunnelCapabilityIntegrationTest {
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
 
 		greCapability
-				.createGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+				.createGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPv4_ADDRESS, IP_SOURCE, IP_DESTINY));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -155,11 +158,14 @@ public class GRETunnelCapabilityIntegrationTest {
 
 		ComputerSystem routerModel = (ComputerSystem) routerResource.getModel();
 		routerModel.addHostedService(
-				ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE,
+				ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPv4_ADDRESS, IP_SOURCE,
+						IP_DESTINY));
+		routerModel.addHostedService(
+				ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPv6_ADDRESS, IP_SOURCE,
 						IP_DESTINY));
 
 		List<GRETunnelService> greServices = greCapability.showGRETunnelConfiguration();
-		Assert.assertEquals(greServices.size(), 1);
+		Assert.assertEquals(greServices.size(), 2);
 
 		GRETunnelService greService = greServices.get(0);
 		Assert.assertEquals(TUNNEL_NAME, greService.getName());
@@ -173,10 +179,42 @@ public class GRETunnelCapabilityIntegrationTest {
 		ProtocolEndpoint pE = greService.getProtocolEndpoint().get(0);
 		Assert.assertTrue(pE instanceof GRETunnelEndpoint);
 		GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
-		Assert.assertEquals(IPV4_ADDRESS, gE.getIPv4Address());
-		Assert.assertEquals(SUBNET_MASK, gE.getSubnetMask());
+		Assert.assertEquals(IPUtilsHelper.getAddressFromIP(IPv4_ADDRESS), gE.getIPv4Address());
+		Assert.assertEquals(IPUtilsHelper.getPrefixFromIp(IPv4_ADDRESS), IPUtilsHelper.parseLongToShortIpv4NetMask(gE.getSubnetMask()));
 		Assert.assertEquals(ProtocolIFType.IPV4, gE.getProtocolIFType());
 
+		greService = greServices.get(1);
+		Assert.assertEquals(TUNNEL_NAME, greService.getName());
+
+		Assert.assertNotNull(greService.getGRETunnelConfiguration());
+		greConfig = greService.getGRETunnelConfiguration();
+		Assert.assertEquals(IP_SOURCE, greConfig.getSourceAddress());
+		Assert.assertEquals(IP_DESTINY, greConfig.getDestinationAddress());
+
+		Assert.assertEquals(greService.getProtocolEndpoint().size(), 1);
+		pE = greService.getProtocolEndpoint().get(0);
+		Assert.assertTrue(pE instanceof GRETunnelEndpoint);
+		gE = (GRETunnelEndpoint) pE;
+		Assert.assertEquals(IPUtilsHelper.getAddressFromIP(IPv6_ADDRESS), gE.getIPv6Address());
+		Assert.assertEquals(IPUtilsHelper.getPrefixFromIp(IPv6_ADDRESS), String.valueOf(gE.getPrefixLength()));
+		Assert.assertEquals(ProtocolIFType.IPV6, gE.getProtocolIFType());
+	}
+
+	@Test
+	public void createGRETunnelv6Test() throws CapabilityException, ProtocolException
+	{
+		log.info("Test createGRETunnel method");
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
+
+		greCapability
+				.createGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPv6_ADDRESS, IP_SOURCE, IP_DESTINY));
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
 	}
 
 	@Test
@@ -185,7 +223,7 @@ public class GRETunnelCapabilityIntegrationTest {
 		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
 
-		greCapability.createGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+		greCapability.createGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPv4_ADDRESS, IP_SOURCE, IP_DESTINY));
 		greCapability.deleteGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, null, null, null, null));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
