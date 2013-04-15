@@ -132,8 +132,6 @@ public class GRETunnelCapabilityIntegrationTest {
 	}
 
 	@Test
-	@Ignore
-	// FIXME: Mock Router does not contain gre configuration
 	public void deleteGRETunnelTest() throws CapabilityException, ProtocolException {
 		log.info("Test createGRETunnel method");
 
@@ -247,8 +245,6 @@ public class GRETunnelCapabilityIntegrationTest {
 	}
 
 	@Test
-	@Ignore
-	// FIXME: Mock Router does not contain gre configuration
 	public void testGREDeleteTunnelAction() throws CapabilityException, ProtocolException {
 		log.info("TEST GRE TUNNEL ACTION");
 		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
@@ -271,6 +267,36 @@ public class GRETunnelCapabilityIntegrationTest {
 		Assert.assertEquals(queueResponse.getRestoreResponse().getStatus(), ActionResponse.STATUS.PENDING);
 
 		Assert.assertTrue(queueResponse.isOk());
+
+		queue = (List<IAction>) queueCapability.getActions();
+		Assert.assertEquals(queue.size(), 0);
+	}
+
+	/**
+	 * This test require the dirty model, since the checkParams method would check there's a GreTunnelService in the model.
+	 * 
+	 * @throws CapabilityException
+	 * @throws ProtocolException
+	 */
+	@Test
+	@Ignore
+	public void testDeleteUnexistingTunnelAction() throws CapabilityException, ProtocolException {
+		log.info("TEST GRE TUNNEL ACTION");
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
+
+		greCapability.deleteGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
+		Assert.assertEquals(queue.size(), 1);
+
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertEquals(queueResponse.getResponses().size(), 1);
+
+		Assert.assertFalse(queueResponse.isOk());
 
 		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertEquals(queue.size(), 0);
