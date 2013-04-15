@@ -112,7 +112,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	@Deprecated
 	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress, String isDiscard) throws CapabilityException {
 
-		if (IPUtilsHelper.isIPv4ValidAddress(netIdIpAdress))
+		if (IPUtilsHelper.validateIpAddressPattern(netIdIpAdress))
 			netIdIpAdress = netIdIpAdress + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(maskIpAdress);
 		else
 			netIdIpAdress = netIdIpAdress + "/" + maskIpAdress;
@@ -136,7 +136,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	@Override
 	public void deleteStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
 
-		if (IPUtilsHelper.isIPv4ValidAddress(netIdIpAdress))
+		if (IPUtilsHelper.validateIpAddressPattern(netIdIpAdress))
 			netIdIpAdress = netIdIpAdress + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(maskIpAdress);
 		else
 			netIdIpAdress = netIdIpAdress + "/" + maskIpAdress;

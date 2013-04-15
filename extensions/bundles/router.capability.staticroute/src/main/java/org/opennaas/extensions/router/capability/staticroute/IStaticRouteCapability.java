@@ -36,7 +36,7 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @throws CapabilityException
 	 */
 	@GET
-	@Path("/createStaticRoute")
+	@Path("/createStaticRouteComposedIP")
 	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress,
 			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard) throws CapabilityException;
 
@@ -63,7 +63,7 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @throws CapabilityException
 	 */
 	@GET
-	@Path("/deleteStaticRoute")
+	@Path("/deleteStaticRouteComposedIP")
 	public void deleteStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("nextHopIpAddress") String nextHopIpAddress)
 			throws CapabilityException;
 
