@@ -125,14 +125,14 @@ public class StaticRouteIntegrationTest {
 		queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
-		staticRouteCapability.createStaticRoute("45:34fa:12::4e/64", "192.168.1.1", "false");
+		staticRouteCapability.createStaticRoute("45:34fa:12::4e/64", "45:34fa:12::4e:12", "false");
 
 		queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
-		staticRouteCapability.createStaticRoute("45:34fa:12::4e", "64", "192.168.1.1", "false");
+		staticRouteCapability.createStaticRoute("45:34fa:12::4e", "64", "45:34fa:12::4e:12", "false");
 
 		queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -167,14 +167,14 @@ public class StaticRouteIntegrationTest {
 		queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
-		staticRouteCapability.deleteStaticRoute("45:34fa:12::4e/64", "192.168.1.1");
+		staticRouteCapability.deleteStaticRoute("45:34fa:12::4e/64", "45:34fa:12::4e:12");
 
 		queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
-		staticRouteCapability.deleteStaticRoute("45:34fa:12::4e", "64", "192.168.1.1");
+		staticRouteCapability.deleteStaticRoute("45:34fa:12::4e", "64", "45:34fa:12::4e:12");
 
 		queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
