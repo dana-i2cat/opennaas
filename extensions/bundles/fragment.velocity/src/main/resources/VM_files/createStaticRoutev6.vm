@@ -8,20 +8,19 @@
 			<name>$elementName</name>
 	#end
 	<routing-options>
-		<rib>
-			<inet6.0>
-				<static>
-					<route>
-						<name>$param[0]</name>
-						#if(!$param[1].equals(""))
-						<next-hop>$param[1]</next-hop>
-						#end
-						#if($param[2].equals("true"))
-						<discard/>
-						#end
-					</route>
-				</static>
-			</inet6.0>
+		<rib> 
+			<name>inet6.0</name>
+			<static>
+				<route>
+					<name>$param[0]</name>
+					#if(!$param[1].equals(""))
+					<next-hop>$param[1]</next-hop>
+					#end
+					#if($param[2].equals("true"))
+					<discard/>
+					#end
+				</route>
+			</static>
 		</rib>
 	</routing-options>
 	#if($logicalRouter.equals("true"))
