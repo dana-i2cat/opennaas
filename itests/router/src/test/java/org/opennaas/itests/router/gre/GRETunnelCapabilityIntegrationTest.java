@@ -250,6 +250,14 @@ public class GRETunnelCapabilityIntegrationTest {
 		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
 
+		// add gre tunnel service to the router model.
+		GRETunnelService greTunnelService = new GRETunnelService();
+		greTunnelService.setName(TUNNEL_NAME);
+
+		ComputerSystem model = (ComputerSystem) routerResource.getModel();
+		model.addHostedService(greTunnelService);
+		routerResource.setModel(model);
+
 		greCapability.deleteGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, null, null, null, null));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
