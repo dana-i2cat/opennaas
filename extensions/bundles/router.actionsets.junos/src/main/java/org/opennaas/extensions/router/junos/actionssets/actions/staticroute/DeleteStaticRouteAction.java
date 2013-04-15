@@ -20,16 +20,15 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
  */
 public class DeleteStaticRouteAction extends JunosAction {
 
-	private static final String	VELOCITY_TEMPLATE	= "/VM_files/deleteStaticRoute.vm";
-
-	private static final String	PROTOCOL_NAME		= "netconf";
+	private static final String	VELOCITY_TEMPLATE_V4	= "/VM_files/deleteStaticRoute.vm";
+	private static final String	VELOCITY_TEMPLATE_V6	= "/VM_files/deleteStaticRoutev6.vm";
+	private static final String	PROTOCOL_NAME			= "netconf";
 
 	/**
 	 * 
 	 */
 	public DeleteStaticRouteAction() {
 		setActionID(ActionConstants.STATIC_ROUTE_DELETE);
-		setTemplate(VELOCITY_TEMPLATE);
 		this.protocolName = PROTOCOL_NAME;
 	}
 
@@ -60,6 +59,7 @@ public class DeleteStaticRouteAction extends JunosAction {
 	 */
 	@Override
 	public void prepareMessage() throws ActionException {
+		setTemplate();
 		validate();
 		try {
 			String elementName = "";
@@ -97,7 +97,7 @@ public class DeleteStaticRouteAction extends JunosAction {
 	 * 
 	 * @param params
 	 *            it should be a String[]
-	 * @return false if params is null, is not a String[], lenght != 3 or not have the pattern [0..255].[0..255].[0..255].[0..255]
+	 * @return false if params is null, is not a String[], lenght != 2 or are not valid IP addresses or they are from different type.
 	 */
 	@Override
 	public boolean checkParams(Object params) {
@@ -107,14 +107,17 @@ public class DeleteStaticRouteAction extends JunosAction {
 			paramsOK = false;
 		} else {
 			String[] aParams = (String[]) params;
-			if (aParams.length != 3) {
+			if (aParams.length != 2) {
 				paramsOK = false;
-			} else if (!IPUtilsHelper
-					.validateIpAddressPattern(aParams[0]) ||
-					!IPUtilsHelper
-							.validateIpAddressPattern(aParams[1]) ||
-					!IPUtilsHelper
-							.validateIpAddressPattern(aParams[2])) {
+			} else if (!IPUtilsHelper.isIPValidAddress(aParams[0])
+					||
+					(!aParams[1].equals("") && !IPUtilsHelper.isIPWithoutMaskValidAddress(aParams[1]))) {
+				paramsOK = false;
+			} else if (IPUtilsHelper.isIPv4ValidAddress(aParams[0]) && (!aParams[1].equals("")) && (!IPUtilsHelper
+					.validateIpAddressPattern(aParams[1]))) {
+				paramsOK = false;
+			} else if (!IPUtilsHelper.isIPv4ValidAddress(aParams[0]) && (!aParams[1].equals("")) && (IPUtilsHelper
+					.validateIpAddressPattern(aParams[1]))) {
 				paramsOK = false;
 			}
 		}
@@ -146,5 +149,14 @@ public class DeleteStaticRouteAction extends JunosAction {
 		if (!checkParams(params)) {
 			throw new ActionException("Invalid parameters for action " + getActionID());
 		}
+	}
+
+	private void setTemplate() {
+		String[] aParams = (String[]) params;
+		if (IPUtilsHelper.isIPv4ValidAddress(aParams[0]))
+			this.template = VELOCITY_TEMPLATE_V4;
+		else
+			this.template = VELOCITY_TEMPLATE_V6;
+
 	}
 }

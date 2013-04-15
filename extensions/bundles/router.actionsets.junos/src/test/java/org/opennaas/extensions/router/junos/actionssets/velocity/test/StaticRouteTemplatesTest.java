@@ -57,10 +57,9 @@ public class StaticRouteTemplatesTest extends VelocityTemplatesTest {
 	 */
 	private String[] getParams() {
 		String[] params = new String[4];
-		params[0] = "0.0.0.0";
-		params[1] = "0.0.0.0";
-		params[2] = "192.168.1.1";
-		params[3] = "false";
+		params[0] = "0.0.0.0/0";
+		params[1] = "192.168.1.1";
+		params[2] = "false";
 		return params;
 	}
 
