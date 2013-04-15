@@ -68,6 +68,7 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 
 			interfaceIPProtocolEndpoint.addLogiaclPort(routerInterface);
 			vrrpProtocolEndpoint.bindServiceAccessPoint(interfaceIPProtocolEndpoint);
+			vrrpProtocolEndpoint.setProtocolIFType(interfaceIPProtocolEndpoint.getProtocolIFType());
 			vrrpProtocolEndpoint.setService(vrrpGroup);
 
 			vrrpCapability.configureVRRP(vrrpProtocolEndpoint);

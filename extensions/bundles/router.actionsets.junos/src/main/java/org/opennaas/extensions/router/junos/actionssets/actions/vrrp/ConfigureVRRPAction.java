@@ -18,13 +18,17 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class ConfigureVRRPAction extends JunosAction {
-	Log	log	= LogFactory.getLog(ConfigureVRRPAction.class);
+	Log							log						= LogFactory.getLog(ConfigureVRRPAction.class);
+
+	private static final String	VELOCITY_TEMPLATE_IPv4	= "/VM_files/configureVRRP.vm";
+	private static final String	VELOCITY_TEMPLATE_IPv6	= "/VM_files/configureVRRPIPv6.vm";
 
 	public ConfigureVRRPAction() {
 		super();
@@ -64,47 +68,56 @@ public class ConfigureVRRPAction extends JunosAction {
 			return false;
 		}
 		// correct instance received
-		if (!(params instanceof VRRPProtocolEndpoint)) {
+		if (!(params instanceof VRRPProtocolEndpoint))
 			return false;
-		} else {
-			List<ProtocolEndpoint> protocolEndpoints = ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints();
-			// VRRPProtocolEndpoint has 1 ProtocolEndpoint
-			if (protocolEndpoints.size() != 1) {
-				return false;
-			} else {
-				// protocolEndpoint is an instance of IPProtocolEndpoint
-				ProtocolEndpoint protocolEndpoint = protocolEndpoints.get(0);
-				if (!(protocolEndpoint instanceof IPProtocolEndpoint)) {
-					return false;
-				} else {
-					// protocolEndpoint has 1 LogicalPort
-					List<LogicalPort> logicalPorts = ((IPProtocolEndpoint) protocolEndpoint).getLogicalPorts();
-					if (logicalPorts.size() != 1) {
-						return false;
-					} else {
-						// logicalPort is an instance of NetworkPort
-						LogicalPort logicalPort = logicalPorts.get(0);
-						if (!(logicalPort instanceof NetworkPort)) {
-							return false;
-						} else {
-							// service is an instance of VRRPGroup
-							Service service = ((VRRPProtocolEndpoint) params).getService();
-							if (!(service instanceof VRRPGroup)) {
-								return false;
-							}
-						}
-					}
-				}
-			}
+
+		VRRPProtocolEndpoint pE = (VRRPProtocolEndpoint) params;
+
+		// ProtocolIFtype not set or not correct.
+		if (pE.getProtocolIFType() == null)
+			return false;
+
+		if (!pE.getProtocolIFType().equals(ProtocolIFType.IPV4) && !pE.getProtocolIFType().equals(ProtocolIFType.IPV6))
+			return false;
+
+		List<ProtocolEndpoint> protocolEndpoints = ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints();
+		// VRRPProtocolEndpoint has 1 ProtocolEndpoint
+		if (protocolEndpoints.size() != 1)
+			return false;
+
+		// protocolEndpoint is an instance of IPProtocolEndpoint
+		ProtocolEndpoint protocolEndpoint = protocolEndpoints.get(0);
+		if (!(protocolEndpoint instanceof IPProtocolEndpoint))
+			return false;
+
+		// ProtocolEndpoint and VRRPProtocolEndpoint with different protocols.
+		if (!protocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
+			return false;
+
+		// protocolEndpoint has 1 LogicalPort
+		List<LogicalPort> logicalPorts = ((IPProtocolEndpoint) protocolEndpoint).getLogicalPorts();
+		if (logicalPorts.size() != 1)
+			return false;
+		// logicalPort is an instance of NetworkPort
+		LogicalPort logicalPort = logicalPorts.get(0);
+		if (!(logicalPort instanceof NetworkPort))
+			return false;
+
+		// service is an instance of VRRPGroup
+		Service service = ((VRRPProtocolEndpoint) params).getService();
+		if (!(service instanceof VRRPGroup)) {
+			return false;
 		}
+
 		// structure correct
 		return true;
 	}
 
 	@Override
 	public void prepareMessage() throws ActionException {
-		if (template == null || template.equals(""))
-			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
+
+		setTemplate();
+
 		try {
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 
@@ -136,5 +149,16 @@ public class ConfigureVRRPAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
+	}
+
+	private void setTemplate() throws ActionException {
+		VRRPProtocolEndpoint pE = (VRRPProtocolEndpoint) params;
+		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV4))
+			this.template = VELOCITY_TEMPLATE_IPv4;
+		else if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6))
+			this.template = VELOCITY_TEMPLATE_IPv6;
+		else
+			throw new ActionException("VRRPProtocolEndpoint param must have an either IPv4 or IPv6 ProtocolIFType.");
+
 	}
 }

@@ -94,6 +94,7 @@ public class VRRPCapability extends AbstractCapability implements IVRRPCapabilit
 			throws CapabilityException {
 		log.info("Start of configureVRRP call");
 		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_CONFIGURE, vrrpProtocolEndpoint);
+
 		queueAction(action);
 		log.info("End of configureVRRP call");
 	}
