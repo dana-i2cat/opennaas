@@ -22,11 +22,7 @@ public class DeleteStaticRouteCommand extends GenericKarafCommand {
 			false)
 	private String	netIdIpAdress;
 
-	@Argument(index = 2, name = "maskIpAdress", description = "The mask id ip address", required = true, multiValued =
-			false)
-	private String	maskIpAdress;
-
-	@Argument(index = 3, name = "nextHopIpAddress", description = "The next hop ip address", required = true, multiValued =
+	@Argument(index = 2, name = "nextHopIpAddress", description = "The next hop ip address", required = true, multiValued =
 			false)
 	private String	nextHopIpAddress;
 
@@ -37,7 +33,7 @@ public class DeleteStaticRouteCommand extends GenericKarafCommand {
 			IResource router = getResourceFromFriendlyName(resourceId);
 
 			IStaticRouteCapability staticRouteCapability = (IStaticRouteCapability) router.getCapabilityByInterface(IStaticRouteCapability.class);
-			staticRouteCapability.deleteStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress);
+			staticRouteCapability.deleteStaticRoute(netIdIpAdress, nextHopIpAddress);
 
 		} catch (ResourceException e) {
 			printError(e);
