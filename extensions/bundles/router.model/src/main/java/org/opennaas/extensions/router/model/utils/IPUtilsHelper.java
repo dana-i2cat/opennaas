@@ -187,4 +187,8 @@ public class IPUtilsHelper {
 		return ip.split("/")[1];
 	}
 
+	public static boolean isIPWithoutMaskValidAddress(String ipAddress) {
+		return (validateIPv6Address(ipAddress) || validateIpAddressPattern(ipAddress));
+	}
+
 }

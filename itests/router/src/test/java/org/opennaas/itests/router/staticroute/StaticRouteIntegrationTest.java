@@ -64,10 +64,12 @@ public class StaticRouteIntegrationTest {
 	@Inject
 	protected BundleContext			bundleContext;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
 	private BlueprintContainer		netconfService;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
 	private BlueprintContainer		routerRepoService;
@@ -109,14 +111,78 @@ public class StaticRouteIntegrationTest {
 
 		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE));
-		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1", "false");
+		staticRouteCapability.createStaticRoute("0.0.0.0/0", "192.168.1.1", "false");
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
+		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1", "false");
+
+		queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		queueResponse = queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		staticRouteCapability.createStaticRoute("45:34fa:12::4e/64", "192.168.1.1", "false");
+
+		queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		queueResponse = queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		staticRouteCapability.createStaticRoute("45:34fa:12::4e", "64", "192.168.1.1", "false");
+
+		queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		queueResponse = queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
 		stopResource();
+
+	}
+
+	/**
+	 * Test to check create static route method
+	 */
+	@Test
+	public void deleteStaticRouteTest()
+			throws ProtocolException, ResourceException {
+		startResource();
+
+		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE));
+		staticRouteCapability.deleteStaticRoute("0.0.0.0/0", "192.168.1.1");
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		staticRouteCapability.deleteStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1");
+
+		queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		queueResponse = queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		staticRouteCapability.deleteStaticRoute("45:34fa:12::4e/64", "192.168.1.1");
+
+		queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		queueResponse = queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		staticRouteCapability.deleteStaticRoute("45:34fa:12::4e", "64", "192.168.1.1");
+
+		queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		queueResponse = queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		stopResource();
+
 	}
 
 	@Before

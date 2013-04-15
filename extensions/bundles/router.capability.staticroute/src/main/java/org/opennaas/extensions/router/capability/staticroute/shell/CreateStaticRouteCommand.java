@@ -22,15 +22,11 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			false)
 	private String	netIdIpAdress;
 
-	@Argument(index = 2, name = "maskIpAdress", description = "The mask id ip address", required = true, multiValued =
-			false)
-	private String	maskIpAdress;
-
-	@Argument(index = 3, name = "nextHopIpAddress", description = "The next hop ip address", required = true, multiValued =
+	@Argument(index = 2, name = "nextHopIpAddress", description = "The next hop ip address", required = true, multiValued =
 			false)
 	private String	nextHopIpAddress;
 
-	@Argument(index = 4, name = "isRejected", description = "Choose if is discard", required = true, multiValued = false)
+	@Argument(index = 3, name = "isRejected", description = "Choose if is discard", required = true, multiValued = false)
 	private String	isDiscard;
 
 	@Override
@@ -40,7 +36,7 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			IResource router = getResourceFromFriendlyName(resourceId);
 
 			IStaticRouteCapability staticRouteCapability = (IStaticRouteCapability) router.getCapabilityByInterface(IStaticRouteCapability.class);
-			staticRouteCapability.createStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress, isDiscard);
+			staticRouteCapability.createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard);
 
 		} catch (ResourceException e) {
 			printError(e);

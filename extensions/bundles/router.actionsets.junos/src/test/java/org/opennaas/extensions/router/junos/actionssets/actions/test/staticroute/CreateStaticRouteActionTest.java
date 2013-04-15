@@ -44,12 +44,6 @@ public class CreateStaticRouteActionTest {
 		Assert.assertNotNull("Null parameters", action.getParams());
 	}
 
-	@Test
-	public void templateTest() {
-		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/createStaticRoute.vm", action.getTemplate());
-	}
-
 	/**
 	 * Create two OSPFProtocolEndpoint with state to enable
 	 * 
@@ -75,11 +69,10 @@ public class CreateStaticRouteActionTest {
 	 * @return
 	 */
 	private String[] getParams() {
-		String[] params = new String[4];
-		params[0] = "0.0.0.0";
-		params[1] = "0.0.0.0";
-		params[2] = "192.168.1.1";
-		params[3] = "false";
+		String[] params = new String[3];
+		params[0] = "0.0.0.0/0";
+		params[1] = "192.168.1.1";
+		params[2] = "false";
 		return params;
 	}
 }

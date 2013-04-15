@@ -10,6 +10,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
@@ -77,20 +78,6 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	}
 
 	/**
-	 * 
-	 * @return QueuemanagerService this capability is associated to.
-	 * @throws CapabilityException
-	 *             if desired queueManagerService could not be retrieved.
-	 */
-	private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
-		try {
-			return Activator.getQueueManagerService(resourceId);
-		} catch (ActivatorException e) {
-			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
-		}
-	}
-
-	/**
 	 * Return the Static Route ActionSet
 	 */
 	@Override
@@ -109,13 +96,12 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 */
 
 	@Override
-	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress, String isDiscard) throws CapabilityException {
+	public void createStaticRoute(String netIdIpAdress, String nextHopIpAddress, String isDiscard) throws CapabilityException {
 		log.info("Start of createStaticRoute call");
-		String[] aParams = new String[4];
+		String[] aParams = new String[3];
 		aParams[0] = netIdIpAdress;
-		aParams[1] = maskIpAdress;
-		aParams[2] = nextHopIpAddress;
-		aParams[3] = isDiscard;
+		aParams[1] = nextHopIpAddress;
+		aParams[2] = isDiscard;
 
 		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
 		queueAction(action);
@@ -123,16 +109,52 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	}
 
 	@Override
-	public void deleteStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
+	@Deprecated
+	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress, String isDiscard) throws CapabilityException {
+
+		if (IPUtilsHelper.isIPv4ValidAddress(netIdIpAdress))
+			netIdIpAdress = netIdIpAdress + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(maskIpAdress);
+		else
+			netIdIpAdress = netIdIpAdress + "/" + maskIpAdress;
+		createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard);
+
+	}
+
+	@Override
+	public void deleteStaticRoute(String netIdIpAdress, String nextHopIpAddress) throws CapabilityException {
 		log.info("Start of deleteStaticRoute call");
-		String[] aParams = new String[3];
+		String[] aParams = new String[2];
 		aParams[0] = netIdIpAdress;
-		aParams[1] = maskIpAdress;
-		aParams[2] = nextHopIpAddress;
+		aParams[1] = nextHopIpAddress;
 
 		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_DELETE, aParams);
 		queueAction(action);
 		log.info("End of deleteStaticRoute call");
+	}
 
+	@Deprecated
+	@Override
+	public void deleteStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
+
+		if (IPUtilsHelper.isIPv4ValidAddress(netIdIpAdress))
+			netIdIpAdress = netIdIpAdress + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(maskIpAdress);
+		else
+			netIdIpAdress = netIdIpAdress + "/" + maskIpAdress;
+		deleteStaticRoute(netIdIpAdress, nextHopIpAddress);
+
+	}
+
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
+		}
 	}
 }
