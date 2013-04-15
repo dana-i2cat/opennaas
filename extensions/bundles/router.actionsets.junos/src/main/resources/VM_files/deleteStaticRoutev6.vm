@@ -9,15 +9,14 @@
 	#end
 	<routing-options>
 		<rib>
-			<inet6.0>
-				<static>
-					<route>
-						<name>$param[0]</name>
-						<next-hop operation="delete">$param[1]</next-hop>
-						##Notice that if there is an empty route, junOS removes it automatically
-					</route>
-				</static>
-			</inet6.0>
+			<name>inet6.0</name>
+			<static>
+				<route>
+					<name>$param[0]</name>
+					<next-hop operation="delete">$param[1]</next-hop>
+					##Notice that if there is an empty route, junOS removes it automatically
+				</route>
+			</static>
 		</rib>				
 	</routing-options>
 	#if($logicalRouter.equals("true"))

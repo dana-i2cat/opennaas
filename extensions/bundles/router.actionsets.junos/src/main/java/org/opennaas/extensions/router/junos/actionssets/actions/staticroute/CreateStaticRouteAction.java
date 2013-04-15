@@ -119,7 +119,7 @@ public class CreateStaticRouteAction extends JunosAction {
 				paramsOK = false;
 			} else if (!IPUtilsHelper.isIPValidAddress(aParams[0])
 					||
-					(!aParams[1].equals("") && !IPUtilsHelper.isIPWithoutMaskValidAddress(aParams[1]))) {
+					(!aParams[1].equals("") && !(IPUtilsHelper.isIPWithoutMaskValidAddress(aParams[1])))) {
 				paramsOK = false;
 			} else if (IPUtilsHelper.isIPv4ValidAddress(aParams[0]) && (!aParams[1].equals("")) && (!IPUtilsHelper
 					.validateIpAddressPattern(aParams[1]))) {

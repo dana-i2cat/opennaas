@@ -45,7 +45,7 @@ public class CreateStaticRouteActionTest {
 	}
 
 	/**
-	 * Create two OSPFProtocolEndpoint with state to enable
+	 * Create static route v4.
 	 * 
 	 * @throws IOException
 	 */
@@ -66,6 +66,22 @@ public class CreateStaticRouteActionTest {
 	}
 
 	/**
+	 * 
+	 * 
+	 * @throws IOException
+	 * @throws ActionException
+	 */
+	@Test(expected = ActionException.class)
+	public void executeActionWrongParamsTest() throws ActionException {
+
+		action.setModelToUpdate(new ComputerSystem());
+		action.setParams(wrongParams());
+
+		ActionResponse response = action.execute(protocolsessionmanager);
+
+	}
+
+	/**
 	 * @return
 	 */
 	private String[] getParams() {
@@ -75,4 +91,13 @@ public class CreateStaticRouteActionTest {
 		params[2] = "false";
 		return params;
 	}
+
+	private String[] wrongParams() {
+		String[] params = new String[3];
+		params[0] = "0.0.0.0/0";
+		params[1] = "FDEC:34:52::A6/64";
+		params[2] = "false";
+		return params;
+	}
+
 }
