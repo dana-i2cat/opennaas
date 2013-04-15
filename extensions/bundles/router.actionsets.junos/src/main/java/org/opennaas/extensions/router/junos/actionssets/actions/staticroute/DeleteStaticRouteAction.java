@@ -71,7 +71,6 @@ public class DeleteStaticRouteAction extends JunosAction {
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 			extraParams.put("disabledState", EnabledState.DISABLED.toString());
 			extraParams.put("enableState", EnabledState.ENABLED.toString());
-			extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 			extraParams.put("elementName", elementName);
 
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
