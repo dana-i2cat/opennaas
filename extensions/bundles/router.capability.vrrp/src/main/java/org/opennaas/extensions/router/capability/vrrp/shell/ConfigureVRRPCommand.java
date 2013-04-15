@@ -4,10 +4,12 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.vrrp.IVRRPCapability;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
@@ -54,19 +56,10 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 			VRRPProtocolEndpoint vrrpProtocolEndpoint = new VRRPProtocolEndpoint();
 
 			// get interface name and port
-			String[] argsInterface = splitInterfaces(interfaceName);
-			String interfaceName = argsInterface[0];
-			int port = Integer.parseInt(argsInterface[1]);
 
-			NetworkPort routerInterface = new NetworkPort();
-			routerInterface.setName(interfaceName);
-			routerInterface.setPortNumber(port);
+			NetworkPort routerInterface = buildNetworkPort();
 
-			// TODO setIPv4 or IPv6? now IPv4
-			IPProtocolEndpoint interfaceIPProtocolEndpoint = new IPProtocolEndpoint();
-			String[] ipParts = IPUtilsHelper.composedIPAddressToIPAddressAndMask(interfaceIPAddress);
-			interfaceIPProtocolEndpoint.setIPv4Address(ipParts[0]);
-			interfaceIPProtocolEndpoint.setSubnetMask(ipParts[1]);
+			IPProtocolEndpoint interfaceIPProtocolEndpoint = buildIPProtocolEndpoint();
 
 			vrrpProtocolEndpoint.setPriority(priority);
 
@@ -90,5 +83,46 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
+	}
+
+	private NetworkPort buildNetworkPort() throws Exception {
+
+		NetworkPort netPort = new NetworkPort();
+		String[] argsInterface = splitInterfaces(interfaceName);
+		String interfaceName = argsInterface[0];
+		int port = Integer.parseInt(argsInterface[1]);
+
+		netPort.setName(interfaceName);
+		netPort.setPortNumber(port);
+
+		return netPort;
+	}
+
+	private IPProtocolEndpoint buildIPProtocolEndpoint() throws CommandException {
+
+		IPProtocolEndpoint pE = new IPProtocolEndpoint();
+
+		if (IPUtilsHelper.isIPv4ValidAddress(interfaceIPAddress)) {
+
+			String address = IPUtilsHelper.getAddressFromIP(interfaceIPAddress);
+			String mask = IPUtilsHelper.getPrefixFromIp(address);
+
+			pE.setIPv4Address(address);
+			pE.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(mask));
+			pE.setProtocolIFType(ProtocolIFType.IPV4);
+
+		} else if (IPUtilsHelper.isIPv4ValidAddress(interfaceIPAddress)) {
+
+			String address = IPUtilsHelper.getAddressFromIP(interfaceIPAddress);
+			String prefix = IPUtilsHelper.getPrefixFromIp(address);
+
+			pE.setIPv6Address(address);
+			pE.setPrefixLength(Short.valueOf(prefix));
+			pE.setProtocolIFType(ProtocolIFType.IPV6);
+
+		} else
+			throw new CommandException("Invalid IP format.");
+
+		return pE;
 	}
 }
