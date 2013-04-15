@@ -3,17 +3,16 @@ package org.opennaas.extensions.router.junos.actionssets.actions.gretunnel;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.Service;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 
 /**
  * @author Jordi Puig
@@ -111,8 +110,9 @@ public class DeleteTunnelAction extends JunosAction {
 			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
 		if (!checkPatternName(((GRETunnelService) params).getName()))
 			throw new ActionException("The name of the GRE tunnel must have the following format -> gr-x/y/z{.a}");
-		if (!checkExistsName(((GRETunnelService) params).getName()))
-			throw new ActionException("The name of the GRE tunnel not exist in this router");
+		// TODO: this has to be check with the dirty model.
+		// if (!checkExistsName(((GRETunnelService) params).getName()))
+		// throw new ActionException("The name of the GRE tunnel does not exist in this router");
 		return true;
 	}
 
@@ -182,12 +182,12 @@ public class DeleteTunnelAction extends JunosAction {
 	 * @return true if exists, false otherwise
 	 */
 	private boolean checkExistsName(String name) {
-		boolean existsName = true;
 		for (Service service : ((ComputerSystem) modelToUpdate).getHostedService()) {
 			if (service instanceof GRETunnelService) {
-				existsName = (((GRETunnelService) service).getName().equals(name));
+				if (((GRETunnelService) service).getName().equals(name))
+					return true;
 			}
 		}
-		return existsName;
+		return false;
 	}
 }
