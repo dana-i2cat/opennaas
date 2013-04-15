@@ -1,0 +1,13 @@
+<configuration>
+	<routing-options>
+		<rib>
+			<name>inet6.0</name>
+			<static>
+				<route>
+					<name>43:256:F1::13:A/0</name>
+					<next-hop>FDEC:45::B3</next-hop>
+				</route>
+			</static>
+		</rib>
+	</routing-options>
+</configuration>

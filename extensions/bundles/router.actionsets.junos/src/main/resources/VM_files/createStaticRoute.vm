@@ -10,11 +10,11 @@
 	<routing-options>
 		<static>
 			<route>
-				<name>$param[0]/$ipUtilsHelper.parseLongToShortIpv4NetMask($param[1])</name>
-				#if(!$param[2].equals(""))
-				<next-hop>$param[2]</next-hop>
+				<name>$param[0]</name>
+				#if(!$param[1].equals(""))
+				<next-hop>$param[1]</next-hop>
 				#end
-				#if($param[3].equals("true"))
+				#if($param[2].equals("true"))
 				<discard/>
 				#end
 			</route>

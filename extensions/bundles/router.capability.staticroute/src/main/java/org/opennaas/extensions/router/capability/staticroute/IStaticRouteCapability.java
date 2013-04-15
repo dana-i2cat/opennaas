@@ -23,11 +23,12 @@ public interface IStaticRouteCapability extends ICapability {
 	 */
 	@GET
 	@Path("/createStaticRoute")
+	@Deprecated
 	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("maskIpAdress") String maskIpAdress,
 			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard) throws CapabilityException;
 
 	/**
-	 * Delete a static route in the router
+	 * Create a static route in the router
 	 * 
 	 * @param netIdIpAdress
 	 * @param maskIpAdress
@@ -35,8 +36,35 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @throws CapabilityException
 	 */
 	@GET
+	@Path("/createStaticRouteComposedIP")
+	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress,
+			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard) throws CapabilityException;
+
+	/**
+	 * Deletes a static route in the router
+	 * 
+	 * @param netIdIpAdress
+	 * @param maskIpAdress
+	 * @param nextHopIpAddress
+	 * @throws CapabilityException
+	 */
+	@Deprecated
+	@GET
 	@Path("/deleteStaticRoute")
 	public void deleteStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("maskIpAdress") String maskIpAdress,
 			@QueryParam("nextHopIpAddress") String nextHopIpAddress) throws CapabilityException;
+
+	/**
+	 * Deletes a static route in the router
+	 * 
+	 * @param netIdIpAdress
+	 * @param maskIpAdress
+	 * @param nextHopIpAddress
+	 * @throws CapabilityException
+	 */
+	@GET
+	@Path("/deleteStaticRouteComposedIP")
+	public void deleteStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("nextHopIpAddress") String nextHopIpAddress)
+			throws CapabilityException;
 
 }

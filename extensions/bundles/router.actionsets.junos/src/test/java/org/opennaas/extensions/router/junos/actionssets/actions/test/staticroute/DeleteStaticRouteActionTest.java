@@ -12,19 +12,20 @@ import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.CreateStaticRouteAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.DeleteStaticRouteAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
-public class CreateStaticRouteActionTest {
-	Log										log	= LogFactory.getLog(CreateStaticRouteActionTest.class);
-	private static CreateStaticRouteAction	action;
+public class DeleteStaticRouteActionTest {
+
+	Log										log	= LogFactory.getLog(DeleteStaticRouteActionTest.class);
+	private static DeleteStaticRouteAction	action;
 	static ActionTestHelper					helper;
 	static ProtocolSessionManager			protocolsessionmanager;
 
 	@BeforeClass
 	public static void init() {
-		action = new CreateStaticRouteAction();
+		action = new DeleteStaticRouteAction();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 		action.setParams(helper.newParamsInterfaceEthernet());
@@ -34,7 +35,7 @@ public class CreateStaticRouteActionTest {
 
 	@Test
 	public void actionIDTest() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.STATIC_ROUTE_CREATE,
+		Assert.assertEquals("Wrong ActionID", ActionConstants.STATIC_ROUTE_DELETE,
 				action.getActionID());
 	}
 
@@ -45,7 +46,7 @@ public class CreateStaticRouteActionTest {
 	}
 
 	/**
-	 * Create static route v4.
+	 * Create two OSPFProtocolEndpoint with state to enable
 	 * 
 	 * @throws IOException
 	 */
@@ -56,7 +57,7 @@ public class CreateStaticRouteActionTest {
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.STATIC_ROUTE_CREATE));
+					.equals(ActionConstants.STATIC_ROUTE_DELETE));
 		} catch (ActionException e) {
 			e.printStackTrace();
 			Assert.fail();
@@ -66,37 +67,12 @@ public class CreateStaticRouteActionTest {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @throws IOException
-	 * @throws ActionException
-	 */
-	@Test(expected = ActionException.class)
-	public void executeActionWrongParamsTest() throws ActionException {
-
-		action.setModelToUpdate(new ComputerSystem());
-		action.setParams(wrongParams());
-
-		ActionResponse response = action.execute(protocolsessionmanager);
-
-	}
-
-	/**
 	 * @return
 	 */
 	private String[] getParams() {
-		String[] params = new String[3];
+		String[] params = new String[2];
 		params[0] = "0.0.0.0/0";
 		params[1] = "192.168.1.1";
-		params[2] = "false";
-		return params;
-	}
-
-	private String[] wrongParams() {
-		String[] params = new String[3];
-		params[0] = "0.0.0.0/0";
-		params[1] = "FDEC:34:52::A6/64";
-		params[2] = "false";
 		return params;
 	}
 
