@@ -41,7 +41,7 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	 */
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Shows GRE tunnels");
+		printInitCommand("Create GRE tunnel");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			IGRETunnelCapability tunnelCapability = (IGRETunnelCapability) router.getCapabilityByInterface(IGRETunnelCapability.class);
@@ -51,7 +51,7 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error showing GRE tunnels");
+			printError("Error creating GRE tunnels");
 			printError(e);
 			printEndCommand();
 			return -1;
