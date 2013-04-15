@@ -109,6 +109,10 @@ h1 {
 	overflow: auto;
 }
 
+#sp_vcpe_v6 li {
+	margin-top: 20px;
+}
+
 #selectable li {
 	margin-right: 3px;
 	padding: 5px;
@@ -875,4 +879,8 @@ h3.lr_inactive {
 	color: #8a1f11;
 	border-color: #FBC2C4;
 	z-index: 1000;
+}
+
+#sp_vcpe_v6 {
+	margin-top: 10px;
 }

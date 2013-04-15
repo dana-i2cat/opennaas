@@ -4,7 +4,6 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -18,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
@@ -111,7 +111,6 @@ public class GRETunnelCapabilityIntegrationTest {
 				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
-				openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -218,22 +217,21 @@ public class GRETunnelCapabilityIntegrationTest {
 	}
 
 	@Test
-	public void testGRETunnelAction() throws CapabilityException, ProtocolException {
+	public void testGRECreateTunnelAction() throws CapabilityException, ProtocolException {
 		log.info("TEST GRE TUNNEL ACTION");
 		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
 
 		greCapability.createGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, IPv4_ADDRESS, IP_SOURCE, IP_DESTINY));
-		greCapability.deleteGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, null, null, null, null));
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		List<IAction> queue = (List<IAction>) queueCapability.getActions();
-		Assert.assertEquals(queue.size(), 2);
+		Assert.assertEquals(queue.size(), 1);
 
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
-		Assert.assertEquals(queueResponse.getResponses().size(), 2);
+		Assert.assertEquals(queueResponse.getResponses().size(), 1);
 
 		Assert.assertEquals(queueResponse.getPrepareResponse().getStatus(), ActionResponse.STATUS.OK);
 		Assert.assertEquals(queueResponse.getConfirmResponse().getStatus(), ActionResponse.STATUS.OK);
@@ -241,6 +239,72 @@ public class GRETunnelCapabilityIntegrationTest {
 		Assert.assertEquals(queueResponse.getRestoreResponse().getStatus(), ActionResponse.STATUS.PENDING);
 
 		Assert.assertTrue(queueResponse.isOk());
+
+		queue = (List<IAction>) queueCapability.getActions();
+		Assert.assertEquals(queue.size(), 0);
+	}
+
+	@Test
+	public void testGREDeleteTunnelAction() throws CapabilityException, ProtocolException {
+		log.info("TEST GRE TUNNEL ACTION");
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
+
+		// add gre tunnel service to the router model.
+		GRETunnelService greTunnelService = new GRETunnelService();
+		greTunnelService.setName(TUNNEL_NAME);
+
+		ComputerSystem model = (ComputerSystem) routerResource.getModel();
+		model.addHostedService(greTunnelService);
+		routerResource.setModel(model);
+
+		greCapability.deleteGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
+		Assert.assertEquals(queue.size(), 1);
+
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertEquals(queueResponse.getResponses().size(), 1);
+
+		Assert.assertEquals(queueResponse.getPrepareResponse().getStatus(), ActionResponse.STATUS.OK);
+		Assert.assertEquals(queueResponse.getConfirmResponse().getStatus(), ActionResponse.STATUS.OK);
+		Assert.assertEquals(queueResponse.getRefreshResponse().getStatus(), ActionResponse.STATUS.OK);
+		Assert.assertEquals(queueResponse.getRestoreResponse().getStatus(), ActionResponse.STATUS.PENDING);
+
+		Assert.assertTrue(queueResponse.isOk());
+
+		queue = (List<IAction>) queueCapability.getActions();
+		Assert.assertEquals(queue.size(), 0);
+	}
+
+	/**
+	 * This test require the dirty model, since the checkParams method would check there's a GreTunnelService in the model.
+	 * 
+	 * @throws CapabilityException
+	 * @throws ProtocolException
+	 */
+	@Test
+	@Ignore
+	public void testDeleteUnexistingTunnelAction() throws CapabilityException, ProtocolException {
+		log.info("TEST GRE TUNNEL ACTION");
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.GRE_CAPABILITY_TYPE));
+
+		greCapability.deleteGRETunnel(ParamCreationHelper.getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
+		Assert.assertEquals(queue.size(), 1);
+
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertEquals(queueResponse.getResponses().size(), 1);
+
+		Assert.assertFalse(queueResponse.isOk());
 
 		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertEquals(queue.size(), 0);
