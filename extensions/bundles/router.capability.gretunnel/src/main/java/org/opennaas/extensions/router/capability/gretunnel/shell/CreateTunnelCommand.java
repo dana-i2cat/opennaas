@@ -22,7 +22,7 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the router to create the GRE Tunnel", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Argument(index = 1, name = "interfaceName", description = "GRE interface name", required = true, multiValued = false)
+	@Argument(index = 1, name = "interfaceName", description = "GRE interface name. Be aware that given name SHOULD match an existing gr interface in the router, otherwise GRE will be configured but will NOT work.", required = true, multiValued = false)
 	private String	interfaceName;
 
 	@Argument(index = 2, name = "ipAddress", description = "IP of the tunnel", required = true, multiValued = false)
