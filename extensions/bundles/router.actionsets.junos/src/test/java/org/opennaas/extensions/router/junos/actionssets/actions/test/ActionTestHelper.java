@@ -14,6 +14,7 @@ import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 
@@ -126,10 +127,12 @@ public class ActionTestHelper {
 		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
 		vrrProtocolEndpoint1.setPriority(100);
 		vrrProtocolEndpoint1.setService(vrrpGroup);
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
 
 		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
 		ipProtocolEndpoint1.setIPv4Address("192.168.1.1");
 		ipProtocolEndpoint1.setSubnetMask("255.255.255.0");
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
 		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
 
 		EthernetPort eth1 = new EthernetPort();
