@@ -31,10 +31,11 @@ public class VCPENetworkModel implements IModel {
 	private String						name;
 	private String						templateType;
 	private String						clientIpRange;
+	private String						nocIpRange;
 	private BGP							bgp;
 	private VRRP						vrrp;
 	private boolean						created;
-	private List<VCPENetworkElement>	elements;
+	private List<VCPENetworkElement>	elements			= new ArrayList<VCPENetworkElement>();
 
 	/**
 	 * @return the id
@@ -44,8 +45,7 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -59,8 +59,7 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -74,11 +73,24 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param clientIpRange
-	 *            the clientIpRange to set
+	 * @param clientIpRange the clientIpRange to set
 	 */
 	public void setClientIpRange(String clientIpRange) {
 		this.clientIpRange = clientIpRange;
+	}
+
+	/**
+	 * @return the nocIpRange
+	 */
+	public String getNocIpRange() {
+		return nocIpRange;
+	}
+
+	/**
+	 * @param nocIpRange the nocIpRange to set
+	 */
+	public void setNocIpRange(String nocIpRange) {
+		this.nocIpRange = nocIpRange;
 	}
 
 	/**
@@ -103,8 +115,7 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param bgp
-	 *            the bgp to set
+	 * @param bgp the bgp to set
 	 */
 	public void setBgp(BGP bgp) {
 		this.bgp = bgp;
@@ -152,8 +163,7 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param vrrp
-	 *            the vrrp to set
+	 * @param vrrp the vrrp to set
 	 */
 	public void setVrrp(VRRP vrrp) {
 		this.vrrp = vrrp;
@@ -167,8 +177,7 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param templateType
-	 *            the templateType to set
+	 * @param templateType the templateType to set
 	 */
 	public void setTemplateType(String templateType) {
 		this.templateType = templateType;

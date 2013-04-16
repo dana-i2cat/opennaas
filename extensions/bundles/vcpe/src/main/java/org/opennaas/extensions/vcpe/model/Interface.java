@@ -106,6 +106,16 @@ public class Interface extends VCPENetworkElement {
 		if (getClass() != obj.getClass())
 			return false;
 		Interface other = (Interface) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (templateName == null) {
+			if (other.templateName != null)
+				return false;
+		} else if (!templateName.equals(other.templateName))
+			return false;
 		if (ipAddress == null) {
 			if (other.ipAddress != null)
 				return false;

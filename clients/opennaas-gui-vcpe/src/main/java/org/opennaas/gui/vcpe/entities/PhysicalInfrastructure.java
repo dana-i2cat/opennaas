@@ -1,60 +1,24 @@
-/**
- * 
- */
 package org.opennaas.gui.vcpe.entities;
 
 /**
  * @author Jordi
  */
+
 public class PhysicalInfrastructure {
 
-	private PhysicalRouter	coreRouter;
-	private PhysicalRouter	phyRouterMaster;
-	private PhysicalRouter	phyRouterBackup;
+	private String	templateType;
 
 	/**
-	 * @return the coreRouter
+	 * @return the templateType
 	 */
-	public PhysicalRouter getCoreRouter() {
-		return coreRouter;
+	public String getTemplateType() {
+		return templateType;
 	}
 
 	/**
-	 * @param coreRouter
-	 *            the coreRouter to set
+	 * @param templateType the templateType to set
 	 */
-	public void setCoreRouter(PhysicalRouter coreRouter) {
-		this.coreRouter = coreRouter;
+	public void setTemplateType(String templateType) {
+		this.templateType = templateType;
 	}
-
-	/**
-	 * @return the phyRouterMaster
-	 */
-	public PhysicalRouter getPhyRouterMaster() {
-		return phyRouterMaster;
-	}
-
-	/**
-	 * @param phyRouterMaster
-	 *            the phyRouterMaster to set
-	 */
-	public void setPhyRouterMaster(PhysicalRouter phyRouterMaster) {
-		this.phyRouterMaster = phyRouterMaster;
-	}
-
-	/**
-	 * @return the phyRouterBackup
-	 */
-	public PhysicalRouter getPhyRouterBackup() {
-		return phyRouterBackup;
-	}
-
-	/**
-	 * @param phyRouterBackup
-	 *            the phyRouterBackup to set
-	 */
-	public void setPhyRouterBackup(PhysicalRouter phyRouterBackup) {
-		this.phyRouterBackup = phyRouterBackup;
-	}
-
 }

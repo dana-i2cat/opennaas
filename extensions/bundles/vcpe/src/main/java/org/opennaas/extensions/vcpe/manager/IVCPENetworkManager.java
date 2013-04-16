@@ -12,7 +12,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
-import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Path("/")
@@ -77,22 +76,41 @@ public interface IVCPENetworkManager {
 	public VCPEManagerModel getModel();
 
 	/**
-	 * Get the physical infrastructure
+	 * Get a suggestion for the physical infrastructure
 	 * 
+	 * @param templateType
+	 *            whose physical infrastructure is desired.
 	 * @return the physical infrastructure
 	 * @throws VCPENetworkManagerException
 	 */
-	@Path("/getPhysicalInfrastructure")
+	@Path("/getPhyInfrastructureSuggestion")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public VCPEPhysicalInfrastructure getPhysicalInfrastructure() throws VCPENetworkManagerException;
+	public VCPENetworkModel getPhysicalInfrastructureSuggestion(@QueryParam("templateType") String templateType) throws VCPENetworkManagerException;
+
+	/**
+	 * Get a suggestion for the logical infrastructure
+	 * 
+	 * @param templateType
+	 *            whose physical infrastructure is desired.
+	 * @param physicalInfrastructure
+	 *            supporting the logical infrastructure to obtain.
+	 * @return the suggested logical infrastructure
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/getLogicalInfrastructureSuggestion")
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physicalInfrastructure) throws VCPENetworkManagerException;
 
 	/**
 	 * Check if a VLAN is available or not in a interface
 	 * 
 	 * @param vcpeId
-	 * @param ifaceName
+	 * @param router
 	 * @param vlan
+	 * @param ifaceName
 	 * @return true if is available
 	 * @throws VCPENetworkManagerException
 	 */
@@ -100,13 +118,15 @@ public interface IVCPENetworkManager {
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isVLANFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("vlan") String vlan, @QueryParam("ifaceName") String ifaceName)
+	public Boolean isVLANFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("router") String router, @QueryParam("vlan") String vlan,
+			@QueryParam("ifaceName") String ifaceName)
 			throws VCPENetworkManagerException;
 
 	/**
 	 * Check if an IP is available or not in the environment
 	 * 
 	 * @param vcpeId
+	 * @param router
 	 * @param iface
 	 * @return true if is available
 	 * @throws VCPENetworkManagerException
@@ -115,12 +135,14 @@ public interface IVCPENetworkManager {
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isIPFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("ip") String ip) throws VCPENetworkManagerException;
+	public Boolean isIPFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("router") String router, @QueryParam("ip") String ip)
+			throws VCPENetworkManagerException;
 
 	/**
 	 * Check if an interface is available or not in the environment
 	 * 
 	 * @param vcpeId
+	 * @param router
 	 * @param iface
 	 * @return true if is available
 	 * @throws VCPENetworkManagerException
@@ -129,6 +151,7 @@ public interface IVCPENetworkManager {
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean isInterfaceFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("iface") String iface) throws VCPENetworkManagerException;
+	public Boolean isInterfaceFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("router") String router, @QueryParam("iface") String iface)
+			throws VCPENetworkManagerException;
 
 }
