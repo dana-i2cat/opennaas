@@ -18,6 +18,7 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.ConfigureVRRPAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UnconfigureVRRPAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.xml.sax.SAXException;
 
@@ -25,7 +26,6 @@ public class VRRPIPv6ActionTest {
 
 	Log								log	= LogFactory.getLog(VRRPIPv6ActionTest.class);
 
-	ConfigureVRRPAction				configureAction;
 	static ActionTestHelper			helper;
 	static ProtocolSessionManager	protocolsessionmanager;
 
@@ -37,7 +37,7 @@ public class VRRPIPv6ActionTest {
 
 	@Test
 	public void configureVRRPIPv6Test() throws ActionException, SAXException, IOException, TransformerException, ParserConfigurationException {
-		configureAction = new ConfigureVRRPAction();
+		ConfigureVRRPAction configureAction = new ConfigureVRRPAction();
 		configureAction.setModelToUpdate(new ComputerSystem());
 		configureAction.setParams(helper.newParamsVRRPGroupWithOneEndpointIPv6().getProtocolEndpoint().get(0));
 
@@ -48,6 +48,23 @@ public class VRRPIPv6ActionTest {
 
 		String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/configureVRRPIPv6.xml"));
 		String actionMessage = XmlHelper.formatXML(configureAction.getVelocityMessage());
+
+		Assert.assertEquals(expectedMessage, actionMessage);
+	}
+
+	@Test
+	public void unconfigureVRRPIPv6Test() throws ActionException, SAXException, IOException, TransformerException, ParserConfigurationException {
+		UnconfigureVRRPAction unconfigureAction = new UnconfigureVRRPAction();
+		unconfigureAction.setModelToUpdate(new ComputerSystem());
+		unconfigureAction.setParams(helper.newParamsVRRPGroupWithOneEndpointIPv6().getProtocolEndpoint().get(0));
+
+		Assert.assertTrue("Invalid params for UnconfigureVRRP action : ", unconfigureAction.checkParams(unconfigureAction.getParams()));
+		unconfigureAction.prepareMessage();
+
+		Assert.assertEquals("Invalid template for configuring VRRP with IPv6", "/VM_files/unconfigureVRRPIPv6.vm", unconfigureAction.getTemplate());
+
+		String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/unconfigureVRRPIPv6.xml"));
+		String actionMessage = XmlHelper.formatXML(unconfigureAction.getVelocityMessage());
 
 		Assert.assertEquals(expectedMessage, actionMessage);
 	}

@@ -1,0 +1,20 @@
+<configuration>
+	<interfaces>	
+		<interface>
+			<name>fe-0/3/2</name>
+				<unit>
+				<name>1</name>
+				<family>
+					<inet6>
+						<address>
+							<name>fecd:123::5/64</name>
+							<vrrp-inet6-group operation="delete">
+								<name>201</name>
+							</vrrp-inet6-group>
+						</address>
+					</inet6>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>
