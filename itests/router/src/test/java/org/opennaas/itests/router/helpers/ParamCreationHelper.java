@@ -310,17 +310,47 @@ public class ParamCreationHelper {
 		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
 		vrrProtocolEndpoint1.setPriority(100);
 		vrrProtocolEndpoint1.setService(vrrpGroup);
-
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
 		// IPProtocolEndpoint
 		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
 		ipProtocolEndpoint1.setIPv4Address(interfaceIPAddress);
 		ipProtocolEndpoint1.setSubnetMask(interfaceSubnetMask);
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
 		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
 
 		// EthernetPort
 		EthernetPort eth1 = new EthernetPort();
 		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		eth1.setName(interfaceName);
+		ipProtocolEndpoint1.addLogiaclPort(eth1);
+
+		return vrrpGroup;
+	}
+
+	public static VRRPGroup newParamsVRRPGroupWithOneEndpointIPv6(String virtualIPAddress, String virtualLinkAddress, String interfaceName,
+			String interfaceIPAddress) {
+		// VRRPGroup
+		VRRPGroup vrrpGroup = new VRRPGroup();
+		vrrpGroup.setVrrpName(201);
+		vrrpGroup.setVirtualIPAddress(virtualIPAddress);
+		vrrpGroup.setVirtualLinkAddress(virtualLinkAddress);
+		// VRRPProtocolEndpoint
+		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint1.setPriority(100);
+		vrrProtocolEndpoint1.setService(vrrpGroup);
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		// IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
+		ipProtocolEndpoint1.setIPv6Address(IPUtilsHelper.getAddressFromIP(interfaceIPAddress));
+		ipProtocolEndpoint1.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(interfaceIPAddress)));
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
+
+		// EthernetPort
+		EthernetPort eth1 = new EthernetPort();
+		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth1.setName(interfaceName);
+		eth1.setPortNumber(1);
 		ipProtocolEndpoint1.addLogiaclPort(eth1);
 
 		return vrrpGroup;
@@ -353,4 +383,5 @@ public class ParamCreationHelper {
 
 		return greService;
 	}
+
 }

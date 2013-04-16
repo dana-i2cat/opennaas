@@ -91,7 +91,7 @@ public class ConfigureVRRPAction extends JunosAction {
 			return false;
 
 		// ProtocolEndpoint and VRRPProtocolEndpoint with different protocols.
-		if (!protocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
+		if (protocolEndpoint.getProtocolIFType() == null || !protocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
 			return false;
 
 		// protocolEndpoint has 1 LogicalPort
@@ -132,11 +132,17 @@ public class ConfigureVRRPAction extends JunosAction {
 
 			// IP address and subnet mask of interface
 			IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints().get(0);
-			String ipAddress = ipProtocolEndpoint.getIPv4Address();
-			extraParams.put("ipAddress", ipAddress);
-			String subnetMask = IPUtilsHelper.parseLongToShortIpv4NetMask(ipProtocolEndpoint.getSubnetMask());
-			extraParams.put("subnetMask", subnetMask);
-
+			if (ipProtocolEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+				String ipAddress = ipProtocolEndpoint.getIPv4Address();
+				extraParams.put("ipAddress", ipAddress);
+				String subnetMask = IPUtilsHelper.parseLongToShortIpv4NetMask(ipProtocolEndpoint.getSubnetMask());
+				extraParams.put("subnetMask", subnetMask);
+			} else {
+				String ipAddress = ipProtocolEndpoint.getIPv6Address();
+				extraParams.put("ipAddress", ipAddress);
+				short prefix = ipProtocolEndpoint.getPrefixLength();
+				extraParams.put("prefix", prefix);
+			}
 			// router interface
 			NetworkPort networkInterface = (NetworkPort) ipProtocolEndpoint.getLogicalPorts().get(0);
 			extraParams.put("networkInterface", networkInterface);
