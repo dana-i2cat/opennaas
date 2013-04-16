@@ -232,4 +232,18 @@ public class VRRPIntegrationTest {
 		stopResource();
 	}
 
+	@Test
+	public void testUpdatePriorityVRRPIPv6() throws ProtocolException, ResourceException {
+		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
+		vrrpCapability.updateVRRPPriority((VRRPProtocolEndpoint) ParamCreationHelper
+				.newParamsVRRPGroupWithOneEndpointIPv6("fecd:123:a1::4", "f8:34::12", "fe-1/0/1", "fecd:123:a1::5/64").getProtocolEndpoint().get(0));
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		stopResource();
+	}
+
 }
