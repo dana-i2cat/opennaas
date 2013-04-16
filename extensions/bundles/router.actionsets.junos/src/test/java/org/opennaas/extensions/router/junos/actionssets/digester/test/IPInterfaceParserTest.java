@@ -10,6 +10,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -394,31 +395,6 @@ public class IPInterfaceParserTest {
 		return model;
 	}
 
-	/**
-	 * Simple parser. It was used for proves with xml files
-	 * 
-	 * @param stream
-	 * @return
-	 */
-	private String readStringFromFile(String pathFile) throws Exception {
-		String answer = null;
-		InputStream inputFile = getClass().getResourceAsStream(pathFile);
-		InputStreamReader streamReader = new InputStreamReader(inputFile);
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(streamReader);
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-		answer = fileData.toString();
-
-		return answer;
-	}
-
 	@Test
 	public void testVRRPConfigParserTest() throws Exception {
 		System model = createSampleModel();
@@ -447,6 +423,8 @@ public class IPInterfaceParserTest {
 								str += "VRRP endpoint ==> ";
 								VRRPProtocolEndpoint vrrpProtocolEndpoint = (VRRPProtocolEndpoint) bindedProtocolEndpoint;
 								str += "priority: " + vrrpProtocolEndpoint.getPriority() + ", ";
+								Assert.assertEquals(ProtocolIFType.IPV4, ((VRRPProtocolEndpoint) bindedProtocolEndpoint).getProtocolIFType());
+								str += "protocol: " + ((VRRPProtocolEndpoint) bindedProtocolEndpoint).getProtocolIFType() + ", ";
 								Service service = vrrpProtocolEndpoint.getService();
 								Assert.assertTrue("VRRPProtocolEndpoint must have a Service instace of VRRPGroup", service instanceof VRRPGroup);
 								VRRPGroup vrrpGroup = (VRRPGroup) service;
@@ -490,5 +468,115 @@ public class IPInterfaceParserTest {
 		}
 		Assert.assertTrue("Our configuration must have one VRRPGroup", vrrpGroups == 1);
 		Assert.assertTrue("Our configuration must have two VRRPProtocolEndpoint's", vrrpProtocolEndpoints == 2);
+	}
+
+	@Test
+	public void testVRRPIPv6ConfigParser() throws Exception {
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String message = readStringFromFile("/parsers/getConfigWithVRRPIPv6.xml");
+
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		model = parser.getModel();
+
+		List<VRRPGroup> vrrpList = model.getAllHostedServicesByType(new VRRPGroup());
+		Assert.assertEquals("Model should have only one VRRPGroup.", 1, vrrpList.size());
+
+		VRRPGroup group = vrrpList.get(0);
+		Assert.assertEquals("VRRPGroup's name should be 201", 201, group.getVrrpName());
+		Assert.assertEquals("VRRPGroup's virtual address should be fec0::5:0:0:7", "fec0::5:0:0:7", group.getVirtualIPAddress());
+		Assert.assertEquals("VRRPGroup's virtual link address should be fe80::5:0:0:7", "fe80::5:0:0:7", group.getVirtualLinkAddress());
+
+		List<ProtocolEndpoint> protocolEndpointList = group.getProtocolEndpoint();
+		Assert.assertEquals("VRRPGroup service should have 2 protocol endpoints. ", 2, protocolEndpointList.size());
+
+		ProtocolEndpoint pE = protocolEndpointList.get(0);
+		Assert.assertTrue("VRRPGroup should only have VRRPProtocolEndpoints.", pE instanceof VRRPProtocolEndpoint);
+
+		VRRPProtocolEndpoint vE = (VRRPProtocolEndpoint) pE;
+		Assert.assertEquals("First VRRPProtocolEndpoint should have a priority value of 200.", 200, vE.getPriority());
+		Assert.assertEquals("First VRRPProtocolEndpoint should have been configured with IPv6 protocol.", ProtocolIFType.IPV6, vE.getProtocolIFType());
+
+		pE = protocolEndpointList.get(1);
+		Assert.assertTrue("VRRPGroup should only have VRRPProtocolEndpoints", pE instanceof VRRPProtocolEndpoint);
+
+		vE = (VRRPProtocolEndpoint) pE;
+		Assert.assertEquals("Second VRRPProtocolEndpoint should have a priority value of 100.", 100, vE.getPriority());
+		Assert.assertEquals("Second VRRPProtocolEndpoint should have been configured with IPv6 protocol.", ProtocolIFType.IPV6,
+				vE.getProtocolIFType());
+
+		String str = "\n";
+		for (LogicalDevice device : model.getLogicalDevices()) {
+			if (device instanceof NetworkPort) {
+				NetworkPort port = (NetworkPort) device;
+
+				str += "- NetworkPort: " + '\n';
+				str += port.getName() + '.' + port.getPortNumber() + '\n';
+				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
+					if (protocolEndpoint instanceof IPProtocolEndpoint) {
+						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint) protocolEndpoint;
+						for (ServiceAccessPoint bindedProtocolEndpoint : ipProtocol
+								.getBindedServiceAccessPoints()) {
+							if (bindedProtocolEndpoint instanceof VRRPProtocolEndpoint) {
+								str += "VRRP endpoint ==> ";
+								VRRPProtocolEndpoint vrrpProtocolEndpoint = (VRRPProtocolEndpoint) bindedProtocolEndpoint;
+								str += "priority: " + vrrpProtocolEndpoint.getPriority() + ", ";
+								Assert.assertEquals(ProtocolIFType.IPV6, ((VRRPProtocolEndpoint) bindedProtocolEndpoint).getProtocolIFType());
+								str += "protocol: " + ((VRRPProtocolEndpoint) bindedProtocolEndpoint).getProtocolIFType() + ", ";
+								Service service = vrrpProtocolEndpoint.getService();
+								Assert.assertTrue("VRRPProtocolEndpoint must have a Service instace of VRRPGroup", service instanceof VRRPGroup);
+								VRRPGroup vrrpGroup = (VRRPGroup) service;
+								Assert.assertNotNull("VRRPGroup must have a VRRP name (ID)", vrrpGroup.getVrrpName());
+								str += "VRRP group: " + vrrpGroup.getVrrpName() + ", ";
+								Assert.assertNotNull("VRRPGroup must have a virtual IP address", vrrpGroup.getVirtualIPAddress());
+								str += "virtual IP address: " + vrrpGroup.getVirtualIPAddress() + ", ";
+								str += "virtual link address: " + vrrpGroup.getVirtualLinkAddress();
+								str += '\n';
+							}
+						}
+					}
+				}
+				str += '\n';
+			} else {
+				str += "not searched device";
+			}
+
+		}
+
+		log.info(str);
+
+	}
+
+	@Ignore
+	@Test
+	public void testMultipleVRRPGroupsConfigParser() {
+		// TODO
+	}
+
+	/**
+	 * Simple parser. It was used for proves with xml files
+	 * 
+	 * @param stream
+	 * @return
+	 */
+	private String readStringFromFile(String pathFile) throws Exception {
+		String answer = null;
+		InputStream inputFile = getClass().getResourceAsStream(pathFile);
+		InputStreamReader streamReader = new InputStreamReader(inputFile);
+		StringBuffer fileData = new StringBuffer(1000);
+		BufferedReader reader = new BufferedReader(streamReader);
+		char[] buf = new char[1024];
+		int numRead = 0;
+		while ((numRead = reader.read(buf)) != -1) {
+			String readData = String.valueOf(buf, 0, numRead);
+			fileData.append(readData);
+			buf = new char[1024];
+		}
+		reader.close();
+		answer = fileData.toString();
+
+		return answer;
 	}
 }

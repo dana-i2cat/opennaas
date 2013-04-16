@@ -21,6 +21,7 @@ public class VRRPGroup extends Service implements Serializable {
 
 	private int					vrrpName;
 	private String				virtualIPAddress;
+	private String				virtualLinkAddress;
 
 	public VRRPGroup() {
 	}
@@ -39,5 +40,13 @@ public class VRRPGroup extends Service implements Serializable {
 
 	public void setVirtualIPAddress(String virtualIPAddress) {
 		this.virtualIPAddress = virtualIPAddress;
+	}
+
+	public String getVirtualLinkAddress() {
+		return virtualLinkAddress;
+	}
+
+	public void setVirtualLinkAddress(String virtualLinkAddress) {
+		this.virtualLinkAddress = virtualLinkAddress;
 	}
 }
