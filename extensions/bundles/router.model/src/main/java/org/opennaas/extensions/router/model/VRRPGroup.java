@@ -49,4 +49,5 @@ public class VRRPGroup extends Service implements Serializable {
 	public void setVirtualLinkAddress(String virtualLinkAddress) {
 		this.virtualLinkAddress = virtualLinkAddress;
 	}
+
 }

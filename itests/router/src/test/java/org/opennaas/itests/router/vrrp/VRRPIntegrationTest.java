@@ -4,7 +4,6 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -23,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -32,6 +32,8 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.vrrp.IVRRPCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
@@ -82,7 +84,6 @@ public class VRRPIntegrationTest {
 				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
-				openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -260,4 +261,46 @@ public class VRRPIntegrationTest {
 		stopResource();
 	}
 
+	@Test
+	public void testUpdateVirtualLinkAddress() throws ProtocolException, ResourceException {
+
+		prepareResourceModel();
+
+		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
+		vrrpCapability.updateVRRPVirtualLinkAddress(ParamCreationHelper
+				.newParamsVRRPGroupWithOneEndpointIPv6("fecd:123:a1::4", "f8:34::12", "fe-1/0/1", "fecd:123:a1::5/64"));
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		stopResource();
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void testUpdateVirualLinkAddressWithWrongIP() throws ProtocolException, ResourceException {
+
+		prepareResourceModel();
+
+		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
+		vrrpCapability.updateVRRPVirtualLinkAddress(ParamCreationHelper
+				.newParamsVRRPGroupWithOneEndpointIPv6("fecd:123:a1::4", "192.168.1.1", "fe-1/0/1", "fecd:123:a1::5/64"));
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		stopResource();
+	}
+
+	private void prepareResourceModel() {
+
+		ComputerSystem model = new ComputerSystem();
+		VRRPGroup group = ParamCreationHelper.newParamsVRRPGroupWithOneEndpointIPv6("fecd:123:a1::4", "f8:34::13", "fe-1/0/1", "fecd:123:a1::5/64");
+
+		model.addHostedService(group);
+		routerResource.setModel(model);
+	}
 }

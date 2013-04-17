@@ -10,7 +10,10 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * @author Julio Carlos Barrera
@@ -122,5 +125,23 @@ public class VRRPCapability extends AbstractCapability implements IVRRPCapabilit
 		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_PRIORITY, vrrpProtocolEndpoint);
 		queueAction(action);
 		log.info("End of updateVRRPPriority call");
+	}
+
+	@Override
+	public void updateVRRPVirtualLinkAddress(VRRPGroup vrrpGroup) throws CapabilityException {
+		log.info("Start of updateVRRPPVirtualLinkAddress call");
+
+		VRRPGroup vrrpGroupFromModel = ModelHelper.getVRRPGroupByName((ComputerSystem) this.resource.getModel(), vrrpGroup.getVrrpName());
+		if (vrrpGroupFromModel == null)
+			throw new CapabilityException("There's no VRRPGroup with id " + vrrpGroup.getVrrpName() + " configured in resource " + this.resource
+					.getResourceDescriptor().getInformation().getName());
+
+		VRRPGroup param = ModelHelper.copyVRRPConfiguration(vrrpGroupFromModel);
+		param.setVirtualLinkAddress(vrrpGroup.getVirtualLinkAddress());
+
+		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS, param);
+		queueAction(action);
+		log.info("End of updateVRRPPVirtualLinkAddress call");
+
 	}
 }

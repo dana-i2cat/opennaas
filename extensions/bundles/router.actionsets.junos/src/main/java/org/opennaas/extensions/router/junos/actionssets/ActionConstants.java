@@ -1,13 +1,13 @@
 package org.opennaas.extensions.router.junos.actionssets;
 
 import org.opennaas.extensions.router.capability.bgp.BGPActionSet;
+import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.capability.gretunnel.GRETunnelActionSet;
 import org.opennaas.extensions.router.capability.ip.IPActionSet;
 import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
+import org.opennaas.extensions.router.capability.ospfv3.OSPFv3ActionSet;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteActionSet;
 import org.opennaas.extensions.router.capability.vrrp.VRRPActionSet;
-import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
-import org.opennaas.extensions.router.capability.ospfv3.OSPFv3ActionSet;
 
 public class ActionConstants {
 
@@ -89,4 +89,6 @@ public class ActionConstants {
 	public static final String	VRRP_UNCONFIGURE					= VRRPActionSet.VRRP_UNCONFIGURE;
 	public static final String	VRRP_UPDATE_IP_ADDRESS				= VRRPActionSet.VRRP_UPDATE_VIRTUAL_IP_ADDRESS;
 	public static final String	VRRP_UPDATE_PRIORITY				= VRRPActionSet.VRRP_UPDATE_PRIORITY;
+	public static final String	VRRP_UPDATE_VIRTUAL_LINK_ADDRESS	= VRRPActionSet.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS;
+
 }
