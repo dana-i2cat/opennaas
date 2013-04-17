@@ -20,6 +20,7 @@ import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestH
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.ConfigureVRRPAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UnconfigureVRRPAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPPriorityAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPVirtualIPAddressAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.xml.sax.SAXException;
 
@@ -82,6 +83,24 @@ public class VRRPIPv6ActionTest {
 		Assert.assertEquals("Invalid template for configuring VRRP with IPv6", "/VM_files/updateVRRPPriorityIPv6.vm", updateAction.getTemplate());
 
 		String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/updateVRRPPriorityIPv6.xml"));
+		String actionMessage = XmlHelper.formatXML(updateAction.getVelocityMessage());
+
+		Assert.assertEquals(expectedMessage, actionMessage);
+	}
+
+	@Test
+	public void updateVRRPVirtualIPAddressIPv6Test() throws ActionException, SAXException, IOException, TransformerException,
+			ParserConfigurationException {
+		UpdateVRRPVirtualIPAddressAction updateAction = new UpdateVRRPVirtualIPAddressAction();
+		updateAction.setModelToUpdate(new ComputerSystem());
+		updateAction.setParams(helper.newParamsVRRPGroupWithOneEndpointIPv6().getProtocolEndpoint().get(0));
+
+		Assert.assertTrue("Invalid params for UpdateVRRPVirtualIPAddress action : ", updateAction.checkParams(updateAction.getParams()));
+		updateAction.prepareMessage();
+
+		Assert.assertEquals("Invalid template for configuring VRRP with IPv6", "/VM_files/updateVRRPIPAddressIPv6.vm", updateAction.getTemplate());
+
+		String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/updateVRRPIPAddressIPv6.xml"));
 		String actionMessage = XmlHelper.formatXML(updateAction.getVelocityMessage());
 
 		Assert.assertEquals(expectedMessage, actionMessage);

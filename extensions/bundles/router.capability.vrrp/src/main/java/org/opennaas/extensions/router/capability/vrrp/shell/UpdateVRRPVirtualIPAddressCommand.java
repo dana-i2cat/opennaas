@@ -53,6 +53,7 @@ public class UpdateVRRPVirtualIPAddressCommand extends GenericKarafCommand {
 						vrrpGroup = candidate;
 						newVRRPGroup.setVrrpName(vrrpGroup.getVrrpName());
 						newVRRPGroup.setVirtualIPAddress(virtualIPAddress);
+
 						newRouter.addHostedService(newVRRPGroup);
 						break;
 					}
