@@ -6,6 +6,7 @@ package org.opennaas.extensions.vcpe.manager.templates;
 import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
 import org.opennaas.extensions.vcpe.manager.templates.mp.MultipleProviderTemplate;
 import org.opennaas.extensions.vcpe.manager.templates.sp.SingleProviderTemplate;
+import org.opennaas.extensions.vcpe.manager.templates.sp.v6.SingleProviderV6Template;
 
 /**
  * @author Jordi
@@ -25,6 +26,8 @@ public class TemplateSelector {
 			iTemplate = new SingleProviderTemplate();
 		} else if (templateId.equals(ITemplate.MP_VCPE_TEMPLATE)) {
 			iTemplate = new MultipleProviderTemplate();
+		} else if (templateId.equals(ITemplate.SP_V6_VCPE_TEMPLATE)) {
+			iTemplate = new SingleProviderV6Template();
 		}
 
 		if (iTemplate == null)

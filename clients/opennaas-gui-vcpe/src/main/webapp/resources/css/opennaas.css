@@ -109,7 +109,7 @@ h1 {
 	overflow: auto;
 }
 
-#sp_vcpe_v6 li {
+#sp_v6_vcpe li {
 	margin-top: 20px;
 }
 
@@ -881,6 +881,6 @@ h3.lr_inactive {
 	z-index: 1000;
 }
 
-#sp_vcpe_v6 {
+#sp_v6_vcpe {
 	margin-top: 10px;
 }
