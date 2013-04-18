@@ -114,7 +114,7 @@ public class ResourceManagerIntegrationTest
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 		capabilities.add("queue");
 
 		ResourceDescriptor descriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
@@ -176,7 +176,7 @@ public class ResourceManagerIntegrationTest
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");
-		capabilities.add("ipv4");
+		capabilities.add("ip");
 		capabilities.add("queue");
 
 		ResourceDescriptor descriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);

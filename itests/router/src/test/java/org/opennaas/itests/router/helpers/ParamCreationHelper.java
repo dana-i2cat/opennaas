@@ -21,6 +21,7 @@ import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
@@ -202,6 +203,15 @@ public class ParamCreationHelper {
 		if (routerId != null) {
 			ospfService.setRouterID(routerId);
 		}
+		return ospfService;
+	}
+
+	public static OSPFService getOSPFv3Service(String routerId) {
+		OSPFService ospfService = new OSPFService();
+		if (routerId != null) {
+			ospfService.setRouterID(routerId);
+		}
+		ospfService.setAlgorithmType(AlgorithmType.OSPFV3);
 		return ospfService;
 	}
 

@@ -15,7 +15,7 @@ public class IPCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(IPCapability.IPv4), resource
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(IPCapability.IP), resource
 				.getResourceDescriptor()
 				.getId());
 		capability.setResource(resource);

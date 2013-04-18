@@ -21,6 +21,7 @@ import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.wrappers.AddInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaRequest;
@@ -115,6 +116,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	public void configureOSPF(OSPFService ospfService) throws CapabilityException {
 		log.info("Start of configureOSPF call");
 		ospfService.setEnabledState(EnabledState.DISABLED); // mark OSPF as disabled, we are configuring only
+		ospfService.setAlgorithmType(AlgorithmType.OSPFV2);
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CONFIGURE, ospfService);
 		queueAction(action);
 		log.info("End of configureOSPF call");
@@ -143,6 +145,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("Start of activateOSPF call");
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.ENABLED);
+		service.setAlgorithmType(AlgorithmType.OSPFV2);
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_ACTIVATE, service);
 		queueAction(action);
 		log.info("End of activateOSPF call");
@@ -158,6 +161,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("Start of deactivateOSPF call");
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.DISABLED);
+		service.setAlgorithmType(AlgorithmType.OSPFV2);
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_DEACTIVATE, service);
 		queueAction(action);
 		log.info("End of deactivateOSPF call");
@@ -363,7 +367,9 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		// Search OSPF Service in the Service list
 		for (Service service : lServices) {
 			if (service instanceof OSPFService) {
-				ospfService = (OSPFService) service;
+				OSPFService ospf = (OSPFService) service;
+				if (ospf.getAlgorithmType().equals(AlgorithmType.OSPFV2))
+					ospfService = ospf;
 				break;
 			}
 		}

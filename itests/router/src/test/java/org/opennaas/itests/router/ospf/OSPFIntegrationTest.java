@@ -1,10 +1,8 @@
-/**
- *
- */
 package org.opennaas.itests.router.ospf;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -32,16 +30,18 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
 import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
@@ -51,7 +51,8 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
  * @author Adrian Rosello
  */
 @RunWith(JUnit4TestRunner.class)
-public abstract class OSPFIntegrationTest
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class OSPFIntegrationTest
 {
 	protected static final String	RESOURCE_INFO_NAME	= "OSPF Test";
 
@@ -82,6 +83,7 @@ public abstract class OSPFIntegrationTest
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-router", "opennaas-junos"),
+				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());
 	}

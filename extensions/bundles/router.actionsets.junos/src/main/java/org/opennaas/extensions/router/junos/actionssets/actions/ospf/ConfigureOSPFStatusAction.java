@@ -3,6 +3,10 @@ package org.opennaas.extensions.router.junos.actionssets.actions.ospf;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants;
@@ -11,11 +15,7 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.OSPFService;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 
 /**
  * This action is responsible of configuring enable/disable OSPF status in a Junos 10 router.
@@ -71,8 +71,13 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 		if (!(params instanceof OSPFService))
 			return false;
 
-		if (((OSPFService) params).getEnabledState().equals(EnabledState.ENABLED) ||
-				((OSPFService) params).getEnabledState().equals(EnabledState.DISABLED))
+		OSPFService ospfService = (OSPFService) params;
+
+		if (ospfService.getAlgorithmType() == null || ospfService.equals(AlgorithmType.OSPFV2))
+			return false;
+
+		if (ospfService.getEnabledState().equals(EnabledState.ENABLED) ||
+				(ospfService.getEnabledState().equals(EnabledState.DISABLED)))
 			return true;
 
 		return false;
