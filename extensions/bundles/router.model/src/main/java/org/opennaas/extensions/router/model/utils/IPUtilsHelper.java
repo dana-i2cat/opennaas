@@ -3,6 +3,8 @@ package org.opennaas.extensions.router.model.utils;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import com.google.common.net.InetAddresses;
+
 /**
  * It is used to parse different messages
  * 
@@ -127,6 +129,62 @@ public class IPUtilsHelper {
 				Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
 						+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
 		return IP_PATTERN.matcher(iPaddress).matches();
+	}
+
+	public static boolean validateIPv6Address(String ipAddress) {
+
+		return InetAddresses.isInetAddress(ipAddress);
+	}
+
+	public static boolean isIPv4ValidAddress(String ipAddress) {
+
+		if (ipAddress.split("/").length != 2)
+			return false;
+
+		String ip = getAddressFromIP(ipAddress);
+		String mask = getPrefixFromIp(ipAddress);
+
+		boolean validIP = validateIpAddressPattern(ip);
+		boolean validMask = validateSubnetMask(mask);
+
+		return (validIP && validMask);
+	}
+
+	public static boolean validateSubnetMask(String mask) {
+
+		int maskSize = Integer.valueOf(mask);
+		if ((maskSize < 0) || (maskSize > 32))
+			return false;
+
+		return true;
+	}
+
+	public static boolean isIPv6ValidAddress(String ipAddress) {
+
+		if (ipAddress.split("/").length != 2)
+			return false;
+
+		String ip = getAddressFromIP(ipAddress);
+		String preffix = getPrefixFromIp(ipAddress);
+
+		boolean validIP = validateIPv6Address(ip);
+		boolean validPrefix = validateIPv6Prefix(Short.valueOf(preffix));
+
+		return (validIP && validPrefix);
+	}
+
+	public static boolean validateIPv6Prefix(Short prefixLength) {
+		if (prefixLength < 0 || prefixLength > 128)
+			return false;
+		return true;
+	}
+
+	public static String getAddressFromIP(String ip) {
+		return ip.split("/")[0];
+	}
+
+	public static String getPrefixFromIp(String ip) {
+		return ip.split("/")[1];
 	}
 
 }

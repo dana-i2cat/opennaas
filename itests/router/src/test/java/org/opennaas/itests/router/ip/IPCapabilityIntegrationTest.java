@@ -29,9 +29,9 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
@@ -49,7 +49,7 @@ public class IPCapabilityIntegrationTest
 {
 	private final static Log	log					= LogFactory.getLog(IPCapabilityIntegrationTest.class);
 
-	private final static String	RESOURCE_INFO_NAME	= "IPv4 test";
+	private final static String	RESOURCE_INFO_NAME	= "IP test";
 
 	protected ICapability		iIPCapability;
 

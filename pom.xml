@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.18</version>
+	<version>0.19-SNAPSHOT</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -277,6 +277,11 @@
 				<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.ospfv3</artifactId>
+				<version>${project.version}</version>
+			</dependency>			
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>

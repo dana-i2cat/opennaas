@@ -1,0 +1,35 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$elementName.equals("") )
+		#set($logicalRouter = "true")
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	
+	<protocols>	
+		<ospf3>
+		#set($ospfArea = $param.getOSPFArea())
+			<area>
+				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
+				##TODO Area type config should be included here (stub, nssa,...)
+
+				#foreach($ospfPep in $ospfArea.getEndpointsInArea())
+				<interface>
+					<name>$ospfPep.getName()</name>
+					##ENABLED/DISABLED
+					#if($ospfPep.getEnabledState().toString().equals($disabledState))
+					<disable/>
+					#else
+					<disable operation="delete"/>
+					#end
+				</interface>
+				#end
+			</area>
+		</ospf3>
+	</protocols>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
