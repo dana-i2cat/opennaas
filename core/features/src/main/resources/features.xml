@@ -16,7 +16,6 @@
 		<bundle>mvn:org.springframework.security/spring-security-config/${spring.version}</bundle>
 		<bundle>mvn:org.springframework.security/spring-security-acl/${spring.version}</bundle>
 		<bundle>mvn:org.springframework.security/spring-security-web/${spring.version}</bundle>
-		<bundle>mvn:org.springframework.security/spring-security-taglibs/${spring.version}</bundle>
 	</feature>
 
 
