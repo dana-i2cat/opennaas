@@ -4,7 +4,6 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -85,7 +84,6 @@ public class VRRPIntegrationTest {
 				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
-				openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
