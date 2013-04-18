@@ -4,6 +4,7 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -84,6 +85,7 @@ public class VRRPIntegrationTest {
 				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
+				openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -205,12 +207,27 @@ public class VRRPIntegrationTest {
 		stopResource();
 	}
 
+	@Test(expected = CapabilityException.class)
+	public void testConfigureVRRPIPv6WrongParams() throws ProtocolException, ResourceException {
+		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
+		vrrpCapability.configureVRRP((VRRPProtocolEndpoint) ParamCreationHelper
+				.newParamsVRRPGroupWithOneEndpointIPv6("fecd:123:a1::4", "f8:34::12", "fe-1/0/1", "fecd:123:a1::5/64").getProtocolEndpoint().get(0));
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		stopResource();
+	}
+
 	@Test
 	public void testConfigureVRRPIPv6() throws ProtocolException, ResourceException {
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
 		vrrpCapability.configureVRRP((VRRPProtocolEndpoint) ParamCreationHelper
-				.newParamsVRRPGroupWithOneEndpointIPv6("fecd:123:a1::4", "f8:34::12", "fe-1/0/1", "fecd:123:a1::5/64").getProtocolEndpoint().get(0));
+				.newParamsVRRPGroupWithTwoEndpointIPv6("fecd:123:a1::4", "f8:34::12", "fe-1/0/1", "fecd:123:a1::5/64", "f8:34::13/64")
+				.getProtocolEndpoint().get(0));
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();

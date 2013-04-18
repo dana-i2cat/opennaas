@@ -5,15 +5,18 @@
 				<unit>
 				<name>1</name>
 				<family>
-					<inet6>
+					<inet6 operation="replace">
 						<address>
 							<name>fecd:123::5/64</name>
-							<vrrp-inet6-group operation="replace">
+							<vrrp-inet6-group>
 								<name>201</name>
 								<virtual-inet6-address>fecd:123::4</virtual-inet6-address>
 								<virtual-link-local-address>f8:cd:1243::9</virtual-link-local-address>
 								<priority>100</priority>
 							</vrrp-inet6-group>
+						</address>
+						<address>
+							<name>f8:cd:1243::10/64</name>
 						</address>
 					</inet6>
 				</family>

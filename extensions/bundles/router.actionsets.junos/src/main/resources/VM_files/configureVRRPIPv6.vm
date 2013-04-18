@@ -17,15 +17,18 @@
 				<unit>
 				<name>$networkInterface.getPortNumber()</name>
 				<family>
-					<inet6>
+					<inet6 operation="replace">
 						<address>
 							<name>$ipAddress/$prefix</name>
-							<vrrp-inet6-group operation="replace">
+							<vrrp-inet6-group>
 								<name>$vrrpGroup.getVrrpName()</name>
 								<virtual-inet6-address>$vrrpGroup.getVirtualIPAddress()</virtual-inet6-address>
 								<virtual-link-local-address>$vrrpGroup.getVirtualLinkAddress()</virtual-link-local-address>
 								<priority>$param.getPriority()</priority>
 							</vrrp-inet6-group>
+						</address>
+						<address>
+							<name>$ipLinkAddress/$ipLinkPrefix</name>
 						</address>
 					</inet6>
 				</family>

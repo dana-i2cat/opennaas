@@ -62,6 +62,9 @@ public class ConfigureVRRPAction extends JunosAction {
 
 	}
 
+	/**
+	 * FIXME
+	 */
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		if (params == null) {
@@ -82,7 +85,10 @@ public class ConfigureVRRPAction extends JunosAction {
 
 		List<ProtocolEndpoint> protocolEndpoints = ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints();
 		// VRRPProtocolEndpoint has 1 ProtocolEndpoint
-		if (protocolEndpoints.size() != 1)
+		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV4) && protocolEndpoints.size() != 1)
+			return false;
+
+		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6) && protocolEndpoints.size() != 2)
 			return false;
 
 		// protocolEndpoint is an instance of IPProtocolEndpoint
@@ -93,6 +99,14 @@ public class ConfigureVRRPAction extends JunosAction {
 		// ProtocolEndpoint and VRRPProtocolEndpoint with different protocols.
 		if (protocolEndpoint.getProtocolIFType() == null || !protocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
 			return false;
+
+		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6)) {
+			ProtocolEndpoint secondProtocolEndpoint = protocolEndpoints.get(1);
+			if (!(secondProtocolEndpoint instanceof IPProtocolEndpoint))
+				return false;
+			if (secondProtocolEndpoint.getProtocolIFType() == null || !secondProtocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
+				return false;
+		}
 
 		// protocolEndpoint has 1 LogicalPort
 		List<LogicalPort> logicalPorts = ((IPProtocolEndpoint) protocolEndpoint).getLogicalPorts();
@@ -108,6 +122,10 @@ public class ConfigureVRRPAction extends JunosAction {
 		if (!(service instanceof VRRPGroup)) {
 			return false;
 		}
+
+		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6))
+			if (((VRRPGroup) service).getVirtualLinkAddress() == null || ((VRRPGroup) service).getVirtualLinkAddress().isEmpty())
+				return false;
 
 		// structure correct
 		return true;
@@ -142,6 +160,11 @@ public class ConfigureVRRPAction extends JunosAction {
 				extraParams.put("ipAddress", ipAddress);
 				short prefix = ipProtocolEndpoint.getPrefixLength();
 				extraParams.put("prefix", prefix);
+				IPProtocolEndpoint secondIProtocolEnpodint = (IPProtocolEndpoint) ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints().get(1);
+				String secondIPAddress = secondIProtocolEnpodint.getIPv6Address();
+				short secondPrefix = ipProtocolEndpoint.getPrefixLength();
+				extraParams.put("ipLinkAddress", secondIPAddress);
+				extraParams.put("ipLinkPrefix", secondPrefix);
 			}
 			// router interface
 			NetworkPort networkInterface = (NetworkPort) ipProtocolEndpoint.getLogicalPorts().get(0);

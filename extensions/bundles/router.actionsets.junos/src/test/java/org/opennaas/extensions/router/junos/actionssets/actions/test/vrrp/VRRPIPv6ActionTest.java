@@ -23,6 +23,8 @@ import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPP
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPVirtualIPAddressAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPVirtualLinkAddressAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.VRRPGroup;
+import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.xml.sax.SAXException;
 
 public class VRRPIPv6ActionTest {
@@ -39,10 +41,11 @@ public class VRRPIPv6ActionTest {
 	}
 
 	@Test
-	public void configureVRRPIPv6Test() throws ActionException, SAXException, IOException, TransformerException, ParserConfigurationException {
+	public void configureVRRPIPv6Test() throws ActionException, SAXException, IOException, TransformerException,
+			ParserConfigurationException {
 		ConfigureVRRPAction configureAction = new ConfigureVRRPAction();
 		configureAction.setModelToUpdate(new ComputerSystem());
-		configureAction.setParams(helper.newParamsVRRPGroupWithOneEndpointIPv6().getProtocolEndpoint().get(0));
+		configureAction.setParams(helper.newParamsVRRPGroupWithTwoEndpointIPv6().getProtocolEndpoint().get(0));
 
 		Assert.assertTrue("Invalid params for ConfigureVRRP action : ", configureAction.checkParams(configureAction.getParams()));
 		configureAction.prepareMessage();
@@ -53,6 +56,38 @@ public class VRRPIPv6ActionTest {
 		String actionMessage = XmlHelper.formatXML(configureAction.getVelocityMessage());
 
 		Assert.assertEquals(expectedMessage, actionMessage);
+	}
+
+	// checkParams should fail
+	@Test
+	public void configureVRRPIPv6TestWithoutVirtualLink() throws ActionException, SAXException, IOException, TransformerException,
+			ParserConfigurationException {
+		ConfigureVRRPAction configureAction = new ConfigureVRRPAction();
+		configureAction.setModelToUpdate(new ComputerSystem());
+		VRRPProtocolEndpoint pE = (VRRPProtocolEndpoint) helper.newParamsVRRPGroupWithTwoEndpointIPv6().getProtocolEndpoint().get(0);
+
+		((VRRPGroup) pE.getService()).setVirtualLinkAddress(null);
+
+		configureAction.setParams(pE);
+
+		Assert.assertFalse("Params should not be valid since VirtualLinkAddress is not set : ",
+				configureAction.checkParams(configureAction.getParams()));
+
+	}
+
+	// checkParams should fail
+	@Test
+	public void configureVRRPIPv6TestWithOneLink() throws ActionException, SAXException, IOException, TransformerException,
+			ParserConfigurationException {
+		ConfigureVRRPAction configureAction = new ConfigureVRRPAction();
+		configureAction.setModelToUpdate(new ComputerSystem());
+		VRRPProtocolEndpoint pE = (VRRPProtocolEndpoint) helper.newParamsVRRPGroupWithOneEndpointIPv6().getProtocolEndpoint().get(0);
+
+		configureAction.setParams(pE);
+
+		Assert.assertFalse("Params should not be valid since VRRPProtocolEndpoint is binded only to one IPProtocolEndpoint : ",
+				configureAction.checkParams(configureAction.getParams()));
+
 	}
 
 	@Test

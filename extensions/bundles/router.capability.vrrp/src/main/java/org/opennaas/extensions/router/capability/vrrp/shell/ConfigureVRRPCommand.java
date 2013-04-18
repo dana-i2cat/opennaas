@@ -44,6 +44,14 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 			false)
 	private String	virtualIPAddress;
 
+	@Argument(index = 6, name = "virtualIPAddress", description = "The virtual IP address", required = true, multiValued =
+			false)
+	private String	interfaceLinkAddress;
+
+	@Argument(index = 7, name = "virtualIPAddress", description = "The virtual IP address", required = true, multiValued =
+			false)
+	private String	virtualLinkAddress;
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Configure VRRP");
