@@ -4,14 +4,14 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
@@ -22,19 +22,16 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the router to create the GRE Tunnel", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Argument(index = 1, name = "interfaceName", description = "GRE interface name", required = true, multiValued = false)
+	@Argument(index = 1, name = "interfaceName", description = "GRE interface name. Be aware that given name SHOULD match an existing gr interface in the router, otherwise GRE will be configured but will NOT work.", required = true, multiValued = false)
 	private String	interfaceName;
 
-	@Argument(index = 2, name = "ipv4Address", description = "IP of the tunnel", required = true, multiValued = false)
-	private String	ipv4Address;
+	@Argument(index = 2, name = "ipAddress", description = "IP of the tunnel", required = true, multiValued = false)
+	private String	ipAddress;
 
-	@Argument(index = 3, name = "subnetMask", description = "Mask of the tunnel", required = true, multiValued = false)
-	private String	subnetMask;
-
-	@Argument(index = 4, name = "ipSource", description = "IP source address", required = true, multiValued = false)
+	@Argument(index = 3, name = "ipSource", description = "IP source address", required = true, multiValued = false)
 	private String	ipSource;
 
-	@Argument(index = 5, name = "ipDestiny", description = "IP destination address", required = true, multiValued = false)
+	@Argument(index = 4, name = "ipDestiny", description = "IP destination address", required = true, multiValued = false)
 	private String	ipDestiny;
 
 	/*
@@ -44,7 +41,7 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	 */
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Shows GRE tunnels");
+		printInitCommand("Create GRE tunnel");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			IGRETunnelCapability tunnelCapability = (IGRETunnelCapability) router.getCapabilityByInterface(IGRETunnelCapability.class);
@@ -54,7 +51,7 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error showing GRE tunnels");
+			printError("Error creating GRE tunnels");
 			printError(e);
 			printEndCommand();
 			return -1;
@@ -73,18 +70,6 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	private GRETunnelService getTunnelService() throws Exception {
 		// Create the GRETunnelService
 
-		IResource router = getResourceFromFriendlyName(resourceId);
-		ComputerSystem model = (ComputerSystem) router.getModel();
-		GREService greService = model.getAllHostedServicesByType(new GREService()).get(0);
-
-		boolean found = false;
-		for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
-			if (pE.getName().equals(interfaceName))
-				found = true;
-		}
-		if (!found)
-			throw new Exception("GRE Interface not available at this router.");
-
 		GRETunnelService greTunnelService = new GRETunnelService();
 
 		greTunnelService.setName(interfaceName);
@@ -95,10 +80,26 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 		greTunnelConfiguration.setDestinationAddress(ipDestiny);
 		greTunnelService.setGRETunnelConfiguration(greTunnelConfiguration);
 
-		// Create the protocol endpoint
 		GRETunnelEndpoint greTunnelEndpoint = new GRETunnelEndpoint();
-		greTunnelEndpoint.setIPv4Address(ipv4Address);
-		greTunnelEndpoint.setSubnetMask(subnetMask);
+
+		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
+			throw new CommandException("The tunnel address is not a valid ipv4/ipv6 address.");
+
+		String address = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String prefix = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+		// Create the protocol endpoint
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+			greTunnelEndpoint.setIPv4Address(address);
+			greTunnelEndpoint.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(prefix));
+			greTunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
+		}
+		else {
+			greTunnelEndpoint.setIPv6Address(address);
+			greTunnelEndpoint.setPrefixLength(Short.valueOf(prefix));
+			greTunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
+		}
+
 		greTunnelService.addProtocolEndpoint(greTunnelEndpoint);
 		return greTunnelService;
 	}
