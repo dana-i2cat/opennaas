@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.junos.actionssets.actions.ipv4;
+package org.opennaas.extensions.router.junos.actionssets.actions.ip;
 
 import java.util.HashMap;
 import java.util.Map;

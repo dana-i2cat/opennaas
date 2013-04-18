@@ -150,7 +150,7 @@ public class CoreTest
 			/* specify profiles */
 			Map<String, IActionSet> actionSets = new HashMap<String, IActionSet>();
 			ActionSet actionSet = new ActionSet();
-			actionSet.putAction("setIPv4", MockAction.class);
+			actionSet.putAction("setIP", MockAction.class);
 
 			actionSets.put("chassis", actionSet);
 

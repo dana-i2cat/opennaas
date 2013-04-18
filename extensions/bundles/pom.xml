@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.18</version>
+		<version>0.19-SNAPSHOT</version>
 	</parent>
 	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
@@ -28,6 +28,7 @@
 		<module>router.capability.ip</module>
 		<module>router.capability.gretunnel</module>
 		<module>router.capability.ospf</module>
+		<module>router.capability.ospfv3</module>		
 		<module>router.capability.staticroute</module>
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>

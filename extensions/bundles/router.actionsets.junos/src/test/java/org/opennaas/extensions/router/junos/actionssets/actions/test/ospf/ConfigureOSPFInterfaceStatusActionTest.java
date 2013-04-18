@@ -5,16 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ConfigureOSPFInterfaceStatusAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
-import org.opennaas.extensions.router.model.OSPFService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +13,17 @@ import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ConfigureOSPFInterfaceStatusAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
+import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class ConfigureOSPFInterfaceStatusActionTest {
 	Log													log	= LogFactory.getLog(ConfigureOSPFInterfaceStatusActionTest.class);
@@ -134,6 +135,8 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 		ComputerSystem model = new ComputerSystem();
 
 		OSPFService ospfService = new OSPFService();
+
+		ospfService.setAlgorithmType(AlgorithmType.OSPFV2);
 
 		OSPFAreaConfiguration config1 = new OSPFAreaConfiguration();
 		OSPFProtocolEndpoint pep1 = getOSPFProtocolEndpoint("0.0.0.0", "fe-0/0/2", "1");
