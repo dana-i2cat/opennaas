@@ -21,10 +21,12 @@ import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class ParamCreationHelper {
@@ -249,6 +251,7 @@ public class ParamCreationHelper {
 		GRETunnelEndpoint gE = new GRETunnelEndpoint();
 		gE.setIPv4Address(ipv4Address);
 		gE.setSubnetMask(subnetMask);
+		gE.setProtocolIFType(ProtocolIFType.IPV6);
 
 		greService.setGRETunnelConfiguration(greConfig);
 		greService.addProtocolEndpoint(gE);
@@ -323,4 +326,31 @@ public class ParamCreationHelper {
 		return vrrpGroup;
 	}
 
+	public static GRETunnelService getGRETunnelService(String tunnelName, String ipAddress, String ipSource, String ipDestiny) {
+		GRETunnelService greService = new GRETunnelService();
+		greService.setElementName("");
+		greService.setName(tunnelName);
+
+		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
+		greConfig.setSourceAddress(ipSource);
+		greConfig.setDestinationAddress(ipDestiny);
+
+		GRETunnelEndpoint gE = new GRETunnelEndpoint();
+
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+			gE.setIPv4Address(IPUtilsHelper.getAddressFromIP(ipAddress));
+			String mask = IPUtilsHelper.getPrefixFromIp(ipAddress);
+			gE.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(mask));
+			gE.setProtocolIFType(ProtocolIFType.IPV4);
+		} else {
+			gE.setIPv6Address(IPUtilsHelper.getAddressFromIP(ipAddress));
+			gE.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(ipAddress)));
+			gE.setProtocolIFType(ProtocolIFType.IPV6);
+		}
+
+		greService.setGRETunnelConfiguration(greConfig);
+		greService.addProtocolEndpoint(gE);
+
+		return greService;
+	}
 }

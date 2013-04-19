@@ -10,7 +10,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.gretunnel.CreateTunnelAction;
@@ -21,7 +20,8 @@ import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
-public class CreateTunnelActionTest {
+public class CreateTunnelv6ActionTest {
+
 	private static CreateTunnelAction		action;
 	private static ActionTestHelper			helper;
 	private static ProtocolSessionManager	protocolsessionmanager;
@@ -49,9 +49,9 @@ public class CreateTunnelActionTest {
 			action.setParams(greTunnelService);
 
 			action.prepareMessage();
-			Assert.assertEquals("Wrong Velocity Template", "/VM_files/createTunnel.vm", action.getTemplate());
+			Assert.assertEquals("Wrong Velocity Template", "/VM_files/createTunnelv6.vm", action.getTemplate());
 
-			String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/greTunnelv4.xml"));
+			String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/greTunnelv6.xml"));
 			String actionMessage = XmlHelper.formatXML(action.getVelocityMessage());
 			Assert.assertEquals(expectedMessage, actionMessage);
 		} catch (Exception e) {
@@ -59,28 +59,6 @@ public class CreateTunnelActionTest {
 			Assert.fail(e.getMessage());
 		}
 
-	}
-
-	/**
-	 * Execute the action
-	 * 
-	 * @throws IOException
-	 * @throws ActionException
-	 */
-	@Test
-	public void executeActionTest() throws IOException, ActionException {
-		action.setModelToUpdate(new ComputerSystem());
-
-		// Add params
-		GRETunnelService greTunnelService = getGRETunnelService();
-		action.setParams(greTunnelService);
-
-		ActionResponse response = action.execute(protocolsessionmanager);
-		Assert.assertTrue(response.getActionID()
-				.equals(ActionConstants.CREATETUNNEL));
-
-		org.opennaas.extensions.router.model.System computerSystem = (org.opennaas.extensions.router.model.System) action.getModelToUpdate();
-		Assert.assertNotNull(computerSystem);
 	}
 
 	private String textFileToString(String fileLocation) throws IOException {
@@ -112,9 +90,9 @@ public class CreateTunnelActionTest {
 		greConfig.setDestinationAddress("193.45.23.1");
 
 		GRETunnelEndpoint gE = new GRETunnelEndpoint();
-		gE.setIPv4Address("192.168.32.1");
-		gE.setSubnetMask("255.255.255.0");
-		gE.setProtocolIFType(ProtocolIFType.IPV4);
+		gE.setIPv6Address("51:4F3::3A:B1");
+		gE.setPrefixLength(Short.valueOf("64"));
+		gE.setProtocolIFType(ProtocolIFType.IPV6);
 
 		greService.setGRETunnelConfiguration(greConfig);
 		greService.addProtocolEndpoint(gE);

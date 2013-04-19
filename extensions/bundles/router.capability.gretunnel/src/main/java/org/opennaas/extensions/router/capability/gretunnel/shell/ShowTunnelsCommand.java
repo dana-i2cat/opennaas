@@ -12,6 +12,7 @@ import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
@@ -64,12 +65,12 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 		}
 		for (GRETunnelService greTunnelService : lGRETunnelService) {
 			printSymbol("GRE tunnel: " + greTunnelService.getName());
-			printSymbol("Source IP address: " + greTunnelService.getGRETunnelConfiguration().getSourceAddress());
-			printSymbol("Destiny IP address: " + greTunnelService.getGRETunnelConfiguration().getDestinationAddress());
+			printSymbol("\tSource IP address: " + greTunnelService.getGRETunnelConfiguration().getSourceAddress());
+			printSymbol("\tDestiny IP address: " + greTunnelService.getGRETunnelConfiguration().getDestinationAddress());
 			if (!greTunnelService.getProtocolEndpoint().isEmpty()) {
 				for (ProtocolEndpoint pep : greTunnelService.getProtocolEndpoint()) {
 					GRETunnelEndpoint greTunnelEndpoint = (GRETunnelEndpoint) pep;
-					printSymbol("Tunnel IP address: " + getIPTunnelAddress(greTunnelEndpoint));
+					printSymbol("\tTunnel IP address: " + getIPTunnelAddress(greTunnelEndpoint));
 				}
 			}
 			printSymbol(doubleLine);
@@ -83,9 +84,19 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 	 * @return ip/mask
 	 */
 	private String getIPTunnelAddress(GRETunnelEndpoint greTunnelEndpoint) {
-		String ipAddress = greTunnelEndpoint.getIPv4Address();
-		String mask = greTunnelEndpoint.getSubnetMask() != null ?
-				IPUtilsHelper.parseLongToShortIpv4NetMask(greTunnelEndpoint.getSubnetMask()) : null;
-		return (ipAddress != null && mask != null) ? ipAddress + "/" + mask : "";
+
+		String ipAddress;
+		String prefix;
+
+		if (greTunnelEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+			ipAddress = greTunnelEndpoint.getIPv4Address();
+			prefix = greTunnelEndpoint.getSubnetMask() != null ?
+					IPUtilsHelper.parseLongToShortIpv4NetMask(greTunnelEndpoint.getSubnetMask()) : null;
+		} else {
+			ipAddress = greTunnelEndpoint.getIPv6Address();
+			prefix = String.valueOf(greTunnelEndpoint.getPrefixLength());
+		}
+
+		return (ipAddress != null && prefix != null) ? ipAddress + "/" + prefix : "";
 	}
 }
