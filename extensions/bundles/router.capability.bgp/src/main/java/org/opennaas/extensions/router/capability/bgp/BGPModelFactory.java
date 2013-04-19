@@ -2,6 +2,7 @@ package org.opennaas.extensions.router.capability.bgp;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,11 +54,20 @@ public class BGPModelFactory {
 
 		loadProperties(path);
 	}
+	
+	public BGPModelFactory(InputStream input) throws IOException {
+		loadProperties(input);
+	}
 
 	private void loadProperties(String path) throws IOException {
 		props = new Properties();
 		File file = new File(path);
 		props.load(new FileInputStream(file));
+	}
+	
+	private void loadProperties(InputStream input) throws IOException {
+		props = new Properties();
+		props.load(input);
 	}
 
 	public ComputerSystem createRouterWithBGP() {
@@ -118,7 +128,12 @@ public class BGPModelFactory {
 
 			for (int j = 0; j < Integer.parseInt(props.getProperty("bgp.group." + i + ".sessions.size")); j++) {
 				BGPProtocolEndpoint session = new BGPProtocolEndpoint();
-				session.setDescription("description");
+				
+				String description = props.getProperty("bgp.group." + i + ".session." + j + ".description");
+				if (description == null) {
+					description = "description";
+				}
+				session.setDescription(description);
 				session.setLocalIdentifier(service.getRouterID());
 				session.setPeerIdentifier(props.getProperty("bgp.group." + i + ".session." + j + ".peername"));
 				if ("external".equals(props.getProperty("bgp.group." + i + ".type"))) {

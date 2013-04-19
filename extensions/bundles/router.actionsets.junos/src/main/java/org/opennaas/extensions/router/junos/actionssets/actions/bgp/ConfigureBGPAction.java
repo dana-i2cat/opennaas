@@ -84,7 +84,13 @@ public class ConfigureBGPAction extends JunosAction {
 		}
 	}
 
-	private String prepareConfigBGPMessage() throws ActionException {
+	/**
+	 * This method is public only for testing purposes (was private). It SHOULD not be called by other classes.
+	 * 
+	 * @return
+	 * @throws ActionException
+	 */
+	public String prepareConfigBGPMessage() throws ActionException {
 
 		boolean isLogical = false;
 		String lrName = null;
@@ -109,7 +115,13 @@ public class ConfigureBGPAction extends JunosAction {
 		}
 	}
 
-	private String prepareConfigPolicyOptionsMessage() throws ActionException {
+	/**
+	 * This method is public only for testing purposes (was private). It SHOULD not be called by other classes.
+	 * 
+	 * @return
+	 * @throws ActionException
+	 */
+	public String prepareConfigPolicyOptionsMessage() throws ActionException {
 
 		boolean isLogical = false;
 		String lrName = null;

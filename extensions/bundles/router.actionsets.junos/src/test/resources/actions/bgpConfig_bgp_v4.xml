@@ -1,0 +1,45 @@
+<configuration>
+  <protocols>
+    <bgp>
+      <path-selection>
+        <cisco-non-deterministic/>
+      </path-selection>
+      <keep>all</keep>
+      <group>
+        <name>uplink-circuit</name>
+        <hold-time>45</hold-time>
+        <neighbor>
+          <name>193.1.190.134</name>
+          <description>uplink</description>
+          <import>import-default-route-from-bgp</import>
+          <import>import-generic-ip-deny-all</import>
+          <export>export-ipv4-testjuni</export>
+          <export>bgp-redistribute</export>
+          <export>export-generic-ip-deny-all</export>
+          <peer-as>65166</peer-as>
+        </neighbor>
+        <type>external</type>
+      </group>
+      <group>
+        <name>iBGP-v4</name>
+        <hold-time>45</hold-time>
+        <neighbor>
+          <name>193.1.190.138</name>
+          <description>testjuni to PW</description>
+          <import>import-ipv4-testjuni</import>
+          <import>import-default-route-from-ibgp</import>
+          <export>export-ipv4-testjuni</export>
+          <export>export-default-route-to-ibgp</export>
+          <peer-as>65533</peer-as>
+        </neighbor>
+        <type>internal</type>
+      </group>
+    </bgp>
+  </protocols>
+  <routing-options operation="merge">
+    <router-id>193.1.190.141</router-id>
+    <autonomous-system>
+      <as-number>65533</as-number>
+    </autonomous-system>
+  </routing-options>
+</configuration>
