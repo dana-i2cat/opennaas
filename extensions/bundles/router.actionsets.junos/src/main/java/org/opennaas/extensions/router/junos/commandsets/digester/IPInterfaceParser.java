@@ -108,13 +108,14 @@ public class IPInterfaceParser extends DigesterEngine {
 			addSetNext("*/interfaces/interface/unit/family/inet/address/vrrp-group", "bindServiceAccessPoint");
 
 			// VRRP IPv6 configuration
-			addObjectCreate("*/interfaces/interface/unit/family/inet/address/vrrp-inet6-group", VRRPProtocolEndpoint.class);
-			addCallMethod("*/interfaces/interface/unit/family/inet/address/vrrp-inet6-group/priority", "setPriority", 0, new Class[] { Integer.TYPE });
-			addMyRule("*/interfaces/interface/unit/family/inet/address/vrrp-inet6-group/name", "addVRRPGroup", 0);
-			addMyRule("*/interfaces/interface/unit/family/inet/address/vrrp-inet6-group/virtual-inet6-address", "setVRRPGroupVirtualAddress", 0);
-			addMyRule("*/interfaces/interface/unit/family/inet/address/vrrp-inet6-group/virtual-link-local-address",
+			addObjectCreate("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group", VRRPProtocolEndpoint.class);
+			addCallMethod("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/priority", "setPriority", 0,
+					new Class[] { Integer.TYPE });
+			addMyRule("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/name", "addVRRPGroup", 0);
+			addMyRule("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/virtual-inet6-address", "setVRRPGroupVirtualAddress", 0);
+			addMyRule("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/virtual-link-local-address",
 					"setVRRPGroupVirtualLinkLocalAddress", 0);
-			addSetNext("*/interfaces/interface/unit/family/inet/address/vrrp-inet6-group", "bindServiceAccessPoint");
+			addSetNext("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group", "bindServiceAccessPoint");
 
 		}
 	}

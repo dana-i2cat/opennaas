@@ -21,6 +21,15 @@
 					</inet6>
 				</family>
 			</unit>
-		</interface>
+		</interface>		
 	</interfaces>
+	<protocols>
+	 	<router-advertisement>
+	 		<interface operation="replace">
+				<name>fe-0/3/2.1</name>
+				<prefix>fecd::/64</prefix>
+				<max-advertisement-interval>4</max-advertisement-interval>
+	 		</interface>
+	 	</router-advertisement>
+	</protocols>	
 </configuration>

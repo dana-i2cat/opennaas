@@ -17,10 +17,10 @@
 				<unit>
 				<name>$networkInterface.getPortNumber()</name>
 				<family>
-					<inet6>
+					<inet6 operation="delete">
 						<address>
 							<name>$ipAddress/$prefix</name>
-							<vrrp-inet6-group operation="delete">
+							<vrrp-inet6-group>
 								<name>$vrrpGroup.getVrrpName()</name>
 							</vrrp-inet6-group>
 						</address>
@@ -29,6 +29,13 @@
 			</unit>
 		</interface>
 	</interfaces>
+	<protocols>
+	 	<router-advertisement>
+	 		<interface operation="delete">
+				<name>$networkInterface.getName().$networkInterface.getPortNumber()</name>
+	 		</interface>
+	 	</router-advertisement>
+	</protocols>
 	#if($logicalRouter.equals("true"))
 		</logical-systems>
 	#end

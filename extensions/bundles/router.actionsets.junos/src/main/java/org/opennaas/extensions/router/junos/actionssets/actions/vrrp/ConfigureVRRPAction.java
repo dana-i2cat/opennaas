@@ -63,7 +63,8 @@ public class ConfigureVRRPAction extends JunosAction {
 	}
 
 	/**
-	 * FIXME
+	 * FIXME VRRPProtocolEndpoint in IPv6 should not have 3 IPProtocolEndpoints. The third one was a work-around to store the IPv6 prefix for
+	 * router-advertisement. Router-advertisement is mandatory in VRRP with IPv6 and our model DOES NOT support it.
 	 */
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
@@ -88,7 +89,7 @@ public class ConfigureVRRPAction extends JunosAction {
 		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV4) && protocolEndpoints.size() != 1)
 			return false;
 
-		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6) && protocolEndpoints.size() != 2)
+		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6) && protocolEndpoints.size() != 3)
 			return false;
 
 		// protocolEndpoint is an instance of IPProtocolEndpoint
@@ -106,6 +107,13 @@ public class ConfigureVRRPAction extends JunosAction {
 				return false;
 			if (secondProtocolEndpoint.getProtocolIFType() == null || !secondProtocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
 				return false;
+
+			ProtocolEndpoint thirdProtocolEndpoint = protocolEndpoints.get(2);
+			if (!(thirdProtocolEndpoint instanceof IPProtocolEndpoint))
+				return false;
+			if (thirdProtocolEndpoint.getProtocolIFType() == null || !thirdProtocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
+				return false;
+
 		}
 
 		// protocolEndpoint has 1 LogicalPort
@@ -165,6 +173,11 @@ public class ConfigureVRRPAction extends JunosAction {
 				short secondPrefix = ipProtocolEndpoint.getPrefixLength();
 				extraParams.put("ipLinkAddress", secondIPAddress);
 				extraParams.put("ipLinkPrefix", secondPrefix);
+
+				IPProtocolEndpoint thirdIProtocolEnpodint = (IPProtocolEndpoint) ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints().get(2);
+
+				extraParams.put("longPrefix", thirdIProtocolEnpodint.getIPv6Address() + "/" + thirdIProtocolEnpodint.getPrefixLength());
+
 			}
 			// router interface
 			NetworkPort networkInterface = (NetworkPort) ipProtocolEndpoint.getLogicalPorts().get(0);

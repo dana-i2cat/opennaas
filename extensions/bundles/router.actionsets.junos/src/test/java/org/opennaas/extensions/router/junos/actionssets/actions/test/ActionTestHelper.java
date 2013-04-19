@@ -223,4 +223,44 @@ public class ActionTestHelper {
 
 		return vrrpGroup;
 	}
+
+	public Service newParamsVRRPGroupWithThreeEndpointsIPv6() {
+
+		VRRPGroup vrrpGroup = new VRRPGroup();
+		vrrpGroup.setVrrpName(201);
+		vrrpGroup.setVirtualIPAddress("fecd:123::4");
+		vrrpGroup.setVirtualLinkAddress("f8:cd:1243::9");
+		// VRRPProtocolEndpoint 1
+		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint1.setPriority(100);
+		vrrProtocolEndpoint1.setService(vrrpGroup);
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+
+		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
+		ipProtocolEndpoint1.setIPv6Address("fecd:123::5");
+		ipProtocolEndpoint1.setPrefixLength(Short.valueOf("64"));
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
+
+		IPProtocolEndpoint ipProtocolEndpoint2 = new IPProtocolEndpoint();
+		ipProtocolEndpoint2.setIPv6Address("f8:cd:1243::10");
+		ipProtocolEndpoint2.setPrefixLength(Short.valueOf("64"));
+		ipProtocolEndpoint2.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint2);
+
+		IPProtocolEndpoint ipProtocolEndpoint3 = new IPProtocolEndpoint();
+		ipProtocolEndpoint3.setIPv6Address("fecd::");
+		ipProtocolEndpoint3.setPrefixLength(Short.valueOf("64"));
+		ipProtocolEndpoint3.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint3);
+
+		EthernetPort eth1 = new EthernetPort();
+		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth1.setName("fe-0/3/2");
+		eth1.setPortNumber(1);
+		ipProtocolEndpoint1.addLogiaclPort(eth1);
+
+		return vrrpGroup;
+	}
+
 }

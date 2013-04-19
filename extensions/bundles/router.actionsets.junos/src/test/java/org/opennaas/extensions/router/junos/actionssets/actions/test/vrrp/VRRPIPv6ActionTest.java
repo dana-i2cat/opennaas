@@ -45,7 +45,7 @@ public class VRRPIPv6ActionTest {
 			ParserConfigurationException {
 		ConfigureVRRPAction configureAction = new ConfigureVRRPAction();
 		configureAction.setModelToUpdate(new ComputerSystem());
-		configureAction.setParams(helper.newParamsVRRPGroupWithTwoEndpointIPv6().getProtocolEndpoint().get(0));
+		configureAction.setParams(helper.newParamsVRRPGroupWithThreeEndpointsIPv6().getProtocolEndpoint().get(0));
 
 		Assert.assertTrue("Invalid params for ConfigureVRRP action : ", configureAction.checkParams(configureAction.getParams()));
 		configureAction.prepareMessage();

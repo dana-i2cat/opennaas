@@ -35,6 +35,15 @@
 			</unit>
 		</interface>
 	</interfaces>
+	<protocols>
+	 	<router-advertisement>
+	 		<interface operation="replace">
+				<name>$networkInterface.getName().$networkInterface.getPortNumber()</name>
+				<prefix>$longPrefix</prefix>
+				<max-advertisement-interval>4</max-advertisement-interval>
+	 		</interface>
+	 	</router-advertisement>
+	</protocols>
 	#if($logicalRouter.equals("true"))
 		</logical-systems>
 	#end

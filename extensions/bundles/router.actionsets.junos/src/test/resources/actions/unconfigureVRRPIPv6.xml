@@ -5,10 +5,10 @@
 				<unit>
 				<name>1</name>
 				<family>
-					<inet6>
+					<inet6 operation="delete">
 						<address>
 							<name>fecd:123::5/64</name>
-							<vrrp-inet6-group operation="delete">
+							<vrrp-inet6-group>
 								<name>201</name>
 							</vrrp-inet6-group>
 						</address>
@@ -17,4 +17,11 @@
 			</unit>
 		</interface>
 	</interfaces>
+	<protocols>
+	 	<router-advertisement>
+	 		<interface operation="delete">
+				<name>fe-0/3/2.1</name>
+	 		</interface>
+	 	</router-advertisement>
+	</protocols>	
 </configuration>

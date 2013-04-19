@@ -94,16 +94,16 @@ public class UnconfigureVRRPCommand extends GenericKarafCommand {
 		if (IPUtilsHelper.isIPv4ValidAddress(interfaceIPAddress)) {
 
 			String address = IPUtilsHelper.getAddressFromIP(interfaceIPAddress);
-			String mask = IPUtilsHelper.getPrefixFromIp(address);
+			String mask = IPUtilsHelper.getPrefixFromIp(interfaceIPAddress);
 
 			pE.setIPv4Address(address);
 			pE.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(mask));
 			pE.setProtocolIFType(ProtocolIFType.IPV4);
 
-		} else if (IPUtilsHelper.isIPv4ValidAddress(interfaceIPAddress)) {
+		} else if (IPUtilsHelper.isIPv6ValidAddress(interfaceIPAddress)) {
 
 			String address = IPUtilsHelper.getAddressFromIP(interfaceIPAddress);
-			String prefix = IPUtilsHelper.getPrefixFromIp(address);
+			String prefix = IPUtilsHelper.getPrefixFromIp(interfaceIPAddress);
 
 			pE.setIPv6Address(address);
 			pE.setPrefixLength(Short.valueOf(prefix));

@@ -224,7 +224,7 @@ public class VRRPIntegrationTest {
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
 		vrrpCapability.configureVRRP((VRRPProtocolEndpoint) ParamCreationHelper
-				.newParamsVRRPGroupWithTwoEndpointIPv6("fecd:123:a1::4", "f8:34::12", "fe-1/0/1", "fecd:123:a1::5/64", "f8:34::13/64")
+				.newParamsVRRPGroupWithThreeEndpointIPv6("fecd:123:a1::4", "f8:34::12", "fe-1/0/1", "fecd:123:a1::5/64", "f8:34::13/64", "fecd::/64")
 				.getProtocolEndpoint().get(0));
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));

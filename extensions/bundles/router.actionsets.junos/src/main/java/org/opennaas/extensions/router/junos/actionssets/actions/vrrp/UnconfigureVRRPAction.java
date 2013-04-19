@@ -141,6 +141,7 @@ public class UnconfigureVRRPAction extends JunosAction {
 				extraParams.put("ipAddress", ipAddress);
 				short prefix = ipProtocolEndpoint.getPrefixLength();
 				extraParams.put("prefix", prefix);
+
 			}
 
 			// router interface
