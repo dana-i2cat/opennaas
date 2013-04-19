@@ -71,9 +71,7 @@ public class UpdateVRRPVirtualIPAddressCommand extends GenericKarafCommand {
 						newVRRPProtocolEndpoint.setService(newVRRPGroup);
 						// IPProtocolEndpoint copy
 						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) vrrpProtocolEndpoint.getBindedProtocolEndpoints().get(0);
-						IPProtocolEndpoint newIPProtocolEndpoint = new IPProtocolEndpoint();
-						newIPProtocolEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
-						newIPProtocolEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+						IPProtocolEndpoint newIPProtocolEndpoint = ipProtocolEndpoint.partialCopy();
 						newVRRPProtocolEndpoint.bindServiceAccessPoint(newIPProtocolEndpoint);
 						// NetworkPort copy
 						NetworkPort networkPort = (NetworkPort) ipProtocolEndpoint.getLogicalPorts().get(0);
