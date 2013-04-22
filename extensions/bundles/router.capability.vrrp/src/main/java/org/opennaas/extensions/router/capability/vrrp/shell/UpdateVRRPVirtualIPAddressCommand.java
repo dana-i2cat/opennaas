@@ -69,6 +69,7 @@ public class UpdateVRRPVirtualIPAddressCommand extends GenericKarafCommand {
 					if (((VRRPGroup) ((VRRPProtocolEndpoint) protocolEndpoint).getService()).getVrrpName() == vrrpGroup.getVrrpName()) {
 						vrrpProtocolEndpoint = (VRRPProtocolEndpoint) protocolEndpoint;
 						newVRRPProtocolEndpoint.setService(newVRRPGroup);
+						newVRRPProtocolEndpoint.setProtocolIFType(vrrpProtocolEndpoint.getProtocolIFType());
 						// IPProtocolEndpoint copy
 						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) vrrpProtocolEndpoint.getBindedProtocolEndpoints().get(0);
 						IPProtocolEndpoint newIPProtocolEndpoint = ipProtocolEndpoint.partialCopy();

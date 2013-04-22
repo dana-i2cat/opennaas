@@ -54,6 +54,7 @@ public class UpdateVRRPPriorityCommand extends GenericKarafCommand {
 					if (candidate.getVrrpName() == vrrpGroupId) {
 						vrrpGroup = candidate;
 						newVRRPGroup.setVrrpName(vrrpGroup.getVrrpName());
+						newVRRPGroup.setVirtualIPAddress(vrrpGroup.getVirtualIPAddress());
 						newRouter.addHostedService(newVRRPGroup);
 						break;
 					}
@@ -71,6 +72,7 @@ public class UpdateVRRPPriorityCommand extends GenericKarafCommand {
 						// set priority
 						newVRRPProtocolEndpoint.setPriority(priority);
 						newVRRPProtocolEndpoint.setService(newVRRPGroup);
+						newVRRPProtocolEndpoint.setProtocolIFType(vrrpProtocolEndpoint.getProtocolIFType());
 						// IPProtocolEndpoint copy
 						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) vrrpProtocolEndpoint.getBindedProtocolEndpoints().get(0);
 						IPProtocolEndpoint newIPProtocolEndpoint = ipProtocolEndpoint.partialCopy();
