@@ -16,7 +16,7 @@
 		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp-v6/logicalForm.jsp" />	
   	</c:when>
 	<c:otherwise>
-		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp-v6/logicalForm.jsp" />	
+		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/mp/logicalForm.jsp" />	
 	</c:otherwise>
 </c:choose>
 
