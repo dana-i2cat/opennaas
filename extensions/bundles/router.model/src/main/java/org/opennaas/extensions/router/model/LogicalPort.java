@@ -6,6 +6,7 @@
 package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -87,6 +88,25 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	@SuppressWarnings("unchecked")
 	public List<ProtocolEndpoint> getProtocolEndpoint() {
 		return (List<ProtocolEndpoint>) this.getToAssociatedElementsByType(PortImplementsEndpoint.class);
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (22/04/2013) <br>
+	 * 
+	 * @param logicalDevice
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends ProtocolEndpoint> List<T> getProtocolEndpointsByType(Class<? extends ProtocolEndpoint> clazz) {
+		List<ProtocolEndpoint> list = getProtocolEndpoint();
+
+		ArrayList<T> desiredProtocolEndpoints = new ArrayList<T>();
+		for (ProtocolEndpoint protocolEndpoint : list) {
+			if (clazz.isInstance(protocolEndpoint))
+				desiredProtocolEndpoints.add((T) protocolEndpoint);
+		}
+
+		return desiredProtocolEndpoints;
 	}
 
 	/**

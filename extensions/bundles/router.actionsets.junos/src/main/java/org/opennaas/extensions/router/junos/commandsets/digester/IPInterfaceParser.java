@@ -84,10 +84,13 @@ public class IPInterfaceParser extends DigesterEngine {
 
 			// addObjectCreate("*/interfaces/interface/unit/peer-unit", LogicalTunnelPort.class);
 			addMyRule("*/interfaces/interface/unit/peer-unit", "setPeerUnit", 0);
-			addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
+			addObjectCreate("*/interfaces/interface/unit/family/inet/address", IPProtocolEndpoint.class);
 			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
+			addSetNext("*/interfaces/interface/unit/family/inet/address", "addProtocolEndpoint");
+
+			addObjectCreate("*/interfaces/interface/unit/family/inet6/address", IPProtocolEndpoint.class);
 			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
-			addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
+			addSetNext("*/interfaces/interface/unit/family/inet6/address", "addProtocolEndpoint");
 
 			/* GRETunnel Configuration */
 			addMyRule("*/interfaces/interface/unit/tunnel", "setGRETunnel", 0);
@@ -224,7 +227,6 @@ public class IPInterfaceParser extends DigesterEngine {
 					IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) pE;
 					GRETunnelEndpoint gretunnelEndpoint = new GRETunnelEndpoint();
 
-					String ip = ipProtocolEndpoint.getIPv4Address();
 					if (ipProtocolEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
 
 						gretunnelEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
