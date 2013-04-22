@@ -7,6 +7,9 @@
 	<c:when test="${physicalInfrastructure.templateType == 'sp_vcpe'}">
 		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp/physicalForm.jsp" />	
 	</c:when>
+	<c:when test="${physicalInfrastructure.templateType == 'sp_v6_vcpe'}">
+		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp-v6/physicalForm.jsp" />	
+  	</c:when>
 	<c:otherwise>
 		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/mp/physicalForm.jsp" />				
 	</c:otherwise>

@@ -39,7 +39,8 @@ public class OpennaasBeanUtils {
 	 */
 	public static VCPENetworkModel getVCPENetwork(LogicalInfrastructure modelIn) {
 		VCPENetworkModel modelOut = null;
-		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
+		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())
+				|| modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER_V6.toString())) {
 			modelOut = getVCPENetworkFromSP((SingleProviderLogical) modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
 			modelOut = getVCPENetworkFromMP((MultipleProviderLogical) modelIn);
@@ -154,7 +155,8 @@ public class OpennaasBeanUtils {
 	 */
 	public static VCPENetworkModel getPhysicalInfrastructure(PhysicalInfrastructure modelIn) {
 		VCPENetworkModel modelOut = null;
-		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
+		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString()) ||
+				modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER_V6.toString())) {
 			modelOut = getSingleProviderPhysical((SingleProviderPhysical) modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
 			modelOut = getMultipleProviderPhysical((MultipleProviderPhysical) modelIn);

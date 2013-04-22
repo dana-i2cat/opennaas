@@ -668,7 +668,8 @@ $(function() {
 	$("#selectable").selectable();
 	$("#selectTemplateButton").click(function(event) {	
 		if ($('#selectable .ui-selected').attr('id') != undefined) {
-			if ($('#selectable .ui-selected').attr('id') == 'sp_vcpe') {
+			if ($('#selectable .ui-selected').attr('id') == 'sp_vcpe' 
+				|| $('#selectable .ui-selected').attr('id') == 'sp_v6_vcpe') {
 				url = "/opennaas-vcpe/secure/noc/vcpeNetwork/singleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');
 			} else {
 				url = "/opennaas-vcpe/secure/noc/vcpeNetwork/multipleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');				

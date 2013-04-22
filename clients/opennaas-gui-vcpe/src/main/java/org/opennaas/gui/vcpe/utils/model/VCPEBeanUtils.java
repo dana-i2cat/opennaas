@@ -42,7 +42,8 @@ public class VCPEBeanUtils {
 	 */
 	public static LogicalInfrastructure getLogicalInfrastructure(VCPENetworkModel modelIn) {
 		LogicalInfrastructure modelOut = null;
-		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
+		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())
+				|| modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER_V6.toString())) {
 			modelOut = getSingleProviderLogical(modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
 			modelOut = getMultipleProviderLogical(modelIn);
@@ -142,7 +143,8 @@ public class VCPEBeanUtils {
 	 */
 	public static PhysicalInfrastructure getPhysicalInfrastructure(VCPENetworkModel modelIn) {
 		PhysicalInfrastructure modelOut = null;
-		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())) {
+		if (modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER.toString())
+				|| modelIn.getTemplateType().equals(Template.SINGLE_PROVIDER_V6.toString())) {
 			modelOut = getSingleProviderPhysical(modelIn);
 		} else if (modelIn.getTemplateType().equals(Template.MULTIPLE_PROVIDER.toString())) {
 			modelOut = getMultipleProviderPhysical(modelIn);

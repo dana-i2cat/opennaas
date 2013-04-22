@@ -12,6 +12,7 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 public interface ITemplate {
 
 	public static final String	SP_VCPE_TEMPLATE	= "sp_vcpe";
+	public static final String	SP_V6_VCPE_TEMPLATE	= "sp_v6_vcpe";
 	public static final String	MP_VCPE_TEMPLATE	= "mp_vcpe";
 
 	/**
@@ -20,7 +21,8 @@ public interface ITemplate {
 	 * @param initialModel
 	 * @param managerModel
 	 * @return VCPENetworkModel
-	 * @throws VCPENetworkManagerException if parameters are not available
+	 * @throws VCPENetworkManagerException
+	 *             if parameters are not available
 	 */
 	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) throws VCPENetworkManagerException;
 

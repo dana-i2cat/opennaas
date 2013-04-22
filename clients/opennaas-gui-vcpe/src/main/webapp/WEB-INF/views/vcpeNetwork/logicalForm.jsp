@@ -12,8 +12,11 @@
 	<c:when test="${logicalInfrastructure.templateType == 'sp_vcpe'}">
 		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp/logicalForm.jsp" />	
 	</c:when>
+	<c:when test="${logicalInfrastructure.templateType == 'sp_v6_vcpe'}">
+		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/sp-v6/logicalForm.jsp" />	
+  	</c:when>
 	<c:otherwise>
-		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/mp/logicalForm.jsp" />				
+		<c:set var="subpage" value="/WEB-INF/views/vcpeNetwork/mp/logicalForm.jsp" />	
 	</c:otherwise>
 </c:choose>
 
