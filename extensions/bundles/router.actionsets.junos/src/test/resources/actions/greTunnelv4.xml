@@ -1,0 +1,21 @@
+<configuration>
+	<interfaces>	
+		<interface>
+			<name>gr-0/1/1</name>
+			<unit operation="replace">
+				<name>2</name>
+				<tunnel>
+					<source>147.56.89.62</source>
+					<destination>193.45.23.1</destination>
+				</tunnel>
+				<family>
+					<inet>
+						<address>
+							<name>192.168.32.1/24</name>
+						</address>
+					</inet>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>

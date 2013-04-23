@@ -4,8 +4,23 @@
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 
+	<feature name="opennaas-spring-security" version="${project.version}">
+		<feature version="${spring.version}">spring</feature>
+		<feature version="${spring.version}">spring-web</feature>
+		<feature version="${spring.osgi.version}">spring-dm</feature>
+		<feature version="${spring.osgi.version}">spring-dm-web</feature>
+		
+		<bundle dependency="true">mvn:org.springframework/org.springframework.transaction/${spring.version}</bundle>
+		
+		<bundle>mvn:org.springframework.security/spring-security-core/${spring.version}</bundle>
+		<bundle>mvn:org.springframework.security/spring-security-config/${spring.version}</bundle>
+		<bundle>mvn:org.springframework.security/spring-security-acl/${spring.version}</bundle>
+		<bundle>mvn:org.springframework.security/spring-security-web/${spring.version}</bundle>
+	</feature>
+
+
 	<feature name="opennaas-persistence" version="${project.version}">
-		<feature>spring</feature>
+		<feature version="${spring.version}">spring</feature>
 		<feature>jndi</feature>
 		<feature>jpa</feature>
 
@@ -105,6 +120,7 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ip/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.gretunnel/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospfv3/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.staticroute/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.bgp/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.vrrp/${project.version}</bundle>

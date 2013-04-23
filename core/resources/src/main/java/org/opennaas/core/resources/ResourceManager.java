@@ -302,9 +302,10 @@ public class ResourceManager implements IResourceManager {
 			try {
 				return (Resource) repo.getResource(resourceId);
 			} catch (ResourceException e) {
+				// ignore, try next repository
 			}
 		}
-		return null;
+		throw new ResourceException("No resource with ID " + resourceId + " was found.");
 	}
 
 	@Override
