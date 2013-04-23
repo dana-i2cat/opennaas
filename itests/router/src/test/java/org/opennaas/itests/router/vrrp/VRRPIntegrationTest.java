@@ -49,6 +49,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -179,6 +180,9 @@ public class VRRPIntegrationTest {
 
 	@Test
 	public void testUpdateVRRPVirtualIPAddress() throws ProtocolException, ResourceException {
+
+		prepareResourceModelforIPv4();
+
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
 		vrrpCapability.updateVRRPVirtualIPAddress((VRRPProtocolEndpoint) ParamCreationHelper
@@ -193,6 +197,9 @@ public class VRRPIntegrationTest {
 
 	@Test
 	public void testUpdateVRRPPriority() throws ProtocolException, ResourceException {
+
+		prepareResourceModelforIPv4();
+
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
 		vrrpCapability.updateVRRPPriority((VRRPProtocolEndpoint) ParamCreationHelper
@@ -250,6 +257,9 @@ public class VRRPIntegrationTest {
 
 	@Test
 	public void testUpdatePriorityVRRPIPv6() throws ProtocolException, ResourceException {
+
+		prepareResourceModelforIPv6();
+
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
 		vrrpCapability.updateVRRPPriority((VRRPProtocolEndpoint) ParamCreationHelper
@@ -264,6 +274,9 @@ public class VRRPIntegrationTest {
 
 	@Test
 	public void testUpdateIPAddressVRRPIPv6() throws ProtocolException, ResourceException {
+
+		prepareResourceModelforIPv6();
+
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
 		vrrpCapability.updateVRRPVirtualIPAddress((VRRPProtocolEndpoint) ParamCreationHelper
@@ -279,7 +292,7 @@ public class VRRPIntegrationTest {
 	@Test
 	public void testUpdateVirtualLinkAddress() throws ProtocolException, ResourceException {
 
-		prepareResourceModel();
+		prepareResourceModelforIPv6();
 
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
@@ -296,7 +309,7 @@ public class VRRPIntegrationTest {
 	@Test(expected = CapabilityException.class)
 	public void testUpdateVirualLinkAddressWithWrongIP() throws ProtocolException, ResourceException {
 
-		prepareResourceModel();
+		prepareResourceModelforIPv6();
 
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
@@ -310,10 +323,19 @@ public class VRRPIntegrationTest {
 		stopResource();
 	}
 
-	private void prepareResourceModel() {
+	private void prepareResourceModelforIPv6() {
 
 		ComputerSystem model = new ComputerSystem();
 		VRRPGroup group = ParamCreationHelper.newParamsVRRPGroupWithOneEndpointIPv6("fecd:123:a1::4", "f8:34::13", "fe-1/0/1", "fecd:123:a1::5/64");
+
+		model.addHostedService(group);
+		routerResource.setModel(model);
+	}
+
+	private void prepareResourceModelforIPv4() {
+
+		ComputerSystem model = new ComputerSystem();
+		VRRPGroup group = ParamCreationHelper.newParamsVRRPGroupWithOneEndpoint("192.168.1.1", "fe-0/3/2", "192.168.1.100", "255.255.255.0");
 
 		model.addHostedService(group);
 		routerResource.setModel(model);

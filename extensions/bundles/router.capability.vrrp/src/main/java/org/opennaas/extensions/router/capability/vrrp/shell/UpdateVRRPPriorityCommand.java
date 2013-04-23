@@ -1,23 +1,17 @@
 package org.opennaas.extensions.router.capability.vrrp.shell;
 
-import java.util.List;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.vrrp.IVRRPCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 
 /**
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello
  */
 @Command(scope = "vrrp", name = "updatePriority", description = "Update VRRP priority")
 public class UpdateVRRPPriorityCommand extends GenericKarafCommand {
@@ -38,68 +32,22 @@ public class UpdateVRRPPriorityCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		printInitCommand("Update VRRP priority");
 		try {
+
 			IResource router = getResourceFromFriendlyName(resourceId);
 
 			IVRRPCapability vrrpCapability = (IVRRPCapability) router.getCapabilityByInterface(IVRRPCapability.class);
 
-			VRRPGroup vrrpGroup = null;
-			// ComputerSystem copy
-			ComputerSystem newRouter = new ComputerSystem();
-			// VRRPGroup copy
-			VRRPGroup newVRRPGroup = new VRRPGroup();
-			List<Service> services = ((ComputerSystem) router.getModel()).getHostedService();
-			for (Service service : services) {
-				if (service instanceof VRRPGroup) {
-					VRRPGroup candidate = (VRRPGroup) service;
-					if (candidate.getVrrpName() == vrrpGroupId) {
-						vrrpGroup = candidate;
-						newVRRPGroup.setVrrpName(vrrpGroup.getVrrpName());
-						newVRRPGroup.setVirtualIPAddress(vrrpGroup.getVirtualIPAddress());
-						newRouter.addHostedService(newVRRPGroup);
-						break;
-					}
-				}
-			}
+			VRRPGroup vrrpGroup = new VRRPGroup();
+			vrrpGroup.setVrrpName(vrrpGroupId);
 
-			VRRPProtocolEndpoint vrrpProtocolEndpoint = null;
-			// VRRPProtocolEndpoint copy
-			VRRPProtocolEndpoint newVRRPProtocolEndpoint = new VRRPProtocolEndpoint();
-			if (vrrpGroup != null) {
-				List<ProtocolEndpoint> protocolEndpoints = vrrpGroup.getProtocolEndpoint();
-				for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
-					if (((VRRPGroup) ((VRRPProtocolEndpoint) protocolEndpoint).getService()).getVrrpName() == vrrpGroup.getVrrpName()) {
-						vrrpProtocolEndpoint = (VRRPProtocolEndpoint) protocolEndpoint;
-						// set priority
-						newVRRPProtocolEndpoint.setPriority(priority);
-						newVRRPProtocolEndpoint.setService(newVRRPGroup);
-						newVRRPProtocolEndpoint.setProtocolIFType(vrrpProtocolEndpoint.getProtocolIFType());
-						// IPProtocolEndpoint copy
-						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) vrrpProtocolEndpoint.getBindedProtocolEndpoints().get(0);
-						IPProtocolEndpoint newIPProtocolEndpoint = ipProtocolEndpoint.partialCopy();
-						newVRRPProtocolEndpoint.bindServiceAccessPoint(newIPProtocolEndpoint);
-						// NetworkPort copy
-						NetworkPort networkPort = (NetworkPort) ipProtocolEndpoint.getLogicalPorts().get(0);
-						NetworkPort newNetworkPort = new NetworkPort();
-						newNetworkPort.setName(networkPort.getName());
-						newNetworkPort.setPortNumber(networkPort.getPortNumber());
-						newNetworkPort.addProtocolEndpoint(newIPProtocolEndpoint);
-						newRouter.addLogicalDevice(newNetworkPort);
-						break;
-					}
-				}
-				if (vrrpProtocolEndpoint != null) {
-					vrrpCapability.updateVRRPPriority(newVRRPProtocolEndpoint);
-					printEndCommand();
-					return null;
-				}
-				else {
-					printError("Error updating VRRP priority. No VRRPProtocolEndpoint found");
-				}
-			} else {
-				printError("Error updating VRRP priority. No VRRPGroup found");
-			}
+			VRRPProtocolEndpoint vrrpEndpoint = new VRRPProtocolEndpoint();
+			vrrpEndpoint.setPriority(priority);
+			vrrpEndpoint.setService(vrrpGroup);
+
+			vrrpCapability.updateVRRPPriority(vrrpEndpoint);
+
 			printEndCommand();
-			return -1;
+			return null;
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
