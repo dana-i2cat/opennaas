@@ -22,7 +22,7 @@
 						<name>201</name>
 						<vlan-id>201</vlan-id>
 						<family>
-							<inet>
+							<inet6>
 								<address>
 									<name>fec0::5:0:0:6/64</name>									
 									<vrrp-inet6-group>
@@ -32,7 +32,7 @@
 										<priority>200</priority>
 									</vrrp-inet6-group>
 								</address>
-							</inet>
+							</inet6>
 						</family>
 					</unit>
 				</interface>
@@ -109,6 +109,9 @@
 										<virtual-link-local-address>fe80::5:0:0:7</virtual-link-local-address>
 										<priority>100</priority>
 									</vrrp-inet6-group>
+								</address>
+								<address>
+									<name>fe80::5:0:0:7/64</name>
 								</address>
 							</inet>
 						</family>

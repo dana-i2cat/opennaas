@@ -42,7 +42,7 @@ public class UpdateVRRPVirtualLinkAddressCommand extends GenericKarafCommand {
 			vrrpCapability.updateVRRPVirtualLinkAddress(vrrpGroup);
 
 			printEndCommand();
-			return -1;
+			return null;
 
 		} catch (Exception e) {
 			printError("Error updating VRRP virtual Link address.");

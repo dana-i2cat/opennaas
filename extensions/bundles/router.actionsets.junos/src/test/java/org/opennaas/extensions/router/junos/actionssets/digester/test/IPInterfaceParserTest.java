@@ -490,22 +490,14 @@ public class IPInterfaceParserTest {
 		Assert.assertEquals("VRRPGroup's virtual link address should be fe80::5:0:0:7", "fe80::5:0:0:7", group.getVirtualLinkAddress());
 
 		List<ProtocolEndpoint> protocolEndpointList = group.getProtocolEndpoint();
-		Assert.assertEquals("VRRPGroup service should have 2 protocol endpoints. ", 2, protocolEndpointList.size());
+		Assert.assertEquals("VRRPGroup service should have 1 protocol endpoint. ", 1, protocolEndpointList.size());
 
 		ProtocolEndpoint pE = protocolEndpointList.get(0);
 		Assert.assertTrue("VRRPGroup should only have VRRPProtocolEndpoints.", pE instanceof VRRPProtocolEndpoint);
 
 		VRRPProtocolEndpoint vE = (VRRPProtocolEndpoint) pE;
-		Assert.assertEquals("First VRRPProtocolEndpoint should have a priority value of 200.", 200, vE.getPriority());
-		Assert.assertEquals("First VRRPProtocolEndpoint should have been configured with IPv6 protocol.", ProtocolIFType.IPV6, vE.getProtocolIFType());
-
-		pE = protocolEndpointList.get(1);
-		Assert.assertTrue("VRRPGroup should only have VRRPProtocolEndpoints", pE instanceof VRRPProtocolEndpoint);
-
-		vE = (VRRPProtocolEndpoint) pE;
-		Assert.assertEquals("Second VRRPProtocolEndpoint should have a priority value of 100.", 100, vE.getPriority());
-		Assert.assertEquals("Second VRRPProtocolEndpoint should have been configured with IPv6 protocol.", ProtocolIFType.IPV6,
-				vE.getProtocolIFType());
+		Assert.assertEquals("VRRPProtocolEndpoint should have a priority value of 200.", 200, vE.getPriority());
+		Assert.assertEquals("VRRPProtocolEndpoint should have been configured with IPv6 protocol.", ProtocolIFType.IPV6, vE.getProtocolIFType());
 
 		String str = "\n";
 		for (LogicalDevice device : model.getLogicalDevices()) {
