@@ -94,12 +94,12 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			// //// run the matching and mapping/////
 			// Global.rowNum=8;
 			// Global.cellNum=8;
-			Global.PNodeChoice = 1;
-			Global.pathChoice = 1;
-			Global.maxPathLinksNum = 5;
+			Global.getInstance().setpNodeChoice(1);
+			Global.getInstance().setPathChoice(1);
+			Global.getInstance().setMaxPathLinksNum(5);
 			// Global.staticNet=1;
 			// Global.staticVNT=1;
-			Global.stepsMax = 100;
+			Global.getInstance().setStepsMax(100);
 			// //
 			// InPNetwork net=new InPNetwork();
 			// net=net.readPNetworkFromXMLFile("src\\marketplace\\network.xml");
