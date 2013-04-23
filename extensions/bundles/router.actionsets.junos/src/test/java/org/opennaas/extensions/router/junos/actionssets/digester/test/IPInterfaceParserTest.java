@@ -90,7 +90,7 @@ public class IPInterfaceParserTest {
 		Assert.assertEquals("Model shouldn't have any service.", 0, model.getHostedService().size());
 
 		List<LogicalDevice> logicalDevices = model.getLogicalDevices();
-		Assert.assertEquals("Model should have 4 differents logical devices.", 4, logicalDevices.size());
+		Assert.assertEquals("Model should have 4 differents logical devices.", 5, logicalDevices.size());
 
 		for (LogicalDevice device : logicalDevices) {
 			Assert.assertTrue("Model should only have Ethernet ports.", device instanceof EthernetPort);
@@ -213,6 +213,57 @@ public class IPInterfaceParserTest {
 						ipEndpoint.getPrefixLength());
 
 				Assert.assertEquals("Ethernet Port fe-0/3/2.0 should only have VlanEndpoint with VlanID 32", 32, vlanEndpoints.get(0).getVlanID());
+
+			}
+
+			if (ethPort.getName().equals("fe-0/3/2") && ethPort.getPortNumber() == 1) {
+				Assert.assertNotNull("Ethernet Port fe-0/3/2.1 should have a description.", ethPort.getDescription());
+				List<ProtocolEndpoint> protocolEndpoints = ethPort.getProtocolEndpoint();
+				Assert.assertEquals("Ethernet Port fe-0/3/2.1 should have 3 ProtocolEndpoints", 3, protocolEndpoints.size());
+
+				List<IPProtocolEndpoint> ipEndpoints = ethPort.getProtocolEndpointsByType(IPProtocolEndpoint.class);
+				Assert.assertEquals("Ethernet Port fe-0/3/2.1 should have 2 IPProtocolEndpoints", 2, ipEndpoints.size());
+
+				List<VLANEndpoint> vlanEndpoints = ethPort.getProtocolEndpointsByType(VLANEndpoint.class);
+				Assert.assertEquals("Ethernet Port fe-0/3/2.1 should have 1 VlanProtocolEndpoint", 1, vlanEndpoints.size());
+
+				IPProtocolEndpoint ipEndpoint1 = ipEndpoints.get(0);
+				IPProtocolEndpoint ipEndpoint2 = ipEndpoints.get(1);
+				Assert.assertNotNull("ProtocolIFType should be set in IPProtocolEndpoint of Ethernet Port fe-0/3/2.1.",
+						ipEndpoint1.getProtocolIFType());
+				Assert.assertNotNull("ProtocolIFType should be set in IPProtocolEndpoint of Ethernet Port fe-0/3/2.1.",
+						ipEndpoint2.getProtocolIFType());
+				Assert.assertFalse("IPProtocolEndpoints should have differents protocols in Ethernet Port fe-0/3/2.1",
+						ipEndpoint1.getProtocolIFType().equals(ipEndpoint2.getProtocolIFType()));
+
+				for (IPProtocolEndpoint ipEndpoint : ipEndpoints) {
+					if (ipEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+
+						Assert.assertNull("IPv4 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should not have configured IPv6 addresses",
+								ipEndpoint.getIPv6Address());
+						Assert.assertEquals("IPv4 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should not have configured IPv6 prefix length", 0,
+								ipEndpoint.getPrefixLength());
+						Assert.assertEquals("IPv4 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should have the address 192.168.1.1.",
+								"192.168.1.1", ipEndpoint.getIPv4Address());
+						Assert.assertEquals("IPv4 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should have the mask 255.255.255.0",
+								"255.255.255.0", ipEndpoint.getSubnetMask());
+					}
+
+					if (ipEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV6)) {
+
+						Assert.assertNull("IPv6 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should not have configured IPv4 addresses",
+								ipEndpoint.getIPv4Address());
+						Assert.assertNull("IPv6 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should not have configured IPv4 subnet mask",
+								ipEndpoint.getSubnetMask());
+						Assert.assertEquals("IPv6 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should have the address FEDC:43::32:3",
+								"FEDC:43::32:3", ipEndpoint.getIPv6Address());
+						Assert.assertEquals("IPv6 IPProtocolEndpoint in Ethernet Port fe-0/3/2.1 should have a prefix lenght of 64",
+								64, ipEndpoint.getPrefixLength());
+					}
+
+				}
+
+				Assert.assertEquals("Ethernet Port fe-0/3/2.1 should only have VlanEndpoint with VlanID 35", 35, vlanEndpoints.get(0).getVlanID());
 
 			}
 

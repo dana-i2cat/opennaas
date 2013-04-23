@@ -6,7 +6,7 @@
 					<name>ge-2/0/0</name>
 					<unit>
 						<name>12</name>
-						<description>Uplink to lola:fe-0/3/0.12</description>
+						<description>Interface with two IPv4 addresses</description>
 						<vlan-id>12</vlan-id>
 						<family>
 							<inet>
@@ -21,7 +21,7 @@
 					</unit>
 					<unit>
 						<name>201</name>
-						<description>Downlink to local LAN</description>
+						<description>Interface with one IPv4 address</description>
 						<vlan-id>201</vlan-id>
 						<family>
 							<inet>
@@ -33,7 +33,7 @@
 					</unit>
 					<unit>
 						<name>202</name>
-						<description>Downlink to local LAN</description>
+						<description>Interface with one IPv6 address</description>
 						<vlan-id>202</vlan-id>
 						<family>
 							<inet6>
@@ -49,7 +49,7 @@
 					<vlan-tagging />
 					<unit>
 						<name>0</name>
-						<description></description>
+						<description>Interface with two IPv6 addresses</description>
 						<vlan-id>32</vlan-id>
 						<family>
 							<inet6>
@@ -62,6 +62,23 @@
 							</inet6>
 						</family>
 				 	</unit>
+					<unit>
+						<name>1</name>
+						<description>Interface with both type of addresses</description>
+						<vlan-id>35</vlan-id>
+						<family>
+							<inet>
+								<address>
+									<name>192.168.1.1/24</name>
+								</address>
+							</inet>						
+							<inet6>
+								<address>
+									<name>FEDC:43::32:3/64</name>
+								</address>
+							</inet6>					
+						</family>
+				 	</unit>				 	
 				</interface>
 			</interfaces>
 	</configuration>
