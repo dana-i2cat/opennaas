@@ -36,7 +36,7 @@ Join us here:
 
 http://www.opennaas.org/community/
 
-* Adrian Rossello
+* Adrian Rosello
 * Carlos Baez
 * Eduard Grasa
 * Elisabeth Rigol
@@ -46,3 +46,5 @@ http://www.opennaas.org/community/
 * Natalia Koroleva
 * Pau Minoves
 * Santiago Pimentel
+* Julio Carlos Barrera
+* Manel Jara
