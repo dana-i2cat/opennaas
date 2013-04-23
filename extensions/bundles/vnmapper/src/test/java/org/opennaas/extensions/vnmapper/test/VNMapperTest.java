@@ -21,13 +21,13 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
-import org.opennaas.extensions.vnmapper.Global;
 import org.opennaas.extensions.vnmapper.InPNetwork;
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.PLink;
 import org.opennaas.extensions.vnmapper.PNode;
 import org.opennaas.extensions.vnmapper.VLink;
 import org.opennaas.extensions.vnmapper.VNState;
+import org.opennaas.extensions.vnmapper.VNTMapperConfiguration;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.VNode;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperInput;
@@ -37,20 +37,21 @@ import org.xml.sax.SAXException;
 
 public class VNMapperTest {
 
-	private final static String	TOPOLOGY_FILE	= "topology.xml";
-	private final static String	REQUEST_FILE	= "request.xml";
-	private final static String	RESULT_FILE		= "output.karaf";
+	private final static String		TOPOLOGY_FILE	= "topology.xml";
+	private final static String		REQUEST_FILE	= "request.xml";
+	private final static String		RESULT_FILE		= "output.karaf";
 
-	private final static String	SAMPLE_1_URL	= "/samples/sample1/";
-	private final static String	SAMPLE_2_URL	= "/samples/sample2/";
-	private final static String	SAMPLE_3_URL	= "/samples/sample3/";
-	private final static String	SAMPLE_4_URL	= "/samples/sample4/";
-	private final static String	SAMPLE_5_URL	= "/samples/sample5/";
-	private final static String	SAMPLE_6_URL	= "/samples/sample6/";
-	private final static String	SAMPLE_7_URL	= "/samples/sample7/";
-	private final static String	SAMPLE_8_URL	= "/samples/sample8/";
+	private final static String		SAMPLE_1_URL	= "/samples/sample1/";
+	private final static String		SAMPLE_2_URL	= "/samples/sample2/";
+	private final static String		SAMPLE_3_URL	= "/samples/sample3/";
+	private final static String		SAMPLE_4_URL	= "/samples/sample4/";
+	private final static String		SAMPLE_5_URL	= "/samples/sample5/";
+	private final static String		SAMPLE_6_URL	= "/samples/sample6/";
+	private final static String		SAMPLE_7_URL	= "/samples/sample7/";
+	private final static String		SAMPLE_8_URL	= "/samples/sample8/";
 
-	private VNMappingCapability	capab;
+	private VNMappingCapability		capab;
+	private VNTMapperConfiguration	vNTMapperConfiguration;
 
 	class TestInput {
 		InPNetwork	net;
@@ -70,10 +71,11 @@ public class VNMapperTest {
 		descriptor.setCapabilityInformation(capabilityInformation);
 		capab = new VNMappingCapability(descriptor, resourceId);
 
-		Global.getInstance().setpNodeChoice(1);
-		Global.getInstance().setPathChoice(1);
-		Global.getInstance().setMaxPathLinksNum(5);
-		Global.getInstance().setStepsMax(100);
+		vNTMapperConfiguration = new VNTMapperConfiguration();
+		vNTMapperConfiguration.setpNodeChoice(1);
+		vNTMapperConfiguration.setPathChoice(1);
+		vNTMapperConfiguration.setMaxPathLinksNum(5);
+		vNTMapperConfiguration.setStepsMax(100);
 	}
 
 	@Test
@@ -81,7 +83,7 @@ public class VNMapperTest {
 
 		TestInput testInput = loadTestInput(SAMPLE_1_URL);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -95,7 +97,7 @@ public class VNMapperTest {
 
 		TestInput testInput = loadTestInput(SAMPLE_2_URL);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -109,7 +111,7 @@ public class VNMapperTest {
 
 		TestInput testInput = loadTestInput(SAMPLE_3_URL);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -123,7 +125,7 @@ public class VNMapperTest {
 
 		TestInput testInput = loadTestInput(SAMPLE_4_URL);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -137,7 +139,7 @@ public class VNMapperTest {
 
 		TestInput testInput = loadTestInput(SAMPLE_5_URL);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -151,7 +153,7 @@ public class VNMapperTest {
 
 		TestInput testInput = loadTestInput(SAMPLE_6_URL);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -194,7 +196,7 @@ public class VNMapperTest {
 		testInput.net.getConnections().get(2).get(4).setCapacity(500);
 		testInput.net.getConnections().get(3).get(4).setCapacity(600);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -235,7 +237,7 @@ public class VNMapperTest {
 			link.setCapacity(600);
 		}
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		VNMapperInput input = new VNMapperInput(testInput.net, testInput.vnt);
 		VNMapperOutput output = new VNMapperOutput(result, input);
@@ -277,7 +279,7 @@ public class VNMapperTest {
 			}
 		}
 
-		MappingResult result = capab.executeAlgorithm(request1, net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, request1, net);
 
 		Assert.assertEquals(VNState.SUCCESSFUL, result.getMatchingState());
 		Assert.assertEquals(VNState.ERROR, result.getMappingState());
@@ -299,7 +301,7 @@ public class VNMapperTest {
 
 		testInput.vnt.getVnodes().get(randomIndex).setCapacity(maxPNodeCapacity + 1);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		Assert.assertEquals(VNState.ERROR, result.getMatchingState());
 		Assert.assertEquals(VNState.SKIPPED, result.getMappingState());
@@ -321,7 +323,7 @@ public class VNMapperTest {
 
 		testInput.vnt.getVlinks().get(randomIndex).setCapacity(maxPLinkCapacity + 10);
 
-		MappingResult result = capab.executeAlgorithm(testInput.vnt, testInput.net);
+		MappingResult result = capab.executeAlgorithm(vNTMapperConfiguration, testInput.vnt, testInput.net);
 
 		Assert.assertEquals(VNState.SUCCESSFUL, result.getMatchingState());
 		Assert.assertEquals(VNState.ERROR, result.getMappingState());
