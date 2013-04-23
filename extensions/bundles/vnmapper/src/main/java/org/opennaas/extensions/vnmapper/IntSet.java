@@ -132,6 +132,21 @@ public class IntSet extends AbstractSet<Integer>
 		return new IntSet(b);
 	}
 
+	@Override
+	public String toString() {
+
+		String str = "";
+
+		Iterator<Integer> it = this.iterator();
+
+		while (it.hasNext())
+		{
+			str += "set : " + String.valueOf(it.next()) + "\n";
+		}
+
+		return str;
+	}
+
 	/**
 	 * An iterator over the integers in the backing {@code BitSet}.
 	 */
@@ -172,4 +187,5 @@ public class IntSet extends AbstractSet<Integer>
 			cur = -1;
 		}
 	}
+
 }

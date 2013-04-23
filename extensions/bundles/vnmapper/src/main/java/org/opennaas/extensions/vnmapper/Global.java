@@ -1,106 +1,163 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.opennaas.extensions.vnmapper;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+public class Global {
 
-/**
- * 
- * @author ahammaa
- */
-public class Global
-{
-	public static int	rowNum;
-	public static int	cellNum;
-	public static int	servNumMin;
-	public static int	servNumMax;
-	public static int	vEnvMax;
-	public static int	vTypeMax;
-	public static int	minDay;
-	public static int	maxDay;
-	public static int	PNodeChoice;
-	// /
-	public static int	maxDistance;
+	private static Global	instance;
 
-	public static int	pathChoice;		// // SPF: pathChoice=1 / LB: pathChoice=2
-	public static int	maxPathLinksNum;
-	public static int	staticNet	= 0;
-	public static int	staticVNT	= 0;
+	private int				rowNum;
+	private int				cellNum;
+	private int				servNumMin;
+	private int				servNumMax;
+	private int				vEnvMax;
+	private int				vTypeMax;
+	private int				minDay;
+	private int				maxDay;
+	private int				pNodeChoice;
+	private int				pathChoice;		// // SPF: pathChoice=1 / LB: pathChoice=2
+	private int				maxPathLinksNum;
+	private int				staticNet;
+	private int				staticVNT;
 
 	// /
-	public static int	stepsNum	= 0;
-	public static int	stepsMax	= 500;
+	private int				stepsNum;
+	private int				stepsMax;
 
-	// /
-	public static int getRandInt(int min, int max, Random r)
-	{
-		int res = 0;
-		// return r.Next(min, max+1);
-		if (max == min)
-			res = max;
-		else
-		{
-			int t = r.nextInt(max - min + 1);
-			res = min + t;
-		}
-		return res;
-
+	private Global() {
+		stepsNum = 0;
+		stepsMax = 500;
+		staticVNT = 0;
+		staticNet = 0;
 	}
 
-	public static int getNodeNum(int nodeMin, int nodeMax, Random r)
-	{
-		return getRandInt(nodeMin, nodeMax, r);
+	public static Global getInstance() {
+		if (instance == null)
+			instance = new Global();
+
+		return instance;
 	}
 
-	public static void printMatchingResult(ArrayList<ArrayList<Integer>> matchingResult)
-	{
-		for (int i = 0; i < matchingResult.size(); i++)
-		{
-			System.out.print(i + ":");
-			for (int j = 0; j < matchingResult.get(i).size(); j++)
-			{
-				int t = Integer.valueOf(matchingResult.get(i).get(j).toString());
-				System.out.print(t + "-");
-			}
-			System.out.println();
-		}
+	public int getRowNum() {
+		return rowNum;
 	}
 
-	public static void printMappingResult(MappingResult mres)
-	{
-		System.out.println("Mapping Result: ");
-		System.out.println("Nodes: ");
-		for (int i = 0; i < mres.getNodes().size(); i++)
-		{
-			int t = Integer.valueOf(mres.getNodes().get(i).toString());
-			if (t > 0)
-				System.out.println(i + " : " + t);
-		}
-		System.out.println("Links: ");
-
-		for (int i = 0; i < mres.getLinks().size(); i++)
-			for (int j = 0; j < mres.getLinks().get(i).size(); j++)
-			{
-				int t = Integer.valueOf(mres.getLinks().get(i).get(j).toString());
-				if (t > 0)
-					System.out.println(i + "-" + j + " : " + t);
-			}
-
-		System.out.println("------------------");
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
 	}
 
-	public static void printSet(IntSet s)
-	{
-		Iterator<Integer> it = s.iterator();
+	public int getCellNum() {
+		return cellNum;
+	}
 
-		while (it.hasNext())
-		{
-			System.out.println("set : " + it.next());
-		}
+	public void setCellNum(int cellNum) {
+		this.cellNum = cellNum;
+	}
+
+	public int getServNumMin() {
+		return servNumMin;
+	}
+
+	public void setServNumMin(int servNumMin) {
+		this.servNumMin = servNumMin;
+	}
+
+	public int getServNumMax() {
+		return servNumMax;
+	}
+
+	public void setServNumMax(int servNumMax) {
+		this.servNumMax = servNumMax;
+	}
+
+	public int getvEnvMax() {
+		return vEnvMax;
+	}
+
+	public void setvEnvMax(int vEnvMax) {
+		this.vEnvMax = vEnvMax;
+	}
+
+	public int getvTypeMax() {
+		return vTypeMax;
+	}
+
+	public void setvTypeMax(int vTypeMax) {
+		this.vTypeMax = vTypeMax;
+	}
+
+	public int getMinDay() {
+		return minDay;
+	}
+
+	public void setMinDay(int minDay) {
+		this.minDay = minDay;
+	}
+
+	public int getMaxDay() {
+		return maxDay;
+	}
+
+	public void setMaxDay(int maxDay) {
+		this.maxDay = maxDay;
+	}
+
+	public int getpNodeChoice() {
+		return pNodeChoice;
+	}
+
+	public void setpNodeChoice(int pNodeChoice) {
+		this.pNodeChoice = pNodeChoice;
+	}
+
+	public int getPathChoice() {
+		return pathChoice;
+	}
+
+	public void setPathChoice(int pathChoice) {
+		this.pathChoice = pathChoice;
+	}
+
+	public int getMaxPathLinksNum() {
+		return maxPathLinksNum;
+	}
+
+	public void setMaxPathLinksNum(int maxPathLinksNum) {
+		this.maxPathLinksNum = maxPathLinksNum;
+	}
+
+	public int getStaticNet() {
+		return staticNet;
+	}
+
+	public void setStaticNet(int staticNet) {
+		this.staticNet = staticNet;
+	}
+
+	public int getStaticVNT() {
+		return staticVNT;
+	}
+
+	public void setStaticVNT(int staticVNT) {
+		this.staticVNT = staticVNT;
+	}
+
+	public int getStepsNum() {
+		return stepsNum;
+	}
+
+	public void setStepsNum(int stepsNum) {
+		this.stepsNum = stepsNum;
+	}
+
+	public int getStepsMax() {
+		return stepsMax;
+	}
+
+	public void setStepsMax(int stepsMax) {
+		this.stepsMax = stepsMax;
+	}
+
+	public void increaseStepsNum(int value) {
+		this.stepsNum += value;
 	}
 
 }

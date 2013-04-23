@@ -70,10 +70,10 @@ public class VNMapperTest {
 		descriptor.setCapabilityInformation(capabilityInformation);
 		capab = new VNMappingCapability(descriptor, resourceId);
 
-		Global.PNodeChoice = 1;
-		Global.pathChoice = 1;
-		Global.maxPathLinksNum = 5;
-		Global.stepsMax = 100;
+		Global.getInstance().setpNodeChoice(1);
+		Global.getInstance().setPathChoice(1);
+		Global.getInstance().setMaxPathLinksNum(5);
+		Global.getInstance().setStepsMax(100);
 	}
 
 	@Test
