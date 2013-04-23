@@ -19,7 +19,9 @@ import org.apache.commons.logging.LogFactory;
 // /// the next class is resposible for matching and mapping///
 public class VNTMapper {
 
-	Log	log	= LogFactory.getLog(VNTMapper.class);
+	Log								log	= LogFactory.getLog(VNTMapper.class);
+
+	private VNTMapperConfiguration	configuration;
 
 	// // the next method sorts the virtual nodes based on nodes degrees
 	public ArrayList<Integer> vNodesSorting(VNTRequest v)
@@ -121,11 +123,11 @@ public class VNTMapper {
 
 		}
 
-		if (Global.getInstance().getPathChoice() == 1) // // shortest path
-			p = net.findPathBetweemTwoNodes(v1RealNode, v2RealNode, requiredB, requiredD, Global.getInstance().getMaxPathLinksNum());
+		if (getConfiguration().getPathChoice() == 1) // // shortest path
+			p = net.findPathBetweemTwoNodes(v1RealNode, v2RealNode, requiredB, requiredD, getConfiguration().getMaxPathLinksNum());
 		else
 			// / load balancing
-			p = net.findPathBetweemTwoNodes2(v1RealNode, v2RealNode, requiredB, requiredD, Global.getInstance().getMaxPathLinksNum());
+			p = net.findPathBetweemTwoNodes2(v1RealNode, v2RealNode, requiredB, requiredD, getConfiguration().getMaxPathLinksNum());
 		return p;
 	}
 
@@ -183,7 +185,7 @@ public class VNTMapper {
 			IntSet mappedVNTNodes = new IntSet();
 
 			// // call the method that is resposible for the recursive backtracking job of composing the VNT
-			Global.getInstance().setStepsNum(0);
+			getConfiguration().setStepsNum(0);
 			res = VNTMappingFunc(v, net, selectedRealNodes, VNTNodeMappingArray, VNTLinkMappingArray, sortedVNodesSet, mappedVNTNodes);
 
 			// // calculating the mapping result and cost of it //
@@ -314,18 +316,18 @@ public class VNTMapper {
 			Path resultedPath = new Path();
 
 			// // sort the possible candidate physical nodes
-			if (Global.getInstance().getpNodeChoice() == 1) { // / cost reduction
+			if (getConfiguration().getpNodeChoice() == 1) { // / cost reduction
 				ArrayList<Integer> node = sortRealNode1(v, net, currentVNodeId,
 						VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes(), selectedRealNodes);
 				VNTNodeMappingArray.get(currentVNodeId).setPossibleRealNodes(node);
 			}
-			if (Global.getInstance().getpNodeChoice() == 2) { // / load balancing
+			if (getConfiguration().getpNodeChoice() == 2) { // / load balancing
 				ArrayList<Integer> node = sortRealNode2(v, net, currentVNodeId,
 						VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes(), selectedRealNodes);
 				VNTNodeMappingArray.get(currentVNodeId).setPossibleRealNodes(node);
 			}
-			for (int i = 0; i < VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes().size() && (mappingFinish == 0) && (Global
-					.getInstance().getStepsNum() <= Global.getInstance().getStepsMax()); i++)
+			for (int i = 0; i < VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes().size() && (mappingFinish == 0) &&
+					(getConfiguration().getStepsNum() <= getConfiguration().getStepsMax()); i++)
 			{
 				// / get next candidate pnode
 				currentRealNode = Integer.valueOf(VNTNodeMappingArray.get(currentVNodeId).getPossibleRealNodes().get(i).toString());
@@ -427,8 +429,9 @@ public class VNTMapper {
 							}
 						}
 
-						if ((mappingFinish == 0) && (Global.getInstance().getStepsNum() < Global.getInstance().getStepsMax())) // / need to continue
-																																	// mapping
+						if ((mappingFinish == 0) && (getConfiguration().getStepsNum() < getConfiguration()
+								.getStepsMax())) // / need to continue
+						// mapping
 						{
 							// / recursive call
 							mappingFinish = VNTMappingFunc(v, net, selectedRealNodes, VNTNodeMappingArray, VNTLinkMappingArray, sortedVNodesSet,
@@ -437,8 +440,8 @@ public class VNTMapper {
 								// / remove the selected pnode
 								VNTNodeMappingArray.get(currentVNodeId).setChosenRealNode(-1);
 								selectedRealNodes.remove(currentRealNode);
-								Global.getInstance().increaseStepsNum(1);
-								// System.out.println("steps = "+Global.stepsNum);
+								getConfiguration().increaseStepsNum(1);
+								// System.out.println("steps = "+VNTMapperConfiguration.stepsNum);
 								for (int u = 0; u < v.getVnodeNum(); u++)
 								{
 									if ((u < currentVNodeId) && (v.getConnections().get(u).get(currentVNodeId).getId() != -1))
@@ -737,6 +740,14 @@ public class VNTMapper {
 		}
 
 		return nets;
+	}
+
+	public VNTMapperConfiguration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(VNTMapperConfiguration config) {
+		this.configuration = config;
 	}
 
 }
