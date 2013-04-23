@@ -1,39 +1,30 @@
 package org.opennaas.extensions.vnmapper;
 
-public class Global {
+public class VNTMapperConfiguration {
 
-	private static Global	instance;
-
-	private int				rowNum;
-	private int				cellNum;
-	private int				servNumMin;
-	private int				servNumMax;
-	private int				vEnvMax;
-	private int				vTypeMax;
-	private int				minDay;
-	private int				maxDay;
-	private int				pNodeChoice;
-	private int				pathChoice;		// // SPF: pathChoice=1 / LB: pathChoice=2
-	private int				maxPathLinksNum;
-	private int				staticNet;
-	private int				staticVNT;
+	private int	rowNum;
+	private int	cellNum;
+	private int	servNumMin;
+	private int	servNumMax;
+	private int	vEnvMax;
+	private int	vTypeMax;
+	private int	minDay;
+	private int	maxDay;
+	private int	pNodeChoice;
+	private int	pathChoice;		// // SPF: pathChoice=1 / LB: pathChoice=2
+	private int	maxPathLinksNum;
+	private int	staticNet;
+	private int	staticVNT;
 
 	// /
-	private int				stepsNum;
-	private int				stepsMax;
+	private int	stepsNum;
+	private int	stepsMax;
 
-	private Global() {
+	public VNTMapperConfiguration() {
 		stepsNum = 0;
 		stepsMax = 500;
 		staticVNT = 0;
 		staticNet = 0;
-	}
-
-	public static Global getInstance() {
-		if (instance == null)
-			instance = new Global();
-
-		return instance;
 	}
 
 	public int getRowNum() {

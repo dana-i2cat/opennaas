@@ -21,7 +21,6 @@ import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
-import org.opennaas.extensions.vnmapper.Global;
 import org.opennaas.extensions.vnmapper.InPNetwork;
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.ObjectCopier;
@@ -29,6 +28,7 @@ import org.opennaas.extensions.vnmapper.PLink;
 import org.opennaas.extensions.vnmapper.PNode;
 import org.opennaas.extensions.vnmapper.VNState;
 import org.opennaas.extensions.vnmapper.VNTMapper;
+import org.opennaas.extensions.vnmapper.VNTMapperConfiguration;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 
 /**
@@ -92,14 +92,8 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 
 		try {
 			// //// run the matching and mapping/////
-			// Global.rowNum=8;
-			// Global.cellNum=8;
-			Global.getInstance().setpNodeChoice(1);
-			Global.getInstance().setPathChoice(1);
-			Global.getInstance().setMaxPathLinksNum(5);
-			// Global.staticNet=1;
-			// Global.staticVNT=1;
-			Global.getInstance().setStepsMax(100);
+			VNTMapperConfiguration vNTMapperConfiguration = prepareVNTMapperConfiguration();
+
 			// //
 			// InPNetwork net=new InPNetwork();
 			// net=net.readPNetworkFromXMLFile("src\\marketplace\\network.xml");
@@ -108,7 +102,7 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			InPNetwork net = getInPNetwork();
 			VNMapperInput input = new VNMapperInput(net, request);
 
-			MappingResult result = executeAlgorithm(request, net);
+			MappingResult result = executeAlgorithm(vNTMapperConfiguration, request, net);
 
 			return new VNMapperOutput(result, input);
 		} catch (IOException io) {
@@ -116,6 +110,20 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			throw new CapabilityException(io);
 		}
 
+	}
+
+	private VNTMapperConfiguration prepareVNTMapperConfiguration() {
+		VNTMapperConfiguration vNTMapperConfiguration = new VNTMapperConfiguration();
+		// VNTMapperConfiguration.rowNum=8;
+		// VNTMapperConfiguration.cellNum=8;
+		vNTMapperConfiguration.setpNodeChoice(1);
+		vNTMapperConfiguration.setPathChoice(1);
+		vNTMapperConfiguration.setMaxPathLinksNum(5);
+		// VNTMapperConfiguration.staticNet=1;
+		// VNTMapperConfiguration.staticVNT=1;
+		vNTMapperConfiguration.setStepsMax(100);
+
+		return vNTMapperConfiguration;
 	}
 
 	public InPNetwork getInPNetwork() throws CapabilityException {
@@ -212,9 +220,16 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 		return net;
 	}
 
-	public MappingResult executeAlgorithm(VNTRequest request, InPNetwork net) throws IOException {
+	public MappingResult executeAlgorithm(VNTMapperConfiguration config, VNTRequest request, InPNetwork net) throws IOException {
 
 		VNTMapper mapper = new VNTMapper();
+		if (config != null) {
+			mapper.setConfiguration(config);
+		} else {
+			// set configuration with default values
+			mapper.setConfiguration(new VNTMapperConfiguration());
+		}
+
 		MappingResult mres = new MappingResult();
 		ArrayList<ArrayList<Integer>> matchingResult = new ArrayList<ArrayList<Integer>>();
 		int matchingRes = mapper.matchVirtualNetwork(request, net, matchingResult);
@@ -242,4 +257,5 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 		return mres;
 
 	}
+
 }
