@@ -1,0 +1,43 @@
+
+#macro (isPeerUnit $element $resp $peerUnit)
+	#set( $resp = "false" )
+	#if($element.getClass().getSimpleName().equals("LogicalTunnelPort"))
+			#set( $peerUnit = $element.Peer_unit)
+			#set( $resp = "true" )
+			#break
+	#end
+
+#end
+
+###############################################################################
+#########             ADD IPv4 address IN AN INTERFACE                #########
+###############################################################################
+
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<interfaces>	
+		<interface>
+			<name>$param.Name</name>
+				<unit>
+				<name>$param.PortNumber</name>
+				<family>
+					<inet operation="create">
+						<address>
+							<name>$param.ProtocolEndpoint.get(0).getIPv4Address()/$ipUtilsHelper.parseLongToShortIpv4NetMask($param.ProtocolEndpoint.get(0).getSubnetMask())</name>
+						</address>
+					</inet>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
