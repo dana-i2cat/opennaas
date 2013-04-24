@@ -132,6 +132,28 @@ public class IPCapabilityIntegrationTest
 	}
 
 	@Test
+	public void removeIPv4() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIPv4(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+	}
+
+	@Test
+	public void removeIPv6() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIPv6(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPointIPv6());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+	}
+
+	@Test
 	public void testSetInterfaceDescription() throws ProtocolException, ResourceException {
 		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
