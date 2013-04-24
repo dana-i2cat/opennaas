@@ -144,9 +144,9 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	public void setIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException {
 		log.info("Start of setIP call");
 
-		if (!ip.getIPv4Address().isEmpty() && !ip.getSubnetMask().isEmpty())
+		if ((ip.getIPv4Address() != null) && (ip.getSubnetMask() != null) && !(ip.getIPv4Address().isEmpty()) && !(ip.getSubnetMask().isEmpty()))
 			setIPv4(logicalDevice, ip);
-		else if (!ip.getIPv6Address().isEmpty())
+		else if (ip.getIPv6Address() != null && !ip.getIPv6Address().isEmpty())
 			setIPv6(logicalDevice, ip);
 		else
 			throw new CapabilityException("IP address not set.");
@@ -329,9 +329,9 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		log.info("Start of addIP call");
 
-		if (!ip.getIPv4Address().isEmpty() && !ip.getSubnetMask().isEmpty())
+		if ((ip.getIPv4Address() != null) && (ip.getSubnetMask() != null) && !(ip.getIPv4Address().isEmpty()) && !(ip.getSubnetMask().isEmpty()))
 			addIPv4(logicalDevice, ip);
-		else if (!ip.getIPv6Address().isEmpty())
+		else if (ip.getIPv6Address() != null && !ip.getIPv6Address().isEmpty())
 			addIPv6(logicalDevice, ip);
 		else
 			throw new CapabilityException("IP address not set.");
@@ -410,9 +410,9 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	public void removeIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException {
 		log.info("Start of removeIP call");
 
-		if (!ip.getIPv4Address().isEmpty() && !ip.getSubnetMask().isEmpty())
+		if ((ip.getIPv4Address() != null) && (ip.getSubnetMask() != null) && !(ip.getIPv4Address().isEmpty()) && !(ip.getSubnetMask().isEmpty()))
 			addIPv4(logicalDevice, ip);
-		else if (!ip.getIPv6Address().isEmpty())
+		else if (ip.getIPv6Address() != null && !ip.getIPv6Address().isEmpty())
 			addIPv6(logicalDevice, ip);
 		else
 			throw new CapabilityException("IP address not set.");
