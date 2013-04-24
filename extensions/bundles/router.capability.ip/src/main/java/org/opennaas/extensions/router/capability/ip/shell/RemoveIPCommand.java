@@ -10,20 +10,19 @@ import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
-@Command(scope = "ip", name = "addIP", description = "Add an IP address to a given interface of a resource")
-public class AddIPCommand extends GenericKarafCommand {
+@Command(scope = "ip", name = "removeIP", description = "Removes an IP address from a given interface of a resource")
+public class RemoveIPCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id, owning the interface", required = true, multiValued = false)
 	private String	resourceId;
 	@Argument(index = 1, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
 	private String	interfaceName;
-	@Argument(index = 2, name = "ip", description = "A valid IPv4 or IPv6 address : x.x.x.x/x or x:x:x:x:x:x:x:x/x", required = true, multiValued = false)
+	@Argument(index = 2, name = "ip", description = "A valid IPv4 or IPv6 address to remove : x.x.x.x/x or x:x:x:x:x:x:x:x/x", required = true, multiValued = false)
 	private String	ipAddress;
 
 	@Override
 	protected Object doExecute() throws Exception {
-
-		printInitCommand("Add IP address");
+		printInitCommand("Remove IP address");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -37,10 +36,10 @@ public class AddIPCommand extends GenericKarafCommand {
 			NetworkPort networkPort = buildNetworkPort();
 
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
-			ipCapability.addIP(networkPort, ipAddress);
+			ipCapability.removeIP(networkPort, ipAddress);
 
 		} catch (Exception e) {
-			printError("Error adding ip address to an interface.");
+			printError("Error removing ip address from an interface.");
 			printError(e);
 			printEndCommand();
 			return null;
