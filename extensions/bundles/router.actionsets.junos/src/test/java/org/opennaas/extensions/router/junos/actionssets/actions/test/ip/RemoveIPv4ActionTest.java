@@ -68,6 +68,12 @@ public class RemoveIPv4ActionTest {
 		}
 	}
 
+	@Test(expected = ActionException.class)
+	public void wrongParamsTest() throws ActionException {
+		action.setParams(helper.newParamsInterfaceEthernetIPv6("fedc:12::4", (short) 32));
+		action.checkParams(action.getParams());
+	}
+
 	private String textFileToString(String fileLocation) throws IOException {
 		String fileString = "";
 		BufferedReader br = new BufferedReader(

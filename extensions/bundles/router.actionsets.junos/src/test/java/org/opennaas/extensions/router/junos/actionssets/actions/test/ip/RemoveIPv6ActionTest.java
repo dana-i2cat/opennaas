@@ -68,6 +68,12 @@ public class RemoveIPv6ActionTest {
 		}
 	}
 
+	@Test(expected = ActionException.class)
+	public void wrongParamsTest() throws ActionException {
+		action.setParams(helper.newParamsInterfaceEthernet());
+		action.checkParams(action.getParams());
+	}
+
 	private String textFileToString(String fileLocation) throws IOException {
 		String fileString = "";
 		BufferedReader br = new BufferedReader(

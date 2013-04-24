@@ -67,7 +67,7 @@ public class SetIPv6ActionTest {
 			action.prepareMessage();
 
 			// read expected message into a String
-			String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/setIPv6.xml"));
+			String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/ip/setIPv6.xml"));
 			String actionMessage = XmlHelper.formatXML(action.getVelocityMessage());
 			Assert.assertEquals(expectedMessage, actionMessage);
 		} catch (Exception e) {
