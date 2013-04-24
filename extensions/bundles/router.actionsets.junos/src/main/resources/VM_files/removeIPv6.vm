@@ -10,7 +10,7 @@
 #end
 
 ###############################################################################
-########             REMOVE IPv4 address IN AN INTERFACE                #######
+########             REMOVE IPv6 address IN AN INTERFACE                #######
 ###############################################################################
 
 <configuration>
@@ -28,11 +28,11 @@
 				<unit>
 				<name>$param.PortNumber</name>
 				<family>
-					<inet>
+					<inet6>
 						<address operation="delete">
-							<name>$param.ProtocolEndpoint.get(0).getIPv4Address()/$ipUtilsHelper.parseLongToShortIpv4NetMask($param.ProtocolEndpoint.get(0).getSubnetMask())</name>
+							<name>$param.ProtocolEndpoint.get(0).getIPv6Address()/$param.ProtocolEndpoint.get(0).getPrefixLength()</name>
 						</address>
-					</inet>
+					</inet6>
 				</family>
 			</unit>
 		</interface>
