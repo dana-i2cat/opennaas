@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.junos.actionssets.actions.ipv4;
+package org.opennaas.extensions.router.junos.actionssets.actions.ip;
 
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;

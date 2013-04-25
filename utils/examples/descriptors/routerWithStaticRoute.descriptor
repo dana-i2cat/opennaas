@@ -3,7 +3,7 @@
     <capabilityDescriptors>
         <capabilityProperty value="junos" name="actionset.name"/>
         <capabilityProperty value="10.10" name="actionset.version" />
-        <information><type>ipv4</type></information>
+        <information><type>ip</type></information>
     </capabilityDescriptors>
     <capabilityDescriptors>
         <capabilityProperty value="junos" name="actionset.name"/>

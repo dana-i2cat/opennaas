@@ -21,6 +21,18 @@ public interface IIPCapability extends ICapability {
 	public void setIPv4(SetIpAddressRequest request)
 			throws CapabilityException;
 
+	@POST
+	@Path("/setIPv6")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setIPv6(SetIpAddressRequest request)
+			throws CapabilityException;
+
+	@POST
+	@Path("/setIP")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setIP(SetIpAddressRequest request)
+			throws CapabilityException;
+
 	/**
 	 * Set the given ip to the logical device
 	 * 
@@ -31,6 +43,12 @@ public interface IIPCapability extends ICapability {
 	// only a single object can go in a POST body (using setIPv4(SetIpAddressRequest) instead) :)
 	public void setIPv4(LogicalDevice logicalDevice, IPProtocolEndpoint ip)
 			throws CapabilityException;
+
+	public void setIPv6(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException;
+
+	public void setIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException;
+
+	public void setIP(LogicalDevice logicalDevice, String ipAddress) throws CapabilityException;
 
 	/**
 	 * Set the description for the given interface

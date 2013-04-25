@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
@@ -56,8 +57,7 @@ public class DeleteTunnelTest {
 	 */
 	@Test
 	public void executeActionTest() throws IOException, ActionException {
-		action.setModelToUpdate(new ComputerSystem());
-
+		action.setModelToUpdate(getComputerSystem());
 		// Add params
 		GRETunnelService greTunnelService = getGRETunnelService();
 		action.setParams(greTunnelService);
@@ -76,10 +76,16 @@ public class DeleteTunnelTest {
 	 * @return GRETunnelService
 	 * @throws IOException
 	 */
-	private GRETunnelService getGRETunnelService() throws IOException {
+	private static GRETunnelService getGRETunnelService() {
 		GRETunnelService greTunnelService = new GRETunnelService();
 		greTunnelService.setName("gr-0/1/3.2");
 		return greTunnelService;
 	}
 
+	private static IModel getComputerSystem() {
+
+		ComputerSystem model = new ComputerSystem();
+		model.addHostedService(getGRETunnelService());
+		return model;
+	}
 }

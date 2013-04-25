@@ -11,7 +11,7 @@ import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
 
-@Command(scope = "ipv4", name = "setInterfaceDescription", description = "Sets given description to given interface.")
+@Command(scope = "ip", name = "setInterfaceDescription", description = "Sets given description to given interface.")
 public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
