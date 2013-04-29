@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
@@ -34,6 +35,7 @@ import org.opennaas.extensions.vnmapper.VNTRequest;
 /**
  * 
  * @author Elisabeth Rigol
+ * @author Adrian Rosello
  * 
  */
 public class VNMappingCapability extends AbstractCapability implements IVNMappingCapability {
@@ -88,9 +90,12 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 		}
 	}
 
-	public VNMapperOutput mapVN(VNTRequest request) throws CapabilityException {
+	public VNMapperOutput mapVN(String resourceId, VNTRequest request) throws CapabilityException {
 
 		try {
+
+			IResource resource = getNetworkResource(resourceId);
+
 			// //// run the matching and mapping/////
 			VNTMapperConfiguration vNTMapperConfiguration = prepareVNTMapperConfiguration();
 
@@ -99,7 +104,7 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			// net=net.readPNetworkFromXMLFile("src\\marketplace\\network.xml");
 			// net.printNetwork();
 			// //
-			InPNetwork net = getInPNetwork();
+			InPNetwork net = getInPNetworkFromNetworkTopology(resource.getModel());
 			VNMapperInput input = new VNMapperInput(net, request);
 
 			MappingResult result = executeAlgorithm(vNTMapperConfiguration, request, net);
@@ -110,6 +115,22 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			throw new CapabilityException(io);
 		}
 
+	}
+
+	private IResource getNetworkResource(String resourceId) throws CapabilityException {
+		try {
+			ResourceManager resourcemng = (ResourceManager) Activator.getResourceManagerService();
+			IResource resource = resourcemng.getResourceById(resourceId);
+
+			if (!resource.getResourceDescriptor().getInformation().getType().equals("network"))
+				throw new CapabilityException("Resource id does not belong to a network resource.");
+
+			return resource;
+		} catch (ActivatorException ae) {
+			throw new CapabilityException(ae);
+		} catch (ResourceException re) {
+			throw new CapabilityException(re);
+		}
 	}
 
 	private VNTMapperConfiguration prepareVNTMapperConfiguration() {
@@ -124,38 +145,6 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 		vNTMapperConfiguration.setStepsMax(100);
 
 		return vNTMapperConfiguration;
-	}
-
-	public InPNetwork getInPNetwork() throws CapabilityException {
-
-		try {
-			ResourceManager resourcemng = (ResourceManager) Activator.getResourceManagerService();
-			List<IResource> res1 = resourcemng.listResourcesByType("network");
-			IModel networkModel = res1.get(0).getModel();
-			InPNetwork net = getInPNetworkFromNetworkTopology(networkModel);
-			// System.out.println(" network links num : " + links.size());
-			// for(int i=0;i<links.size();i++)
-			// {
-			// System.out.println(" link : " + links.get(i).getSource().getName());
-			// System.out.println(" link : " + links.get(i).getSource().getDevice().getName());
-			//
-			// }
-
-			// System.out.println(" devices num : " + devices.size());
-			// for(int i=0;i<devices.size();i++)
-			// {
-			// System.out.println(" device : " + devices.get(i).getName());
-			//
-			// }
-
-			// /// generate the network object
-
-			return net;
-
-		} catch (ActivatorException ae) {
-			throw new CapabilityException(ae);
-		}
-
 	}
 
 	public InPNetwork getInPNetworkFromNetworkTopology(IModel networkModel) {
