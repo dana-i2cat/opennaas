@@ -1,4 +1,4 @@
-package org.opennaas.core.resources.scripting;
+package org.opennaas.core.scripting;
 
 public class BaseScript extends groovy.lang.Script {
 

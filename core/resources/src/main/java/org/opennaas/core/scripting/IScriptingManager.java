@@ -1,4 +1,4 @@
-package org.opennaas.core.resources.scripting;
+package org.opennaas.core.scripting;
 
 import groovy.lang.Binding;
 import groovy.util.ResourceException;
