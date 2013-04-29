@@ -11,6 +11,7 @@ import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability
 /**
  * 
  * @author Elisabeth Rigol
+ * @author Adrian Rosello
  * 
  */
 @Command(scope = "vnmapping", name = "mapvn", description = "Map a virtual network request.")
@@ -24,7 +25,7 @@ public class MapVNCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("sayHello");
+		printInitCommand("Map Virtual Network Request");
 		try {
 
 			VNTRequest vnt = new VNTRequest();
@@ -32,7 +33,10 @@ public class MapVNCommand extends GenericKarafCommand {
 
 			IResource resource = getResourceFromFriendlyName(resourceName);
 			VNMappingCapability capab = (VNMappingCapability) resource.getCapabilityByType(VNMappingCapability.CAPABILITY_TYPE);
-			VNMapperOutput capabOutput = capab.mapVN(vnt);
+
+			String resourceId = resource.getResourceIdentifier().getId();
+
+			VNMapperOutput capabOutput = capab.mapVN(resourceId, vnt);
 
 			System.out.println(capabOutput.toString());
 

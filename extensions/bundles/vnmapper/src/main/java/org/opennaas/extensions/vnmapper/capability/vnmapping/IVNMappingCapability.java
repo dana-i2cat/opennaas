@@ -7,6 +7,7 @@ import org.opennaas.extensions.vnmapper.VNTRequest;
 /**
  * 
  * @author Elisabeth Rigol
+ * @author Adrian Rosello
  * 
  */
 public interface IVNMappingCapability extends ICapability {
@@ -15,6 +16,6 @@ public interface IVNMappingCapability extends ICapability {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public VNMapperOutput mapVN(VNTRequest request) throws CapabilityException;
+	public VNMapperOutput mapVN(String resourceId, VNTRequest request) throws CapabilityException;
 
 }
