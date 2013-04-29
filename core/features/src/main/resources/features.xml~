@@ -41,7 +41,7 @@
 	<feature name="org.opennaas.core" version="${project.version}">
 		<feature>xml-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
-		<bundle dependency="true">mvn:org.codehaus.groovy/groovy-all/2.1.3</bundle>
+
 		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>

@@ -10,6 +10,7 @@ import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import groovy.util.ScriptException;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -49,6 +50,7 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.scripting.IScriptingManager;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -84,6 +86,9 @@ public class CoreTest
 
 	@Inject
 	private IEventManager			eventManager;
+
+	@Inject
+	IScriptingManager				scriptingManager;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
@@ -357,6 +362,15 @@ public class CoreTest
 		eventManager.unregisterHandler(handler2Id);
 		log.info("Unregistering Handlers... DONE");
 
+	}
+
+	/*
+	 * SCRIPTING TESTS
+	 */
+	@Test
+	public void runDummyScript() throws groovy.util.ResourceException, ScriptException
+	{
+		scriptingManager.runScript("dummy.op.groovy");
 	}
 
 	/*
