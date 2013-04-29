@@ -62,6 +62,7 @@
 			<action class="org.opennaas.extensions.vnmapper.capability.vnmapping.shell.MapVNCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
+				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
