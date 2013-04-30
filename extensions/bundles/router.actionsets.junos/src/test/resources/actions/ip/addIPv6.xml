@@ -5,8 +5,8 @@
 			<unit>
 				<name>0</name>
 				<family>
-					<inet6 operation="merge">
-						<address>
+					<inet6>
+						<address operation="create">
 							<name>fedc:4123:fa::12/64</name>	
 						</address>
 					</inet6>

@@ -28,8 +28,8 @@
 				<unit>
 				<name>$param.PortNumber</name>
 				<family>
-					<inet6 operation="merge">
-						<address>
+					<inet6>
+						<address operation="create">
 							<name>$param.ProtocolEndpoint.get(0).getIPv6Address()/$param.ProtocolEndpoint.get(0).getPrefixLength()</name>
 						</address>
 					</inet6>

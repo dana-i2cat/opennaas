@@ -28,8 +28,8 @@
 				<unit>
 				<name>$param.PortNumber</name>
 				<family>
-					<inet operation="merge">
-						<address>
+					<inet>
+						<address operation="create">
 							<name>$param.ProtocolEndpoint.get(0).getIPv4Address()/$ipUtilsHelper.parseLongToShortIpv4NetMask($param.ProtocolEndpoint.get(0).getSubnetMask())</name>
 						</address>
 					</inet>
