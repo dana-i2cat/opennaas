@@ -11,51 +11,45 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.ip.SetIPv4Action;
+import org.opennaas.extensions.router.junos.actionssets.actions.ip.AddIPv6Action;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
-public class SetIPv4ActionTest {
-	Log								log	= LogFactory.getLog(SetIPv4ActionTest.class);
-	private static SetIPv4Action	action;
+public class AddIPv6ActionTest {
+
+	Log								log	= LogFactory.getLog(AddIPv6ActionTest.class);
+	private static AddIPv6Action	action;
 	static ActionTestHelper			helper;
 	static ProtocolSessionManager	protocolsessionmanager;
 
 	@BeforeClass
 	public static void init() {
-		action = new SetIPv4Action();
+
+		action = new AddIPv6Action();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
-		action.setParams(helper.newParamsInterfaceEthernet());
-		// TODO
-		// /need to add extra params
 
-		// NetworkPort networkPort = new NetworkPort();
-		// velocityEngine.addExtraParam("networkPort", networkPort);
-		//
-		// IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
-		// velocityEngine.addExtraParam("ipUtilsHelper", ipUtilsHelper);
-		helper = new ActionTestHelper();
+		action.setParams(helper.newParamsInterfaceEthernetIPv6("fedc:4123:fa::12", (short) 64));
 		protocolsessionmanager = helper.getProtocolSessionManager();
 	}
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.SETIPv4, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", ActionConstants.ADDIPv6, action.getActionID());
 	}
 
 	@Test
-	public void paramsTest() {
-		// this action always have null params
-		Assert.assertNotNull("Null parameters", action.getParams());
+	public void paramsTest() throws ActionException {
+		action.checkParams(action.getParams());
 	}
 
 	@Test
 	public void templateTest() {
 		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/configureIPv4.vm", action.getTemplate());
+		Assert.assertEquals("Invalid template", "/VM_files/addIPv6.vm", action.getTemplate());
 	}
 
 	@Test
@@ -64,13 +58,19 @@ public class SetIPv4ActionTest {
 			action.prepareMessage();
 
 			// read expected message into a String
-			String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/ip/setIPv4.xml"));
+			String expectedMessage = XmlHelper.formatXML(textFileToString("/actions/ip/addIPv6.xml"));
 			String actionMessage = XmlHelper.formatXML(action.getVelocityMessage());
 			Assert.assertEquals(expectedMessage, actionMessage);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
+	}
+
+	@Test(expected = ActionException.class)
+	public void wrongParamsTest() throws ActionException {
+		action.setParams(helper.newParamsInterfaceEthernet());
+		action.checkParams(action.getParams());
 	}
 
 	private String textFileToString(String fileLocation) throws IOException {
