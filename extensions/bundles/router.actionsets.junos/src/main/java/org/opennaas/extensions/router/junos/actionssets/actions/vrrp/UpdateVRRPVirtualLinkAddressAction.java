@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
@@ -19,19 +17,17 @@ import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
-import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
-public class UpdateVRRPPriorityAction extends JunosAction {
-	Log							log						= LogFactory.getLog(UpdateVRRPPriorityAction.class);
+public class UpdateVRRPVirtualLinkAddressAction extends JunosAction {
 
-	private static final String	VELOCITY_TEMPLATE_IPv4	= "/VM_files/updateVRRPPriority.vm";
-	private static final String	VELOCITY_TEMPLATE_IPv6	= "/VM_files/updateVRRPPriorityIPv6.vm";
+	private static final String	VELOCITY_TEMPLATE	= "/VM_files/updateVRRPVirtualLinkAddress.vm";
 
-	public UpdateVRRPPriorityAction() {
+	public UpdateVRRPVirtualLinkAddressAction() {
 		super();
+		this.template = VELOCITY_TEMPLATE;
 		initialize();
 	}
 
@@ -39,7 +35,7 @@ public class UpdateVRRPPriorityAction extends JunosAction {
 	 * Initialize protocolName, ActionId and velocity template
 	 */
 	protected void initialize() {
-		this.setActionID(ActionConstants.VRRP_UPDATE_PRIORITY);
+		this.setActionID(ActionConstants.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS);
 		this.protocolName = "netconf";
 	}
 
@@ -53,6 +49,7 @@ public class UpdateVRRPPriorityAction extends JunosAction {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
 		validateAction(actionResponse);
+
 	}
 
 	@Override
@@ -63,23 +60,36 @@ public class UpdateVRRPPriorityAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		if (params == null)
+		if (params == null) {
+			return false;
+		}
+		// Param is not instance of VRRPGroup
+		if (!(params instanceof VRRPGroup))
 			return false;
 
-		// correct instance received
-		if (!(params instanceof VRRPProtocolEndpoint))
+		VRRPGroup group = (VRRPGroup) params;
+
+		// if virtual link address is not ipv6
+		if (group.getVirtualLinkAddress().isEmpty() || IPUtilsHelper.validateIpAddressPattern(group.getVirtualLinkAddress()))
 			return false;
 
-		VRRPProtocolEndpoint pE = (VRRPProtocolEndpoint) params;
+		// VRRPGroup must contain VRRPProtocolEndpoint
+		if (group.getProtocolEndpoint().isEmpty())
+			return false;
+
+		if (!(group.getProtocolEndpoint().get(0) instanceof VRRPProtocolEndpoint))
+			return false;
+
+		VRRPProtocolEndpoint vE = (VRRPProtocolEndpoint) group.getProtocolEndpoint().get(0);
 
 		// ProtocolIFtype not set or not correct.
-		if (pE.getProtocolIFType() == null)
+		if (vE.getProtocolIFType() == null)
 			return false;
 
-		if (!pE.getProtocolIFType().equals(ProtocolIFType.IPV4) && !pE.getProtocolIFType().equals(ProtocolIFType.IPV6))
+		if (!vE.getProtocolIFType().equals(ProtocolIFType.IPV6))
 			return false;
 
-		List<ProtocolEndpoint> protocolEndpoints = pE.getBindedProtocolEndpoints();
+		List<ProtocolEndpoint> protocolEndpoints = vE.getBindedProtocolEndpoints();
 		// VRRPProtocolEndpoint has 1 ProtocolEndpoint
 		if (protocolEndpoints.size() != 1)
 			return false;
@@ -89,8 +99,9 @@ public class UpdateVRRPPriorityAction extends JunosAction {
 			return false;
 
 		// ProtocolEndpoint and VRRPProtocolEndpoint with different protocols.
-		if (protocolEndpoint.getProtocolIFType() == null || !protocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
+		if (protocolEndpoint.getProtocolIFType() == null || !protocolEndpoint.getProtocolIFType().equals(vE.getProtocolIFType()))
 			return false;
+
 		// protocolEndpoint has 1 LogicalPort
 		List<LogicalPort> logicalPorts = ((IPProtocolEndpoint) protocolEndpoint).getLogicalPorts();
 		if (logicalPorts.size() != 1)
@@ -98,10 +109,6 @@ public class UpdateVRRPPriorityAction extends JunosAction {
 		// logicalPort is an instance of NetworkPort
 		LogicalPort logicalPort = logicalPorts.get(0);
 		if (!(logicalPort instanceof NetworkPort))
-			return false;
-		// service is an instance of VRRPGroup
-		Service service = ((VRRPProtocolEndpoint) params).getService();
-		if (!(service instanceof VRRPGroup))
 			return false;
 
 		// structure correct
@@ -111,8 +118,10 @@ public class UpdateVRRPPriorityAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 
-		checkParams(params);
-		setTemplate();
+		if (!checkParams(params)) {
+			throw new ActionException("Params for updateVRRPVirtualLinkAddres are not valid");
+		}
+
 		try {
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 
@@ -125,42 +134,17 @@ public class UpdateVRRPPriorityAction extends JunosAction {
 				((ManagedElement) params).setElementName("");
 			}
 
-			// IP address and subnet mask of interface
-			IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints().get(0);
-			if (ipProtocolEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
-				String ipAddress = ipProtocolEndpoint.getIPv4Address();
-				extraParams.put("ipAddress", ipAddress);
-				String subnetMask = IPUtilsHelper.parseLongToShortIpv4NetMask(ipProtocolEndpoint.getSubnetMask());
-				extraParams.put("subnetMask", subnetMask);
-			} else {
-				String ipAddress = ipProtocolEndpoint.getIPv6Address();
-				extraParams.put("ipAddress", ipAddress);
-				short prefix = ipProtocolEndpoint.getPrefixLength();
-				extraParams.put("prefix", prefix);
-			}
-
-			// router interface
-			NetworkPort networkInterface = (NetworkPort) ipProtocolEndpoint.getLogicalPorts().get(0);
-			extraParams.put("networkInterface", networkInterface);
-
 			// VRRPGroup
-			VRRPGroup vrrpGroup = (VRRPGroup) ((VRRPProtocolEndpoint) params).getService();
-			extraParams.put("vrrpGroup", vrrpGroup);
+			VRRPGroup group = (VRRPGroup) params;
+			IPProtocolEndpoint pE = (IPProtocolEndpoint) group.getProtocolEndpoint().get(0).getBindedProtocolEndpoints().get(0);
+			NetworkPort netPort = (NetworkPort) pE.getLogicalPorts().get(0);
+			extraParams.put("ipProtocolEndpoint", pE);
+			extraParams.put("networkPort", netPort);
 
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
+
 		}
-	}
-
-	private void setTemplate() throws ActionException {
-		VRRPProtocolEndpoint pE = (VRRPProtocolEndpoint) params;
-		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV4))
-			this.template = VELOCITY_TEMPLATE_IPv4;
-		else if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6))
-			this.template = VELOCITY_TEMPLATE_IPv6;
-		else
-			throw new ActionException("VRRPProtocolEndpoint param must have an either IPv4 or IPv6 ProtocolIFType.");
-
 	}
 }
