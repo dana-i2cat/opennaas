@@ -93,4 +93,6 @@ public class ActionConstants {
 	public static final String	VRRP_UNCONFIGURE					= VRRPActionSet.VRRP_UNCONFIGURE;
 	public static final String	VRRP_UPDATE_IP_ADDRESS				= VRRPActionSet.VRRP_UPDATE_VIRTUAL_IP_ADDRESS;
 	public static final String	VRRP_UPDATE_PRIORITY				= VRRPActionSet.VRRP_UPDATE_PRIORITY;
+	public static final String	VRRP_UPDATE_VIRTUAL_LINK_ADDRESS	= VRRPActionSet.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS;
+
 }

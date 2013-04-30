@@ -10,10 +10,14 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello
  */
 public class VRRPCapability extends AbstractCapability implements IVRRPCapability {
 
@@ -94,6 +98,7 @@ public class VRRPCapability extends AbstractCapability implements IVRRPCapabilit
 			throws CapabilityException {
 		log.info("Start of configureVRRP call");
 		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_CONFIGURE, vrrpProtocolEndpoint);
+
 		queueAction(action);
 		log.info("End of configureVRRP call");
 	}
@@ -110,6 +115,20 @@ public class VRRPCapability extends AbstractCapability implements IVRRPCapabilit
 	@Override
 	public void updateVRRPVirtualIPAddress(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException {
 		log.info("Start of updateVRRPVirtualIPAddress call");
+
+		VRRPGroup vrrpGroup = (VRRPGroup) vrrpProtocolEndpoint.getService();
+
+		VRRPGroup vrrpGroupFromModel = ModelHelper.getVRRPGroupByName((ComputerSystem) this.resource.getModel(), vrrpGroup.getVrrpName());
+		if (vrrpGroupFromModel == null)
+			throw new CapabilityException("There's no VRRPGroup with id " + vrrpGroup.getVrrpName() + " configured in resource " + this.resource
+					.getResourceDescriptor().getInformation().getName());
+
+		VRRPGroup vrrpCopy = ModelHelper.copyVRRPConfiguration(vrrpGroupFromModel);
+		vrrpCopy.setVirtualIPAddress(vrrpGroup.getVirtualIPAddress());
+
+		VRRPProtocolEndpoint param = (VRRPProtocolEndpoint) vrrpCopy.getProtocolEndpoint().get(0);
+		param.setPriority(vrrpProtocolEndpoint.getPriority());
+
 		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_VIRTUAL_IP_ADDRESS, vrrpProtocolEndpoint);
 		queueAction(action);
 		log.info("End of updateVRRPVirtualIPAddress call");
@@ -118,8 +137,39 @@ public class VRRPCapability extends AbstractCapability implements IVRRPCapabilit
 	@Override
 	public void updateVRRPPriority(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException {
 		log.info("Start of updateVRRPPriority call");
-		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_PRIORITY, vrrpProtocolEndpoint);
+
+		VRRPGroup vrrpGroup = (VRRPGroup) vrrpProtocolEndpoint.getService();
+
+		VRRPGroup vrrpGroupFromModel = ModelHelper.getVRRPGroupByName((ComputerSystem) this.resource.getModel(), vrrpGroup.getVrrpName());
+		if (vrrpGroupFromModel == null)
+			throw new CapabilityException("There's no VRRPGroup with id " + vrrpGroup.getVrrpName() + " configured in resource " + this.resource
+					.getResourceDescriptor().getInformation().getName());
+
+		VRRPGroup vrrpCopy = ModelHelper.copyVRRPConfiguration(vrrpGroupFromModel);
+
+		VRRPProtocolEndpoint param = (VRRPProtocolEndpoint) vrrpCopy.getProtocolEndpoint().get(0);
+		param.setPriority(vrrpProtocolEndpoint.getPriority());
+
+		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_PRIORITY, param);
 		queueAction(action);
 		log.info("End of updateVRRPPriority call");
+	}
+
+	@Override
+	public void updateVRRPVirtualLinkAddress(VRRPGroup vrrpGroup) throws CapabilityException {
+		log.info("Start of updateVRRPPVirtualLinkAddress call");
+
+		VRRPGroup vrrpGroupFromModel = ModelHelper.getVRRPGroupByName((ComputerSystem) this.resource.getModel(), vrrpGroup.getVrrpName());
+		if (vrrpGroupFromModel == null)
+			throw new CapabilityException("There's no VRRPGroup with id " + vrrpGroup.getVrrpName() + " configured in resource " + this.resource
+					.getResourceDescriptor().getInformation().getName());
+
+		VRRPGroup param = ModelHelper.copyVRRPConfiguration(vrrpGroupFromModel);
+		param.setVirtualLinkAddress(vrrpGroup.getVirtualLinkAddress());
+
+		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS, param);
+		queueAction(action);
+		log.info("End of updateVRRPPVirtualLinkAddress call");
+
 	}
 }
