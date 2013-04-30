@@ -142,12 +142,17 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 	@Override
 	public void setIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException {
+		log.info("Start of setIP call");
 
-		if (!ip.getIPv4Address().isEmpty() && !ip.getSubnetMask().isEmpty())
+		if ((ip.getIPv4Address() != null) && (ip.getSubnetMask() != null) && !(ip.getIPv4Address().isEmpty()) && !(ip.getSubnetMask().isEmpty()))
 			setIPv4(logicalDevice, ip);
-		else if (!ip.getIPv6Address().isEmpty())
+		else if (ip.getIPv6Address() != null && !ip.getIPv6Address().isEmpty())
 			setIPv6(logicalDevice, ip);
-		throw new CapabilityException("IP address not set.");
+		else
+			throw new CapabilityException("IP address not set.");
+
+		log.info("End of setIP call");
+
 	}
 
 	/*
@@ -241,5 +246,199 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 
 		return ipEndpoint;
+	}
+
+	@Override
+	public void addIPv4(SetIpAddressRequest request) throws CapabilityException {
+		addIPv4(request.getLogicalDevice(), request.getIpProtocolEndpoint());
+
+	}
+
+	@Override
+	public void addIPv6(SetIpAddressRequest request) throws CapabilityException {
+		addIPv6(request.getLogicalDevice(), request.getIpProtocolEndpoint());
+
+	}
+
+	@Override
+	public void addIP(SetIpAddressRequest request) throws CapabilityException {
+		addIP(request.getLogicalDevice(), request.getIpProtocolEndpoint());
+
+	}
+
+	@Override
+	public void removeIPv4(SetIpAddressRequest request) throws CapabilityException {
+		removeIPv4(request.getLogicalDevice(), request.getIpProtocolEndpoint());
+	}
+
+	@Override
+	public void removeIPv6(SetIpAddressRequest request) throws CapabilityException {
+		removeIPv6(request.getLogicalDevice(), request.getIpProtocolEndpoint());
+	}
+
+	@Override
+	public void removeIP(SetIpAddressRequest request) throws CapabilityException {
+		removeIP(request.getLogicalDevice(), request.getIpProtocolEndpoint());
+	}
+
+	@Override
+	public void addIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
+		log.info("Start of addIPv4 call");
+		NetworkPort param = new NetworkPort();
+		param.setName(iface.getName());
+		if (iface instanceof NetworkPort) {
+			param.setPortNumber(((NetworkPort) iface).getPortNumber());
+			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
+		}
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+		ipEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+		ipEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+
+		param.addProtocolEndpoint(ipEndpoint);
+
+		IAction action = createActionAndCheckParams(IPActionSet.ADD_IPv4, param);
+		queueAction(action);
+		log.info("End of addIPv4 call");
+	}
+
+	@Override
+	public void addIPv6(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
+		log.info("Start of addIPv6 call");
+		NetworkPort param = new NetworkPort();
+		param.setName(iface.getName());
+		if (iface instanceof NetworkPort) {
+			param.setPortNumber(((NetworkPort) iface).getPortNumber());
+			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
+		}
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+		ipEndpoint.setIPv6Address(ipProtocolEndpoint.getIPv6Address());
+		ipEndpoint.setPrefixLength(ipProtocolEndpoint.getPrefixLength());
+
+		param.addProtocolEndpoint(ipEndpoint);
+
+		IAction action = createActionAndCheckParams(IPActionSet.ADD_IPv6, param);
+		queueAction(action);
+		log.info("End of addIPv6 call");
+
+	}
+
+	@Override
+	public void addIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException {
+
+		log.info("Start of addIP call");
+
+		if ((ip.getIPv4Address() != null) && (ip.getSubnetMask() != null) && !(ip.getIPv4Address().isEmpty()) && !(ip.getSubnetMask().isEmpty()))
+			addIPv4(logicalDevice, ip);
+		else if (ip.getIPv6Address() != null && !ip.getIPv6Address().isEmpty())
+			addIPv6(logicalDevice, ip);
+		else
+			throw new CapabilityException("IP address not set.");
+		log.info("End of addIP call");
+
+	}
+
+	@Override
+	public void addIP(LogicalDevice iface, String ipAddress) throws CapabilityException {
+		log.info("Start of addIP call");
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+
+			ipEndpoint = buildIPv4ProtocolEndpoint(ipAddress);
+			addIPv4(iface, ipEndpoint);
+
+		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress)) {
+
+			ipEndpoint = buildIPv6ProtocolEndpoint(ipAddress);
+			addIPv6(iface, ipEndpoint);
+		}
+		else
+			throw new CapabilityException("Unvalid Address format.");
+
+		log.info("End of addIP call");
+	}
+
+	@Override
+	public void removeIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
+		log.info("Start of removeIPv4 call");
+		NetworkPort param = new NetworkPort();
+		param.setName(iface.getName());
+		if (iface instanceof NetworkPort) {
+			param.setPortNumber(((NetworkPort) iface).getPortNumber());
+			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
+		}
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+		ipEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+		ipEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
+
+		param.addProtocolEndpoint(ipEndpoint);
+
+		IAction action = createActionAndCheckParams(IPActionSet.REMOVE_IPv4, param);
+		queueAction(action);
+		log.info("End of removeIPv4 call");
+
+	}
+
+	@Override
+	public void removeIPv6(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
+		log.info("Start of removeIPv6 call");
+		NetworkPort param = new NetworkPort();
+		param.setName(iface.getName());
+		if (iface instanceof NetworkPort) {
+			param.setPortNumber(((NetworkPort) iface).getPortNumber());
+			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
+		}
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+		ipEndpoint.setIPv6Address(ipProtocolEndpoint.getIPv6Address());
+		ipEndpoint.setPrefixLength(ipProtocolEndpoint.getPrefixLength());
+		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
+
+		param.addProtocolEndpoint(ipEndpoint);
+
+		IAction action = createActionAndCheckParams(IPActionSet.REMOVE_IPv6, param);
+		queueAction(action);
+		log.info("End of removeIPv6 call");
+	}
+
+	@Override
+	public void removeIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException {
+		log.info("Start of removeIP call");
+
+		if ((ip.getIPv4Address() != null) && (ip.getSubnetMask() != null) && !(ip.getIPv4Address().isEmpty()) && !(ip.getSubnetMask().isEmpty()))
+			addIPv4(logicalDevice, ip);
+		else if (ip.getIPv6Address() != null && !ip.getIPv6Address().isEmpty())
+			addIPv6(logicalDevice, ip);
+		else
+			throw new CapabilityException("IP address not set.");
+		log.info("End of removeIP call");
+
+	}
+
+	@Override
+	public void removeIP(LogicalDevice iface, String ipAddress) throws CapabilityException {
+		log.info("Start of removeIP call");
+
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
+
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+
+			ipEndpoint = buildIPv4ProtocolEndpoint(ipAddress);
+			removeIPv4(iface, ipEndpoint);
+
+		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress)) {
+
+			ipEndpoint = buildIPv6ProtocolEndpoint(ipAddress);
+			removeIPv6(iface, ipEndpoint);
+		}
+		else
+			throw new CapabilityException("Unvalid Address format.");
+
+		log.info("End of removeIP call");
 	}
 }
