@@ -38,6 +38,10 @@ public class ActionConstants {
 	public static final String	SETIPv4								= IPActionSet.SET_IPv4;
 	public static final String	SETIPv6								= IPActionSet.SET_IPv6;
 	public static final String	SETINTERFACEDESCRIPTION				= IPActionSet.SET_INTERFACE_DESCRIPTION;
+	public static final String	ADDIPv4								= IPActionSet.ADD_IPv4;
+	public static final String	ADDIPv6								= IPActionSet.ADD_IPv6;
+	public static final String	REMOVEIPv4							= IPActionSet.REMOVE_IPv4;
+	public static final String	REMOVEIPv6							= IPActionSet.REMOVE_IPv6;
 
 	// TODO THE SAME NAME FOR THE OTHER LIST LOGICAL ROUTERS
 	public static final String	GETLOGICALROUTERS					= "getLogicalRouters";

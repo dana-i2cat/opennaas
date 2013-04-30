@@ -460,4 +460,10 @@ public class ParamCreationHelper {
 		return vrrpGroup;
 	}
 
+	public static IPProtocolEndpoint getIPProtocolEndPointIPv6() {
+		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+		ipProtocolEndpoint.setIPv6Address("fedc:34:ff::af");
+		ipProtocolEndpoint.setPrefixLength((short) 64);
+		return ipProtocolEndpoint;
+	}
 }
