@@ -9,25 +9,27 @@
 
 
 <ul id="_menu">
+	<c:set var="clientArea" value="/secure/vcpeNetwork" />
+	<c:set var="nocArea" value="/secure/noc/vcpeNetwork" />
 	<c:forEach varStatus="vs" items="${sessionScope.vcpeNetworkList}">
 		<c:choose>
-			<c:when test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
-				<c:set var="url" value="/secure/noc/vcpeNetwork/singleProvider" />
+			<c:when test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">
+				<c:set var="templateUrl" value="singleProvider" />
 			</c:when>
 			<c:otherwise>
-				<c:set var="url" value="/secure/noc/vcpeNetwork/multipleProvider" />
+				<c:set var="templateUrl" value="multipleProvider" />
 			</c:otherwise>
 		</c:choose>
 		<li><a href="#">${sessionScope.vcpeNetworkList[vs.index].name}</a>
 			<ul>
 				<sec:authorize access="hasRole('ROLE_NOC')">
 					<li>
-						<a href="<c:url value="${url}/edit?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+						<a href="<c:url value="${nocArea}/${templateUrl}/edit?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
 							<spring:message code="menu.edit" />
 						</a>
 					</li>
 					<li>
-						<a class="link_confirm" href="<c:url value="${url}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+						<a class="link_confirm" href="<c:url value="${nocArea}/${templateUrl}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
 							<spring:message code="menu.delete" />
 						</a>
 					</li>
@@ -37,7 +39,7 @@
 				<sec:authorize access="hasRole('ROLE_CLIENT')">
 					<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
 						<li>
-							<a href="<c:url value="${url}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+							<a href="<c:url value="${clientArea}/${templateUrl}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
 								<spring:message code="menu.update" />
 							</a>
 						</li>
