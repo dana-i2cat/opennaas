@@ -11,6 +11,7 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
+import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -109,11 +110,27 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 
 			MappingResult result = executeAlgorithm(vNTMapperConfiguration, request, net);
 
-			return new VNMapperOutput(result, input);
+			NetworkModel topologyResult = transformMapperOutputToNetworkTopology(resource.getModel(), net, result);
+
+			return new VNMapperOutput(result, input, topologyResult);
 		} catch (IOException io) {
 			log.error("Error maping request - ", io);
 			throw new CapabilityException(io);
+		} catch (ResourceNotFoundException re) {
+			log.error("Error maping request - ", re);
+			throw new CapabilityException(re);
 		}
+
+	}
+
+	public NetworkModel transformMapperOutputToNetworkTopology(IModel inputNetworkModel, InPNetwork net, MappingResult result)
+			throws ResourceNotFoundException {
+
+		MappingResultParser adaptor = new MappingResultParser((NetworkModel) inputNetworkModel, net, result);
+
+		NetworkModel resultModel = adaptor.parseMappingResult();
+
+		return resultModel;
 
 	}
 
