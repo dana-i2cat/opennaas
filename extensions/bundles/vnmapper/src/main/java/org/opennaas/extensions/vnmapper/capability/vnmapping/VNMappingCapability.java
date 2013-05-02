@@ -95,7 +95,7 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 
 		try {
 
-			IResource resource = getNetworkResource(resourceId);
+			IResource resource = getNetworkResource(networkResourceId);
 
 			// //// run the matching and mapping/////
 			VNTMapperConfiguration vNTMapperConfiguration = prepareVNTMapperConfiguration();

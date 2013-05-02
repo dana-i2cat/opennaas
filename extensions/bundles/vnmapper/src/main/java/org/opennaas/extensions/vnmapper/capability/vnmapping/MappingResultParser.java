@@ -76,7 +76,9 @@ public class MappingResultParser {
 
 		for (int i = 0; i < mappingResult.getVnodes().size(); i++) {
 
-			String deviceId = inpNetwork.getNodes().get(i).getPnodeID();
+			int vnodeId = mappingResult.getVnodes().get(i);
+
+			String deviceId = inpNetwork.getNodes().get(vnodeId).getPnodeID();
 			Device device = NetworkModelHelper.getDeviceByName(physicalNetworkModel, deviceId);
 			if (device == null)
 				throw new ResourceNotFoundException("Device " + deviceId + " not found in network topology.");
