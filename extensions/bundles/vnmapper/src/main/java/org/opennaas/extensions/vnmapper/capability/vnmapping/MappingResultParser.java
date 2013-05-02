@@ -111,8 +111,6 @@ public class MappingResultParser {
 
 						vIface.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(i)));
 						vIface2.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(j)));
-						vIface.setName(vIface.getDevice().getName() + ":" + i);
-						vIface2.setName(vIface2.getDevice().getName() + ":" + j);// maaaal! poner phyId?
 
 					}
 					else
@@ -124,8 +122,6 @@ public class MappingResultParser {
 						vIface.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(j)));
 						vIface2.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(i)));
 
-						vIface.setName(vIface.getDevice().getName() + ":" + j);
-						vIface2.setName(vIface2.getDevice().getName() + ":" + i);
 					}
 
 					VirtualLink vLink = new VirtualLink();

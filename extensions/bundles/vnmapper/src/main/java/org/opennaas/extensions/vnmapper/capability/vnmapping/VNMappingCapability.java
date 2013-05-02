@@ -91,7 +91,7 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 		}
 	}
 
-	public VNMapperOutput mapVN(String resourceId, VNTRequest request) throws CapabilityException {
+	public VNMapperOutput mapVN(String networkResourceId, VNTRequest request) throws CapabilityException {
 
 		try {
 
