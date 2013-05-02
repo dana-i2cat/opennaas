@@ -47,6 +47,18 @@ public class NetworkModelHelper {
 		return toReturn;
 	}
 
+	public static Device getDeviceByName(NetworkModel model, String deviceName) {
+
+		List<Device> networkElements = getDevices(model);
+
+		for (NetworkElement elem : networkElements) {
+			if (elem instanceof Device && elem.getName().equals(deviceName)) {
+				return (Device) elem;
+			}
+		}
+		return null;
+	}
+
 	public static List<NetworkDomain> getDomains(NetworkModel model) {
 		return getDomains(model.getNetworkElements());
 	}
@@ -350,5 +362,18 @@ public class NetworkModelHelper {
 			}
 		}
 		return clientLinks;
+	}
+
+	public static List<Link> getAllLinksBetweenTwoDevices(NetworkModel networkModel, String firstDeviceId, String secondDeviceId) {
+
+		List<Link> links = new ArrayList<Link>();
+
+		List<Link> modelLinks = getLinks(networkModel);
+
+		for (Link link : modelLinks)
+			if (link.getSource().getDevice().getName().equals(firstDeviceId) && (link.getSink().getDevice().getName().equals(secondDeviceId)))
+				links.add(link);
+
+		return links;
 	}
 }
