@@ -40,7 +40,22 @@ public class VCPENetworkBO {
 	 */
 	public String create(LogicalInfrastructure logicalInfrastructure) throws RestServiceException {
 		LOGGER.debug("create a VCPENetwork: " + logicalInfrastructure);
-		return vcpeNetworkService.createVCPENetwork(OpennaasBeanUtils.getVCPENetwork(logicalInfrastructure));
+		String resourceId = vcpeNetworkService.createVCPENetwork(OpennaasBeanUtils.getVCPENetwork(logicalInfrastructure));
+		// the resource is being created, but has not finished yet
+
+		LOGGER.debug("Polling for building task to finish");
+		while (!vcpeNetworkService.hasFinishedBuild(resourceId)) {
+			try {
+				Thread.sleep(10 * 1000);
+			} catch (InterruptedException e) {
+				LOGGER.warn("Interrupted while waiting for VCPE build to finish", e);
+				break;
+			}
+		}
+		LOGGER.debug("Retrieving build result");
+		vcpeNetworkService.getBuildResult(resourceId);
+
+		return resourceId;
 	}
 
 	/**

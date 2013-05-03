@@ -154,4 +154,30 @@ public interface IVCPENetworkManager {
 	public Boolean isInterfaceFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("router") String router, @QueryParam("iface") String iface)
 			throws VCPENetworkManagerException;
 
+	/**
+	 * 
+	 * @param resourceId
+	 * @return true if the build has finished (either by having completed the task or having failed), false otherwise.
+	 * @throws VCPENetworkManagerException
+	 *             if there is no building execution for given resource id.
+	 */
+	@Path("/hasFinishedBuild/{id}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	boolean hasFinishedBuild(@PathParam("id") String resourceId) throws VCPENetworkManagerException;
+
+	/**
+	 * 
+	 * @param resourceId
+	 * @return true if the build has been successful
+	 * @throws VCPENetworkManagerException
+	 *             if building has failed, or there is no building execution for given resource id.
+	 */
+	@Path("/getBuildResult/{id}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	boolean getBuildResult(@PathParam("id") String resourceId) throws VCPENetworkManagerException;
+
 }
