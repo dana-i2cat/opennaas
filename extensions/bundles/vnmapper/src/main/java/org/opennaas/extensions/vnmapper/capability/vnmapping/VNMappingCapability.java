@@ -20,6 +20,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.technology.ethernet.EthernetLink;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -177,7 +178,7 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			PNode n = new PNode();
 			n.setId(i);
 			n.setPnodeID(devices.get(i).getName());
-			n.setCapacity(16);
+			n.setCapacity(devices.get(i).getVirtualizationService().getVirtualDevicesCapacity());
 			n.setPathNum(0);
 			net.getNodes().add(n);
 			net.setNodeNum(net.getNodeNum() + 1);
@@ -211,7 +212,12 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 
 				net.getConnections().get(node1).get(node2).setNode2Id(node2);
 
-				net.getConnections().get(node1).get(node2).setCapacity(100);
+				if (links.get(node1) instanceof EthernetLink && ((EthernetLink) links.get(i)).getBandwidth() == 0)
+
+					net.getConnections().get(node1).get(node2).setCapacity(100);
+
+				else
+					net.getConnections().get(node1).get(node2).setCapacity((int) ((EthernetLink) links.get(i)).getBandwidth());
 
 				net.getConnections().get(node1).get(node2).setDelay(1);
 

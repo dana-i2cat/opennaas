@@ -43,6 +43,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.extensions.network.model.topology.NetworkConnection;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
@@ -98,7 +99,6 @@ public class VNMapperCapabilityTest {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-vnmapper"),
 				includeTestHelper(),
-				// openDebugSocket(),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -686,6 +686,226 @@ public class VNMapperCapabilityTest {
 		phyLink = (Link) netConnection;
 		Assert.assertEquals("router:junos40:em0.0", phyLink.getSource().getName());
 		Assert.assertEquals("router:junos50:em0.0", phyLink.getSink().getName());
+
+	}
+
+	@Test
+	public void Sample7Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
+
+		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample7/topology.xml"));
+		VNTRequest vnt = loadRequestFromFile("/inputs/sample7/request.xml");
+
+		VNMappingCapability capab = (VNMappingCapability) vnmapperResource.getCapabilityByType(MAPPING_CAPABILITY_TYPE);
+
+		Assert.assertNotNull(capab);
+
+		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		NetworkModel virtualModel = out.getNetworkModel();
+		Assert.assertNotNull(virtualModel);
+
+		NetworkModel physicalModel = (NetworkModel) networkResource.getModel();
+		Assert.assertNotNull(physicalModel);
+
+		// /// CHECK VIRTUAL DEVICES
+
+		List<NetworkElement> virtualDevices = NetworkModelHelper
+				.getNetworkElementsByClassName(VirtualDevice.class, virtualModel.getNetworkElements());
+		Assert.assertEquals("Virtual Network Model should contain 3 virtual devices.", 3, virtualDevices.size());
+
+		VirtualDevice vDevice0 = (VirtualDevice) virtualDevices.get(0);
+		Assert.assertEquals("0", vDevice0.getName());
+		Assert.assertEquals("VirtualDevice 0 should match physical router router:junos40", vDevice0.getImplementedBy(),
+				NetworkModelHelper.getDeviceByName(physicalModel, "router:junos40"));
+
+		VirtualDevice vDevice1 = (VirtualDevice) virtualDevices.get(1);
+		Assert.assertEquals("1", vDevice1.getName());
+		Assert.assertEquals("VirtualDevice 1 should match physical router router:junos50", vDevice1.getImplementedBy(),
+				NetworkModelHelper.getDeviceByName(physicalModel, "router:junos50"));
+
+		VirtualDevice vDevice2 = (VirtualDevice) virtualDevices.get(2);
+		Assert.assertEquals("2", vDevice2.getName());
+		Assert.assertEquals("VirtualDevice 2 should match physical router router:junos60", vDevice2.getImplementedBy(),
+				NetworkModelHelper.getDeviceByName(physicalModel, "router:junos60"));
+
+		// /// CHECK VIRTUAL LINKS
+
+		List<NetworkElement> virtualLinks = NetworkModelHelper.getNetworkElementsByClassName(VirtualLink.class, virtualModel.getNetworkElements());
+		Assert.assertEquals("Virtual Network Model should contain 3 virtual links.", 3, virtualLinks.size());
+
+		VirtualLink vlink1 = (VirtualLink) virtualLinks.get(0);
+		Assert.assertNotNull(vlink1.getSource());
+		Assert.assertNotNull(vlink1.getSink());
+		Assert.assertNotNull(vlink1.getImplementedBy());
+
+		Path path = vlink1.getImplementedBy();
+		Assert.assertEquals("Virtual Link 0-1 should begin in Virtual Device 0.", vlink1.getSource().getDevice(), vDevice0);
+		Assert.assertEquals("Virtual Link 0-1 should end in Virtual Device 1.", vlink1.getSink().getDevice(), vDevice1);
+
+		Assert.assertEquals("Virtual Path 0-1 should only contain one segment.", 1, path.getPathSegments().size());
+		NetworkConnection netConnection = path.getPathSegments().get(0);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		Link phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos40:em0.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos50:em0.0", phyLink.getSink().getName());
+
+		VirtualLink vlink2 = (VirtualLink) virtualLinks.get(1);
+		Assert.assertNotNull(vlink2.getSource());
+		Assert.assertNotNull(vlink2.getSink());
+		Assert.assertNotNull(vlink2.getImplementedBy());
+
+		path = vlink2.getImplementedBy();
+		Assert.assertEquals("Virtual Link 0-2 should begin in Virtual Device 0.", vlink2.getSource().getDevice(), vDevice0);
+		Assert.assertEquals("Virtual Link 0-2 should end in Virtual Device 2.", vlink2.getSink().getDevice(), vDevice2);
+
+		Assert.assertEquals("Virtual Path 0-2 should only contain one segment.", 1, path.getPathSegments().size());
+		netConnection = path.getPathSegments().get(0);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos40:em1.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos60:em0.0", phyLink.getSink().getName());
+
+		VirtualLink vlink3 = (VirtualLink) virtualLinks.get(2);
+		Assert.assertNotNull(vlink3.getSource());
+		Assert.assertNotNull(vlink3.getSink());
+		Assert.assertNotNull(vlink3.getImplementedBy());
+
+		path = vlink3.getImplementedBy();
+		Assert.assertEquals("Virtual Link 1-2 should begin in Virtual Device 1.", vlink3.getSource().getDevice(), vDevice1);
+		Assert.assertEquals("Virtual Link 1-2 should end in Virtual Device 2.", vlink3.getSink().getDevice(), vDevice2);
+
+		Assert.assertEquals("Virtual Path 1-2 should only contain one segment.", 1, path.getPathSegments().size());
+		netConnection = path.getPathSegments().get(0);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos50:em1.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos60:em1.0", phyLink.getSink().getName());
+
+	}
+
+	@Test
+	public void Sample8Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
+
+		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample8/topology.xml"));
+		NetworkModel physicalModel = (NetworkModel) networkResource.getModel();
+		Assert.assertNotNull(physicalModel);
+		updateDeviceCapacity(physicalModel, "router:junos20", 10);
+		updateDeviceCapacity(physicalModel, "router:junos30", 11);
+		updateDeviceCapacity(physicalModel, "router:junos40", 12);
+		updateDeviceCapacity(physicalModel, "router:junos50", 13);
+		updateDeviceCapacity(physicalModel, "router:junos60", 14);
+
+		VNTRequest vnt = loadRequestFromFile("/inputs/sample8/request.xml");
+
+		VNMappingCapability capab = (VNMappingCapability) vnmapperResource.getCapabilityByType(MAPPING_CAPABILITY_TYPE);
+
+		Assert.assertNotNull(capab);
+
+		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		NetworkModel virtualModel = out.getNetworkModel();
+		Assert.assertNotNull(virtualModel);
+
+		// /// CHECK VIRTUAL DEVICES
+
+		List<NetworkElement> virtualDevices = NetworkModelHelper
+				.getNetworkElementsByClassName(VirtualDevice.class, virtualModel.getNetworkElements());
+		Assert.assertEquals("Virtual Network Model should contain 3 virtual devices.", 3, virtualDevices.size());
+
+		VirtualDevice vDevice0 = (VirtualDevice) virtualDevices.get(0);
+		Assert.assertEquals("0", vDevice0.getName());
+		Assert.assertEquals("VirtualDevice 0 should match physical router router:junos20", vDevice0.getImplementedBy(),
+				NetworkModelHelper.getDeviceByName(physicalModel, "router:junos20"));
+
+		VirtualDevice vDevice1 = (VirtualDevice) virtualDevices.get(1);
+		Assert.assertEquals("1", vDevice1.getName());
+		Assert.assertEquals("VirtualDevice 1 should match physical router router:junos60", vDevice1.getImplementedBy(),
+				NetworkModelHelper.getDeviceByName(physicalModel, "router:junos60"));
+
+		VirtualDevice vDevice2 = (VirtualDevice) virtualDevices.get(2);
+		Assert.assertEquals("2", vDevice2.getName());
+		Assert.assertEquals("VirtualDevice 2 should match physical router router:junos50", vDevice2.getImplementedBy(),
+				NetworkModelHelper.getDeviceByName(physicalModel, "router:junos50"));
+
+		// /// CHECK VIRTUAL LINKS
+
+		List<NetworkElement> virtualLinks = NetworkModelHelper.getNetworkElementsByClassName(VirtualLink.class, virtualModel.getNetworkElements());
+		Assert.assertEquals("Virtual Network Model should contain 3 virtual links.", 3, virtualLinks.size());
+
+		VirtualLink vlink1 = (VirtualLink) virtualLinks.get(0);
+		Assert.assertNotNull(vlink1.getSource());
+		Assert.assertNotNull(vlink1.getSink());
+		Assert.assertNotNull(vlink1.getImplementedBy());
+
+		Path path = vlink1.getImplementedBy();
+		Assert.assertEquals("Virtual Link 0-1 should begin in Virtual Device 0.", vlink1.getSource().getDevice(), vDevice0);
+		Assert.assertEquals("Virtual Link 0-1 should end in Virtual Device 1.", vlink1.getSink().getDevice(), vDevice1);
+
+		Assert.assertEquals("Virtual Path 0-1 should only contain one segment.", 1, path.getPathSegments().size());
+		NetworkConnection netConnection = path.getPathSegments().get(0);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		Link phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos20:em1.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos60:em2.0", phyLink.getSink().getName());
+
+		VirtualLink vlink2 = (VirtualLink) virtualLinks.get(1);
+		Assert.assertNotNull(vlink2.getSource());
+		Assert.assertNotNull(vlink2.getSink());
+		Assert.assertNotNull(vlink2.getImplementedBy());
+
+		path = vlink2.getImplementedBy();
+		Assert.assertEquals("Virtual Link 0-2 should begin in Virtual Device 0.", vlink2.getSource().getDevice(), vDevice0);
+		Assert.assertEquals("Virtual Link 0-2 should end in Virtual Device 2.", vlink2.getSink().getDevice(), vDevice2);
+
+		Assert.assertEquals("Virtual Path 0-2 should contain three segments.", 3, path.getPathSegments().size());
+
+		netConnection = path.getPathSegments().get(0);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos40:em0.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos50:em0.0", phyLink.getSink().getName());
+
+		netConnection = path.getPathSegments().get(1);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos30:em0.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos40:em2.0", phyLink.getSink().getName());
+
+		netConnection = path.getPathSegments().get(2);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos20:em0.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos30:em1.0", phyLink.getSink().getName());
+
+		VirtualLink vlink3 = (VirtualLink) virtualLinks.get(2);
+		Assert.assertNotNull(vlink3.getSource());
+		Assert.assertNotNull(vlink3.getSink());
+		Assert.assertNotNull(vlink3.getImplementedBy());
+
+		path = vlink3.getImplementedBy();
+		Assert.assertEquals("Virtual Link 1-2 should begin in Virtual Device 1.", vlink3.getSource().getDevice(), vDevice1);
+		Assert.assertEquals("Virtual Link 1-2 should end in Virtual Device 2.", vlink3.getSink().getDevice(), vDevice2);
+
+		Assert.assertEquals("Virtual Path 1-2 should only contain one segment.", 1, path.getPathSegments().size());
+		netConnection = path.getPathSegments().get(0);
+		Assert.assertTrue(netConnection instanceof Link);
+
+		phyLink = (Link) netConnection;
+		Assert.assertEquals("router:junos50:em1.0", phyLink.getSource().getName());
+		Assert.assertEquals("router:junos60:em1.0", phyLink.getSink().getName());
+
+	}
+
+	private void updateDeviceCapacity(NetworkModel physicalModel, String deviceName, int capacity) {
+		Device device = NetworkModelHelper.getDeviceByName(physicalModel, deviceName);
+		device.getVirtualizationService().setVirtualDevicesCapacity(capacity);
 
 	}
 
