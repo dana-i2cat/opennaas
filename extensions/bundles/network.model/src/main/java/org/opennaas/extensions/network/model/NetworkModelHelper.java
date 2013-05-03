@@ -194,6 +194,10 @@ public class NetworkModelHelper {
 
 		if (src instanceof EthernetInterface && dst instanceof EthernetInterface) {
 			link = new EthernetLink();
+
+			long capacity = Math.min(((EthernetInterface) src).getBandwidth(), ((EthernetInterface) dst).getBandwidth());
+			((EthernetLink) link).setBandwidth(capacity);
+
 		}
 
 		link.setSource(src);

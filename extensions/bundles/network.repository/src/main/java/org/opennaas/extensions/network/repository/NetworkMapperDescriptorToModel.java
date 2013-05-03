@@ -62,7 +62,7 @@ public class NetworkMapperDescriptorToModel {
 		if (networkTopology.getInterfaces() != null) {
 			/* set interfaces */
 			for (Interface interf : networkTopology.getInterfaces()) {
-				existingInterfaces.add(createInterface(interf.getName()));
+				existingInterfaces.add(createInterface(interf));
 			}
 
 			/* set links */
@@ -204,9 +204,16 @@ public class NetworkMapperDescriptorToModel {
 
 	}
 
-	private static org.opennaas.extensions.network.model.topology.Interface createInterface(String name) {
+	private static org.opennaas.extensions.network.model.topology.Interface createInterface(Interface interf) {
 		org.opennaas.extensions.network.model.topology.Interface newInterf = new org.opennaas.extensions.network.model.topology.Interface();
-		newInterf.setName(name);
+
+		if (interf.getAtLayer().getResource() != null && interf.getAtLayer().getResource().equals("#EthernetLayer")) {
+			newInterf = new org.opennaas.extensions.network.model.technology.ethernet.EthernetInterface();
+			if (interf.getCapacity() != null )
+			((org.opennaas.extensions.network.model.technology.ethernet.EthernetInterface) newInterf)
+					.setBandwidth(Long.valueOf(interf.getCapacity()));
+		}
+		newInterf.setName(interf.getName());
 		return newInterf;
 	}
 

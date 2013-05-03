@@ -6,6 +6,10 @@ public class VirtualDevice extends Device {
 
 	private Device	implementedBy;
 
+	public VirtualDevice() {
+		virtualizationService.setVirtualDevicesCapacity(0);
+	}
+
 	public Device getImplementedBy() {
 		return implementedBy;
 	}
