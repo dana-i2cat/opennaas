@@ -12,10 +12,12 @@
 		
 		<bundle dependency="true">mvn:org.springframework/org.springframework.transaction/${spring.version}</bundle>
 		
-		<bundle>mvn:org.springframework.security/spring-security-core/${spring.version}</bundle>
-		<bundle>mvn:org.springframework.security/spring-security-config/${spring.version}</bundle>
-		<bundle>mvn:org.springframework.security/spring-security-acl/${spring.version}</bundle>
-		<bundle>mvn:org.springframework.security/spring-security-web/${spring.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-core/${spring.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-config/${spring.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-acl/${spring.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-web/${spring.version}</bundle>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.core.security/${project.version}</bundle>
 	</feature>
 
 
@@ -92,7 +94,11 @@
 		<feature>jetty</feature>
 		
 		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.5.2</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.codehaus.woodstox/stax2-api/3.1.1</bundle>
+		<bundle dependency="true">mvn:org.codehaus.woodstox/woodstox-core-asl/4.2.0</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dom4j/1.6.1_5</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/2.2.0</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>
