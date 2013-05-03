@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -31,6 +32,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
@@ -103,6 +105,239 @@ public class IPCapabilityIntegrationTest
 		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
 				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
 		ipCapability.setIPv4(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+	}
+
+	@Test
+	public void testAddIPv4() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.addIPv4(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+	}
+
+	@Test
+	public void testAddIPv6() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.addIPv6(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPointIPv6());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+	}
+
+	@Test
+	public void removeIPv4() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIPv4(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+	}
+
+	@Test
+	public void testSetIP() throws ProtocolException, ResourceException {
+
+		// Set IP with IPv4 ProtocolEndpoint
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setIP(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Set IP with IPv6 ProtocolEndpoint
+
+		ipCapability.setIP(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPointIPv6());
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Set IP with string ipv4
+		ipCapability.setIP(ParamCreationHelper.getLogicalPort(), "192.168.1.12/24");
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Set IP with string ipv6
+		ipCapability.setIP(ParamCreationHelper.getLogicalPort(), "fedc:54:123:ffa1::8/64");
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void testSetIPWrongParameters() throws CapabilityException {
+
+		// test IP with empty ProtocolEndpoint - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setIP(ParamCreationHelper.getLogicalPort(), new IPProtocolEndpoint());
+
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void setIPWithUnvalidIP() throws CapabilityException {
+		// test IP with invalid ip String - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setIP(ParamCreationHelper.getLogicalPort(), "invalidIP");
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void setIPWithEmptyIP() throws CapabilityException {
+		// test IP with invalid ip String - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setIP(ParamCreationHelper.getLogicalPort(), new String());
+	}
+
+	@Test
+	public void testAddIP() throws ProtocolException, ResourceException {
+
+		// Add IP with IPv4 ProtocolEndpoint
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.addIP(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Add IP with IPv6 ProtocolEndpoint
+
+		ipCapability.addIP(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPointIPv6());
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Add IP with string ipv4
+		ipCapability.addIP(ParamCreationHelper.getLogicalPort(), "192.168.1.12/24");
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Add IP with string ipv6
+		ipCapability.addIP(ParamCreationHelper.getLogicalPort(), "fedc:54:123:ffa1::8/64");
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void testAddIPWrongParameters() throws ProtocolException, ResourceException {
+
+		// Add IP with empty ProtocolEndpoint - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), new IPProtocolEndpoint());
+
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void addIPWithUnvalidIP() throws CapabilityException {
+		// test IP with invalid ip String - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.addIP(ParamCreationHelper.getLogicalPort(), "invalidIP");
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void addIPWithEmptyIP() throws CapabilityException {
+		// test IP with invalid ip String - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.addIP(ParamCreationHelper.getLogicalPort(), new String());
+	}
+
+	@Test
+	public void testRemoveIP() throws ProtocolException, ResourceException {
+
+		// Remove IP with IPv4 ProtocolEndpoint
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Remove IP with IPv6 ProtocolEndpoint
+
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPointIPv6());
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Remove IP with string ipv4
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), "192.168.1.12/24");
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		// Remove IP with string ipv6
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), "fedc:54:123:ffa1::8/64");
+
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void testRemoveIPWrongParameters() throws ProtocolException, ResourceException {
+
+		// Remove IP with empty ProtocolEndpoint - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), new IPProtocolEndpoint());
+
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void removeIPWithUnvalidIP() throws CapabilityException {
+		// test IP with invalid ip String - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), "invalidIP");
+	}
+
+	@Test(expected = CapabilityException.class)
+	public void removeIPWithEmptyIP() throws CapabilityException {
+		// test IP with invalid ip String - should fail
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIP(ParamCreationHelper.getLogicalPort(), new String());
+	}
+
+	@Test
+	public void removeIPv6() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.removeIPv6(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPointIPv6());
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
