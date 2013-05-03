@@ -69,71 +69,73 @@ public class ConfigureVRRPAction extends JunosAction {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		if (params == null) {
-			return false;
+			throw new ActionException("Invalid params. Params cannot be null.");
 		}
 		// correct instance received
 		if (!(params instanceof VRRPProtocolEndpoint))
-			return false;
+			throw new ActionException("Invalid params. VRRPProtocolEndpoint expected.");
 
 		VRRPProtocolEndpoint pE = (VRRPProtocolEndpoint) params;
 
 		// ProtocolIFtype not set or not correct.
 		if (pE.getProtocolIFType() == null)
-			return false;
+			throw new ActionException("Invalid params. ProtocolIFtype cannot be null.");
 
 		if (!pE.getProtocolIFType().equals(ProtocolIFType.IPV4) && !pE.getProtocolIFType().equals(ProtocolIFType.IPV6))
-			return false;
+			throw new ActionException("Invalid params. Unknown ProtocolIFtype.");
 
 		List<ProtocolEndpoint> protocolEndpoints = ((VRRPProtocolEndpoint) params).getBindedProtocolEndpoints();
 		// VRRPProtocolEndpoint has 1 ProtocolEndpoint
 		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV4) && protocolEndpoints.size() != 1)
-			return false;
+			throw new ActionException("Invalid params. A single IPProtocolEndpoint is required for VRRP IPv4.");
 
 		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6) && protocolEndpoints.size() != 3)
-			return false;
+			throw new ActionException("Invalid params. Three IPProtocolEndpoints are required for VRRP IPv6.");
 
 		// protocolEndpoint is an instance of IPProtocolEndpoint
 		ProtocolEndpoint protocolEndpoint = protocolEndpoints.get(0);
 		if (!(protocolEndpoint instanceof IPProtocolEndpoint))
-			return false;
+			throw new ActionException("Invalid params. IPProtocolEndpoint expected.");
 
 		// ProtocolEndpoint and VRRPProtocolEndpoint with different protocols.
 		if (protocolEndpoint.getProtocolIFType() == null || !protocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
-			return false;
+			throw new ActionException("Invalid params. IPProtocolEndpoint ProtocolIFtype not matching VRRP ProtocolIFtype " + pE.getProtocolIFType());
 
 		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6)) {
 			ProtocolEndpoint secondProtocolEndpoint = protocolEndpoints.get(1);
 			if (!(secondProtocolEndpoint instanceof IPProtocolEndpoint))
-				return false;
+				throw new ActionException("Invalid params. IPProtocolEndpoint expected.");
 			if (secondProtocolEndpoint.getProtocolIFType() == null || !secondProtocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
-				return false;
+				throw new ActionException(
+						"Invalid params. IPProtocolEndpoint ProtocolIFtype not matching VRRP ProtocolIFtype " + pE.getProtocolIFType());
 
 			ProtocolEndpoint thirdProtocolEndpoint = protocolEndpoints.get(2);
 			if (!(thirdProtocolEndpoint instanceof IPProtocolEndpoint))
-				return false;
+				throw new ActionException("Invalid params. IPProtocolEndpoint expected.");
 			if (thirdProtocolEndpoint.getProtocolIFType() == null || !thirdProtocolEndpoint.getProtocolIFType().equals(pE.getProtocolIFType()))
-				return false;
+				throw new ActionException(
+						"Invalid params. IPProtocolEndpoint ProtocolIFtype not matching VRRP ProtocolIFtype " + pE.getProtocolIFType());
 
 		}
 
 		// protocolEndpoint has 1 LogicalPort
 		List<LogicalPort> logicalPorts = ((IPProtocolEndpoint) protocolEndpoint).getLogicalPorts();
 		if (logicalPorts.size() != 1)
-			return false;
+			throw new ActionException("Invalid params. A LogicalPort is required.");
 		// logicalPort is an instance of NetworkPort
 		LogicalPort logicalPort = logicalPorts.get(0);
 		if (!(logicalPort instanceof NetworkPort))
-			return false;
+			throw new ActionException("Invalid params. A NetworkPort is required.");
 
 		// service is an instance of VRRPGroup
 		Service service = ((VRRPProtocolEndpoint) params).getService();
 		if (!(service instanceof VRRPGroup)) {
-			return false;
+			throw new ActionException("Invalid params. VRRPGroup service required.");
 		}
 
 		if (pE.getProtocolIFType().equals(ProtocolIFType.IPV6))
 			if (((VRRPGroup) service).getVirtualLinkAddress() == null || ((VRRPGroup) service).getVirtualLinkAddress().isEmpty())
-				return false;
+				throw new ActionException("Invalid params. VirtualLinkAddress required for IPv6.");
 
 		// structure correct
 		return true;
