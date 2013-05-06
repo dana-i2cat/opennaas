@@ -180,6 +180,12 @@ public class VNMapperCapabilityTest {
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
 
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
+
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
 
@@ -259,6 +265,12 @@ public class VNMapperCapabilityTest {
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
 
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
+
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
 
@@ -337,6 +349,12 @@ public class VNMapperCapabilityTest {
 		Assert.assertNotNull(capab);
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
 
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
@@ -432,6 +450,12 @@ public class VNMapperCapabilityTest {
 		Assert.assertNotNull(capab);
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
 
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
@@ -554,6 +578,12 @@ public class VNMapperCapabilityTest {
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
 
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
+
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
 
@@ -616,6 +646,12 @@ public class VNMapperCapabilityTest {
 		Assert.assertNotNull(capab);
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
 
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
@@ -701,6 +737,12 @@ public class VNMapperCapabilityTest {
 		Assert.assertNotNull(capab);
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
 
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
@@ -806,6 +848,12 @@ public class VNMapperCapabilityTest {
 		Assert.assertNotNull(capab);
 
 		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.SUCCESSFUL, mapState);
 
 		NetworkModel virtualModel = out.getNetworkModel();
 		Assert.assertNotNull(virtualModel);
