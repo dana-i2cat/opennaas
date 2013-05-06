@@ -16,6 +16,6 @@ public interface IVNMappingCapability extends ICapability {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public VNMapperOutput mapVN(String resourceId, VNTRequest request) throws CapabilityException;
+	public VNMapperOutput mapVN(String networkResourceId, VNTRequest request) throws CapabilityException;
 
 }

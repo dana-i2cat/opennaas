@@ -11,6 +11,7 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
+import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -19,6 +20,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.technology.ethernet.EthernetLink;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -90,11 +92,11 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 		}
 	}
 
-	public VNMapperOutput mapVN(String resourceId, VNTRequest request) throws CapabilityException {
+	public VNMapperOutput mapVN(String networkResourceId, VNTRequest request) throws CapabilityException {
 
 		try {
 
-			IResource resource = getNetworkResource(resourceId);
+			IResource resource = getNetworkResource(networkResourceId);
 
 			// //// run the matching and mapping/////
 			VNTMapperConfiguration vNTMapperConfiguration = prepareVNTMapperConfiguration();
@@ -109,11 +111,27 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 
 			MappingResult result = executeAlgorithm(vNTMapperConfiguration, request, net);
 
-			return new VNMapperOutput(result, input);
+			NetworkModel topologyResult = transformMapperOutputToNetworkTopology(resource.getModel(), net, result);
+
+			return new VNMapperOutput(result, input, topologyResult);
 		} catch (IOException io) {
 			log.error("Error maping request - ", io);
 			throw new CapabilityException(io);
+		} catch (ResourceNotFoundException re) {
+			log.error("Error maping request - ", re);
+			throw new CapabilityException(re);
 		}
+
+	}
+
+	public NetworkModel transformMapperOutputToNetworkTopology(IModel inputNetworkModel, InPNetwork net, MappingResult result)
+			throws ResourceNotFoundException {
+
+		MappingResultParser adaptor = new MappingResultParser((NetworkModel) inputNetworkModel, net, result);
+
+		NetworkModel resultModel = adaptor.parseMappingResult();
+
+		return resultModel;
 
 	}
 
@@ -160,7 +178,7 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			PNode n = new PNode();
 			n.setId(i);
 			n.setPnodeID(devices.get(i).getName());
-			n.setCapacity(16);
+			n.setCapacity(devices.get(i).getVirtualizationService().getVirtualDevicesCapacity());
 			n.setPathNum(0);
 			net.getNodes().add(n);
 			net.setNodeNum(net.getNodeNum() + 1);
@@ -194,7 +212,12 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 
 				net.getConnections().get(node1).get(node2).setNode2Id(node2);
 
-				net.getConnections().get(node1).get(node2).setCapacity(100);
+				if (links.get(node1) instanceof EthernetLink && ((EthernetLink) links.get(i)).getBandwidth() == 0)
+
+					net.getConnections().get(node1).get(node2).setCapacity(100);
+
+				else
+					net.getConnections().get(node1).get(node2).setCapacity((int) ((EthernetLink) links.get(i)).getBandwidth());
 
 				net.getConnections().get(node1).get(node2).setDelay(1);
 

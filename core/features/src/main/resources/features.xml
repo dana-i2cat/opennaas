@@ -141,6 +141,12 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
 	</feature>
+	
+	<feature name="opennaas-vnmapper" version="${project.version}">
+		<feature version="${project.version}">opennaas-network</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extesnions.vnmapper/${project.version}</bundle>
+	</feature>
 
 	<feature name="opennaas-sampleresource" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
@@ -193,6 +199,7 @@
 		<feature version="${project.version}">opennaas-router</feature>
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
+		<feature version="${project.version}">opennaas-vnmapper</feature>
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
 		<feature version="${project.version}">opennaas-junos</feature>
