@@ -96,6 +96,91 @@ public class VNTRequest
 		return res;
 	}
 
+	public VNTRequest parseVNTRequestFromDoc(Document doc) {
+
+		VNTRequest res = new VNTRequest();
+
+		Element element = doc.getDocumentElement();
+
+		NodeList theVNodes = element.getElementsByTagName("VNode");
+
+		if (theVNodes != null && theVNodes.getLength() > 0) {
+			for (int i = 0; i < theVNodes.getLength(); i++) {
+
+				Node node = theVNodes.item(i);
+
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+					VNode n = new VNode();
+					Element e = (Element) node;
+					NodeList nodeList = e.getElementsByTagName("id");
+					n.setId(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+					nodeList = e.getElementsByTagName("pnodeID");
+					n.setPnodeID(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+					nodeList = e.getElementsByTagName("capacity");
+					if (nodeList.item(0) != null && nodeList.item(0).getChildNodes().item(0) != null) {
+						n.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+					} else {
+						// default capacity set to 1
+						n.setCapacity(1);
+					}
+					res.vnodes.add(n);
+					res.vnodeNum++;
+
+				}
+			}
+		}
+
+		for (int i = 0; i < res.vnodeNum; i++) {
+			res.connections.add(new ArrayList<VLink>());
+			for (int j = 0; j < res.vnodeNum; j++) {
+				res.connections.get(i).add(new VLink());
+			}
+		}
+
+		NodeList theVLinks = element.getElementsByTagName("VLink");
+
+		if (theVLinks != null && theVLinks.getLength() > 0) {
+			for (int i = 0; i < theVLinks.getLength(); i++) {
+
+				Node link = theVLinks.item(i);
+
+				if (link.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element e = (Element) link;
+
+					NodeList nodeList = e.getElementsByTagName("node1");
+					int node1 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+					nodeList = e.getElementsByTagName("node2");
+					int node2 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
+
+					res.connections.get(node1).get(node2).setId(1);
+
+					res.connections.get(node1).get(node2).setNode1Id(node1);
+
+					res.connections.get(node1).get(node2).setNode2Id(node2);
+
+					nodeList = e.getElementsByTagName("capacity");
+					if (nodeList.item(0) != null && nodeList.item(0).getChildNodes().item(0) != null) {
+						res.connections.get(node1).get(node2)
+								.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
+					} else {
+						// default capacity set to 1
+						res.connections.get(node1).get(node2).setCapacity(1);
+					}
+					// nodeList = e.getElementsByTagName("delay");
+					// res.connections.get(node1).get(node2).delay=Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());;
+					res.connections.get(node1).get(node2).setDelay(10000);
+
+					res.vlinks.add(res.connections.get(node1).get(node2));
+
+				}
+			}
+		}
+
+		return res;
+	}
+
 	public VNTRequest readVNTRequestFromXMLFile(String fileName) throws ParserConfigurationException, SAXException, IOException
 	{
 
@@ -108,84 +193,7 @@ public class VNTRequest
 		File file = new File(fileName);
 		if (file.exists()) {
 			Document doc = db.parse(file);
-			Element element = doc.getDocumentElement();
-
-			NodeList theVNodes = element.getElementsByTagName("VNode");
-
-			if (theVNodes != null && theVNodes.getLength() > 0) {
-				for (int i = 0; i < theVNodes.getLength(); i++) {
-
-					Node node = theVNodes.item(i);
-
-					if (node.getNodeType() == Node.ELEMENT_NODE) {
-
-						VNode n = new VNode();
-						Element e = (Element) node;
-						NodeList nodeList = e.getElementsByTagName("id");
-						n.setId(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
-						nodeList = e.getElementsByTagName("pnodeID");
-						n.setPnodeID(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-						nodeList = e.getElementsByTagName("capacity");
-						if (nodeList.item(0) != null && nodeList.item(0).getChildNodes().item(0) != null) {
-							n.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
-						} else {
-							// default capacity set to 1
-							n.setCapacity(1);
-						}
-						res.vnodes.add(n);
-						res.vnodeNum++;
-
-					}
-				}
-			}
-
-			for (int i = 0; i < res.vnodeNum; i++) {
-				res.connections.add(new ArrayList<VLink>());
-				for (int j = 0; j < res.vnodeNum; j++) {
-					res.connections.get(i).add(new VLink());
-				}
-			}
-
-			NodeList theVLinks = element.getElementsByTagName("VLink");
-
-			if (theVLinks != null && theVLinks.getLength() > 0) {
-				for (int i = 0; i < theVLinks.getLength(); i++) {
-
-					Node link = theVLinks.item(i);
-
-					if (link.getNodeType() == Node.ELEMENT_NODE) {
-
-						Element e = (Element) link;
-
-						NodeList nodeList = e.getElementsByTagName("node1");
-						int node1 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-						nodeList = e.getElementsByTagName("node2");
-						int node2 = Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());
-
-						res.connections.get(node1).get(node2).setId(1);
-
-						res.connections.get(node1).get(node2).setNode1Id(node1);
-
-						res.connections.get(node1).get(node2).setNode2Id(node2);
-
-						nodeList = e.getElementsByTagName("capacity");
-						if (nodeList.item(0) != null && nodeList.item(0).getChildNodes().item(0) != null) {
-							res.connections.get(node1).get(node2)
-									.setCapacity(Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue()));
-						} else {
-							// default capacity set to 1
-							res.connections.get(node1).get(node2).setCapacity(1);
-						}
-						// nodeList = e.getElementsByTagName("delay");
-						// res.connections.get(node1).get(node2).delay=Integer.parseInt(nodeList.item(0).getChildNodes().item(0).getNodeValue());;
-						res.connections.get(node1).get(node2).setDelay(10000);
-
-						res.vlinks.add(res.connections.get(node1).get(node2));
-
-					}
-				}
-			}
-
+			res = parseVNTRequestFromDoc(doc);
 		}
 
 		log.info("VNT Request read : \n" + res.toString());
