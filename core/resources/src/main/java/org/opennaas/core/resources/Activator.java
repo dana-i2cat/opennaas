@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.scripting.IScriptingManager;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -42,6 +43,11 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	public static IProtocolManager getProtocolManagerService() throws ActivatorException {
 		log.debug("Calling ProtocolManagerService");
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
+	}
+
+	public static IScriptingManager getScriptingManagerService() throws ActivatorException {
+		log.debug("Calling ScriptingManagerService");
+		return (IScriptingManager) getServiceFromRegistry(context, IScriptingManager.class.getName());
 	}
 
 }
