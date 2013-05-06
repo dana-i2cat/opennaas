@@ -51,6 +51,7 @@ import org.opennaas.extensions.network.model.topology.Path;
 import org.opennaas.extensions.network.model.virtual.VirtualDevice;
 import org.opennaas.extensions.network.model.virtual.VirtualLink;
 import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
+import org.opennaas.extensions.vnmapper.VNState;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperOutput;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability;
@@ -906,6 +907,78 @@ public class VNMapperCapabilityTest {
 	private void updateDeviceCapacity(NetworkModel physicalModel, String deviceName, int capacity) {
 		Device device = NetworkModelHelper.getDeviceByName(physicalModel, deviceName);
 		device.getVirtualizationService().setVirtualDevicesCapacity(capacity);
+
+	}
+
+	/**
+	 * Sample topology as sample 1, with vnode capacity > 16.
+	 */
+	@Test
+	public void overloadVNodeCapacityTest() throws Exception {
+
+		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample9/topology.xml"));
+
+		VNTRequest vnt = loadRequestFromFile("/inputs/sample9/request.xml");
+
+		VNMappingCapability capab = (VNMappingCapability) vnmapperResource.getCapabilityByType(MAPPING_CAPABILITY_TYPE);
+
+		Assert.assertNotNull(capab);
+
+		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.ERROR, matchState);
+		Assert.assertEquals(VNState.SKIPPED, mapState);
+
+	}
+
+	/**
+	 * Sample topology as sample 1, but request contains more Vnodes than available.
+	 */
+	@Test
+	public void overloadVNodeNumTest() throws Exception {
+
+		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample11/topology.xml"));
+
+		VNTRequest vnt = loadRequestFromFile("/inputs/sample11/request.xml");
+
+		VNMappingCapability capab = (VNMappingCapability) vnmapperResource.getCapabilityByType(MAPPING_CAPABILITY_TYPE);
+
+		Assert.assertNotNull(capab);
+
+		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.ERROR, mapState);
+
+	}
+
+	/**
+	 * Sample topology as sample 1, but there's a link in virtual request requiring more capacity than available.
+	 */
+	@Test
+	public void overloadLinkCapacityTest() throws Exception {
+
+		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample10/topology.xml"));
+
+		VNTRequest vnt = loadRequestFromFile("/inputs/sample10/request.xml");
+
+		VNMappingCapability capab = (VNMappingCapability) vnmapperResource.getCapabilityByType(MAPPING_CAPABILITY_TYPE);
+
+		Assert.assertNotNull(capab);
+
+		VNMapperOutput out = capab.mapVN(networkResource.getResourceIdentifier().getId(), vnt);
+
+		VNState matchState = out.getResult().getMatchingState();
+		VNState mapState = out.getResult().getMappingState();
+
+		Assert.assertEquals(VNState.SUCCESSFUL, matchState);
+		Assert.assertEquals(VNState.ERROR, mapState);
 
 	}
 
