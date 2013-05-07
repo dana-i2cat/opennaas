@@ -10,6 +10,7 @@
 	<name>OpenNaaS :: Core</name>
 	<artifactId>org.opennaas.core</artifactId>
 	<modules>
+		<module>security</module>
 		<module>features</module>
 		<module>karafbranding</module>
 		<module>persistence</module>
