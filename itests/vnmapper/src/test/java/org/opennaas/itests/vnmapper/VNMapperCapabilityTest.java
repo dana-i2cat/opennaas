@@ -94,7 +94,6 @@ public class VNMapperCapabilityTest {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-vnmapper"),
 				includeTestHelper(),
-				// openDebugSocket(),
 				noConsole(),
 				keepRuntimeFolder());
 	}
