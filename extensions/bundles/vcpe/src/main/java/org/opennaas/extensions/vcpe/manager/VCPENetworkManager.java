@@ -2,7 +2,14 @@ package org.opennaas.extensions.vcpe.manager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,16 +34,47 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
 
-	private Log					log						= LogFactory.getLog(VCPENetworkManager.class);
+	private Log								log						= LogFactory.getLog(VCPENetworkManager.class);
 
-	public static final String	RESOURCE_VCPENET_TYPE	= "vcpenet";
-	private VCPEManagerModel	model;
+	public static final String				RESOURCE_VCPENET_TYPE	= "vcpenet";
+	private VCPEManagerModel				model;
+
+	private ExecutorService					executor;
+	private Map<String, Future<Boolean>>	futures;
+
+	private class BuildVCPECallable implements Callable<Boolean> {
+
+		VCPENetworkModel	vcpeNetworkModel;
+
+		public BuildVCPECallable(VCPENetworkModel vcpeNetworkModel) {
+			this.vcpeNetworkModel = vcpeNetworkModel;
+		}
+
+		@Override
+		public Boolean call() throws Exception {
+			return build(vcpeNetworkModel);
+		}
+
+		public VCPENetworkModel getVcpeNetworkModel() {
+			return vcpeNetworkModel;
+		}
+
+	}
 
 	/**
 	 * @throws IOException
 	 */
 	public VCPENetworkManager() throws IOException {
 		initModel();
+		executor = Executors.newSingleThreadExecutor();
+		futures = new HashMap<String, Future<Boolean>>();
+	}
+
+	public void destroy() {
+		executor.shutdown();
+		if (!executor.isTerminated()) {
+			executor.shutdownNow();
+		}
 	}
 
 	@Override
@@ -61,9 +99,59 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		vcpeNetworkModel.setId(resource.getResourceIdentifier().getId());
 		// Start the resource
 		startResource(resource.getResourceIdentifier().getId());
-		// Build the enviroment
-		build(vcpeNetworkModel);
+
+		BuildVCPECallable c = new BuildVCPECallable(vcpeNetworkModel);
+		Future<Boolean> future = executor.submit(c);
+		futures.put(resource.getResourceIdentifier().getId(), future);
+
 		return resource.getResourceIdentifier().getId();
+	}
+
+	@Override
+	public boolean hasFinishedBuild(String resourceId) throws VCPENetworkManagerException {
+		Future<Boolean> f = futures.get(resourceId);
+		if (f == null) {
+			throw new VCPENetworkManagerException("No building task for resource " + resourceId);
+		}
+
+		return f.isDone();
+	}
+
+	/**
+	 * This implementation consumes the task, so following invocations to this method with same resourceId throw an exception
+	 * 
+	 * @param resourceId
+	 * @return
+	 */
+	@Override
+	public boolean getBuildResult(String resourceId) throws VCPENetworkManagerException {
+		if (!hasFinishedBuild(resourceId)) {
+			throw new VCPENetworkManagerException("Build task has not yet finished.");
+		}
+
+		Future<Boolean> f = futures.get(resourceId);
+		if (f == null) {
+			throw new VCPENetworkManagerException("No building task for resource " + resourceId);
+		}
+
+		boolean result;
+		try {
+			result = f.get();
+		} catch (InterruptedException e) {
+			log.error("Creation of VCPE has been interrupted", e);
+			throw new VCPENetworkManagerException("Creation of VCPE has been interrupted: " + e.getMessage());
+		} catch (ExecutionException e) {
+			if (e.getCause() instanceof VCPENetworkManagerException)
+				throw (VCPENetworkManagerException) e.getCause();
+			else {
+				throw new VCPENetworkManagerException(e.getCause());
+			}
+		} finally {
+			// remove future from pending tasks
+			futures.remove(resourceId);
+		}
+
+		return result;
 	}
 
 	/*
