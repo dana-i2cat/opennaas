@@ -13,6 +13,10 @@
 	<packaging>bundle</packaging>
 	<dependencies>
 		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.persistence</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
@@ -23,6 +27,10 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -37,15 +45,14 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<!-- Guava and Pax Exam are optional dependencies because we currently 
-							use them in the context of the JUnitRunner and not from within the OSGi 
-							based test container. -->
+						<Bundle-Activator>org.opennaas.core.security.Activator</Bundle-Activator>
 						<Import-Package>
 							org.springframework.security.core,
 							org.springframework.security.core.userdetails.memory,
 							org.springframework.security.web,
 							*
 						</Import-Package>
+						<Meta-Persistence>META-INF/security-persistence.xml</Meta-Persistence>
 					</instructions>
 				</configuration>
 			</plugin>

@@ -5,6 +5,8 @@
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 
 	<feature name="opennaas-spring-security" version="${project.version}">
+		<feature version="${project.version}">opennaas-persistence</feature>
+	
 		<feature version="${spring.version}">spring</feature>
 		<feature version="${spring.version}">spring-web</feature>
 		<feature version="${spring.osgi.version}">spring-dm</feature>
@@ -43,6 +45,7 @@
 	<feature name="org.opennaas.core" version="${project.version}">
 		<feature>xml-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
+		<feature version="${project.version}">opennaas-spring-security</feature>
 
 		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
