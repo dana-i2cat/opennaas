@@ -32,6 +32,7 @@ public class SecurityRepository {
 	private static String			SQL_GROUPS;
 	private static String			SQL_PERSISTENT_LOGINS;
 	private static String			SQL_ACLS;
+	private static String			SQL_ZERO_USERS;
 
 	private EntityManagerFactory	entityManagerFactory	= null;
 	private String					persistenceUnit			= null;
@@ -54,7 +55,8 @@ public class SecurityRepository {
 		SQL_USERS_AUTHORITIES = Activator.getBundleTextFileContents("/security_db_scripts/users_authorities.sql");
 		SQL_GROUPS = Activator.getBundleTextFileContents("/security_db_scripts/groups.sql");
 		SQL_PERSISTENT_LOGINS = Activator.getBundleTextFileContents("/security_db_scripts/persistent_logins.sql");
-		SQL_ACLS = Activator.getBundleTextFileContents("/security_db_scripts/users_authorities.sql");
+		SQL_ACLS = Activator.getBundleTextFileContents("/security_db_scripts/acls.sql");
+		SQL_ZERO_USERS = Activator.getBundleTextFileContents("/security_db_scripts/zero_users.sql");
 		log.debug("OpenNaaS-Security SQL init scripts contents read.");
 
 		log.debug("Executing OpenNaaS-Security SQL init scripts...");
@@ -64,7 +66,9 @@ public class SecurityRepository {
 			getEntityManager().createNativeQuery(SQL_GROUPS).executeUpdate();
 			getEntityManager().createNativeQuery(SQL_PERSISTENT_LOGINS).executeUpdate();
 			getEntityManager().createNativeQuery(SQL_ACLS).executeUpdate();
+			getEntityManager().createNativeQuery(SQL_ZERO_USERS).executeUpdate();
 			getEntityManager().getTransaction().commit();
+			getEntityManager().flush();
 		} catch (Exception e) {
 			log.error("Error executing OpenNaaS-Security SQL init scripts, rollbacking", e);
 			getEntityManager().getTransaction().rollback();
