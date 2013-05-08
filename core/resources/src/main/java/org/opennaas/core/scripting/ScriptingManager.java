@@ -72,6 +72,7 @@ public class ScriptingManager implements IScriptingManager {
 		gse.setConfig(compiler);
 
 		defaultBinding = new Binding();
+		defaultBinding.setVariable("resources", resourceManager);
 	}
 
 	public IResourceManager getResourceManager() {
