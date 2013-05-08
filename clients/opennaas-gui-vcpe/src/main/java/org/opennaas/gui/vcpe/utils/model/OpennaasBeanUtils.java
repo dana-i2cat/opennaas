@@ -225,6 +225,7 @@ public class OpennaasBeanUtils {
 		outNetwork.setName(inNetwork.getName());
 		outNetwork.setTemplateName(inNetwork.getTemplateName());
 		outNetwork.setASNumber(inNetwork.getASNumber());
+		outNetwork.setOwner(inNetwork.getOwner());
 
 		List<String> ipAddressRanges = new ArrayList<String>();
 		ipAddressRanges.add(inNetwork.getiPAddressRange());
