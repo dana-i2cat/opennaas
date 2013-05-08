@@ -5,6 +5,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
@@ -19,7 +21,10 @@ import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.vcpe.manager.PhysicalInfrastructureLoader;
 import org.opennaas.extensions.vcpe.manager.model.VCPEPhysicalInfrastructure;
+import org.opennaas.extensions.vcpe.model.BGP;
+import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.VRRP;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class ModelTest {
@@ -50,6 +55,47 @@ public class ModelTest {
 
 		Assert.assertEquals(model, loaded);
 		Assert.assertEquals(xml, xml2);
+	}
+
+	@Test
+	public void deepCopyTest() throws SerializationException {
+
+		VCPENetworkModel model = VCPENetworkModelHelper.generateFullSampleModel();
+
+		VCPENetworkModel modelCopy = model.deepCopy();
+
+		Assert.assertNotNull(modelCopy);
+		Assert.assertFalse(model == modelCopy);
+		Assert.assertTrue(model.equals(modelCopy));
+
+		BGP bgp = model.getBgp();
+		BGP bgpCopy = modelCopy.getBgp();
+
+		Assert.assertFalse(bgp == bgpCopy);
+		Assert.assertTrue(bgp.equals(bgpCopy));
+
+		VRRP vrrp = model.getVrrp();
+		VRRP vrrpCopy = modelCopy.getVrrp();
+
+		Assert.assertFalse(vrrp == vrrpCopy);
+		Assert.assertTrue(vrrp.equals(vrrpCopy));
+
+		List<VCPENetworkElement> netElements = model.getElements();
+		List<VCPENetworkElement> netElementsCopy = modelCopy.getElements();
+
+		Assert.assertEquals(netElements.size(), netElementsCopy.size());
+
+		Iterator<VCPENetworkElement> iterator = netElements.iterator();
+
+		while (iterator.hasNext()) {
+
+			VCPENetworkElement netElement = iterator.next();
+			VCPENetworkElement netElementCopy = VCPENetworkModelHelper.getElementByTemplateName(modelCopy, netElement.getTemplateName());
+
+			Assert.assertFalse(netElement == netElementCopy);
+			Assert.assertTrue(netElement.equals(netElementCopy));
+
+		}
 	}
 
 	@Test
