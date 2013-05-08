@@ -36,8 +36,10 @@
 	<bean id="alarmsRepository" class="org.opennaas.core.resources.alarms.AlarmsRepository"/>
 	<service ref="alarmsRepository" interface="org.opennaas.core.resources.alarms.IAlarmsRepository"/>
 
-	<bean id="scriptingManager" class="org.opennaas.core.resources.scripting.ScriptingManager" init-method="init" destroy-method="destroy"/>
-	<service ref="scriptingManager" interface="org.opennaas.core.resources.scripting.IScriptingManager"/>
+	<bean id="scriptingManager" class="org.opennaas.core.scripting.ScriptingManager" init-method="init" destroy-method="destroy">
+		<property name="resourceManager" ref="resourceManager"/>
+	</bean>
+	<service ref="scriptingManager" interface="org.opennaas.core.scripting.IScriptingManager"/>
 	
 	<bean id="resourceNameCompleter" class="org.opennaas.core.resources.shell.completers.ResourceNameCompleter"/>
 	<service ref="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer">

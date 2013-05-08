@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -23,7 +21,6 @@ public class ScriptingManager implements IScriptingManager {
 
 	Log							log		= LogFactory.getLog(ScriptingManager.class);
 
-	@Inject
 	private IResourceManager	resourceManager;
 	BundleContext				bundleContext;
 	ConfigurationAdminUtil		configuration;
@@ -75,6 +72,14 @@ public class ScriptingManager implements IScriptingManager {
 		gse.setConfig(compiler);
 
 		defaultBinding = new Binding();
+	}
+
+	public IResourceManager getResourceManager() {
+		return resourceManager;
+	}
+
+	public void setResourceManager(IResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
 	}
 
 	public void destroy() {
