@@ -28,7 +28,6 @@
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${servicemix.cglib.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.serp/${servicemix.serp.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/${commons.dbcp.version}</bundle>
-		<!-- <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle> -->
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
 		<bundle dependency="true">mvn:commons-pool/commons-pool/${commons.pool.version}</bundle>
 		<bundle dependency="true">mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
@@ -71,7 +70,6 @@
 		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-servlet_2.5_spec/${geronimo.servlet.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/${commons.jxpath.version}</bundle>
-		<!-- <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>  -->
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ant/${ant.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oro/${oro.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.velocity/${servicemix.velocity.version}</bundle>
