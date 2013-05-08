@@ -201,6 +201,7 @@ public class VCPEBeanUtils {
 		networkOut.setASNumber(networkIn.getASNumber());
 		networkOut.setNetworkInterface(getInterface(networkIn.getInterfaces().get(0)));
 		networkOut.setiPAddressRange(networkIn.getIPAddressRanges().get(0));
+		networkOut.setOwner(networkIn.getOwner());
 		return networkOut;
 	}
 

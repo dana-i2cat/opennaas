@@ -35,6 +35,12 @@
 						</form:label>
 						<form:input path="providerNetwork1.iPAddressRange" size="18" />
 						<form:errors path="providerNetwork1.iPAddressRange" size="18" />
+						
+						<form:label for="providerNetwork1.owner" path="providerNetwork1.owner" cssErrorClass="error">
+							<spring:message code="network.owner" />
+						</form:label>
+						<form:select path="providerNetwork1.owner" items="${usersNOC}" />
+						<form:errors path="providerNetwork1.owner" size="18" />
 					</div>		
 				</div>
 			</div>
@@ -56,6 +62,12 @@
 						</form:label>
 						<form:input path="providerNetwork2.iPAddressRange" size="18"/>
 						<form:errors path="providerNetwork2.iPAddressRange" size="18" />
+						
+						<form:label for="providerNetwork2.owner" path="providerNetwork1.owner" cssErrorClass="error">
+							<spring:message code="network.owner" />
+						</form:label>
+						<form:select path="providerNetwork2.owner" items="${usersNOC}" />
+						<form:errors path="providerNetwork2.owner" size="18" />
 					</div>		
 				</div>
 			</div>
@@ -515,6 +527,12 @@
 						</form:label>
 						<form:input path="clientNetwork.iPAddressRange" size="18"/>
 						<form:errors path="clientNetwork.iPAddressRange" size="18" />
+						
+						<form:label for="clientNetwork.owner" path="clientNetwork.owner" cssErrorClass="error">
+							<spring:message code="network.owner" />
+						</form:label>
+						<form:select path="clientNetwork.owner" items="${usersClient}" />
+						<form:errors path="clientNetwork.owner" size="18" />
 					</div>		
 				</div>		
 			</div>

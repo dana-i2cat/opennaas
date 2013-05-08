@@ -23,14 +23,16 @@
 				invalidate-session="true" 
 				logout-success-url="/auth/login" 
 				logout-url="/auth/logout"/>
-				
 	</security:http>
 	
 	 <security:authentication-manager>
         <security:authentication-provider>
             <security:user-service>
-                <security:user name="client" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_CLIENT" />
-                <security:user name="noc" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
+                <security:user name="client1" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_CLIENT" />
+                <security:user name="client2" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_CLIENT" />
+                <security:user name="noc1" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
+                <security:user name="noc2" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
+                <security:user name="noc3" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
             </security:user-service>
             <security:password-encoder ref="passwordEncoder"/>
         </security:authentication-provider>
