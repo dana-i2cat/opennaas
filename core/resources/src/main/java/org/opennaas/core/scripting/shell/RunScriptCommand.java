@@ -11,7 +11,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.core.scripting.IScriptingManager;
 
 @Command(scope = "resource", name = "script", description = "Run the mentioned operations script")
-public class RunScriptingCommand extends GenericKarafCommand {
+public class RunScriptCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "name of the scripts", description = "The names of the scripts to be sequentially run.", required = false, multiValued = true)
 	private List<String>	scripts;
@@ -27,6 +27,10 @@ public class RunScriptingCommand extends GenericKarafCommand {
 
 		if (list) {
 			throw new NotImplementedException();
+		} else if (scripts == null || scripts.size() == 0)
+		{
+			printError("At least one script should be provided.");
+			return null;
 		}
 
 		IScriptingManager scriptingManager = Activator.getScriptingManagerService();
@@ -36,7 +40,7 @@ public class RunScriptingCommand extends GenericKarafCommand {
 				scriptingManager.runScript(script);
 
 			} catch (Exception e) {
-				printInitCommand("Error on script " + script + ": " + e);
+				printError("Error on script " + script + ": " + e.getMessage());
 
 				if (ignoreErrors)
 					continue;

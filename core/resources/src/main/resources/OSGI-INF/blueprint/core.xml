@@ -140,6 +140,9 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="resource/script">
+			<action class="org.opennaas.core.scripting.shell.RunScriptCommand"/>
+		</command>
 		<!--
 		    Profiles Karaf Commands
 		  -->
