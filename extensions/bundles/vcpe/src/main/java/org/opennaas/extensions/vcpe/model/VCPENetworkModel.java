@@ -45,7 +45,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -59,7 +60,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -73,7 +75,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param clientIpRange the clientIpRange to set
+	 * @param clientIpRange
+	 *            the clientIpRange to set
 	 */
 	public void setClientIpRange(String clientIpRange) {
 		this.clientIpRange = clientIpRange;
@@ -87,7 +90,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param nocIpRange the nocIpRange to set
+	 * @param nocIpRange
+	 *            the nocIpRange to set
 	 */
 	public void setNocIpRange(String nocIpRange) {
 		this.nocIpRange = nocIpRange;
@@ -115,7 +119,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param bgp the bgp to set
+	 * @param bgp
+	 *            the bgp to set
 	 */
 	public void setBgp(BGP bgp) {
 		this.bgp = bgp;
@@ -163,7 +168,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param vrrp the vrrp to set
+	 * @param vrrp
+	 *            the vrrp to set
 	 */
 	public void setVrrp(VRRP vrrp) {
 		this.vrrp = vrrp;
@@ -177,7 +183,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param templateType the templateType to set
+	 * @param templateType
+	 *            the templateType to set
 	 */
 	public void setTemplateType(String templateType) {
 		this.templateType = templateType;
@@ -257,4 +264,12 @@ public class VCPENetworkModel implements IModel {
 		return true;
 	}
 
+	public VCPENetworkModel deepCopy() throws SerializationException {
+
+		String xmlModel = this.toXml();
+		VCPENetworkModel modelCopy = (VCPENetworkModel) ObjectSerializer.fromXml(xmlModel, this.getClass());
+
+		return modelCopy;
+
+	}
 }

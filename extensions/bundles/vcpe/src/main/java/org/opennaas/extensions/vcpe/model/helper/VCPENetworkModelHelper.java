@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
+import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.VRRP;
 
 public class VCPENetworkModelHelper {
 
@@ -495,6 +497,44 @@ public class VCPENetworkModelHelper {
 			ifaceKey = iface.getPhysicalInterfaceName();
 		}
 		return ifaceKey;
+	}
+
+	public static VCPENetworkModel generateFullSampleModel() {
+
+		VCPENetworkModel sampleModel = generateSampleModel();
+
+		sampleModel.setBgp(generateSampleBGP());
+		sampleModel.setVrrp(generateSampleVRRP());
+
+		return sampleModel;
+	}
+
+	private static VRRP generateSampleVRRP() {
+
+		VRRP vrrp = new VRRP();
+
+		vrrp.setGroup(1);
+		vrrp.setPriorityBackup(100);
+		vrrp.setPriorityMaster(200);
+		vrrp.setVirtualIPAddress("192.162.1.2/30");
+
+		return vrrp;
+	}
+
+	public static BGP generateSampleBGP() {
+
+		BGP bgp = new BGP();
+
+		bgp.setNocASNumber("1234");
+		bgp.setClientASNumber("5678");
+
+		List<String> customerPrefixes = new ArrayList<String>();
+		customerPrefixes.add("147.45.84.0/24");
+		customerPrefixes.add("147.45.85.0/24");
+
+		bgp.setCustomerPrefixes(customerPrefixes);
+
+		return bgp;
 	}
 
 }
