@@ -129,6 +129,11 @@ public class MappingResultParser {
 					}
 
 					// binds to physical path
+					org.opennaas.extensions.network.model.topology.Path virtualPath = new org.opennaas.extensions.network.model.topology.Path();
+
+					String sourceId = String.valueOf(Math.min(i, j));
+					String sinkId = String.valueOf(Math.max(i, j));
+					virtualPath.setName(sourceId + ":" + sinkId);
 
 					for (int k = 0; k < path.getLinks().size(); k++) {
 
@@ -144,9 +149,11 @@ public class MappingResultParser {
 						if (!isVirtualNodeAlreadyAdded(vSinkId))
 							addVirtualDeviceToModel(phySinkId);
 
-						addVirtualLink(vSourceId, vSinkId);
+						addVirtualLink(virtualPath, vSourceId, vSinkId);
 
 					}
+
+					mappingNetworkResult.getNetworkElements().add(virtualPath);
 
 				}
 
@@ -179,16 +186,16 @@ public class MappingResultParser {
 	}
 
 	/**
-	 * This method adds to virtual model all necessary information to store a virtual link: 
-	 * 	1) Builds a source and a sink virtual interface. 
-	 * 	2) Links virtual interfaces to virtual devices (source and sink). 
-	 *  3) Links virtual link with physical link.
+	 * This method adds to virtual model all necessary information to store a virtual link: 1) Builds a source and a sink virtual interface. 2) Links
+	 * virtual interfaces to virtual devices (source and sink). 3) Links virtual link with physical link.
 	 * 
+	 * @param virtualPath
 	 * @param sourceId
 	 * @param sinkId
 	 * @throws ResourceNotFoundException
 	 */
-	private void addVirtualLink(int sourceId, int sinkId) throws ResourceNotFoundException {
+	private void addVirtualLink(org.opennaas.extensions.network.model.topology.Path virtualPath, int sourceId, int sinkId)
+			throws ResourceNotFoundException {
 
 		VirtualInterface vIfaceSource = new VirtualInterface();
 		VirtualInterface vIfaceSink = new VirtualInterface();
@@ -214,6 +221,8 @@ public class MappingResultParser {
 		vlink.setImplementedBy(links.get(0));
 		vlink.setSource(vIfaceSource);
 		vlink.setSink(vIfaceSink);
+
+		virtualPath.getPathSegments().add(vlink);
 
 		mappingNetworkResult.getNetworkElements().add(vlink);
 	}

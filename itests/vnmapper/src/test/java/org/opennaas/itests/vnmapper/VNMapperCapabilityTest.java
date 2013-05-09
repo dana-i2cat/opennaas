@@ -5,6 +5,7 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -44,7 +45,9 @@ import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Link;
+import org.opennaas.extensions.network.model.topology.NetworkConnection;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.network.model.topology.Path;
 import org.opennaas.extensions.network.model.virtual.VirtualDevice;
 import org.opennaas.extensions.network.model.virtual.VirtualLink;
 import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
@@ -94,6 +97,7 @@ public class VNMapperCapabilityTest {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-vnmapper"),
 				includeTestHelper(),
+				openDebugSocket(),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -236,6 +240,23 @@ public class VNMapperCapabilityTest {
 		Assert.assertEquals("router:junos30:em1.0", link2.getSource().getName());
 		Assert.assertEquals("router:junos40:em1.0", link2.getSink().getName());
 
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(2, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:1", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
+
+		path = (Path) paths.get(1);
+		Assert.assertEquals("1:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink2));
+
 	}
 
 	@Test
@@ -317,6 +338,23 @@ public class VNMapperCapabilityTest {
 		Link link2 = vlink2.getImplementedBy();
 		Assert.assertEquals("router:junos30:em1.0", link2.getSource().getName());
 		Assert.assertEquals("router:junos40:em1.0", link2.getSink().getName());
+
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(2, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:1", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
+
+		path = (Path) paths.get(1);
+		Assert.assertEquals("1:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink2));
 
 	}
 
@@ -411,6 +449,30 @@ public class VNMapperCapabilityTest {
 
 		Assert.assertEquals("router:junos50:em1.0", link.getSource().getName());
 		Assert.assertEquals("router:junos60:em1.0", link.getSink().getName());
+
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(3, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:1", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
+
+		path = (Path) paths.get(1);
+		Assert.assertEquals("0:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink2));
+
+		path = (Path) paths.get(2);
+		Assert.assertEquals("1:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink3));
 	}
 
 	@Test
@@ -531,6 +593,37 @@ public class VNMapperCapabilityTest {
 		Assert.assertEquals("router:junos50:em1.0", link.getSource().getName());
 		Assert.assertEquals("router:junos60:em1.0", link.getSink().getName());
 
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(4, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:4", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
+
+		path = (Path) paths.get(1);
+		Assert.assertEquals("1:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink2));
+
+		path = (Path) paths.get(2);
+		Assert.assertEquals("1:3", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink3));
+
+		path = (Path) paths.get(3);
+		Assert.assertEquals("2:3", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink4));
+
 	}
 
 	@Test
@@ -598,6 +691,16 @@ public class VNMapperCapabilityTest {
 
 		Assert.assertEquals("router:junos20:em0.0", link.getSource().getName());
 		Assert.assertEquals("router:junos30:em0.0", link.getSink().getName());
+
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(1, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:2", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
 
 	}
 
@@ -686,6 +789,23 @@ public class VNMapperCapabilityTest {
 
 		Assert.assertEquals("router:junos40:em0.0", link.getSource().getName());
 		Assert.assertEquals("router:junos50:em0.0", link.getSink().getName());
+
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(2, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:2", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
+
+		path = (Path) paths.get(1);
+		Assert.assertEquals("1:3", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink2));
 
 	}
 
@@ -782,6 +902,30 @@ public class VNMapperCapabilityTest {
 		link = vlink3.getImplementedBy();
 		Assert.assertEquals("router:junos50:em1.0", link.getSource().getName());
 		Assert.assertEquals("router:junos60:em1.0", link.getSink().getName());
+
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(3, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:1", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
+
+		path = (Path) paths.get(1);
+		Assert.assertEquals("0:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink2));
+
+		path = (Path) paths.get(2);
+		Assert.assertEquals("1:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink3));
 
 	}
 
@@ -894,33 +1038,59 @@ public class VNMapperCapabilityTest {
 		Assert.assertEquals("router:junos30:em0.0", link.getSource().getName());
 		Assert.assertEquals("router:junos40:em2.0", link.getSink().getName());
 
-		VirtualLink link4 = (VirtualLink) virtualLinks.get(3);
-		Assert.assertNotNull(link4.getSource());
-		Assert.assertNotNull(link4.getSink());
-		Assert.assertNotNull(link4.getImplementedBy());
+		VirtualLink vlink4 = (VirtualLink) virtualLinks.get(3);
+		Assert.assertNotNull(vlink4.getSource());
+		Assert.assertNotNull(vlink4.getSink());
+		Assert.assertNotNull(vlink4.getImplementedBy());
 
-		link = link4.getImplementedBy();
+		link = vlink4.getImplementedBy();
 		Assert.assertEquals("Virtual Link 0-4 should begin in Virtual Device 0.",
-				link4.getSource().getDevice(), vDevice0);
+				vlink4.getSource().getDevice(), vDevice0);
 		Assert.assertEquals("Virtual Link 0-4 should end in Virtual Device 4.",
-				link4.getSink().getDevice(), vDevice4);
+				vlink4.getSink().getDevice(), vDevice4);
 
 		Assert.assertEquals("router:junos20:em0.0", link.getSource().getName());
 		Assert.assertEquals("router:junos30:em1.0", link.getSink().getName());
 
-		VirtualLink link5 = (VirtualLink) virtualLinks.get(4);
-		Assert.assertNotNull(link5.getSource());
-		Assert.assertNotNull(link5.getSink());
-		Assert.assertNotNull(link5.getImplementedBy());
+		VirtualLink vlink5 = (VirtualLink) virtualLinks.get(4);
+		Assert.assertNotNull(vlink5.getSource());
+		Assert.assertNotNull(vlink5.getSink());
+		Assert.assertNotNull(vlink5.getImplementedBy());
 
-		link = link5.getImplementedBy();
+		link = vlink5.getImplementedBy();
 		Assert.assertEquals("Virtual Link 2-1 should begin in Virtual Device 2.",
-				link5.getSource().getDevice(), vDevice2);
+				vlink5.getSource().getDevice(), vDevice2);
 		Assert.assertEquals("Virtual Link 2-1 should end in Virtual Device 1.",
-				link5.getSink().getDevice(), vDevice1);
+				vlink5.getSink().getDevice(), vDevice1);
 
 		Assert.assertEquals("router:junos50:em1.0", link.getSource().getName());
 		Assert.assertEquals("router:junos60:em1.0", link.getSink().getName());
+
+		List<NetworkElement> paths = NetworkModelHelper.getNetworkElementsByClassName(Path.class, virtualModel.getNetworkElements());
+		Assert.assertEquals(3, paths.size());
+
+		Path path = (Path) paths.get(0);
+		Assert.assertEquals("0:1", path.getName());
+
+		List<NetworkConnection> pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink1));
+
+		path = (Path) paths.get(1);
+		Assert.assertEquals("0:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(3, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink2));
+		Assert.assertTrue(pathLinks.contains(vlink3));
+		Assert.assertTrue(pathLinks.contains(vlink4));
+
+		path = (Path) paths.get(2);
+		Assert.assertEquals("1:2", path.getName());
+
+		pathLinks = path.getPathSegments();
+		Assert.assertEquals(1, pathLinks.size());
+		Assert.assertTrue(pathLinks.contains(vlink5));
 
 	}
 
