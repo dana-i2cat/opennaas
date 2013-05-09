@@ -12,7 +12,7 @@
 		<security:intercept-url pattern="index.jsp" access="permitAll" />
 		<security:intercept-url pattern="/auth/login" access="permitAll"/>
 		<security:intercept-url pattern="/secure/noc/**" access="hasRole('ROLE_NOC')"/>
-		<security:intercept-url pattern="/secure/**" access="hasRole('ROLE_CLIENT')"/>
+		<security:intercept-url pattern="/secure/**" access="hasRole('ROLE_USER')"/>
 			
 		<security:form-login
 				login-page="/auth/login" 
@@ -28,11 +28,12 @@
 	 <security:authentication-manager>
         <security:authentication-provider>
             <security:user-service>
-                <security:user name="client1" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_CLIENT" />
-                <security:user name="client2" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_CLIENT" />
-                <security:user name="noc1" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
-                <security:user name="noc2" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
-                <security:user name="noc3" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
+                <security:user name="admin" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_ADMIN" />
+                <security:user name="client1" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_USER" />
+                <security:user name="client2" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_USER" />
+                <security:user name="noc1" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_USER" />
+                <security:user name="noc2" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_USER" />
+                <security:user name="noc3" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_USER" />
             </security:user-service>
             <security:password-encoder ref="passwordEncoder"/>
         </security:authentication-provider>
