@@ -200,6 +200,8 @@ public class NetworkModelHelper {
 
 		}
 
+		link.setName(src.getName() + "-" + dst.getName());
+
 		link.setSource(src);
 		link.setSink(dst);
 		link.setBidirectional(bidiLink);
@@ -375,7 +377,8 @@ public class NetworkModelHelper {
 		List<Link> modelLinks = getLinks(networkModel);
 
 		for (Link link : modelLinks)
-			if (link.getSource().getDevice().getName().equals(firstDeviceId) && (link.getSink().getDevice().getName().equals(secondDeviceId)))
+			if (link.getSource().getDevice().getName().equals(firstDeviceId) && (link.getSink().getDevice().getName().equals(secondDeviceId)) || (link
+					.getSource().getDevice().getName().equals(secondDeviceId) && (link.getSink().getDevice().getName().equals(firstDeviceId))))
 				links.add(link);
 
 		return links;
