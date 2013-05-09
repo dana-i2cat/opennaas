@@ -200,6 +200,8 @@ public class NetworkModelHelper {
 
 		}
 
+		link.setName(src.getName() + "-" + dst.getName());
+
 		link.setSource(src);
 		link.setSink(dst);
 		link.setBidirectional(bidiLink);

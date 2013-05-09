@@ -4,14 +4,14 @@ import org.opennaas.extensions.network.model.topology.Link;
 
 public class VirtualLink extends Link {
 
-	private Link	implementedBy;
+	private String	implementedBy;
 
-	public Link getImplementedBy() {
+	public String getImplementedBy() {
 		return implementedBy;
 	}
 
-	public void setImplementedBy(Link link) {
-		this.implementedBy = link;
+	public void setImplementedBy(String linkName) {
+		this.implementedBy = linkName;
 	}
 
 }

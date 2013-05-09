@@ -93,7 +93,7 @@ public class MappingResultParser {
 
 			VirtualDevice vDevice = new VirtualDevice();
 			vDevice.setName(String.valueOf(i));
-			vDevice.setImplementedBy(device);
+			vDevice.setImplementedBy(deviceId);
 
 			mappingNetworkResult.getNetworkElements().add(vDevice);
 
@@ -133,7 +133,7 @@ public class MappingResultParser {
 
 					String sourceId = String.valueOf(Math.min(i, j));
 					String sinkId = String.valueOf(Math.max(i, j));
-					virtualPath.setName(sourceId + ":" + sinkId);
+					virtualPath.setName(sourceId + "-" + sinkId);
 
 					for (int k = 0; k < path.getLinks().size(); k++) {
 
@@ -176,7 +176,7 @@ public class MappingResultParser {
 		String phyNodeName = this.inpNetwork.getNodes().get(phyNodeId).getPnodeID();
 
 		for (NetworkElement vDevice : vDevices) {
-			if (((VirtualDevice) vDevice).getImplementedBy().getName().equals(phyNodeName))
+			if (((VirtualDevice) vDevice).getImplementedBy().equals(phyNodeName))
 				return Integer.valueOf(vDevice.getName());
 
 		}
@@ -208,17 +208,17 @@ public class MappingResultParser {
 
 		VirtualLink vlink = new VirtualLink();
 
-		Device sourcePhyDevice = sourceDevice.getImplementedBy();
-		Device sinkPhyDevice = sinkDevice.getImplementedBy();
+		String sourcePhyDevice = sourceDevice.getImplementedBy();
+		String sinkPhyDevice = sinkDevice.getImplementedBy();
 
-		List<Link> links = NetworkModelHelper.getAllLinksBetweenTwoDevices((NetworkModel) physicalNetworkModel, sourcePhyDevice.getName(),
-				sinkPhyDevice.getName());
+		List<Link> links = NetworkModelHelper.getAllLinksBetweenTwoDevices((NetworkModel) physicalNetworkModel, sourcePhyDevice,
+				sinkPhyDevice);
 
 		if (links.isEmpty())
 			throw new ResourceNotFoundException(
-					"No physical links between physical devices " + sourcePhyDevice.getName() + " and " + sinkPhyDevice.getName());
+					"No physical links between physical devices " + sourcePhyDevice + " and " + sinkPhyDevice);
 
-		vlink.setImplementedBy(links.get(0));
+		vlink.setImplementedBy(links.get(0).getName());
 		vlink.setSource(vIfaceSource);
 		vlink.setSink(vIfaceSink);
 
@@ -243,7 +243,7 @@ public class MappingResultParser {
 
 		VirtualDevice vDevice = new VirtualDevice();
 		vDevice.setName(String.valueOf(virtualId));
-		vDevice.setImplementedBy(device);
+		vDevice.setImplementedBy(phyDeviceId);
 
 		mappingNetworkResult.getNetworkElements().add(vDevice);
 	}
