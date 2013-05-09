@@ -36,7 +36,7 @@
 				</sec:authorize>
 
 				
-				<sec:authorize access="hasRole('ROLE_CLIENT')">
+				<sec:authorize access="hasRole('ROLE_USER')">
 					<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
 						<li>
 							<a href="<c:url value="${clientArea}/${templateUrl}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
