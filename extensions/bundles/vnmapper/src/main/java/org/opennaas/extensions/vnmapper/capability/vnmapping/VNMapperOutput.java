@@ -1,5 +1,6 @@
 package org.opennaas.extensions.vnmapper.capability.vnmapping;
 
+import org.opennaas.core.resources.IResource;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.vnmapper.MappingResult;
 import org.opennaas.extensions.vnmapper.VNState;
@@ -9,6 +10,7 @@ public class VNMapperOutput {
 	private MappingResult	result;
 	private VNMapperInput	mapperInput;
 
+	private IResource		inputNetwork;
 	private NetworkModel	networkModel;
 
 	public VNMapperOutput(MappingResult result, VNMapperInput mapperInput) {
@@ -16,10 +18,11 @@ public class VNMapperOutput {
 		this.mapperInput = mapperInput;
 	}
 
-	public VNMapperOutput(MappingResult result, VNMapperInput mapperInput, NetworkModel networkModel) {
+	public VNMapperOutput(MappingResult result, VNMapperInput mapperInput, IResource networkResource, NetworkModel networkModel) {
 		this.result = result;
 		this.mapperInput = mapperInput;
 		this.networkModel = networkModel;
+		this.inputNetwork = networkResource;
 	}
 
 	public MappingResult getResult() {
@@ -46,6 +49,14 @@ public class VNMapperOutput {
 		this.networkModel = networkModel;
 	}
 
+	public IResource getInputNetwork() {
+		return inputNetwork;
+	}
+
+	public void setInputNetwork(IResource inputNetwork) {
+		this.inputNetwork = inputNetwork;
+	}
+
 	@Override
 	public String toString() {
 
@@ -68,4 +79,5 @@ public class VNMapperOutput {
 
 		return outputString;
 	}
+
 }
