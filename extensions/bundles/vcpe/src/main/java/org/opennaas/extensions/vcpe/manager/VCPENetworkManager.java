@@ -34,6 +34,7 @@ import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+import org.springframework.security.access.AccessDeniedException;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
 
@@ -233,14 +234,16 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			throw new VCPENetworkManagerException(ae.getMessage());
 		} catch (ResourceException re) {
 			throw new VCPENetworkManagerException(re.getMessage());
-		} catch (Exception e) { // FIXME this exception must be replaced by AccessDeniedException after integrating security model.
-			throw new VCPENetworkManagerException(e.getMessage());
+		} catch (AccessDeniedException ad) {
+			throw new VCPENetworkManagerException(ad.getMessage());
+		} catch (SerializationException se) {
+			throw new VCPENetworkManagerException(se.getMessage());
 		}
 
 		return filteredModel;
 	}
 
-	private VCPENetworkModel filterVCPENetworkModel(VCPENetworkModel originalModel) throws SerializationException {
+	private VCPENetworkModel filterVCPENetworkModel(VCPENetworkModel originalModel) throws SerializationException, ResourceException {
 
 		IResourceManager resourceManager;
 		VCPENetworkModel filteredModel = originalModel.deepCopy();
@@ -261,7 +264,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 				resourceManager.getResource(
 						resourceManager.getIdentifierFromResourceName("router", routerName));
 
-			} catch (Exception e) { // FIXME this exception must be replaced by AccessDeniedException after integrating security model.
+			} catch (AccessDeniedException ad) {
 				VCPENetworkModelHelper.removeAllRouterInformationFromModel(filteredModel, routerName);
 			}
 
