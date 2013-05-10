@@ -222,6 +222,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	@Override
 	public VCPENetworkModel getUserFilteredVCPEModel(String vcpeNetworkId) {
 
+		log.info("Filtering VCPE " + vcpeNetworkId + " model.");
+
 		VCPENetworkModel filteredModel = null;
 
 		try {
@@ -239,6 +241,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		} catch (SerializationException se) {
 			throw new VCPENetworkManagerException(se.getMessage());
 		}
+
+		log.info("VCPE " + vcpeNetworkId + " model filtered.");
 
 		return filteredModel;
 	}
@@ -258,6 +262,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 
 		for (Router router : routerList) {
 
+			log.debug("Cheking user access to router " + router.getName());
+
 			String routerName = router.getName();
 
 			try {
@@ -265,7 +271,10 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 						resourceManager.getIdentifierFromResourceName("router", routerName));
 
 			} catch (AccessDeniedException ad) {
+				log.debug("Access denied to router " + router.getName() + ". Removing router from VCPE model.");
 				VCPENetworkModelHelper.removeAllRouterInformationFromModel(filteredModel, routerName);
+				log.debug("Router " + router.getName() + " removed from VCPE model.");
+
 			}
 
 		}
