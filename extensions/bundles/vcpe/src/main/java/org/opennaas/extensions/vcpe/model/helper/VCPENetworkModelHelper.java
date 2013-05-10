@@ -548,6 +548,18 @@ public class VCPENetworkModelHelper {
 		return bgp;
 	}
 
+	public static void removeAllRouterInformationFromModel(VCPENetworkModel vCPEModel, String routerName) {
+
+		List<VCPENetworkElement> elements = vCPEModel.getElements();
+		Router router = VCPENetworkModelHelper.getRouterByName(elements, routerName);
+
+		if (router != null) {
+
+			VCPENetworkModelHelper.removeAllRouterInterfacesFromRouter(vCPEModel, router);
+
+		}
+	}
+
 	public static void removeAllRouterInterfacesFromRouter(VCPENetworkModel filteredModel, Router router) {
 
 		List<Interface> ifaces = router.getInterfaces();

@@ -32,7 +32,6 @@ import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.Router;
-import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
@@ -263,24 +262,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 						resourceManager.getIdentifierFromResourceName("router", routerName));
 
 			} catch (Exception e) { // FIXME this exception must be replaced by AccessDeniedException after integrating security model.
-				deleteAllRouterInformationFromModel(filteredModel, routerName);
+				VCPENetworkModelHelper.removeAllRouterInformationFromModel(filteredModel, routerName);
 			}
 
 		}
 
 		return filteredModel;
-	}
-
-	private void deleteAllRouterInformationFromModel(VCPENetworkModel filteredModel, String routerName) {
-
-		List<VCPENetworkElement> elements = filteredModel.getElements();
-		Router router = VCPENetworkModelHelper.getRouterByName(elements, routerName);
-
-		if (router != null) {
-
-			VCPENetworkModelHelper.removeAllRouterInterfacesFromRouter(filteredModel, router);
-
-		}
 	}
 
 	/**
