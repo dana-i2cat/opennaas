@@ -556,29 +556,59 @@ public class VCPENetworkModelHelper {
 		if (router != null) {
 
 			VCPENetworkModelHelper.removeAllRouterInterfacesFromRouter(vCPEModel, router);
-
+			vCPEModel.getElements().remove(router);
 		}
 	}
 
-	public static void removeAllRouterInterfacesFromRouter(VCPENetworkModel filteredModel, Router router) {
+	public static void removeAllRouterInterfacesFromRouter(VCPENetworkModel vcpeModel, Router router) {
 
 		List<Interface> ifaces = router.getInterfaces();
 
 		for (Interface iface : ifaces) {
-			removeAllInterfaceLinksFromModel(filteredModel, iface);
-			ifaces.remove(iface);
+			removeAllInterfaceLinksFromModel(vcpeModel, iface);
+			vcpeModel.getElements().remove(iface);
 		}
 
 	}
 
-	private static void removeAllInterfaceLinksFromModel(VCPENetworkModel filteredModel, Interface iface) {
+	public static void removeAllInterfaceLinksFromModel(VCPENetworkModel vcpeModel, Interface iface) {
 
-		List<Link> links = getLinks(filteredModel.getElements());
+		List<Link> links = getLinks(vcpeModel.getElements());
 
 		for (Link link : links) {
 			if (link.getSource().equals(iface) || link.getSink().equals(iface))
-				links.remove(link);
+				vcpeModel.getElements().remove(link);
 		}
 
+	}
+
+	public static List<Link> getAllRouterLinksFromModel(VCPENetworkModel vcpeModel, Router router) {
+
+		List<Link> routerLinks = new ArrayList<Link>();
+		List<Link> modelLinks = getLinks(vcpeModel.getElements());
+
+		List<Interface> ifaces = router.getInterfaces();
+		for (Interface iface : ifaces) {
+			routerLinks.addAll(getAllInterfaceLinksFromModel(vcpeModel, iface));
+			for (Link link : modelLinks) {
+				if ((link.getSource().equals(iface) || link.getSink().equals(iface)) && (!routerLinks.contains(link)))
+					routerLinks.add(link);
+			}
+		}
+
+		return routerLinks;
+	}
+
+	public static List<Link> getAllInterfaceLinksFromModel(VCPENetworkModel vcpeModel, Interface iface) {
+
+		List<Link> ifaceLinks = new ArrayList<Link>();
+
+		List<Link> links = getLinks(vcpeModel.getElements());
+		for (Link link : links) {
+			if (link.getSource().equals(iface) || link.getSink().equals(iface))
+				ifaceLinks.add(link);
+		}
+
+		return ifaceLinks;
 	}
 }
