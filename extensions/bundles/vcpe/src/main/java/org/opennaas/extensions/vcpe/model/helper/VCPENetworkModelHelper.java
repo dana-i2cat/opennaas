@@ -57,6 +57,17 @@ public class VCPENetworkModelHelper {
 		return routers;
 	}
 
+	public static Router getRouterByName(List<? extends VCPENetworkElement> elements, String name) {
+
+		for (VCPENetworkElement netElement : elements) {
+			if (netElement instanceof Router && netElement.getName().equals(name))
+				return (Router) netElement;
+		}
+
+		return null;
+
+	}
+
 	public static List<Domain> getDomains(List<? extends VCPENetworkElement> elements) {
 		List<Domain> domains = new ArrayList<Domain>();
 		if (elements == null)
@@ -537,4 +548,25 @@ public class VCPENetworkModelHelper {
 		return bgp;
 	}
 
+	public static void removeAllRouterInterfacesFromRouter(VCPENetworkModel filteredModel, Router router) {
+
+		List<Interface> ifaces = router.getInterfaces();
+
+		for (Interface iface : ifaces) {
+			removeAllInterfaceLinksFromModel(filteredModel, iface);
+			ifaces.remove(iface);
+		}
+
+	}
+
+	private static void removeAllInterfaceLinksFromModel(VCPENetworkModel filteredModel, Interface iface) {
+
+		List<Link> links = getLinks(filteredModel.getElements());
+
+		for (Link link : links) {
+			if (link.getSource().equals(iface) || link.getSink().equals(iface))
+				links.remove(link);
+		}
+
+	}
 }

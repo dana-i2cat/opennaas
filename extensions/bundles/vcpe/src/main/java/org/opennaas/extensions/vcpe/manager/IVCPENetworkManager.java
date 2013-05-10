@@ -180,4 +180,6 @@ public interface IVCPENetworkManager {
 	@Produces(MediaType.APPLICATION_XML)
 	boolean getBuildResult(@PathParam("id") String resourceId) throws VCPENetworkManagerException;
 
+	VCPENetworkModel getUserFilteredVCPEModel(String vcpeNetworkId);
+
 }

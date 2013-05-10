@@ -18,6 +18,7 @@ import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
@@ -30,7 +31,10 @@ import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
+import org.opennaas.extensions.vcpe.model.Router;
+import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
 
@@ -213,6 +217,70 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			throw new VCPENetworkManagerException(e.getMessage());
 		}
 		return result;
+	}
+
+	@Override
+	public VCPENetworkModel getUserFilteredVCPEModel(String vcpeNetworkId) {
+
+		VCPENetworkModel filteredModel = null;
+
+		try {
+
+			IResource resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			VCPENetworkModel model = (VCPENetworkModel) resource.getModel();
+			filteredModel = filterVCPENetworkModel(model);
+
+		} catch (ActivatorException ae) {
+			throw new VCPENetworkManagerException(ae.getMessage());
+		} catch (ResourceException re) {
+			throw new VCPENetworkManagerException(re.getMessage());
+		} catch (Exception e) { // FIXME this exception must be replaced by AccessDeniedException after integrating security model.
+			throw new VCPENetworkManagerException(e.getMessage());
+		}
+
+		return filteredModel;
+	}
+
+	private VCPENetworkModel filterVCPENetworkModel(VCPENetworkModel originalModel) throws SerializationException {
+
+		IResourceManager resourceManager;
+		VCPENetworkModel filteredModel = originalModel.deepCopy();
+
+		try {
+			resourceManager = Activator.getResourceManagerService();
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e.getMessage());
+		}
+
+		List<Router> routerList = VCPENetworkModelHelper.getRouters(originalModel.getElements());
+
+		for (Router router : routerList) {
+
+			String routerName = router.getName();
+
+			try {
+				resourceManager.getResource(
+						resourceManager.getIdentifierFromResourceName("router", routerName));
+
+			} catch (Exception e) { // FIXME this exception must be replaced by AccessDeniedException after integrating security model.
+				deleteAllRouterInformationFromModel(filteredModel, routerName);
+			}
+
+		}
+
+		return filteredModel;
+	}
+
+	private void deleteAllRouterInformationFromModel(VCPENetworkModel filteredModel, String routerName) {
+
+		List<VCPENetworkElement> elements = filteredModel.getElements();
+		Router router = VCPENetworkModelHelper.getRouterByName(elements, routerName);
+
+		if (router != null) {
+
+			VCPENetworkModelHelper.removeAllRouterInterfacesFromRouter(filteredModel, router);
+
+		}
 	}
 
 	/**
