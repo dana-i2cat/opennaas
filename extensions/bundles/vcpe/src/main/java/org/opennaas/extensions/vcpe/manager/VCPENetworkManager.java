@@ -31,6 +31,7 @@ import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
+import org.opennaas.extensions.vcpe.model.BGP;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
@@ -545,7 +546,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			AccessDeniedException {
 
 		updateRoutersInformation(oldModel, filteredModel);
-		updateProtocolsInformation(oldModel, filteredModel);
+		updateBGPConfiguration(oldModel, filteredModel);
 		updateIPRanges(oldModel, filteredModel);
 
 		return oldModel;
@@ -560,14 +561,16 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 
 	}
 
-	private void updateProtocolsInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
+	private void updateBGPConfiguration(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
 
-		if (filteredModel.getBgp() != null)
-			oldModel.setBgp(filteredModel.getBgp());
+		BGP oldBGP = oldModel.getBgp();
+		BGP newBGP = oldModel.getBgp();
 
-		if (filteredModel.getVrrp() != null)
-			oldModel.setVrrp(filteredModel.getVrrp());
+		if (newBGP.getClientASNumber() != null && !newBGP.getClientASNumber().equals(oldBGP.getClientASNumber()))
+			oldBGP.setClientASNumber(newBGP.getClientASNumber());
 
+		if (newBGP.getNocASNumber() != null && !newBGP.getNocASNumber().equals(oldBGP.getNocASNumber()))
+			oldBGP.setNocASNumber(newBGP.getNocASNumber());
 	}
 
 	private void updateRoutersInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException, AccessDeniedException {
