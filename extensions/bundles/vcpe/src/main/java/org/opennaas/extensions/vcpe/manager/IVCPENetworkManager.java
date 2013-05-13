@@ -57,6 +57,8 @@ public interface IVCPENetworkManager {
 	/**
 	 * Get all VCPENetworks
 	 * 
+	 * @Consumes(MediaType.APPLICATION_XML)
+	 * @Produces(MediaType.APPLICATION_XML)
 	 * @return all the VCPENetworks
 	 * @throws VCPENetworkManagerException
 	 */
@@ -179,5 +181,17 @@ public interface IVCPENetworkManager {
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	boolean getBuildResult(@PathParam("id") String resourceId) throws VCPENetworkManagerException;
+
+	@Path("/getUserFilteredVCPEModel/{id}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	VCPENetworkModel getUserFilteredVCPEModel(@PathParam("id") String vcpeNetworkId);
+
+	@Path("/editFilteredVCPE/{id}")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	VCPENetworkModel editFilteredVCPE(@PathParam("id") String vcpeNetworkId, VCPENetworkModel filteredModel);
 
 }

@@ -57,6 +57,17 @@ public class VCPENetworkModelHelper {
 		return routers;
 	}
 
+	public static Router getRouterByName(List<? extends VCPENetworkElement> elements, String name) {
+
+		for (VCPENetworkElement netElement : elements) {
+			if (netElement instanceof Router && netElement.getName().equals(name))
+				return (Router) netElement;
+		}
+
+		return null;
+
+	}
+
 	public static List<Domain> getDomains(List<? extends VCPENetworkElement> elements) {
 		List<Domain> domains = new ArrayList<Domain>();
 		if (elements == null)
@@ -101,6 +112,41 @@ public class VCPENetworkModelHelper {
 		model.setName("vcpeNet1");
 
 		return model;
+	}
+
+	public static Router generateSampleRouter() {
+
+		Router vcpe1 = new Router();
+		vcpe1.setTemplateName(SPTemplateConstants.VCPE1_ROUTER);
+		vcpe1.setName("vCPE1");
+
+		Interface inter1 = new Interface();
+		inter1.setTemplateName(SPTemplateConstants.INTER1_INTERFACE_LOCAL);
+		inter1.setName("fe-0/3/2.2");
+		inter1.setVlan(1);
+		inter1.setIpAddress("192.168.0.13/30");
+
+		Interface down1 = new Interface();
+		down1.setTemplateName(SPTemplateConstants.DOWN1_INTERFACE_LOCAL);
+		down1.setName("ge-0/2/0.1");
+		down1.setVlan(1);
+		down1.setIpAddress("192.0.2.2/25");
+
+		Interface up1 = new Interface();
+		up1.setTemplateName(SPTemplateConstants.UP1_INTERFACE_LOCAL);
+		up1.setName("lt-0/1/2.1");
+		up1.setIpAddress("192.168.0.9/30");
+
+		List<Interface> vcpe1Interfaces = new ArrayList<Interface>();
+		vcpe1Interfaces.add(inter1);
+		vcpe1Interfaces.add(down1);
+		vcpe1Interfaces.add(up1);
+		vcpe1.setInterfaces(vcpe1Interfaces);
+
+		vcpe1.setInterfaces(vcpe1Interfaces);
+
+		return vcpe1;
+
 	}
 
 	private static List<VCPENetworkElement> generateLogicalSampleModel() {
@@ -535,6 +581,99 @@ public class VCPENetworkModelHelper {
 		bgp.setCustomerPrefixes(customerPrefixes);
 
 		return bgp;
+	}
+
+	public static void removeAllRouterInformationFromModel(VCPENetworkModel vCPEModel, String routerName) {
+
+		List<VCPENetworkElement> elements = vCPEModel.getElements();
+		Router router = VCPENetworkModelHelper.getRouterByName(elements, routerName);
+
+		if (router != null) {
+
+			VCPENetworkModelHelper.removeAllRouterInterfacesFromRouter(vCPEModel, router);
+			vCPEModel.getElements().remove(router);
+		}
+	}
+
+	public static void removeAllRouterInterfacesFromRouter(VCPENetworkModel vcpeModel, Router router) {
+
+		List<Interface> ifaces = router.getInterfaces();
+
+		for (Interface iface : ifaces) {
+			removeAllInterfaceLinksFromModel(vcpeModel, iface);
+			vcpeModel.getElements().remove(iface);
+		}
+
+	}
+
+	public static void removeAllInterfaceLinksFromModel(VCPENetworkModel vcpeModel, Interface iface) {
+
+		List<Link> links = getLinks(vcpeModel.getElements());
+
+		for (Link link : links) {
+			if (link.getSource().equals(iface) || link.getSink().equals(iface))
+				vcpeModel.getElements().remove(link);
+		}
+
+	}
+
+	public static List<Link> getAllRouterLinksFromModel(VCPENetworkModel vcpeModel, Router router) {
+
+		List<Link> routerLinks = new ArrayList<Link>();
+		List<Link> modelLinks = getLinks(vcpeModel.getElements());
+
+		List<Interface> ifaces = router.getInterfaces();
+		for (Interface iface : ifaces) {
+			routerLinks.addAll(getAllInterfaceLinksFromModel(vcpeModel, iface));
+			for (Link link : modelLinks) {
+				if ((link.getSource().equals(iface) || link.getSink().equals(iface)) && (!routerLinks.contains(link)))
+					routerLinks.add(link);
+			}
+		}
+
+		return routerLinks;
+	}
+
+	public static List<Link> getAllInterfaceLinksFromModel(VCPENetworkModel vcpeModel, Interface iface) {
+
+		List<Link> ifaceLinks = new ArrayList<Link>();
+
+		List<Link> links = getLinks(vcpeModel.getElements());
+		for (Link link : links) {
+			if (link.getSource().equals(iface) || link.getSink().equals(iface))
+				ifaceLinks.add(link);
+		}
+
+		return ifaceLinks;
+	}
+
+	public static void updateRouterInformation(VCPENetworkModel oldModel, Router router, List<Link> routerLinks) {
+
+		removeAllRouterInformationFromModel(oldModel, router.getName());
+		addRouterInformationToModel(oldModel, router, routerLinks);
+
+	}
+
+	public static void addRouterInformationToModel(VCPENetworkModel oldModel, Router router, List<Link> routerLinks) {
+
+		oldModel.getElements().add(router);
+
+		for (Interface iface : router.getInterfaces())
+			oldModel.getElements().add(iface);
+
+		for (Link link : routerLinks)
+			if (!oldModel.getElements().contains(link))
+				oldModel.getElements().add(link);
+
+	}
+
+	public static VCPENetworkElement getElementByName(List<VCPENetworkElement> elements, String elementName) {
+
+		for (VCPENetworkElement element : elements)
+			if (element.getName() != null && element.getName().equals(elementName))
+				return element;
+
+		return null;
 	}
 
 }

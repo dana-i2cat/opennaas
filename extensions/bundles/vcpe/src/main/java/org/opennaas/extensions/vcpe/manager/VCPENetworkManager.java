@@ -18,6 +18,7 @@ import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
@@ -30,7 +31,12 @@ import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
+import org.opennaas.extensions.vcpe.model.BGP;
+import org.opennaas.extensions.vcpe.model.Link;
+import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+import org.springframework.security.access.AccessDeniedException;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
 
@@ -213,6 +219,59 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			throw new VCPENetworkManagerException(e.getMessage());
 		}
 		return result;
+	}
+
+	@Override
+	public VCPENetworkModel getUserFilteredVCPEModel(String vcpeNetworkId) {
+
+		log.info("Filtering VCPE " + vcpeNetworkId + " model.");
+
+		VCPENetworkModel filteredModel = null;
+
+		try {
+
+			IResource resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			VCPENetworkModel model = (VCPENetworkModel) resource.getModel();
+			filteredModel = filterVCPENetworkModel(model);
+
+		} catch (ActivatorException ae) {
+			throw new VCPENetworkManagerException(ae.getMessage());
+		} catch (ResourceException re) {
+			throw new VCPENetworkManagerException(re.getMessage());
+		} catch (AccessDeniedException ad) {
+			throw new VCPENetworkManagerException(ad.getMessage());
+		} catch (SerializationException se) {
+			throw new VCPENetworkManagerException(se.getMessage());
+		}
+
+		log.info("VCPE " + vcpeNetworkId + " model filtered.");
+
+		return filteredModel;
+	}
+
+	@Override
+	public VCPENetworkModel editFilteredVCPE(String vcpeNetworkId, VCPENetworkModel filteredModel) {
+
+		log.info("Updating VCPE " + vcpeNetworkId + " model.");
+
+		VCPENetworkModel updatedModel = new VCPENetworkModel();
+
+		try {
+
+			IResource vcpeResource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			VCPENetworkModel oldModel = (VCPENetworkModel) vcpeResource.getModel();
+			updatedModel = updateVCPEModelInformation(oldModel, filteredModel);
+
+		} catch (ActivatorException ae) {
+			throw new VCPENetworkManagerException(ae.getMessage());
+		} catch (ResourceException re) {
+			throw new VCPENetworkManagerException(re.getMessage());
+		} catch (AccessDeniedException ad) {
+			throw new VCPENetworkManagerException(ad.getMessage());
+		}
+
+		log.info("VCPE " + vcpeNetworkId + " model updated.");
+		return updatedModel;
 	}
 
 	/**
@@ -481,6 +540,107 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		PhysicalInfrastructureLoader loader = new PhysicalInfrastructureLoader();
 		model.setPhysicalInfrastructure(loader.loadPhysicalInfrastructure());
 		setModel(model);
+	}
+
+	private VCPENetworkModel updateVCPEModelInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException,
+			AccessDeniedException {
+
+		updateRoutersInformation(oldModel, filteredModel);
+		updateBGPConfiguration(oldModel, filteredModel);
+		updateIPRanges(oldModel, filteredModel);
+
+		return oldModel;
+	}
+
+	private void updateIPRanges(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
+		if (filteredModel.getClientIpRange() != null && !filteredModel.getClientIpRange().isEmpty())
+			oldModel.setClientIpRange(filteredModel.getClientIpRange());
+
+		if (filteredModel.getNocIpRange() != null && !filteredModel.getNocIpRange().isEmpty())
+			oldModel.setNocIpRange(filteredModel.getNocIpRange());
+
+	}
+
+	private void updateBGPConfiguration(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
+
+		BGP oldBGP = oldModel.getBgp();
+		BGP newBGP = oldModel.getBgp();
+
+		if (newBGP.getClientASNumber() != null && !newBGP.getClientASNumber().equals(oldBGP.getClientASNumber()))
+			oldBGP.setClientASNumber(newBGP.getClientASNumber());
+
+		if (newBGP.getNocASNumber() != null && !newBGP.getNocASNumber().equals(oldBGP.getNocASNumber()))
+			oldBGP.setNocASNumber(newBGP.getNocASNumber());
+	}
+
+	private void updateRoutersInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException, AccessDeniedException {
+
+		IResourceManager resourceManager;
+
+		log.debug("Updating routers information.");
+
+		try {
+			resourceManager = Activator.getResourceManagerService();
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e.getMessage());
+		}
+
+		List<Router> routerList = VCPENetworkModelHelper.getRouters(filteredModel.getElements());
+
+		for (Router router : routerList) {
+
+			log.debug("Checking user access to router " + router.getName());
+			// this call is done to launch an AccessDeniedException, if necessary
+			resourceManager.getResource(
+					resourceManager.getIdentifierFromResourceName("router", router.getName()));
+
+			log.debug("Updating router " + router.getName() + " information");
+
+			if (VCPENetworkModelHelper.getRouterByName(oldModel.getElements(), router.getName()) == null)
+				throw new ResourceException("No router with name " + router.getName() + " in model.");
+
+			List<Link> routerLinks = VCPENetworkModelHelper.getAllRouterLinksFromModel(filteredModel, router);
+			VCPENetworkModelHelper.updateRouterInformation(oldModel, router, routerLinks);
+
+		}
+
+		log.debug("Routers information updated.");
+
+	}
+
+	private VCPENetworkModel filterVCPENetworkModel(VCPENetworkModel originalModel) throws SerializationException, ResourceException {
+
+		IResourceManager resourceManager;
+		VCPENetworkModel filteredModel = originalModel.deepCopy();
+
+		try {
+			resourceManager = Activator.getResourceManagerService();
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e.getMessage());
+		}
+
+		List<Router> routerList = VCPENetworkModelHelper.getRouters(originalModel.getElements());
+
+		for (Router router : routerList) {
+
+			log.debug("Cheking user access to router " + router.getName());
+
+			String routerName = router.getName();
+
+			try {
+				resourceManager.getResource(
+						resourceManager.getIdentifierFromResourceName("router", routerName));
+
+			} catch (AccessDeniedException ad) {
+				log.debug("Access denied to router " + router.getName() + ". Removing router from VCPE model.");
+				VCPENetworkModelHelper.removeAllRouterInformationFromModel(filteredModel, routerName);
+				log.debug("Router " + router.getName() + " removed from VCPE model.");
+
+			}
+
+		}
+
+		return filteredModel;
 	}
 
 }
