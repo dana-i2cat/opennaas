@@ -188,4 +188,10 @@ public interface IVCPENetworkManager {
 	@Produces(MediaType.APPLICATION_XML)
 	VCPENetworkModel getUserFilteredVCPEModel(@PathParam("id") String vcpeNetworkId);
 
+	@Path("/editFilteredVCPE/{id}")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	VCPENetworkModel editFilteredVCPE(@PathParam("id") String vcpeNetworkId, VCPENetworkModel filteredModel);
+
 }

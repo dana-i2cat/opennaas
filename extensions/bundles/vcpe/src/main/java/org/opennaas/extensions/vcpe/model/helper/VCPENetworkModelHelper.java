@@ -114,6 +114,41 @@ public class VCPENetworkModelHelper {
 		return model;
 	}
 
+	public static Router generateSampleRouter() {
+
+		Router vcpe1 = new Router();
+		vcpe1.setTemplateName(SPTemplateConstants.VCPE1_ROUTER);
+		vcpe1.setName("vCPE1");
+
+		Interface inter1 = new Interface();
+		inter1.setTemplateName(SPTemplateConstants.INTER1_INTERFACE_LOCAL);
+		inter1.setName("fe-0/3/2.2");
+		inter1.setVlan(1);
+		inter1.setIpAddress("192.168.0.13/30");
+
+		Interface down1 = new Interface();
+		down1.setTemplateName(SPTemplateConstants.DOWN1_INTERFACE_LOCAL);
+		down1.setName("ge-0/2/0.1");
+		down1.setVlan(1);
+		down1.setIpAddress("192.0.2.2/25");
+
+		Interface up1 = new Interface();
+		up1.setTemplateName(SPTemplateConstants.UP1_INTERFACE_LOCAL);
+		up1.setName("lt-0/1/2.1");
+		up1.setIpAddress("192.168.0.9/30");
+
+		List<Interface> vcpe1Interfaces = new ArrayList<Interface>();
+		vcpe1Interfaces.add(inter1);
+		vcpe1Interfaces.add(down1);
+		vcpe1Interfaces.add(up1);
+		vcpe1.setInterfaces(vcpe1Interfaces);
+
+		vcpe1.setInterfaces(vcpe1Interfaces);
+
+		return vcpe1;
+
+	}
+
 	private static List<VCPENetworkElement> generateLogicalSampleModel() {
 
 		// vcpe1
@@ -611,4 +646,34 @@ public class VCPENetworkModelHelper {
 
 		return ifaceLinks;
 	}
+
+	public static void updateRouterInformation(VCPENetworkModel oldModel, Router router, List<Link> routerLinks) {
+
+		removeAllRouterInformationFromModel(oldModel, router.getName());
+		addRouterInformationToModel(oldModel, router, routerLinks);
+
+	}
+
+	public static void addRouterInformationToModel(VCPENetworkModel oldModel, Router router, List<Link> routerLinks) {
+
+		oldModel.getElements().add(router);
+
+		for (Interface iface : router.getInterfaces())
+			oldModel.getElements().add(iface);
+
+		for (Link link : routerLinks)
+			if (!oldModel.getElements().contains(link))
+				oldModel.getElements().add(link);
+
+	}
+
+	public static VCPENetworkElement getElementByName(List<VCPENetworkElement> elements, String elementName) {
+
+		for (VCPENetworkElement element : elements)
+			if (element.getName() != null && element.getName().equals(elementName))
+				return element;
+
+		return null;
+	}
+
 }

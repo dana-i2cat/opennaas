@@ -31,6 +31,7 @@ import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
+import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
@@ -245,6 +246,74 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		log.info("VCPE " + vcpeNetworkId + " model filtered.");
 
 		return filteredModel;
+	}
+
+	@Override
+	public VCPENetworkModel editFilteredVCPE(String vcpeNetworkId, VCPENetworkModel filteredModel) {
+
+		log.info("Updating VCPE " + vcpeNetworkId + " model.");
+
+		VCPENetworkModel updatedModel = new VCPENetworkModel();
+
+		try {
+
+			IResource vcpeResource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			VCPENetworkModel oldModel = (VCPENetworkModel) vcpeResource.getModel();
+			updatedModel = updateVCPEModelInformation(oldModel, filteredModel);
+
+		} catch (ActivatorException ae) {
+			throw new VCPENetworkManagerException(ae.getMessage());
+		} catch (ResourceException re) {
+			throw new VCPENetworkManagerException(re.getMessage());
+		} catch (AccessDeniedException ad) {
+			throw new VCPENetworkManagerException(ad.getMessage());
+		}
+
+		log.info("VCPE " + vcpeNetworkId + " model updated.");
+		return updatedModel;
+	}
+
+	private VCPENetworkModel updateVCPEModelInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException {
+
+		updateRoutersInformation(oldModel, filteredModel);
+		updateProtocolsInformation(oldModel, filteredModel);
+		updateIPRanges(oldModel, filteredModel);
+
+		return oldModel;
+	}
+
+	private void updateIPRanges(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
+		if (filteredModel.getClientIpRange() != null && !filteredModel.getClientIpRange().isEmpty())
+			oldModel.setClientIpRange(filteredModel.getClientIpRange());
+
+		if (filteredModel.getNocIpRange() != null && !filteredModel.getNocIpRange().isEmpty())
+			oldModel.setNocIpRange(filteredModel.getNocIpRange());
+
+	}
+
+	private void updateProtocolsInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
+
+		if (filteredModel.getBgp() != null)
+			oldModel.setBgp(filteredModel.getBgp());
+
+		if (filteredModel.getVrrp() != null)
+			oldModel.setVrrp(filteredModel.getVrrp());
+
+	}
+
+	private void updateRoutersInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException {
+
+		List<Router> routerList = VCPENetworkModelHelper.getRouters(filteredModel.getElements());
+
+		for (Router router : routerList) {
+
+			if (VCPENetworkModelHelper.getRouterByName(oldModel.getElements(), router.getName()) == null)
+				throw new ResourceException("No router with name " + router.getName() + " in model.");
+
+			List<Link> routerLinks = VCPENetworkModelHelper.getAllRouterLinksFromModel(filteredModel, router);
+			VCPENetworkModelHelper.updateRouterInformation(oldModel, router, routerLinks);
+
+		}
 	}
 
 	private VCPENetworkModel filterVCPENetworkModel(VCPENetworkModel originalModel) throws SerializationException, ResourceException {
