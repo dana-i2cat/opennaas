@@ -34,7 +34,7 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@Override
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/singleProvider/physical")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/admin/vcpeNetwork/singleProvider/physical")
 	public String getPhysicalForm(@RequestParam("templateType") String templateType, Model model, Locale locale) {
 		return super.getPhysicalForm(templateType, model, locale);
 	}
@@ -45,7 +45,7 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/logical")
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/singleProvider/logical")
 	public String getLogicalForm(@ModelAttribute("physicalInfrastructure") SingleProviderPhysical physical, Model model, Locale locale) {
 		return super.getLogicalForm(physical, model, locale);
 	}
@@ -58,10 +58,24 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/create")
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/singleProvider/create")
 	public String create(@Valid @ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
 			BindingResult result, Model model, Locale locale, HttpSession session) {
 		return super.create(logical, result, model, locale, session);
+	}
+
+	/**
+	 * Delete a single provider VCPE Network
+	 * 
+	 * @param vcpeNetworkId
+	 * @param model
+	 * @param locale
+	 * @return
+	 */
+	@Override
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/admin/vcpeNetwork/singleProvider/delete")
+	public String delete(String vcpeNetworkId, Model model, Locale locale, HttpSession session) {
+		return super.delete(vcpeNetworkId, model, locale, session);
 	}
 
 	/**
@@ -72,7 +86,7 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@Override
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/singleProvider/edit")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/singleProvider/edit")
 	public String edit(String vcpeNetworkId, Model model, Locale locale) {
 		return super.edit(vcpeNetworkId, model, locale);
 	}
@@ -86,24 +100,10 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/update")
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/update")
 	public String update(@Valid @ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
 			BindingResult result, Model model, Locale locale) {
 		return super.update(logical, result, model, locale);
-	}
-
-	/**
-	 * Delete a single provider VCPE Network
-	 * 
-	 * @param vcpeNetworkId
-	 * @param model
-	 * @param locale
-	 * @return
-	 */
-	@Override
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/singleProvider/delete")
-	public String delete(String vcpeNetworkId, Model model, Locale locale, HttpSession session) {
-		return super.delete(vcpeNetworkId, model, locale, session);
 	}
 
 	/**
@@ -116,19 +116,6 @@ public class SingleProviderController extends VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/singleProvider/updateIpsForm")
 	public String updateIpsForm(String vcpeNetworkId, Model model, Locale locale) {
-		return updateIpsFormSecure(vcpeNetworkId, model, locale);
-	}
-
-	/**
-	 * Redirect to the form to modify the ip's. Noc entry method
-	 * 
-	 * @param vcpeNetworkId
-	 * @param model
-	 * @param locale
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/singleProvider/updateIpsForm")
-	public String updateIpsFormSecure(String vcpeNetworkId, Model model, Locale locale) {
 		LOGGER.debug("updateIpsForm entity with id: " + vcpeNetworkId);
 		try {
 			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
@@ -140,7 +127,7 @@ public class SingleProviderController extends VCPENetworkController {
 	}
 
 	/**
-	 * Redirect to the form to modify the ip's
+	 * Update the ip's
 	 * 
 	 * @param logical
 	 * @param model
@@ -149,19 +136,6 @@ public class SingleProviderController extends VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/updateIps")
 	public String updateIps(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical, Model model, Locale locale) {
-		return updateIpsSecure(logical, model, locale);
-	}
-
-	/**
-	 * Redirect to the form to modify the ip's
-	 * 
-	 * @param logical
-	 * @param model
-	 * @param locale
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/updateIps")
-	public String updateIpsSecure(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical, Model model, Locale locale) {
 		LOGGER.debug("update Ips of VCPENetwork: " + logical);
 		try {
 			vcpeNetworkBO.updateIps(logical);
