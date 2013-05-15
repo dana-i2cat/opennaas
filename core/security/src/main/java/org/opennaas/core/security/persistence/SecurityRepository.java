@@ -27,13 +27,6 @@ public class SecurityRepository {
 
 	private static Log				log						= LogFactory.getLog(SecurityRepository.class);
 
-	// OpenNaaS-Security SQL scripts to initialize Spring Security ACLs SQL schema
-	private static String			SQL_USERS_AUTHORITIES;
-	private static String			SQL_GROUPS;
-	private static String			SQL_PERSISTENT_LOGINS;
-	private static String			SQL_ACLS;
-	private static String			SQL_ZERO_USERS;
-
 	private EntityManagerFactory	entityManagerFactory	= null;
 	private String					persistenceUnit			= null;
 	private EntityManager			entityManager;
@@ -47,33 +40,6 @@ public class SecurityRepository {
 		} catch (Exception e) {
 			log.error("Error initializing Security Persistence!", e);
 		}
-		initializeSpringSecurityACLDB();
-	}
-
-	private void initializeSpringSecurityACLDB() {
-		log.debug("Reading OpenNaaS-Security SQL init scripts contents...");
-		SQL_USERS_AUTHORITIES = Activator.getBundleTextFileContents("/security_db_scripts/users_authorities.sql");
-		SQL_GROUPS = Activator.getBundleTextFileContents("/security_db_scripts/groups.sql");
-		SQL_PERSISTENT_LOGINS = Activator.getBundleTextFileContents("/security_db_scripts/persistent_logins.sql");
-		SQL_ACLS = Activator.getBundleTextFileContents("/security_db_scripts/acls.sql");
-		SQL_ZERO_USERS = Activator.getBundleTextFileContents("/security_db_scripts/zero_users.sql");
-		log.debug("OpenNaaS-Security SQL init scripts contents read.");
-
-		log.debug("Executing OpenNaaS-Security SQL init scripts...");
-		getEntityManager().getTransaction().begin();
-		try {
-			getEntityManager().createNativeQuery(SQL_USERS_AUTHORITIES).executeUpdate();
-			getEntityManager().createNativeQuery(SQL_GROUPS).executeUpdate();
-			getEntityManager().createNativeQuery(SQL_PERSISTENT_LOGINS).executeUpdate();
-			getEntityManager().createNativeQuery(SQL_ACLS).executeUpdate();
-			getEntityManager().createNativeQuery(SQL_ZERO_USERS).executeUpdate();
-			getEntityManager().getTransaction().commit();
-			getEntityManager().flush();
-		} catch (Exception e) {
-			log.error("Error executing OpenNaaS-Security SQL init scripts, rollbacking", e);
-			getEntityManager().getTransaction().rollback();
-		}
-		log.debug("OpenNaaS-Security SQL init scripts executed.");
 	}
 
 	private void initializeEntityManager() throws Exception {
@@ -98,6 +64,7 @@ public class SecurityRepository {
 		EntityManager entityManager = getEntityManager();
 		if (entityManager != null) {
 			log.debug("Closing entity manager: " + entityManager);
+			entityManager.flush();
 			entityManager.close();
 			setEntityManager(null);
 		}
