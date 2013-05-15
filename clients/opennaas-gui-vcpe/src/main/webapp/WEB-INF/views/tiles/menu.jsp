@@ -9,8 +9,9 @@
 
 
 <ul id="_menu">
-	<c:set var="clientArea" value="/secure/vcpeNetwork" />
+	<c:set var="userArea" value="/secure/vcpeNetwork" />
 	<c:set var="nocArea" value="/secure/noc/vcpeNetwork" />
+	<c:set var="adminArea" value="/secure/admin/vcpeNetwork" />
 	<c:forEach varStatus="vs" items="${sessionScope.vcpeNetworkList}">
 		<c:choose>
 			<c:when test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">
@@ -21,29 +22,28 @@
 			</c:otherwise>
 		</c:choose>
 		<li><a href="#">${sessionScope.vcpeNetworkList[vs.index].name}</a>
-			<ul>
-				<sec:authorize access="hasRole('ROLE_NOC')">
+			<ul>				
+				<sec:authorize access="hasRole('ROLE_USER')">
 					<li>
-						<a href="<c:url value="${nocArea}/${templateUrl}/edit?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+						<a href="<c:url value="${userArea}/${templateUrl}/edit?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
 							<spring:message code="menu.edit" />
 						</a>
 					</li>
-					<li>
-						<a class="link_confirm" href="<c:url value="${nocArea}/${templateUrl}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="menu.delete" />
-						</a>
-					</li>
-				</sec:authorize>
-
-				
-				<sec:authorize access="hasRole('ROLE_USER')">
 					<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
 						<li>
-							<a href="<c:url value="${clientArea}/${templateUrl}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+							<a href="<c:url value="${userArea}/${templateUrl}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
 								<spring:message code="menu.update" />
 							</a>
 						</li>
 					</c:if>
+				</sec:authorize>
+
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<li>
+						<a class="link_confirm" href="<c:url value="${adminArea}/${templateUrl}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+							<spring:message code="menu.delete" />
+						</a>
+					</li>
 				</sec:authorize>
 			</ul>
 		</li>

@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<sec:authorize access="hasRole('ROLE_NOC')">
+<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<ol id="selectable">
 		<li id="sp_vcpe" class="ui-widget-content template">
 				<div class="title"><spring:message code="home.template.sp_vcpe.title"/></div>
