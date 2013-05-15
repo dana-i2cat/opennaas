@@ -30,6 +30,18 @@ public interface IVCPENetworkManager {
 	public String create(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException;
 
 	/**
+	 * Update a VCPE infrastructure of VCPEResource from model
+	 * 
+	 * @return the id if the VCPE has been created
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/update")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public String update(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException;
+
+	/**
 	 * Remove a VCPE infrastructure of the resource with id = vcpeNetworkId
 	 * 
 	 * @param vcpeNetworkId
@@ -168,6 +180,7 @@ public interface IVCPENetworkManager {
 	boolean hasFinishedBuild(@PathParam("id") String resourceId) throws VCPENetworkManagerException;
 
 	/**
+	 * This implementation consumes the task, so following invocations to this method with same resourceId throw an exception
 	 * 
 	 * @param resourceId
 	 * @return true if the build has been successful

@@ -26,6 +26,7 @@
 <sec:authorize access="hasRole('ROLE_NOC')">
 	<h2 id="vcpe_title"><spring:message code="logical.mp.title"/></h2>
 	<form:form modelAttribute="logicalInfrastructure" action="${action}" method="post">
+		<form:hidden path="id" />
 		<form:hidden  path="templateType"/>
 		
 		<!-- Graphical view -->
