@@ -107,8 +107,8 @@ public class MultipleProviderController extends VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/multipleProvider/update")
 	public String update(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
-			BindingResult result, Model model, Locale locale) {
-		return super.update(logical, result, model, locale);
+			BindingResult result, Model model, Locale locale, HttpSession session) {
+		return super.update(logical, result, model, locale, session);
 	}
 
 }

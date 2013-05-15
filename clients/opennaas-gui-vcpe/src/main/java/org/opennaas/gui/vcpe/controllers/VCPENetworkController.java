@@ -140,16 +140,13 @@ public abstract class VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
+	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale, HttpSession session) {
 		LOGGER.debug("update entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {
-				LOGGER.debug("removing the old environment");
-				vcpeNetworkBO.delete(logicalInfrastructure.getId());
-
-				LOGGER.debug("create the new environment");
-				String vcpeNetworkId = vcpeNetworkBO.create(logicalInfrastructure);
-
+				LOGGER.debug("update the vcpe");
+				String vcpeNetworkId = vcpeNetworkBO.update(logicalInfrastructure);
+				session.setAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 				model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
 				model.addAttribute("infoMsg", messageSource.getMessage("vcpenetwork.update.message.info", null, locale));
 			} else {

@@ -48,25 +48,6 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	private ExecutorService					executor;
 	private Map<String, Future<Boolean>>	futures;
 
-	private class BuildVCPECallable implements Callable<Boolean> {
-
-		VCPENetworkModel	vcpeNetworkModel;
-
-		public BuildVCPECallable(VCPENetworkModel vcpeNetworkModel) {
-			this.vcpeNetworkModel = vcpeNetworkModel;
-		}
-
-		@Override
-		public Boolean call() throws Exception {
-			return build(vcpeNetworkModel);
-		}
-
-		public VCPENetworkModel getVcpeNetworkModel() {
-			return vcpeNetworkModel;
-		}
-
-	}
-
 	/**
 	 * @throws IOException
 	 */
@@ -76,6 +57,9 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		futures = new HashMap<String, Future<Boolean>>();
 	}
 
+	/**
+	 * 
+	 */
 	public void destroy() {
 		executor.shutdown();
 		if (!executor.isTerminated()) {
@@ -83,13 +67,21 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		}
 	}
 
+	/**
+	 * @param model
+	 */
+	public void setModel(VCPEManagerModel model) {
+		this.model = model;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#getModel()
+	 */
 	@Override
 	public VCPEManagerModel getModel() throws VCPENetworkManagerException {
 		return model;
-	}
-
-	public void setModel(VCPEManagerModel model) {
-		this.model = model;
 	}
 
 	/*
@@ -113,51 +105,18 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return resource.getResourceIdentifier().getId();
 	}
 
-	@Override
-	public boolean hasFinishedBuild(String resourceId) throws VCPENetworkManagerException {
-		Future<Boolean> f = futures.get(resourceId);
-		if (f == null) {
-			throw new VCPENetworkManagerException("No building task for resource " + resourceId);
-		}
-
-		return f.isDone();
-	}
-
-	/**
-	 * This implementation consumes the task, so following invocations to this method with same resourceId throw an exception
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param resourceId
-	 * @return
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#update(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
-	public boolean getBuildResult(String resourceId) throws VCPENetworkManagerException {
-		if (!hasFinishedBuild(resourceId)) {
-			throw new VCPENetworkManagerException("Build task has not yet finished.");
-		}
-
-		Future<Boolean> f = futures.get(resourceId);
-		if (f == null) {
-			throw new VCPENetworkManagerException("No building task for resource " + resourceId);
-		}
-
-		boolean result;
-		try {
-			result = f.get();
-		} catch (InterruptedException e) {
-			log.error("Creation of VCPE has been interrupted", e);
-			throw new VCPENetworkManagerException("Creation of VCPE has been interrupted: " + e.getMessage());
-		} catch (ExecutionException e) {
-			if (e.getCause() instanceof VCPENetworkManagerException)
-				throw (VCPENetworkManagerException) e.getCause();
-			else {
-				throw new VCPENetworkManagerException(e.getCause());
-			}
-		} finally {
-			// remove future from pending tasks
-			futures.remove(resourceId);
-		}
-
-		return result;
+	public String update(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException {
+		log.info("Updating a VCPE: " + vcpeNetworkModel.getName());
+		log.info("First remove a VCPE: " + vcpeNetworkModel.getName());
+		remove(vcpeNetworkModel.getId());
+		log.info("Create the new VCPE: " + vcpeNetworkModel.getName());
+		return create(vcpeNetworkModel);
 	}
 
 	/*
@@ -221,62 +180,10 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return result;
 	}
 
-	@Override
-	public VCPENetworkModel getUserFilteredVCPEModel(String vcpeNetworkId) {
-
-		log.info("Filtering VCPE " + vcpeNetworkId + " model.");
-
-		VCPENetworkModel filteredModel = null;
-
-		try {
-
-			IResource resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
-			VCPENetworkModel model = (VCPENetworkModel) resource.getModel();
-			filteredModel = filterVCPENetworkModel(model);
-
-		} catch (ActivatorException ae) {
-			throw new VCPENetworkManagerException(ae.getMessage());
-		} catch (ResourceException re) {
-			throw new VCPENetworkManagerException(re.getMessage());
-		} catch (AccessDeniedException ad) {
-			throw new VCPENetworkManagerException(ad.getMessage());
-		} catch (SerializationException se) {
-			throw new VCPENetworkManagerException(se.getMessage());
-		}
-
-		log.info("VCPE " + vcpeNetworkId + " model filtered.");
-
-		return filteredModel;
-	}
-
-	@Override
-	public VCPENetworkModel editFilteredVCPE(String vcpeNetworkId, VCPENetworkModel filteredModel) {
-
-		log.info("Updating VCPE " + vcpeNetworkId + " model.");
-
-		VCPENetworkModel updatedModel = new VCPENetworkModel();
-
-		try {
-
-			IResource vcpeResource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
-			VCPENetworkModel oldModel = (VCPENetworkModel) vcpeResource.getModel();
-			updatedModel = updateVCPEModelInformation(oldModel, filteredModel);
-
-		} catch (ActivatorException ae) {
-			throw new VCPENetworkManagerException(ae.getMessage());
-		} catch (ResourceException re) {
-			throw new VCPENetworkManagerException(re.getMessage());
-		} catch (AccessDeniedException ad) {
-			throw new VCPENetworkManagerException(ad.getMessage());
-		}
-
-		log.info("VCPE " + vcpeNetworkId + " model updated.");
-		return updatedModel;
-	}
-
-	/**
-	 * @return the physical infrastructure
-	 * @throws VCPENetworkManagerException
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#getPhysicalInfrastructureSuggestion(java.lang.String)
 	 */
 	@Override
 	public VCPENetworkModel getPhysicalInfrastructureSuggestion(String templateType) throws VCPENetworkManagerException {
@@ -285,9 +192,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return phySuggestion;
 	}
 
-	/**
-	 * @return a suggestion of the logical infrastructure
-	 * @throws VCPENetworkManagerException
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#getLogicalInfrastructureSuggestion(org.opennaas.extensions.vcpe.model.VCPENetworkModel
+	 * )
 	 */
 	@Override
 	public VCPENetworkModel getLogicalInfrastructureSuggestion(VCPENetworkModel physical) throws VCPENetworkManagerException {
@@ -324,6 +234,112 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	@Override
 	public Boolean isIPFree(String vcpeId, String router, String ip) throws VCPENetworkManagerException {
 		return IsFreeChecker.isIPFree(vcpeId, router, ip);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#hasFinishedBuild(java.lang.String)
+	 */
+	@Override
+	public boolean hasFinishedBuild(String resourceId) throws VCPENetworkManagerException {
+		Future<Boolean> f = futures.get(resourceId);
+		if (f == null) {
+			throw new VCPENetworkManagerException("No building task for resource " + resourceId);
+		}
+		return f.isDone();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#getBuildResult(java.lang.String)
+	 */
+	@Override
+	public boolean getBuildResult(String resourceId) throws VCPENetworkManagerException {
+		if (!hasFinishedBuild(resourceId)) {
+			throw new VCPENetworkManagerException("Build task has not yet finished.");
+		}
+
+		Future<Boolean> f = futures.get(resourceId);
+		if (f == null) {
+			throw new VCPENetworkManagerException("No building task for resource " + resourceId);
+		}
+
+		boolean result;
+		try {
+			result = f.get();
+		} catch (InterruptedException e) {
+			log.error("Creation of VCPE has been interrupted", e);
+			throw new VCPENetworkManagerException("Creation of VCPE has been interrupted: " + e.getMessage());
+		} catch (ExecutionException e) {
+			if (e.getCause() instanceof VCPENetworkManagerException)
+				throw (VCPENetworkManagerException) e.getCause();
+			else {
+				throw new VCPENetworkManagerException(e.getCause());
+			}
+		} finally {
+			// remove future from pending tasks
+			futures.remove(resourceId);
+		}
+
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#getUserFilteredVCPEModel(java.lang.String)
+	 */
+	@Override
+	public VCPENetworkModel getUserFilteredVCPEModel(String vcpeNetworkId) {
+		log.info("Filtering VCPE " + vcpeNetworkId + " model.");
+		VCPENetworkModel filteredModel = null;
+
+		try {
+			IResource resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			VCPENetworkModel model = (VCPENetworkModel) resource.getModel();
+			filteredModel = filterVCPENetworkModel(model);
+		} catch (ActivatorException ae) {
+			throw new VCPENetworkManagerException(ae.getMessage());
+		} catch (ResourceException re) {
+			throw new VCPENetworkManagerException(re.getMessage());
+		} catch (AccessDeniedException ad) {
+			throw new VCPENetworkManagerException(ad.getMessage());
+		} catch (SerializationException se) {
+			throw new VCPENetworkManagerException(se.getMessage());
+		}
+
+		log.info("VCPE " + vcpeNetworkId + " model filtered.");
+		return filteredModel;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#editFilteredVCPE(java.lang.String,
+	 * org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 */
+	@Override
+	public VCPENetworkModel editFilteredVCPE(String vcpeNetworkId, VCPENetworkModel filteredModel) {
+		log.info("Updating VCPE " + vcpeNetworkId + " model.");
+		VCPENetworkModel updatedModel = new VCPENetworkModel();
+		try {
+
+			IResource vcpeResource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			VCPENetworkModel oldModel = (VCPENetworkModel) vcpeResource.getModel();
+			updatedModel = updateVCPEModelInformation(oldModel, filteredModel);
+
+		} catch (ActivatorException ae) {
+			throw new VCPENetworkManagerException(ae.getMessage());
+		} catch (ResourceException re) {
+			throw new VCPENetworkManagerException(re.getMessage());
+		} catch (AccessDeniedException ad) {
+			throw new VCPENetworkManagerException(ad.getMessage());
+		}
+
+		log.info("VCPE " + vcpeNetworkId + " model updated.");
+		return updatedModel;
 	}
 
 	/**
@@ -530,8 +546,6 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return desc;
 	}
 
-	// TODO this method should go to the Bootstrapper and VCPENetworkManager to be a Resource
-	// TODO the IOException thrown would then prevent the resource to start
 	/**
 	 * @throws IOException
 	 */
@@ -542,6 +556,13 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		setModel(model);
 	}
 
+	/**
+	 * @param oldModel
+	 * @param filteredModel
+	 * @return
+	 * @throws ResourceException
+	 * @throws AccessDeniedException
+	 */
 	private VCPENetworkModel updateVCPEModelInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException,
 			AccessDeniedException {
 
@@ -552,6 +573,10 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return oldModel;
 	}
 
+	/**
+	 * @param oldModel
+	 * @param filteredModel
+	 */
 	private void updateIPRanges(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
 		if (filteredModel.getClientIpRange() != null && !filteredModel.getClientIpRange().isEmpty())
 			oldModel.setClientIpRange(filteredModel.getClientIpRange());
@@ -561,6 +586,10 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 
 	}
 
+	/**
+	 * @param oldModel
+	 * @param filteredModel
+	 */
 	private void updateBGPConfiguration(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
 
 		BGP oldBGP = oldModel.getBgp();
@@ -573,6 +602,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			oldBGP.setNocASNumber(newBGP.getNocASNumber());
 	}
 
+	/**
+	 * @param oldModel
+	 * @param filteredModel
+	 * @throws ResourceException
+	 * @throws AccessDeniedException
+	 */
 	private void updateRoutersInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException, AccessDeniedException {
 
 		IResourceManager resourceManager;
@@ -608,6 +643,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 
 	}
 
+	/**
+	 * @param originalModel
+	 * @return
+	 * @throws SerializationException
+	 * @throws ResourceException
+	 */
 	private VCPENetworkModel filterVCPENetworkModel(VCPENetworkModel originalModel) throws SerializationException, ResourceException {
 
 		IResourceManager resourceManager;
@@ -643,4 +684,24 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		return filteredModel;
 	}
 
+	/**
+	 * 
+	 */
+	private class BuildVCPECallable implements Callable<Boolean> {
+
+		VCPENetworkModel	vcpeNetworkModel;
+
+		public BuildVCPECallable(VCPENetworkModel vcpeNetworkModel) {
+			this.vcpeNetworkModel = vcpeNetworkModel;
+		}
+
+		@Override
+		public Boolean call() throws Exception {
+			return build(vcpeNetworkModel);
+		}
+
+		public VCPENetworkModel getVcpeNetworkModel() {
+			return vcpeNetworkModel;
+		}
+	}
 }

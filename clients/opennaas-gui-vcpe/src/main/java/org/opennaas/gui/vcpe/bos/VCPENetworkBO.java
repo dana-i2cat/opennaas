@@ -59,6 +59,33 @@ public class VCPENetworkBO {
 	}
 
 	/**
+	 * Update a VCPE Network
+	 * 
+	 * @param logicalInfrastructure
+	 * @return id
+	 * @throws RestServiceException
+	 */
+	public String update(LogicalInfrastructure logicalInfrastructure) throws RestServiceException {
+		LOGGER.debug("update the VCPENetwork: " + logicalInfrastructure.getId());
+		String resourceId = vcpeNetworkService.updateVCPENetwork(OpennaasBeanUtils.getVCPENetwork(logicalInfrastructure));
+		// the resource is being updating, but has not finished yet
+
+		LOGGER.debug("Polling for building task to finish");
+		while (!vcpeNetworkService.hasFinishedBuild(resourceId)) {
+			try {
+				Thread.sleep(10 * 1000);
+			} catch (InterruptedException e) {
+				LOGGER.warn("Interrupted while waiting for VCPE build to finish", e);
+				break;
+			}
+		}
+		LOGGER.debug("Retrieving build result");
+		vcpeNetworkService.getBuildResult(resourceId);
+
+		return resourceId;
+	}
+
+	/**
 	 * Delete a VCPE Network
 	 * 
 	 * @param vcpeNetworkId
@@ -206,4 +233,5 @@ public class VCPENetworkBO {
 		}
 		return listModelOut;
 	}
+
 }

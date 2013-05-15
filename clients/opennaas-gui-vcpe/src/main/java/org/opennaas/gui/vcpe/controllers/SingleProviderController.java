@@ -102,8 +102,8 @@ public class SingleProviderController extends VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/update")
 	public String update(@Valid @ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
-			BindingResult result, Model model, Locale locale) {
-		return super.update(logical, result, model, locale);
+			BindingResult result, Model model, Locale locale, HttpSession session) {
+		return super.update(logical, result, model, locale, session);
 	}
 
 	/**
