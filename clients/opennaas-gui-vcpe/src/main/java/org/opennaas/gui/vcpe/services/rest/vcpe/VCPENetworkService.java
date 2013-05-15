@@ -27,8 +27,9 @@ public class VCPENetworkService extends GenericRestService {
 	private static final Logger	LOGGER	= Logger.getLogger(VCPENetworkService.class);
 
 	/**
-	 * Call a rest service to create a VCPENetwork resource. When this call returns, the VCPENetwork is not yet created but in progress. Returned id
-	 * can be used to invoke other methods in this class to check for finalization and its result.
+	 * Call a rest service to create a VCPENetwork resource. <br>
+	 * When this call returns, the VCPENetwork is not yet created but in progress. <br>
+	 * Returned id can be used to invoke other methods in this class to check for finalization and its result.
 	 * 
 	 * @param request
 	 * @return true if the environment has been created
@@ -45,6 +46,30 @@ public class VCPENetworkService extends GenericRestService {
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
 			LOGGER.info("VCPENetwork created: " + response);
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return checkResponse(response) ? response.getEntity(String.class) : null;
+	}
+
+	/**
+	 * Call a rest service to update a VCPENetwork resource.
+	 * 
+	 * @param logicalInfrastructure
+	 * @return vcpeid
+	 * @throws RestServiceException
+	 */
+	public String updateVCPENetwork(VCPENetworkModel request) throws RestServiceException {
+		ClientResponse response = null;
+		try {
+			LOGGER.info("Calling update VCPENetworkManager service");
+			String url = getURL("vcpenetwork/update");
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML)
+					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
+			LOGGER.info("VCPENetwork updated: " + response);
 		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
 			throw e;
@@ -269,8 +294,8 @@ public class VCPENetworkService extends GenericRestService {
 	}
 
 	/**
-	 * Call a rest service to retrieve the result of the building for VCPE with given id. An Exception will be thrown in case there is an error
-	 * during build. 
+	 * Call a rest service to retrieve the result of the building for VCPE with given id. An Exception will be thrown in case there is an error during
+	 * build.
 	 * 
 	 * @param id
 	 *            of the VCPE to check for.
