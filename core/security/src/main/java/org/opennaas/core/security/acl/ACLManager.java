@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -13,6 +15,7 @@ import javax.persistence.EntityTransaction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.Resource;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.security.Activator;
 import org.opennaas.core.security.persistence.SecurityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,7 @@ public class ACLManager implements IACLManager {
 		initializeSpringSecurityAclDB();
 		initializeUsers();
 		initializeClasses();
+		registerOSGiService();
 	}
 
 	private void initializeSpringSecurityAclDB() {
@@ -159,6 +163,29 @@ public class ACLManager implements IACLManager {
 			log.error("Error executing SQL query, rollbacking", e);
 			et.rollback();
 		}
+	}
+
+	/**
+	 * It is necessary to register the OSGi service here, because OSGi ConfigurationAdmin service has access to "ws.rest.url", required to register
+	 * our REST API
+	 * 
+	 * @throws IOException
+	 */
+	private void registerOSGiService() throws IOException {
+		Dictionary<String, String> props = new Hashtable<String, String>();
+		ConfigurationAdminUtil configurationAdmin = new ConfigurationAdminUtil(Activator.getBundleContext());
+		String url = configurationAdmin.getProperty("org.opennaas", "ws.rest.url");
+
+		if (props != null) {
+			props.put("service.exported.interfaces", "*");
+			props.put("service.exported.configs", "org.apache.cxf.rs");
+			props.put("service.exported.intents", "HTTP");
+			props.put("org.apache.cxf.rs.httpservice.context", url + "/aclmanager");
+			props.put("org.apache.cxf.rs.address", "/");
+			props.put("org.apache.cxf.httpservice.requirefilter", "true");
+		}
+		log.info("Registering ws in url: " + props.get("org.apache.cxf.rs.httpservice.context"));
+		Activator.getBundleContext().registerService(IACLManager.class.getName(), this, props);
 	}
 
 	public void setUsersPropertiesFile(String usersPropertiesFile) {

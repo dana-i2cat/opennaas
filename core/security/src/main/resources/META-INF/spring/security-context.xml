@@ -67,26 +67,39 @@
 		<property name="accessDecisionManager" ref="webAccessDecisionManager" />
 		<property name="securityMetadataSource">
 			<security:filter-security-metadata-source>
-				<security:intercept-url pattern="/sample/sayHello"
-					access="ROLE_ADMIN" />
-				<security:intercept-url pattern="/sample/generateResources"
-					access="ROLE_ADMIN" />
 				<!-- Require ROLE_USER in all other methods -->
-				<security:intercept-url pattern="/**" access="ROLE_USER" />
+				<!-- TODO secure WS endpoints dinamically, with roles!! -->
+				<security:intercept-url pattern="/**"
+					access="ROLE_ADMIN, ROLE_NOC, ROLE_USER" />
 			</security:filter-security-metadata-source>
 		</property>
 	</bean>
 
 	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider>
+			<!-- TODO manage users and roles dinamically!! -->
 			<security:user-service id="userService">
-				<security:user name="admin" password="admin"
-					authorities="ROLE_ADMIN, ROLE_USER" />
-				<security:user name="user" password="user"
+				<security:user name="admin" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_ADMIN, ROLE_NOC, ROLE_USER" />
+				<security:user name="client1" password="e10adc3949ba59abbe56e057f20f883e"
 					authorities="ROLE_USER" />
+				<security:user name="client2" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_USER" />
+				<security:user name="noc1" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_NOC, ROLE_USER" />
+				<security:user name="noc2" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_NOC, ROLE_USER" />
+				<security:user name="noc3" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_NOC, ROLE_USER" />
 			</security:user-service>
+			<security:password-encoder ref="passwordEncoder" />
 		</security:authentication-provider>
 	</security:authentication-manager>
+
+	<!-- Use a Md5 encoder since the user's passwords are stored as Md5 in the 
+		database -->
+	<bean id="passwordEncoder"
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
 
 	<!-- ============================================================================= -->
 	<!-- ============================= AUTHORIZATION ================================= -->
@@ -172,7 +185,7 @@
 	<bean id="auditLogger"
 		class="org.springframework.security.acls.domain.ConsoleAuditLogger" />
 
-	
+
 	<!-- ACL permission masks used by this application -->
 	<bean id="readPermission"
 		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
@@ -206,20 +219,6 @@
 		<property name="persistenceUnit" value="opennaas-security" />
 	</bean>
 
-	<!-- ACLManager exported as OSGi service -->
-	<osgi:service ref="aclManager"
-		interface="org.opennaas.core.security.acl.IACLManager">
-		<osgi:service-properties>
-			<!-- Rest -->	
-			<entry key="service.exported.interfaces" value="*"/>
-			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
-			<entry key="service.exported.intents" value="HTTP"/>
-			<entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/aclmanager"/>
-			<entry key="org.apache.cxf.rs.address" value="/"/>
-			<entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>		
-		</osgi:service-properties>
-	</osgi:service>
-
 	<!-- ACLManager bean -->
 	<bean id="aclManager" class="org.opennaas.core.security.acl.ACLManager"
 		init-method="init">
@@ -228,10 +227,11 @@
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
 		<property name="usersPropertiesFile" value="users" />
 	</bean>
-	
+
 	<!-- Permission evaluator -->
-	<bean id="permissionEvaluator" class="org.springframework.security.acls.AclPermissionEvaluator">
-		<constructor-arg ref="aclService"/>
+	<bean id="permissionEvaluator"
+		class="org.springframework.security.acls.AclPermissionEvaluator">
+		<constructor-arg ref="aclService" />
 	</bean>
 
 </beans>
