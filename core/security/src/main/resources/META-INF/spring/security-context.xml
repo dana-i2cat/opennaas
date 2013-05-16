@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xmlns:osgi="http://www.springframework.org/schema/osgi"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -181,6 +182,7 @@
 
 	<!-- Register OpenNaaS OSGi Services & Beans for Security -->
 
+	<!-- DataSourceSecurity bean -->
 	<bean id="dataSourceSecurity" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
@@ -190,25 +192,41 @@
 		<property name="password" value="" />
 	</bean>
 
+	<!-- DataSourceSecurity exported as OSGi service -->
 	<osgi:service ref="dataSourceSecurity" interface="javax.sql.DataSource">
 		<osgi:service-properties>
 			<entry key="osgi.jndi.service.name" value="jdbc/opennaas-security" />
 		</osgi:service-properties>
 	</osgi:service>
 
+	<!-- SecurityRepository bean -->
 	<bean id="securityRepository"
 		class="org.opennaas.core.security.persistence.SecurityRepository"
 		init-method="init" destroy-method="close">
 		<property name="persistenceUnit" value="opennaas-security" />
 	</bean>
 
-	<osgi:service ref="aclManager" interface="org.opennaas.core.security.acl.IACLManager" />
+	<!-- ACLManager exported as OSGi service -->
+	<osgi:service ref="aclManager"
+		interface="org.opennaas.core.security.acl.IACLManager">
+		<osgi:service-properties>
+			<!-- Rest -->	
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="service.exported.intents" value="HTTP"/>
+			<entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/aclmanager"/>
+			<entry key="org.apache.cxf.rs.address" value="/"/>
+			<entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>		
+		</osgi:service-properties>
+	</osgi:service>
 
+	<!-- ACLManager bean -->
 	<bean id="aclManager" class="org.opennaas.core.security.acl.ACLManager"
 		init-method="init">
 		<property name="securityRepository" ref="securityRepository" />
 		<property name="aclService" ref="aclService" />
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
+		<property name="usersPropertiesFile" value="users" />
 	</bean>
 	
 	<!-- Permission evaluator -->

@@ -96,7 +96,7 @@ public class ACLManagerTest {
 
 		// secure Resource using ACLManager (admin credentials are necessary to create ACLs, set it)
 		SecurityContextHolder.getContext().setAuthentication(adminAuthentication);
-		aclManager.secureResource(resource, adminUser);
+		aclManager.secureResource(resource.getResourceIdentifier().getId(), adminUser);
 
 		/* check accessibility using ACLManager */
 

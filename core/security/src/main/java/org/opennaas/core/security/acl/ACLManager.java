@@ -1,5 +1,10 @@
 package org.opennaas.core.security.acl;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -29,10 +34,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class ACLManager implements IACLManager {
 
-	private static Log			log	= LogFactory.getLog(ACLManager.class);
+	private static Log			log							= LogFactory.getLog(ACLManager.class);
 
 	// OpenNaaS-Security SQL scripts to initialize Spring Security ACLs SQL schema
 	private static String		SQL_ACLS;
+
+	// Properties containing users to add to DB
+	private String				usersPropertiesFile;
+	private static final String	usersPropertiesUsersPrefix	= "users.";
+	private static final String	usersPropertiesUsersSize	= "size";
 
 	private SecurityRepository	securityRepository;
 
@@ -41,7 +51,7 @@ public class ACLManager implements IACLManager {
 	@Autowired
 	private PermissionEvaluator	permissionEvaluator;
 
-	public void init() {
+	public void init() throws IOException {
 		initializeSpringSecurityAclDB();
 		initializeUsers();
 		initializeClasses();
@@ -57,13 +67,35 @@ public class ACLManager implements IACLManager {
 		log.debug("OpenNaaS-Security SQL init scripts executed.");
 	}
 
-	private void initializeUsers() {
-		insertAclSid(1, true, new PrincipalSid("admin"));
-		insertAclSid(2, true, new PrincipalSid("noc"));
-		insertAclSid(3, true, new PrincipalSid("noc2"));
-		insertAclSid(4, true, new PrincipalSid("noc3"));
-		insertAclSid(5, true, new PrincipalSid("client"));
-		insertAclSid(6, true, new PrincipalSid("client2"));
+	private void initializeUsers() throws IOException, NumberFormatException {
+		Properties usersProperties = getProperties(usersPropertiesFile);
+
+		// getting users.size
+		int usersSize = Integer.parseInt(usersProperties.getProperty(usersPropertiesUsersPrefix + usersPropertiesUsersSize));
+
+		for (int i = 0; i < usersSize; i++) {
+			// adding users.{i}
+			String user = usersProperties.getProperty(usersPropertiesUsersPrefix + i);
+			if (user != null) {
+				insertAclSid(i, true, new PrincipalSid(user));
+			}
+		}
+	}
+
+	public Properties getProperties(final String propertyFile)
+			throws IOException {
+		final Properties properties = new Properties();
+		final URL resource = Activator.class.getClassLoader().getResource(propertyFile
+				+ ".properties");
+
+		if (null == resource) {
+			throw new FileNotFoundException(propertyFile
+					+ " could not be found");
+		}
+
+		final InputStream propertyStream = resource.openStream();
+		properties.load(propertyStream);
+		return properties;
 	}
 
 	private void initializeClasses() {
@@ -81,8 +113,8 @@ public class ACLManager implements IACLManager {
 		executeSqlQuery(query);
 	}
 
-	private void insertAcl(Object object, long id, PrincipalSid principalSid, Permission permission) {
-		ObjectIdentity oi = new ObjectIdentityImpl(object.getClass(), id);
+	private void insertAcl(long id, PrincipalSid principalSid, Permission permission) {
+		ObjectIdentity oi = new ObjectIdentityImpl(Resource.class, id);
 
 		// Create or update the relevant ACL
 		MutableAcl acl = null;
@@ -98,12 +130,12 @@ public class ACLManager implements IACLManager {
 	}
 
 	@Override
-	public void secureResource(Resource resource, String user) {
-		insertAcl(resource, ResourceIdToSecureId(resource.getResourceIdentifier().getId()), new PrincipalSid(user), BasePermission.READ);
+	public void secureResource(String resourceId, String user) {
+		insertAcl(ResourceIdToSecureId(resourceId), new PrincipalSid(user), BasePermission.READ);
 	}
 
 	@Override
-	public boolean isResourceAccessible(String resourceId) {
+	public Boolean isResourceAccessible(String resourceId) {
 		return permissionEvaluator.hasPermission(SecurityContextHolder.getContext().getAuthentication(), ResourceIdToSecureId(resourceId),
 				Resource.class.getName(), BasePermission.READ);
 	}
@@ -127,6 +159,10 @@ public class ACLManager implements IACLManager {
 			log.error("Error executing SQL query, rollbacking", e);
 			et.rollback();
 		}
+	}
+
+	public void setUsersPropertiesFile(String usersPropertiesFile) {
+		this.usersPropertiesFile = usersPropertiesFile;
 	}
 
 	public void setSecurityRepository(SecurityRepository securityRepository) {
