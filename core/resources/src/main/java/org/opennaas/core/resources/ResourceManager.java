@@ -310,16 +310,7 @@ public class ResourceManager implements IResourceManager {
 
 	@Override
 	public ResourceDescriptor getResourceDescriptor(String resourceId) throws ResourceException {
-		ResourceDescriptor descriptor = null;
-		try {
-			for (IResourceRepository repo : resourceRepositories.values()) {
-				IResource resource = repo.getResource(resourceId);
-				descriptor = resource.getResourceDescriptor();
-			}
-		} catch (ResourceException e) {
-			throw e;
-		}
-		return descriptor;
+		return getResourceById(resourceId).getResourceDescriptor();
 	}
 
 	@Override
