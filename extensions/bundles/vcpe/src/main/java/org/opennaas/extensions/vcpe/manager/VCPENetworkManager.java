@@ -22,6 +22,7 @@ import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
+import org.opennaas.core.security.acl.IACLManager;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilderCapability;
 import org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapability;
@@ -167,6 +168,13 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public VCPENetworkModel getVCPENetworkById(String vcpeNetworkId) throws VCPENetworkManagerException {
+		if (!getAclManager().isResourceAccessible(vcpeNetworkId))
+			throw new VCPENetworkManagerException("Access denied to resource: " + vcpeNetworkId);
+
+		return doGetVCPENetworkById(vcpeNetworkId);
+	}
+
+	private VCPENetworkModel doGetVCPENetworkById(String vcpeNetworkId) throws VCPENetworkManagerException {
 		IResource resource = null;
 		try {
 			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
@@ -188,15 +196,41 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public List<VCPENetworkModel> getAllVCPENetworks() throws VCPENetworkManagerException {
-		List<IResource> listModel = null;
-		List<VCPENetworkModel> result = new ArrayList<VCPENetworkModel>();
-		try {
-			listModel = Activator.getResourceManagerService().listResourcesByType(VCPENetworkDescriptor.RESOURCE_TYPE);
-			for (int i = 0; i < listModel.size(); i++) {
-				if (listModel.get(i).getModel() != null) {
-					result.add((VCPENetworkModel) listModel.get(i).getModel());
-				}
+
+		List<IResource> vcpes = doGetAllVCPENetworks();
+
+		for (int i = vcpes.size(); i >= 0; i--) {
+			if (!getAclManager().isResourceAccessible(vcpes.get(i).getResourceIdentifier().getId())) {
+				log.debug("Access denied to resource " + vcpes.get(i).getResourceIdentifier().getId());
+				vcpes.remove(i);
+				log.debug("Resource removed from returnObject.");
 			}
+		}
+
+		return getModelsFromVCPEs(vcpes);
+	}
+
+	/**
+	 * Assumes given resources are VCPEs.
+	 * 
+	 * @param resources
+	 * @return
+	 * @throws VCPENetworkManagerException
+	 */
+	private List<VCPENetworkModel> getModelsFromVCPEs(List<IResource> resources) throws VCPENetworkManagerException {
+		List<VCPENetworkModel> result = new ArrayList<VCPENetworkModel>();
+		for (int i = 0; i < resources.size(); i++) {
+			if (resources.get(i).getModel() != null) {
+				result.add((VCPENetworkModel) resources.get(i).getModel());
+			}
+		}
+		return result;
+	}
+
+	private List<IResource> doGetAllVCPENetworks() throws VCPENetworkManagerException {
+		List<IResource> result = null;
+		try {
+			result = Activator.getResourceManagerService().listResourcesByType(VCPENetworkDescriptor.RESOURCE_TYPE);
 		} catch (ActivatorException e) {
 			throw new VCPENetworkManagerException(e.getMessage());
 		}
@@ -753,6 +787,14 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		}
 
 		return filteredModel;
+	}
+
+	private IACLManager getAclManager() throws VCPENetworkManagerException {
+		try {
+			return Activator.getACLManagerService();
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e.getMessage());
+		}
 	}
 
 	/**
