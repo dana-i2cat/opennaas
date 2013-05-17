@@ -779,6 +779,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	private void secureVCPE(IResource vcpeNeworkResource, VCPENetworkModel vcpeNetworkModel) throws ActivatorException {
 		List<String> users = new ArrayList<String>();
 
+		users.add("admin");
 		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
 				TemplateConstants.LAN_CLIENT)).getOwner());
 		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
