@@ -16,7 +16,7 @@
 	<bean id="mySecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
 		<security:filter-chain-map path-type="ant">
 			<security:filter-chain pattern="/**"
-				filters="securityContextPersistenceFilterWithASCFalse,
+				filters="securityContextPersistenceFilterWithASCFalseSkippingClearContext,
 				basicAuthenticationFilter,
 				exceptionTranslationFilter,
 				filterSecurityInterceptor" />
@@ -36,14 +36,15 @@
 	</osgi:service>
 
 	<!-- Define filter beans -->
-	<bean id="securityContextPersistenceFilterWithASCFalse"
-		class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
-		<property name='securityContextRepository'>
-			<bean
-				class='org.springframework.security.web.context.HttpSessionSecurityContextRepository'>
-				<property name='allowSessionCreation' value='false' />
-			</bean>
-		</property>
+	<bean id="securityContextPersistenceFilterWithASCFalseSkippingClearContext"
+		class="org.opennaas.core.security.filters.SecurityContextPersistenceFilterSkipClearContext">
+		<property name="securityContextRepository" ref="httpSessionSecurityContextRepositoryWithASCFalse"/>
+		<property name="skipClearContext" value="true" />
+	</bean>
+	
+	<bean id="httpSessionSecurityContextRepositoryWithASCFalse"
+		class='org.springframework.security.web.context.HttpSessionSecurityContextRepository'>
+		<property name="allowSessionCreation" value="false" />
 	</bean>
 
 	<bean id="basicAuthenticationFilter"
@@ -70,7 +71,7 @@
 				<!-- Require ROLE_USER in all other methods -->
 				<!-- TODO secure WS endpoints dinamically, with roles!! -->
 				<security:intercept-url pattern="/**"
-					access="ROLE_ADMIN, ROLE_NOC, ROLE_USER" />
+					access="ROLE_USER" />
 			</security:filter-security-metadata-source>
 		</property>
 	</bean>
