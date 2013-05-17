@@ -12,10 +12,12 @@
 	<description>OpenNaaS Core Security </description>
 	<packaging>bundle</packaging>
 	<dependencies>
+		<!-- Servlet API -->
 		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.resources</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
 		</dependency>
+		<!-- Spring security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
@@ -47,11 +49,11 @@
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
 		</dependency>
-		<!-- Servlet API -->
-		 <dependency>
-        	<groupId>javax.servlet</groupId>
-        	<artifactId>servlet-api</artifactId>
-    	</dependency>
+		<!-- OpenNaaS bundles -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
