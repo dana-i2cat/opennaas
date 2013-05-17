@@ -59,7 +59,7 @@ public class VRRPIPv6ActionTest {
 	}
 
 	// checkParams should fail
-	@Test
+	@Test(expected = ActionException.class)
 	public void configureVRRPIPv6TestWithoutVirtualLink() throws ActionException, SAXException, IOException, TransformerException,
 			ParserConfigurationException {
 		ConfigureVRRPAction configureAction = new ConfigureVRRPAction();
@@ -70,13 +70,12 @@ public class VRRPIPv6ActionTest {
 
 		configureAction.setParams(pE);
 
-		Assert.assertFalse("Params should not be valid since VirtualLinkAddress is not set : ",
-				configureAction.checkParams(configureAction.getParams()));
+		configureAction.checkParams(configureAction.getParams());
 
 	}
 
 	// checkParams should fail
-	@Test
+	@Test(expected = ActionException.class)
 	public void configureVRRPIPv6TestWithOneLink() throws ActionException, SAXException, IOException, TransformerException,
 			ParserConfigurationException {
 		ConfigureVRRPAction configureAction = new ConfigureVRRPAction();
@@ -85,8 +84,7 @@ public class VRRPIPv6ActionTest {
 
 		configureAction.setParams(pE);
 
-		Assert.assertFalse("Params should not be valid since VRRPProtocolEndpoint is binded only to one IPProtocolEndpoint : ",
-				configureAction.checkParams(configureAction.getParams()));
+		configureAction.checkParams(configureAction.getParams());
 
 	}
 
