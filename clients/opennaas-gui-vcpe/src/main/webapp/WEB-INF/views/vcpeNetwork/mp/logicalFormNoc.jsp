@@ -27,6 +27,7 @@
 	<h2 id="vcpe_title"><spring:message code="logical.mp.title"/></h2>
 	<form:form modelAttribute="logicalInfrastructure" action="${action}" method="post">
 		<form:hidden path="id" />
+		<form:hidden path="name" />
 		<form:hidden  path="templateType"/>
 		
 		<!-- Graphical view -->
