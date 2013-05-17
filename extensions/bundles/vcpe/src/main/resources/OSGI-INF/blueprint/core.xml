@@ -12,7 +12,8 @@
 	<!--
 	    Register VCPENetworkManager as OSGi Service
 	  -->		
-	<bean id="vcpeNetworkManager" class="org.opennaas.extensions.vcpe.manager.VCPENetworkManager"/>
+	<bean id="vcpeNetworkManager" class="org.opennaas.extensions.vcpe.manager.VCPENetworkManager"
+	destroy-method="destroy"/>
 	<service ref="vcpeNetworkManager" interface="org.opennaas.extensions.vcpe.manager.IVCPENetworkManager">
 		<service-properties>
 			<!-- Rest -->	
