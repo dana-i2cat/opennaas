@@ -103,6 +103,8 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 			secureVCPE(resource, vcpeNetworkModel);
 		} catch (ActivatorException e) {
 			log.error("Error securing vCPE", e);
+			// error, remove resource
+			removeResource(resource.getResourceIdentifier().getId());
 			throw new VCPENetworkManagerException("Error securing vCPE: " + e.getMessage());
 		}
 
