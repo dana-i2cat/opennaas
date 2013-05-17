@@ -42,6 +42,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling create VCPENetworkManager service");
 			String url = getURL("vcpenetwork/create");
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
@@ -66,6 +67,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling update VCPENetworkManager service");
 			String url = getURL("vcpenetwork/update");
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
@@ -89,6 +91,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling remove VCPENetworkManager service");
 			String url = getURL("vcpenetwork/remove/" + vcpeNetworkId);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class);
@@ -113,6 +116,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling getById VCPENetworkManager service");
 			String url = getURL("vcpenetwork/getVCPENetworkById/" + id);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("VCPENetwork recovered");
@@ -137,6 +141,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling getAllVCPENetworks service");
 			String url = getURL("vcpenetwork/getAllVCPENetworks");
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("List of VCPENetwork recovered");
@@ -160,6 +165,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling getPhyInfrastructure VCPENetworkManager service");
 			String url = getURL("vcpenetwork/getPhyInfrastructureSuggestion?templateType=" + templateType);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("Physical Infrastructure recovered");
@@ -182,6 +188,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling getLogicalInfrastructureSuggestion VCPENetworkManager service");
 			String url = getURL("vcpenetwork/getLogicalInfrastructureSuggestion");
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, physicalInfrastructure);
@@ -208,6 +215,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling isVLANFree VCPENetworkManager service");
 			String url = getURL("vcpenetwork/isVLANFree?vcpeId=" + vcpeId + "&router=" + router + "&vlan=" + vlan + "&ifaceName=" + ifaceName);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("VLAN is free: " + response);
@@ -232,6 +240,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling isIPFree VCPENetworkManager service");
 			String url = getURL("vcpenetwork/isIPFree?vcpeId=" + vcpeId + "&router=" + router + "&ip=" + ip);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("IP is free: " + response);
@@ -257,6 +266,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling isVLANFree VCPENetworkManager service");
 			String url = getURL("vcpenetwork/isInterfaceFree?vcpeId=" + vcpeId + "&router=" + router + "&iface=" + iface + "." + port);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("Interface is free: " + response);
@@ -282,6 +292,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling getById VCPENetworkManager service");
 			String url = getURL("vcpenetwork/hasFinishedBuild/" + id);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("VCPENetwork recovered");
@@ -309,6 +320,7 @@ public class VCPENetworkService extends GenericRestService {
 			LOGGER.info("Calling getById VCPENetworkManager service");
 			String url = getURL("vcpenetwork/getBuildResult/" + id);
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("VCPENetwork recovered");
