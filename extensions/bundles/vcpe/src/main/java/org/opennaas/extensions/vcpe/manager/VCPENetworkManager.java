@@ -31,7 +31,9 @@ import org.opennaas.extensions.vcpe.manager.isfree.IsFreeChecker;
 import org.opennaas.extensions.vcpe.manager.model.VCPEManagerModel;
 import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
 import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
+import org.opennaas.extensions.vcpe.manager.templates.mp.TemplateConstants;
 import org.opennaas.extensions.vcpe.model.BGP;
+import org.opennaas.extensions.vcpe.model.IPNetworkDomain;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
@@ -111,12 +113,22 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#update(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
-	public String update(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException {
-		log.info("Updating a VCPE: " + vcpeNetworkModel.getName());
-		log.info("First remove a VCPE: " + vcpeNetworkModel.getName());
-		remove(vcpeNetworkModel.getId());
-		log.info("Create the new VCPE: " + vcpeNetworkModel.getName());
-		return create(vcpeNetworkModel);
+	public String update(VCPENetworkModel partialModel) throws VCPENetworkManagerException {
+		log.info("Updating a VCPE: " + partialModel.getName());
+		VCPENetworkModel newModel;
+		String vcpeId = null;
+		try {
+			newModel = getVCPENetworkById(partialModel.getId()).deepCopy();
+			newModel = fillModel(partialModel, newModel);
+			log.info("First remove a VCPE: " + partialModel.getName());
+			remove(partialModel.getId());
+			log.info("Create the new VCPE: " + partialModel.getName());
+			vcpeId = create(newModel);
+		} catch (SerializationException e) {
+			log.error("can't update the vcpe");
+			throw new VCPENetworkManagerException(e);
+		}
+		return vcpeId;
 	}
 
 	/*
@@ -587,11 +599,59 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	}
 
 	/**
+	 * Fill the model to update it if hasn't all the network domains.
+	 * 
+	 * @param partialModel
+	 * @param newModel
+	 * @return the complete model
+	 */
+	private VCPENetworkModel fillModel(VCPENetworkModel partialModel, VCPENetworkModel newModel) {
+		// Network Provider1
+		if ((IPNetworkDomain) VCPENetworkModelHelper
+				.getElementByTemplateName(partialModel, TemplateConstants.WAN1) != null) {
+			IPNetworkDomain partialNetwork = (IPNetworkDomain) VCPENetworkModelHelper
+					.getElementByTemplateName(partialModel, TemplateConstants.WAN1);
+			IPNetworkDomain newNetwork = (IPNetworkDomain) VCPENetworkModelHelper
+					.getElementByTemplateName(newModel, TemplateConstants.WAN1);
+			fillNetworkDomainModel(partialNetwork, newNetwork);
+		}
+		if ((IPNetworkDomain) VCPENetworkModelHelper
+				.getElementByTemplateName(partialModel, TemplateConstants.WAN2) != null) {
+			IPNetworkDomain partialNetwork = (IPNetworkDomain) VCPENetworkModelHelper
+					.getElementByTemplateName(partialModel, TemplateConstants.WAN2);
+			IPNetworkDomain newNetwork = (IPNetworkDomain) VCPENetworkModelHelper
+					.getElementByTemplateName(newModel, TemplateConstants.WAN2);
+			fillNetworkDomainModel(partialNetwork, newNetwork);
+		}
+		if ((IPNetworkDomain) VCPENetworkModelHelper
+				.getElementByTemplateName(partialModel, TemplateConstants.LAN_CLIENT) != null) {
+			IPNetworkDomain partialNetwork = (IPNetworkDomain) VCPENetworkModelHelper
+					.getElementByTemplateName(partialModel, TemplateConstants.LAN_CLIENT);
+			IPNetworkDomain newNetwork = (IPNetworkDomain) VCPENetworkModelHelper
+					.getElementByTemplateName(newModel, TemplateConstants.LAN_CLIENT);
+			fillNetworkDomainModel(partialNetwork, newNetwork);
+		}
+
+		return newModel;
+	}
+
+	/**
+	 * @param partialModel
+	 * @param newModel
+	 */
+	private void fillNetworkDomainModel(IPNetworkDomain partialNetwork, IPNetworkDomain newNetwork) {
+		newNetwork.setASNumber(partialNetwork.getASNumber());
+		newNetwork.setName(partialNetwork.getName());
+		newNetwork.setOwner(partialNetwork.getOwner());
+		newNetwork.setInterfaces(partialNetwork.getInterfaces());
+		newNetwork.setIPAddressRanges(partialNetwork.getIPAddressRanges());
+	}
+
+	/**
 	 * @param oldModel
 	 * @param filteredModel
 	 */
 	private void updateBGPConfiguration(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) {
-
 		BGP oldBGP = oldModel.getBgp();
 		BGP newBGP = oldModel.getBgp();
 
