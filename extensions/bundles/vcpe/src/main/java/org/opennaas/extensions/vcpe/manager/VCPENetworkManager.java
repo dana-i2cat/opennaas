@@ -97,6 +97,17 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		// Create the resource
 		IResource resource = createResource(vcpeNetworkModel.getName());
 		vcpeNetworkModel.setId(resource.getResourceIdentifier().getId());
+
+		// Secure vCPE Resource for users
+		try {
+			secureVCPE(resource, vcpeNetworkModel);
+		} catch (ActivatorException e) {
+			log.error("Error securing vCPE", e);
+			// error, remove resource
+			removeResource(resource.getResourceIdentifier().getId());
+			throw new VCPENetworkManagerException("Error securing vCPE: " + e.getMessage());
+		}
+
 		// Start the resource
 		startResource(resource.getResourceIdentifier().getId());
 
@@ -762,6 +773,22 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 
 		public VCPENetworkModel getVcpeNetworkModel() {
 			return vcpeNetworkModel;
+		}
+	}
+
+	private void secureVCPE(IResource vcpeNeworkResource, VCPENetworkModel vcpeNetworkModel) throws ActivatorException {
+		List<String> users = new ArrayList<String>();
+
+		users.add("admin");
+		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
+				TemplateConstants.LAN_CLIENT)).getOwner());
+		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
+				TemplateConstants.WAN1)).getOwner());
+		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
+				TemplateConstants.WAN2)).getOwner());
+
+		for (String user : users) {
+			Activator.getACLManagerService().secureResource(vcpeNeworkResource.getResourceIdentifier().getId(), user);
 		}
 	}
 }
