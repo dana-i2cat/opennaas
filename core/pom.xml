@@ -10,7 +10,6 @@
 	<name>OpenNaaS :: Core</name>
 	<artifactId>org.opennaas.core</artifactId>
 	<modules>
-		<module>security</module>
 		<module>features</module>
 		<module>karafbranding</module>
 		<module>persistence</module>
@@ -18,6 +17,7 @@
 		<module>resources</module>
 		<!-- Bundles past this point do depend on the resources bundle -->
 		<!--<module>org.opennaas.core.resourcemanager-soapendpoint</module>-->
+		<module>security</module>
 		<module>tests-mockprofile</module>
 	</modules>
 	<build>
