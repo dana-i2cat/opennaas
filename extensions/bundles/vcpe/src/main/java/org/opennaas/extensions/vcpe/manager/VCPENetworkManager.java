@@ -102,7 +102,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		// Secure vCPE Resource for users
 		try {
 			secureVCPE(resource, vcpeNetworkModel);
-		} catch (ActivatorException e) {
+		} catch (VCPENetworkManagerException e) {
 			log.error("Error securing vCPE", e);
 			// error, remove resource
 			removeResource(resource.getResourceIdentifier().getId());
@@ -168,25 +168,27 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 */
 	@Override
 	public VCPENetworkModel getVCPENetworkById(String vcpeNetworkId) throws VCPENetworkManagerException {
+		return (VCPENetworkModel) getVCPENetworkByIdSecured(vcpeNetworkId).getModel();
+	}
+
+	private IResource getVCPENetworkByIdSecured(String vcpeNetworkId) throws VCPENetworkManagerException {
 		if (!getAclManager().isResourceAccessible(vcpeNetworkId))
 			throw new VCPENetworkManagerException("Access denied to resource: " + vcpeNetworkId);
 
 		return doGetVCPENetworkById(vcpeNetworkId);
 	}
 
-	private VCPENetworkModel doGetVCPENetworkById(String vcpeNetworkId) throws VCPENetworkManagerException {
+	private IResource doGetVCPENetworkById(String vcpeNetworkId) throws VCPENetworkManagerException {
 		IResource resource = null;
 		try {
-			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			resource = getResourceManager().getResourceById(vcpeNetworkId);
 			if (resource == null) {
 				throw new VCPENetworkManagerException("Don't find a VCPENetwork with id = " + vcpeNetworkId);
 			}
-		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e.getMessage());
 		} catch (ResourceException e) {
 			throw new VCPENetworkManagerException(e.getMessage());
 		}
-		return (VCPENetworkModel) resource.getModel();
+		return resource;
 	}
 
 	/*
@@ -228,13 +230,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	}
 
 	private List<IResource> doGetAllVCPENetworks() throws VCPENetworkManagerException {
-		List<IResource> result = null;
-		try {
-			result = Activator.getResourceManagerService().listResourcesByType(VCPENetworkDescriptor.RESOURCE_TYPE);
-		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e.getMessage());
-		}
-		return result;
+		return getResourceManager().listResourcesByType(VCPENetworkDescriptor.RESOURCE_TYPE);
 	}
 
 	/*
@@ -354,11 +350,9 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		VCPENetworkModel filteredModel = null;
 
 		try {
-			IResource resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			IResource resource = getVCPENetworkByIdSecured(vcpeNetworkId);
 			VCPENetworkModel model = (VCPENetworkModel) resource.getModel();
 			filteredModel = filterVCPENetworkModel(model);
-		} catch (ActivatorException ae) {
-			throw new VCPENetworkManagerException(ae.getMessage());
 		} catch (ResourceException re) {
 			throw new VCPENetworkManagerException(re.getMessage());
 		} catch (AccessDeniedException ad) {
@@ -383,12 +377,10 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		VCPENetworkModel updatedModel = new VCPENetworkModel();
 		try {
 
-			IResource vcpeResource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			IResource vcpeResource = getVCPENetworkByIdSecured(vcpeNetworkId);
 			VCPENetworkModel oldModel = (VCPENetworkModel) vcpeResource.getModel();
 			updatedModel = updateVCPEModelInformation(oldModel, filteredModel);
 
-		} catch (ActivatorException ae) {
-			throw new VCPENetworkManagerException(ae.getMessage());
 		} catch (ResourceException re) {
 			throw new VCPENetworkManagerException(re.getMessage());
 		} catch (AccessDeniedException ad) {
@@ -409,8 +401,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		log.debug("Creating new VCPE resource: " + vcpeNetworkName);
 		IResource resource = null;
 		try {
-			IResourceManager manager = Activator.getResourceManagerService();
-			resource = manager.createResource(getResourceDescriptor(vcpeNetworkName));
+			resource = getResourceManager().createResource(getResourceDescriptor(vcpeNetworkName));
 			if (resource == null || resource.getResourceIdentifier() == null) {
 				throw new VCPENetworkManagerException("Can't create the resource. ");
 			}
@@ -431,7 +422,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		log.debug("Starting VCPE resource: " + vcpeNetworId);
 		IResource resource = null;
 		try {
-			IResourceManager manager = Activator.getResourceManagerService();
+			IResourceManager manager = getResourceManager();
 			resource = manager.getResourceById(vcpeNetworId);
 			manager.startResource(resource.getResourceIdentifier());
 			if (!resource.getState().equals(ILifecycle.State.ACTIVE)) {
@@ -456,7 +447,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		log.debug("Building VCPE resource: " + vcpeNetworkModel.getName());
 		IResource resource = null;
 		try {
-			resource = Activator.getResourceManagerService()
+			resource = getResourceManager()
 					.getResourceById(vcpeNetworkModel.getId());
 
 			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateType());
@@ -487,7 +478,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		log.debug("Stopping VCPE resource: " + vcpeNetworkId);
 		IResource resource = null;
 		try {
-			IResourceManager manager = Activator.getResourceManagerService();
+			IResourceManager manager = getResourceManager();
 			resource = manager.getResourceById(vcpeNetworkId);
 			manager.stopResource(resource.getResourceIdentifier());
 		} catch (Exception e) {
@@ -507,7 +498,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		log.debug("Removing VCPE resource: " + vcpeNetworkId);
 		IResource resource = null;
 		try {
-			IResourceManager manager = Activator.getResourceManagerService();
+			IResourceManager manager = getResourceManager();
 			resource = manager.getResourceById(vcpeNetworkId);
 			manager.removeResource(resource.getResourceIdentifier());
 		} catch (Exception e) {
@@ -528,7 +519,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		log.debug("Destroying VCPE resource: " + vcpeNetworkId);
 		IResource resource = null;
 		try {
-			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			resource = getResourceManager().getResourceById(vcpeNetworkId);
 			// Execute the capability and destroy the real enviroment
 			IVCPENetworkBuilderCapability vcpeNetworkBuilderCapability = (IVCPENetworkBuilderCapability) resource
 					.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
@@ -713,17 +704,14 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @throws ResourceException
 	 * @throws AccessDeniedException
 	 */
-	private void updateRoutersInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws ResourceException, AccessDeniedException {
+	private void updateRoutersInformation(VCPENetworkModel oldModel, VCPENetworkModel filteredModel) throws VCPENetworkManagerException,
+			ResourceException, AccessDeniedException {
 
 		IResourceManager resourceManager;
 
 		log.debug("Updating routers information.");
 
-		try {
-			resourceManager = Activator.getResourceManagerService();
-		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e.getMessage());
-		}
+		resourceManager = getResourceManager();
 
 		List<Router> routerList = VCPENetworkModelHelper.getRouters(filteredModel.getElements());
 
@@ -759,11 +747,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		IResourceManager resourceManager;
 		VCPENetworkModel filteredModel = originalModel.deepCopy();
 
-		try {
-			resourceManager = Activator.getResourceManagerService();
-		} catch (ActivatorException e) {
-			throw new VCPENetworkManagerException(e.getMessage());
-		}
+		resourceManager = getResourceManager();
 
 		List<Router> routerList = VCPENetworkModelHelper.getRouters(originalModel.getElements());
 
@@ -797,6 +781,14 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		}
 	}
 
+	private IResourceManager getResourceManager() throws VCPENetworkManagerException {
+		try {
+			return Activator.getResourceManagerService();
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e.getMessage());
+		}
+	}
+
 	/**
 	 * 
 	 */
@@ -818,7 +810,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		}
 	}
 
-	private void secureVCPE(IResource vcpeNeworkResource, VCPENetworkModel vcpeNetworkModel) throws ActivatorException {
+	private void secureVCPE(IResource vcpeNeworkResource, VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException {
 		List<String> users = new ArrayList<String>();
 
 		users.add("admin");
@@ -830,7 +822,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 				TemplateConstants.WAN2)).getOwner());
 
 		for (String user : users) {
-			Activator.getACLManagerService().secureResource(vcpeNeworkResource.getResourceIdentifier().getId(), user);
+			getAclManager().secureResource(vcpeNeworkResource.getResourceIdentifier().getId(), user);
 		}
 	}
 }
