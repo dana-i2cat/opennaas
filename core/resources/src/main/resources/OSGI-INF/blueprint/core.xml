@@ -15,11 +15,13 @@
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
 	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
 		<service-properties>
-			<!-- Rest -->	
+			<!-- Rest -->
 			<entry key="service.exported.interfaces" value="*"/>
 			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
-			<entry key="service.exported.intents" value="HTTP"/>		
-			<entry key="org.apache.cxf.ws.address" value="${ws.rest.url}/resources"/>  
+			<entry key="service.exported.intents" value="HTTP"/>
+			<entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/resources"/>
+			<entry key="org.apache.cxf.rs.address" value="/"/>
+			<entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
 		</service-properties>
 	</service>
 	

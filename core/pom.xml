@@ -17,6 +17,7 @@
 		<module>resources</module>
 		<!-- Bundles past this point do depend on the resources bundle -->
 		<!--<module>org.opennaas.core.resourcemanager-soapendpoint</module>-->
+		<module>security</module>
 		<module>tests-mockprofile</module>
 	</modules>
 	<build>

@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
+	<repository>mvn:org.apache.karaf.assemblies.features/standard/2.2.6/xml/features</repository>
 	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 
+	<feature name="opennaas-spring-jdbc" version="${project.version}">
+ 		<feature version="${spring.version}">spring</feature>
+		<bundle>mvn:org.springframework/spring-tx/${spring.version}</bundle>
+		<bundle>mvn:org.springframework/spring-jdbc/${spring.version}</bundle>
+ 	</feature>
+
 	<feature name="opennaas-spring-security" version="${project.version}">
+		<feature version="${project.version}">opennaas-persistence</feature>
+		<feature version="${project.version}">opennaas-spring-jdbc</feature>
+	
 		<feature version="${spring.version}">spring</feature>
 		<feature version="${spring.version}">spring-web</feature>
 		<feature version="${spring.osgi.version}">spring-dm</feature>
 		<feature version="${spring.osgi.version}">spring-dm-web</feature>
 		
 		<bundle dependency="true">mvn:org.springframework/org.springframework.transaction/${spring.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/${servicemix.ehcache.version}</bundle>
+				
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-core/${spring.security.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-config/${spring.security.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-acl/${spring.security.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-web/${spring.security.version}</bundle>
 		
-		<bundle>mvn:org.springframework.security/spring-security-core/${spring.version}</bundle>
-		<bundle>mvn:org.springframework.security/spring-security-config/${spring.version}</bundle>
-		<bundle>mvn:org.springframework.security/spring-security-acl/${spring.version}</bundle>
-		<bundle>mvn:org.springframework.security/spring-security-web/${spring.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.core.security/${project.version}</bundle>
 	</feature>
 
 
@@ -41,6 +54,7 @@
 	<feature name="org.opennaas.core" version="${project.version}">
 		<feature>xml-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
+		<feature version="${project.version}">opennaas-spring-security</feature>
 
 		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
@@ -92,7 +106,11 @@
 		<feature>jetty</feature>
 		
 		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.5.2</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.codehaus.woodstox/stax2-api/3.1.1</bundle>
+		<bundle dependency="true">mvn:org.codehaus.woodstox/woodstox-core-asl/4.2.0</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dom4j/1.6.1_5</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/2.2.0</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>

@@ -43,19 +43,24 @@
 						<form:label for="providerNetwork1.ASNumber" path="providerNetwork1.ASNumber" cssErrorClass="error">
 							<spring:message code="network.ASNumber" />
 						</form:label>
-						<form:input disabled="${providerNet1Disabled}" path="providerNetwork1.ASNumber" size="8"/>
+						<form:input readonly="${providerNet1Disabled}" path="providerNetwork1.ASNumber" size="8"/>
 						<form:errors path="providerNetwork1.ASNumber" size="8" /><br>
 						
 						<form:label for="providerNetwork1.iPAddressRange" path="providerNetwork1.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input disabled="${providerNet1Disabled}"  path="providerNetwork1.iPAddressRange" size="18" />
+						<form:input readonly="${providerNet1Disabled}"  path="providerNetwork1.iPAddressRange" size="18" />
 						<form:errors path="providerNetwork1.iPAddressRange" size="18" />
 						
 						<form:label for="providerNetwork1.owner" path="providerNetwork1.owner" cssErrorClass="error">
 							<spring:message code="network.owner" />
 						</form:label>
-						<form:select disabled="${providerNet1Disabled}" path="providerNetwork1.owner" items="${usersNOC}" />
+						<select disabled="disabled">
+							<option>
+								${logicalInfrastructure.providerNetwork1.owner}
+							</option>
+						</select>
+						<form:hidden path="providerNetwork1.owner" />
 						<form:errors path="providerNetwork1.owner" size="18" />
 					</div>		
 				</div>
@@ -71,19 +76,24 @@
 						<form:label for="providerNetwork2.ASNumber" path="providerNetwork2.ASNumber" cssErrorClass="error">
 							<spring:message code="network.ASNumber" />
 						</form:label>
-						<form:input disabled="${providerNet2Disabled}" path="providerNetwork2.ASNumber" size="8"/>
+						<form:input readonly="${providerNet2Disabled}" path="providerNetwork2.ASNumber" size="8"/>
 						<form:errors path="providerNetwork2.ASNumber" size="8" /><br>
 						
 						<form:label for="providerNetwork2.iPAddressRange" path="providerNetwork2.iPAddressRange" cssErrorClass="error">
 							<spring:message code="network.ipAddress" />
 						</form:label>
-						<form:input disabled="${providerNet2Disabled}"  path="providerNetwork2.iPAddressRange" size="18"/>
+						<form:input readonly="${providerNet2Disabled}"  path="providerNetwork2.iPAddressRange" size="18"/>
 						<form:errors path="providerNetwork2.iPAddressRange" size="18" />
 						
 						<form:label for="providerNetwork2.owner" path="providerNetwork1.owner" cssErrorClass="error">
 							<spring:message code="network.owner" />
 						</form:label>
-						<form:select disabled="${providerNet2Disabled}"  path="providerNetwork2.owner" items="${usersNOC}" />
+						<select disabled="disabled">
+							<option>
+								${logicalInfrastructure.providerNetwork2.owner}
+							</option>
+						</select>
+						<form:hidden path="providerNetwork2.owner" />
 						<form:errors path="providerNetwork2.owner" size="18" />
 					</div>		
 				</div>
@@ -102,21 +112,21 @@
 								<spring:message code="interface.name" />:
 							</form:label>
 						</form:label>
-						<form:input disabled="${providerNet1Disabled}"  path="providerNetwork1.networkInterface.name" size="8"  />.
+						<form:input readonly="${providerNet1Disabled}"  path="providerNetwork1.networkInterface.name" size="8"  />.
 						<form:errors path="providerNetwork1.networkInterface.name" size="8" />
-						<form:input disabled="${providerNet1Disabled}"  path="providerNetwork1.networkInterface.port" size="3"  />
+						<form:input readonly="${providerNet1Disabled}"  path="providerNetwork1.networkInterface.port" size="3"  />
 						<form:errors path="providerNetwork1.networkInterface.port" size="3" />
 						<br>
 						<form:label for="providerNetwork1.networkInterface.ipAddress" path="providerNetwork1.networkInterface.ipAddress" cssErrorClass="error">
 							<spring:message code="interface.ipAddress" />
 						</form:label>
-						<form:input disabled="${providerNet1Disabled}"  path="providerNetwork1.networkInterface.ipAddress" size="18"  />
+						<form:input readonly="${providerNet1Disabled}"  path="providerNetwork1.networkInterface.ipAddress" size="18"  />
 						<form:errors path="providerNetwork1.networkInterface.ipAddress" size="18" />
 						<br>
 						<form:label for="providerNetwork1.networkInterface.vlan" path="providerNetwork1.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
 						</form:label>
-						<form:input disabled="${providerNet1Disabled}" path="providerNetwork1.networkInterface.vlan" size="3"  />
+						<form:input readonly="${providerNet1Disabled}" path="providerNetwork1.networkInterface.vlan" size="3"  />
 						<form:errors path="providerNetwork1.networkInterface.vlan" size="3" />
 						
 					</div>		
@@ -134,22 +144,22 @@
 								<spring:message code="interface.name" />:
 							</form:label>
 						</form:label>
-						<form:input disabled="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.name" size="8"  />.
+						<form:input readonly="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.name" size="8"  />.
 						<form:errors path="providerNetwork2.networkInterface.name" size="8" />
-						<form:input disabled="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.port" size="3"  />
+						<form:input readonly="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.port" size="3"  />
 						<form:errors path="providerNetwork2.networkInterface.port" size="3" />
 						
 						<br>
 						<form:label for="providerNetwork2.networkInterface.ipAddress" path="providerNetwork2.networkInterface.ipAddress" cssErrorClass="error">
 							<spring:message code="interface.ipAddress" />
 						</form:label>
-						<form:input disabled="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.ipAddress" size="18"  />
+						<form:input readonly="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.ipAddress" size="18"  />
 						<form:errors path="providerNetwork2.networkInterface.ipAddress" size="18" />
 						<br>
 						<form:label for="providerNetwork2.networkInterface.vlan" path="providerNetwork2.networkInterface.vlan" cssErrorClass="error">
 							<spring:message code="interface.vlan" />
 						</form:label>
-						<form:input disabled="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.vlan" size="3"  />
+						<form:input readonly="${providerNet2Disabled}"  path="providerNetwork2.networkInterface.vlan" size="3"  />
 						<form:errors path="providerNetwork2.networkInterface.vlan" size="3" />
 					</div>		
 				</div>										
