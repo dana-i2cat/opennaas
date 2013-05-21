@@ -102,7 +102,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		// Secure vCPE Resource for users
 		try {
 			secureVCPE(resource, vcpeNetworkModel);
-		} catch (VCPENetworkManagerException e) {
+		} catch (Exception e) {
 			log.error("Error securing vCPE", e);
 			// error, remove resource
 			removeResource(resource.getResourceIdentifier().getId());
@@ -115,6 +115,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		BuildVCPECallable c = new BuildVCPECallable(vcpeNetworkModel);
 		Future<Boolean> future = executor.submit(c);
 		futures.put(resource.getResourceIdentifier().getId(), future);
+		//TODO find a way to execute rollback if something fails
 
 		return resource.getResourceIdentifier().getId();
 	}
@@ -201,7 +202,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 
 		List<IResource> vcpes = doGetAllVCPENetworks();
 
-		for (int i = vcpes.size(); i >= 0; i--) {
+		for (int i = vcpes.size() - 1; i >= 0; i--) {
 			if (!getAclManager().isResourceAccessible(vcpes.get(i).getResourceIdentifier().getId())) {
 				log.debug("Access denied to resource " + vcpes.get(i).getResourceIdentifier().getId());
 				vcpes.remove(i);
