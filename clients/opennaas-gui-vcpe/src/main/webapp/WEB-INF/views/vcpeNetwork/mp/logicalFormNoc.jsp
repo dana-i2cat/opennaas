@@ -55,20 +55,12 @@
 						<form:label for="providerNetwork1.owner" path="providerNetwork1.owner" cssErrorClass="error">
 							<spring:message code="network.owner" />
 						</form:label>
-						<c:choose>
-							<c:when test="${providerNet1Disabled}">
-								<select disabled="${providerNet1Disabled}">
-									<option>
-										${logicalInfrastructure.providerNetwork1.owner}
-									</option>
-								</select>
-								<form:hidden path="providerNetwork1.owner" />
-							</c:when>
-							<c:otherwise>
-								<form:select disabled="${providerNet1Disabled}"
-									path="providerNetwork1.owner" items="${usersNOC}" />
-							</c:otherwise>
-						</c:choose>
+						<select disabled="disabled">
+							<option>
+								${logicalInfrastructure.providerNetwork1.owner}
+							</option>
+						</select>
+						<form:hidden path="providerNetwork1.owner" />
 						<form:errors path="providerNetwork1.owner" size="18" />
 					</div>		
 				</div>
@@ -96,20 +88,12 @@
 						<form:label for="providerNetwork2.owner" path="providerNetwork1.owner" cssErrorClass="error">
 							<spring:message code="network.owner" />
 						</form:label>
-						<c:choose>
-							<c:when test="${providerNet2Disabled}">
-								<select disabled="${providerNet2Disabled}">
-									<option>
-										${logicalInfrastructure.providerNetwork2.owner}
-									</option>
-								</select>
-								<form:hidden path="providerNetwork2.owner" />
-							</c:when>
-							<c:otherwise>
-								<form:select disabled="${providerNet2Disabled}"
-									path="providerNetwork2.owner" items="${usersNOC}" />
-							</c:otherwise>
-						</c:choose>
+						<select disabled="disabled">
+							<option>
+								${logicalInfrastructure.providerNetwork2.owner}
+							</option>
+						</select>
+						<form:hidden path="providerNetwork2.owner" />
 						<form:errors path="providerNetwork2.owner" size="18" />
 					</div>		
 				</div>
