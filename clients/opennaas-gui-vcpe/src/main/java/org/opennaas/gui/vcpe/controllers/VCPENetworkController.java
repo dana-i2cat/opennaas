@@ -150,6 +150,7 @@ public abstract class VCPENetworkController {
 				model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
 				model.addAttribute("infoMsg", messageSource.getMessage("vcpenetwork.update.message.info", null, locale));
 			} else {
+				LOGGER.info("invalid request: " + result);
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.update.message.error.fields", null, locale));
 			}
