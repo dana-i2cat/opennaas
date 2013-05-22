@@ -22,31 +22,42 @@
 			</c:otherwise>
 		</c:choose>
 		<li><a href="#">${sessionScope.vcpeNetworkList[vs.index].name}</a>
-			<ul>				
-				<sec:authorize access="hasRole('ROLE_USER')">
-					<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'mp_vcpe'}">		
+			<ul>
+				<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'mp_vcpe'}">		
 						<li>
 							<a href="<c:url value="${userArea}/${templateUrl}/edit?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
 								<spring:message code="menu.edit" />
 							</a>
 						</li>
-					</c:if>
-					<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<li>
+								<a class="link_confirm" href="<c:url value="${adminArea}/${templateUrl}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+									<spring:message code="menu.delete" />
+								</a>
+							</li>
+						</sec:authorize>
+				</c:if>
+				<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">	
+					<sec:authorize access="hasRole('ROLE_NOC')">
 						<li>
-							<a href="<c:url value="${userArea}/${templateUrl}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
-								<spring:message code="menu.update" />
+							<a href="<c:url value="${userArea}/${templateUrl}/edit?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+								<spring:message code="menu.edit" />
 							</a>
 						</li>
-					</c:if>
-				</sec:authorize>
-
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<li>
-						<a class="link_confirm" href="<c:url value="${adminArea}/${templateUrl}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="menu.delete" />
-						</a>
-					</li>
-				</sec:authorize>
+						<li>
+							<a class="link_confirm" href="<c:url value="${adminArea}/${templateUrl}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+								<spring:message code="menu.delete" />
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_USER')">
+							<li>
+								<a href="<c:url value="${userArea}/${templateUrl}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
+									<spring:message code="menu.update" />
+								</a>
+							</li>
+					</sec:authorize>
+				</c:if>
 			</ul>
 		</li>
 	</c:forEach>
