@@ -8,6 +8,7 @@ import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Link;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.network.model.virtual.VirtualDevice;
 import org.opennaas.extensions.network.model.virtual.VirtualInterface;
 import org.opennaas.extensions.network.model.virtual.VirtualLink;
@@ -64,30 +65,38 @@ public class MappingResultParser {
 
 	public NetworkModel parseMappingResult() throws ResourceNotFoundException {
 
+		mappingNetworkResult = new NetworkModel();
+
+		addPhysicalNetworkElements();
 		parseVirtualDevices();
 		parseVirtualLinks();
 
 		return mappingNetworkResult;
 	}
 
-	private void parseVirtualDevices() throws ResourceNotFoundException {
+	private void addPhysicalNetworkElements() {
 
-		mappingNetworkResult = new NetworkModel();
+		for (NetworkElement elem : physicalNetworkModel.getNetworkElements())
+			mappingNetworkResult.getNetworkElements().add(elem);
+	}
+
+	private void parseVirtualDevices() throws ResourceNotFoundException {
 
 		for (int i = 0; i < mappingResult.getVnodes().size(); i++) {
 
 			int vnodeId = mappingResult.getVnodes().get(i);
-
 			String deviceId = inpNetwork.getNodes().get(vnodeId).getPnodeID();
 			Device device = NetworkModelHelper.getDeviceByName(physicalNetworkModel, deviceId);
+
 			if (device == null)
 				throw new ResourceNotFoundException("Device " + deviceId + " not found in network topology.");
 
 			VirtualDevice vDevice = new VirtualDevice();
 			vDevice.setName(String.valueOf(i));
-			vDevice.setImplementedBy(device);
+			vDevice.setImplementedBy(deviceId);
 
 			mappingNetworkResult.getNetworkElements().add(vDevice);
+
 		}
 
 	}
@@ -103,59 +112,151 @@ public class MappingResultParser {
 					// all this block constructs the virtual network
 
 					Path path;
-					VirtualInterface vIface = new VirtualInterface();
-					VirtualInterface vIface2 = new VirtualInterface();
 
 					if (i < j) {
 						resultLinks.get(i).get(j).getResultPath().setNode1Id(Integer.valueOf(mappingResult.getVnodes().get(i).toString()));
 						resultLinks.get(i).get(j).getResultPath().setNode2Id(Integer.valueOf(mappingResult.getVnodes().get(j).toString()));
 						path = resultLinks.get(i).get(j).getResultPath();
 
-						vIface.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(i)));
-						vIface2.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(j)));
-
 					}
+
 					else
 					{
 						resultLinks.get(j).get(i).getResultPath().setNode1Id(Integer.valueOf(mappingResult.getVnodes().get(j).toString()));
 						resultLinks.get(j).get(i).getResultPath().setNode2Id(Integer.valueOf(mappingResult.getVnodes().get(i).toString()));
 						path = resultLinks.get(j).get(i).getResultPath();
 
-						vIface.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(j)));
-						vIface2.setDevice(NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(i)));
-
 					}
-
-					VirtualLink vLink = new VirtualLink();
-					vLink.setSource(vIface);
-					vLink.setSink(vIface2);
 
 					// binds to physical path
+					org.opennaas.extensions.network.model.topology.Path virtualPath = new org.opennaas.extensions.network.model.topology.Path();
 
-					org.opennaas.extensions.network.model.topology.Path phyPath = new org.opennaas.extensions.network.model.topology.Path();
+					String sourceId = String.valueOf(Math.min(i, j));
+					String sinkId = String.valueOf(Math.max(i, j));
+					virtualPath.setName(sourceId + "-" + sinkId);
 
 					for (int k = 0; k < path.getLinks().size(); k++) {
-						int sourceId = path.getLinks().get(k).getNode1Id();
-						int destId = path.getLinks().get(k).getNode2Id();
 
-						String sourcePhyId = inpNetwork.getNodes().get(sourceId).getPnodeID();
-						String destPhyId = inpNetwork.getNodes().get(destId).getPnodeID();
+						int phySourceId = path.getLinks().get(k).getNode1Id();
+						int phySinkId = path.getLinks().get(k).getNode2Id();
 
-						List<Link> links = NetworkModelHelper.getAllLinksBetweenTwoDevices((NetworkModel) physicalNetworkModel, sourcePhyId,
-								destPhyId);
-						if (links.isEmpty())
-							throw new ResourceNotFoundException("No physical links between physical devices " + sourcePhyId + " and " + destPhyId);
+						int vSourceId = getVirtualDeviceIdByPhysicalId(phySourceId);
+						int vSinkId = getVirtualDeviceIdByPhysicalId(phySinkId);
 
-						phyPath.getPathSegments().add(links.get(0));
+						if (!isVirtualNodeAlreadyAdded(vSourceId))
+							addVirtualDeviceToModel(phySourceId);
+
+						if (!isVirtualNodeAlreadyAdded(vSinkId))
+							addVirtualDeviceToModel(phySinkId);
+
+						addVirtualLink(virtualPath, vSourceId, vSinkId);
 
 					}
 
-					vLink.setImplementedBy(phyPath);
-					mappingNetworkResult.getNetworkElements().add(vLink);
+					mappingNetworkResult.getNetworkElements().add(virtualPath);
+
 				}
 
 			}
 		}
 	}
 
+	/**
+	 * This method looks if there's a virtual device implemented by the physical device with the param name in model. If so, the name of this virtual
+	 * device is returned. If not, the "size" index is returned in order to add a new virtual device with this name to the virtual devices list.
+	 * 
+	 * @param phyNodeId
+	 * @return
+	 */
+	private int getVirtualDeviceIdByPhysicalId(int phyNodeId) {
+
+		List<NetworkElement> vDevices = NetworkModelHelper.getNetworkElementsByClassName(VirtualDevice.class,
+				mappingNetworkResult.getNetworkElements());
+
+		String phyNodeName = this.inpNetwork.getNodes().get(phyNodeId).getPnodeID();
+
+		for (NetworkElement vDevice : vDevices) {
+			if (((VirtualDevice) vDevice).getImplementedBy().equals(phyNodeName))
+				return Integer.valueOf(vDevice.getName());
+
+		}
+
+		return Integer.valueOf(vDevices.size());
+
+	}
+
+	/**
+	 * This method adds to virtual model all necessary information to store a virtual link: 1) Builds a source and a sink virtual interface. 2) Links
+	 * virtual interfaces to virtual devices (source and sink). 3) Links virtual link with physical link.
+	 * 
+	 * @param virtualPath
+	 * @param sourceId
+	 * @param sinkId
+	 * @throws ResourceNotFoundException
+	 */
+	private void addVirtualLink(org.opennaas.extensions.network.model.topology.Path virtualPath, int sourceId, int sinkId)
+			throws ResourceNotFoundException {
+
+		VirtualInterface vIfaceSource = new VirtualInterface();
+		VirtualInterface vIfaceSink = new VirtualInterface();
+
+		VirtualDevice sourceDevice = (VirtualDevice) NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(sourceId));
+		VirtualDevice sinkDevice = (VirtualDevice) NetworkModelHelper.getDeviceByName(mappingNetworkResult, String.valueOf(sinkId));
+
+		vIfaceSource.setDevice(sourceDevice);
+		vIfaceSink.setDevice(sinkDevice);
+
+		VirtualLink vlink = new VirtualLink();
+
+		String sourcePhyDevice = sourceDevice.getImplementedBy();
+		String sinkPhyDevice = sinkDevice.getImplementedBy();
+
+		List<Link> links = NetworkModelHelper.getAllLinksBetweenTwoDevices((NetworkModel) physicalNetworkModel, sourcePhyDevice,
+				sinkPhyDevice);
+
+		if (links.isEmpty())
+			throw new ResourceNotFoundException(
+					"No physical links between physical devices " + sourcePhyDevice + " and " + sinkPhyDevice);
+
+		vlink.setImplementedBy(links.get(0).getName());
+		vlink.setSource(vIfaceSource);
+		vlink.setSink(vIfaceSink);
+
+		virtualPath.getPathSegments().add(vlink);
+
+		mappingNetworkResult.getNetworkElements().add(vlink);
+	}
+
+	private void addVirtualDeviceToModel(int phyNodeId) throws ResourceNotFoundException {
+
+		List<NetworkElement> vDevices = NetworkModelHelper.getNetworkElementsByClassName(VirtualDevice.class,
+				mappingNetworkResult.getNetworkElements());
+
+		int virtualId = vDevices.size();
+
+		String phyDeviceId = inpNetwork.getNodes().get(phyNodeId).getPnodeID();
+
+		Device device = NetworkModelHelper.getDeviceByName(physicalNetworkModel, phyDeviceId);
+
+		if (device == null)
+			throw new ResourceNotFoundException("Device " + phyDeviceId + " not found in network topology.");
+
+		VirtualDevice vDevice = new VirtualDevice();
+		vDevice.setName(String.valueOf(virtualId));
+		vDevice.setImplementedBy(phyDeviceId);
+
+		mappingNetworkResult.getNetworkElements().add(vDevice);
+	}
+
+	private boolean isVirtualNodeAlreadyAdded(int sourceId) {
+
+		List<NetworkElement> virtualDevices = NetworkModelHelper.getNetworkElementsByClassName(VirtualDevice.class,
+				mappingNetworkResult.getNetworkElements());
+
+		for (NetworkElement device : virtualDevices)
+			if (device.getName().equals(String.valueOf(sourceId)))
+				return true;
+
+		return false;
+	}
 }

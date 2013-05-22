@@ -1,18 +1,17 @@
 package org.opennaas.extensions.network.model.virtual;
 
 import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.Path;
 
 public class VirtualLink extends Link {
 
-	private Path	implementedBy;
+	private String	implementedBy;
 
-	public Path getImplementedBy() {
+	public String getImplementedBy() {
 		return implementedBy;
 	}
 
-	public void setImplementedBy(Path implementedBy) {
-		this.implementedBy = implementedBy;
+	public void setImplementedBy(String linkName) {
+		this.implementedBy = linkName;
 	}
 
 }

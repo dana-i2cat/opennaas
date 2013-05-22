@@ -4,18 +4,18 @@ import org.opennaas.extensions.network.model.topology.Device;
 
 public class VirtualDevice extends Device {
 
-	private Device	implementedBy;
+	private String	implementedBy;
 
 	public VirtualDevice() {
 		virtualizationService.setVirtualDevicesCapacity(0);
 	}
 
-	public Device getImplementedBy() {
+	public String getImplementedBy() {
 		return implementedBy;
 	}
 
-	public void setImplementedBy(Device implementedBy) {
-		this.implementedBy = implementedBy;
+	public void setImplementedBy(String deviceName) {
+		this.implementedBy = deviceName;
 	}
 
 }
