@@ -47,6 +47,18 @@ public class NetworkModelHelper {
 		return toReturn;
 	}
 
+	public static Device getDeviceByName(NetworkModel model, String deviceName) {
+
+		List<Device> networkElements = getDevices(model);
+
+		for (NetworkElement elem : networkElements) {
+			if (elem instanceof Device && elem.getName().equals(deviceName)) {
+				return (Device) elem;
+			}
+		}
+		return null;
+	}
+
 	public static List<NetworkDomain> getDomains(NetworkModel model) {
 		return getDomains(model.getNetworkElements());
 	}
@@ -182,7 +194,13 @@ public class NetworkModelHelper {
 
 		if (src instanceof EthernetInterface && dst instanceof EthernetInterface) {
 			link = new EthernetLink();
+
+			long capacity = Math.min(((EthernetInterface) src).getBandwidth(), ((EthernetInterface) dst).getBandwidth());
+			((EthernetLink) link).setBandwidth(capacity);
+
 		}
+
+		link.setName(src.getName() + "-" + dst.getName());
 
 		link.setSource(src);
 		link.setSink(dst);
@@ -352,4 +370,18 @@ public class NetworkModelHelper {
 		return clientLinks;
 	}
 
+
+	public static List<Link> getAllLinksBetweenTwoDevices(NetworkModel networkModel, String firstDeviceId, String secondDeviceId) {
+
+		List<Link> links = new ArrayList<Link>();
+
+		List<Link> modelLinks = getLinks(networkModel);
+
+		for (Link link : modelLinks)
+			if (link.getSource().getDevice().getName().equals(firstDeviceId) && (link.getSink().getDevice().getName().equals(secondDeviceId)) || (link
+					.getSource().getDevice().getName().equals(secondDeviceId) && (link.getSink().getDevice().getName().equals(firstDeviceId))))
+				links.add(link);
+
+		return links;
+	}
 }

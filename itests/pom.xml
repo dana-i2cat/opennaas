@@ -20,6 +20,7 @@
 		<module>roadm</module>
 		<module>bod</module>
 		<module>vcpe</module>
+		<module>vnmapper</module>
 		<module>security</module>
 	</modules>
 
