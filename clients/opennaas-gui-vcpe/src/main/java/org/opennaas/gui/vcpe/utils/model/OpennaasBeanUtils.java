@@ -55,16 +55,14 @@ public class OpennaasBeanUtils {
 	 */
 	public static VCPENetworkModel getVCPENetworkFromSP(SingleProviderLogical modelIn) {
 		VCPENetworkModel modelOut = new VCPENetworkModel();
-		// Id
+
 		modelOut.setId(modelIn.getId());
-		// Name
 		modelOut.setName(modelIn.getName());
-		// Template
+		modelOut.setOwner(modelIn.getOwner());
 		modelOut.setTemplateType(modelIn.getTemplateType());
-		// Client IP Range
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
-		// NOC IP Range
 		modelOut.setNocIpRange(modelIn.getNocIpRange());
+
 		// BGP
 		if (modelIn.getBgp() != null) {
 			modelOut.setBgp(getBGP(modelIn.getBgp()));

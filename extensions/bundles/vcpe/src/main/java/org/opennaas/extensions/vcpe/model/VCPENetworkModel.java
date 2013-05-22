@@ -29,6 +29,7 @@ public class VCPENetworkModel implements IModel {
 	private static final long			serialVersionUID	= -1793468268517626224L;
 	private String						id;
 	private String						name;
+	private String						owner;
 	private String						templateType;
 	private String						clientIpRange;
 	private String						nocIpRange;
@@ -65,6 +66,21 @@ public class VCPENetworkModel implements IModel {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the owner
+	 */
+	public String getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 	/**
@@ -190,6 +206,17 @@ public class VCPENetworkModel implements IModel {
 		this.templateType = templateType;
 	}
 
+	/**
+	 * @return a copy of the model
+	 * @throws SerializationException
+	 */
+	public VCPENetworkModel deepCopy() throws SerializationException {
+		String xmlModel = this.toXml();
+		VCPENetworkModel modelCopy = (VCPENetworkModel) ObjectSerializer.fromXml(xmlModel, this.getClass());
+		return modelCopy;
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -205,6 +232,8 @@ public class VCPENetworkModel implements IModel {
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((nocIpRange == null) ? 0 : nocIpRange.hashCode());
+		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		result = prime * result + ((templateType == null) ? 0 : templateType.hashCode());
 		result = prime * result + ((vrrp == null) ? 0 : vrrp.hashCode());
 		return result;
@@ -251,6 +280,16 @@ public class VCPENetworkModel implements IModel {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (nocIpRange == null) {
+			if (other.nocIpRange != null)
+				return false;
+		} else if (!nocIpRange.equals(other.nocIpRange))
+			return false;
+		if (owner == null) {
+			if (other.owner != null)
+				return false;
+		} else if (!owner.equals(other.owner))
+			return false;
 		if (templateType == null) {
 			if (other.templateType != null)
 				return false;
@@ -264,12 +303,4 @@ public class VCPENetworkModel implements IModel {
 		return true;
 	}
 
-	public VCPENetworkModel deepCopy() throws SerializationException {
-
-		String xmlModel = this.toXml();
-		VCPENetworkModel modelCopy = (VCPENetworkModel) ObjectSerializer.fromXml(xmlModel, this.getClass());
-
-		return modelCopy;
-
-	}
 }
