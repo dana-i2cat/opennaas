@@ -65,7 +65,10 @@
 		<module>macbridge.capability.vlanawarebridge</module>
 		<module>macbridge.ios.resource</module>
 		
+		<module>vnmapper</module>
+		
 		<module>vcpe</module>
+
 		<module>sampleresource</module>
 	</modules>
 </project>
