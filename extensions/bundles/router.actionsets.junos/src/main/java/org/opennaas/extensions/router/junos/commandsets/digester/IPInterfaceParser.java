@@ -18,6 +18,7 @@ import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
@@ -83,10 +84,13 @@ public class IPInterfaceParser extends DigesterEngine {
 
 			// addObjectCreate("*/interfaces/interface/unit/peer-unit", LogicalTunnelPort.class);
 			addMyRule("*/interfaces/interface/unit/peer-unit", "setPeerUnit", 0);
-			addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
+			addObjectCreate("*/interfaces/interface/unit/family/inet/address", IPProtocolEndpoint.class);
 			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
+			addSetNext("*/interfaces/interface/unit/family/inet/address", "addProtocolEndpoint");
+
+			addObjectCreate("*/interfaces/interface/unit/family/inet6/address", IPProtocolEndpoint.class);
 			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
-			addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
+			addSetNext("*/interfaces/interface/unit/family/inet6/address", "addProtocolEndpoint");
 
 			/* GRETunnel Configuration */
 			addMyRule("*/interfaces/interface/unit/tunnel", "setGRETunnel", 0);
@@ -102,6 +106,17 @@ public class IPInterfaceParser extends DigesterEngine {
 			addMyRule("*/interfaces/interface/unit/family/inet/address/vrrp-group/name", "addVRRPGroup", 0);
 			addMyRule("*/interfaces/interface/unit/family/inet/address/vrrp-group/virtual-address", "setVRRPGroupVirtualAddress", 0);
 			addSetNext("*/interfaces/interface/unit/family/inet/address/vrrp-group", "bindServiceAccessPoint");
+
+			// VRRP IPv6 configuration
+			addObjectCreate("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group", VRRPProtocolEndpoint.class);
+			addCallMethod("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/priority", "setPriority", 0,
+					new Class[] { Integer.TYPE });
+			addMyRule("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/name", "addVRRPGroup", 0);
+			addMyRule("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/virtual-inet6-address", "setVRRPGroupVirtualAddress", 0);
+			addMyRule("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group/virtual-link-local-address",
+					"setVRRPGroupVirtualLinkLocalAddress", 0);
+			addSetNext("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group", "bindServiceAccessPoint");
+
 		}
 	}
 
@@ -222,14 +237,17 @@ public class IPInterfaceParser extends DigesterEngine {
 
 					IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) pE;
 					GRETunnelEndpoint gretunnelEndpoint = new GRETunnelEndpoint();
-					String ip = ipProtocolEndpoint.getIPv4Address();
-					if (ip != null) {
-						gretunnelEndpoint.setIPv4Address(ip);
+
+					if (ipProtocolEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+
+						gretunnelEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+						gretunnelEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+						gretunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 					} else {
-						ip = ipProtocolEndpoint.getIPv6Address();
-						gretunnelEndpoint.setIPv6Address(ip);
+						gretunnelEndpoint.setIPv6Address(ipProtocolEndpoint.getIPv6Address());
+						gretunnelEndpoint.setPrefixLength(ipProtocolEndpoint.getPrefixLength());
+						gretunnelEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
 					}
-					gretunnelEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
 
 					gretunnelService.addProtocolEndpoint(gretunnelEndpoint);
 				}
@@ -292,6 +310,7 @@ public class IPInterfaceParser extends DigesterEngine {
 			String maskIpv4 = IPUtilsHelper.parseShortToLongIpv4NetMask(shortMask);
 			ipProtocolEndpoint.setIPv4Address(ip);
 			ipProtocolEndpoint.setSubnetMask(maskIpv4);
+			ipProtocolEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -301,12 +320,11 @@ public class IPInterfaceParser extends DigesterEngine {
 	public void setIPv6Address(String ipv6) {
 		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
 		try {
-			// TODO implement a method to convert the mask of an IPv6 address
 			String ip = ipv6.split("/")[0];
 			String shortMask = ipv6.split("/")[1];
-			// ipProtocolEndpoint.setIPv6Address(ip);
-			// ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
-
+			ipProtocolEndpoint.setIPv6Address(ip);
+			ipProtocolEndpoint.setPrefixLength(Short.valueOf(shortMask));
+			ipProtocolEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -360,6 +378,20 @@ public class IPInterfaceParser extends DigesterEngine {
 		Object obj2 = peek(0);
 		assert (obj2 instanceof VRRPProtocolEndpoint);
 		((VRRPProtocolEndpoint) obj2).setService(vrrpGroup);
+		((VRRPProtocolEndpoint) obj2).setProtocolIFType(ProtocolIFType.IPV4);
+
+	}
+
+	public void setVRRPGroupVirtualLinkLocalAddress(String address) {
+
+		Object obj2 = peek();
+		assert (obj2 instanceof VRRPProtocolEndpoint);
+		VRRPProtocolEndpoint vE = (VRRPProtocolEndpoint) obj2;
+
+		vE.setProtocolIFType(ProtocolIFType.IPV6);
+		assert (vE.getService() instanceof VRRPGroup);
+		((VRRPGroup) vE.getService()).setVirtualLinkAddress(address);
+
 	}
 
 	@Deprecated

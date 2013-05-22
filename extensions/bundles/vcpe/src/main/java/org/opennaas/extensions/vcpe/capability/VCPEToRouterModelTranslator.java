@@ -8,13 +8,14 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
+import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.VCPETemplate;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPEToRouterModelTranslator {
@@ -100,6 +101,7 @@ public class VCPEToRouterModelTranslator {
 		String[] addressAndMask = IPUtilsHelper.composedIPAddressToIPAddressAndMask(ipAddress);
 
 		IPProtocolEndpoint ipEP = new IPProtocolEndpoint();
+		ipEP.setProtocolIFType(ProtocolIFType.IPV4);
 		ipEP.setIPv4Address(addressAndMask[0]);
 		if (addressAndMask.length > 1)
 			ipEP.setSubnetMask(addressAndMask[1]);
@@ -113,7 +115,7 @@ public class VCPEToRouterModelTranslator {
 		Link ltLink = null;
 		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
 		for (Link link : links) {
-			if (link.getType().equals(VCPETemplate.LINK_TYPE_LT)) {
+			if (link.getType().equals(SPTemplateConstants.LINK_TYPE_LT)) {
 				if (link.getSource().equals(iface) || link.getSink().equals(iface)) {
 					ltLink = link;
 					break;

@@ -6,5 +6,5 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<h1>Access Denied!</h1>
-<p>Only NOC users can see this page!</p>
+<h1><spring:message code="denied.title" /></h1>
+<p><spring:message code="denied.message" /></p>

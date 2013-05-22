@@ -4,23 +4,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.Service;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
@@ -194,6 +194,8 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 
 		OSPFService toReturn = new OSPFService();
 
+		toReturn.setAlgorithmType(AlgorithmType.OSPFV2);
+
 		// get OSPF area id for each pep to configure
 		OSPFArea tmpArea;
 		OSPFArea areaWithPep;
@@ -248,7 +250,8 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 	private OSPFService getOSPFService(ComputerSystem system) {
 		for (Service service : system.getHostedService()) {
 			if (service instanceof OSPFService) {
-				return (OSPFService) service;
+				if (((OSPFService) service).getAlgorithmType().equals(AlgorithmType.OSPFV2))
+					return (OSPFService) service;
 			}
 		}
 		return null;

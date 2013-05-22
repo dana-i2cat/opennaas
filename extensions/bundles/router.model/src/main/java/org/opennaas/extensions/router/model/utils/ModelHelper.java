@@ -7,9 +7,16 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.VRRPGroup;
+import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 
 public class ModelHelper {
 
@@ -47,4 +54,89 @@ public class ModelHelper {
 		return address.getHostAddress();
 	}
 
+	public static VRRPGroup copyVRRPConfiguration(VRRPGroup vrrpGroup) {
+
+		VRRPGroup copy = copyVRRPGroup(vrrpGroup);
+
+		for (ProtocolEndpoint protocolEndpoint : vrrpGroup.getProtocolEndpoint()) {
+
+			// copy VRRPProtocolEndpoint
+			VRRPProtocolEndpoint vrrpProtocolEndpoint = copyVRRPProtocolEndpoint((VRRPProtocolEndpoint) protocolEndpoint);
+			copy.addProtocolEndpoint(vrrpProtocolEndpoint);
+
+			// IPProtocolEndpoint copy
+			IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) protocolEndpoint.getBindedProtocolEndpoints().get(0);
+			IPProtocolEndpoint ipCopy = copyIPProtocolEndpoint(ipProtocolEndpoint);
+			vrrpProtocolEndpoint.bindServiceAccessPoint(ipCopy);
+
+			// NetworkPort copy
+			NetworkPort networkPort = (NetworkPort) ipProtocolEndpoint.getLogicalPorts().get(0);
+			NetworkPort netCopy = copyNetworkPort(networkPort);
+
+			netCopy.addProtocolEndpoint(ipCopy);
+
+		}
+
+		return copy;
+	}
+
+	public static VRRPGroup copyVRRPGroup(VRRPGroup vrrpGroup) {
+
+		VRRPGroup copy = new VRRPGroup();
+
+		copy.setVrrpName(vrrpGroup.getVrrpName());
+		copy.setVirtualIPAddress(vrrpGroup.getVirtualIPAddress());
+		copy.setVirtualLinkAddress(vrrpGroup.getVirtualLinkAddress());
+
+		return copy;
+	}
+
+	public static NetworkPort copyNetworkPort(NetworkPort networkPort) {
+		NetworkPort netCopy = new NetworkPort();
+		netCopy.setName(networkPort.getName());
+		netCopy.setPortNumber(networkPort.getPortNumber());
+		return netCopy;
+	}
+
+	public static IPProtocolEndpoint copyIPProtocolEndpoint(IPProtocolEndpoint ipProtocolEndpoint) {
+
+		IPProtocolEndpoint copy = new IPProtocolEndpoint();
+		copy.setProtocolIFType(ipProtocolEndpoint.getProtocolIFType());
+
+		if (ipProtocolEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+			copy.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+			copy.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+
+		} else if (ipProtocolEndpoint.getProtocolIFType().equals(ProtocolIFType.IPV6)) {
+			copy.setIPv6Address(ipProtocolEndpoint.getIPv6Address());
+			copy.setPrefixLength(ipProtocolEndpoint.getPrefixLength());
+
+		} else {
+			copy.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+			copy.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+			copy.setIPv6Address(ipProtocolEndpoint.getIPv6Address());
+			copy.setPrefixLength(ipProtocolEndpoint.getPrefixLength());
+		}
+		return copy;
+
+	}
+
+	public static VRRPProtocolEndpoint copyVRRPProtocolEndpoint(VRRPProtocolEndpoint pE) {
+
+		VRRPProtocolEndpoint copy = new VRRPProtocolEndpoint();
+		copy.setPriority(pE.getPriority());
+		copy.setProtocolIFType(pE.getProtocolIFType());
+		return copy;
+	}
+
+	public static VRRPGroup getVRRPGroupByName(ComputerSystem model, int groupId) throws CapabilityException {
+
+		List<VRRPGroup> vrrpGroupsList = model.getAllHostedServicesByType(new VRRPGroup());
+
+		for (VRRPGroup candidate : vrrpGroupsList)
+			if (candidate.getVrrpName() == groupId)
+				return candidate;
+
+		return null;
+	}
 }

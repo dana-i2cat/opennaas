@@ -99,6 +99,7 @@ public class MockNetworkModel {
 		link.setSource((Interface) networkElements.get(0));
 		link.setSink((Interface) networkElements.get(8));
 		link.setBidirectional(false);
+		link.setName(link.getSource().getName() + "-" + link.getSink().getName());
 
 		((Interface) networkElements.get(0)).setLinkTo(link);
 		listLinks.add(link);
@@ -108,6 +109,7 @@ public class MockNetworkModel {
 		link2.setSource((Interface) networkElements.get(1));
 		link2.setSink((Interface) networkElements.get(4));
 		link2.setBidirectional(true);
+		link2.setName(link2.getSource().getName() + "-" + link2.getSink().getName());
 		((Interface) networkElements.get(1)).setLinkTo(link2);
 		((Interface) networkElements.get(4)).setLinkTo(link2);
 		listLinks.add(link2);
@@ -117,6 +119,7 @@ public class MockNetworkModel {
 		link3.setSource((Interface) networkElements.get(3));
 		link3.setSink((Interface) networkElements.get(6));
 		link3.setBidirectional(true);
+		link3.setName(link3.getSource().getName() + "-" + link3.getSink().getName());
 		((Interface) networkElements.get(3)).setLinkTo(link3);
 		((Interface) networkElements.get(6)).setLinkTo(link3);
 		listLinks.add(link3);

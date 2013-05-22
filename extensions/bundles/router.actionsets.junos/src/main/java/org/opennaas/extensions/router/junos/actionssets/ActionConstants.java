@@ -5,6 +5,7 @@ import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.capability.gretunnel.GRETunnelActionSet;
 import org.opennaas.extensions.router.capability.ip.IPActionSet;
 import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
+import org.opennaas.extensions.router.capability.ospfv3.OSPFv3ActionSet;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteActionSet;
 import org.opennaas.extensions.router.capability.vrrp.VRRPActionSet;
 
@@ -35,7 +36,12 @@ public class ActionConstants {
 
 	// IP
 	public static final String	SETIPv4								= IPActionSet.SET_IPv4;
+	public static final String	SETIPv6								= IPActionSet.SET_IPv6;
 	public static final String	SETINTERFACEDESCRIPTION				= IPActionSet.SET_INTERFACE_DESCRIPTION;
+	public static final String	ADDIPv4								= IPActionSet.ADD_IPv4;
+	public static final String	ADDIPv6								= IPActionSet.ADD_IPv6;
+	public static final String	REMOVEIPv4							= IPActionSet.REMOVE_IPv4;
+	public static final String	REMOVEIPv6							= IPActionSet.REMOVE_IPv6;
 
 	// TODO THE SAME NAME FOR THE OTHER LIST LOGICAL ROUTERS
 	public static final String	GETLOGICALROUTERS					= "getLogicalRouters";
@@ -61,6 +67,19 @@ public class ActionConstants {
 	public static final String	OSPF_ADD_INTERFACE_IN_AREA			= OSPFActionSet.OSPF_ADD_INTERFACE_IN_AREA;
 	public static final String	OSPF_REMOVE_INTERFACE_IN_AREA		= OSPFActionSet.OSPF_REMOVE_INTERFACE_IN_AREA;
 
+	// OSPFv3 actionset
+	public static final String	OSPFv3_CONFIGURE					= OSPFv3ActionSet.OSPFv3_CONFIGURE;
+	public static final String	OSPFv3_CLEAR						= OSPFv3ActionSet.OSPFv3_CLEAR;
+	public static final String	OSPFv3_GET_CONFIGURATION			= OSPFv3ActionSet.OSPFv3_GET_CONFIGURATION;
+	public static final String	OSPFv3_ACTIVATE						= OSPFv3ActionSet.OSPFv3_ACTIVATE;
+	public static final String	OSPFv3_DEACTIVATE					= OSPFv3ActionSet.OSPFv3_DEACTIVATE;
+	public static final String	OSPFv3_ENABLE_INTERFACE				= OSPFv3ActionSet.OSPFv3_ENABLE_INTERFACE;
+	public static final String	OSPFv3_DISABLE_INTERFACE			= OSPFv3ActionSet.OSPFv3_DISABLE_INTERFACE;
+	public static final String	OSPFv3_CONFIGURE_AREA				= OSPFv3ActionSet.OSPFv3_CONFIGURE_AREA;
+	public static final String	OSPFv3_REMOVE_AREA					= OSPFv3ActionSet.OSPFv3_REMOVE_AREA;
+	public static final String	OSPFv3_ADD_INTERFACE_IN_AREA		= OSPFv3ActionSet.OSPFv3_ADD_INTERFACE_IN_AREA;
+	public static final String	OSPFv3_REMOVE_INTERFACE_IN_AREA		= OSPFv3ActionSet.OSPFv3_REMOVE_INTERFACE_IN_AREA;
+
 	// Static Route actionset
 	public static final String	STATIC_ROUTE_CREATE					= StaticRouteActionSet.STATIC_ROUTE_CREATE;
 	public static final String	STATIC_ROUTE_DELETE					= StaticRouteActionSet.STATIC_ROUTE_DELETE;
@@ -74,4 +93,6 @@ public class ActionConstants {
 	public static final String	VRRP_UNCONFIGURE					= VRRPActionSet.VRRP_UNCONFIGURE;
 	public static final String	VRRP_UPDATE_IP_ADDRESS				= VRRPActionSet.VRRP_UPDATE_VIRTUAL_IP_ADDRESS;
 	public static final String	VRRP_UPDATE_PRIORITY				= VRRPActionSet.VRRP_UPDATE_PRIORITY;
+	public static final String	VRRP_UPDATE_VIRTUAL_LINK_ADDRESS	= VRRPActionSet.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS;
+
 }

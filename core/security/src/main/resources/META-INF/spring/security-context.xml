@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.0.4.xsd
+		http://www.springframework.org/schema/osgi
+		http://www.springframework.org/schema/osgi/spring-osgi-1.2.xsd
+		">
+
+	<!-- Spring Security Context -->
+	<!-- from https://josh.media.berkeley.edu/?p=61 -->
+	<bean id="mySecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
+		<security:filter-chain-map path-type="ant">
+			<security:filter-chain pattern="/**"
+				filters="securityContextPersistenceFilterWithASCFalseSkippingClearContext,
+				basicAuthenticationFilter,
+				exceptionTranslationFilter,
+				filterSecurityInterceptor" />
+		</security:filter-chain-map>
+	</bean>
+
+	<!-- Publish the chain as a single Filter in the OSGi service registry, 
+		for DOSGi to register it: See https://cxf.apache.org/distributed-osgi-reference.html#DistributedOSGiReference-ConfigurationProperties -->
+	<osgi:service id="mySecurityFilterChainOsgi" ref="mySecurityFilterChain"
+		interface="javax.servlet.Filter">
+		<osgi:service-properties>
+			<entry key="org.apache.cxf.httpservice.filter" value="true" />
+			<!-- Pax web will pick up this filter, and will complain if no servletNames 
+				or urlPatterns are specified -->
+			<entry key="servletNames" value="none" />
+		</osgi:service-properties>
+	</osgi:service>
+
+	<!-- Define filter beans -->
+	<bean id="securityContextPersistenceFilterWithASCFalseSkippingClearContext"
+		class="org.opennaas.core.security.filters.SecurityContextPersistenceFilterSkipClearContext">
+		<property name="securityContextRepository" ref="httpSessionSecurityContextRepositoryWithASCFalse"/>
+		<property name="skipClearContext" value="true" />
+	</bean>
+	
+	<bean id="httpSessionSecurityContextRepositoryWithASCFalse"
+		class='org.springframework.security.web.context.HttpSessionSecurityContextRepository'>
+		<property name="allowSessionCreation" value="false" />
+	</bean>
+
+	<bean id="basicAuthenticationFilter"
+		class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+	</bean>
+	<bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+		<property name="realmName" value="OpenNaaS Application" />
+	</bean>
+
+	<bean id="exceptionTranslationFilter"
+		class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+	</bean>
+
+	<bean id="filterSecurityInterceptor"
+		class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="accessDecisionManager" ref="webAccessDecisionManager" />
+		<property name="securityMetadataSource">
+			<security:filter-security-metadata-source>
+				<!-- Require ROLE_USER in all other methods -->
+				<!-- TODO secure WS endpoints dinamically, with roles!! -->
+				<security:intercept-url pattern="/**"
+					access="ROLE_USER" />
+			</security:filter-security-metadata-source>
+		</property>
+	</bean>
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider>
+			<!-- TODO manage users and roles dinamically!! -->
+			<security:user-service id="userService">
+				<security:user name="admin" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_ADMIN, ROLE_NOC, ROLE_USER" />
+				<security:user name="client1" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_USER" />
+				<security:user name="client2" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_USER" />
+				<security:user name="noc1" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_NOC, ROLE_USER" />
+				<security:user name="noc2" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_NOC, ROLE_USER" />
+				<security:user name="noc3" password="e10adc3949ba59abbe56e057f20f883e"
+					authorities="ROLE_NOC, ROLE_USER" />
+			</security:user-service>
+			<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<!-- Use a Md5 encoder since the user's passwords are stored as Md5 in the 
+		database -->
+	<bean id="passwordEncoder"
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+
+	<!-- ============================================================================= -->
+	<!-- ============================= AUTHORIZATION ================================= -->
+	<!-- ============================================================================= -->
+
+	<!-- SeeAlso bean named filterSecurityInterceptor where webAccessDecisionManager 
+		is used -->
+	<bean id="webAccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<property name="decisionVoters">
+			<list>
+				<bean class="org.springframework.security.access.vote.RoleVoter" />
+				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- =================================== ACL ===================================== -->
+
+	<!-- Declare an ACL service -->
+	<bean id="aclService"
+		class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
+		<constructor-arg ref="dataSourceSecurity" />
+		<constructor-arg ref="lookupStrategy" />
+		<constructor-arg ref="aclCache" />
+	</bean>
+	<!-- Publish aclService in the OSGi service registry -->
+	<osgi:service id="myACLServiceOsgi" ref="aclService"
+		interface="org.springframework.security.acls.model.MutableAclService" />
+
+	<!-- Declare a lookup strategy -->
+	<bean id="lookupStrategy"
+		class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
+		<constructor-arg ref="dataSourceSecurity" />
+		<constructor-arg ref="aclCache" />
+		<constructor-arg ref="aclAuthorizationStrategy" />
+		<constructor-arg ref="auditLogger" />
+	</bean>
+
+	<!-- Declare an acl cache -->
+	<bean id="aclCache"
+		class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
+		<constructor-arg>
+			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+						<property name="configLocation" value="/META-INF/ehcache-failsafe.xml" />
+					</bean>
+				</property>
+				<property name="cacheName" value="aclCache" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<!-- Declare an acl authorization strategy -->
+	<bean id="aclAuthorizationStrategy"
+		class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
+		<!-- From org.springframework.security.acls.domain.AclAuthorizationStrategyImpl 
+			javadoc: The only mandatory parameter relates to the system-wide GrantedAuthority 
+			instances that can be held to always permit ACL changes. params: auths an 
+			array of <code>GrantedAuthority</code>s that have special permissions (index 
+			0 is the authority needed to change ownership, index 1 is the authority needed 
+			to modify auditing details, index 2 is the authority needed to change other 
+			ACL and ACE details) (required) -->
+		<constructor-arg>
+			<list>
+				<bean
+					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					<constructor-arg value="ROLE_ADMIN" />
+				</bean>
+				<bean
+					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					<constructor-arg value="ROLE_ADMIN" />
+				</bean>
+				<bean
+					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					<constructor-arg value="ROLE_ADMIN" />
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- Declare an audit logger -->
+	<bean id="auditLogger"
+		class="org.springframework.security.acls.domain.ConsoleAuditLogger" />
+
+
+	<!-- ACL permission masks used by this application -->
+	<bean id="readPermission"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField"
+			value="org.springframework.security.acls.domain.BasePermission.READ" />
+	</bean>
+
+	<!-- Register OpenNaaS OSGi Services & Beans for Security -->
+
+	<!-- DataSourceSecurity bean -->
+	<bean id="dataSourceSecurity" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url"
+			value="jdbc:hsqldb:file:databases/security/security_db;hsqldb.default_table_type=cached;shutdown=true" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean>
+
+	<!-- DataSourceSecurity exported as OSGi service -->
+	<osgi:service ref="dataSourceSecurity" interface="javax.sql.DataSource">
+		<osgi:service-properties>
+			<entry key="osgi.jndi.service.name" value="jdbc/opennaas-security" />
+		</osgi:service-properties>
+	</osgi:service>
+
+	<!-- SecurityRepository bean -->
+	<bean id="securityRepository"
+		class="org.opennaas.core.security.persistence.SecurityRepository"
+		init-method="init" destroy-method="close">
+		<property name="persistenceUnit" value="opennaas-security" />
+	</bean>
+
+	<!-- ACLManager bean -->
+	<bean id="aclManager" class="org.opennaas.core.security.acl.ACLManager"
+		init-method="init">
+		<property name="securityRepository" ref="securityRepository" />
+		<property name="aclService" ref="aclService" />
+		<property name="permissionEvaluator" ref="permissionEvaluator" />
+		<property name="usersPropertiesFile" value="users" />
+	</bean>
+
+	<!-- Permission evaluator -->
+	<bean id="permissionEvaluator"
+		class="org.springframework.security.acls.AclPermissionEvaluator">
+		<constructor-arg ref="aclService" />
+	</bean>
+
+</beans>
