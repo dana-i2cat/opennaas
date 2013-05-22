@@ -302,23 +302,15 @@ public class ResourceManager implements IResourceManager {
 			try {
 				return (Resource) repo.getResource(resourceId);
 			} catch (ResourceException e) {
+				// ignore, try next repository
 			}
 		}
-		return null;
+		throw new ResourceException("No resource with ID " + resourceId + " was found.");
 	}
 
 	@Override
 	public ResourceDescriptor getResourceDescriptor(String resourceId) throws ResourceException {
-		ResourceDescriptor descriptor = null;
-		try {
-			for (IResourceRepository repo : resourceRepositories.values()) {
-				IResource resource = repo.getResource(resourceId);
-				descriptor = resource.getResourceDescriptor();
-			}
-		} catch (ResourceException e) {
-			throw e;
-		}
-		return descriptor;
+		return getResourceById(resourceId).getResourceDescriptor();
 	}
 
 	@Override

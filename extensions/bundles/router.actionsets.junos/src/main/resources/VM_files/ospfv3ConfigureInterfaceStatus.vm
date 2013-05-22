@@ -1,0 +1,34 @@
+<configuration>
+	#set($logicalRouter = "false")
+	#if(!$elementName.equals(""))
+		#set($logicalRouter = "true")
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+
+	<protocols>
+		<ospf3>
+			#foreach($ospfAreaConfig in $param.getOSPFAreaConfiguration())
+			#set($ospfArea = $ospfAreaConfig.getOSPFArea())
+			<area>
+				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
+				#foreach($ospfPep in $ospfArea.getEndpointsInArea())
+				##replace the content on interface with given name
+				<interface operation="replace">
+					<name>$ospfPep.getName()</name>
+					##ENABLED/DISABLED
+					#if($ospfPep.getEnabledState().toString().equals($disabledState))
+					<disable/>
+					#end
+				</interface>
+				#end
+			</area>
+			#end
+		</ospf3>
+	</protocols>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

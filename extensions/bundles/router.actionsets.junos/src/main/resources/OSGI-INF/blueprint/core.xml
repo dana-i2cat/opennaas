@@ -18,7 +18,7 @@
 		<service-properties>
 			<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="junos"/>
-			<entry key="actionset.capability" value="ipv4"/>
+			<entry key="actionset.capability" value="ip"/>
 			<entry key="actionset.version" value="10.10"/>
 		</service-properties>
 	</service>
@@ -85,4 +85,17 @@
 			<entry key="actionset.version" value="10.10"/>
 		</service-properties>
 	</service>
+
+	
+	<bean id="ospfv3ActionSet" class="org.opennaas.extensions.router.junos.actionssets.OSPFv3ActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="ospfv3ActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="ospfv3"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+	
 </blueprint>

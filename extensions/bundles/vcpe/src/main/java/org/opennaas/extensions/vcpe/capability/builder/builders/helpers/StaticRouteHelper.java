@@ -34,6 +34,11 @@ public class StaticRouteHelper extends GenericHelper {
 			throw new ResourceException("Invalid IP address range (missing mask): " + ipRange);
 		}
 
+		// nextHopIpAddress should have no mask
+		if (nextHopIpAddress != null && nextHopIpAddress.contains("/")) {
+			nextHopIpAddress = IPUtilsHelper.composedIPAddressToIPAddressAndMask(nextHopIpAddress)[0];
+		}
+
 		IStaticRouteCapability capability = (IStaticRouteCapability) routerResource.getCapabilityByInterface(IStaticRouteCapability.class);
 		capability.createStaticRoute(ipRangeAddressAndMask[0], ipRangeAddressAndMask[1], nextHopIpAddress, String.valueOf(isDiscard));
 	}

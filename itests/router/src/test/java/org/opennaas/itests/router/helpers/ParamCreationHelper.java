@@ -21,9 +21,13 @@ import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
+import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class ParamCreationHelper {
@@ -205,6 +209,15 @@ public class ParamCreationHelper {
 		return ospfService;
 	}
 
+	public static OSPFService getOSPFv3Service(String routerId) {
+		OSPFService ospfService = new OSPFService();
+		if (routerId != null) {
+			ospfService.setRouterID(routerId);
+		}
+		ospfService.setAlgorithmType(AlgorithmType.OSPFV3);
+		return ospfService;
+	}
+
 	/**
 	 * @param areaId
 	 * @param selectedAreaType
@@ -239,6 +252,7 @@ public class ParamCreationHelper {
 		GRETunnelEndpoint gE = new GRETunnelEndpoint();
 		gE.setIPv4Address(ipv4Address);
 		gE.setSubnetMask(subnetMask);
+		gE.setProtocolIFType(ProtocolIFType.IPV6);
 
 		greService.setGRETunnelConfiguration(greConfig);
 		greService.addProtocolEndpoint(gE);
@@ -297,11 +311,12 @@ public class ParamCreationHelper {
 		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
 		vrrProtocolEndpoint1.setPriority(100);
 		vrrProtocolEndpoint1.setService(vrrpGroup);
-
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
 		// IPProtocolEndpoint
 		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
 		ipProtocolEndpoint1.setIPv4Address(interfaceIPAddress);
 		ipProtocolEndpoint1.setSubnetMask(interfaceSubnetMask);
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
 		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
 
 		// EthernetPort
@@ -313,4 +328,142 @@ public class ParamCreationHelper {
 		return vrrpGroup;
 	}
 
+	public static VRRPGroup newParamsVRRPGroupWithOneEndpointIPv6(String virtualIPAddress, String virtualLinkAddress, String interfaceName,
+			String interfaceIPAddress) {
+		// VRRPGroup
+		VRRPGroup vrrpGroup = new VRRPGroup();
+		vrrpGroup.setVrrpName(201);
+		vrrpGroup.setVirtualIPAddress(virtualIPAddress);
+		vrrpGroup.setVirtualLinkAddress(virtualLinkAddress);
+		// VRRPProtocolEndpoint
+		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint1.setPriority(100);
+		vrrProtocolEndpoint1.setService(vrrpGroup);
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		// IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
+		ipProtocolEndpoint1.setIPv6Address(IPUtilsHelper.getAddressFromIP(interfaceIPAddress));
+		ipProtocolEndpoint1.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(interfaceIPAddress)));
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
+
+		// EthernetPort
+		EthernetPort eth1 = new EthernetPort();
+		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth1.setName(interfaceName);
+		eth1.setPortNumber(1);
+		ipProtocolEndpoint1.addLogiaclPort(eth1);
+
+		return vrrpGroup;
+	}
+
+	public static GRETunnelService getGRETunnelService(String tunnelName, String ipAddress, String ipSource, String ipDestiny) {
+		GRETunnelService greService = new GRETunnelService();
+		greService.setElementName("");
+		greService.setName(tunnelName);
+
+		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
+		greConfig.setSourceAddress(ipSource);
+		greConfig.setDestinationAddress(ipDestiny);
+
+		GRETunnelEndpoint gE = new GRETunnelEndpoint();
+
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+			gE.setIPv4Address(IPUtilsHelper.getAddressFromIP(ipAddress));
+			String mask = IPUtilsHelper.getPrefixFromIp(ipAddress);
+			gE.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(mask));
+			gE.setProtocolIFType(ProtocolIFType.IPV4);
+		} else {
+			gE.setIPv6Address(IPUtilsHelper.getAddressFromIP(ipAddress));
+			gE.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(ipAddress)));
+			gE.setProtocolIFType(ProtocolIFType.IPV6);
+		}
+
+		greService.setGRETunnelConfiguration(greConfig);
+		greService.addProtocolEndpoint(gE);
+
+		return greService;
+	}
+
+	public static Service newParamsVRRPGroupWithTwoEndpointIPv6(String virtualIPAddress, String virtualLinkAddress, String interfaceName,
+			String interfaceIPAddress, String interfaceIPLinkAddress) {
+		VRRPGroup vrrpGroup = new VRRPGroup();
+		vrrpGroup.setVrrpName(201);
+		vrrpGroup.setVirtualIPAddress(virtualIPAddress);
+		vrrpGroup.setVirtualLinkAddress(virtualLinkAddress);
+		// VRRPProtocolEndpoint
+		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint1.setPriority(100);
+		vrrProtocolEndpoint1.setService(vrrpGroup);
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		// IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
+		ipProtocolEndpoint1.setIPv6Address(IPUtilsHelper.getAddressFromIP(interfaceIPAddress));
+		ipProtocolEndpoint1.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(interfaceIPAddress)));
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
+		// Another IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint2 = new IPProtocolEndpoint();
+		ipProtocolEndpoint2.setIPv6Address(IPUtilsHelper.getAddressFromIP(interfaceIPLinkAddress));
+		ipProtocolEndpoint2.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(interfaceIPLinkAddress)));
+		ipProtocolEndpoint2.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint2);
+
+		// EthernetPort
+		EthernetPort eth1 = new EthernetPort();
+		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth1.setName(interfaceName);
+		eth1.setPortNumber(1);
+		ipProtocolEndpoint1.addLogiaclPort(eth1);
+
+		return vrrpGroup;
+	}
+
+	public static Service newParamsVRRPGroupWithThreeEndpointIPv6(String virtualIPAddress, String virtualLinkAddress, String interfaceName,
+			String interfaceIPAddress, String interfaceIPLinkAddress, String advertisementPrefix) {
+		VRRPGroup vrrpGroup = new VRRPGroup();
+		vrrpGroup.setVrrpName(201);
+		vrrpGroup.setVirtualIPAddress(virtualIPAddress);
+		vrrpGroup.setVirtualLinkAddress(virtualLinkAddress);
+		// VRRPProtocolEndpoint
+		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint1.setPriority(100);
+		vrrProtocolEndpoint1.setService(vrrpGroup);
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		// IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
+		ipProtocolEndpoint1.setIPv6Address(IPUtilsHelper.getAddressFromIP(interfaceIPAddress));
+		ipProtocolEndpoint1.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(interfaceIPAddress)));
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
+		// Another IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint2 = new IPProtocolEndpoint();
+		ipProtocolEndpoint2.setIPv6Address(IPUtilsHelper.getAddressFromIP(interfaceIPLinkAddress));
+		ipProtocolEndpoint2.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(interfaceIPLinkAddress)));
+		ipProtocolEndpoint2.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint2);
+
+		// Another IPprotocolEndpoint containing router-advertisement
+		IPProtocolEndpoint ipProtocolEndpoint3 = new IPProtocolEndpoint();
+		ipProtocolEndpoint3.setIPv6Address(IPUtilsHelper.getAddressFromIP(advertisementPrefix));
+		ipProtocolEndpoint3.setPrefixLength(Short.valueOf(IPUtilsHelper.getPrefixFromIp(advertisementPrefix)));
+		ipProtocolEndpoint3.setProtocolIFType(ProtocolIFType.IPV6);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint3);
+
+		// EthernetPort
+		EthernetPort eth1 = new EthernetPort();
+		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth1.setName(interfaceName);
+		eth1.setPortNumber(1);
+		ipProtocolEndpoint1.addLogiaclPort(eth1);
+
+		return vrrpGroup;
+	}
+
+	public static IPProtocolEndpoint getIPProtocolEndPointIPv6() {
+		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+		ipProtocolEndpoint.setIPv6Address("fedc:34:ff::af");
+		ipProtocolEndpoint.setPrefixLength((short) 64);
+		return ipProtocolEndpoint;
+	}
 }

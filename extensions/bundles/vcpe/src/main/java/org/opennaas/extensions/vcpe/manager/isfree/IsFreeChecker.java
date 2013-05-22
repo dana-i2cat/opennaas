@@ -294,8 +294,11 @@ public class IsFreeChecker {
 				vcpe = vcpes_it.next();
 				if (!vcpe.getResourceIdentifier().getId().equals(vcpeId)) {
 					if (((VCPENetworkModel) vcpe.getModel()).isCreated()) {
-						if (((VCPENetworkModel) vcpe.getModel()).getVrrp().getGroup().equals(Integer.parseInt(vrrpGroup))) {
-							isFree = false;
+						if (((VCPENetworkModel) vcpe.getModel()).getVrrp() != null &&
+								((VCPENetworkModel) vcpe.getModel()).getVrrp().getGroup() != null) {
+							if (((VCPENetworkModel) vcpe.getModel()).getVrrp().getGroup().equals(Integer.parseInt(vrrpGroup))) {
+								isFree = false;
+							}
 						}
 					}
 				}
