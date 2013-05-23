@@ -101,6 +101,7 @@ public class VCPEBeanUtils {
 		// Network dates
 		modelOut.setId(modelIn.getId());
 		modelOut.setName(modelIn.getName());
+		modelOut.setOwner(modelIn.getOwner());
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
 		modelOut.setNocIpRange(modelIn.getNocIpRange());
 		modelOut.setTemplateType(modelIn.getTemplateType());

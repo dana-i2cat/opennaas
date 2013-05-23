@@ -115,7 +115,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		BuildVCPECallable c = new BuildVCPECallable(vcpeNetworkModel);
 		Future<Boolean> future = executor.submit(c);
 		futures.put(resource.getResourceIdentifier().getId(), future);
-		//TODO find a way to execute rollback if something fails
+		// TODO find a way to execute rollback if something fails
 
 		return resource.getResourceIdentifier().getId();
 	}
@@ -815,12 +815,18 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		List<String> users = new ArrayList<String>();
 
 		users.add("admin");
-		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
-				TemplateConstants.LAN_CLIENT)).getOwner());
-		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
-				TemplateConstants.WAN1)).getOwner());
-		users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
-				TemplateConstants.WAN2)).getOwner());
+		if (vcpeNetworkModel.getTemplateType().equals(ITemplate.SP_VCPE_TEMPLATE)) {
+			users.add("noc1");
+			users.add("noc2");
+			users.add(vcpeNetworkModel.getOwner());
+		} else if (vcpeNetworkModel.getTemplateType().equals(ITemplate.MP_VCPE_TEMPLATE)) {
+			users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
+					TemplateConstants.LAN_CLIENT)).getOwner());
+			users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
+					TemplateConstants.WAN1)).getOwner());
+			users.add(((IPNetworkDomain) VCPENetworkModelHelper.getElementByTemplateName(vcpeNetworkModel,
+					TemplateConstants.WAN2)).getOwner());
+		}
 
 		for (String user : users) {
 			getAclManager().secureResource(vcpeNeworkResource.getResourceIdentifier().getId(), user);
