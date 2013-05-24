@@ -352,7 +352,9 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 				props.put("org.apache.cxf.rs.address", "/");
 				props.put("org.apache.cxf.httpservice.requirefilter", "true");
 			}
-			log.info("Registering ws in url: " + props.get("org.apache.cxf.rs.address"));
+			log.info("Registering ws: \n " +
+					"in url: " + props.get("org.apache.cxf.rs.address") + "\n" +
+					"in context: " + props.get("org.apache.cxf.rs.httpservice.context"));
 			registration = bundleContext.registerService(ifaceName, this, props);
 		} catch (IOException e) {
 			throw new CapabilityException(e);
