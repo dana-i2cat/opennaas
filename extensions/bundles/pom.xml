@@ -68,6 +68,8 @@
 		<module>vnmapper</module>
 		
 		<module>vcpe</module>
+		
+		<module>pdu</module>
 
 		<module>sampleresource</module>
 	</modules>
