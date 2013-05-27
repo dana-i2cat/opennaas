@@ -60,6 +60,20 @@ public class PowerDeliveryResource extends ONS_Resource {
 		return name;
 	}
 	
+	public String getOutletName(int targetOutletIndex){
+		String name;
+		
+		try{
+			name=driver.getOutletName(targetOutletIndex);
+			
+		}catch(IOException ioe){
+			System.out.println("Error from APC Driver:"+ioe.getMessage());
+			return null;
+		}
+		
+		return name;
+	}
+	
 	public MeasuredLoad getCurrentPowerMetrics(int targetOutletIndex){
 		
 		Double outletCurrent, outletVoltage, outletPower, outletEnergy;

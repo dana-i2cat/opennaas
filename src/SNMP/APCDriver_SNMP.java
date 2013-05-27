@@ -19,8 +19,13 @@ public class APCDriver_SNMP {
 	String devicePowerOID = "1.3.6.1.4.1.318.1.1.26.4.3.1.5.1"; // rpdu2
 	String deviceEnergyOID = "1.3.6.1.4.1.318.1.1.26.4.3.1.9.1"; // rpdu2
 	String deviceCurrentOID = "1.3.6.1.4.1.318.1.1.26.6.3.1.5.1"; // rpdu2
-		   
-
+	
+	String rootOutletNameOID = "1.3.6.1.4.1.318.1.1.26.9.4.1.1.3";
+	String rootOutletCurrentOID = "1.3.6.1.4.1.318.1.1.26.9.4.3.1.6"; // rpdu2
+	String rootOutletPowerOID = "1.3.6.1.4.1.318.1.1.26.9.4.3.1.7";
+	
+	String rootOutletEnergyOID = "1.3.6.1.4.1.318.1.1.26.9.4.3.1.11";
+	
 	//String rootOutletCurrentOID = ".1.3.6.1.4.1.318.1.1.26.9.4.3.1.7"; // for rPDU2, not supported by PDU
 	
 	String rootOutletStatusOID = "1.3.6.1.4.1.318.1.1.26.9.2.3.1.5"; //.1.3.6.1.4.1.318.1.1.12.3.5.1.1.4";
@@ -38,6 +43,10 @@ public class APCDriver_SNMP {
 		return client.getAsString(new OID(deviceNameOID));
 	}
 	
+	public String getOutletName(int targetOutletIndex) throws IOException{
+		return client.getAsString(new OID(rootOutletNameOID+"."+targetOutletIndex));
+	}
+	
 	public Double getCurrentPower(int targetOutletIndex) throws IOException{
 		
 			/* 
@@ -46,7 +55,7 @@ public class APCDriver_SNMP {
 			 *	or alternatively make the querying powersupply class aware that this value is the device value
 			 */
 		
-			return Double.parseDouble(client.getAsString(new OID(devicePowerOID)))/100; // MIB value returned in hundredths of KW
+			return Double.parseDouble(client.getAsString(new OID(rootOutletPowerOID+"."+targetOutletIndex)))/1000; // MIB value returned in hundredths of KW
 
 	}
 	
@@ -58,7 +67,7 @@ public class APCDriver_SNMP {
 		 *	or alternatively make the querying powersupply class aware that this value is the device value
 		 */
 	
-		return Double.parseDouble(client.getAsString(new OID(deviceEnergyOID)))/10; // MIB value returned in tenths of KWh
+		return Double.parseDouble(client.getAsString(new OID(rootOutletEnergyOID+"."+targetOutletIndex)))/10; // MIB value returned in tenths of KWh
 
 }
 	
@@ -71,8 +80,6 @@ public class APCDriver_SNMP {
 		 */
 		
 		return Double.parseDouble(client.getAsString(new OID(deviceVoltageOID)));
-
-
 	}
 
 	public Double getCurrentCurrent(int targetOutletIndex) throws IOException{
@@ -84,7 +91,7 @@ public class APCDriver_SNMP {
 		 */
 		
 		//return Double.parseDouble(client.getAsString(new OID(rootOutletCurrentOID+"."+targetOutletIndex)));
-		return Double.parseDouble(client.getAsString(new OID(deviceCurrentOID)))/10;
+		return Double.parseDouble(client.getAsString(new OID(rootOutletCurrentOID+"."+targetOutletIndex)))/10;
 
 		}
 
