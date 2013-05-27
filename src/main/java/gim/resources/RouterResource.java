@@ -54,6 +54,14 @@ public class RouterResource extends NetworkResource{
 		return name;
 	}
 	
+	public String getPowerSupplyOutletName(int targetOutletIndex) throws IOException{
+		String name;
+
+		name =  m_PowerDeliveryResource.getOutletName(targetOutletIndex);
+
+		return name;
+	}
+	
 	
 	public void readToPowerLog(){
 		

@@ -73,6 +73,20 @@ public class PowerDeliveryResource extends ONS_Resource {
 		return name;
 	}
 
+	public String getOutletName(int targetOutletIndex) {
+		String name;
+
+		try {
+			name = driver.getOutletName(targetOutletIndex);
+
+		} catch (IOException ioe) {
+			System.out.println("Error from APC Driver:" + ioe.getMessage());
+			return null;
+		}
+
+		return name;
+	}
+
 	public MeasuredLoad getPortCurrentPowerMetrics(PDUPort port) throws Exception {
 		return getCurrentPowerMetrics(getPortOutletIndex(port));
 	}
@@ -158,7 +172,8 @@ public class PowerDeliveryResource extends ONS_Resource {
 	}
 
 	/**
-	 * @param powerSupplies the powerSupplies to set
+	 * @param powerSupplies
+	 *            the powerSupplies to set
 	 */
 	public void setPowerSupplies(List<IPowerSupply> powerSupplies) {
 		this.powerSupplies = powerSupplies;

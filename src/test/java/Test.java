@@ -13,24 +13,25 @@ import java.util.Date;
 public class Test {
 	public static void main(String[] args) throws IOException {
 		String PDUIP = "udp:193.1.29.121/161";
-		int routerOutletNumber = 5;
+		int routerOutletNumber = 1;
 		
 		PowerDeliveryResource PDU = new PowerDeliveryResource(PDUIP);
 		RouterResource router1 = new RouterResource(PDU, routerOutletNumber);
 		
 		System.out.println("Router Power Supply : "+router1.getPowerSupplyDeviceName());
+		System.out.println("Router Outlet ID: "+router1.getPowerSupplyOutletName(routerOutletNumber));
 
 		
 		boolean status = router1.getPowerStatus();
 		System.out.println("Router Status: "+status);
 		
 
-		router1.powerOff();
+		//router1.powerOff();
 		
 		status = router1.getPowerStatus();
 		System.out.println("Router Status: "+status);
 		
-		router1.powerOn();
+		//router1.powerOn();
 		
 		status = router1.getPowerStatus();
 		System.out.println("Router Status: "+status);
@@ -44,7 +45,7 @@ public class Test {
 		System.out.println("Router Voltage @ "+ml.getReadingTime().toLocaleString()+": "+ml.getVoltage()+" Volts");
 		System.out.println("Router Current @ "+ml.getReadingTime().toLocaleString()+": "+ml.getCurrent()+" Amps");
 		System.out.println("Router Power @ "+ml.getReadingTime().toLocaleString()+": "+ml.getPower()+"KW");
-		System.out.println("Router Power @ "+ml.getReadingTime().toLocaleString()+": "+ml.getEnergy()+"KWh");
+		System.out.println("Router Energy @ "+ml.getReadingTime().toLocaleString()+": "+ml.getEnergy()+"KWh");
 			
 		int time = 0, monintoringDuration = router1.getPowerMonitoringSampleDuration(), 
 		sampleTime = router1.getPowerMonitoringSamplePeriod();
