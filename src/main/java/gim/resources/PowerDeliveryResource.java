@@ -1,15 +1,21 @@
-package GIM;
+package gim.resources;
 
 import org.snmp4j.smi.OID;
+
+import snmp.APCDriver_SNMP;
+import snmp.SNMPManager;
+
+import gim.energy.Energy;
+import gim.energy.energyClass;
+import gim.energy.energyType;
+import gim.load.DeliveryRatedLoad;
+import gim.load.MeasuredLoad;
+import gim.resources.ONS_Resource;
+import gim.resources.PowerSupplyResource;
 
 import java.io.IOException;
 import java.util.Date;
 
-import GIM.ONS_Resource;
-import GIM.PowerSupplyResource;
-import GIM.PowerMonitorLog;
-import SNMP.SNMPManager;
-import SNMP.APCDriver_SNMP;
 /**
  * @author rcarroll
  * @version 1.0

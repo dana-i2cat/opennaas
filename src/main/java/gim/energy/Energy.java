@@ -1,4 +1,4 @@
-package GIM;
+package gim.energy;
 
 /**
  * @author rcarroll

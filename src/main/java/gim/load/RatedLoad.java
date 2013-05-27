@@ -1,4 +1,7 @@
-package GIM;
+package gim.load;
+
+import gim.resources.NetworkResource;
+import gim.resources.PowerSupplyResource;
 
 /**
  * @author rcarroll

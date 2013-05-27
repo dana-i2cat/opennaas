@@ -1,4 +1,8 @@
-package GIM;
+package gim.resources;
+
+import gim.Facility;
+import gim.log.PowerMonitorLog;
+
 
 /**
  * @author rcarroll

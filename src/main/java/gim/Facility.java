@@ -1,4 +1,4 @@
-package GIM;
+package gim;
 
 /**
  * @version 1.0

@@ -1,10 +1,11 @@
-package SNMP;
+package snmp;
+
+import gim.load.MeasuredLoad;
 
 import java.io.IOException;
 
 import org.snmp4j.smi.OID;
 
-import GIM.MeasuredLoad;
 
 public class APCDriver_SNMP {
 	SNMPManager client;

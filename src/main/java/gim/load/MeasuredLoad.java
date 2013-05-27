@@ -1,4 +1,4 @@
-package GIM;
+package gim.load;
 
 import java.util.Date;
 

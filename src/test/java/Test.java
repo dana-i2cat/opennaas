@@ -1,12 +1,13 @@
+import gim.load.MeasuredLoad;
+import gim.log.PowerMonitorLog;
+import gim.resources.PowerDeliveryResource;
+import gim.resources.RouterResource;
+
 import java.io.IOException;
 import java.util.Date;
 
 
 
-import GIM.MeasuredLoad;
-import GIM.PowerDeliveryResource;
-import GIM.PowerMonitorLog;
-import GIM.RouterResource;
 
 
 public class Test {

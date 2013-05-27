@@ -1,6 +1,10 @@
-package GIM;
+package gim.log;
+
+import gim.load.MeasuredLoad;
+import gim.resources.PowerSupplyResource;
 
 import java.util.ArrayList;
+
 
 /**
  * @author rcarroll

@@ -1,6 +1,10 @@
-package GIM;
+package gim.resources;
+
+import gim.load.MeasuredLoad;
+import gim.log.PowerMonitorLog;
 
 import java.io.IOException;
+
 
 /**
  * @author rcarroll

@@ -1,4 +1,4 @@
-package SNMP;
+package snmp;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,8 +29,8 @@ import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
-import GIM.MeasuredLoad;
-import GIM.PowerMonitorLog;
+import gim.load.MeasuredLoad;
+import gim.log.PowerMonitorLog;
 
 public class SNMPManager {
 Snmp snmp = null;

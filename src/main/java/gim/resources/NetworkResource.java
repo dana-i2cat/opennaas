@@ -1,5 +1,5 @@
-package GIM;
-import GIM.ONS_Resource;
+package gim.resources;
+import gim.resources.ONS_Resource;
 
 /**
  * @author rcarroll

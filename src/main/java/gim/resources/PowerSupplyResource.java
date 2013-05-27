@@ -1,4 +1,6 @@
-package GIM;
+package gim.resources;
+
+import gim.energy.Energy;
 
 /**
  * @author rcarroll
