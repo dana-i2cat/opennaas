@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+         xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>physical</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: Physical module</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining physical aspects of networks, including properties of physical devices and locations. It can be regarded as an inventory schema. It does not define data plane properties, like regeneration. This schema reuses some concept on the Common Information Model (CIM) Physical module. Also it extends the Location class with the properties facility, room, rack, and panel. Finally, it allows more detailed description of devices using chassis, cards and blades.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=15-Physical-Schema"/>
+    <vs:moreinfo>WARNING: This schema has testing status and is extremely likely to change! Please wait at least wait till it is in unstable mode before using it. Hopefully, some of it's concepts will crystalize, and get incorporated in some of the ideas put forward in the NML workgroup in the OGF (www.ogf.org).</vs:moreinfo>
+</rdf:Description>
+
+<!-- PHYSICAL LOCATIONS (COLLECTION OF DEVICES) -->
+
+<!-- For historic reasons, the Location and locatedAt definitions are in the topology schema -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl#Location">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/topology.rdf"/>
+</rdfs:Class>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl#locatedAt">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/topology.rdf"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#facility">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">facility</rdfs:label>
+    <rdfs:comment>The name of the facility at a location. For example "Server room", "AMS-IX", "student lab".</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Location"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#room">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">room</rdfs:label>
+    <rdfs:comment>The room number of a location. For example "113", "2.25", "entrance hall" (while the last may be defined as a facility as well, use in the way you prefer). Note that XML strings are case-sensitive, so make sure you use it consistently within your organization.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Location"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#rack">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">rack</rdfs:label>
+    <rdfs:comment>The identifier of a rack of a location. For example "24", "AG-11", "Cust18". Note that XML strings are case-sensitive, so make sure you use it consistently within your organization.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Location"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#panel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">panel</rdfs:label>
+    <rdfs:comment>The name of a panel (typically within a rack) of a location. For example "13", "22-23U", "height unit 13 front". Note that XML strings are case-sensitive, so make sure you use it consistently within your organization.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Location"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+</rdf:Property>
+
+<!-- PHYSICAL ELEMENTS AND DEVICE LAYOUT-->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">Physical Element</rdfs:label>
+    <rdfs:comment xml:lang="en">A Physical Network Element. This class is loosely based on the PhysicalElement and PhysicalPackage classes in CIM Physical.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#Blade">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">Blade</rdfs:label>
+    <rdfs:comment xml:lang="en">The Blade within a device, as a collection of Interfaces. The blade is identified by it's blade number (the rdfs:label), as well as (optionally) the chassis parameter.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#atBlade">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">at Blade</rdfs:label>
+    <rdfs:comment>The relation between a (Physical) Interface and a Blade.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#Blade"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#chassis">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">chassis</rdfs:label>
+    <rdfs:comment>The identifying chassis as part of a blade.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#Blade"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#slotnumber">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">slot</rdfs:label>
+    <rdfs:comment>The identifier, which in combination with the blade, defines an Interface. If the slotnumber is set, the interface is a duplex interface, and the ingress and egress part have the same identifier.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:seeAlso rdfs:resource="http://www.science.uva.nl/research/sne/ndl/physical#ingressSlotnumber"/>
+    <rdfs:seeAlso rdfs:resource="http://www.science.uva.nl/research/sne/ndl/physical#egressSlotnumber"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#ingressSlotnumber">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">ingress slot</rdfs:label>
+    <rdfs:comment>The identifier, which in combination with the blade, defines an ingress Interface. If the ingress slotnumber is set, the interface is either a unidirectional interface, or the ingress and egress part of the same interface have different identifiers.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:seeAlso rdfs:resource="http://www.science.uva.nl/research/sne/ndl/physical#ingressSlotnumber"/>
+    <rdfs:seeAlso rdfs:resource="http://www.science.uva.nl/research/sne/ndl/physical#slotnumber"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#egressSlotnumber">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">egress slot</rdfs:label>
+    <rdfs:comment>The identifier, which in combination with the blade, defines an egress Interface. If the egress slotnumber is set, the interface is either a unidirectional interface, or the ingress and egress part of the same interface have different identifiers.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:seeAlso rdfs:resource="http://www.science.uva.nl/research/sne/ndl/physical#egressSlotnumber"/>
+    <rdfs:seeAlso rdfs:resource="http://www.science.uva.nl/research/sne/ndl/physical#slotnumber"/>
+</rdf:Property>
+
+<!-- CIM PREDICATES -->
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#length">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">length</rdfs:label>
+    <rdfs:comment xml:lang="en">The length of a fiber, cable or bundle in meters. This is inconsistent with CIM, which defines the Length of a PhysicalLink in feet.</rdfs:comment>
+    <!-- the two domains signify that the domain must be of BOTH types. Thus a PhysicalLink in CIM terms. -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Link"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#height">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">height</rdfs:label>
+    <rdfs:comment xml:lang="en">The height of a physical element in meters. This is inconsistent with CIM, which defines the Height of a PhysicalPackage in inches.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#depth">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">depth</rdfs:label>
+    <rdfs:comment xml:lang="en">The depth of a physical element in meters. This is inconsistent with CIM, which defines the Depth of a PhysicalPackage in inches.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#width">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">width</rdfs:label>
+    <rdfs:comment xml:lang="en">The width of a physical element in meters. This is inconsistent with CIM, which defines the Width of a PhysicalPackage in inches.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#weight">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">weight</rdfs:label>
+    <rdfs:comment xml:lang="en">The weight of a physical element in kilogram. This is inconsistent with CIM, which defines the Width of a PhysicalPackage in (presumably avoirdupois) pounds.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#manufacturer">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">manufacturer</rdfs:label>
+    <rdfs:comment xml:lang="en">The manufacturer of a physical element. This is the same as the Manufacturer of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#model">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">model</rdfs:label>
+    <rdfs:comment xml:lang="en">The model of a physical element. This is the same as the Model of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#SKU">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">SKU</rdfs:label>
+    <rdfs:comment xml:lang="en">The stock-keeping unit number of a physical element. This is the same as the SKU of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#serialNumber">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">serial number</rdfs:label>
+    <rdfs:comment xml:lang="en">The serial number of a physical element. This is the same as the SerialNumber of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#version">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">version</rdfs:label>
+    <rdfs:comment xml:lang="en">The version of a physical element. This is the same as the Version of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#partNumber">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">part number</rdfs:label>
+    <rdfs:comment xml:lang="en">The part number of a physical element. This is the same as the PartNumber of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#otherIdentifyingInfo">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">other identifying info</rdfs:label>
+    <rdfs:comment xml:lang="en">The other identifying info of a physical element. This is the same as the OtherIdentifyingInfo of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#poweredOn">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">poweredOn</rdfs:label>
+    <rdfs:comment xml:lang="en">The powered on status of a physical element. This is the same as the PoweredOn of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#manufactureDate">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">manufacture date</rdfs:label>
+    <rdfs:comment xml:lang="en">The manufacture date and time of a physical element. This is the same as the ManufactureDate of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#vendorEquipmentType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">vendor equipment type</rdfs:label>
+    <rdfs:comment xml:lang="en">The vendor equipment type of a physical element. This is the same as the VendorEquipmentType of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/physical#userTracking">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/physical.rdf"/>
+    <rdfs:label xml:lang="en">user tracking</rdfs:label>
+    <rdfs:comment xml:lang="en">The user tracking of a physical element. This is the same as the UserTracking of a PhysicalElement in CIM Physical.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</rdf:Property>
+
+</rdf:RDF>

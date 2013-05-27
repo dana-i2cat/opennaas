@@ -1,0 +1,156 @@
+shell:echo "INITIALIZE RESOURCES"
+##Creating heanet resource
+resource:create /home/adrian/heanetM20.descriptor
+protocols:context router:heanetM20 netconf password ssh://user:password@hea.net:22/netconf
+resource:start router:heanetM20
+
+##Creating GSN resource
+resource:create /home/adrian/gsnMX10.descriptor
+protocols:context router:gsnMX10 netconf password ssh://user:password@gsn.hea.net:22/netconf
+resource:start router:gsnMX10
+
+##Creating UNI-C resource
+resource:create /home/adrian/unicM7i.descriptor
+protocols:context router:unicM7i netconf password ssh://user:password@unic.hea.net:22/netconf
+resource:start router:unicM7i
+
+##Create demo network resource (with empty topology)
+resource:create  /home/adrian/network.descriptor
+resource:start network:networkdemo
+
+shell:echo "CONFIGURE SUBINTERFACES"
+##Create interfaces
+chassis:createsubinterface --vlanid 1 router:heanetM20 fe-0/3/3.1
+chassis:createsubinterface --vlanid 13 router:heanetM20 fe-0/3/0.13
+chassis:createsubinterface --vlanid 80 router:heanetM20 ge-0/2/0.80
+chassis:createsubinterface router:heanetM20 gr-1/2/0.1 
+queue:listactions router:heanetM20
+queue:execute router:heanetM20
+
+chassis:createsubinterface --vlanid 59 router:gsnMX10 ge-1/0/7.59
+chassis:createsubinterface --vlanid 60 router:gsnMX10 ge-1/0/7.60
+queue:listactions router:gsnMX10
+queue:execute router:gsnMX10
+
+chassis:createsubinterface --vlanid 81 router:unicM7i ge-2/0/1.81
+chassis:createsubinterface --vlanid 12 router:unicM7i ge-2/0/0.12
+chassis:createsubinterface --vlanid 13 router:unicM7i ge-2/0/0.13
+chassis:createsubinterface router:unicM7i gr-1/1/0.2
+queue:listactions router:unicM7i
+queue:execute router:unicM7i
+
+shell:echo "CREATE LOGICAL ROUTERS"
+##Creating logical routers
+chassis:createlogicalrouter router:heanetM20 logicalheanet1 fe-0/3/3.1 fe-0/3/0.13 ge-0/2/0.80 gr-1/2/0.1
+resource:list
+queue:listactions router:heanetM20
+queue:execute router:heanetM20
+protocols:context router:logicalheanet1 netconf ssh://user:password@hea.net:22/netconf
+resource:start router:logicalheanet1
+
+chassis:createlogicalrouter router:unicM7i logicalunic1 ge-2/0/0.13 ge-2/0/0.12 ge-2/0/1.81 gr-1/1/0.2
+resource:list
+queue:listactions router:unicM7i
+queue:execute router:unicM7i
+protocols:context router:logicalunic1 netconf ssh://user:password@unic.hea.net:22/netconf
+resource:start router:logicalunic1
+
+chassis:createlogicalrouter router:gsnMX10 logicalgsn1 ge-1/0/7.60 ge-1/0/7.59
+queue:listactions router:gsnMX10
+queue:execute router:gsnMX10
+protocols:context router:logicalgsn1 netconf ssh://user:password@gsn.hea.net:22/netconf
+resource:start router:logicalgsn1
+
+shell:echo "ADD RESOURCES TO NETWORK"
+##Add resources to network
+net:addResource network:networkdemo router:logicalheanet1
+net:addResource network:networkdemo router:logicalunic1
+net:addresource network:networkdemo router:logicalgsn1
+
+shell:echo "UPDATE NETWORK TOPOLOGY WITH EXISTENT LINKS"
+##Tell network who is connected with who unsing only static vlans
+net:l2attach network:networkdemo router:logicalheanet1:fe-0/3/0.13 router:logicalunic1:ge-2/0/0.13
+net:l2attach network:networkdemo router:logicalheanet1:ge-0/2/0.80 router:logicalgsn1:ge-1/0/7.59
+net:l2attach network:networkdemo router:logicalgsn1:ge-1/0/7.60 router:logicalunic1:ge-2/0/1.81
+
+
+shell:echo "SET IP ADDRESSES"
+##Set ip addresses on router interfaces
+ip:setip router:logicalheanet1 ge-0/2/0.80 192.168.1.5/30
+ip:setip router:logicalgsn1 ge-1/0/7.59 192.168.1.6/30
+ip:setip router:logicalgsn1 ge-1/0/7.60 192.168.1.9/30
+ip:setip router:logicalunic1 ge-2/0/1.81 192.168.1.10/30
+ip:setip router:logicalunic1 ge-2/0/0.13 192.168.1.13/30
+ip:setip router:logicalheanet1 fe-0/3/0.13 192.168.1.14/30
+ip:setip router:logicalheanet1 fe-0/3/3.1 193.1.190.250/24
+ip:setip router:logicalunic1 ge-2/0/0.12 193.1.190.245/24
+queue:execute router:logicalheanet1
+queue:execute router:logicalunic1
+queue:execute router:logicalgsn1
+
+#Set static route
+staticroute:create router:logicalheanet1 0.0.0.0 0.0.0.0 193.1.190.249
+staticroute:create router:logicalunic1 0.0.0.0 0.0.0.0 193.1.190.246
+queue:execute router:logicalheanet1
+queue:execute router:logicalunic1
+
+shell:echo "CONFIGURE OSPF"
+## Enable ospf in all devices of the network
+netospf:activate network:networkdemo
+netqueue:execute network:networkdemo
+
+shell:echo "CONFIGURE GRE TUNNELS"
+##configure vpn access using given interface through each router, CHANGE THE LAST IP OF EACH LINE AND SET THE IP OF THE CORRESPONDING VM!!!!
+gretunnel:create router:logicalheanet1 gr-1/2/0.1 192.168.1.17 255.255.255.252 193.1.190.250 147.83.206.87
+gretunnel:create router:logicalunic1 gr-1/1/0.2 192.168.1.21 255.255.255.252 193.1.190.246 147.83.206.88
+queue:execute router:logicalheanet1
+queue:execute router:logicalunic1
+
+
+
+// DEACTIVATE OSPF
+netospf:deactivate network:networkdemo 
+netqueue:execute network:networkdemo 
+
+
+
+## REVERT CHANGES IN DEVICE CONFIG - GRE TUNNE
+gretunnel:delete router:logicalheanet1 gr-1/2/0.1
+gretunnel:delete router:logicalunic1 gr-1/1/0.2
+queue:execute router:logicalheanet1
+queue:execute router:logicalunic1
+
+
+resource:stop logicalheanet1
+resource:remove logicalheanet1
+resource:stop logicalunic1
+resource:remove logicalunic1
+resource:stop logicalgns1
+resource:remove logicalgsn1
+chassis:deletelogicalrouter router:heanetM20 logicalheanet1
+chassis:deletelogicalrouter router:gsnMX10 logicalgsn1
+chassis:deletelogicalrouter router:unicM7i logicalunic1
+queue:execute router:heanetM20
+queue:execute router:gsnMX10
+queue:execute router:unicM7i
+
+
+shell:echo "REMOVE RESOURCES AND STOP"
+##Deleting demo network resource
+resource:stop network:networkdemo
+resource:delete network:networkdemo
+
+##Deleting heanet resource
+resource:stop router:heanetM20
+resource:delete router:heanetM20
+
+##Deleting GSN resource
+resource:stop router:gsnMX10
+resource:delete router:gsnMX10
+
+##Deleting UNI-C resource
+resource:stop router:unicM7i
+resource:delete router:unicM7i
+
+shutdown -f
+

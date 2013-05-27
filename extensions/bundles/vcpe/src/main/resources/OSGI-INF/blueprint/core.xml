@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint 
+	xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" 
+    xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+ 						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+	
+    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+	
+	<!--
+	    Register VCPENetworkManager as OSGi Service
+	  -->		
+	<bean id="vcpeNetworkManager" class="org.opennaas.extensions.vcpe.manager.VCPENetworkManager"/>
+	<service ref="vcpeNetworkManager" interface="org.opennaas.extensions.vcpe.manager.IVCPENetworkManager">
+		<service-properties>
+			<!-- Rest -->	
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="service.exported.intents" value="HTTP"/>		
+			<entry key="org.apache.cxf.ws.address" value="${ws.rest.url}/vcpenetwork"/>  
+		</service-properties>
+	</service>
+	
+	<!-- Build capability factories -->
+	<bean id="vcpeBuilderCapabilityFactory" class="org.opennaas.extensions.vcpe.capability.builder.VCPENetworkBuilderCapabilityFactory">
+		<property name="type" value="vcpenet_builder"/>
+	</bean>
+	<bean id="vcpeVRRPCapabilityFactory" class="org.opennaas.extensions.vcpe.capability.vrrp.VCPEVRRPCapabilityFactory">
+		<property name="type" value="vcpenet_vrrp"/>
+	</bean>
+	<bean id="vcpeIPCapabilityFactory" class="org.opennaas.extensions.vcpe.capability.ip.VCPEIPCapabilityFactory">
+		<property name="type" value="vcpenet_ip"/>
+	</bean>
+	
+	<!-- Build the bootstrapper -->
+	<bean id="vCPENetBootstrapperFactory" class="org.opennaas.extensions.vcpe.repository.VCPENetBootstrapperFactory"/>
+    <bean id="resourceDescriptorRepository"
+          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+          init-method="initializeEntityManager" destroy-method="close">
+         <property name="persistenceUnit" value="ResourceCore"/>
+    </bean>
+   
+    <!-- Build the repository -->
+	<bean id="vCPENetRepository" class="org.opennaas.extensions.vcpe.repository.VCPENetRepository"
+          init-method="init">
+		<argument value="vcpenet"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
+		<property name="resourceBootstrapperFactory" ref="vCPENetBootstrapperFactory"/>
+	</bean>
+
+	<!-- Publish capability factories as an OSGi Service -->
+	<service ref="vcpeBuilderCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="vcpenet_builder"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	<service ref="vcpeVRRPCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="vcpenet_vrrp"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	<service ref="vcpeIPCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="vcpenet_ip"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- Make repo a listener of published capability factories -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="vCPENetRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+	
+	<!-- Publish repository -->
+	<service ref="vCPENetRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="vcpenet"/>
+			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>
+
+	<!-- Command completers -->
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
+	
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="vcpenet/create">
+			<action class="org.opennaas.extensions.vcpe.capability.builder.shell.CreateVCPEScenarioCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="vcpenet/destroy">
+			<action class="org.opennaas.extensions.vcpe.capability.builder.shell.DestroyVCPEScenarioCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+	</command-bundle>
+
+	
+	<!-- Forces this bundle to wait for dataSourceResources being published -->
+	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>
+</blueprint>

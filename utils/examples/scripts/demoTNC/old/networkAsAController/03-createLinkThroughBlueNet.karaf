@@ -1,0 +1,7 @@
+##verion 0.1
+
+shell:echo Script creating vlan links through bluenet
+
+##Create desired links (using bluenet)
+#l2vlan:createLink network:networkdemo router:logicalheanet1:fe-0/1/2.1 router:logicalgsn1:fe-0/2/1.2
+#queue:execute network:networkdemo

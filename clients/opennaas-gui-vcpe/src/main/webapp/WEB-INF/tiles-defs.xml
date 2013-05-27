@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+
+	<definition name="login" template="/WEB-INF/views/login.jsp" >
+		<put-attribute name="title" value="Login" />
+	</definition>
+		
+	<definition name="exception" template="/WEB-INF/views/exception.jsp" />
+
+	<definition name="base.definition" template="/WEB-INF/views/tiles/baseLayout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/views/tiles/menu.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp" />
+	</definition>
+
+	<definition name="home" extends="base.definition">
+		<put-attribute name="title" value="Home" />
+		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+	</definition>
+
+	<definition name="denied" extends="base.definition">
+		<put-attribute name="title" value="Denied" />
+		<put-attribute name="body" value="/WEB-INF/views/denied.jsp" />
+	</definition>
+
+	<definition name="physicalForm" extends="base.definition">
+		<put-attribute name="title" value="Create Virtual CPE Network - Physical View" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/physicalForm.jsp" />
+	</definition>
+
+	<definition name="logicalForm" extends="base.definition">
+		<put-attribute name="title" value="Create Virtual CPE Network - Logical View" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/logicalForm.jsp" />
+	</definition>
+
+	<definition name="updateIpsVCPENetwork" extends="base.definition">
+		<put-attribute name="title" value="Update Ip's VCPE Network" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/updateIpsForm.jsp" />
+	</definition>
+
+</tiles-definitions>

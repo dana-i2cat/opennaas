@@ -1,0 +1,25 @@
+###############################################################################
+###########     CONFIGURE INTERFACE COMMAND WITH ETHERNET           ###########
+###############################################################################
+
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<interfaces>	
+		<interface>
+			<name>$param.Name</name>
+			<unit>
+				<name>$param.getPortNumber()</name>
+			</unit>
+		</interface>	
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

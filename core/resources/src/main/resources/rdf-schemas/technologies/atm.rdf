@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
+         xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#"
+         xmlns:atm="http://www.science.uva.nl/research/sne/ndl/atm#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>atm</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: ATM technology</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining an ATM network. This schema defines four layers: AAL0 (the individual VCI channels), VPI-NNI (grouped VPI channels; interdomain), VPI-UNI (grouped VPI channels; intradomain), and ATM. There is no separate AAL5 layer. Instead, Something over AAL5 over AAL0 is described as Something over AAL0. Also, the other AAL layers are not described. It would also be possible to describe VPI as a single layer, with a encoding property to distinguish between the different cell formats, just like IPV4 and IPv6 are described in a single layer. Note that we can not remove the (seemingly) obsolete ATM layer: this allows us to define inverse multiplexing of ATM in something example. For example ATM over VC-4-16c.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We regard this schema in particular as a "quick hack". We're not experts in the technologies mentioned here, and will likely have overlooked a few things. Feel free to make a schema for these technologies based on our layer schema, or (slightly) better example schemas (e.g. Ethernet, TDM or WDM), but please start from scratch for this particular technology.</vs:moreinfo>
+</rdf:Description>
+
+<!-- AAL0 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">AAL0</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the ATM AAL0 Layer. The AAL0 layer is circuit switched, and links on this layer represent the content of a flow with a specific VCI. Technically, it is the payload of the ATM cells.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#AAL0Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">AAL0</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VCILabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VCI Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Value of the VCI field in the ATM cell header.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65535</xsd:maxInclusive>
+    <vs:moreinfo>The range is (0..65535). We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#vci">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VCI</rdfs:label>
+    <rdfs:comment xml:lang="en">The Virtual Channel Identifier (VCI) label, specifying the VCI channel. The range of VCI labels is an integer in the range {0...65535}</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VCILabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#IP-in-AAL0">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">IP in AAL0</rdfs:label>
+    <rdfs:comment xml:lang="en">The adaptation of IP packets in AAL5 (with padding) in multiple AAL0 payloads (each 48 bytes per cell).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement"/> <!-- server layer -->
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#Ethernet-in-AAL0">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">Ethernet in AAL0</rdfs:label>
+    <rdfs:comment xml:lang="en">The adaptation of Ethernet frames in AAL5 (with padding) in multiple AAL0 payloads (each 48 bytes per cell).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#PPPoA">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">PPPoA</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of PPP over AAL5 (PPPoA) over AAL0.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/>
+
+<!-- VPI-NNI LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNINetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (NNI)</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the VPI NNI Layer. The VPI NNI layer is circuit switched. A link on the VPI NNI layer represents a single VPI channel (consisting of multiple VCI channels). The VPI field has 8 bits on the VPI NNI layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNINetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNIInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (NNI)</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNINetworkElement"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNIInterface"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPILabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Value of the VPI field in the ATM cell header. This can be either a 8-bit or a 12-bit variable, depending on the header format (respectively the NNI and UNI variants).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4095</xsd:maxInclusive>
+    <vs:moreinfo>The range is (0..255) or (0..4095). We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNILabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (NNI) Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Value of the 8-bit VPI field in an ATM cell with NNI header.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <vs:moreinfo>The range is (0..255). This probably should be specified. Perhaps using OWL 1.1.</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#vpi-nni">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI</rdfs:label>
+    <rdfs:comment xml:lang="en">The Virtual Path Identifier (VPI) label, NNI variant (8-bits), specifying the VPI path. The range of VPI labels is an integer in the range {0...255}</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNINetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNILabel"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#vpi-uni"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#AAL0-in-VPI-NNI">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">AAL0 in VPI (NNI)</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation AAL0 in ATM cell payloads (VCI) in a NNI VPI.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNINetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65536</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- VPI-UNI LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNINetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (UNI)</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the VPI NNI Layer. The VPI NNI layer is circuit switched. A link on the VPI NNI layer represents a single VPI channel (consisting of multiple VCI channels). The VPI field has 8 bits on the VPI NNI layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNI"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNIInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (UNI)</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNINetworkElement"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNIInterface"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNILabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (UNI) Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Value of the 12-bit VPI field in an ATM cell with UNI header.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4095</xsd:maxInclusive>
+    <vs:moreinfo>The range is (0..4095). We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#vpi-uni">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI</rdfs:label>
+    <rdfs:comment xml:lang="en">The Virtual Path Identifier (VPI) label, UNI variant (12-bits), specifying the VPI path. The range of VPI labels is an integer in the range {0...4095}</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNINetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNILabel"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#vpi-nni"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#AAL0-in-VPI-UNI">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">AAL0 in VPI (UNI)</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation AAL0 in ATM cell payloads (VCI) in a UNI VPI.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#AAL0NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNINetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65536</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- ATM LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">ATM</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the ATM Layer. The ATM layer represent a packet switched layer with cells of 53 bytes in length (5 byte header + 48 byte payload). It does not specify the fields in the header; for that see the VPI-NNI and VPI-UNI layers.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#ATMInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">ATM</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/>
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNI-in-ATM">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (NNI) in ATM</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of NNI VPI path in a ATM link.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-NNINetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4096</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNI-in-ATM">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/atm.rdf"/>
+    <rdfs:label xml:lang="en">VPI (UNI) in ATM</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of UNI VPI path in a ATM link.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#VPI-UNINetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">256</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+</rdf:RDF>

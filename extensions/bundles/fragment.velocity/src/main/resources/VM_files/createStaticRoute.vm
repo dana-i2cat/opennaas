@@ -1,0 +1,26 @@
+<configuration>
+	#set($logicalRouter = "false")
+	#if(!$elementName.equals(""))
+		#set($logicalRouter = "true")
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	<routing-options>
+		<static>
+			<route>
+				<name>$param[0]</name>
+				#if(!$param[1].equals(""))
+				<next-hop>$param[1]</next-hop>
+				#end
+				#if($param[2].equals("true"))
+				<discard/>
+				#end
+			</route>
+		</static>
+	</routing-options>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

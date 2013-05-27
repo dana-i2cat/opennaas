@@ -1,0 +1,30 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<protocols>	
+		<ospf>
+		##ENABLED/DISABLED
+		#if( $param.getEnabledState().toString().equals($disabledState))
+		<disable/>
+		#else
+		<disable operation="delete"></disable>
+		#end
+		</ospf>
+	</protocols>
+	#set( $routerId = "false" )
+	#set ($routerId = $param.getRouterID())
+	#if (!$routerId.equals("false"))
+	<routing-options operation="merge">
+		<router-id>$param.getRouterID()</router-id>
+	</routing-options>
+	#end
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

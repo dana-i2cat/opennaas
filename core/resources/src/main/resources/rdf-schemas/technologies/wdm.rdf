@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
+         xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#"
+         xmlns:wdm="http://www.science.uva.nl/research/sne/ndl/wdm#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>wdm</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: WDM and Fiber technologies</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining an wavelength division multiplexing (WDM) network. This schema defines two layers: Lambda the layer representing individual wavelengths, and the Fiber layer representing the collection of wavelengths on a fiber. Note that all higher layers like Ethernet and OC-channels are defined over a Lambda, rather than directly over Fiber. The reason is that for nearly all Something-over-Fiber adaptations, it is trivial to adapt it over a specific Lambda as well, by simply buying a GBIC, SFP, XFP or other pluggable laser for a specific wavelength. This schema does not define a separate layer for wavelength groups. It that is to be added, it should go between the Lambda and Fiber layer. The spacing property of the Fiber Interface defines what type of Lambda is transmitted over the fiber: a single Lambda, CWDM, DWDM (with 100, 50, 25 or 12.5 GHz spacing). Different spacings lead to incompatibilities between interfaces. The model is not always ideal to describe a fiber network as only has a sketchy concept of power levels and power loss.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We do feel that this schema has a few nice concepts, so feel free to take ideas you like, and put those in your own schema (and let us know you did!). Just don't merely use this schema: it is unmaintained.</vs:moreinfo>
+</rdf:Description>
+
+<!-- LAMBDA LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Lambda</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Lambda Layer. A link on this layer represents an individual wavelength in a WDM network.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Lambda</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#WavelengthLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Wavelength</rdfs:label>
+    <rdfs:comment xml:lang="en">The wavelength (λ) in nanometer of a "Lamba" Link over a wavelength division multiplexing (WDM) system. Basically the colour of a laser. The accuracy must be sufficient for the given spacing, and considering that two floats are compared by at least 20 significant bits (6 decimal places).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <vs:moreinfo>The range of this variable depends on the "Spacing" parameter in the Fiber layer. All valid values should probably be specified somehow. Perhaps in a long list using RDF:Alt. See for now the wdm:SpacingDistance descriptions for valid values. Plus 1300.00nm for 100base-FX</vs:moreinfo>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">750.0</xsd:minInclusive>  <!-- lowest we know of is 770nm -->
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1700.0</xsd:maxInclusive> <!-- highest we know of is 1675nm -->
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#wavelength">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">wavelength</rdfs:label>
+    <rdfs:comment xml:lang="en">The wavelength label, specifying wavelength (λ) of a lambda in nanometers. The range of wavelengths is a float, representing the wavelength through vacuum in nanometers. To compare if two wavelengths are equal, at least the 6 most significant bits must be compared, and two literals with a decimal representation must be the same if it is logically the same.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#WavelengthLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#eth10base-F">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">10base-F</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 10 Mb/s Ethernet into a single wavelength. This includes the 10base-FL (full duplex), 10base-FB and 10base-FP Ethernet PMDs. The encoding is 4b/5b with Manchester pulsing. This adaptation MUST go over multimode fiber and MUST have a wavelength of 850nm.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#eth100base-FX">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">100base-FX</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 100 Mb/s Ethernet into a single wavelength using the 100base-FX PMD. The encoding is 4b/5b with Non-Return-to-Zero Inverted (NRZI) pulsing. This adaptation MUST go over multi mode fiber (not single mode!) and MUST have a wavelength of 1300nm.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#eth1000base-X">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">1000base-X</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 1000 Mb/s Ethernet into a single wavelength. This includes the all 1000base-X Ethernet PMDs, including the non-standard 1000base-ZX. The encoding is 8b/10b with Non-Return-to-Zero (NRZ) pulsing. For 1000base-SX the fiber MUST be multi mode and the wavelength label MUST be 850nm (actual wavelength between 770nm and 860nm). For 1000base-LX the fiber can be either multi mode or single mode and the wavelength label MUST be 1310nm (actual wavelength between 1270nm and 1355nm). For 1000base-ZX (=1000base-LH) the fiber MUST be single mode and the wavelength MUST be 1310nm.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#eth10Gbase-R">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">10Gbase-R</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 10 Gb/s Ethernet into a single wavelength. This includes the all 10Gbase-R Ethernet PMDs, including the non-standard 10Gbase-ZR. The encoding is 8b/10b with Non-Return-to-Zero (NRZ) pulsing. For 10Gbase-SR the fiber MUST be multi mode and the wavelength MUST be 850nm. For 10Gbase-LR the fiber MUST be single mode and the wavelength MUST be 1310nm. For 10Gbase-ER the fiber MUST be single mode and the wavelength MUST be 1550nm. For 10Gbase-ZR the fiber MUST be single mode and the wavelength MUST be 1550nm.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#oc1-in-Lambda">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-1 in Lambda</rdfs:label>
+    <rdfs:comment xml:lang="en">OC-1 embedded in a Lambda, using 64b/66b encoding, with standard Non-Return-to-Zero (NRZ) pulsing.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC1NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC1NetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#oc3-in-Lambda">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-3 in Lambda</rdfs:label>
+    <rdfs:comment xml:lang="en">OC-3 embedded in a Lambda, using 64b/66b encoding, with standard Non-Return-to-Zero (NRZ) pulsing.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC3NetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#oc48-in-Lambda">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-48 in Lambda</rdfs:label>
+    <rdfs:comment xml:lang="en">OC-48 embedded in a Lambda, using 64b/66b encoding, with standard Non-Return-to-Zero (NRZ) pulsing.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC48NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC48NetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#oc192-in-Lambda">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-192 in Lambda</rdfs:label>
+    <rdfs:comment xml:lang="en">OC-192 embedded in a Lambda, using 64b/66b encoding, with standard Non-Return-to-Zero (NRZ) pulsing.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC192NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC192NetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#oc768-in-Lambda">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-768 in Lambda</rdfs:label>
+    <rdfs:comment xml:lang="en">OC-768 embedded in a Lambda, using 64b/66b encoding, with standard Non-Return-to-Zero (NRZ) pulsing.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC768NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC768NetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#atm-in-Lambda">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">ATM in Lambda</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 155 Mb/s ATM over a single Lambda.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/>
+
+<!-- FIBER LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Fiber</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Fiber Layer. A circuit switched layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalNetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#FiberInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Fiber</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalNetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#SpacingDistance">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Spacing</rdfs:label>
+    <rdfs:comment xml:lang="en">A spacing between individual wavelengths.</rdfs:comment>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#CladdingType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Cladding</rdfs:label>
+    <rdfs:comment xml:lang="en">The diameter of the core and cladding of a fiber.</rdfs:comment>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#ConnectorType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Connector</rdfs:label>
+    <rdfs:comment xml:lang="en">A type of connector.</rdfs:comment>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#PolishType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Polish</rdfs:label>
+    <rdfs:comment xml:lang="en">A polish or cut type of a connector</rdfs:comment>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#TransceiverType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">Transceiver</rdfs:label>
+    <rdfs:comment xml:lang="en">A pluggable transceiver type.</rdfs:comment>
+</rdfs:Class>
+
+<!-- Resources -->
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#SingleLambda">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">only a single Lambda can be carried</rdfs:label>
+    <rdfs:comment xml:lang="en">Only a single Lambda can be carried over the fiber.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#WWDM-windows">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">3 WWDM windows</rdfs:label>
+    <rdfs:comment xml:lang="en">Only a single Lambda can be carried in each optical window: 850nm, 1310nm, and 1550nm.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#WWDM-bands">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">6 WWDM bands</rdfs:label>
+    <rdfs:comment xml:lang="en">Only a single Lambda can be carried in each band: O, E, S, C, L and U band. The O (Original) band at 1260nm - 1360nm; the E (Extended) band at 1360nm - 1460nm; the S (Short) band at 1460nm - 1530nm; the C (Conventional) band at 1530nm - 1565nm; the L (Long) band at 1565nm - 1625nm; and the U (Ultra-long) band at 1625nm - 1675nm. The values to be used as wavelength label are: 1310, 1410, 1490, 1550, 1590 and 1650.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#CWDM">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">CWDM</rdfs:label>
+    <rdfs:comment xml:lang="en">Coarse Wavelength Division Multiplexing (CWDM) as defined in ITU G.694.2. A spacing of 20nm, with a starting frequency of 1271nm, going up to 1611nm, and beyond. Note that not all frequencies may be used due to the water peak.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#spacing100GHz">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">100GHz</rdfs:label>
+    <rdfs:comment xml:lang="en">Dense Wavelength Division Multiplexing (DWDM) with a central frequency of 193.1THz and a spacing of 100GHz between different wavelengths, as defined in ITU G.694.1. The associated wavelength are the wavelengths in vacuum.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#spacing50GHz">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">50GHz</rdfs:label>
+    <rdfs:comment xml:lang="en">Dense Wavelength Division Multiplexing (DWDM) with a central frequency of 193.1THz and a spacing of 50GHz between different wavelengths, as defined in ITU G.694.1. The associated wavelength are the wavelengths in vacuum.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#spacing25GHz">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">25GHz</rdfs:label>
+    <rdfs:comment xml:lang="en">Dense Wavelength Division Multiplexing (DWDM) with a central frequency of 193.1THz and a spacing of 25GHz between different wavelengths, as defined in ITU G.694.1. The associated wavelength are the wavelengths in vacuum.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:SpacingDistance rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#spacing12.5GHz">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">12.5GHz</rdfs:label>
+    <rdfs:comment xml:lang="en">Dense Wavelength Division Multiplexing (DWDM) with a central frequency of 193.1THz and a spacing of 12.5GHz between different wavelengths, as defined in ITU G.694.1. The associated wavelength are the wavelengths in vacuum.</rdfs:comment>
+</wdm:SpacingDistance>
+
+<wdm:CladdingType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#SingleMode">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">SM</rdfs:label>
+    <rdfs:comment xml:lang="en">Single mode fiber: a fiber with a core between 3μm and 10μm (typically 8.3μm) and a cladding of 125μm diameter. Single mode fiber can support DWDM, and is often used in conjunction with wavelengths in the 1300nm - 1600nm range.</rdfs:comment>
+</wdm:CladdingType>
+
+<wdm:CladdingType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#MultiMode">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">MM</rdfs:label>
+    <rdfs:comment xml:lang="en">Multi mode fiber: a fiber with a core of 50μm or 62.5μm and a cladding of 125μm diameter. Multi mode fiber is useful to transport wavelengths around 850nm, though it can be used for 1310nm for short distances.</rdfs:comment>
+</wdm:CladdingType>
+
+<wdm:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#SC-Connector">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">SC</rdfs:label>
+    <rdfs:comment xml:lang="en">SC connector</rdfs:comment>
+</wdm:ConnectorType>
+
+<wdm:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#LC-Connector">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">LC</rdfs:label>
+    <rdfs:comment xml:lang="en">LC connector</rdfs:comment>
+</wdm:ConnectorType>
+
+<wdm:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#ST-Connector">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">ST</rdfs:label>
+    <rdfs:comment xml:lang="en">Straight Tip (ST) connector</rdfs:comment>
+</wdm:ConnectorType>
+
+<wdm:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#FC-Connector">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">FC</rdfs:label>
+    <rdfs:comment xml:lang="en">FC connector</rdfs:comment>
+</wdm:ConnectorType>
+
+<wdm:PolishType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#PC">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">PC</rdfs:label>
+    <rdfs:comment xml:lang="en">Physical Contact (PC) polish</rdfs:comment>
+</wdm:PolishType>
+
+<wdm:PolishType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#SPC">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">SPC</rdfs:label>
+    <rdfs:comment xml:lang="en">Super Physical Contact (SPC) polish</rdfs:comment>
+</wdm:PolishType>
+
+<wdm:PolishType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#UPC">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">UPC</rdfs:label>
+    <rdfs:comment xml:lang="en">Ultra Physical Contact (UPC) polish</rdfs:comment>
+</wdm:PolishType>
+
+<wdm:PolishType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#APC">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">APC</rdfs:label>
+    <rdfs:comment xml:lang="en">Angled Physical Contact (APC) polish</rdfs:comment>
+</wdm:PolishType>
+
+<wdm:TransceiverType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#GBIC">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">GBIC</rdfs:label>
+    <rdfs:comment xml:lang="en">GBIC pluggable transceiver for 1000 Mb/s interfaces</rdfs:comment>
+</wdm:TransceiverType>
+
+<wdm:TransceiverType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#SFP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">SFP</rdfs:label>
+    <rdfs:comment xml:lang="en">SFP pluggable transceiver for 1000 Mb/s interfaces</rdfs:comment>
+</wdm:TransceiverType>
+
+<wdm:TransceiverType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#XENPAK">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">XENPAK</rdfs:label>
+    <rdfs:comment xml:lang="en">XENPAK pluggable transceiver for 10 Gb/s interfaces</rdfs:comment>
+</wdm:TransceiverType>
+
+<wdm:TransceiverType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#XPAK">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">XPAK</rdfs:label>
+    <rdfs:comment xml:lang="en">XPAK pluggable transceiver for 10 Gb/s interfaces</rdfs:comment>
+</wdm:TransceiverType>
+
+<wdm:TransceiverType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#X2">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">X2</rdfs:label>
+    <rdfs:comment xml:lang="en">X2 pluggable transceiver for 10 Gb/s interfaces</rdfs:comment>
+</wdm:TransceiverType>
+
+<wdm:TransceiverType rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#XFP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">XFP</rdfs:label>
+    <rdfs:comment xml:lang="en">XFP pluggable transceiver for 10 Gb/s interfaces</rdfs:comment>
+</wdm:TransceiverType>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#strand">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">strand</rdfs:label>
+    <rdfs:comment xml:lang="en">The identification number of a certain fiber within a bundle of links.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#strand"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#StrandLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</owl:minCardinality> <!-- label MAY be unset for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#spacing">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">spacing</rdfs:label>
+    <rdfs:comment xml:lang="en">The spacing in GHz between two wavelengths. Possible values include 100 GHz, 50GHz, but also CWDM (20nm), WWDM (only a few wavelengths possible) or single lambda (only one wavelength possible).</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#SpacingDistance"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#cladding">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">cladding</rdfs:label>
+    <rdfs:comment xml:lang="en">The cladding of a fiber, describing the diameter of the core and the cladding of a fiber. Possible values include multi mode and single mode fiber.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#CladdingType"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#connector">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">connector type</rdfs:label>
+    <rdfs:comment xml:lang="en">The type of connector. The interface is always female, and the connected to link is always male. If it is the other way around, that must be clearly specified in the connector type.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#ConnectorType"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#polish">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">polish</rdfs:label>
+    <rdfs:comment xml:lang="en">The polish property describes the type of physical contact between the fiber core and cladding. Typically, this is a plain "physical contact" (PC), but other fiber cuts, like angled physical contact (APC) have the advantage of having less reflection.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#PolishType"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#transceiver">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">transceiver</rdfs:label>
+    <rdfs:comment xml:lang="en">The transceiver property described the type of pluggable interface in the physical fiber interface. Possible values include GBIC, SFP, XFP, X2, XENPAK and XPAK.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#TransceiverType"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#ingressPowerLevel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">ingress power level</rdfs:label>
+    <rdfs:comment xml:lang="en">The ingress power level defines the maximum power level received by a fiber interface coming from interfaces connected to here. The power level is measured in dBm, where 0 dBm equals 1 milliWatt of power. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#egressPowerLevel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">egress power level</rdfs:label>
+    <rdfs:comment xml:lang="en">The egress power level describes the power level as send out by a fiber interface to each connected to interface. The power level is measured in dBm, where 0 dBm equals 1 milliWatt of power. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#powerLoss">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">power loss</rdfs:label>
+    <rdfs:comment xml:lang="en">The power loss that is to be expected when light travels through a network element. For a link, the powerloss property of the Link resource, and the powerloss of the two Interface resources (if any) must be added up. The power loss is measured in dB. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#WDM">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/wdm.rdf"/>
+    <rdfs:label xml:lang="en">WDM</rdfs:label>
+    <rdfs:comment xml:lang="en">Wavelength Division Multiplexing (WDM): embedding of one or more wavelengths in a fiber.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#LambdaNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/> <!-- server layer -->
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+</rdf:RDF>

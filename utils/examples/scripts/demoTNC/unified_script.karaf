@@ -1,0 +1,155 @@
+shell:echo "INITIALIZE RESOURCES"
+##Creating HEANET#1 resource
+resource:create PATH_TO_DESCRIPTOR/lolaM20.descriptor
+protocols:context router:lolaM20 netconf mock://user:password@lola.hea.net:22/netconf
+resource:start router:lolaM20
+
+##Creating GSN resource
+resource:create PATH_TO_DESCRIPTOR/gsnMX10.descriptor
+protocols:context router:gsnMX10 netconf mock://user:password@cpe1-gsn.hea.net:22/netconf
+resource:start router:gsnMX10
+
+##Creating HEANET#2 resource
+resource:create PATH_TO_DESCRIPTOR/myreM7i.descriptor
+protocols:context router:myreM7i netconf mock://user:password@myre.hea.net:22/netconf
+resource:start router:myreM7i
+
+##Create demo network resource (with empty topology)
+resource:create PATH_TO_DESCRIPTOR/network.descriptor
+resource:start network:networkdemo
+
+shell:echo "CONFIGURE SUBINTERFACES"
+##Create interfaces
+chassis:createsubinterface --vlanid 1 router:lolaM20 fe-0/3/3.1
+chassis:createsubinterface --vlanid 13 router:lolaM20 fe-0/3/0.13
+chassis:createsubinterface --vlanid 80 router:lolaM20 ge-0/2/0.80
+chassis:createsubinterface router:lolaM20 gr-1/2/0.1 
+queue:listactions router:lolaM20
+queue:execute router:lolaM20
+
+chassis:createsubinterface --vlanid 59 router:gsnMX10 ge-1/0/7.59
+chassis:createsubinterface --vlanid 60 router:gsnMX10 ge-1/0/7.60
+queue:listactions router:gsnMX10
+queue:execute router:gsnMX10
+
+chassis:createsubinterface --vlanid 81 router:myreM7i ge-2/0/1.81
+chassis:createsubinterface --vlanid 12 router:myreM7i ge-2/0/0.12
+chassis:createsubinterface --vlanid 13 router:myreM7i ge-2/0/0.13
+chassis:createsubinterface router:myreM7i gr-1/1/0.2
+queue:listactions router:myreM7i
+queue:execute router:myreM7i
+
+shell:echo "CREATE LOGICAL ROUTERS"
+##Creating logical routers
+chassis:createlogicalrouter router:lolaM20 logicallola1 fe-0/3/3.1 fe-0/3/0.13 ge-0/2/0.80 gr-1/2/0.1
+resource:list
+queue:listactions router:lolaM20
+queue:execute router:lolaM20
+protocols:context router:logicallola1 netconf mock://user:password@lola.hea.net:22/netconf
+resource:start router:logicallola1
+
+chassis:createlogicalrouter router:myreM7i logicalmyre1 ge-2/0/0.13 ge-2/0/0.12 ge-2/0/1.81 gr-1/1/0.2
+resource:list
+queue:listactions router:myreM7i
+queue:execute router:myreM7i
+protocols:context router:logicalmyre1 netconf mock://user:password@myre.hea.net:22/netconf
+resource:start router:logicalmyre1
+
+chassis:createlogicalrouter router:gsnMX10 logicalgsn1 ge-1/0/7.60 ge-1/0/7.59
+queue:listactions router:gsnMX10
+queue:execute router:gsnMX10
+protocols:context router:logicalgsn1 netconf mock://user:password@cpe1-gsn.hea.net:22/netconf
+resource:start router:logicalgsn1
+
+shell:echo "ADD RESOURCES TO NETWORK"
+##Add resources to network
+net:addResource network:networkdemo router:logicallola1
+net:addResource network:networkdemo router:logicalmyre1
+net:addresource network:networkdemo router:logicalgsn1
+
+shell:echo "UPDATE NETWORK TOPOLOGY WITH EXISTENT LINKS"
+##Tell network who is connected with who unsing only static vlans
+net:l2attach network:networkdemo router:logicallola1:fe-0/3/0.13 router:logicalmyre1:ge-2/0/0.13
+net:l2attach network:networkdemo router:logicallola1:ge-0/2/0.80 router:logicalgsn1:ge-1/0/7.59
+net:l2attach network:networkdemo router:logicalgsn1:ge-1/0/7.60 router:logicalmyre1:ge-2/0/1.81
+
+
+shell:echo "SET IP ADDRESSES"
+##Set ip addresses on router interfaces
+ipv4:setip router:logicallola1 ge-0/2/0.80 192.168.1.5 255.255.255.252
+ipv4:setip router:logicalgsn1 ge-1/0/7.59 192.168.1.6 255.255.255.252
+ipv4:setip router:logicalgsn1 ge-1/0/7.60 192.168.1.9 255.255.255.252
+ipv4:setip router:logicalmyre1 ge-2/0/1.81 192.168.1.10 255.255.255.252
+ipv4:setip router:logicalmyre1 ge-2/0/0.13 192.168.1.13 255.255.255.252
+ipv4:setip router:logicallola1 fe-0/3/0.13 192.168.1.14 255.255.255.252
+ipv4:setip router:logicallola1 fe-0/3/3.1 193.1.190.250 255.255.255.252
+ipv4:setip router:logicalmyre1 ge-2/0/0.12 193.1.190.1 255.255.255.252
+queue:execute router:logicallola1
+queue:execute router:logicalmyre1
+queue:execute router:logicalgsn1
+
+#Set static route
+staticroute:create router:logicallola1 0.0.0.0 0.0.0.0 193.1.190.249
+staticroute:create router:logicalmyre1 0.0.0.0 0.0.0.0 193.1.190.2
+queue:execute router:logicallola1
+queue:execute router:logicalmyre1
+
+shell:echo "CONFIGURE OSPF"
+## Enable ospf in all devices of the network
+netospf:activate network:networkdemo
+netqueue:execute network:networkdemo
+
+shell:echo "CONFIGURE GRE TUNNELS"
+##configure vpn access using given interface through each router
+gretunnel:create router:logicallola1 gr-1/2/0.1 192.168.1.17 255.255.255.252 193.1.190.250 84.88.40.26
+gretunnel:create router:logicalmyre1 gr-1/1/0.2 192.168.1.33 255.255.255.252 193.1.190.1 134.226.53.108
+queue:execute router:logicallola1
+queue:execute router:logicalmyre1
+
+shell:sleep 100000000000000
+
+// DEACTIVATE OSPF
+netospf:deactivate network:networkdemo 
+netqueue:execute network:networkdemo 
+
+
+
+## REVERT CHANGES IN DEVICE CONFIG - GRE TUNNEL
+gretunnel:delete router:logicallola1 gr-1/2/0.1
+gretunnel:delete router:logicalmyre1 gr-1/1/0.2
+queue:execute router:logicallola1
+queue:execute router:logicalmyre1
+
+
+resource:stop router:logicallola1
+resource:remove router:logicallola1
+resource:stop router:logicalmyre1
+resource:remove router:logicalmyre1
+resource:stop router:logicalgsn1
+resource:remove router:logicalgsn1
+chassis:deletelogicalrouter router:lolaM20 logicallola1
+chassis:deletelogicalrouter router:gsnMX10 logicalgsn1
+chassis:deletelogicalrouter router:myreM7i logicalmyre1
+queue:execute router:lolaM20
+queue:execute router:gsnMX10
+queue:execute router:myreM7i
+
+
+shell:echo "REMOVE RESOURCES AND STOP"
+##Deleting demo network resource
+resource:stop network:networkdemo
+resource:remove network:networkdemo
+
+##Deleting heanet#1 resource
+resource:stop router:lolaM20
+resource:remove router:lolaM20
+
+##Deleting GSN resource
+resource:stop router:gsnMX10
+resource:remove router:gsnMX10
+
+##Deleting heanet#2 resource
+resource:stop router:myreM7i
+resource:remove router:myreM7i
+
+shutdown -f

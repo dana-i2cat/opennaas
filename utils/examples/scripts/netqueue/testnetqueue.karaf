@@ -1,0 +1,32 @@
+#Creating and initializing resource
+resource:create C:/Users/Jordi/git/opennaas/examples/descriptors/netqueue.descriptor
+resource:start network:network1
+
+resource:create C:/Users/Jordi/git/opennaas/examples/descriptors/netqueue-router1.descriptor
+protocols:context router:R-AS2-1 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:R-AS2-1
+
+resource:create C:/Users/Jordi/git/opennaas/manticore/utils/netqueue-router2.descriptor
+protocols:context router:R-AS2-2 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:R-AS2-2
+
+resource:create C:/Users/Jordi/git/opennaas/manticore/utils/netqueue-router3.descriptor
+protocols:context router:R-AS2-3 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:R-AS2-3
+
+resource:list
+
+netqueue:execute network:network1
+
+#Restoring configuration
+resource:stop network:network1
+resource:remove network:network1
+
+resource:stop router:R-AS2-1
+resource:remove router:R-AS2-1
+
+resource:stop router:R-AS2-2
+resource:remove router:R-AS2-2
+
+resource:stop router:R-AS2-3
+resource:remove router:R-AS2-3

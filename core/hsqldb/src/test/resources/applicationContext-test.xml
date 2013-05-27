@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="  http://www.springframework.org/schema/beans     http://www.springframework.org/schema/beans/spring-beans.xsd  ">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+		<property name="url" value="jdbc:hsqldb:mem:test"/>
+		<property name="username" value="sa"/>
+		<property name="password" value=""/>
+	</bean>
+	<bean id="dataBase" class="org.opennaas.core.hsqldb.internal.HSQLDBServer" lazy-init="false">
+		<property name="dataSource">
+			<ref local="dataSource"/>
+		</property>
+		<property name="serverProperties">
+			<props>
+				<prop key="server.port">${port}</prop>
+				<prop key="server.database.0">mem:test</prop>
+				<prop key="server.dbname.0">testdb</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

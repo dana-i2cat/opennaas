@@ -1,0 +1,9 @@
+protocol.url.myre="mock://username:password@myre.hea.net:22/netconf"
+protocol.url.gsn="mock://username:password@cpe1-gsn.hea.net:22/netconf"
+protocol.url.unic="mock://username:password@130.225.242.82:22/netconf"
+
+protocol.url.dub=$protocol.url.myre
+protocol.url.pw=$protocol.url.gsn
+protocol.url.cph=$protocol.url.unic
+
+protocol.url.autobahn="http://kanga.heanet.ie:8080/autobahn"

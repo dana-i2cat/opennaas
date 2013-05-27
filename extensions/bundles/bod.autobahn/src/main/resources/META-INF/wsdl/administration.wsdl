@@ -1,0 +1,1248 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="AdministrationService" targetNamespace="http://administration.autobahn.geant.net/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://administration.autobahn.geant.net/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="useraccesspoint.autobahn.geant.net" xmlns="useraccesspoint.autobahn.geant.net" xmlns:ns1="http://administration.autobahn.geant.net/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://administration.autobahn.geant.net/" />
+<xs:complexType name="PortType">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" type="xs:string" />
+<xs:element minOccurs="0" name="mode" type="ns1:mode" />
+<xs:element name="vlan" type="xs:int" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element name="isIdcp" type="xs:boolean" />
+<xs:element name="isClient" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="reservation.autobahn.geant.net" xmlns="reservation.autobahn.geant.net" xmlns:ns1="network.autobahn.geant.net" xmlns:ns2="constraints.autobahn.geant.net" xmlns:ns3="aai.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="network.autobahn.geant.net" />
+<xs:import namespace="constraints.autobahn.geant.net" />
+<xs:import namespace="aai.autobahn.geant.net" />
+<xs:complexType name="User">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="homeDomain" type="ns1:AdminDomain" />
+<xs:element minOccurs="0" name="email" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ReservationHistory">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element minOccurs="0" name="startPort" type="xs:string" />
+<xs:element minOccurs="0" name="endPort" type="xs:string" />
+<xs:element minOccurs="0" name="startPortDescription" type="xs:string" />
+<xs:element minOccurs="0" name="endPortDescription" type="xs:string" />
+<xs:element minOccurs="0" name="resiliency" type="xs:string" />
+<xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+<xs:element name="capacity" type="xs:long" />
+<xs:element name="bidirectional" type="xs:boolean" />
+<xs:element name="maxDelay" type="xs:int" />
+<xs:element name="mtu" type="xs:int" />
+<xs:element name="priority" type="xs:int" />
+<xs:element name="intState" type="xs:int" />
+<xs:element name="startVlan" type="xs:int" />
+<xs:element name="endVlan" type="xs:int" />
+<xs:element minOccurs="0" name="authParameters" type="xs:string" />
+<xs:element minOccurs="0" name="failureCause" type="xs:string" />
+<xs:element name="userEndVlan" type="xs:int" />
+<xs:element name="userStartVlan" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ReservationParams">
+<xs:sequence>
+<xs:element name="capacity" type="xs:long" />
+<xs:element name="maxDelay" type="xs:int" />
+<xs:element minOccurs="0" name="resiliency" type="xs:string" />
+<xs:element name="bidirectional" type="xs:boolean" />
+<xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="pathConstraintsIngress" type="ns2:PathConstraints" />
+<xs:element minOccurs="0" name="pathConstraintsEgress" type="ns2:PathConstraints" />
+<xs:element name="mtu" type="xs:int" />
+<xs:element minOccurs="0" name="authParameters" type="ns3:UserAuthParameters" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema targetNamespace="network.autobahn.geant.net" version="1.0" xmlns:tns="network.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="AdminDomain">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="ASID" type="xs:string" />
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element name="clientDomain" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Path">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="links" nillable="true" type="tns:Link" />
+<xs:element name="monetary_cost" type="xs:double" />
+<xs:element name="manual_cost" type="xs:double" />
+<xs:element name="capacity" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Link">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element name="kind" type="xs:int" />
+<xs:element minOccurs="0" name="startPort" type="tns:Port" />
+<xs:element minOccurs="0" name="endPort" type="tns:Port" />
+<xs:element name="bidirectional" type="xs:boolean" />
+<xs:element name="delay" type="xs:int" />
+<xs:element name="manualCost" type="xs:double" />
+<xs:element name="monetaryCost" type="xs:double" />
+<xs:element name="granularity" type="xs:long" />
+<xs:element name="minResCapacity" type="xs:long" />
+<xs:element name="maxResCapacity" type="xs:long" />
+<xs:element name="capacity" type="xs:long" />
+<xs:element minOccurs="0" name="resilience" type="xs:string" />
+<xs:element minOccurs="0" name="timestamp" type="xs:dateTime" />
+<xs:element minOccurs="0" name="localName" type="xs:string" />
+<xs:element minOccurs="0" name="type" type="tns:LinkType" />
+<xs:element minOccurs="0" name="operationalState" type="tns:StateOper" />
+<xs:element minOccurs="0" name="administrativeState" type="tns:StateAdmin" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Port">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element minOccurs="0" name="technology" type="xs:string" />
+<xs:element name="bundled" type="xs:boolean" />
+<xs:element minOccurs="0" name="node" type="tns:Node" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Node">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="type" type="xs:string" />
+<xs:element minOccurs="0" name="address" type="xs:string" />
+<xs:element minOccurs="0" name="provisioningDomain" type="tns:ProvisioningDomain" />
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="country" type="xs:string" />
+<xs:element minOccurs="0" name="city" type="xs:string" />
+<xs:element minOccurs="0" name="institution" type="xs:string" />
+<xs:element minOccurs="0" name="longitude" type="xs:string" />
+<xs:element minOccurs="0" name="latitude" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProvisioningDomain">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="provType" type="xs:string" />
+<xs:element minOccurs="0" name="adminDomain" type="tns:AdminDomain" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="LinkType">
+<xs:sequence>
+<xs:element name="type" type="xs:int" />
+<xs:element minOccurs="0" name="desc" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StateOper">
+<xs:sequence>
+<xs:element name="id" type="xs:int" />
+<xs:element minOccurs="0" name="desc" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StateAdmin">
+<xs:sequence>
+<xs:element name="id" type="xs:int" />
+<xs:element minOccurs="0" name="desc" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="net.geant.autobahn.intradomain.IntradomainPath" xmlns="net.geant.autobahn.intradomain.IntradomainPath" xmlns:ns1="common.intradomain.autobahn.geant.net" xmlns:ns2="constraints.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="common.intradomain.autobahn.geant.net" />
+<xs:import namespace="constraints.autobahn.geant.net" />
+<xs:complexType name="IntradomainPath">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="glinks" nillable="true" type="ns1:GenericLink" />
+<xs:element name="pathConstraints">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="key" type="ns1:GenericLink" />
+<xs:element minOccurs="0" name="value" type="ns2:PathConstraints" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="capacity" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://administration.autobahn.geant.net/" xmlns:ns1="administration.autobahn.geant.net" xmlns:ns2="aai.autobahn.geant.net" xmlns:ns3="network.autobahn.geant.net" xmlns:ns4="net.geant.autobahn.intradomain.IntradomainPath" xmlns:ns5="common.intradomain.autobahn.geant.net" xmlns:ns6="reservation.autobahn.geant.net" xmlns:tns="http://administration.autobahn.geant.net/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="administration.autobahn.geant.net" />
+<xs:import namespace="aai.autobahn.geant.net" />
+<xs:import namespace="network.autobahn.geant.net" />
+<xs:import namespace="net.geant.autobahn.intradomain.IntradomainPath" />
+<xs:import namespace="common.intradomain.autobahn.geant.net" />
+<xs:import namespace="reservation.autobahn.geant.net" />
+<xs:element name="cancelAllServices" type="tns:cancelAllServices" />
+<xs:element name="cancelAllServicesResponse" type="tns:cancelAllServicesResponse" />
+<xs:element name="getAccessPolicy" type="tns:getAccessPolicy" />
+<xs:element name="getAccessPolicyResponse" type="tns:getAccessPolicyResponse" />
+<xs:element name="getIntradomainCalendarsUsage" type="tns:getIntradomainCalendarsUsage" />
+<xs:element name="getIntradomainCalendarsUsageResponse" type="tns:getIntradomainCalendarsUsageResponse" />
+<xs:element name="getIntradomainPaths" type="tns:getIntradomainPaths" />
+<xs:element name="getIntradomainPathsResponse" type="tns:getIntradomainPathsResponse" />
+<xs:element name="getIntradomainReservationParams" type="tns:getIntradomainReservationParams" />
+<xs:element name="getIntradomainReservationParamsResponse" type="tns:getIntradomainReservationParamsResponse" />
+<xs:element name="getLog" type="tns:getLog" />
+<xs:element name="getLogResponse" type="tns:getLogResponse" />
+<xs:element name="getProperties" type="tns:getProperties" />
+<xs:element name="getPropertiesResponse" type="tns:getPropertiesResponse" />
+<xs:element name="getReservation" type="tns:getReservation" />
+<xs:element name="getReservationInProcessing" type="tns:getReservationInProcessing" />
+<xs:element name="getReservationInProcessingResponse" type="tns:getReservationInProcessingResponse" />
+<xs:element name="getReservationLog" type="tns:getReservationLog" />
+<xs:element name="getReservationLogResponse" type="tns:getReservationLogResponse" />
+<xs:element name="getReservationResponse" type="tns:getReservationResponse" />
+<xs:element name="getService" type="tns:getService" />
+<xs:element name="getServiceResponse" type="tns:getServiceResponse" />
+<xs:element name="getServices" type="tns:getServices" />
+<xs:element name="getServicesInProcessing" type="tns:getServicesInProcessing" />
+<xs:element name="getServicesInProcessingResponse" type="tns:getServicesInProcessingResponse" />
+<xs:element name="getServicesResponse" type="tns:getServicesResponse" />
+<xs:element name="getStatistics" type="tns:getStatistics" />
+<xs:element name="getStatisticsResponse" type="tns:getStatisticsResponse" />
+<xs:element name="getStatus" type="tns:getStatus" />
+<xs:element name="getStatusResponse" type="tns:getStatusResponse" />
+<xs:element name="getTopology" type="tns:getTopology" />
+<xs:element name="getTopologyResponse" type="tns:getTopologyResponse" />
+<xs:element name="handleTopologyChange" type="tns:handleTopologyChange" />
+<xs:element name="handleTopologyChangeResponse" type="tns:handleTopologyChangeResponse" />
+<xs:element name="restart" type="tns:restart" />
+<xs:element name="restartResponse" type="tns:restartResponse" />
+<xs:element name="setAccessPolicy" type="tns:setAccessPolicy" />
+<xs:element name="setAccessPolicyResponse" type="tns:setAccessPolicyResponse" />
+<xs:element name="setProperties" type="tns:setProperties" />
+<xs:element name="setPropertiesResponse" type="tns:setPropertiesResponse" />
+<xs:element name="setTopology" type="tns:setTopology" />
+<xs:element name="setTopologyResponse" type="tns:setTopologyResponse" />
+<xs:complexType name="getService">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="service" type="ns1:ServiceType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservationInProcessing">
+<xs:sequence>
+<xs:element minOccurs="0" name="resID" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservationInProcessingResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="Reservation" type="ns1:ReservationType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setAccessPolicy">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:accessPolicy" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="accessPolicy">
+<xs:sequence>
+<xs:element minOccurs="0" name="policy" type="xs:string" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="policyRules" nillable="true" type="tns:accessRule" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="accessRule">
+<xs:sequence>
+<xs:element minOccurs="0" name="authp" type="ns2:UserAuthParameters" />
+<xs:element minOccurs="0" name="rule" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setAccessPolicyResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="setTopology">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="links" type="ns3:Link" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setTopologyResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getStatus">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getStatusResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="status" type="ns1:Status" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservationLog">
+<xs:sequence>
+<xs:element minOccurs="0" name="resId" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservationLogResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="rsvLog" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getIntradomainPaths">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getIntradomainPathsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="intradomainPaths" type="tns:StringPathType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StringPathType">
+<xs:sequence>
+<xs:element minOccurs="0" name="pathList">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="paths" type="tns:stringPath" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="stringPath">
+<xs:sequence>
+<xs:element minOccurs="0" name="string" type="xs:string" />
+<xs:element minOccurs="0" name="path" type="ns4:IntradomainPath" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getProperties">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getPropertiesResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Properties" type="ns1:KeyValue" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getStatistics">
+<xs:sequence>
+<xs:element name="all" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getStatisticsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="statistics" type="ns1:StatisticsType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="statisticsEntry">
+<xs:sequence>
+<xs:element name="id" type="xs:int" />
+<xs:element name="intradomain" type="xs:boolean" />
+<xs:element minOccurs="0" name="reservation_id" type="xs:string" />
+<xs:element name="setup_time" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getTopology">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getTopologyResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="links" type="ns3:Link" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getLog">
+<xs:sequence>
+<xs:element name="all" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getLogResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="log" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setProperties">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="properties" type="ns1:KeyValue" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setPropertiesResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getServicesInProcessing">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getServicesInProcessingResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="services" type="ns1:ServiceType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getIntradomainCalendarsUsage">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="ns4:IntradomainPath" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getIntradomainCalendarsUsageResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="usageCalendars" type="tns:GenericLinkCalendarType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GenericLinkCalendarType">
+<xs:sequence>
+<xs:element minOccurs="0" name="linkCalendar">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="links" type="tns:genericLinkCalendar" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="genericLinkCalendar">
+<xs:sequence>
+<xs:element minOccurs="0" name="link" type="ns5:GenericLink" />
+<xs:element minOccurs="0" name="calendar" type="tns:CalendarLongType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CalendarLongType">
+<xs:sequence>
+<xs:element minOccurs="0" name="calendarLong">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="calendar" type="tns:calendarLong" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="calendarLong">
+<xs:sequence>
+<xs:element minOccurs="0" name="calendar" type="xs:dateTime" />
+<xs:element minOccurs="0" name="long" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="cancelAllServices">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="cancelAllServicesResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="handleTopologyChange">
+<xs:sequence>
+<xs:element name="arg0" type="xs:boolean" />
+<xs:element name="arg1" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="handleTopologyChangeResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getIntradomainReservationParams">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getIntradomainReservationParamsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="reservationParams" type="tns:StringReservationType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StringReservationType">
+<xs:sequence>
+<xs:element minOccurs="0" name="reservationList">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" type="tns:stringReservation" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="stringReservation">
+<xs:sequence>
+<xs:element minOccurs="0" name="string" type="xs:string" />
+<xs:element minOccurs="0" name="reservation" type="tns:intradomainReservation" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="intradomainReservation">
+<xs:sequence>
+<xs:element name="active" type="xs:boolean" />
+<xs:element minOccurs="0" name="params" type="ns6:ReservationParams" />
+<xs:element name="pathCreated" type="xs:boolean" />
+<xs:element minOccurs="0" name="reservationId" type="xs:string" />
+<xs:element minOccurs="0" name="reservedPath" type="ns4:IntradomainPath" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getServices">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getServicesResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="services" type="ns1:ServiceType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservation">
+<xs:sequence>
+<xs:element minOccurs="0" name="resID" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="Reservation" type="ns1:ReservationType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="restart">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="restartResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAccessPolicy">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getAccessPolicyResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:accessPolicy" />
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="mode">
+<xs:restriction base="xs:string">
+<xs:enumeration value="VLAN" />
+<xs:enumeration value="UNTAGGED" />
+<xs:enumeration value="TRANSPARENT" />
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="AdministrationException" type="tns:AdministrationException" />
+<xs:complexType name="AdministrationException">
+<xs:sequence />
+</xs:complexType>
+</xs:schema>
+<xs:schema targetNamespace="constraints.autobahn.geant.net" version="1.0" xmlns:tns="constraints.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="PathConstraints">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="addNames" nillable="true" type="tns:ConstraintsNames" />
+<xs:element maxOccurs="unbounded" name="addConstraints" nillable="true" type="tns:AdditiveConstraint" />
+<xs:element maxOccurs="unbounded" name="boolNames" nillable="true" type="tns:ConstraintsNames" />
+<xs:element maxOccurs="unbounded" name="boolConstraints" nillable="true" type="tns:BooleanConstraint" />
+<xs:element maxOccurs="unbounded" name="rangeNames" nillable="true" type="tns:ConstraintsNames" />
+<xs:element maxOccurs="unbounded" name="rangeConstraints" nillable="true" type="tns:RangeConstraint" />
+<xs:element maxOccurs="unbounded" name="minValNames" nillable="true" type="tns:ConstraintsNames" />
+<xs:element maxOccurs="unbounded" name="minValConstraints" nillable="true" type="tns:MinValueConstraint" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AdditiveConstraint">
+<xs:complexContent>
+<xs:extension base="tns:Constraint">
+<xs:sequence>
+<xs:element minOccurs="0" name="value" type="xs:double" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="Constraint">
+<xs:all />
+</xs:complexType>
+<xs:complexType name="BooleanConstraint">
+<xs:complexContent>
+<xs:extension base="tns:Constraint">
+<xs:sequence>
+<xs:element minOccurs="0" name="value" type="xs:boolean" />
+<xs:element minOccurs="0" name="logic" type="xs:string" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="RangeConstraint">
+<xs:complexContent>
+<xs:extension base="tns:Constraint">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="ranges" nillable="true" type="tns:Range" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Range">
+<xs:sequence>
+<xs:element minOccurs="0" name="min" type="xs:int" />
+<xs:element minOccurs="0" name="max" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="MinValueConstraint">
+<xs:complexContent>
+<xs:extension base="tns:Constraint">
+<xs:sequence>
+<xs:element minOccurs="0" name="value" type="xs:double" />
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="ConstraintsNames">
+<xs:restriction base="xs:string">
+<xs:enumeration value="VLANS" />
+<xs:enumeration value="TIMESLOTS" />
+<xs:enumeration value="MTU" />
+<xs:enumeration value="SUPPORTS_VLAN_TRANSLATION" />
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+<xs:schema targetNamespace="common.intradomain.autobahn.geant.net" version="1.0" xmlns:tns="common.intradomain.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="GenericLink">
+<xs:sequence>
+<xs:element name="linkId" type="xs:long" />
+<xs:element minOccurs="0" name="version" type="tns:VersionInfo" />
+<xs:element minOccurs="0" name="startInterface" type="tns:GenericInterface" />
+<xs:element minOccurs="0" name="endInterface" type="tns:GenericInterface" />
+<xs:element minOccurs="0" name="direction" type="xs:string" />
+<xs:element name="protection" type="xs:boolean" />
+<xs:element name="propDelay" type="xs:double" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="VersionInfo">
+<xs:sequence>
+<xs:element name="versionId" type="xs:long" />
+<xs:element minOccurs="0" name="startDate" type="xs:dateTime" />
+<xs:element minOccurs="0" name="endDate" type="xs:dateTime" />
+<xs:element minOccurs="0" name="createdBy" type="xs:string" />
+<xs:element minOccurs="0" name="modifiedBy" type="xs:string" />
+<xs:element minOccurs="0" name="dateCreated" type="xs:dateTime" />
+<xs:element minOccurs="0" name="dateModified" type="xs:dateTime" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="GenericInterface">
+<xs:sequence>
+<xs:element name="interfaceId" type="xs:long" />
+<xs:element minOccurs="0" name="version" type="tns:VersionInfo" />
+<xs:element minOccurs="0" name="interfaceType" type="tns:InterfaceType" />
+<xs:element minOccurs="0" name="parentInterface" type="tns:GenericInterface" />
+<xs:element minOccurs="0" name="node" type="tns:Node" />
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element name="bandwidth" type="xs:long" />
+<xs:element minOccurs="0" name="status" type="xs:string" />
+<xs:element name="mtu" type="xs:int" />
+<xs:element minOccurs="0" name="domainId" type="xs:string" />
+<xs:element name="clientPort" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="InterfaceType">
+<xs:sequence>
+<xs:element name="interfaceTypeId" type="xs:long" />
+<xs:element minOccurs="0" name="switchingType" type="xs:string" />
+<xs:element minOccurs="0" name="dataEncodingType" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Node">
+<xs:sequence>
+<xs:element name="nodeId" type="xs:long" />
+<xs:element minOccurs="0" name="version" type="tns:VersionInfo" />
+<xs:element minOccurs="0" name="location" type="tns:Location" />
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element minOccurs="0" name="status" type="xs:string" />
+<xs:element minOccurs="0" name="vendor" type="xs:string" />
+<xs:element minOccurs="0" name="model" type="xs:string" />
+<xs:element minOccurs="0" name="osName" type="xs:string" />
+<xs:element minOccurs="0" name="osVersion" type="xs:string" />
+<xs:element minOccurs="0" name="ipAddress" type="xs:string" />
+<xs:element name="vlanTranslationSupport" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Location">
+<xs:sequence>
+<xs:element name="locationId" type="xs:long" />
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element minOccurs="0" name="country" type="xs:string" />
+<xs:element minOccurs="0" name="institution" type="xs:string" />
+<xs:element minOccurs="0" name="street" type="xs:string" />
+<xs:element name="floor" type="xs:int" />
+<xs:element name="roomSuite" type="xs:int" />
+<xs:element name="row_" type="xs:int" />
+<xs:element name="cabinet" type="xs:int" />
+<xs:element minOccurs="0" name="zipCode" type="xs:string" />
+<xs:element minOccurs="0" name="phoneNumber" type="xs:string" />
+<xs:element minOccurs="0" name="eMailAddress" type="xs:string" />
+<xs:element name="geoLatitude" type="xs:double" />
+<xs:element name="geoLongitude" type="xs:double" />
+<xs:element minOccurs="0" name="type" type="xs:string" />
+<xs:element minOccurs="0" name="zone" type="xs:string" />
+<xs:element name="altitude" type="xs:double" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="administration.autobahn.geant.net" xmlns:ns1="reservation.autobahn.geant.net" xmlns:ns2="useraccesspoint.autobahn.geant.net" xmlns:ns3="network.autobahn.geant.net" xmlns:ns4="http://administration.autobahn.geant.net/" xmlns:tns="administration.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="reservation.autobahn.geant.net" />
+<xs:import namespace="useraccesspoint.autobahn.geant.net" />
+<xs:import namespace="network.autobahn.geant.net" />
+<xs:import namespace="http://administration.autobahn.geant.net/" />
+<xs:complexType name="ServiceType">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="justification" type="xs:string" />
+<xs:element name="priority" type="xs:int" />
+<xs:element minOccurs="0" name="user" type="ns1:User" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" nillable="true" type="tns:ReservationType" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ReservationType">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string" />
+<xs:element minOccurs="0" name="startPort" type="ns2:PortType" />
+<xs:element minOccurs="0" name="endPort" type="ns2:PortType" />
+<xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+<xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
+<xs:element name="priority" type="xs:int" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element name="capacity" type="xs:long" />
+<xs:element name="mtu" type="xs:int" />
+<xs:element name="maxDelay" type="xs:int" />
+<xs:element minOccurs="0" name="resiliency" type="xs:string" />
+<xs:element name="bidirectional" type="xs:boolean" />
+<xs:element minOccurs="0" name="path" type="ns3:Path" />
+<xs:element name="state" type="xs:int" />
+<xs:element minOccurs="0" name="failureCause" type="xs:string" />
+<xs:element name="userStartVlan" type="xs:int" />
+<xs:element name="userEndVlan" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Status">
+<xs:sequence>
+<xs:element minOccurs="0" name="domain" type="xs:string" />
+<xs:element name="longitude" type="xs:float" />
+<xs:element name="latitude" type="xs:float" />
+<xs:element maxOccurs="unbounded" name="neighbors" nillable="true" type="tns:Neighbor" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Neighbor">
+<xs:sequence>
+<xs:element minOccurs="0" name="domain" type="xs:string" />
+<xs:element minOccurs="0" name="link" type="ns3:Link" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="KeyValue">
+<xs:sequence>
+<xs:element minOccurs="0" name="key" type="xs:string" />
+<xs:element minOccurs="0" name="value" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StatisticsType">
+<xs:sequence>
+<xs:element name="averageIntra" type="xs:long" />
+<xs:element name="averageInter" type="xs:long" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="intra" nillable="true" type="ns4:statisticsEntry" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="inter" nillable="true" type="ns4:statisticsEntry" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" nillable="true" type="ns1:ReservationHistory" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema targetNamespace="aai.autobahn.geant.net" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="UserAuthParameters">
+<xs:sequence>
+<xs:element minOccurs="0" name="identifier" type="xs:string" />
+<xs:element minOccurs="0" name="organization" type="xs:string" />
+<xs:element minOccurs="0" name="projectMembership" type="xs:string" />
+<xs:element minOccurs="0" name="projectRole" type="xs:string" />
+<xs:element minOccurs="0" name="email" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getAccessPolicy">
+    <wsdl:part element="tns:getAccessPolicy" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setAccessPolicyResponse">
+    <wsdl:part element="tns:setAccessPolicyResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServicesResponse">
+    <wsdl:part element="tns:getServicesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setTopologyResponse">
+    <wsdl:part element="tns:setTopologyResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelAllServices">
+    <wsdl:part element="tns:cancelAllServices" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setProperties">
+    <wsdl:part element="tns:setProperties" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="restartResponse">
+    <wsdl:part element="tns:restartResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setTopology">
+    <wsdl:part element="tns:setTopology" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getService">
+    <wsdl:part element="tns:getService" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="handleTopologyChangeResponse">
+    <wsdl:part element="tns:handleTopologyChangeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="handleTopologyChange">
+    <wsdl:part element="tns:handleTopologyChange" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatistics">
+    <wsdl:part element="tns:getStatistics" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServicesInProcessingResponse">
+    <wsdl:part element="tns:getServicesInProcessingResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatus">
+    <wsdl:part element="tns:getStatus" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServiceResponse">
+    <wsdl:part element="tns:getServiceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLog">
+    <wsdl:part element="tns:getLog" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="restart">
+    <wsdl:part element="tns:restart" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIntradomainCalendarsUsage">
+    <wsdl:part element="tns:getIntradomainCalendarsUsage" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatusResponse">
+    <wsdl:part element="tns:getStatusResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTopologyResponse">
+    <wsdl:part element="tns:getTopologyResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationResponse">
+    <wsdl:part element="tns:getReservationResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTopology">
+    <wsdl:part element="tns:getTopology" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationLogResponse">
+    <wsdl:part element="tns:getReservationLogResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationInProcessing">
+    <wsdl:part element="tns:getReservationInProcessing" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProperties">
+    <wsdl:part element="tns:getProperties" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIntradomainCalendarsUsageResponse">
+    <wsdl:part element="tns:getIntradomainCalendarsUsageResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelAllServicesResponse">
+    <wsdl:part element="tns:cancelAllServicesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setAccessPolicy">
+    <wsdl:part element="tns:setAccessPolicy" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setPropertiesResponse">
+    <wsdl:part element="tns:setPropertiesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservation">
+    <wsdl:part element="tns:getReservation" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServicesInProcessing">
+    <wsdl:part element="tns:getServicesInProcessing" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIntradomainPaths">
+    <wsdl:part element="tns:getIntradomainPaths" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAccessPolicyResponse">
+    <wsdl:part element="tns:getAccessPolicyResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIntradomainReservationParamsResponse">
+    <wsdl:part element="tns:getIntradomainReservationParamsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServices">
+    <wsdl:part element="tns:getServices" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationInProcessingResponse">
+    <wsdl:part element="tns:getReservationInProcessingResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPropertiesResponse">
+    <wsdl:part element="tns:getPropertiesResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLogResponse">
+    <wsdl:part element="tns:getLogResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatisticsResponse">
+    <wsdl:part element="tns:getStatisticsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIntradomainPathsResponse">
+    <wsdl:part element="tns:getIntradomainPathsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AdministrationException">
+    <wsdl:part element="tns:AdministrationException" name="AdministrationException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIntradomainReservationParams">
+    <wsdl:part element="tns:getIntradomainReservationParams" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationLog">
+    <wsdl:part element="tns:getReservationLog" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Administration">
+    <wsdl:operation name="getService">
+      <wsdl:input message="tns:getService" name="getService">
+    </wsdl:input>
+      <wsdl:output message="tns:getServiceResponse" name="getServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservationInProcessing">
+      <wsdl:input message="tns:getReservationInProcessing" name="getReservationInProcessing">
+    </wsdl:input>
+      <wsdl:output message="tns:getReservationInProcessingResponse" name="getReservationInProcessingResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setAccessPolicy">
+      <wsdl:input message="tns:setAccessPolicy" name="setAccessPolicy">
+    </wsdl:input>
+      <wsdl:output message="tns:setAccessPolicyResponse" name="setAccessPolicyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setTopology">
+      <wsdl:input message="tns:setTopology" name="setTopology">
+    </wsdl:input>
+      <wsdl:output message="tns:setTopologyResponse" name="setTopologyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatus">
+      <wsdl:input message="tns:getStatus" name="getStatus">
+    </wsdl:input>
+      <wsdl:output message="tns:getStatusResponse" name="getStatusResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservationLog">
+      <wsdl:input message="tns:getReservationLog" name="getReservationLog">
+    </wsdl:input>
+      <wsdl:output message="tns:getReservationLogResponse" name="getReservationLogResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getIntradomainPaths">
+      <wsdl:input message="tns:getIntradomainPaths" name="getIntradomainPaths">
+    </wsdl:input>
+      <wsdl:output message="tns:getIntradomainPathsResponse" name="getIntradomainPathsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProperties">
+      <wsdl:input message="tns:getProperties" name="getProperties">
+    </wsdl:input>
+      <wsdl:output message="tns:getPropertiesResponse" name="getPropertiesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatistics">
+      <wsdl:input message="tns:getStatistics" name="getStatistics">
+    </wsdl:input>
+      <wsdl:output message="tns:getStatisticsResponse" name="getStatisticsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTopology">
+      <wsdl:input message="tns:getTopology" name="getTopology">
+    </wsdl:input>
+      <wsdl:output message="tns:getTopologyResponse" name="getTopologyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <wsdl:input message="tns:getLog" name="getLog">
+    </wsdl:input>
+      <wsdl:output message="tns:getLogResponse" name="getLogResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setProperties">
+      <wsdl:input message="tns:setProperties" name="setProperties">
+    </wsdl:input>
+      <wsdl:output message="tns:setPropertiesResponse" name="setPropertiesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServicesInProcessing">
+      <wsdl:input message="tns:getServicesInProcessing" name="getServicesInProcessing">
+    </wsdl:input>
+      <wsdl:output message="tns:getServicesInProcessingResponse" name="getServicesInProcessingResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getIntradomainCalendarsUsage">
+      <wsdl:input message="tns:getIntradomainCalendarsUsage" name="getIntradomainCalendarsUsage">
+    </wsdl:input>
+      <wsdl:output message="tns:getIntradomainCalendarsUsageResponse" name="getIntradomainCalendarsUsageResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelAllServices">
+      <wsdl:input message="tns:cancelAllServices" name="cancelAllServices">
+    </wsdl:input>
+      <wsdl:output message="tns:cancelAllServicesResponse" name="cancelAllServicesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="handleTopologyChange">
+      <wsdl:input message="tns:handleTopologyChange" name="handleTopologyChange">
+    </wsdl:input>
+      <wsdl:output message="tns:handleTopologyChangeResponse" name="handleTopologyChangeResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:AdministrationException" name="AdministrationException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIntradomainReservationParams">
+      <wsdl:input message="tns:getIntradomainReservationParams" name="getIntradomainReservationParams">
+    </wsdl:input>
+      <wsdl:output message="tns:getIntradomainReservationParamsResponse" name="getIntradomainReservationParamsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServices">
+      <wsdl:input message="tns:getServices" name="getServices">
+    </wsdl:input>
+      <wsdl:output message="tns:getServicesResponse" name="getServicesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservation">
+      <wsdl:input message="tns:getReservation" name="getReservation">
+    </wsdl:input>
+      <wsdl:output message="tns:getReservationResponse" name="getReservationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="restart">
+      <wsdl:input message="tns:restart" name="restart">
+    </wsdl:input>
+      <wsdl:output message="tns:restartResponse" name="restartResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccessPolicy">
+      <wsdl:input message="tns:getAccessPolicy" name="getAccessPolicy">
+    </wsdl:input>
+      <wsdl:output message="tns:getAccessPolicyResponse" name="getAccessPolicyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AdministrationServiceSoapBinding" type="tns:Administration">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getReservationInProcessing">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getReservationInProcessing">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getReservationInProcessingResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getService">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getService">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getServiceResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setAccessPolicy">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="setAccessPolicy">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setAccessPolicyResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setTopology">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="setTopology">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setTopologyResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservationLog">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getReservationLog">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getReservationLogResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatus">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getStatus">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getStatusResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getIntradomainPaths">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getIntradomainPaths">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getIntradomainPathsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProperties">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getProperties">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPropertiesResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatistics">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getStatistics">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getStatisticsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTopology">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getTopology">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getTopologyResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getLog">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getLogResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setProperties">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="setProperties">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setPropertiesResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServicesInProcessing">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getServicesInProcessing">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getServicesInProcessingResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelAllServices">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="cancelAllServices">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="cancelAllServicesResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getIntradomainCalendarsUsage">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getIntradomainCalendarsUsage">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getIntradomainCalendarsUsageResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="handleTopologyChange">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="handleTopologyChange">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="handleTopologyChangeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AdministrationException">
+        <soap:fault name="AdministrationException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIntradomainReservationParams">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getIntradomainReservationParams">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getIntradomainReservationParamsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServices">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getServices">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getServicesResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservation">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getReservation">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getReservationResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAccessPolicy">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getAccessPolicy">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAccessPolicyResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="restart">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="restart">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="restartResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AdministrationService">
+    <wsdl:port binding="tns:AdministrationServiceSoapBinding" name="AdministrationPort">
+      <soap:address location="http://193.1.219.80:8080/autobahn/administration2" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

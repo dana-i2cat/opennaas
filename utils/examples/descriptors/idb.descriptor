@@ -1,0 +1,13 @@
+<resourceDescriptor>
+    <capabilityDescriptors>
+        <capabilityProperty name="port" value="9999"/>
+        <information><type>idb</type></information>
+    </capabilityDescriptors>
+    <information>
+        <type>IDB</type>
+        <name>idb1</name>
+    </information>
+    <properties/>
+    <fileTopology>
+   </fileTopology>
+</resourceDescriptor>

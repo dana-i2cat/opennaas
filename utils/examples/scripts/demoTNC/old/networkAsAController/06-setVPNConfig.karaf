@@ -1,0 +1,7 @@
+##version 0.1
+
+shell:echo Script enabling vpn access
+
+##configure vpn access using given interface
+#vpn:configure network:networkdemo router:logicalheanet1 fe-0/1/2.3 --address 192.168.1.101 255.255.255.0
+#vpn:configure network:networkdemo router:logicalgsn1 fe-0/2/2.3 --address 192.168.1.102 255.255.255.0 

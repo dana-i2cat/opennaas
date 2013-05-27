@@ -1,0 +1,7 @@
+## Configures rest of scripts
+## NOTE: unified_script must be changed if scripts.path is, to keep in sync!!!
+scripts.path="/home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn"
+descriptors.path="/home/isart/workspace/opennaas/opennaas/examples/TNC-demo/descriptors"
+
+shell:source $scripts.path/00a-mockurls
+#shell:source $scripts.path/00a-realurls

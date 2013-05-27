@@ -1,0 +1,3 @@
+protocols:context router:dub netconf $protocol.url.dub
+protocols:context router:pw netconf $protocol.url.pw
+protocols:context router:cph netconf $protocol.url.cph

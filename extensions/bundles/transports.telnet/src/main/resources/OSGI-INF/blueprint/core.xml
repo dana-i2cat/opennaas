@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<bean id="telnetTransportFactory" class="org.opennaas.extensions.transports.telnet.TelnetTransportFactory"/>
+	
+	<service ref="telnetTransportFactory" interface="org.opennaas.core.resources.transport.ITransportFactory">
+		<service-properties>
+			<entry key="transport" value="telnet"/>
+			<entry key="transport.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+</blueprint>

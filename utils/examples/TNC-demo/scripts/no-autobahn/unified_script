@@ -1,0 +1,11 @@
+scripts.path="/home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn"
+
+shell:source $scripts.path/00-config
+shell:source $scripts.path/01-resources
+shell:source $scripts.path/02-subinterfaces
+shell:source $scripts.path/03-logicalrouters
+shell:source $scripts.path/04-network
+shell:source $scripts.path/05-ips
+shell:source $scripts.path/06-links
+shell:source $scripts.path/07-ospf
+shell:source $scripts.path/08-gre

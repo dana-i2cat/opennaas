@@ -1,0 +1,9 @@
+##version 0.1
+
+shell:echo IP configuration
+
+## Creating IP links
+#l3ip:createLink network:networkdemo router:logicalheanet1:fe-0/1/1.1 192.168.1.11 255.255.255.0 router:logicalunic1:fe-0/3/2.2 192.168.1.12 255.255.255.0
+#l3ip:createLink network:networkdemo router:logicalgsn1:fe-0/2/2.1 192.168.1.31 255.255.255.0 router:logicalunic1:fe-0/3/1.2 192.168.1.32 255.255.255.0
+#l3ip:createLink network:networkdemo router:logicalheanet1:fe-0/1/2.1 192.168.1.21 255.255.255.0 router:logicalgsn1:fe-0/2/1.2 192.168.1.22 255.255.255.0
+#queue:execute network:networkdemo

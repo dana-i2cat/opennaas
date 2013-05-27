@@ -1,0 +1,18 @@
+<configuration>
+<interfaces>
+## for each interface in logical router. TODO change param for logicalROuter.interfaces
+##	#foreach($element in $param)
+##	#if($element.getClass().getSimpleName().equals("Ethernetport"))
+	<interface>
+		<name>$param.Name</name>
+		<unit>
+		<name>$param.PortNumber</name>
+		#if($param.description)
+		<description>$param.description</description>
+		#end
+		</unit>
+	</interface>
+##	#end
+##	#end
+</interfaces>
+</configuration>

@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>org.opennaas.extensions.bundles</artifactId>
+    <groupId>org.opennaas</groupId>
+    <version>0.19</version>
+  </parent>
+
+  <artifactId>org.opennaas.extensions.bod.autobahn</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>bundle</packaging>
+  <name>OpenNaaS :: BoD :: Autobahn driver</name>
+  <description>BoD Autobahn</description>
+
+  <dependencies>
+      <dependency>
+		  <groupId>org.opennaas</groupId>
+		  <artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.googlecode.guava-osgi</groupId>
+          <artifactId>guava-osgi</artifactId>
+      </dependency>
+	  <dependency>
+		  <groupId>joda-time</groupId>
+		  <artifactId>joda-time</artifactId>
+	  </dependency>
+  </dependencies>
+
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.cxf</groupId>
+              <artifactId>cxf-codegen-plugin</artifactId>
+              <version>${cxf.version}</version>
+              <executions>
+                  <execution>
+                      <id>generate-sources</id>
+                      <configuration>
+                          <wsdlOptions>
+                              <wsdlOption>
+                                  <wsdl>${basedir}/src/main/resources/META-INF/wsdl/useraccesspoint.wsdl</wsdl>
+                                  <extraargs>
+                                      <extraarg>-wsdlLocation</extraarg>
+                                      <wsdlUrl>classpath:META-INF/wsdl/useraccesspoint.wsdl</wsdlUrl>
+                                  </extraargs>
+                              </wsdlOption>
+                              <wsdlOption>
+                                  <wsdl>${basedir}/src/main/resources/META-INF/wsdl/administration.wsdl</wsdl>
+                                  <extraargs>
+                                      <extraarg>-wsdlLocation</extraarg>
+                                      <wsdlUrl>classpath:META-INF/wsdl/administration.wsdl</wsdlUrl>
+                                  </extraargs>
+                              </wsdlOption>
+                          </wsdlOptions>
+                      </configuration>
+                      <goals>
+                          <goal>wsdl2java</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.felix</groupId>
+              <artifactId>maven-bundle-plugin</artifactId>
+              <extensions>true</extensions>
+              <configuration>
+                  <instructions>
+                      <!-- org.apache.cxf.jaxws.spi -->
+                      <DynamicImport-Package>*</DynamicImport-Package>
+                      <Export-Package>
+                          org.opennaas.extensions.bod.autobahn.*;version="${project.version}"
+                      </Export-Package>
+                  </instructions>
+              </configuration>
+          </plugin>
+      </plugins>
+      <pluginManagement>
+      	<plugins>
+      		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+      		<plugin>
+      			<groupId>org.eclipse.m2e</groupId>
+      			<artifactId>lifecycle-mapping</artifactId>
+      			<version>1.0.0</version>
+      			<configuration>
+      				<lifecycleMappingMetadata>
+      					<pluginExecutions>
+      						<pluginExecution>
+      							<pluginExecutionFilter>
+      								<groupId>org.apache.cxf</groupId>
+      								<artifactId>
+      									cxf-codegen-plugin
+      								</artifactId>
+      								<versionRange>
+      									[2.4.3-fuse-01-02,)
+      								</versionRange>
+      								<goals>
+      									<goal>wsdl2java</goal>
+      								</goals>
+      							</pluginExecutionFilter>
+      							<action>
+      								<ignore />
+      							</action>
+      						</pluginExecution>
+      					</pluginExecutions>
+      				</lifecycleMappingMetadata>
+      			</configuration>
+      		</plugin>
+      	</plugins>
+      </pluginManagement>
+  </build>
+</project>
