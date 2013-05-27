@@ -46,4 +46,12 @@ public class PDUPort implements IPowerDelivery {
 		this.id = id;
 	}
 
+	public PowerDeliveryResource getParentPDU() {
+		return parentPDU;
+	}
+
+	public void setParentPDU(PowerDeliveryResource parentPDU) {
+		this.parentPDU = parentPDU;
+	}
+
 }

@@ -8,7 +8,9 @@ import gim.load.DeliveryRatedLoad;
 import gim.load.MeasuredLoad;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ import snmp.APCDriver_SNMP;
 public class PowerDeliveryResource extends ONS_Resource {
 
 	private PowerSupplyResource		primaryPowerSupply;
-	private List<IPowerSupply>		powerSupplies;
+	private List<IPowerSupply>		powerSupplies		= new ArrayList<IPowerSupply>();
 	private DeliveryRatedLoad		deliveryRatedLoad;
 
 	private APCDriver_SNMP			driver;
@@ -37,19 +39,20 @@ public class PowerDeliveryResource extends ONS_Resource {
 	 * <p/>
 	 * Key: Port ids, Value: port targetOutletIndex known for the driver
 	 */
-	private Map<Integer, Integer>	portOutletIndexes;
+	private Map<Integer, Integer>	portOutletIndexes	= new HashMap<Integer, Integer>();
 
 	// PowerSupply data, statically set here but should be read dynamically in reality
 
-	private energyClass				energyclass	= energyClass.Green;
-	private energyType				energytype	= energyType.Wind;
+	private energyClass				energyclass			= energyClass.Green;
+	private energyType				energytype			= energyType.Wind;
 
-	private double					pricePerKW	= 0.11;
-	private Energy					psEnergy	= new Energy(energyclass, energytype, pricePerKW);
+	private double					pricePerKW			= 0.11;
+	private Energy					psEnergy			= new Energy(energyclass, energytype, pricePerKW);
 
 	public PowerDeliveryResource(String SNMPIP) {
 		myIP = SNMPIP;
 		primaryPowerSupply = new PowerSupplyResource(psEnergy, pricePerKW);
+		powerSupplies.add(primaryPowerSupply);
 
 		try {
 			driver = new APCDriver_SNMP(myIP);
@@ -85,6 +88,21 @@ public class PowerDeliveryResource extends ONS_Resource {
 		}
 
 		return name;
+	}
+
+	/**
+	 * @return the ports
+	 */
+	public List<PDUPort> getPorts() {
+		return ports;
+	}
+
+	/**
+	 * @param ports
+	 *            the ports to set
+	 */
+	public void setPorts(List<PDUPort> ports) {
+		this.ports = ports;
 	}
 
 	public MeasuredLoad getPortCurrentPowerMetrics(PDUPort port) throws Exception {
@@ -180,15 +198,23 @@ public class PowerDeliveryResource extends ONS_Resource {
 	}
 
 	public String getEnergyType() {
-		return primaryPowerSupply.getEnergy().getEnergyType().toString();
+		return getPowerSupplies().get(0).getEnergy().getEnergyType().toString();
 	}
 
 	public String getEnergyClass() {
-		return primaryPowerSupply.getEnergy().getEnergyClass().toString();
+		return getPowerSupplies().get(0).getEnergy().getEnergyClass().toString();
 	}
 
 	public double getCO2perKW() {
-		return primaryPowerSupply.getEnergy().getCO2perKw();
+		return getPowerSupplies().get(0).getEnergy().getCO2perKw();
+	}
+
+	public Map<Integer, Integer> getPortOutletIndexes() {
+		return portOutletIndexes;
+	}
+
+	public void setPortOutletIndexes(Map<Integer, Integer> portOutletIndexes) {
+		this.portOutletIndexes = portOutletIndexes;
 	}
 
 	private int getPortOutletIndex(PDUPort port) throws Exception {
