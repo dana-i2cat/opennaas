@@ -93,7 +93,19 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
      */
     @Override
     public String getPath(String ipSource, String ipDest, String switchip, String inputPort) throws CapabilityException {
-        return "2";
+        OfRoutingModel model = (OfRoutingModel) resource.getModel();
+        if (model.getTable() == null) {
+            model.setTable(new Table());
+            return "null";
+        }
+        log.error("Path: "+ipSource+" "+ipDest+" "+switchip+" "+inputPort);
+        Switch switchInfo = new Switch(inputPort, switchip);
+        Route route = new Route(ipSource, ipDest, switchInfo);
+        if(model.getTable().RouteExists(route)){
+            return model.getTable().getOutputPort(route);
+        }
+        
+        return "null";
     }
 
     /**
@@ -125,14 +137,14 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
      * 
      */
     @Override
-    public String putRoute(String ipSource, String ipDest, String switchip, String inputPort) throws CapabilityException {
+    public String putRoute(String ipSource, String ipDest, String switchip, String inputPort, String outputPort) throws CapabilityException {
         log.info("Put Route into table");
         OfRoutingModel model = (OfRoutingModel) resource.getModel();
         if (model.getTable() == null) {
             model.setTable(new Table());
         }
 
-        Switch switchInfo = new Switch(inputPort, switchip);
+        Switch switchInfo = new Switch(inputPort, inputPort, outputPort, switchip);
         Route route = new Route(ipSource, ipDest, switchInfo);
         String response = model.getTable().addRoute(route);
         return response;

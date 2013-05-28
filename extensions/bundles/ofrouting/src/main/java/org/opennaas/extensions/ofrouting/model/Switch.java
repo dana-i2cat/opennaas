@@ -11,10 +11,19 @@ public class Switch {
 
     private int numberPorts;
     private List<String> listPorts = new ArrayList<String>();
+    private String inputPort;
+    private String outputPort;
     private String ipAddress;
 
-    public Switch(String port, String ipAddress) {
+    public Switch(String port,String inputPort, String outputPort, String ipAddress) {
         listPorts.add(port);
+        this.inputPort = inputPort;
+        this.outputPort = outputPort;
+        this.ipAddress = ipAddress;
+    }
+    
+    public Switch(String inputPort, String ipAddress) {
+        this.inputPort = inputPort;
         this.ipAddress = ipAddress;
     }
 
@@ -42,6 +51,22 @@ public class Switch {
         this.numberPorts = numberPorts;
     }
 
+    public String getInputPort() {
+        return inputPort;
+    }
+
+    public void setInputPort(String inputPort) {
+        this.inputPort = inputPort;
+    }
+
+    public String getOutputPort() {
+        return outputPort;
+    }
+
+    public void setOutputPort(String outputPort) {
+        this.outputPort = outputPort;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -51,10 +76,7 @@ public class Switch {
             return false;
         }
         final Switch other = (Switch) obj;
-        if (this.numberPorts != other.numberPorts) {
-            return false;
-        }
-        if (this.listPorts != other.listPorts && (this.listPorts == null || !this.listPorts.equals(other.listPorts))) {
+        if ((this.inputPort == null) ? (other.inputPort != null) : !this.inputPort.equals(other.inputPort)) {
             return false;
         }
         if ((this.ipAddress == null) ? (other.ipAddress != null) : !this.ipAddress.equals(other.ipAddress)) {
@@ -62,6 +84,7 @@ public class Switch {
         }
         return true;
     }
+
 
     @Override
     public int hashCode() {

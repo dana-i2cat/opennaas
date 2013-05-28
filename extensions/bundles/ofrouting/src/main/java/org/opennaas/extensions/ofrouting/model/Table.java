@@ -41,6 +41,16 @@ public class Table {
         log.info("Adding route...");
         return false;
     }
+    
+    public String getOutputPort(Route route){
+        log.error("Return output port");
+        for (Route r : this.route){
+            if(r.equals(route)){
+                return r.getSwitchInfo().getOutputPort();
+            }
+        }
+        return "null";
+    }
 
     @Override
     public boolean equals(Object obj) {

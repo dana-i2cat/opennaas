@@ -60,6 +60,7 @@ public interface IRoutingCapability extends ICapability {
 	public String putRoute(@FormParam("ipSource") String ipSource,
         @FormParam("ipDest") String ipDest,
         @FormParam("switchip") String switchip,
-        @FormParam("inputPort") String inputPort) throws CapabilityException;
+        @FormParam("inputPort") String inputPort,
+        @FormParam("inputPort") String outputPort) throws CapabilityException;
 
 }
