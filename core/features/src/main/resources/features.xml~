@@ -168,7 +168,6 @@
         <feature name="opennaas-ofrouting" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson-core-asl.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson-mapper-asl.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofrouting/${project.version}</bundle>

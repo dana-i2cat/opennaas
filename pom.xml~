@@ -55,7 +55,6 @@
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
 		<guava.version>10.0.1</guava.version>
-		<jackson-core-asl.version>1.9.12</jackson-core-asl.version>
 		<jackson-mapper-asl.version>1.9.12</jackson-mapper-asl.version>
 		<jodatime.version>2.1</jodatime.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
@@ -964,11 +963,6 @@
 				<groupId>com.googlecode.guava-osgi</groupId>
 				<artifactId>guava-osgi</artifactId>
 				<version>${guava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-asl.version</artifactId>
-				<version>${jackson-core-asl.version.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>

@@ -67,6 +67,5 @@
 		
 		<module>vcpe</module>
 		<module>sampleresource</module>
-		<module>ofrouting</module>
 	</modules>
 </project>

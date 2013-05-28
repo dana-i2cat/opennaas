@@ -9,10 +9,10 @@
         <version>0.19</version>
 	</parent>
 	
-	<name>OpenNaaS :: Clients</name>
+	<name>OF : Routing : Client</name>
 	<artifactId>org.opennaas.clients</artifactId>
 
 	<modules>
-        <module>opennaas-gui-vcpe</module>
+        <module>of-routing-gui</module>
  	</modules>
 </project>

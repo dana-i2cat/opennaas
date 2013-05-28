@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<!-- Scans the classpath of this application for @Components to deploy as beans -->
+	<context:component-scan base-package="org.opennaas.gui.vcpe" />
+
+	<!-- Configures the @Controller programming model -->
+	<mvc:annotation-driven validator="validator"/>
+	
+	<!-- Configures Handler Interceptors -->	
+	<mvc:interceptors>
+		<!-- Changes the locale when a 'locale' request parameter is sent; e.g. /?locale=de -->
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Spring Validator -->
+	<bean name="resourceBundleLocator" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	    <property name="basenames">
+	        <list>
+	            <value>WEB-INF/messages/messages</value>
+	        </list>
+	    </property>
+	</bean>
+
+	<bean name="validator"
+	    class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	    <property name="validationMessageSource">
+	        <ref bean="resourceBundleLocator"/>
+	    </property>
+	</bean>
+
+	<!-- Saves a locale change using a cookie -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+
+	<!-- Application Message Bundle -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/messages/messages" />
+		<property name="cacheSeconds" value="0" />
+	</bean>
+
+	<!-- Application Message Bundle -->
+	<bean id="configSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/config" />
+		<property name="cacheSeconds" value="0" />
+	</bean>
+
+	<!-- Log4j file configuration -->	
+	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+		<property name="targetMethod" value="initLogging" />
+		<property name="arguments">
+			<list>
+            	<value>classpath:log4j.xml</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- OpenNaas Beans-->
+	<bean id="vcpeNetworkBO" class="org.opennaas.gui.vcpe.bos.VCPENetworkBO" />
+	<bean id="vcpeNetworkService" class="org.opennaas.gui.vcpe.services.rest.vcpe.VCPENetworkService" />	
+	<bean id="builderService" class="org.opennaas.gui.vcpe.services.rest.vcpe.BuilderCapabilityService" />
+</beans>
