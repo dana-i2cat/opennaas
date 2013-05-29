@@ -1,4 +1,4 @@
-package gim;
+package gim.core;
 
 import gim.log.PowerMonitorLog;
 
@@ -10,6 +10,10 @@ import gim.log.PowerMonitorLog;
  */
 public interface IPowerMonitorLogging {
 
+	/**
+	 * 
+	 * @return this system's PowerMonitorLog
+	 */
 	public PowerMonitorLog getPowerMonitorLog();
 
 }

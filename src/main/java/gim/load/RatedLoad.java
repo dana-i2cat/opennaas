@@ -1,7 +1,5 @@
 package gim.load;
 
-import gim.resources.NetworkResource;
-import gim.resources.PowerSupplyResource;
 
 /**
  * @author rcarroll
@@ -10,10 +8,7 @@ import gim.resources.PowerSupplyResource;
  */
 public class RatedLoad extends ElectricalLoad {
 
-	public PowerSupplyResource m_PowerSupplyResource;
-	public NetworkResource m_NetworkResource;
-
-	public RatedLoad(){
+	public RatedLoad() {
 
 	}
 
