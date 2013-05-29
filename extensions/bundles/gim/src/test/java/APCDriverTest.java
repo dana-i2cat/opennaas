@@ -1,16 +1,4 @@
-import gim.core.IPowerConsumer;
-import gim.core.IPowerDelivery;
-import gim.core.IPowerSupply;
-import gim.core.entities.GIModel;
-import gim.core.entities.PowerConsumer;
-import gim.core.entities.PowerSupply;
-import gim.core.entities.pdu.PDU;
-import gim.core.entities.pdu.PDUPort;
-import gim.energy.Energy;
-import gim.energy.energyClass;
-import gim.energy.energyType;
-import gim.load.MeasuredLoad;
-import gim.log.PowerMonitorLog;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,15 +8,29 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opennaas.extensions.gim.controller.APCPDUPowerControllerDriver;
+import org.opennaas.extensions.gim.controller.PDUPortPowerController;
+import org.opennaas.extensions.gim.controller.PDUPowerController;
+import org.opennaas.extensions.gim.controller.PDUPowerControllerDriver;
+import org.opennaas.extensions.gim.controller.snmp.APCDriver_SNMP;
+import org.opennaas.extensions.gim.model.core.IPowerConsumer;
+import org.opennaas.extensions.gim.model.core.IPowerDelivery;
+import org.opennaas.extensions.gim.model.core.IPowerSupply;
+import org.opennaas.extensions.gim.model.core.entities.GIModel;
+import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
+import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
+import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
+import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
+import org.opennaas.extensions.gim.model.energy.Energy;
+import org.opennaas.extensions.gim.model.energy.energyClass;
+import org.opennaas.extensions.gim.model.energy.energyType;
+import org.opennaas.extensions.gim.model.load.MeasuredLoad;
+import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-import controller.snmp.APCDriver_SNMP;
-import controller.APCPDUPowerControllerDriver;
-import controller.PDUPortPowerController;
-import controller.PDUPowerController;
-import controller.PDUPowerControllerDriver;
 
 public class APCDriverTest {
 

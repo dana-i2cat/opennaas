@@ -1,0 +1,35 @@
+package org.opennaas.extensions.gim.model.core;
+
+
+
+import java.util.List;
+
+import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
+
+
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat Foundation)
+ * 
+ */
+public interface IPowerDelivery {
+
+	/**
+	 * 
+	 * @return @code{IPowerSupply}s this system takes energy from.
+	 */
+	public List<IPowerSupply> getPowerSupplies();
+
+	/**
+	 * 
+	 * @return @code{IPowerConsumer}s this system delivers energy to.
+	 */
+	public List<IPowerConsumer> getPowerConsumers();
+
+	/**
+	 * 
+	 * @return the DeliveryRatedLoad (both input and output) this system is designated to handle
+	 */
+	public DeliveryRatedLoad getDeliveryRatedLoad();
+
+}
