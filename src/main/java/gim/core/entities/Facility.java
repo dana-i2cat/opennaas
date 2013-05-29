@@ -1,4 +1,4 @@
-package GIM;
+package gim.core.entities;
 
 /**
  * @version 1.0

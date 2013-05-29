@@ -1,5 +1,5 @@
-package GIM;
-import GIM.RatedLoad;
+package gim.load;
+import gim.load.RatedLoad;
 
 /**
  * @author rcarroll

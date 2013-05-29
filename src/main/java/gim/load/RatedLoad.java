@@ -1,4 +1,5 @@
-package GIM;
+package gim.load;
+
 
 /**
  * @author rcarroll
@@ -7,10 +8,7 @@ package GIM;
  */
 public class RatedLoad extends ElectricalLoad {
 
-	public PowerSupplyResource m_PowerSupplyResource;
-	public NetworkResource m_NetworkResource;
-
-	public RatedLoad(){
+	public RatedLoad() {
 
 	}
 

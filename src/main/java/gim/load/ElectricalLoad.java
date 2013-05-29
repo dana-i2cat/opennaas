@@ -1,5 +1,4 @@
-package GIM;
-import GIM.Load;
+package gim.load;
 
 /**
  * @author rcarroll
