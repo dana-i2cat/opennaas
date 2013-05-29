@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import snmp.APCDriver_SNMP;
+import controller.snmp.APCDriver_SNMP;
 import controller.APCPDUPowerControllerDriver;
 import controller.PDUPortPowerController;
 import controller.PDUPowerController;

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import snmp.APCDriver_SNMP;
+import controller.snmp.APCDriver_SNMP;
 
 public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 

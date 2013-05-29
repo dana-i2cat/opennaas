@@ -1,4 +1,4 @@
-package snmp;
+package controller.snmp;
 
 import gim.load.MeasuredLoad;
 

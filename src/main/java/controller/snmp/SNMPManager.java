@@ -1,4 +1,4 @@
-package snmp;
+package controller.snmp;
 
 import java.io.IOException;
 import java.util.Date;
