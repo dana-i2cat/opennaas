@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.opennaas</groupId>
+	<artifactId>gim.driver.pdu.apc</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>GIM :: APC PDU driver</name>
+	<description>APC PDU driver for GIM model using SNMP</description>
+	
+	<properties>
+		<junit.version>4.10</junit.version>
+		<snmp4j.version>2.1.0_1</snmp4j.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.snmp4j</artifactId>
+			<version>${snmp4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
