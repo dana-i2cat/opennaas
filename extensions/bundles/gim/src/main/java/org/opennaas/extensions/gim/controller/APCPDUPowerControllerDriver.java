@@ -1,10 +1,10 @@
 package org.opennaas.extensions.gim.controller;
 
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.opennaas.extensions.gim.controller.snmp.APCDriver_SNMP;
@@ -31,6 +31,13 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 		return driver.getOutletName(getOutletIndex(port));
 	}
 
+	public List<PDUPort> getPorts() throws Exception {
+		// TODO Auto-generated method stub
+		// read ports from driver
+		// populate outletIndexes
+		return null;
+	}
+
 	public boolean getPowerStatus(PDUPort port) throws Exception {
 		return driver.getOutletStatus(getOutletIndex(port));
 	}
@@ -50,7 +57,7 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 	}
 
 	public PowerMonitorLog getPowerMetricsByTimeRange(PDUPort port, Date from, Date to) throws Exception {
-		// TODO return a log filtered copy including only desired measures.
+		// FIXME return a log filtered copy including only desired measures.
 		return port.getPowerMonitorLog();
 	}
 

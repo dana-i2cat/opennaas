@@ -1,7 +1,16 @@
 <resourceDescriptor>
 	<!-- Capability information -->
 	<capabilityDescriptors>
-		<information><type>example2</type></information>
+	 	<capabilityProperty name="pdu.driver.ipaddress" value="udp:193.1.29.121/161"/>
+		<information><type>pdu_pw_mon</type></information>
+	</capabilityDescriptors>
+	<capabilityDescriptors>
+		<capabilityProperty name="pdu.driver.ipaddress" value="udp:193.1.29.121/161"/>
+		<information><type>pdu_pw_mgt</type></information>
+	</capabilityDescriptors>
+	<capabilityDescriptors>
+		<capabilityProperty name="pdu.driver.ipaddress" value="udp:193.1.29.121/161"/>
+		<information><type>pdu_pw_sup</type></information>
 	</capabilityDescriptors>
 	<!-- Resource information. It specify type and name-->
 	<information>

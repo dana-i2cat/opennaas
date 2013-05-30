@@ -1,7 +1,5 @@
 package org.opennaas.extensions.gim.controller;
 
-
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,9 +12,8 @@ import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-
-
 /**
+ * PDUPowerController that delegates to a PDUPowerControllerDriver.
  * 
  * @author Isart Canyameres Gimenez (i2cat Foundation)
  * 
@@ -43,14 +40,14 @@ public class PDUPowerController implements IPDUPowerManagementCapability, IPDUPo
 	}
 
 	public MeasuredLoad getCurrentPowerMetrics(PDUPort port) throws Exception {
-		return driver.getCurrentPowerMetrics(port);
+		return getDriver().getCurrentPowerMetrics(port);
 	}
 
 	public PowerMonitorLog getPowerMetricsByTimeRange(PDUPort port, Date from, Date to) throws Exception {
 		// read current metrics if now is in requested period
 		Date now = Calendar.getInstance().getTime();
 		if (now.after(from) && now.before(to)) {
-			driver.getCurrentPowerMetrics(port);
+			getDriver().getCurrentPowerMetrics(port);
 		}
 
 		// TODO return a log filtered copy including only desired measures.
@@ -58,25 +55,25 @@ public class PDUPowerController implements IPDUPowerManagementCapability, IPDUPo
 	}
 
 	public boolean getPowerStatus(PDUPort port) throws Exception {
-		return driver.getPowerStatus(port);
+		return getDriver().getPowerStatus(port);
 	}
 
 	public boolean powerOn(PDUPort port) throws Exception {
-		return driver.powerOn(port);
+		return getDriver().powerOn(port);
 	}
 
 	public boolean powerOff(PDUPort port) throws Exception {
-		return driver.powerOff(port);
+		return getDriver().powerOff(port);
 	}
 
 	public Energy getAggregatedEnergy() {
 		// FIXME assuming there is only one supply
-		return pdu.getPowerSupplies().get(0).getEnergy();
+		return getPdu().getPowerSupplies().get(0).getEnergy();
 	}
 
 	public double getAggregatedPricePerEnergyUnit() {
 		// FIXME assuming there is only one supply
-		return pdu.getPowerSupplies().get(0).getPricePerUnit();
+		return getPdu().getPowerSupplies().get(0).getPricePerUnit();
 	}
 
 }

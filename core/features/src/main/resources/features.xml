@@ -230,7 +230,13 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.vnmapper/${project.version}</bundle>
 	</feature>
 	
+	<feature name="opennaas-gim" version="${project.version}">
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.gim/${opennaas.gim.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.snmp4j/${snmp4j.version}</bundle>
+	</feature>
+	
 	<feature name="opennaas-pdu" version="${project.version}">
+		<feature version="${project.version}">opennaas-gim</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.pdu/${project.version}</bundle>
 	</feature>
 

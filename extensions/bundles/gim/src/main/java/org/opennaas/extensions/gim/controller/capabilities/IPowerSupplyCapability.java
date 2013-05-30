@@ -9,8 +9,8 @@ import org.opennaas.extensions.gim.model.energy.Energy;
  */
 public interface IPowerSupplyCapability {
 
-	public Energy getAggregatedEnergy();
+	public Energy getAggregatedEnergy() throws Exception;
 
-	public double getAggregatedPricePerEnergyUnit();
+	public double getAggregatedPricePerEnergyUnit() throws Exception;
 
 }
