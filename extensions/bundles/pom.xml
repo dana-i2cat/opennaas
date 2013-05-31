@@ -70,5 +70,7 @@
 		<module>vcpe</module>
 
 		<module>sampleresource</module>
+		
+		<module>quantum</module>
 	</modules>
 </project>

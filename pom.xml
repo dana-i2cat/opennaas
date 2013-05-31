@@ -1088,6 +1088,11 @@
 					</dependencies>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-wadl2java-plugin</artifactId>
+					<version>${cxf.version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.7</version>

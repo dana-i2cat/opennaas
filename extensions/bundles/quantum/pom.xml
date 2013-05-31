@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent -->
+	<parent>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>0.20-SNAPSHOT</version>
+	</parent>
+	<!-- POM id -->
+	<artifactId>org.opennaas.extensions.quantum</artifactId>
+	<!-- Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
+	<name>OpenNaaS :: Quantum</name>
+	<description>OpenStack Quantum Network Provider</description>
+	<dependencies>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-wadl2java-plugin</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!-- | the following instructions build a simple set of public/private 
+					classes into an OSGi bundle -->
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.opennaas.extensions.quantum.Activator</Bundle-Activator>
+						<Import-Package>
+							org.slf4j,
+							*
+						</Import-Package>
+						<Export-Package>
+							org.opennaas.extensions.quantum;version="${project.version}"
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-wadl2java-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${basedir}/target/generated/java</sourceRoot>
+							<wadlOptions>
+								<wadlOption>
+									<wadl>${basedir}/src/main/resources/quantum-api/wadls/os-networks_new-e2c81ad08a85bd947a77074a32a19250a1faf2fc.wadl</wadl>
+									<packagename>org.opennaas.extensions.quantum.api.networks</packagename>
+								</wadlOption>
+									<wadlOption>
+									<wadl>${basedir}/src/main/resources/quantum-api/wadls/os-ports_new-942fe9dcc4df69746c04b4b7216b773933e90471.wadl</wadl>
+									<packagename>org.opennaas.extensions.quantum.api.ports</packagename>
+								</wadlOption>
+									<wadlOption>
+									<wadl>${basedir}/src/main/resources/quantum-api/wadls/os-subnets_new-9bdd555ef6d47fbc65ab79861bd75851ead71560.wadl</wadl>
+									<packagename>org.opennaas.extensions.quantum.api.subnets</packagename>
+								</wadlOption>
+							</wadlOptions>
+						</configuration>
+						<goals>
+							<goal>wadl2java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.cxf</groupId>
+										<artifactId>cxf-wadl2java-plugin</artifactId>
+										<versionRange>[${cxf.version},)</versionRange>
+										<goals>
+											<goal>wadl2java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
