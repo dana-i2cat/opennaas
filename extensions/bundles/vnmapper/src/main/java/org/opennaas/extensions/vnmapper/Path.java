@@ -168,6 +168,9 @@ public class Path implements Serializable {
 			}
 		}
 
+		if (pathString.endsWith("--"))
+			pathString = pathString.substring(0, pathString.length() - 2);
+
 		return pathString;
 	}
 }
