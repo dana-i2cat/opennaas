@@ -89,6 +89,9 @@
 		<!--
 	  	    Resources Karaf Commands
 	  	  -->
+	  	<command name="resource/clear">
+			<action class="org.opennaas.core.resources.shell.ClearResourcesCommand"/>
+		</command>
 		<command name="resource/create">
 			<action class="org.opennaas.core.resources.shell.CreateResourceCommand"/>
 		</command>
