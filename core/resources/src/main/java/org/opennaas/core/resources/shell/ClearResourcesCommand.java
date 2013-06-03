@@ -11,7 +11,7 @@ public class ClearResourcesCommand extends GenericKarafCommand {
 		try {
 			getResourceManager().destroyAllResources();
 		} catch (Exception e) {
-			printError("Error celaring resources");
+			printError("Error clearing resources");
 			printError(e);
 		}
 		printEndCommand();
