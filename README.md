@@ -42,6 +42,7 @@ http://www.opennaas.org/community/
 * Elisabeth Rigol
 * Gerd Behrmann
 * Isart Canyameres
+* Josep Batallé
 * Jordi Puig
 * Natalia Koroleva
 * Pau Minoves

@@ -1,8 +1,10 @@
 package org.opennaas.extensions.ofrouting.capability.routing;
 
+/*
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+*/
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,7 @@ import org.opennaas.extensions.ofrouting.model.OfRoutingModel;
 import org.opennaas.extensions.ofrouting.model.Route;
 import org.opennaas.extensions.ofrouting.model.Switch;
 import org.opennaas.extensions.ofrouting.model.Table;
+import org.opennaas.extensions.ofrouting.utils.Utils;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 /**
@@ -97,6 +100,9 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
      */
     @Override
     public String getPath(String ipSource, String ipDest, String switchip, String inputPort) throws CapabilityException {
+        ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
+        ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
+        
         OfRoutingModel model = (OfRoutingModel) resource.getModel();
         if (model.getTable() == null) {
             model.setTable(new Table());
@@ -117,11 +123,11 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 //        String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1", "priority":"32767", "ingress-port":"1","active":"true", "actions":"output=2"}";
         String json = "";
         String response = null;
-Client client = Client.create();
+/*Client client = Client.create();
 WebResource webResource = client.resource(url);
 response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
 log.error(response);
-
+*/
         return "null";
     }
 
