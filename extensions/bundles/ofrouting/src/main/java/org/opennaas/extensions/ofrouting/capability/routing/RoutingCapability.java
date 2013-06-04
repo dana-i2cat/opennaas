@@ -1,8 +1,12 @@
 package org.opennaas.extensions.ofrouting.capability.routing;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -98,13 +102,26 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             model.setTable(new Table());
             return "null";
         }
-        log.error("Path: "+ipSource+" "+ipDest+" "+switchip+" "+inputPort);
+        log.error("Path: " + ipSource + " " + ipDest + " " + switchip + " " + inputPort);
         Switch switchInfo = new Switch(inputPort, switchip);
         Route route = new Route(ipSource, ipDest, switchInfo);
-        if(model.getTable().RouteExists(route)){
+        if (model.getTable().RouteExists(route)) {
+            log.error("Get OUTPUT PORT");
+            model.getTable().addRegister("Path: " + ipSource + " " + ipDest + " " + switchip + " " + inputPort + " " + new java.util.Date().getHours() + ":" + new java.util.Date().getMinutes() + ":" + new java.util.Date().getSeconds());
             return model.getTable().getOutputPort(route);
         }
-        
+
+        String ControllerIP = "192.168.101.15";
+        String ControllerPort = "8080";
+        String url = "http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";
+//        String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1", "priority":"32767", "ingress-port":"1","active":"true", "actions":"output=2"}";
+        String json = "";
+        String response = null;
+Client client = Client.create();
+WebResource webResource = client.resource(url);
+response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+log.error(response);
+
         return "null";
     }
 
@@ -148,5 +165,10 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         Route route = new Route(ipSource, ipDest, switchInfo);
         String response = model.getTable().addRoute(route);
         return response;
+    }
+
+    @Override
+    public String getRegister() throws CapabilityException {
+        return ((OfRoutingModel) resource.getModel()).getTable().getRegister().toString();
     }
 }

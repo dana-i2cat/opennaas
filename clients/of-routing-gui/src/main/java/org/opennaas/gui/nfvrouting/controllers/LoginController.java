@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.gui.vcpe.controllers;
+package org.opennaas.gui.nfvrouting.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;

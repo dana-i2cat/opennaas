@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.opennaas.gui.vcpe.services.rest.vcpe;
+package org.opennaas.gui.routing.services.rest.vcpe;
 
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.gui.vcpe.services.rest.GenericRestService;
-import org.opennaas.gui.vcpe.services.rest.RestServiceException;
+import org.opennaas.gui.routing.services.rest.GenericRestService;
+import org.opennaas.gui.routing.services.rest.RestServiceException;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;

@@ -23,7 +23,7 @@
 </div>	
 <div id="header_menu" class="ui-widget-content ui-corner-all">
 	<div id="home">
-		<a href="/opennaas-vcpe/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
+		<a href="/nfv-routing/secure/vcpeNetwork/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
 	</div>
 	<div id="languages">
 		<input type="radio" id="english" name="radio"><label for="english"><span class="languageText"><spring:message code="header.language.english"/></span></label>

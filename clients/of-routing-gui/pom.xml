@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.opennaas.gui.vcpe</artifactId>
 	<packaging>war</packaging>
-	<name>OpenNaas :: GUI :: Virtual CPE</name>
+	<name>NFV :: GUI :: OpenFlow Routing</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
@@ -235,7 +235,9 @@
 	</dependencies>
 	
 	<build>
-		<finalName>opennaas-vcpe</finalName>
+		<finalName>nfv-routing</finalName>
 	</build>
-	
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+    </properties>
 </project>

@@ -13,26 +13,26 @@ public class Switch {
     private List<String> listPorts = new ArrayList<String>();
     private String inputPort;
     private String outputPort;
-    private String ipAddress;
+    private String macAddress;
 
-    public Switch(String port,String inputPort, String outputPort, String ipAddress) {
+    public Switch(String port,String inputPort, String outputPort, String macAddress) {
         listPorts.add(port);
         this.inputPort = inputPort;
         this.outputPort = outputPort;
-        this.ipAddress = ipAddress;
+        this.macAddress = macAddress;
     }
     
-    public Switch(String inputPort, String ipAddress) {
+    public Switch(String inputPort, String macAddress) {
         this.inputPort = inputPort;
-        this.ipAddress = ipAddress;
+        this.macAddress = macAddress;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public String getMacAddress() {
+        return macAddress;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
     }
 
     public List<String> getListPorts() {
@@ -79,7 +79,7 @@ public class Switch {
         if ((this.inputPort == null) ? (other.inputPort != null) : !this.inputPort.equals(other.inputPort)) {
             return false;
         }
-        if ((this.ipAddress == null) ? (other.ipAddress != null) : !this.ipAddress.equals(other.ipAddress)) {
+        if ((this.macAddress == null) ? (other.macAddress != null) : !this.macAddress.equals(other.macAddress)) {
             return false;
         }
         return true;
@@ -90,8 +90,7 @@ public class Switch {
     public int hashCode() {
         int hash = 7;
         hash = 29 * hash + this.numberPorts;
-        hash = 29 * hash + (this.listPorts != null ? this.listPorts.hashCode() : 0);
-        hash = 29 * hash + (this.ipAddress != null ? this.ipAddress.hashCode() : 0);
+        hash = 29 * hash + (this.macAddress != null ? this.macAddress.hashCode() : 0);
         return hash;
     }
 }

@@ -63,4 +63,20 @@ public interface IRoutingCapability extends ICapability {
         @FormParam("inputPort") String inputPort,
         @FormParam("inputPort") String outputPort) throws CapabilityException;
 
+/**
+* Update route
+*
+*/
+        
+        
+        /**
+	 * Get register
+	 * 
+         * return ok or fail
+	 * @throws CapabilityException
+	 */
+	@Path("/getRegister")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getRegister() throws CapabilityException;
 }

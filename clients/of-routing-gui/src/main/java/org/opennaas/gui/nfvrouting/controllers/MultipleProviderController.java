@@ -1,4 +1,4 @@
-package org.opennaas.gui.vcpe.controllers;
+package org.opennaas.gui.nfvrouting.controllers;
 
 import java.util.Locale;
 
@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.vcpe.entities.MultipleProviderLogical;
 import org.opennaas.gui.vcpe.entities.MultipleProviderPhysical;
-import org.opennaas.gui.vcpe.services.rest.RestServiceException;
+import org.opennaas.gui.routing.services.rest.RestServiceException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

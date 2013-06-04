@@ -14,6 +14,7 @@ public class Table {
     private List<Route> route = new ArrayList<Route>();
     private static final long serialVersionUID = -4002472167559948067L;
     Log log = LogFactory.getLog(Table.class);
+    private StringBuilder register;
 
     public List<Route> getRoute() {
         return route;
@@ -38,7 +39,7 @@ public class Table {
                 return true;
             }
         }
-        log.info("Adding route...");
+        //log.info("Adding route...");
         return false;
     }
     
@@ -46,6 +47,7 @@ public class Table {
         log.error("Return output port");
         for (Route r : this.route){
             if(r.equals(route)){
+                log.error("OutputPort = "+ r.getSwitchInfo().getOutputPort());
                 return r.getSwitchInfo().getOutputPort();
             }
         }
@@ -73,7 +75,20 @@ public class Table {
         hash = 23 * hash + (this.route != null ? this.route.hashCode() : 0);
         return hash;
     }
+
+    public StringBuilder getRegister() {
+        return register;
+    }
+
+    public void setRegister(StringBuilder register) {
+        this.register = register;
+    }
     
-    
+    public void addRegister(String string){
+        if(this.register == null){
+            this.register = new StringBuilder("Test ");
+        }
+        this.register.append("\n"+string);
+    }
 
 }

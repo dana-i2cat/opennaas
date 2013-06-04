@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.gui.vcpe.services.rest.vcpe;
+package org.opennaas.gui.routing.services.rest.vcpe;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.gui.vcpe.services.rest.GenericRestService;
-import org.opennaas.gui.vcpe.services.rest.RestServiceException;
+import org.opennaas.gui.routing.services.rest.GenericRestService;
+import org.opennaas.gui.routing.services.rest.RestServiceException;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -22,9 +22,9 @@ import com.sun.jersey.api.client.WebResource;
 /**
  * @author Jordi
  */
-public class VCPENetworkService extends GenericRestService {
+public class NFVRoutingService extends GenericRestService {
 
-	private static final Logger	LOGGER	= Logger.getLogger(VCPENetworkService.class);
+	private static final Logger	LOGGER	= Logger.getLogger(NFVRoutingService.class);
 
 	/**
 	 * Call a rest service to create a VCPENetwork resource

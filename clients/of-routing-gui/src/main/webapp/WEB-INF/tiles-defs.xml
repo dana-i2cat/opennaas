@@ -42,5 +42,10 @@
 		<put-attribute name="title" value="Update Ip's VCPE Network" />
 		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/updateIpsForm.jsp" />
 	</definition>
+        
+        <definition name="routeTable" extends="base.definition">
+		<put-attribute name="title" value="Route Table" />
+		<put-attribute name="body" value="/WEB-INF/views/routing/routeTable.jsp" />
+	</definition>
 
 </tiles-definitions>

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.opennaas.gui.vcpe.controllers;
+package org.opennaas.gui.nfvrouting.controllers;
 
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
-import org.opennaas.gui.vcpe.bos.VCPENetworkBO;
-import org.opennaas.gui.vcpe.services.rest.RestServiceException;
+import org.opennaas.gui.nfvrouting.bos.VCPENetworkBO;
+import org.opennaas.gui.routing.services.rest.RestServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;

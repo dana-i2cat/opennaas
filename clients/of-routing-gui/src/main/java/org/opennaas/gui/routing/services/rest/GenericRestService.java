@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.gui.vcpe.services.rest;
+package org.opennaas.gui.routing.services.rest;
 
 import java.util.Locale;
 
