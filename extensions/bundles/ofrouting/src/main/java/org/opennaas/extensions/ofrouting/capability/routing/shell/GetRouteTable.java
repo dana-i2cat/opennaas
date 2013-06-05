@@ -11,32 +11,20 @@ import org.opennaas.extensions.ofrouting.capability.routing.RoutingCapability;
  * @author josep
  * 
  */
-@Command(scope = "routing", name = "getPath", description = "Get Path of route.")
+@Command(scope = "routing", name = "getRouteTable", description = "Get Route table.")
 public class GetRouteTable extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id", required = true, multiValued = false)
 	private String	resourceName;
         
-        @Argument(index = 1, name = "ipSource", description = "Ip Source.", required = true, multiValued = false)
-	private String	ipSource;
-        
-        @Argument(index = 2, name = "ipDest", description = "Destination IP", required = true, multiValued = false)
-	private String	ipDest;
-        
-        @Argument(index = 3, name = "switchip", description = "Ip of the Switch", required = true, multiValued = false)
-	private String	switchip;
-        
-        @Argument(index = 4, name = "inputPort", description = "Input Port of the Switch.", required = true, multiValued = false)
-	private String	inputPort;
-
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Get Path");
+		printInitCommand("Get Route table");
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceName);
 			RoutingCapability capab = (RoutingCapability) resource.getCapabilityByType("routing");
-			String greeting = capab.getPath(ipSource, ipDest, switchip, inputPort);
-			printInfo("The outputport is: " + greeting);
+			String greeting = capab.getRouteTable();
+			printInfo("The json is: " + greeting);
 		} catch (Exception e) {
 			printError("Error greeting from resource " + resourceName);
 			printError(e);

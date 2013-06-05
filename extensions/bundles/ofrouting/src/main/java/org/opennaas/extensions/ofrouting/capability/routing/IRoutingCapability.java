@@ -59,7 +59,7 @@ public interface IRoutingCapability extends ICapability {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String putRoute(@FormParam("ipSource") String ipSource,
         @FormParam("ipDest") String ipDest,
-        @FormParam("switchip") String switchip,
+        @FormParam("switchMac") String switchMac,
         @FormParam("inputPort") String inputPort,
         @FormParam("inputPort") String outputPort) throws CapabilityException;
 

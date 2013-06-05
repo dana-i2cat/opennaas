@@ -99,7 +99,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
      * 
      */
     @Override
-    public String getPath(String ipSource, String ipDest, String switchip, String inputPort) throws CapabilityException {
+    public String getPath(String ipSource, String ipDest, String switchMac, String inputPort) throws CapabilityException {
         ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
         ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
         
@@ -108,12 +108,12 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             model.setTable(new Table());
             return "null";
         }
-        log.error("Path: " + ipSource + " " + ipDest + " " + switchip + " " + inputPort);
-        Switch switchInfo = new Switch(inputPort, switchip);
+        log.error("Path: " + ipSource + " " + ipDest + " " + switchMac + " " + inputPort);
+        Switch switchInfo = new Switch(inputPort, switchMac);
         Route route = new Route(ipSource, ipDest, switchInfo);
         if (model.getTable().RouteExists(route)) {
             log.error("Get OUTPUT PORT");
-            model.getTable().addRegister("Path: " + ipSource + " " + ipDest + " " + switchip + " " + inputPort + " " + new java.util.Date().getHours() + ":" + new java.util.Date().getMinutes() + ":" + new java.util.Date().getSeconds());
+            model.getTable().addRegister("Path: " + ipSource + " " + ipDest + " " + switchMac + " " + inputPort + " " + new java.util.Date().getHours() + ":" + new java.util.Date().getMinutes() + ":" + new java.util.Date().getSeconds());
             return model.getTable().getOutputPort(route);
         }
 
@@ -160,14 +160,14 @@ log.error(response);
      * 
      */
     @Override
-    public String putRoute(String ipSource, String ipDest, String switchip, String inputPort, String outputPort) throws CapabilityException {
+    public String putRoute(String ipSource, String ipDest, String switchMac, String inputPort, String outputPort) throws CapabilityException {
         log.info("Put Route into table");
         OfRoutingModel model = (OfRoutingModel) resource.getModel();
         if (model.getTable() == null) {
             model.setTable(new Table());
         }
 
-        Switch switchInfo = new Switch(inputPort, inputPort, outputPort, switchip);
+        Switch switchInfo = new Switch(inputPort, inputPort, outputPort, switchMac);
         Route route = new Route(ipSource, ipDest, switchInfo);
         String response = model.getTable().addRoute(route);
         return response;

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//LOGGER" "log4j.dtd">
+
+<!-- Log levels off, fatal, error, warn, info, debug and all. -->
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %l- %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${catalina.home}/logs/opennaas.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %l - %m%n" />
+        </layout>
+    </appender>
+
+	<!-- OpenNaas Loggers -->
+	<logger name="org.opennaas.gui.vcpe">
+		<level value="debug" />
+        <appender-ref ref="file" />
+	</logger>
+
+	<!-- OpenNaas Test Loggers -->
+	<logger name="org.opennaas.gui.vcpe.tests" additivity="false">
+		<level value="debug" />
+        <appender-ref ref="console" />
+	</logger>
+
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.springframework.beans">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.springframework.context">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.hibernate">
+		<level value="error" />
+	</logger>
+	
+	<!-- Root Logger -->
+	<root>
+		<priority value="error" />
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>
