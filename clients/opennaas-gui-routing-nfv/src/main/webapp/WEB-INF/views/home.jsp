@@ -7,7 +7,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <ol id="selectable">
-	List Routing resources...
+	No routing resource started!
 </ol>
 <br>
 <div id="buttonLine">

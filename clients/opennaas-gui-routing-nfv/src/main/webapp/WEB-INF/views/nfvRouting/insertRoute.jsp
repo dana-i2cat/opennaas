@@ -40,14 +40,16 @@
                 <th><form:label path="switchInfo.macAddress">Switch Mac</form:label></th>
                 <th><form:label path="switchInfo.inputPort">Input Port</form:label></th>
                 <th><form:label path="switchInfo.outputPort">Output Port</form:label></th>
-                    <th></th>
-                </tr>
-
-                <td><form:input class="id" path="sourceAddress" type="text" value=""/></td>                    
-            <td><form:input class="inputConfig" path="sourceAddress" type="text" value=""/></td>
-            <td><form:input class="inputConfig" path="sourceAddress" type="text" value=""/></td>
-            <td class="td-last"><input id="deleteButton" type="button" value="Delete"/>
-            </td>
+                <th></th>
+            </tr>
+            <tr>
+                <td><form:input class="ipInput" path="sourceAddress" type="text" value=""/></td>                    
+                <td><form:input class="ipInput" path="sourceAddress" type="text" value=""/></td>
+                <td><form:input class="macInput" path="sourceAddress" type="text" value=""/></td>
+                <td><form:input class="portInput" path="sourceAddress" type="text" value=""/></td>
+                <td><form:input class="portInput" path="sourceAddress" type="text" value=""/></td>
+                <td class="td-last"><input id="deleteButton" type="button" value="Delete"/>
+                </td>
             </tr>
 
         </table>

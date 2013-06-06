@@ -20,26 +20,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 
-	private static final Logger						LOGGER	= Logger.getLogger(HomeController.class);
+    private static final Logger LOGGER = Logger.getLogger(HomeController.class);
+    @Autowired
+    protected NFVRoutingBO nfvRoutingBO;
+    @Autowired
+    protected ReloadableResourceBundleMessageSource messageSource;
 
-	@Autowired
-	protected NFVRoutingBO							vcpeNetworkBO;
-
-	@Autowired
-	protected ReloadableResourceBundleMessageSource	messageSource;
-
-	/**
-	 * Redirect to home
-	 * 
-	 * @param model
-	 * @param locale
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home")
-	public String home(Model model, Locale locale, HttpSession session) {
-		LOGGER.debug("home");
-
-		return "home";
-	}
-
+    /**
+     * Redirect to home
+     * 
+     * @param model
+     * @param locale
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home")
+    public String home(Model model, Locale locale, HttpSession session) {
+        LOGGER.debug("home");
+        try {
+            String response = nfvRoutingBO.getRouteTable("test");
+            model.addAttribute("json", response);
+        } catch (Exception e) {
+            return "home";
+        }
+        return "table";
+    }
 }
