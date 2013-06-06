@@ -1,9 +1,11 @@
 package org.opennaas.extensions.ofrouting.capability.routing;
 
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
+import org.apache.cxf.helpers.IOUtils;
+import org.apache.cxf.io.CachedOutputStream;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.ContentDisposition;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -123,20 +125,20 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
         
         String response = null;
-Client client = Client.create();
-WebResource webResource = client.resource(url);
+WebClient client = WebClient.create(url);
+client.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
         if(switchMac.equals("00:00:00:00:00:00:00:01")){
             //inform SW2
             
             json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-            response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+            response = client.post(json, String.class);
 log.error("1-JSON; "+response);            
             json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-            response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+            response = client.post(json, String.class);
 log.error("1-JSON; "+response);            
             json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
-            response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+            response = client.post(json, String.class);
 log.error("1-JSON; "+response);            
         }
         if(switchMac.equals("00:00:00:00:00:00:00:02")){
