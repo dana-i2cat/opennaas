@@ -1,10 +1,10 @@
 package org.opennaas.extensions.ofrouting.capability.routing;
 
-/*
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-*/
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -120,14 +120,35 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         String ControllerIP = "192.168.101.15";
         String ControllerPort = "8080";
         String url = "http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";
-//        String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1", "priority":"32767", "ingress-port":"1","active":"true", "actions":"output=2"}";
-        String json = "";
+        String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
+        
         String response = null;
-/*Client client = Client.create();
+Client client = Client.create();
 WebResource webResource = client.resource(url);
-response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+
+        if(switchMac.equals("00:00:00:00:00:00:00:01")){
+            //inform SW2
+            
+            json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
+            response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+log.error("1-JSON; "+response);            
+            json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
+            response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+log.error("1-JSON; "+response);            
+            json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
+            response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
+log.error("1-JSON; "+response);            
+        }
+        if(switchMac.equals("00:00:00:00:00:00:00:02")){
+            
+        }
+//        json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
+//        json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
+//        String json = "";
+        
+//response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
 log.error(response);
-*/
+
         return "null";
     }
 
