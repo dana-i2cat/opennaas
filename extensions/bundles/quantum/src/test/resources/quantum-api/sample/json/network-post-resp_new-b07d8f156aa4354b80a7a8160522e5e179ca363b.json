@@ -1,7 +1,3 @@
-'status': '201'
-'content-length': '194'
-'content-type': 'application/json;
-
 {
     "network": {
         "admin_state_up": true,
