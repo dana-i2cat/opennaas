@@ -14,11 +14,38 @@
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: Quantum</name>
 	<description>OpenStack Quantum Network Provider</description>
+	<properties>
+		<jackson-2.version>2.2.1</jackson-2.version>
+		<jsonassert.version>1.2.0</jsonassert.version>
+	</properties>
 	<dependencies>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.core.resources</artifactId>
+			</dependency>
+			<!-- Apache CXF WADL to Java Maven plugin 
+				(http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html) -->
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-wadl2java-plugin</artifactId>
 				<version>${cxf.version}</version>
+			</dependency>
+			<!-- Jackson -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.module</groupId>
+				<artifactId>jackson-module-jaxb-annotations</artifactId>
+				<version>${jackson-2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-2.version}</version>
+			</dependency>
+			<!-- JSON Assert (https://github.com/skyscreamer/JSONassert) -->
+			<dependency>
+			    <groupId>org.skyscreamer</groupId>
+			    <artifactId>jsonassert</artifactId>
+			    <version>${jsonassert.version}</version>
 			</dependency>
 	</dependencies>
 	<build>
