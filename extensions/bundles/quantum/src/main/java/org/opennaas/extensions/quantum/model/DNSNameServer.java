@@ -1,11 +1,17 @@
 package org.opennaas.extensions.quantum.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Internal representation of a DNS nameserver
  * 
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DNSNameServer {
 
 	private String	address;
@@ -25,5 +31,21 @@ public class DNSNameServer {
 
 	public void setSubnet_id(String subnet_id) {
 		this.subnet_id = subnet_id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DNSNameServer other = (DNSNameServer) obj;
+		if (!address.equals(other.getAddress()))
+			return false;
+		if (!subnet_id.equals(other.getSubnet_id()))
+			return false;
+		return true;
 	}
 }

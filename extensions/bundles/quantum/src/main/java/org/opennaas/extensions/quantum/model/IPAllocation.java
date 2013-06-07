@@ -2,13 +2,20 @@ package org.opennaas.extensions.quantum.model;
 
 import java.util.Calendar;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Internal representation of allocated IP addresses in a Quantum subnet.
  * 
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class IPAllocation {
+
 	private String		port_id;
 	private String		ip_address;
 	private String		subnet_id;
@@ -53,5 +60,27 @@ public class IPAllocation {
 
 	public void setExpiration(Calendar expiration) {
 		this.expiration = expiration;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IPAllocation other = (IPAllocation) obj;
+		if (!port_id.equals(other.getPort_id()))
+			return false;
+		if (!ip_address.equals(other.getIp_address()))
+			return false;
+		if (!subnet_id.equals(other.getSubnet_id()))
+			return false;
+		if (!network_id.equals(other.getNetwork_id()))
+			return false;
+		if (!expiration.equals(other.getExpiration()))
+			return false;
+		return true;
 	}
 }

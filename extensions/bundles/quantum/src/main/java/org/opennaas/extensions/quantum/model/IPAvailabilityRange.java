@@ -1,5 +1,9 @@
 package org.opennaas.extensions.quantum.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Internal representation of available IPs for Quantum subnets.
  * 
@@ -10,7 +14,10 @@ package org.opennaas.extensions.quantum.model;
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class IPAvailabilityRange {
+
 	private String	allocation_pool_id;
 	private String	first_ip;
 	private String	last_ip;
@@ -42,5 +49,23 @@ public class IPAvailabilityRange {
 	@Override
 	public String toString() {
 		return first_ip + " - " + last_ip;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IPAvailabilityRange other = (IPAvailabilityRange) obj;
+		if (!allocation_pool_id.equals(other.getAllocation_pool_id()))
+			return false;
+		if (!first_ip.equals(other.getFirst_ip()))
+			return false;
+		if (!last_ip.equals(other.getLast_ip()))
+			return false;
+		return true;
 	}
 }
