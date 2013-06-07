@@ -1,5 +1,9 @@
 package org.opennaas.extensions.quantum.extensions.l3.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.opennaas.extensions.quantum.model.HasId;
 import org.opennaas.extensions.quantum.model.HasTenant;
 import org.opennaas.extensions.quantum.model.Port;
@@ -10,6 +14,8 @@ import org.opennaas.extensions.quantum.model.Port;
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement(name = "router")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Router implements HasId, HasTenant {
 
 	private String	id;

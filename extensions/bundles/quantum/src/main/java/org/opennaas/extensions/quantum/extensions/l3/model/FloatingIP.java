@@ -1,5 +1,9 @@
 package org.opennaas.extensions.quantum.extensions.l3.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.opennaas.extensions.quantum.model.HasId;
 import org.opennaas.extensions.quantum.model.HasTenant;
 
@@ -9,6 +13,8 @@ import org.opennaas.extensions.quantum.model.HasTenant;
  * @author logoff
  * 
  */
+@XmlRootElement(name = "floating_ip")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class FloatingIP implements HasId, HasTenant {
 
 	private String	id;

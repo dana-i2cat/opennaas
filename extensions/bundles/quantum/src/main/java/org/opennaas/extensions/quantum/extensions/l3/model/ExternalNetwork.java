@@ -1,10 +1,16 @@
 package org.opennaas.extensions.quantum.extensions.l3.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement(name = "external_network")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ExternalNetwork {
 
 	private String	network_id;
