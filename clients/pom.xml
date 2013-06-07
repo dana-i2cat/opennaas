@@ -13,6 +13,6 @@
 	<artifactId>org.opennaas.clients</artifactId>
 
 	<modules>
-        <module>of-routing-gui</module>
+        <module>opennaas-gui-routing-nfv</module>
  	</modules>
 </project>

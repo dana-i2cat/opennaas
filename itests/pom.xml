@@ -12,15 +12,15 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>helpers</module>
-
+<!--		<module>helpers</module>
+-->
 		<module>core</module>
-		<module>router</module>
+<!--		<module>router</module>
 		<module>network</module>
 		<module>roadm</module>
 		<module>bod</module>
 		<module>vcpe</module>
-	</modules>
+-->	</modules>
 
 	<dependencies>
 		<dependency>

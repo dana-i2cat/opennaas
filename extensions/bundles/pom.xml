@@ -22,7 +22,7 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>router.actionsets.junos</module>
+<!--		<module>router.actionsets.junos</module>
 		<module>router.repository</module>
 		<module>router.capability.chassis</module>
 		<module>router.capability.ip</module>
@@ -33,13 +33,13 @@
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>
 		<module>router.model</module>
-
+-->
 		<module>fragment.velocity</module>
 		<module>protocols.netconf</module>
 		<module>queuemanager</module>
 		<module>com.wonesys.emsModule</module>
 
-		<module>roadm.repository</module>
+<!--		<module>roadm.repository</module>
 		<module>roadm.protocols.wonesys</module>
 		<module>roadm.actionsets.wonesys</module>
 		<module>roadm.capability.connections</module>
@@ -67,6 +67,6 @@
 		
 		<module>vcpe</module>
 		<module>sampleresource</module>
-		<module>ofrouting</module>
+-->		<module>ofrouting</module>
 	</modules>
 </project>

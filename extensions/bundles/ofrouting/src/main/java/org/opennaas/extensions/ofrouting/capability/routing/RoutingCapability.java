@@ -1,18 +1,20 @@
 package org.opennaas.extensions.ofrouting.capability.routing;
 
-import org.apache.cxf.helpers.IOUtils;
-import org.apache.cxf.io.CachedOutputStream;
-import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.cxf.jaxrs.ext.multipart.Attachment;
-import org.apache.cxf.jaxrs.ext.multipart.ContentDisposition;
-import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
+import java.io.BufferedReader;
+
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IAction;
@@ -119,27 +121,71 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             return model.getTable().getOutputPort(route);
         }
 
-        String ControllerIP = "192.168.101.15";
-        String ControllerPort = "8080";
-        String url = "http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";
-        String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
         
-        String response = null;
-WebClient client = WebClient.create(url);
-client.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+        
+        
+        String ControllerIP = "opennaasNFV";
+        String ControllerPort = "8080";
+        String Url = "http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";
+        String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-3\", \"priority\":\"32767\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
+         
+        
+        
+       try{ 
+           log.error("try to send");
+       URL url = new URL(Url); 
+            URLConnection conn = url.openConnection(); 
+            conn.setDoOutput(true); 
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream()); 
 
+            wr = new OutputStreamWriter(conn.getOutputStream()); 
+            json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ether-type\":\"0x800\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
+            wr.write(json);
+            log.error("write");
+            wr.flush(); 
+            
+            // Get the response 
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
+            String line; 
+            while ((line = rd.readLine()) != null) { 
+                System.out.println(line); 
+            } 
+            wr.close();
+            rd.close(); 
+            
+            
+            conn = url.openConnection(); 
+            conn.setDoOutput(true); 
+            wr = new OutputStreamWriter(conn.getOutputStream()); 
+            json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ether-type\":\"0x800\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
+            wr.write(json);
+            log.error("write");
+            wr.flush(); 
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
+            line = ""; 
+            while ((line = rd.readLine()) != null) { 
+                System.out.println(line); 
+            } 
+wr.close();
+            rd.close();
+            
+       }catch(IOException e){
+           log.error("Error "+e.getMessage());
+       }
+        
+        
         if(switchMac.equals("00:00:00:00:00:00:00:01")){
             //inform SW2
             
             json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-            response = client.post(json, String.class);
-log.error("1-JSON; "+response);            
+//            response = client.post(json, String.class);
+//log.error("1-JSON; "+response);            
             json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-            response = client.post(json, String.class);
-log.error("1-JSON; "+response);            
+//            response = client.post(json, String.class);
+//log.error("1-JSON; "+response);            
             json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
-            response = client.post(json, String.class);
-log.error("1-JSON; "+response);            
+//            response = client.post(json, String.class);
+//log.error("1-JSON; "+response);            
         }
         if(switchMac.equals("00:00:00:00:00:00:00:02")){
             
@@ -149,7 +195,7 @@ log.error("1-JSON; "+response);
 //        String json = "";
         
 //response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
-log.error(response);
+//log.error(response);
 
         return "null";
     }

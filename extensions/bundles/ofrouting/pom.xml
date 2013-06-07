@@ -28,10 +28,6 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
         </dependency>
-        <dependency>
-	  <groupId>org.apache.cxf</groupId>
-	  <artifactId>cxf-bundle</artifactId>
-	 </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -50,9 +46,12 @@
                 <configuration>
                     <instructions>
                         <Bundle-Activator>org.opennaas.extensions.ofrouting.capability.routing.Activator</Bundle-Activator>
-                        <Import-Package>org.slf4j,*</Import-Package>
+                        <Import-Package>
+                            org.slf4j,
+                            *
+                        </Import-Package>
                         <Export-Package>
-							org.opennaas.extensions.ofrouting.capability.routing;version="${project.version}"
+                            org.opennaas.extensions.ofrouting.capability.routing;version="${project.version}"
                         </Export-Package>
                     </instructions>
                 </configuration>
