@@ -2,7 +2,7 @@ package org.opennaas.extensions.gim.controller.capabilities;
 
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 
-public interface IPDUPowerManagementCapability {
+public interface IPDUPowerManagementCapability extends IPDUInventaryCapability {
 
 	/**
 	 * 

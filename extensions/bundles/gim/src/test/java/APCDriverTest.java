@@ -1,5 +1,4 @@
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
-
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,7 +28,6 @@ import org.opennaas.extensions.gim.model.energy.energyClass;
 import org.opennaas.extensions.gim.model.energy.energyType;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
-
 
 public class APCDriverTest {
 
@@ -118,6 +115,7 @@ public class APCDriverTest {
 		// pdu.setDeliveryRatedLoad(deliveryRatedLoad);
 
 		PDUPort port = new PDUPort();
+		port.setId("0001");
 		port.setPdu(pdu);
 		port.setPowerMonitorLog(new PowerMonitorLog(1, 2));
 		// port.setDeliveryRatedLoad(deliveryRatedLoad);
@@ -141,8 +139,8 @@ public class APCDriverTest {
 		snmpDriver = new APCDriver_SNMP(pduIPAddress);
 		PDUPort port = (PDUPort) model.getDeliveries().get(0);
 
-		Map<PDUPort, Integer> outletIndexes = new HashMap<PDUPort, Integer>();
-		outletIndexes.put(port, 1); // port has outletIndex = 1
+		Map<String, Integer> outletIndexes = new HashMap<String, Integer>();
+		outletIndexes.put(port.getId(), 1); // port has outletIndex = 1
 
 		APCPDUPowerControllerDriver apcDriver = new APCPDUPowerControllerDriver();
 		apcDriver.setDriver(snmpDriver);

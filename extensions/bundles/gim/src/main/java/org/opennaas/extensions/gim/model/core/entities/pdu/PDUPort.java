@@ -1,7 +1,5 @@
 package org.opennaas.extensions.gim.model.core.entities.pdu;
 
-
-
 import java.util.List;
 
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
@@ -11,7 +9,6 @@ import org.opennaas.extensions.gim.model.core.IPowerSupply;
 import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat Foundation)
@@ -19,6 +16,7 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
  */
 public class PDUPort implements IPowerDelivery, IPowerMonitorLogging {
 
+	private String					id;
 	private String					name;
 	private List<IPowerConsumer>	powerConsumers;
 	private DeliveryRatedLoad		deliveryRatedLoad;
@@ -32,6 +30,21 @@ public class PDUPort implements IPowerDelivery, IPowerMonitorLogging {
 
 	public void setPdu(PDU pdu) {
 		this.pdu = pdu;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**

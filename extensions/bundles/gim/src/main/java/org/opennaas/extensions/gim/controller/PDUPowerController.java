@@ -2,6 +2,7 @@ package org.opennaas.extensions.gim.controller;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerManagementCapability;
 import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerMonitoringCapability;
@@ -74,6 +75,11 @@ public class PDUPowerController implements IPDUPowerManagementCapability, IPDUPo
 	public double getAggregatedPricePerEnergyUnit() {
 		// FIXME assuming there is only one supply
 		return getPdu().getPowerSupplies().get(0).getPricePerUnit();
+	}
+
+	@Override
+	public List<PDUPort> listPorts() throws Exception {
+		return getDriver().listPorts();
 	}
 
 }

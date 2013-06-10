@@ -4,16 +4,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyCapability;
+import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
+import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.pdu.Activator;
 import org.opennaas.extensions.pdu.model.PDUModel;
 
-
-import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyCapability;
-import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
-import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
-import org.opennaas.extensions.gim.model.energy.Energy;
-
-public class PDUPowerSupplyCapability extends AbstractNotQueueingCapability implements IPowerSupplyCapability {
+public class PDUPowerSupplyCapability extends AbstractNotQueueingCapability implements IPDUPowerSupplyCapability {
 
 	private static Log				log				= LogFactory.getLog(PDUPowerSupplyCapability.class);
 
@@ -25,17 +22,23 @@ public class PDUPowerSupplyCapability extends AbstractNotQueueingCapability impl
 	public PDUPowerSupplyCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
-		log.debug("Built new Example Capability");
+		log.debug("Built new PDUPowerSupplyCapability Capability");
 	}
 
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IPowerSupplyCapability.class.getName());
+		// try{
+		// driver = instantiateDriver();
+		// } catch (Exception e) {
+		// throw new CapabilityException(e);
+		// }
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IPDUPowerSupplyCapability.class.getName());
 		super.activate();
 	}
 
 	@Override
 	public void deactivate() throws CapabilityException {
+		driver = null;
 		unregisterService();
 		super.deactivate();
 	}
@@ -71,7 +74,13 @@ public class PDUPowerSupplyCapability extends AbstractNotQueueingCapability impl
 
 		// FIXME PDUDriverInstantiator should be unknown for the capability
 		// capability should take the driver from an OSGI service.
-		return PDUDriverInstantiator.create(pdu, ip);
+		return PDUDriverInstantiator.create(resourceId, pdu, ip);
+	}
+
+	@Override
+	public void resyncModel() throws Exception {
+		// TODO Auto-generated method stub
+
 	}
 
 }

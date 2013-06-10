@@ -1,7 +1,5 @@
 package org.opennaas.extensions.gim.model.core.entities;
 
-
-
 import java.util.List;
 
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
@@ -11,13 +9,28 @@ import org.opennaas.extensions.gim.model.core.IPowerSupply;
 import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-
 public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
 
+	private String					id;
 	private PowerMonitorLog			powerMonitorLog;
 	private List<IPowerSupply>		powerSupplies;
 	private List<IPowerConsumer>	powerConsumers;
 	private DeliveryRatedLoad		deliveryRatedLoad;
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public PowerMonitorLog getPowerMonitorLog() {
 		return powerMonitorLog;

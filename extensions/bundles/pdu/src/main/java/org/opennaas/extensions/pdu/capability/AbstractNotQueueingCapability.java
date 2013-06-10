@@ -148,6 +148,11 @@ public abstract class AbstractNotQueueingCapability implements ICapabilityLifecy
 		return builder.toString();
 	}
 
+	/**
+	 * Refreshes resource model
+	 */
+	public abstract void resyncModel() throws Exception;
+
 	// Service registration methods
 
 	/**

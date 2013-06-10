@@ -16,10 +16,26 @@ import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
  */
 public class PDU implements IPowerDelivery {
 
+	private String				id;
 	private List<PDUPort>		pduPorts;
 	private List<IPowerSupply>	powerSupplies;
 	private DeliveryRatedLoad	deliveryRatedLoad;
 	private String				name;
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the pduPorts

@@ -1,19 +1,33 @@
 package org.opennaas.extensions.gim.model.core.entities;
 
-
-
 import java.util.List;
 
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
 import org.opennaas.extensions.gim.model.core.IPowerSupply;
 
-
 public class GIModel {
+
+	private String					id;
 
 	private List<IPowerConsumer>	consumers;
 	private List<IPowerDelivery>	deliveries;
 	private List<IPowerSupply>		supplies;
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public List<IPowerConsumer> getConsumers() {
 		return consumers;

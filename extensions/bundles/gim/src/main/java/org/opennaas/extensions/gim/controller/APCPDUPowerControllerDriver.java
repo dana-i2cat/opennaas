@@ -1,6 +1,7 @@
 package org.opennaas.extensions.gim.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,9 +20,9 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 	/**
 	 * A Map used to translate from ports in the model to targetOutletIndexes known for the driver
 	 * <p/>
-	 * Key: Ports, Value: port targetOutletIndex known for the driver
+	 * Key: Portid, Value: port targetOutletIndex known for the driver
 	 */
-	private Map<PDUPort, Integer>	outletIndexes	= new HashMap<PDUPort, Integer>();
+	private Map<String, Integer>	outletIndexes	= new HashMap<String, Integer>();
 
 	public String getDeviceName() throws Exception {
 		return driver.getDeviceName();
@@ -32,10 +33,27 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 	}
 
 	public List<PDUPort> getPorts() throws Exception {
-		// TODO Auto-generated method stub
-		// read ports from driver
-		// populate outletIndexes
-		return null;
+
+		// read outlets
+		List<Integer> outlets = driver.getOutletIndexes();
+
+		// build ports
+		List<PDUPort> ports = new ArrayList<PDUPort>(outlets.size());
+		PDUPort port;
+		for (int i = 0; i < outlets.size(); i++) {
+			port = new PDUPort();
+			port.setId(outlets.get(i).toString());
+			port.setPowerMonitorLog(new PowerMonitorLog(1, 10));
+			ports.add(port);
+		}
+
+		// populate outletIndexes map
+		Map<String, Integer> newOutletIndexes = new HashMap<String, Integer>();
+		for (int i = 0; i < outlets.size(); i++) {
+			newOutletIndexes.put(ports.get(i).getId(), outlets.get(i));
+		}
+		setOutletIndexes(newOutletIndexes);
+		return ports;
 	}
 
 	public boolean getPowerStatus(PDUPort port) throws Exception {
@@ -79,7 +97,7 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 	/**
 	 * @return the outletIndexes
 	 */
-	public Map<PDUPort, Integer> getOutletIndexes() {
+	public Map<String, Integer> getOutletIndexes() {
 		return outletIndexes;
 	}
 
@@ -87,14 +105,18 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 	 * @param outletIndexes
 	 *            the outletIndexes to set
 	 */
-	public void setOutletIndexes(Map<PDUPort, Integer> outletIndexes) {
+	public void setOutletIndexes(Map<String, Integer> outletIndexes) {
 		this.outletIndexes = outletIndexes;
 	}
 
+	private int getOutletIndex(String portId) throws Exception {
+		if (!outletIndexes.containsKey(portId))
+			throw new Exception("Unknown port " + portId);
+		return outletIndexes.get(portId);
+	}
+
 	private int getOutletIndex(PDUPort port) throws Exception {
-		if (!outletIndexes.containsKey(port))
-			throw new Exception("Unknown port " + port);
-		return outletIndexes.get(port);
+		return getOutletIndex(port.getId());
 	}
 
 	private MeasuredLoad getCurrentPowerMetrics(int targetOutletIndex) throws Exception {
@@ -123,6 +145,11 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 		ml.setReadingTime(currentTime);
 
 		return ml;
+	}
+
+	@Override
+	public List<PDUPort> listPorts() throws Exception {
+		return getPorts();
 	}
 
 }
