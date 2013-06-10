@@ -1,10 +1,6 @@
 package org.opennaas.extensions.quantum.model;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,20 +18,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 
 public class QuantumModelSerializingTest {
 
 	private static final Log	log					= LogFactory.getLog(QuantumModelSerializingTest.class);
 
-	private final static String	networkJsonSample1	= "target/test-classes/quantum-api/sample/json/network-post-req_new-3c0e668cae863734e746dbf72e3f2f3a272a9a0d.json";
-	private final static String	networkJsonSample2	= "target/test-classes/quantum-api/sample/json/network-post-resp_new-b07d8f156aa4354b80a7a8160522e5e179ca363b.json";
-	private final static String	networkJsonSample3	= "target/test-classes/quantum-api/sample/json/network-put-update.req_new-c5924ea7732c6bd48107fa2038fa4bcd84d435d9.json";
-	private final static String	networkJsonSample4	= "target/test-classes/quantum-api/sample/json/network-put-update-resp_new-fefa054df4c4a7735e42c555baa86d4f01969335.json";
-	private final static String	networkJsonSample5	= "target/test-classes/quantum-api/sample/json/networks-get-detail-resp_new-42e71c52ad4e79759c3c7a9f691b64cb472cfcb3.json";
-	private final static String	networksJsonSample1	= "target/test-classes/quantum-api/sample/json/networks-get-resp_new-8aa85d6952ee8a70e16252e7e7d69e5ed187627c.json";
-	private final static String	portJsonSample1		= "target/test-classes/quantum-api/sample/json/port-post-create-req_new-fbcbcc7c165acb0eca1f024f6a85065938df215f.json";
-	private final static String	portsJsonSample1	= "target/test-classes/quantum-api/sample/json/ports-get-resp_new-afb81c390ff648144013ef83eff6f489c00cc480.json";
-	private final static String	subnetsJsonSample1	= "target/test-classes/quantum-api/sample/json/subnets-get-resp_new-e5637401ce7357fa8c376065aaa0a6986db32b6a.json";
+	private final static String	networkJsonSample1	= "quantum-api/sample/json/network-post-req_new-3c0e668cae863734e746dbf72e3f2f3a272a9a0d.json";
+	private final static String	networkJsonSample2	= "quantum-api/sample/json/network-post-resp_new-b07d8f156aa4354b80a7a8160522e5e179ca363b.json";
+	private final static String	networkJsonSample3	= "quantum-api/sample/json/network-put-update.req_new-c5924ea7732c6bd48107fa2038fa4bcd84d435d9.json";
+	private final static String	networkJsonSample4	= "quantum-api/sample/json/network-put-update-resp_new-fefa054df4c4a7735e42c555baa86d4f01969335.json";
+	private final static String	networkJsonSample5	= "quantum-api/sample/json/networks-get-detail-resp_new-42e71c52ad4e79759c3c7a9f691b64cb472cfcb3.json";
+	private final static String	networksJsonSample1	= "quantum-api/sample/json/networks-get-resp_new-8aa85d6952ee8a70e16252e7e7d69e5ed187627c.json";
+	private final static String	portJsonSample1		= "quantum-api/sample/json/port-post-create-req_new-fbcbcc7c165acb0eca1f024f6a85065938df215f.json";
+	private final static String	portsJsonSample1	= "quantum-api/sample/json/ports-get-resp_new-afb81c390ff648144013ef83eff6f489c00cc480.json";
+	private final static String	subnetsJsonSample1	= "quantum-api/sample/json/subnets-get-resp_new-e5637401ce7357fa8c376065aaa0a6986db32b6a.json";
 
 	@Test
 	public void serializeTest() throws JsonProcessingException {
@@ -116,8 +114,7 @@ public class QuantumModelSerializingTest {
 
 	private static String GetFileAsString(String filePath) throws IOException {
 		log.debug("Reading file: " + filePath);
-		byte[] encoded = Files.readAllBytes(Paths.get(filePath));
-		return StandardCharsets.UTF_8.decode(ByteBuffer.wrap(encoded)).toString();
+		return Resources.toString(Resources.getResource(filePath), Charsets.UTF_8);
 	}
 
 	private static String serialize(Object quantumModel, boolean rootObject) throws JsonProcessingException {
