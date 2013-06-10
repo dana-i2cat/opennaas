@@ -1,0 +1,27 @@
+Physical Nodes:
+node 0--router:junos20 - 16
+node 1--router:junos30 - 16
+node 2--router:junos40 - 16
+Physical links:
+link : 0--1 : 100, 1
+link : 0--2 : 100, 1
+link : 1--2 : 100, 1
+
+Required Virtual Nodes:
+node 0 : 1
+node 1 : 1
+node 2 : 1
+Required Virtual links
+link : 0--1 : 1
+link : 1--2 : 1
+
+Successful Matching
+Successful Mapping
+Mapping Result: 
+vnodes: 
+0--0
+1--1
+2--2
+vlinks: 
+0--1:0--1
+1--2:1--2

@@ -1,0 +1,36 @@
+###############################################################################
+###########            UPDATE VRRP VIRTUAL IP ADDRESS               ###########
+###############################################################################
+
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<interfaces>	
+		<interface>
+			<name>$networkInterface.getName()</name>
+				<unit>
+				<name>$networkInterface.getPortNumber()</name>
+				<family>
+					<inet6>
+						<address>
+							<name>$ipAddress/$prefix</name>
+							<vrrp-inet6-group>
+								<name>$vrrpGroup.getVrrpName()</name>
+								<virtual-inet6-address operation="replace">$vrrpGroup.getVirtualIPAddress()</virtual-inet6-address>
+							</vrrp-inet6-group>
+						</address>
+					</inet6>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

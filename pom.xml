@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.19</version>
+	<version>0.20</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -46,7 +46,7 @@
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
-		<cxf.dosgi.version>1.3</cxf.dosgi.version>
+		<cxf.dosgi.version>1.4.0</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -90,9 +90,16 @@
 		<servicemix.cglib.version>2.1_3_6</servicemix.cglib.version>
 		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
 		<servicemix.javax-inject.version>1_2</servicemix.javax-inject.version>
+		<!-- 
+			Both versions of ehcache are linked, thus they must be updated together. 
+			ehcache.version is used for package version, servicemix.ehcache.version is used for bundles
+		-->
+		<ehcache.version>1.6.2</ehcache.version>
+		<servicemix.ehcache.version>1.6.2_2</servicemix.ehcache.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<spring.version>3.0.5.RELEASE</spring.version>
+		<spring.version>3.0.7.RELEASE</spring.version>
+		<spring.security.version>3.0.8.RELEASE</spring.security.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<tiles-api.version>2.2.2</tiles-api.version>
 		<tiles-core.version>2.2.2</tiles-core.version>
@@ -155,6 +162,11 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.core.features</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.core.security</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -322,6 +334,11 @@
 				<artifactId>org.opennaas.extensions.vcpe</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.vnmapper</artifactId>
+				<version>${project.version}</version>
+			</dependency>			
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>
@@ -539,12 +556,13 @@
 			    <artifactId>spring-oxm</artifactId>
 			    <version>${spring.version}</version>
 			</dependency>
+			<!-- Spring Security -->
 			<!-- Contains core authentication and access-contol classes and interfaces, 
 				remoting support and basic provisioning APIs. -->
 			<dependency>
 	    		<groupId>org.springframework.security</groupId>
 	    		<artifactId>spring-security-core</artifactId>
-			    <version>${spring.version}</version>
+			    <version>${spring.security.version}</version>
 	 		</dependency> 
 	 		<!-- Contains filters and related web-security infrastructure code. 
 	 			Anything with a servlet API dependency. You'll need it if you require Spring Security 
@@ -552,7 +570,7 @@
 			<dependency>
 	    		<groupId>org.springframework.security</groupId>
 	    		<artifactId>spring-security-web</artifactId>
-			    <version>${spring.version}</version>
+			    <version>${spring.security.version}</version>
 	  		</dependency>
 	  		<!-- Contains the security namespace parsing code. 
 	  			You need it if you are using the Spring Security XML namespace for configuration. 
@@ -561,14 +579,25 @@
 	  		<dependency>
 	    		<groupId>org.springframework.security</groupId>
 	    		<artifactId>spring-security-config</artifactId>
-			    <version>${spring.version}</version>
+			    <version>${spring.security.version}</version>
 	  		</dependency>
 	  		<!-- Spring Security has its own taglib which provides basic support for accessing 
 	  			security information and applying security constraints in JSPs. -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-taglibs</artifactId>
-			    <version>${spring.version}</version>
+			    <version>${spring.security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-acl</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<!-- Required for the ACL cache -->
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.ehcache</artifactId>
+				<version>${servicemix.ehcache.version}</version>
 			</dependency>
 			<!-- Web application development utilities applicable to both Servlet and 
 			    Portlet Environments 

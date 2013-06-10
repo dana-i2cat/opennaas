@@ -22,6 +22,9 @@ public class Network {
 	private String		iPAddressRange;
 	@Valid
 	private Interface	networkInterface;
+	@NotNull
+	@Size(min = 1, max = 25)
+	private String		owner;
 
 	/**
 	 * @return the name
@@ -31,7 +34,8 @@ public class Network {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -45,7 +49,8 @@ public class Network {
 	}
 
 	/**
-	 * @param asNumber the asNumber to set
+	 * @param asNumber
+	 *            the asNumber to set
 	 */
 	public void setASNumber(String asNumber) {
 		this.asNumber = asNumber;
@@ -59,7 +64,8 @@ public class Network {
 	}
 
 	/**
-	 * @param iPAddressRange the iPAddressRange to set
+	 * @param iPAddressRange
+	 *            the iPAddressRange to set
 	 */
 	public void setiPAddressRange(String iPAddressRange) {
 		this.iPAddressRange = iPAddressRange;
@@ -73,7 +79,8 @@ public class Network {
 	}
 
 	/**
-	 * @param networkInterface the networkInterface to set
+	 * @param networkInterface
+	 *            the networkInterface to set
 	 */
 	public void setNetworkInterface(Interface networkInterface) {
 		this.networkInterface = networkInterface;
@@ -87,10 +94,26 @@ public class Network {
 	}
 
 	/**
-	 * @param templateName the templateName to set
+	 * @param templateName
+	 *            the templateName to set
 	 */
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
+	}
+
+	/**
+	 * @return the owner
+	 */
+	public String getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 }

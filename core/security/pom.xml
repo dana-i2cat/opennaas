@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>org.opennaas.core</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>0.20</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.opennaas.core.security</artifactId>
+	<name>OpenNaaS :: Core :: Security</name>
+	<description>OpenNaaS Core Security </description>
+	<packaging>bundle</packaging>
+	<dependencies>
+		<!-- Servlet API -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<!-- Spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-acl</artifactId>
+		</dependency>
+		<!-- Required for the ACL cache -->
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.ehcache</artifactId>
+		</dependency>
+		<!-- Spring DM -->
+		<dependency>
+			<groupId>org.springframework.osgi</groupId>
+			<artifactId>spring-osgi-core</artifactId>
+		</dependency>
+		<!-- OSGi -->
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+		</dependency>
+		<!-- OpenNaaS bundles -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.opennaas.core.security.Activator</Bundle-Activator>
+						<Import-Package>
+							javax.servlet,
+							javax.servlet.http,
+							net.sf.ehcache.exceptionhandler;version="${ehcache.version}",
+							net.sf.ehcache.loader;version="${ehcache.version}",
+							net.sf.ehcache.extension;version="${ehcache.version}",
+							net.sf.ehcache.util;version="${ehcache.version}",
+							net.sf.ehcache.hibernate;version="${ehcache.version}",
+							net.sf.ehcache.store;version="${ehcache.version}",
+							net.sf.ehcache.event;version="${ehcache.version}",
+							net.sf.ehcache.management;version="${ehcache.version}",
+							net.sf.ehcache.constructs.blocking;version="${ehcache.version}",
+							net.sf.ehcache.config;version="${ehcache.version}",
+							net.sf.ehcache.distribution;version="${ehcache.version}",
+							net.sf.ehcache.concurrent;version="${ehcache.version}",
+							net.sf.ehcache.bootstrap;version="${ehcache.version}",
+							net.sf.ehcache;version="${ehcache.version}",
+							org.springframework.beans.factory.config;version="${spring.version}",
+							org.springframework.beans.factory.support;version="${spring.version}",
+							org.springframework.cache.ehcache;version="${spring.version}",
+							org.springframework.jdbc;version="${spring.version}",
+							org.springframework.web.filter,
+							org.springframework.web.context,
+							org.springframework.osgi.web.context.support,
+							org.springframework.security.core.userdetails.memory,
+							org.springframework.security.web;version="${spring.security.version}",
+							org.springframework.security.web.authentication;version="${spring.security.version}",
+							org.springframework.security.web.authentication.www;version="${spring.security.version}",
+							org.springframework.security.access.vote;version="${spring.security.version}",
+							org.springframework.aop;version="${spring.version}",
+							org.springframework.aop.framework;version="${spring.version}",
+							org.aopalliance.aop;version="1.0.0",
+							*
+						</Import-Package>
+						<Meta-Persistence>META-INF/security-persistence.xml</Meta-Persistence>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.openjpa
+										</groupId>
+										<artifactId>
+											openjpa-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.2.0,)
+										</versionRange>
+										<goals>
+											<goal>enhance</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

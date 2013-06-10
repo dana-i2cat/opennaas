@@ -1,0 +1,21 @@
+<configuration>
+	<interfaces>	
+		<interface>
+			<name>fe-0/3/2</name>
+				<unit>
+				<name>1</name>
+				<family>
+					<inet6>
+						<address>
+							<name>fecd:123::5/64</name>
+							<vrrp-inet6-group>
+								<name>201</name>
+								<virtual-link-local-address operation="replace">f8:cd:1243::9</virtual-link-local-address>
+							</vrrp-inet6-group>
+						</address>
+					</inet6>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>

@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.clients</artifactId>
-		<version>0.19</version>
+		<version>0.20</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -13,7 +13,30 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
 		<!--  Spring -->
+		<!-- Application Context 
+		    (depends on spring-core, spring-expression, spring-aop, spring-beans)
+		    This is the central artifact for Spring's Dependency Injection Container
+		    and is generally always defined-->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		</dependency>
 		<!-- Core utilities used by other modules.
 		    Define this if you use Spring Utility APIs 
 		    (org.springframework.core.*/org.springframework.util.*)-->
@@ -42,14 +65,6 @@
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-aop</artifactId>
-		</dependency>
-		<!-- Application Context 
-		    (depends on spring-core, spring-expression, spring-aop, spring-beans)
-		    This is the central artifact for Spring's Dependency Injection Container
-		    and is generally always defined-->
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-context</artifactId>
 		</dependency>
 		<!-- Various Application Context utilities, including EhCache, JavaMail, Quartz, 
 		    and Freemarker integration
@@ -166,21 +181,6 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
-		<!-- Servlet -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-		</dependency>
 		<!-- Jersey Client -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -236,6 +236,20 @@
 	
 	<build>
 		<finalName>opennaas-vcpe</finalName>
+		<plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <!--
+            Exclude all spring 2.5 jars
+          -->
+          <packagingExcludes>
+            WEB-INF/lib/org.springframework.*-2.5*.jar
+          </packagingExcludes>
+        </configuration>
+      </plugin>
+    </plugins>
 	</build>
 	
 </project>

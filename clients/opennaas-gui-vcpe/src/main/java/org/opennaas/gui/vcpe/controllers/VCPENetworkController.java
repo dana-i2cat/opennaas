@@ -1,6 +1,8 @@
 package org.opennaas.gui.vcpe.controllers;
 
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -63,6 +65,8 @@ public abstract class VCPENetworkController {
 		String view = "logicalForm";
 		try {
 			model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getLogicalInfrastructure(physical));
+			model.addAttribute("usersNOC", getUsersNOC());
+			model.addAttribute("usersClient", getUsersClient());
 			model.addAttribute("action", new String("create"));
 		} catch (RestServiceException e) {
 			view = "physicalForm";
@@ -97,6 +101,9 @@ public abstract class VCPENetworkController {
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getMessage());
 			model.addAttribute("action", new String("create"));
+		} finally {
+			model.addAttribute("usersNOC", getUsersNOC());
+			model.addAttribute("usersClient", getUsersClient());
 		}
 		return "logicalForm";
 	}
@@ -117,6 +124,8 @@ public abstract class VCPENetworkController {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.edit.message.error", null, locale));
 		} finally {
+			model.addAttribute("usersNOC", getUsersNOC());
+			model.addAttribute("usersClient", getUsersClient());
 			model.addAttribute("action", new String("update"));
 		}
 		return "logicalForm";
@@ -131,19 +140,17 @@ public abstract class VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale) {
+	protected String update(LogicalInfrastructure logicalInfrastructure, BindingResult result, Model model, Locale locale, HttpSession session) {
 		LOGGER.debug("update entity: " + logicalInfrastructure);
 		try {
 			if (!result.hasErrors()) {
-				LOGGER.debug("removing the old environment");
-				vcpeNetworkBO.delete(logicalInfrastructure.getId());
-
-				LOGGER.debug("create the new environment");
-				String vcpeNetworkId = vcpeNetworkBO.create(logicalInfrastructure);
-
+				LOGGER.debug("update the vcpe");
+				String vcpeNetworkId = vcpeNetworkBO.update(logicalInfrastructure);
+				session.setAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 				model.addAttribute("logicalInfrastructure", vcpeNetworkBO.getById(vcpeNetworkId));
 				model.addAttribute("infoMsg", messageSource.getMessage("vcpenetwork.update.message.info", null, locale));
 			} else {
+				LOGGER.info("invalid request: " + result);
 				model.addAttribute("errorMsg", messageSource
 						.getMessage("vcpenetwork.update.message.error.fields", null, locale));
 			}
@@ -151,6 +158,8 @@ public abstract class VCPENetworkController {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.update.message.error", null, locale) + ": " + e.getMessage());
 		} finally {
+			model.addAttribute("usersNOC", getUsersNOC());
+			model.addAttribute("usersClient", getUsersClient());
 			model.addAttribute("action", new String("update"));
 		}
 		return "logicalForm";
@@ -176,6 +185,27 @@ public abstract class VCPENetworkController {
 					.getMessage("vcpenetwork.delete.message.error", null, locale));
 		}
 		return "home";
+	}
+
+	/**
+	 * @return all the users Client
+	 */
+	private Map<String, String> getUsersClient() {
+		Map<String, String> clients = new LinkedHashMap<String, String>();
+		clients.put("client1", "Client 1");
+		clients.put("client2", "Client 2");
+		return clients;
+	}
+
+	/**
+	 * @return all the users NOC
+	 */
+	private Map<String, String> getUsersNOC() {
+		Map<String, String> nocs = new LinkedHashMap<String, String>();
+		nocs.put("noc1", "NOC 1");
+		nocs.put("noc2", "NOC 2");
+		nocs.put("noc3", "NOC 3");
+		return nocs;
 	}
 
 }

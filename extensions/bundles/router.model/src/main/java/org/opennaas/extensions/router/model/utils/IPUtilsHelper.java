@@ -196,4 +196,38 @@ public class IPUtilsHelper {
 		return (validateIPv6Address(ipAddress) || validateIpAddressPattern(ipAddress));
 	}
 
+
+	// TODO test for simplified addresses
+	public static String parseShortToLongIPv6Prefix(String address, short prefix) {
+		if (!validateIpAddressPattern(address) && (validateIPv6Address(address)) && (validateIPv6Prefix(prefix))) {
+
+			if (prefix == 0)
+				return "0:0:0:0:0:0:0:0";
+			if (prefix == 16)
+				return address.split(":")[0];
+			if (prefix == 32)
+				return address.split(":")[0] + ":" + address.split(":")[1];
+			if (prefix == 48)
+				return address.split(":")[0] + ":" + address.split(":")[1] + ":" + address.split(":")[2];
+			if (prefix == 64)
+				return address.split(":")[0] + ":" + address.split(":")[1] + ":" + address.split(":")[2] + ":" + address.split(":")[3];
+			if (prefix == 80)
+				return address.split(":")[0] + ":" + address.split(":")[1] + ":" + address.split(":")[2] + ":" + address.split(":")[3] + ":" + address
+						.split(":")[4];
+
+			if (prefix == 96)
+				return address.split(":")[0] + ":" + address.split(":")[1] + ":" + address.split(":")[2] + ":" + address.split(":")[3] + ":" + address
+						.split(":")[4] + ":" + address.split(":")[5];
+
+			if (prefix == 112)
+				return address.split(":")[0] + ":" + address.split(":")[1] + ":" + address.split(":")[2] + ":" + address.split(":")[3] + ":" + address
+						.split(":")[4] + ":" + address.split(":")[5] + ":" + address.split(":")[6];
+
+			if (prefix == 128)
+				return address;
+
+		}
+
+		return null;
+	}
 }

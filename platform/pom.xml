@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.19</version>
+		<version>0.20</version>
 	</parent>
 
 	<packaging>pom</packaging>
@@ -222,6 +222,7 @@
 						<configuration>
 							<karafVersion>${karaf.version}</karafVersion>
 							<descriptors>
+								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/2.2.6/xml/features</descriptor>
 								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
