@@ -10,7 +10,6 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.gim.model.core.entities.GIModel;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.pdu.capability.AbstractNotQueueingCapability;
-import org.opennaas.extensions.pdu.capability.PDUDriverHolder;
 import org.opennaas.extensions.pdu.model.PDUModel;
 
 /**
@@ -64,8 +63,6 @@ public class PDUResourceBootstrapper implements IResourceBootstrapper {
 
 		((PDUModel) resource.getModel()).setPdu(null);
 		resource.setModel(oldModel);
-
-		PDUDriverHolder.removePDUDriver(resource.getResourceIdentifier().getId());
 	}
 
 	// FIXME return instance from an osgi service
