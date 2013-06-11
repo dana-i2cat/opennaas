@@ -1,11 +1,8 @@
 package org.opennaas.extensions.gim.model.core;
 
-
-
 import java.util.List;
 
 import org.opennaas.extensions.gim.model.load.RatedLoad;
-
 
 /**
  * An interface to announce implementors have an IPowerDelivery.
@@ -14,6 +11,8 @@ import org.opennaas.extensions.gim.model.load.RatedLoad;
  * 
  */
 public interface IPowerConsumer {
+
+	public String getId();
 
 	/**
 	 * 

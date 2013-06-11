@@ -8,11 +8,20 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.gim.controller.GIMController;
 import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
 import org.opennaas.extensions.gim.model.core.IPowerSupply;
-import org.opennaas.extensions.powernet.Activator;
+import org.opennaas.extensions.gim.model.core.entities.GIModel;
+import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
+import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
+import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
+import org.opennaas.extensions.gim.model.energy.Energy;
+import org.opennaas.extensions.gim.model.energy.EnergyClass;
+import org.opennaas.extensions.gim.model.energy.EnergyType;
+import org.opennaas.extensions.gim.model.load.RatedLoad;
+import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
 
 public class PowerNetManagementCapability extends AbstractCapability implements IPowerNetManagementCapability {
 
@@ -32,13 +41,14 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void activate() throws CapabilityException {
-		//registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IPowerNetManagementCapability.class.getName());
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+		// IPowerNetManagementCapability.class.getName());
 		super.activate();
 	}
 
 	@Override
 	public void deactivate() throws CapabilityException {
-		//unregisterService();
+		// unregisterService();
 		super.deactivate();
 	}
 
@@ -63,113 +73,189 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public String createPowerSupply(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		PowerSupply supply = new PowerSupply();
+		supply.setId(id);
+		((GIModel) resource.getModel()).getSupplies().add(supply);
+		return supply.getId();
 	}
 
 	@Override
 	public void deletePowerSupply(String supplyId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
+		IPowerSupply supply = getPowerSupply(supplyId);
+		// disconnect it
+		if (!supply.getPowerDeliveries().isEmpty()) {
+			for (int i = 0; i < supply.getPowerDeliveries().size(); i++) {
+				disconnectSupplyDelivery(supplyId, supply.getPowerDeliveries().get(i).getId());
+			}
+		}
 
+		((GIModel) resource.getModel()).getSupplies().remove(supply);
 	}
 
 	@Override
 	public IPowerSupply getPowerSupply(String supplyId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		return GIMController.getPowerSupply((GIModel) resource.getModel(), supplyId);
 	}
 
 	@Override
 	public void setPowerSupplyEnergy(String supplyId, String energyName, String energyClass, String energyType, double co2perUnit,
 			double greenPercentage) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
 
+		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
+
+		EnergyClass eClass = EnergyClass.fromString(energyClass);
+		EnergyType eType = EnergyType.fromString(energyType);
+
+		Energy energy = new Energy(eClass, eType, co2perUnit, greenPercentage);
+		supply.setEnergy(energy);
 	}
 
 	@Override
 	public void setPowerSupplyPrice(String supplyId, double pricePerUnit) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
-
+		((PowerSupply) getPowerSupply(supplyId)).setPricePerUnit(pricePerUnit);
 	}
 
 	@Override
 	public void setPowerSupplyRatedLoad(String supplyId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
 			throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
 
+		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
+
+		RatedLoad load = new RatedLoad();
+		load.setVoltage(inputVoltage);
+		load.setCurrent(inputCurrent);
+		load.setPower(inputPower);
+		load.setEnergy(inputEnergy);
+
+		supply.setRatedLoad(load);
 	}
 
 	@Override
 	public String createPowerDelivery(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		PowerDelivery delivery = new PowerDelivery();
+		delivery.setId(id);
+		((GIModel) resource.getModel()).getDeliveries().add(delivery);
+		return delivery.getId();
 	}
 
 	@Override
 	public void deletePowerDelivery(String deliveryId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
+		IPowerDelivery delivery = getPowerDelivery(deliveryId);
+		// disconnect it from consumers
+		if (!delivery.getPowerConsumers().isEmpty()) {
+			for (int i = 0; i < delivery.getPowerConsumers().size(); i++) {
+				disconnectDeliveryConsumer(deliveryId, delivery.getPowerConsumers().get(i).getId());
+			}
+		}
 
+		// disconnect it from supplies
+		if (!delivery.getPowerSupplies().isEmpty()) {
+			for (int i = 0; i < delivery.getPowerSupplies().size(); i++) {
+				disconnectSupplyDelivery(delivery.getPowerSupplies().get(i).getId(), deliveryId);
+			}
+		}
+
+		((GIModel) resource.getModel()).getDeliveries().remove(delivery);
 	}
 
 	@Override
 	public IPowerDelivery getPowerDelivery(String deliveryId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		return GIMController.getPowerDelivery((GIModel) resource.getModel(), deliveryId);
 	}
 
 	@Override
 	public void setPowerDeliveryRatedLoad(String deliveryId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy,
 			double outputVoltage, double outputCurrent) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
 
+		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
+
+		DeliveryRatedLoad load = new DeliveryRatedLoad();
+		load.setVoltage(inputVoltage);
+		load.setCurrent(inputCurrent);
+		load.setPower(inputPower);
+		load.setEnergy(inputEnergy);
+
+		load.setOutputVoltage(outputVoltage);
+		load.setOutputCurrent(outputCurrent);
+
+		delivery.setDeliveryRatedLoad(load);
 	}
 
 	@Override
 	public String createPowerConsumer(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		PowerConsumer consumer = new PowerConsumer();
+		consumer.setId(id);
+		((GIModel) resource.getModel()).getConsumers().add(consumer);
+		return consumer.getId();
 	}
 
 	@Override
 	public void deletePowerConsumer(String consumerId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
+		IPowerConsumer consumer = getPowerConsumer(consumerId);
+		// disconnect it from deliveries
+		if (!consumer.getPowerDeliveries().isEmpty()) {
+			for (int i = 0; i < consumer.getPowerDeliveries().size(); i++) {
+				disconnectDeliveryConsumer(consumer.getPowerDeliveries().get(i).getId(), consumerId);
+			}
+		}
 
+		((GIModel) resource.getModel()).getConsumers().remove(consumer);
 	}
 
 	@Override
 	public IPowerConsumer getPowerConsumer(String consumerId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		return GIMController.getPowerConsumer((GIModel) resource.getModel(), consumerId);
 	}
 
 	@Override
 	public void setPowerConsumerRatedLoad(String consumerId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
 			throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
 
+		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
+
+		RatedLoad load = new RatedLoad();
+		load.setVoltage(inputVoltage);
+		load.setCurrent(inputCurrent);
+		load.setPower(inputPower);
+		load.setEnergy(inputEnergy);
+
+		consumer.setRatedLoad(load);
 	}
 
 	@Override
 	public void connectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
 
+		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
+		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
+
+		supply.getPowerDeliveries().add(delivery);
+		delivery.getPowerSupplies().add(supply);
 	}
 
 	@Override
 	public void connectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
+		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
+		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
 
+		delivery.getPowerConsumers().add(consumer);
+		consumer.getPowerDeliveries().add(delivery);
 	}
 
 	@Override
 	public void disconnectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
+		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
+		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
 
+		supply.getPowerDeliveries().remove(delivery);
+		delivery.getPowerSupplies().remove(supply);
 	}
 
 	@Override
 	public void disconnectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
+		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
+		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
 
+		delivery.getPowerConsumers().remove(consumer);
+		consumer.getPowerDeliveries().remove(delivery);
 	}
 }

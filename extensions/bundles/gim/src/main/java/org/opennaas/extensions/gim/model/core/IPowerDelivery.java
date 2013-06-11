@@ -1,11 +1,8 @@
 package org.opennaas.extensions.gim.model.core;
 
-
-
 import java.util.List;
 
 import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
-
 
 /**
  * 
@@ -13,6 +10,8 @@ import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
  * 
  */
 public interface IPowerDelivery {
+
+	public String getId();
 
 	/**
 	 * 

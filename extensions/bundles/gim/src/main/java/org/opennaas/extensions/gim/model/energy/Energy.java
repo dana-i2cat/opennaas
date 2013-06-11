@@ -11,11 +11,11 @@ public class Energy {
 	private String		energyName;
 	private double		percentageGreen;
 
-	private energyClass	energyClass;
-	private energyType	energyType;
+	private EnergyClass	energyClass;
+	private EnergyType	energyType;
 
 	@Deprecated
-	public Energy(energyClass energyclass, energyType energytype, double co2) {
+	public Energy(EnergyClass energyclass, EnergyType energytype, double co2) {
 
 		energyClass = energyclass;
 		CO2PerKw = co2;
@@ -23,7 +23,7 @@ public class Energy {
 		percentageGreen = getPercentageGreenFromEnergyClass(energyclass);
 	}
 
-	public Energy(energyClass energyclass, energyType energytype, double co2, double percentagegreen) {
+	public Energy(EnergyClass energyclass, EnergyType energytype, double co2, double percentagegreen) {
 
 		energyClass = energyclass;
 		CO2PerKw = co2;
@@ -56,12 +56,12 @@ public class Energy {
 	}
 
 	@Deprecated
-	private double getPercentageGreenFromEnergyClass(energyClass energyclass) {
-		if (energyclass.equals(energyClass.Green))
+	private double getPercentageGreenFromEnergyClass(EnergyClass energyclass) {
+		if (energyclass.equals(EnergyClass.Green))
 			return 100;
-		if (energyclass.equals(energyClass.Mixed))
+		if (energyclass.equals(EnergyClass.Mixed))
 			return 50;
-		if (energyclass.equals(energyClass.Brown))
+		if (energyclass.equals(EnergyClass.Brown))
 			return 0;
 
 		return 0;

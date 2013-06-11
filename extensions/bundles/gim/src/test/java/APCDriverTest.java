@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,8 +23,8 @@ import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 import org.opennaas.extensions.gim.model.energy.Energy;
-import org.opennaas.extensions.gim.model.energy.energyClass;
-import org.opennaas.extensions.gim.model.energy.energyType;
+import org.opennaas.extensions.gim.model.energy.EnergyClass;
+import org.opennaas.extensions.gim.model.energy.EnergyType;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
@@ -103,7 +102,7 @@ public class APCDriverTest {
 
 	private GIModel initModel() {
 
-		Energy e = new Energy(energyClass.Green, energyType.Wind, 0.11, 100);
+		Energy e = new Energy(EnergyClass.Green, EnergyType.Wind, 0.11, 100);
 
 		PowerSupply supply = new PowerSupply();
 		supply.setEnergy(e);
