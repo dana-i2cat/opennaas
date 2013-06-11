@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -104,9 +105,10 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
      */
     @Override
     public String getPath(String ipSource, String ipDest, String switchMac, String inputPort) throws CapabilityException {
+        String response = "";
         ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
         ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
-        
+
         OfRoutingModel model = (OfRoutingModel) resource.getModel();
         if (model.getTable() == null) {
             model.setTable(new Table());
@@ -118,87 +120,77 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         if (model.getTable().RouteExists(route)) {
             log.error("Get OUTPUT PORT");
             model.getTable().addRegister("Path: " + ipSource + " " + ipDest + " " + switchMac + " " + inputPort + " " + new java.util.Date().getHours() + ":" + new java.util.Date().getMinutes() + ":" + new java.util.Date().getSeconds());
-            return model.getTable().getOutputPort(route);
+            response = model.getTable().getOutputPort(route);
         }
 
-        
-        
-        
+        //Next-hop router
+        String controllerInfo = "";
+        Switch destSwInfo = null;
+        try{
+        destSwInfo = model.getTable().getDestinationSwitch(ipSource, ipDest, switchMac);
+            controllerInfo= model.getSwitchController().get(destSwInfo.getMacAddress());
+        } catch (NullPointerException e){
+            
+        }
         String ControllerIP = "opennaasNFV";
         String ControllerPort = "8080";
-        String Url = "http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";
-        String json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-3\", \"priority\":\"32767\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
-         
-        
-        
-       try{ 
-           log.error("try to send");
-       URL url = new URL(Url); 
-            URLConnection conn = url.openConnection(); 
-            conn.setDoOutput(true); 
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream()); 
+        final String Url = "http://" + controllerInfo + "/wm/staticflowentrypusher/json";
+                /*"http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";*/
+        String json[] = new String[4];
+json[0] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipSource+"\", \"dst-ip\":\""+ipDest+"\", \"ether-type\":\"0x800\", \"ingress-port\":\""+destSwInfo.getInputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getOutputPort()+"\"}";
+json[1] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipDest+"\", \"dst-ip\":\""+ipSource+"\", \"ether-type\":\"0x800\", \"ingress-port\":\""+destSwInfo.getOutputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getInputPort()+"\"}";
+json[2] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipSource+"\", \"dst-ip\":\""+ipDest+"\", \"ether-type\":\"0x806\", \"ingress-port\":\""+destSwInfo.getInputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getOutputPort()+"\"}";
+json[3] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipDest+"\", \"dst-ip\":\""+ipSource+"\", \"ether-type\":\"0x806\", \"ingress-port\":\""+destSwInfo.getOutputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getInputPort()+"\"}";
 
-            wr = new OutputStreamWriter(conn.getOutputStream()); 
-            json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ether-type\":\"0x800\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-            wr.write(json);
-            log.error("write");
-            wr.flush(); 
-            
-            // Get the response 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
-            String line; 
-            while ((line = rd.readLine()) != null) { 
-                System.out.println(line); 
-            } 
-            wr.close();
-            rd.close(); 
-            
-            
-            conn = url.openConnection(); 
-            conn.setDoOutput(true); 
-            wr = new OutputStreamWriter(conn.getOutputStream()); 
-            json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ether-type\":\"0x800\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-            wr.write(json);
-            log.error("write");
-            wr.flush(); 
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
-            line = ""; 
-            while ((line = rd.readLine()) != null) { 
-                System.out.println(line); 
-            } 
-wr.close();
-            rd.close();
-            
-       }catch(IOException e){
-           log.error("Error "+e.getMessage());
-       }
-        
-        
-        if(switchMac.equals("00:00:00:00:00:00:00:01")){
-            //inform SW2
-            
-            json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-//            response = client.post(json, String.class);
-//log.error("1-JSON; "+response);            
-            json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-//            response = client.post(json, String.class);
-//log.error("1-JSON; "+response);            
-            json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-2\", \"priority\":\"32767\", \"src-ip\":\"192.168.2.3\", \"dst-ip\":\"192.168.1.2\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
-//            response = client.post(json, String.class);
-//log.error("1-JSON; "+response);            
-        }
-        if(switchMac.equals("00:00:00:00:00:00:00:02")){
-            
-        }
-//        json = "{\"switch\": \"00:00:00:00:00:00:00:02\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"src-ip\":\"192.168.1.2\", \"dst-ip\":\"192.168.2.3\", \"ingress-port\":\"2\",\"active\":\"true\", \"actions\":\"output=1\"}";
-//        json = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-1\", \"priority\":\"32767\", \"ingress-port\":\"1\",\"active\":\"true\", \"actions\":\"output=2\"}";
-//        String json = "";
-        
-//response = webResource.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(String.class, json);
-//log.error(response);
 
-        return "null";
+
+for ( int i = 0; i<4; i++ ){
+    new MyThread(i, Url, json).start();
+}
+
+log.error("Return response");
+        return response;
     }
+
+public class MyThread extends Thread {
+
+    private int i;
+    private String Url;
+    private String[] json;
+    
+   public MyThread(int i, String Url, String[] json) {
+       this.i = i;
+       this.Url = Url;
+       this.json = json;
+   }
+
+   public void run() {
+       try {
+                        log.error("try to send "+i);
+                        URL url = new URL(Url);
+                        URLConnection conn = url.openConnection();
+                        conn.setDoOutput(true);
+                        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                        wr = new OutputStreamWriter(conn.getOutputStream());
+                        wr.write(json[i]);
+                        log.error("write");
+                        wr.flush();
+
+                        // Get the response 
+/*                        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String line;
+                        while ((line = rd.readLine()) != null) {
+                            System.out.println(line);
+                        }
+*/                        
+                        wr.close();
+//                        rd.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+   }
+}
 
     /**
      * @param
@@ -237,7 +229,7 @@ wr.close();
         }
 
         Switch switchInfo = new Switch(inputPort, inputPort, outputPort, switchMac);
-        Route route = new Route(ipSource, ipDest, switchInfo);
+        Route route = new Route(model.getTable().getRoute().size(), ipSource, ipDest, switchInfo);
         String response = model.getTable().addRoute(route);
         return response;
     }
@@ -245,5 +237,16 @@ wr.close();
     @Override
     public String getRegister() throws CapabilityException {
         return ((OfRoutingModel) resource.getModel()).getTable().getRegister().toString();
+    }
+    
+    @Override
+    public Response putSwitchController(String ipController, String portController, String switchMac) throws CapabilityException {
+        log.info("Put Switch-Controller info into table");
+        OfRoutingModel model = (OfRoutingModel) resource.getModel();
+        if (model.getTable() == null) {
+            model.setTable(new Table());
+        }
+        model.getSwitchController().put(switchMac, ipController+":"+portController);
+        return Response.ok().build();
     }
 }

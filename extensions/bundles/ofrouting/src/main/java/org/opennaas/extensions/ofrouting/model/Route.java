@@ -6,6 +6,7 @@ package org.opennaas.extensions.ofrouting.model;
  */
 public class Route {
 
+    private int id;
     private String sourceAddress;
     private String destinationAddress;
     private Switch switchInfo;
@@ -14,6 +15,13 @@ public class Route {
     public Route() {
     }
 
+    public Route(int id, String sourceIp, String destIp, Switch SwitchInfo) {
+        this.id = id++;
+        this.sourceAddress = sourceIp;
+        this.destinationAddress = destIp;
+        this.switchInfo = SwitchInfo;
+    }
+    
     public Route(String sourceIp, String destIp, Switch SwitchInfo) {
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
@@ -83,4 +91,13 @@ public class Route {
         hash = 43 * hash + (this.switchInfo != null ? this.switchInfo.hashCode() : 0);
         return hash;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 }

@@ -79,6 +79,20 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 <null/>
             </completers>
         </command>
+        <command name="routing/getRouteTable">
+            <action class="org.opennaas.extensions.ofrouting.capability.routing.shell.GetRouteTableCommand"/>
+            <completers>
+                <ref component-id="resourceNameCompleter"/>
+                <null/>
+            </completers>
+        </command>
+        <command name="routing/insertControllerInfo">
+            <action class="org.opennaas.extensions.ofrouting.capability.routing.shell.InsertControllerInfoCommand"/>
+            <completers>
+                <ref component-id="resourceNameCompleter"/>
+                <null/>
+            </completers>
+        </command>
     </command-bundle>
     
     <!-- Forces this bundle to wait for dataSourceResources being published -->

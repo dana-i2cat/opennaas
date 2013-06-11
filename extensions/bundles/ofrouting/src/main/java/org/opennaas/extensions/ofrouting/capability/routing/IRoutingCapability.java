@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import javax.ws.rs.core.Response;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.ofrouting.model.Switch;
@@ -79,4 +80,17 @@ public interface IRoutingCapability extends ICapability {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getRegister() throws CapabilityException;
+        
+        /**
+	 * Put Controller Infro
+	 * 
+         * return ok or fail
+	 * @throws CapabilityException
+	 */
+	@Path("/putSwitchCOntroller")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response putSwitchController(@FormParam("ipController") String ipController,
+        @FormParam("portController") String portController,
+        @FormParam("switchMac") String switchMac) throws CapabilityException;
 }

@@ -91,4 +91,14 @@ public class Table {
         this.register.append("\n"+string);
     }
 
+    public Switch getDestinationSwitch(String srcIp, String destIp, String originSwitch){
+        for (Route r : this.route){
+            if(!originSwitch.equals(r.getSwitchInfo().getMacAddress())){
+                if(r.getSourceAddress().equals(srcIp) && r.getDestinationAddress().equals(destIp)){
+                    return r.getSwitchInfo();
+                }
+            }
+        }
+        return null;
+    }
 }

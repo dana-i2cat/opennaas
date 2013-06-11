@@ -12,7 +12,7 @@ import org.opennaas.extensions.ofrouting.capability.routing.RoutingCapability;
  * 
  */
 @Command(scope = "routing", name = "getRouteTable", description = "Get Route table.")
-public class GetRouteTable extends GenericKarafCommand {
+public class GetRouteTableCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id", required = true, multiValued = false)
 	private String	resourceName;
