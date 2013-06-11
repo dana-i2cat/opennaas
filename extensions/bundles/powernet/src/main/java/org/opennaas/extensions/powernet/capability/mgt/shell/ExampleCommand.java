@@ -1,10 +1,10 @@
-package org.opennaas.extensions.powernet.capability.example.shell;
+package org.opennaas.extensions.powernet.capability.mgt.shell;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.powernet.capability.example.ExampleCapability;
+import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
 
 /**
  * 
@@ -25,8 +25,9 @@ public class ExampleCommand extends GenericKarafCommand {
 		printInitCommand("sayHello");
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceName);
-			ExampleCapability capab = (ExampleCapability) resource.getCapabilityByType("example");
-			String greeting = capab.sayHello(username);
+			IPowerNetManagementCapability capab = (IPowerNetManagementCapability) resource
+					.getCapabilityByInterface(IPowerNetManagementCapability.class);
+			String greeting = capab.createPowerConsumer(username);
 			printInfo(resourceName + " says : " + greeting);
 		} catch (Exception e) {
 			printError("Error greeting from resource " + resourceName);

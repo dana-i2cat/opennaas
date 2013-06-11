@@ -42,14 +42,14 @@
 	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>	
 
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="exampleCapabilityFactory" class="org.opennaas.extensions.powernet.capability.example.ExampleCapabilityFactory">
-		<property name="type" value="example"/>
+	<bean id="exampleCapabilityFactory" class="org.opennaas.extensions.powernet.capability.mgt.PowerNetManagementCapabilityFactory">
+		<property name="type" value="powernet_mgt"/>
 	</bean>
 		<!-- Register the Service as an OSGi Service -->
 	<service ref="exampleCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="example"/>
+			<entry key="capability" value="powernet_mgt"/>
 			<entry key="capability.model" value="dummy"/>
 			<entry key="capability.version" value="1.0"/>
 		</service-properties>
@@ -60,7 +60,7 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="example/sayHello">
-			<action class="org.opennaas.extensions.powernet.capability.example.shell.ExampleCommand"/>
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ExampleCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.powernet.capability.example;
+package org.opennaas.extensions.powernet.capability.mgt;
 
 /**
  * @author Elisabeth Rigol
