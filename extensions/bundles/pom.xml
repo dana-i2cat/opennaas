@@ -71,6 +71,7 @@
 		
 		<module>gim</module>
 		<module>pdu</module>
+		<module>powernet</module>
 		
 		<module>sampleresource</module>
 	</modules>

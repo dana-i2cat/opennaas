@@ -239,6 +239,13 @@
 		<feature version="${project.version}">opennaas-gim</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.pdu/${project.version}</bundle>
 	</feature>
+	
+	<feature name="opennaas-power" version="${project.version}">
+		<feature version="${project.version}">opennaas-gim</feature>
+		<feature version="${project.version}">opennaas-pdu</feature>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.powernet/${project.version}</bundle>
+	</feature>
+	
 
 	<feature name="opennaas" version="${project.version}">
 		<feature version="${project.version}">opennaas-router</feature>
@@ -253,7 +260,7 @@
 		<feature version="${project.version}">opennaas-vnmapper</feature>
 		<feature version="${project.version}">opennaas-cisco</feature>
 		<feature version="${project.version}">opennaas-vcpe</feature>
-		<feature version="${project.version}">opennaas-pdu</feature>
+		<feature version="${project.version}">opennaas-power</feature>
 		<feature version="${project.version}">opennaas-ws-rest</feature>
 <!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 	</feature>
