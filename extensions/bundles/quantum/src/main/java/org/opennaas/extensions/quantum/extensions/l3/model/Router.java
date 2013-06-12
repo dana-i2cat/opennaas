@@ -18,14 +18,15 @@ import org.opennaas.extensions.quantum.model.Port;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Router implements HasId, HasTenant {
 
-	private String	id;
-	private String	tenant_id;
+	private String			id;
+	private String			tenant_id;
 
-	private String	name;
-	private String	status;
-	private Boolean	admin_state_up;
-	private String	gw_port_id;
-	private Port	gw_port;
+	private String			name;
+	private String			status;
+	private Boolean			admin_state_up;
+	private String			gw_port_id;
+	private Port			gw_port;
+	private ExternalNetwork	external_gateway_info;
 
 	@Override
 	public String getId() {
@@ -85,6 +86,14 @@ public class Router implements HasId, HasTenant {
 		this.gw_port = gw_port;
 	}
 
+	public ExternalNetwork getExternal_gateway_info() {
+		return external_gateway_info;
+	}
+
+	public void setExternal_gateway_info(ExternalNetwork external_gateway_info) {
+		this.external_gateway_info = external_gateway_info;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -107,6 +116,8 @@ public class Router implements HasId, HasTenant {
 		if (!gw_port_id.equals(other.getGw_port_id()))
 			return false;
 		if (!gw_port.equals(other.getGw_port()))
+			return false;
+		if (!external_gateway_info.equals(other.getExternal_gateway_info()))
 			return false;
 		return true;
 	}

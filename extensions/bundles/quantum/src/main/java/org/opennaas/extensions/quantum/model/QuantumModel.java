@@ -9,11 +9,14 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
+import org.opennaas.extensions.quantum.extensions.l3.model.FloatingIP;
+import org.opennaas.extensions.quantum.extensions.l3.model.Router;
 
 public class QuantumModel implements IModel {
 
 	private static final long	serialVersionUID	= -1626483965904441993L;
 
+	// basic API v2 model objects
 	@XmlIDREF
 	@XmlAttribute
 	private List<Network>		networks;
@@ -23,6 +26,14 @@ public class QuantumModel implements IModel {
 	@XmlIDREF
 	@XmlAttribute
 	private List<Subnet>		subnets;
+
+	// L3 extension model objects
+	@XmlIDREF
+	@XmlAttribute
+	private List<Router>		routers;
+	@XmlIDREF
+	@XmlAttribute
+	private List<FloatingIP>	floatingIPs;
 
 	public List<Network> getNetworks() {
 		return networks;
@@ -58,6 +69,22 @@ public class QuantumModel implements IModel {
 		return ObjectSerializer.toXml(this);
 	}
 
+	public List<Router> getRouters() {
+		return routers;
+	}
+
+	public void setRouters(List<Router> routers) {
+		this.routers = routers;
+	}
+
+	public List<FloatingIP> getFloatingIPs() {
+		return floatingIPs;
+	}
+
+	public void setFloatingIPs(List<FloatingIP> floatingIPs) {
+		this.floatingIPs = floatingIPs;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -72,6 +99,10 @@ public class QuantumModel implements IModel {
 		if (!ports.equals(other.getPorts()))
 			return false;
 		if (!subnets.equals(other.getSubnets()))
+			return false;
+		if (!routers.equals(other.getRouters()))
+			return false;
+		if (!floatingIPs.equals(other.getFloatingIPs()))
 			return false;
 		return true;
 	}
