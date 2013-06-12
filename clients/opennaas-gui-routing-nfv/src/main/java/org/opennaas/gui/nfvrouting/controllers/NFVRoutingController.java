@@ -2,15 +2,23 @@ package org.opennaas.gui.nfvrouting.controllers;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import org.opennaas.gui.nfvrouting.beans.insertCtrlInfo;
+import org.opennaas.gui.nfvrouting.beans.insertRoutes;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
+import org.opennaas.gui.nfvrouting.entities.ControllerInfo;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -40,6 +48,7 @@ public class NFVRoutingController {
         LOGGER.debug("------------------");
         try {
             String response = nfvRoutingBO.getRouteTable("test");
+            LOGGER.info("received json: "+response);
             model.addAttribute("json", response);
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
@@ -58,8 +67,8 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/insertRoute")
-    public String insertRoute(Model model, Locale locale) {
-        model.addAttribute(new Route());
+    public String insertRoute(Model model) {
+        model.addAttribute(new insertRoutes());
 
         return "insert";
     }
@@ -73,11 +82,17 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/insertRoute")
-    public String insertRoutePost(Route route, BindingResult result, Model model, Locale locale) {
-        LOGGER.debug("Insert route------------------");
+    public String insertRoutePost(insertRoutes route, BindingResult result, ModelMap model) {
+        LOGGER.error("Insert route------------------"+route.getListRoutes());
+        
+//        LOGGER.error(route.getSourceAddress());
+
         try {
-            String response = nfvRoutingBO.insertRoute(route);
-            model.addAttribute("json", response);
+            for(Route r : route.getListRoutes()){
+                String response = nfvRoutingBO.insertRoute(r);
+                model.addAttribute("json", response);
+            }
+            model.addAttribute("infoMsg", "Route addded correctly.");
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
@@ -86,5 +101,47 @@ public class NFVRoutingController {
         return "insert";
     }
 
+    /**
+     * Redirect to insert controller info view
+     * 
+     * @param templateType
+     * @param model
+     * @param locale
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/insertCtrlInfo")
+    public String insertCtrlInfo(Model model) {
+        model.addAttribute(new insertCtrlInfo());
+
+        return "insertCtrlInfo";
+    }
+
+    /**
+     * Redirect to the physical view
+     * 
+     * @param templateType
+     * @param model
+     * @param locale
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/insertCtrlInfo")
+    public String insertCtrlInfo(insertCtrlInfo ctrlInfo, BindingResult result, ModelMap model) {
+        LOGGER.error("Insert route------------------"+ctrlInfo.getListCtrl());
+        
+//        LOGGER.error(route.getSourceAddress());
+
+        try {
+            for(ControllerInfo r : ctrlInfo.getListCtrl()){
+                String response = nfvRoutingBO.insertCtrlInfo(r);
+                model.addAttribute("json", response);
+            }
+            model.addAttribute("infoMsg", "Route addded correctly.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
+//                model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
+
+        return "insertCtrlInfo";
+    }
     
 }

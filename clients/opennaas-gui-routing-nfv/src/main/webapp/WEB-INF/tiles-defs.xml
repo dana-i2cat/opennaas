@@ -49,8 +49,13 @@
 	</definition>
         
         <definition name="insert" extends="base.definition">
-		<put-attribute name="title" value="Route Table" />
+		<put-attribute name="title" value="Insert new Route" />
 		<put-attribute name="body" value="/WEB-INF/views/nfvRouting/insertRoute.jsp" />
+	</definition>
+        
+         <definition name="insertCtrlInfo" extends="base.definition">
+		<put-attribute name="title" value="Insert Controller Information" />
+		<put-attribute name="body" value="/WEB-INF/views/nfvRouting/insertCtrlInfo.jsp" />
 	</definition>
 
 </tiles-definitions>

@@ -71,5 +71,4 @@
 	<!-- OpenNaas Beans-->
 	<bean id="nfvRoutingBO" class="org.opennaas.gui.nfvrouting.bos.NFVRoutingBO" />
 	<bean id="nfvRoutingService" class="org.opennaas.gui.nfvrouting.services.rest.routing.NFVRoutingService" />	
-	<bean id="builderService" class="org.opennaas.gui.nfvrouting.services.rest.routing.BuilderCapabilityService" />
 </beans>

@@ -2,6 +2,7 @@ package org.opennaas.gui.nfvrouting.bos;
 
 
 import org.apache.log4j.Logger;
+import org.opennaas.gui.nfvrouting.entities.ControllerInfo;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.opennaas.gui.nfvrouting.services.rest.routing.NFVRoutingService;
@@ -39,7 +40,7 @@ public class NFVRoutingBO {
         return nfvRoutingService.insertRoute(route);
     }
 
-    //////////////////////////////////////////////
-
-    
+    public String insertCtrlInfo(ControllerInfo ctrl) {
+         return nfvRoutingService.insertRoute(ctrl);
+    }
 }

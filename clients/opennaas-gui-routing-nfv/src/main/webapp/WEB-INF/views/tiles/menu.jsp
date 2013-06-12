@@ -19,6 +19,11 @@
             <spring:message code="menu.insertRoute" />
     	</a>
     </li>
+    <li>
+	<a href="<c:url value="${url}/secure/noc/nfvRouting/insertCtrlInfo" />">
+            <spring:message code="menu.insertController" />
+    	</a>
+    </li>
     	<c:forEach varStatus="vs" items="${sessionScope.vcpeNetworkList}">
 		<c:choose>
 			<c:when test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				

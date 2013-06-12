@@ -11,3 +11,14 @@ NFV Routing Special CSS features
 .portInput{
     width: 2em;
 }
+.controllerPort{
+    width: 2.5em;
+}
+#jsonTable thead {
+    cursor: pointer;
+}
+#addButton{
+float:right; margin-right: 11px;
+}
+#defaultValues{float: left; margin-top: 60px;}
+#submitUpdateConfig{float: right; margin-top: 60px;}

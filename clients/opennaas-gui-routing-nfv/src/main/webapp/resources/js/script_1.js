@@ -16,25 +16,10 @@ $(function() {
 	$("#tabs").tabs();
 });
 
-
 /**
  * Javascript for link confirm
  */
 $(document).ready(function() {
-        
-        $("#jsonTable").tablesorter(); 
-
-        $(".deleteButton").live("click", function () {
-            $(this).parent().parent().remove();
-        });
-
-        $('th').click(function() {
-            $("#jsonTable th").css('backgroundColor', '#c3d9ff');
-            $("#jsonTable th").css('color', 'black');
-            $(this).css('backgroundColor', 'rgb(5, 110, 207)');
-            $(this).css('color', 'rgb(255, 255, 255)');
-        });
-
 	$("#dialog").dialog({
 		autoOpen : false,
 		modal : true,
@@ -561,12 +546,6 @@ $(function() {
 	}
 	
 	/* Buttons */
-
-        $("#submitUpdateConfig").button();
-        $("#defaultValues").button();
-        $("#addButton").button();
-        $(".deleteButton").button();
-
 	$("#button1").button();
 	$("#button2").button();
 	$("#button3").button();
@@ -580,7 +559,6 @@ $(function() {
 	$("#button11").button();
 	$("#button12").button();
 	$("#submitButton").button();
-
 	$("#selectTemplateButton").button();
 	$("#updateIpButton").button();
 	$("#waitingButton").button({

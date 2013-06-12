@@ -25,6 +25,7 @@
 	<script src="<c:url value="/resources/js/jquery.validate-1.10.0.js" />"></script>
 	<script src="<c:url value="/resources/js/script.js" />"></script>
 
+        <script src="<c:url value="/resources/js/jquery.tablesorter.js" />"></script> 
 </head>
 <body>
 	<div class="container">

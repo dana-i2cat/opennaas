@@ -1,6 +1,7 @@
 package org.opennaas.gui.nfvrouting.entities;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author Josep
@@ -9,8 +10,11 @@ public class Route {
 
     protected String id;
     @NotBlank(message = "{message.error.field.mandatory}")
+    @NotEmpty
     private String sourceAddress;
+    @NotEmpty
     private String destinationAddress;
+    @NotEmpty
     private Switch switchInfo;
     private Long timeToLive;
     
