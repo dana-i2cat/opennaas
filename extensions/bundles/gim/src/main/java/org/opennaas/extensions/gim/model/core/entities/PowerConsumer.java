@@ -43,4 +43,22 @@ public class PowerConsumer implements IPowerConsumer {
 		this.ratedLoad = ratedLoad;
 	}
 
+	@Override
+	public String toString() {
+		String deliveries;
+		if (powerDeliveries == null) {
+			deliveries = "null";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append("{");
+			for (IPowerDelivery delivery : powerDeliveries) {
+				sb.append("PowerDelivery [id=" + delivery.getId() + "],");
+			}
+			sb.append("}");
+			deliveries = sb.toString();
+		}
+
+		return "PowerConsumer [id=" + id + ", ratedLoad=" + ratedLoad + ", powerDeliveries=" + deliveries + "]";
+	}
+
 }

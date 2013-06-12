@@ -48,4 +48,9 @@ public class DeliveryRatedLoad extends RatedLoad {
 		super.finalize();
 	}
 
+	@Override
+	public String toString() {
+		return "DeliveryRatedLoad [outputVoltage=" + getOutputVoltage() + ", outputCurrent()=" + getOutputCurrent() + ", inputVoltage=" + getVoltage() + ", inputCurrent=" + getCurrent() + ", inputPower()=" + getPower() + ", inputEnergy()=" + getEnergy() + "]";
+	}
+
 }

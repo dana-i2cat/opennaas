@@ -7,12 +7,13 @@ package org.opennaas.extensions.gim.model.energy;
  */
 public class Energy {
 
-	private double		CO2PerKw;
 	private String		energyName;
-	private double		percentageGreen;
 
 	private EnergyClass	energyClass;
 	private EnergyType	energyType;
+
+	private double		CO2PerKw;
+	private double		percentageGreen;
 
 	@Deprecated
 	public Energy(EnergyClass energyclass, EnergyType energytype, double co2) {
@@ -65,6 +66,11 @@ public class Energy {
 			return 0;
 
 		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Energy [energyName=" + energyName + ", energyClass=" + energyClass + ", energyType=" + energyType + ", CO2PerKw=" + CO2PerKw + ", percentageGreen=" + percentageGreen + "]";
 	}
 
 }

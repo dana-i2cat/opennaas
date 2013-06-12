@@ -66,5 +66,75 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="gim/show">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createSupply">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateSupplyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteSupply">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteSupplyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/showConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/showDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/showSupply">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowSupplyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>

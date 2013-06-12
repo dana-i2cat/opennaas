@@ -53,4 +53,9 @@ public class GIModel {
 		this.supplies = supplies;
 	}
 
+	@Override
+	public String toString() {
+		return "GIModel [id=" + id + ",\n consumers=" + consumers + ",\n deliveries=" + deliveries + ",\n supplies=" + supplies + "]";
+	}
+
 }

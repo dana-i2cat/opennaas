@@ -1,5 +1,7 @@
 package org.opennaas.extensions.powernet.capability.mgt;
 
+import java.util.ArrayList;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
@@ -30,7 +32,6 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	Log						log				= LogFactory.getLog(PowerNetManagementCapability.class);
 
 	private String			resourceId		= "";
-	private IResource		resource;
 
 	public PowerNetManagementCapability(CapabilityDescriptor descriptor, String resourceId) {
 
@@ -75,6 +76,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public String createPowerSupply(String id) {
 		PowerSupply supply = new PowerSupply();
 		supply.setId(id);
+		supply.setPowerDeliveries(new ArrayList<IPowerDelivery>());
 		((GIModel) resource.getModel()).getSupplies().add(supply);
 		return supply.getId();
 	}
@@ -134,6 +136,8 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public String createPowerDelivery(String id) {
 		PowerDelivery delivery = new PowerDelivery();
 		delivery.setId(id);
+		delivery.setPowerConsumers(new ArrayList<IPowerConsumer>());
+		delivery.setPowerSupplies(new ArrayList<IPowerSupply>());
 		((GIModel) resource.getModel()).getDeliveries().add(delivery);
 		return delivery.getId();
 	}
@@ -185,6 +189,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public String createPowerConsumer(String id) {
 		PowerConsumer consumer = new PowerConsumer();
 		consumer.setId(id);
+		consumer.setPowerDeliveries(new ArrayList<IPowerDelivery>());
 		((GIModel) resource.getModel()).getConsumers().add(consumer);
 		return consumer.getId();
 	}

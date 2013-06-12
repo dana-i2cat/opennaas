@@ -26,4 +26,6 @@ public interface IPowerConsumer {
 	 */
 	public RatedLoad getRatedLoad();
 
+	public String toString();
+
 }

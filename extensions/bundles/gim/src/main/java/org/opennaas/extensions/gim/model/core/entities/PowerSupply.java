@@ -80,4 +80,21 @@ public class PowerSupply implements IPowerSupply, IPowerMonitorLogging {
 		this.powerDeliveries = powerDeliveries;
 	}
 
+	@Override
+	public String toString() {
+		String deliveries;
+		if (powerDeliveries == null) {
+			deliveries = "null";
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append("{");
+			for (IPowerDelivery delivery : powerDeliveries) {
+				sb.append("PowerDelivery [id=" + delivery.getId() + "],");
+			}
+			sb.append("}");
+			deliveries = sb.toString();
+		}
+		return "PowerSupply [id=" + id + ", energy=" + energy + ", pricePerUnit=" + pricePerUnit + ", ratedLoad=" + ratedLoad + ", powerDeliveries=" + deliveries + "]";
+	}
+
 }

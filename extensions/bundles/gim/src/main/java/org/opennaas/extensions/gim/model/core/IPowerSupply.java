@@ -37,4 +37,6 @@ public interface IPowerSupply {
 	 * @return @code{IPowerDelivery}s this system supplies.
 	 */
 	public List<IPowerDelivery> getPowerDeliveries();
+
+	public String toString();
 }

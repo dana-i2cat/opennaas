@@ -31,4 +31,6 @@ public interface IPowerDelivery {
 	 */
 	public DeliveryRatedLoad getDeliveryRatedLoad();
 
+	public String toString();
+
 }
