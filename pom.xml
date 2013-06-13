@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
@@ -18,13 +19,13 @@
 		<url>http://www.i2cat.net/en</url>
 	</organization>
 
-    <licenses>
-        <license>
-            <name>GNU Lesser General Public License 3</name>
-            <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License 3</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +46,7 @@
 		<commons.lang.version>2.4_4</commons.lang.version>
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
-		<cxf.version>2.4.3-fuse-01-02</cxf.version>
+		<cxf.version>2.7.5</cxf.version>
 		<cxf.dosgi.version>1.4.0</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
@@ -55,15 +56,15 @@
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
 		<guava.version>10.0.1</guava.version>
-		<jodatime.version>2.1</jodatime.version>
+		<jodatime.version>1.6.2</jodatime.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate-validator>4.3.0.Final</hibernate-validator>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<javamail.version>1.4.4</javamail.version>
-		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
-		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
+		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>
+		<jersey-bundle.version>1.10-b01</jersey-bundle.version>
 		<jersey-core.version>1.12</jersey-core.version>
 		<jetty.version>7.4.2.v20110526</jetty.version>
 		<jslt.version>1.2</jslt.version>
@@ -73,6 +74,7 @@
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<netconf4j.version>0.0.3</netconf4j.version>
+		<netautobahn.version>2.3</netautobahn.version>
 		<nmr.version>1.5.1-fuse-03-06</nmr.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
@@ -90,10 +92,9 @@
 		<servicemix.cglib.version>2.1_3_6</servicemix.cglib.version>
 		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
 		<servicemix.javax-inject.version>1_2</servicemix.javax-inject.version>
-		<!-- 
-			Both versions of ehcache are linked, thus they must be updated together. 
-			ehcache.version is used for package version, servicemix.ehcache.version is used for bundles
-		-->
+		<!-- Both versions of ehcache are linked, thus they must be updated together. 
+			ehcache.version is used for package version, servicemix.ehcache.version is 
+			used for bundles -->
 		<ehcache.version>1.6.2</ehcache.version>
 		<servicemix.ehcache.version>1.6.2_2</servicemix.ehcache.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -293,7 +294,7 @@
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.ospfv3</artifactId>
 				<version>${project.version}</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
@@ -338,7 +339,7 @@
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.vnmapper</artifactId>
 				<version>${project.version}</version>
-			</dependency>			
+			</dependency>
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>
@@ -351,6 +352,17 @@
 				<artifactId>netconf4j</artifactId>
 				<version>${netconf4j.version}</version>
 			</dependency>
+			<!-- Geant Autobahn -->			
+<!-- 			<dependency> -->
+<!-- 			    <groupId>net.geant.autobahn</groupId> -->
+<!-- 			    <artifactId>autobahn-common</artifactId> -->
+<!-- 					<version>${netautobahn.version}</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 			    <groupId>net.geant.autobahn</groupId> -->
+<!-- 			    <artifactId>autobahn-idm</artifactId> -->
+<!-- 					<version>${netautobahn.version}</version> -->
+<!-- 			</dependency> -->
 			<!-- Digester, velocity and deps -->
 			<dependency>
 				<groupId>xerces</groupId>
@@ -419,9 +431,9 @@
 				<version>${commons.dbcp.version}</version>
 			</dependency>
 			<dependency>
-  				<groupId>org.apache.servicemix.bundles</groupId>
-  				<artifactId>org.apache.servicemix.bundles.commons-net</artifactId>
- 				<version>${commons.net.version}</version>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.commons-net</artifactId>
+				<version>${commons.net.version}</version>
 			</dependency>
 			<!-- OSGI API -->
 			<dependency>
@@ -471,122 +483,111 @@
 				<version>1.4.0</version>
 			</dependency>
 			<!-- Spring Framework -->
-			<!-- Core utilities used by other modules.
-			    Define this if you use Spring Utility APIs 
-			    (org.springframework.core.*/org.springframework.util.*)-->
+			<!-- Core utilities used by other modules. Define this if you use Spring 
+				Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-core</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Expression Language (depends on spring-core)
-			    Define this if you use Spring Expression APIs 
-			    (org.springframework.expression.*)-->
+			<!-- Expression Language (depends on spring-core) Define this if you use 
+				Spring Expression APIs (org.springframework.expression.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-expression</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-expression</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Bean Factory and JavaBeans utilities (depends on spring-core)
-			    Define this if you use Spring Bean APIs 
-			    (org.springframework.beans.*)-->
+			<!-- Bean Factory and JavaBeans utilities (depends on spring-core) Define 
+				this if you use Spring Bean APIs (org.springframework.beans.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-beans</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Aspect Oriented Programming (AOP) Framework 
-			    (depends on spring-core, spring-beans)
-			    Define this if you use Spring AOP APIs 
-			    (org.springframework.aop.*)-->
+			<!-- Aspect Oriented Programming (AOP) Framework (depends on spring-core, 
+				spring-beans) Define this if you use Spring AOP APIs (org.springframework.aop.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-aop</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Application Context 
-			    (depends on spring-core, spring-expression, spring-aop, spring-beans)
-			    This is the central artifact for Spring's Dependency Injection Container
-			    and is generally always defined-->
+			<!-- Application Context (depends on spring-core, spring-expression, spring-aop, 
+				spring-beans) This is the central artifact for Spring's Dependency Injection 
+				Container and is generally always defined -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-context</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Various Application Context utilities, including EhCache, JavaMail, Quartz, 
-			    and Freemarker integration
-			    Define this if you need any of these integrations-->
+			<!-- Various Application Context utilities, including EhCache, JavaMail, 
+				Quartz, and Freemarker integration Define this if you need any of these integrations -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-context-support</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Transaction Management Abstraction 
-			    (depends on spring-core, spring-beans, spring-aop, spring-context)
-			    Define this if you use Spring Transactions or DAO Exception Hierarchy
-			    (org.springframework.transaction.*/org.springframework.dao.*)-->
+			<!-- Transaction Management Abstraction (depends on spring-core, spring-beans, 
+				spring-aop, spring-context) Define this if you use Spring Transactions or 
+				DAO Exception Hierarchy (org.springframework.transaction.*/org.springframework.dao.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-tx</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- JDBC Data Access Library 
-			    (depends on spring-core, spring-beans, spring-context, spring-tx)
-			    Define this if you use Spring's JdbcTemplate API 
-			    (org.springframework.jdbc.*)-->
+			<!-- JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, 
+				spring-tx) Define this if you use Spring's JdbcTemplate API (org.springframework.jdbc.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-jdbc</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA and iBatis.
-			    (depends on spring-core, spring-beans, spring-context, spring-tx)
-			    Define this if you need ORM (org.springframework.orm.*)-->
+			<!-- Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA 
+				and iBatis. (depends on spring-core, spring-beans, spring-context, spring-tx) 
+				Define this if you need ORM (org.springframework.orm.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-orm</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Object-to-XML Mapping (OXM) abstraction and integration with JAXB, JiBX, 
-			    Castor, XStream, and XML Beans.
-			    (depends on spring-core, spring-beans, spring-context)
-			    Define this if you need OXM (org.springframework.oxm.*)-->
+			<!-- Object-to-XML Mapping (OXM) abstraction and integration with JAXB, 
+				JiBX, Castor, XStream, and XML Beans. (depends on spring-core, spring-beans, 
+				spring-context) Define this if you need OXM (org.springframework.oxm.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-oxm</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-oxm</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
 			<!-- Spring Security -->
 			<!-- Contains core authentication and access-contol classes and interfaces, 
 				remoting support and basic provisioning APIs. -->
 			<dependency>
-	    		<groupId>org.springframework.security</groupId>
-	    		<artifactId>spring-security-core</artifactId>
-			    <version>${spring.security.version}</version>
-	 		</dependency> 
-	 		<!-- Contains filters and related web-security infrastructure code. 
-	 			Anything with a servlet API dependency. You'll need it if you require Spring Security 
-	 			web authentication services and URL-based access-control. -->
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<!-- Contains filters and related web-security infrastructure code. Anything 
+				with a servlet API dependency. You'll need it if you require Spring Security 
+				web authentication services and URL-based access-control. -->
 			<dependency>
-	    		<groupId>org.springframework.security</groupId>
-	    		<artifactId>spring-security-web</artifactId>
-			    <version>${spring.security.version}</version>
-	  		</dependency>
-	  		<!-- Contains the security namespace parsing code. 
-	  			You need it if you are using the Spring Security XML namespace for configuration. 
-	  			The main package is org.springframework.security.config. 
-	  			None of the classes are intended for direct use in an application. --> 
-	  		<dependency>
-	    		<groupId>org.springframework.security</groupId>
-	    		<artifactId>spring-security-config</artifactId>
-			    <version>${spring.security.version}</version>
-	  		</dependency>
-	  		<!-- Spring Security has its own taglib which provides basic support for accessing 
-	  			security information and applying security constraints in JSPs. -->
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<!-- Contains the security namespace parsing code. You need it if you 
+				are using the Spring Security XML namespace for configuration. The main package 
+				is org.springframework.security.config. None of the classes are intended 
+				for direct use in an application. -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<!-- Spring Security has its own taglib which provides basic support for 
+				accessing security information and applying security constraints in JSPs. -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-taglibs</artifactId>
-			    <version>${spring.security.version}</version>
+				<version>${spring.security.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -599,42 +600,39 @@
 				<artifactId>org.apache.servicemix.bundles.ehcache</artifactId>
 				<version>${servicemix.ehcache.version}</version>
 			</dependency>
-			<!-- Web application development utilities applicable to both Servlet and 
-			    Portlet Environments 
-			    (depends on spring-core, spring-beans, spring-context)
-			    Define this if you use Spring MVC, or wish to use Struts, JSF, or another
-			    web framework with Spring (org.springframework.web.*)-->
+			<!-- Web application development utilities applicable to both Servlet 
+				and Portlet Environments (depends on spring-core, spring-beans, spring-context) 
+				Define this if you use Spring MVC, or wish to use Struts, JSF, or another 
+				web framework with Spring (org.springframework.web.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-web</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Spring MVC for Servlet Environments 
-			    (depends on spring-core, spring-beans, spring-context, spring-web)
-			    Define this if you use Spring MVC with a Servlet Container such as 
-			    Apache Tomcat (org.springframework.web.servlet.*)-->
+			<!-- Spring MVC for Servlet Environments (depends on spring-core, spring-beans, 
+				spring-context, spring-web) Define this if you use Spring MVC with a Servlet 
+				Container such as Apache Tomcat (org.springframework.web.servlet.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-webmvc</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Spring MVC for Portlet Environments 
-			    (depends on spring-core, spring-beans, spring-context, spring-web)
-			    Define this if you use Spring MVC with a Portlet Container 
-			    (org.springframework.web.portlet.*)-->
+			<!-- Spring MVC for Portlet Environments (depends on spring-core, spring-beans, 
+				spring-context, spring-web) Define this if you use Spring MVC with a Portlet 
+				Container (org.springframework.web.portlet.*) -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-webmvc-portlet</artifactId>
-			    <version>${spring.version}</version>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc-portlet</artifactId>
+				<version>${spring.version}</version>
 			</dependency>
-			<!-- Support for testing Spring applications with tools such as JUnit and TestNG
-			    This artifact is generally always defined with a 'test' scope for the 
-			    integration testing framework and unit testing stubs-->
+			<!-- Support for testing Spring applications with tools such as JUnit 
+				and TestNG This artifact is generally always defined with a 'test' scope 
+				for the integration testing framework and unit testing stubs -->
 			<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-test</artifactId>
-			    <version>${spring.version}</version>
-			    <scope>test</scope>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<!-- Spring DM -->
 			<dependency>
@@ -876,7 +874,7 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-aegis</artifactId>
 				<version>${cxf.version}</version>
-			</dependency>	
+			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-bundle-minimal</artifactId>
@@ -997,7 +995,7 @@
 				<artifactId>joda-time-jsptags</artifactId>
 				<version>${joda-time-jsptags.version}</version>
 				<scope>runtime</scope>
-			</dependency>	
+			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty.aggregate</groupId>
 				<artifactId>jetty-all-server</artifactId>
@@ -1017,7 +1015,7 @@
 	</dependencyManagement>
 
 	<modules>
-        <module>core</module>
+		<module>core</module>
 		<module>extensions</module>
 		<module>platform</module>
 		<module>itests</module>
@@ -1102,7 +1100,8 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.12</version>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -1305,11 +1304,12 @@
 			<name>Fuse Source releases</name>
 			<url>http://repo.fusesource.com/maven2/</url>
 		</repository>
-		<!--<repository>
-			<id>java</id>
-			<name>Java.net releases</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>-->
+		<repository>
+			<id>GEANT Artifactory Repo</id>
+			<name>GEANT Artifactory</name>
+			<url>https://artifactory.geant.net/artifactory/repo</url>
+		</repository>
+
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -1348,9 +1348,9 @@
 	</pluginRepositories>
 
 	<scm>
-        <connection>scm:git:git://github.com/dana-i2cat/opennaas.git</connection>
-        <developerConnection>scm:git:git@github.com:dana-i2cat/opennaas.git</developerConnection>
-        <url>http://github.com/dana-i2cat/opennaas</url>
+		<connection>scm:git:git://github.com/dana-i2cat/opennaas.git</connection>
+		<developerConnection>scm:git:git@github.com:dana-i2cat/opennaas.git</developerConnection>
+		<url>http://github.com/dana-i2cat/opennaas</url>
 	</scm>
 
 	<distributionManagement>
@@ -1443,9 +1443,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
 				<version>2.3</version>
-				<!-- Similar to the JavaDoc report, the value of a
-				     single top-level report is bigger than individual
-				     reports. -->
+				<!-- Similar to the JavaDoc report, the value of a single top-level report 
+					is bigger than individual reports. -->
 				<inherited>false</inherited>
 			</plugin>
 			<plugin>

@@ -31,7 +31,7 @@ public class ParameterTranslator {
 		}
 
 		boolean processNow =
-				request.startTime.isBefore(DateTime.now().plusSeconds(10));
+				request.startTime.isBefore(new DateTime().plusSeconds(10));
 
 		ReservationRequest reservationRequest = new ReservationRequest();
 		reservationRequest.setStartPort(getPortType((AutobahnInterface) request.interface1, request.vlanid1));

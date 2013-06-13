@@ -81,7 +81,7 @@ public class AutobahnHelper extends GenericHelper {
 
 		NetworkModel model = (NetworkModel) autobahn.getModel();
 
-		DateTime startDate = DateTime.now();
+		DateTime startDate = new DateTime();
 		DateTime expirationDate = startDate.plusYears(1);
 
 		RequestConnectionParameters parameters = new RequestConnectionParameters(

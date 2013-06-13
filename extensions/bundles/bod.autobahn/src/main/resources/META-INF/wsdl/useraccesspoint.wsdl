@@ -658,7 +658,7 @@
   </wsdl:binding>
   <wsdl:service name="UserAccessPointService">
     <wsdl:port binding="tns:UserAccessPointServiceSoapBinding" name="UserAccessPointPort">
-      <soap:address location="http://193.1.219.80:8080/autobahn/uap2" />
+      <soap:address location="http://193.1.219.80:8080/autobahn/uap" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
