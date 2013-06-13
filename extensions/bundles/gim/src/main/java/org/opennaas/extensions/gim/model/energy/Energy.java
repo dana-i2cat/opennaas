@@ -1,10 +1,13 @@
 package org.opennaas.extensions.gim.model.energy;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author rcarroll
  * @version 1.0
  * @created 14-Feb-2013 16:29:35
  */
+@XmlRootElement
 public class Energy {
 
 	private String		energyName;

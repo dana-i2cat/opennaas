@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -22,8 +21,9 @@ import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.energy.EnergyClass;
 import org.opennaas.extensions.gim.model.energy.EnergyType;
-import org.opennaas.extensions.gim.model.load.RatedLoad;
 import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
+import org.opennaas.extensions.gim.model.load.RatedLoad;
+import org.opennaas.extensions.powernet.Activator;
 
 public class PowerNetManagementCapability extends AbstractCapability implements IPowerNetManagementCapability {
 
@@ -42,14 +42,13 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
-		// IPowerNetManagementCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IPowerNetManagementCapability.class.getName());
 		super.activate();
 	}
 
 	@Override
 	public void deactivate() throws CapabilityException {
-		// unregisterService();
+		unregisterService();
 		super.deactivate();
 	}
 
@@ -103,12 +102,16 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public void setPowerSupplyEnergy(String supplyId, String energyName, String energyClass, String energyType, double co2perUnit,
 			double greenPercentage) throws ModelElementNotFoundException {
 
-		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
-
 		EnergyClass eClass = EnergyClass.fromString(energyClass);
 		EnergyType eType = EnergyType.fromString(energyType);
 
 		Energy energy = new Energy(eClass, eType, co2perUnit, greenPercentage);
+		setPowerSupplyEnergy(supplyId, energy);
+	}
+
+	@Override
+	public void setPowerSupplyEnergy(String supplyId, Energy energy) throws ModelElementNotFoundException {
+		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
 		supply.setEnergy(energy);
 	}
 
@@ -121,15 +124,19 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public void setPowerSupplyRatedLoad(String supplyId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
 			throws ModelElementNotFoundException {
 
-		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
-
 		RatedLoad load = new RatedLoad();
 		load.setVoltage(inputVoltage);
 		load.setCurrent(inputCurrent);
 		load.setPower(inputPower);
 		load.setEnergy(inputEnergy);
 
-		supply.setRatedLoad(load);
+		setPowerSupplyRatedLoad(supplyId, load);
+	}
+
+	@Override
+	public void setPowerSupplyRatedLoad(String supplyId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
+		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
+		supply.setRatedLoad(ratedLoad);
 	}
 
 	@Override
@@ -171,8 +178,6 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public void setPowerDeliveryRatedLoad(String deliveryId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy,
 			double outputVoltage, double outputCurrent) throws ModelElementNotFoundException {
 
-		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
-
 		DeliveryRatedLoad load = new DeliveryRatedLoad();
 		load.setVoltage(inputVoltage);
 		load.setCurrent(inputCurrent);
@@ -182,6 +187,12 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 		load.setOutputVoltage(outputVoltage);
 		load.setOutputCurrent(outputCurrent);
 
+		setPowerDeliveryRatedLoad(deliveryId, load);
+	}
+
+	@Override
+	public void setPowerDeliveryRatedLoad(String deliveryId, DeliveryRatedLoad load) throws ModelElementNotFoundException {
+		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
 		delivery.setDeliveryRatedLoad(load);
 	}
 
@@ -216,15 +227,19 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public void setPowerConsumerRatedLoad(String consumerId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
 			throws ModelElementNotFoundException {
 
-		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
-
 		RatedLoad load = new RatedLoad();
 		load.setVoltage(inputVoltage);
 		load.setCurrent(inputCurrent);
 		load.setPower(inputPower);
 		load.setEnergy(inputEnergy);
 
-		consumer.setRatedLoad(load);
+		setPowerConsumerRatedLoad(consumerId, load);
+	}
+
+	@Override
+	public void setPowerConsumerRatedLoad(String consumerId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
+		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
+		consumer.setRatedLoad(ratedLoad);
 	}
 
 	@Override
@@ -263,4 +278,5 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 		delivery.getPowerConsumers().remove(consumer);
 		consumer.getPowerDeliveries().remove(delivery);
 	}
+
 }

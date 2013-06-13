@@ -1,10 +1,13 @@
 package org.opennaas.extensions.gim.model.load;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author rcarroll
  * @version 1.0
  * @created 14-Feb-2013 16:31:02
  */
+@XmlRootElement
 public class DeliveryRatedLoad extends RatedLoad {
 
 	private double	outputVoltage;

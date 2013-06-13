@@ -1,12 +1,23 @@
 package org.opennaas.extensions.powernet.capability.mgt;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
 import org.opennaas.extensions.gim.model.core.IPowerSupply;
+import org.opennaas.extensions.gim.model.energy.Energy;
+import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
+import org.opennaas.extensions.gim.model.load.RatedLoad;
 
 /**
  * 
@@ -21,18 +32,40 @@ public interface IPowerNetManagementCapability extends ICapability {
 	 * @param id
 	 * @return supply id
 	 */
-	public String createPowerSupply(String id);
+	@Path("/supply/{id}")
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	public String createPowerSupply(@PathParam("id") String id);
 
-	public void deletePowerSupply(String supplyId) throws ModelElementNotFoundException;
+	@Path("/supply/{id}")
+	@DELETE
+	public void deletePowerSupply(@PathParam("id") String supplyId) throws ModelElementNotFoundException;
 
-	public IPowerSupply getPowerSupply(String supplyId) throws ModelElementNotFoundException;
+	@Path("/supply/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public IPowerSupply getPowerSupply(@PathParam("id") String supplyId) throws ModelElementNotFoundException;
 
-	public void setPowerSupplyEnergy(String supplyId, String energyName, String energyClass, String energyType, double co2perUnit,
+	public void setPowerSupplyEnergy(@PathParam("id") String supplyId, String energyName, String energyClass, String energyType, double co2perUnit,
 			double greenPercentage) throws ModelElementNotFoundException;
 
-	public void setPowerSupplyPrice(String supplyId, double pricePerUnit) throws ModelElementNotFoundException;
+	@Path("/supply/{id}/energy")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setPowerSupplyEnergy(@PathParam("id") String supplyId, Energy energy) throws ModelElementNotFoundException;
 
-	public void setPowerSupplyRatedLoad(String supplyId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
+	@Path("/supply/{id}/price")
+	@POST
+	public void setPowerSupplyPrice(@PathParam("id") String supplyId, double pricePerUnit) throws ModelElementNotFoundException;
+
+	public void setPowerSupplyRatedLoad(@PathParam("id") String supplyId, double inputVoltage, double inputCurrent, double inputPower,
+			double inputEnergy)
+			throws ModelElementNotFoundException;
+
+	@Path("/supply/{id}/load")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setPowerSupplyRatedLoad(@PathParam("id") String supplyId, RatedLoad ratedLoad)
 			throws ModelElementNotFoundException;
 
 	// PowerDeliveries CRUD
@@ -41,27 +74,56 @@ public interface IPowerNetManagementCapability extends ICapability {
 	 * @param id
 	 * @return delivery id
 	 */
-	public String createPowerDelivery(String id);
+	@Path("/delivery/{id}")
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	public String createPowerDelivery(@PathParam("id") String id);
 
-	public void deletePowerDelivery(String deliveryId) throws ModelElementNotFoundException;
+	@Path("/delivery/{id}")
+	@DELETE
+	public void deletePowerDelivery(@PathParam("id") String deliveryId) throws ModelElementNotFoundException;
 
-	public IPowerDelivery getPowerDelivery(String deliveryId) throws ModelElementNotFoundException;
+	@Path("/delivery/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public IPowerDelivery getPowerDelivery(@PathParam("id") String deliveryId) throws ModelElementNotFoundException;
 
-	public void setPowerDeliveryRatedLoad(String deliveryId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy,
+	public void setPowerDeliveryRatedLoad(@PathParam("id") String deliveryId, double inputVoltage, double inputCurrent, double inputPower,
+			double inputEnergy,
 			double outputVoltage, double outputCurrent) throws ModelElementNotFoundException;
+
+	@Path("/delivery/{id}/load")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setPowerDeliveryRatedLoad(@PathParam("id") String deliveryId, DeliveryRatedLoad load) throws ModelElementNotFoundException;
 
 	// PowerConsumers CRUD
 	/**
 	 * @param id
 	 * @return consumer id
 	 */
-	public String createPowerConsumer(String id);
+	@Path("/consumer/{id}")
+	@POST
+	@Produces(MediaType.APPLICATION_XML)
+	public String createPowerConsumer(@PathParam("id") String id);
 
-	public void deletePowerConsumer(String consumerId) throws ModelElementNotFoundException;
+	@Path("/consumer/{id}")
+	@DELETE
+	public void deletePowerConsumer(@PathParam("id") String consumerId) throws ModelElementNotFoundException;
 
-	public IPowerConsumer getPowerConsumer(String consumerId) throws ModelElementNotFoundException;
+	@Path("/consumer/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public IPowerConsumer getPowerConsumer(@PathParam("id") String consumerId) throws ModelElementNotFoundException;
 
-	public void setPowerConsumerRatedLoad(String consumerId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
+	public void setPowerConsumerRatedLoad(@PathParam("id") String consumerId, double inputVoltage, double inputCurrent, double inputPower,
+			double inputEnergy)
+			throws ModelElementNotFoundException;
+
+	@Path("/consumer/{id}/load")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setPowerConsumerRatedLoad(@PathParam("id") String consumerId, RatedLoad ratedLoad)
 			throws ModelElementNotFoundException;
 
 	// connections
@@ -73,7 +135,10 @@ public interface IPowerNetManagementCapability extends ICapability {
 	 * @param supplyId
 	 * @param deliveryId
 	 */
-	public void connectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException;
+	@Path("/connectSupplyDelivery/")
+	@POST
+	public void connectSupplyDelivery(@QueryParam("supplyId") String supplyId, @QueryParam("deliveryId") String deliveryId)
+			throws ModelElementNotFoundException;
 
 	/**
 	 * Connects an existing consumer with an existing delivery.
@@ -83,10 +148,19 @@ public interface IPowerNetManagementCapability extends ICapability {
 	 * @param deliveryId
 	 * @param consumerId
 	 */
-	public void connectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException;
+	@Path("/connectDeliveryConsumer/")
+	@POST
+	public void connectDeliveryConsumer(@QueryParam("deliveryId") String deliveryId, @QueryParam("consumerId") String consumerId)
+			throws ModelElementNotFoundException;
 
-	public void disconnectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException;
+	@Path("/disconnectSupplyDelivery/")
+	@POST
+	public void disconnectSupplyDelivery(@QueryParam("supplyId") String supplyId, @QueryParam("deliveryId") String deliveryId)
+			throws ModelElementNotFoundException;
 
-	public void disconnectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException;
+	@Path("/disconnectDeliveryConsumer/")
+	@POST
+	public void disconnectDeliveryConsumer(@QueryParam("deliveryId") String deliveryId, @QueryParam("consumerId") String consumerId)
+			throws ModelElementNotFoundException;
 
 }
