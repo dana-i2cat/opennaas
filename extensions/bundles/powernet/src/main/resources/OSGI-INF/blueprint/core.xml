@@ -136,5 +136,41 @@
 				<null/>
 			</completers>
 		</command>
+		<!-- Setters -->
+		<command name="gim/setConsumerLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setDeliveryLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setSupplyLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetConsumerLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setSupplyEnergy">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyEnergyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setSupplyPrice">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyPriceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>
