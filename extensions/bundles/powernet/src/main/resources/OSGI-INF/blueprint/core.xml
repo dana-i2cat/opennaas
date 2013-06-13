@@ -172,5 +172,19 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="gim/connectSupplyDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ConnectSupplyDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/connectDeliveryConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ConnectDeliveryConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>
