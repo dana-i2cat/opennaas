@@ -11,11 +11,11 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
 public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
 
-	private String					id;
-	private PowerMonitorLog			powerMonitorLog;
-	private DeliveryRatedLoad		deliveryRatedLoad;
-	private List<IPowerSupply>		powerSupplies;
-	private List<IPowerConsumer>	powerConsumers;
+	private String				id;
+	private PowerMonitorLog		powerMonitorLog;
+	private DeliveryRatedLoad	deliveryRatedLoad;
+	private List<PowerSupply>	powerSupplies;
+	private List<PowerConsumer>	powerConsumers;
 
 	/**
 	 * @return the id
@@ -40,11 +40,11 @@ public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
 		this.powerMonitorLog = powerMonitorLog;
 	}
 
-	public List<IPowerSupply> getPowerSupplies() {
+	public List<PowerSupply> getPowerSupplies() {
 		return powerSupplies;
 	}
 
-	public void setPowerSupplies(List<IPowerSupply> powerSupplies) {
+	public void setPowerSupplies(List<PowerSupply> powerSupplies) {
 		this.powerSupplies = powerSupplies;
 	}
 
@@ -56,7 +56,7 @@ public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
 		this.deliveryRatedLoad = deliveryRatedLoad;
 	}
 
-	public List<IPowerConsumer> getPowerConsumers() {
+	public List<PowerConsumer> getPowerConsumers() {
 		return powerConsumers;
 	}
 
@@ -64,7 +64,7 @@ public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
 	 * @param powerConsumers
 	 *            the powerConsumers to set
 	 */
-	public void setPowerConsumers(List<IPowerConsumer> powerConsumers) {
+	public void setPowerConsumers(List<PowerConsumer> powerConsumers) {
 		this.powerConsumers = powerConsumers;
 	}
 

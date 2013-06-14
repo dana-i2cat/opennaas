@@ -2,6 +2,8 @@ package org.opennaas.extensions.gim.model.core;
 
 import java.util.List;
 
+import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
+import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
 
 /**
@@ -17,13 +19,13 @@ public interface IPowerDelivery {
 	 * 
 	 * @return @code{IPowerSupply}s this system takes energy from.
 	 */
-	public List<IPowerSupply> getPowerSupplies();
+	public List<PowerSupply> getPowerSupplies();
 
 	/**
 	 * 
 	 * @return @code{IPowerConsumer}s this system delivers energy to.
 	 */
-	public List<IPowerConsumer> getPowerConsumers();
+	public List<PowerConsumer> getPowerConsumers();
 
 	/**
 	 * 

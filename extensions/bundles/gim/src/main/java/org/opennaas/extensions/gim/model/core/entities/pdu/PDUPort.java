@@ -2,11 +2,8 @@ package org.opennaas.extensions.gim.model.core.entities.pdu;
 
 import java.util.List;
 
-import org.opennaas.extensions.gim.model.core.IPowerConsumer;
-import org.opennaas.extensions.gim.model.core.IPowerDelivery;
-import org.opennaas.extensions.gim.model.core.IPowerMonitorLogging;
-import org.opennaas.extensions.gim.model.core.IPowerSupply;
-import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
+import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
+import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
 /**
@@ -14,15 +11,12 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
  * @author Isart Canyameres Gimenez (i2cat Foundation)
  * 
  */
-public class PDUPort implements IPowerDelivery, IPowerMonitorLogging {
+public class PDUPort extends PowerDelivery {
 
-	private String					id;
-	private String					name;
-	private List<IPowerConsumer>	powerConsumers;
-	private DeliveryRatedLoad		deliveryRatedLoad;
-	private PowerMonitorLog			powerMonitorLog;
+	private String			name;
+	private PowerMonitorLog	powerMonitorLog;
 
-	private PDU						pdu;
+	private PDU				pdu;
 
 	public PDU getPdu() {
 		return pdu;
@@ -30,21 +24,6 @@ public class PDUPort implements IPowerDelivery, IPowerMonitorLogging {
 
 	public void setPdu(PDU pdu) {
 		this.pdu = pdu;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	/**
@@ -65,32 +44,8 @@ public class PDUPort implements IPowerDelivery, IPowerMonitorLogging {
 	/**
 	 * Return @code{IPowerSupply}s associated to the PDU
 	 */
-	public List<IPowerSupply> getPowerSupplies() {
+	public List<PowerSupply> getPowerSupplies() {
 		return pdu.getPowerSupplies();
-	}
-
-	public List<IPowerConsumer> getPowerConsumers() {
-		return powerConsumers;
-	}
-
-	/**
-	 * @param powerConsumers
-	 *            the powerConsumers to set
-	 */
-	public void setPowerConsumers(List<IPowerConsumer> powerConsumers) {
-		this.powerConsumers = powerConsumers;
-	}
-
-	public DeliveryRatedLoad getDeliveryRatedLoad() {
-		return deliveryRatedLoad;
-	}
-
-	/**
-	 * @param deliveryRatedLoad
-	 *            the deliveryRatedLoad to set
-	 */
-	public void setDeliveryRatedLoad(DeliveryRatedLoad deliveryRatedLoad) {
-		this.deliveryRatedLoad = deliveryRatedLoad;
 	}
 
 	/**

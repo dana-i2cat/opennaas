@@ -8,9 +8,9 @@ import org.opennaas.extensions.gim.model.load.RatedLoad;
 
 public class PowerConsumer implements IPowerConsumer {
 
-	private String					id;
-	private List<IPowerDelivery>	powerDeliveries;
-	private RatedLoad				ratedLoad;
+	private String				id;
+	private List<PowerDelivery>	powerDeliveries;
+	private RatedLoad			ratedLoad;
 
 	/**
 	 * @return the id
@@ -27,11 +27,11 @@ public class PowerConsumer implements IPowerConsumer {
 		this.id = id;
 	}
 
-	public List<IPowerDelivery> getPowerDeliveries() {
+	public List<PowerDelivery> getPowerDeliveries() {
 		return powerDeliveries;
 	}
 
-	public void setPowerDeliveries(List<IPowerDelivery> powerDeliveries) {
+	public void setPowerDeliveries(List<PowerDelivery> powerDeliveries) {
 		this.powerDeliveries = powerDeliveries;
 	}
 

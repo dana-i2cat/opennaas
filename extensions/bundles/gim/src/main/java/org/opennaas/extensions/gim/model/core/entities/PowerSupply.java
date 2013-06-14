@@ -11,12 +11,12 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
 public class PowerSupply implements IPowerSupply, IPowerMonitorLogging {
 
-	private String					id;
-	private PowerMonitorLog			powerMonitorLog;
-	private Energy					energy;
-	private double					pricePerUnit;
-	private RatedLoad				ratedLoad;
-	private List<IPowerDelivery>	powerDeliveries;
+	private String				id;
+	private PowerMonitorLog		powerMonitorLog;
+	private Energy				energy;
+	private double				pricePerUnit;
+	private RatedLoad			ratedLoad;
+	private List<PowerDelivery>	powerDeliveries;
 
 	/**
 	 * @return the id
@@ -68,7 +68,7 @@ public class PowerSupply implements IPowerSupply, IPowerMonitorLogging {
 	/**
 	 * @return the powerDeliveries
 	 */
-	public List<IPowerDelivery> getPowerDeliveries() {
+	public List<PowerDelivery> getPowerDeliveries() {
 		return powerDeliveries;
 	}
 
@@ -76,7 +76,7 @@ public class PowerSupply implements IPowerSupply, IPowerMonitorLogging {
 	 * @param powerDeliveries
 	 *            the powerDeliveries to set
 	 */
-	public void setPowerDeliveries(List<IPowerDelivery> powerDeliveries) {
+	public void setPowerDeliveries(List<PowerDelivery> powerDeliveries) {
 		this.powerDeliveries = powerDeliveries;
 	}
 

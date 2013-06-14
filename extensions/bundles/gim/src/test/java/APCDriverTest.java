@@ -14,11 +14,9 @@ import org.opennaas.extensions.gim.controller.PDUPortPowerController;
 import org.opennaas.extensions.gim.controller.PDUPowerController;
 import org.opennaas.extensions.gim.controller.PDUPowerControllerDriver;
 import org.opennaas.extensions.gim.controller.snmp.APCDriver_SNMP;
-import org.opennaas.extensions.gim.model.core.IPowerConsumer;
-import org.opennaas.extensions.gim.model.core.IPowerDelivery;
-import org.opennaas.extensions.gim.model.core.IPowerSupply;
 import org.opennaas.extensions.gim.model.core.entities.GIModel;
 import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
+import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
 import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
@@ -110,7 +108,7 @@ public class APCDriverTest {
 		// supply.setRatedLoad(ratedLoad);
 
 		PDU pdu = new PDU();
-		pdu.setPowerSupplies(new ArrayList<IPowerSupply>(Arrays.asList(supply)));
+		pdu.setPowerSupplies(new ArrayList<PowerSupply>(Arrays.asList(supply)));
 		// pdu.setDeliveryRatedLoad(deliveryRatedLoad);
 
 		PDUPort port = new PDUPort();
@@ -120,15 +118,15 @@ public class APCDriverTest {
 		// port.setDeliveryRatedLoad(deliveryRatedLoad);
 
 		PowerConsumer router = new PowerConsumer();
-		router.setPowerDeliveries(new ArrayList<IPowerDelivery>(Arrays.asList(port)));
+		router.setPowerDeliveries(new ArrayList<PowerDelivery>(Arrays.asList(port)));
 		// router.setRatedLoad(ratedLoad);
 
-		port.setPowerConsumers(new ArrayList<IPowerConsumer>(Arrays.asList(router)));
+		port.setPowerConsumers(new ArrayList<PowerConsumer>(Arrays.asList(router)));
 
 		GIModel model = new GIModel();
-		model.setConsumers(new ArrayList<IPowerConsumer>(Arrays.asList(router)));
-		model.setDeliveries(new ArrayList<IPowerDelivery>(Arrays.asList(port, pdu)));
-		model.setSupplies(new ArrayList<IPowerSupply>(Arrays.asList(supply)));
+		model.setConsumers(new ArrayList<PowerConsumer>(Arrays.asList(router)));
+		model.setDeliveries(new ArrayList<PowerDelivery>(Arrays.asList(port, pdu)));
+		model.setSupplies(new ArrayList<PowerSupply>(Arrays.asList(supply)));
 
 		return model;
 	}
