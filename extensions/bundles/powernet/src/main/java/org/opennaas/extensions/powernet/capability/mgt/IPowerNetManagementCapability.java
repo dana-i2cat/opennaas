@@ -12,9 +12,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
-import org.opennaas.extensions.gim.model.core.IPowerConsumer;
-import org.opennaas.extensions.gim.model.core.IPowerDelivery;
-import org.opennaas.extensions.gim.model.core.IPowerSupply;
+import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
+import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
+import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
 import org.opennaas.extensions.gim.model.load.RatedLoad;
@@ -44,7 +44,7 @@ public interface IPowerNetManagementCapability extends ICapability {
 	@Path("/supply/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public IPowerSupply getPowerSupply(@PathParam("id") String supplyId) throws ModelElementNotFoundException;
+	public PowerSupply getPowerSupply(@PathParam("id") String supplyId) throws ModelElementNotFoundException;
 
 	public void setPowerSupplyEnergy(@PathParam("id") String supplyId, String energyName, String energyClass, String energyType, double co2perUnit,
 			double greenPercentage) throws ModelElementNotFoundException;
@@ -86,7 +86,7 @@ public interface IPowerNetManagementCapability extends ICapability {
 	@Path("/delivery/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public IPowerDelivery getPowerDelivery(@PathParam("id") String deliveryId) throws ModelElementNotFoundException;
+	public PowerDelivery getPowerDelivery(@PathParam("id") String deliveryId) throws ModelElementNotFoundException;
 
 	public void setPowerDeliveryRatedLoad(@PathParam("id") String deliveryId, double inputVoltage, double inputCurrent, double inputPower,
 			double inputEnergy,
@@ -114,7 +114,7 @@ public interface IPowerNetManagementCapability extends ICapability {
 	@Path("/consumer/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public IPowerConsumer getPowerConsumer(@PathParam("id") String consumerId) throws ModelElementNotFoundException;
+	public PowerConsumer getPowerConsumer(@PathParam("id") String consumerId) throws ModelElementNotFoundException;
 
 	public void setPowerConsumerRatedLoad(@PathParam("id") String consumerId, double inputVoltage, double inputCurrent, double inputPower,
 			double inputEnergy)

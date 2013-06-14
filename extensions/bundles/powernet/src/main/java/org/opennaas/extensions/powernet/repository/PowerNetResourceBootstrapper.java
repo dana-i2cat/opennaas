@@ -8,14 +8,14 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.extensions.gim.model.core.IPowerConsumer;
-import org.opennaas.extensions.gim.model.core.IPowerDelivery;
-import org.opennaas.extensions.gim.model.core.IPowerSupply;
+import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
+import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
+import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.powernet.model.PowerNetModel;
 
 /**
  * 
- * @author Elisabeth Rigol
+ * @author Isart Canyameres Gimenez (i2cat Foundation)
  * 
  */
 public class PowerNetResourceBootstrapper implements IResourceBootstrapper {
@@ -31,18 +31,19 @@ public class PowerNetResourceBootstrapper implements IResourceBootstrapper {
 
 		// Add here all the necessary methods to populate resource model
 
-		PowerNetModel model = new PowerNetModel();
-		model.setId(resource.getResourceIdentifier().getId());
-		model.setConsumers(new ArrayList<IPowerConsumer>());
-		model.setDeliveries(new ArrayList<IPowerDelivery>());
-		model.setSupplies(new ArrayList<IPowerSupply>());
-		resource.setModel(model);
+		resetModel(resource);
+
 	}
 
 	@Override
 	public void resetModel(Resource resource) throws ResourceException {
 
-		resource.setModel(new PowerNetModel());
+		PowerNetModel model = new PowerNetModel();
+		model.setId(resource.getResourceIdentifier().getId());
+		model.setConsumers(new ArrayList<PowerConsumer>());
+		model.setDeliveries(new ArrayList<PowerDelivery>());
+		model.setSupplies(new ArrayList<PowerSupply>());
+		resource.setModel(model);
 	}
 
 	@Override

@@ -75,7 +75,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public String createPowerSupply(String id) {
 		PowerSupply supply = new PowerSupply();
 		supply.setId(id);
-		supply.setPowerDeliveries(new ArrayList<IPowerDelivery>());
+		supply.setPowerDeliveries(new ArrayList<PowerDelivery>());
 		((GIModel) resource.getModel()).getSupplies().add(supply);
 		return supply.getId();
 	}
@@ -94,7 +94,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public IPowerSupply getPowerSupply(String supplyId) throws ModelElementNotFoundException {
+	public PowerSupply getPowerSupply(String supplyId) throws ModelElementNotFoundException {
 		return GIMController.getPowerSupply((GIModel) resource.getModel(), supplyId);
 	}
 
@@ -111,13 +111,12 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void setPowerSupplyEnergy(String supplyId, Energy energy) throws ModelElementNotFoundException {
-		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
-		supply.setEnergy(energy);
+		getPowerSupply(supplyId).setEnergy(energy);
 	}
 
 	@Override
 	public void setPowerSupplyPrice(String supplyId, double pricePerUnit) throws ModelElementNotFoundException {
-		((PowerSupply) getPowerSupply(supplyId)).setPricePerUnit(pricePerUnit);
+		getPowerSupply(supplyId).setPricePerUnit(pricePerUnit);
 	}
 
 	@Override
@@ -135,16 +134,15 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void setPowerSupplyRatedLoad(String supplyId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
-		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
-		supply.setRatedLoad(ratedLoad);
+		getPowerSupply(supplyId).setRatedLoad(ratedLoad);
 	}
 
 	@Override
 	public String createPowerDelivery(String id) {
 		PowerDelivery delivery = new PowerDelivery();
 		delivery.setId(id);
-		delivery.setPowerConsumers(new ArrayList<IPowerConsumer>());
-		delivery.setPowerSupplies(new ArrayList<IPowerSupply>());
+		delivery.setPowerConsumers(new ArrayList<PowerConsumer>());
+		delivery.setPowerSupplies(new ArrayList<PowerSupply>());
 		((GIModel) resource.getModel()).getDeliveries().add(delivery);
 		return delivery.getId();
 	}
@@ -170,7 +168,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public IPowerDelivery getPowerDelivery(String deliveryId) throws ModelElementNotFoundException {
+	public PowerDelivery getPowerDelivery(String deliveryId) throws ModelElementNotFoundException {
 		return GIMController.getPowerDelivery((GIModel) resource.getModel(), deliveryId);
 	}
 
@@ -192,15 +190,14 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void setPowerDeliveryRatedLoad(String deliveryId, DeliveryRatedLoad load) throws ModelElementNotFoundException {
-		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
-		delivery.setDeliveryRatedLoad(load);
+		getPowerDelivery(deliveryId).setDeliveryRatedLoad(load);
 	}
 
 	@Override
 	public String createPowerConsumer(String id) {
 		PowerConsumer consumer = new PowerConsumer();
 		consumer.setId(id);
-		consumer.setPowerDeliveries(new ArrayList<IPowerDelivery>());
+		consumer.setPowerDeliveries(new ArrayList<PowerDelivery>());
 		((GIModel) resource.getModel()).getConsumers().add(consumer);
 		return consumer.getId();
 	}
@@ -219,7 +216,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public IPowerConsumer getPowerConsumer(String consumerId) throws ModelElementNotFoundException {
+	public PowerConsumer getPowerConsumer(String consumerId) throws ModelElementNotFoundException {
 		return GIMController.getPowerConsumer((GIModel) resource.getModel(), consumerId);
 	}
 
@@ -238,14 +235,13 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void setPowerConsumerRatedLoad(String consumerId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
-		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
-		consumer.setRatedLoad(ratedLoad);
+		getPowerConsumer(consumerId).setRatedLoad(ratedLoad);
 	}
 
 	@Override
 	public void connectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException {
 
-		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
+		PowerSupply supply = getPowerSupply(supplyId);
 		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
 
 		supply.getPowerDeliveries().add(delivery);
@@ -254,8 +250,8 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void connectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException {
-		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
-		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
+		PowerConsumer consumer = getPowerConsumer(consumerId);
+		PowerDelivery delivery = getPowerDelivery(deliveryId);
 
 		delivery.getPowerConsumers().add(consumer);
 		consumer.getPowerDeliveries().add(delivery);
@@ -263,8 +259,8 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void disconnectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException {
-		PowerSupply supply = (PowerSupply) getPowerSupply(supplyId);
-		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
+		PowerSupply supply = getPowerSupply(supplyId);
+		PowerDelivery delivery = getPowerDelivery(deliveryId);
 
 		supply.getPowerDeliveries().remove(delivery);
 		delivery.getPowerSupplies().remove(supply);
@@ -272,8 +268,8 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void disconnectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException {
-		PowerConsumer consumer = (PowerConsumer) getPowerConsumer(consumerId);
-		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
+		PowerConsumer consumer = getPowerConsumer(consumerId);
+		PowerDelivery delivery = getPowerDelivery(deliveryId);
 
 		delivery.getPowerConsumers().remove(consumer);
 		consumer.getPowerDeliveries().remove(delivery);
