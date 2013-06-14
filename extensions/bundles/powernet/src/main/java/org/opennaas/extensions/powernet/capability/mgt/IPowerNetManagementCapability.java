@@ -1,5 +1,7 @@
 package org.opennaas.extensions.powernet.capability.mgt;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,6 +30,15 @@ import org.opennaas.extensions.gim.model.load.RatedLoad;
 public interface IPowerNetManagementCapability extends ICapability {
 
 	// PowerSupplies CRUD
+
+	/**
+	 * 
+	 * @return List of existing power supplies ids.
+	 */
+	@Path("/supply/")
+	@GET
+	public List<String> getPowerSupplies();
+
 	/**
 	 * @param id
 	 * @return supply id
@@ -71,6 +82,14 @@ public interface IPowerNetManagementCapability extends ICapability {
 	// PowerDeliveries CRUD
 
 	/**
+	 * 
+	 * @return List of existing power deliveries ids.
+	 */
+	@Path("/delivery/")
+	@GET
+	public List<String> getPowerDeliveries();
+
+	/**
 	 * @param id
 	 * @return delivery id
 	 */
@@ -98,6 +117,15 @@ public interface IPowerNetManagementCapability extends ICapability {
 	public void setPowerDeliveryRatedLoad(@PathParam("id") String deliveryId, DeliveryRatedLoad load) throws ModelElementNotFoundException;
 
 	// PowerConsumers CRUD
+
+	/**
+	 * 
+	 * @return List of existing power consumers ids.
+	 */
+	@Path("/consumer/")
+	@GET
+	public List<String> getPowerConsumers();
+
 	/**
 	 * @param id
 	 * @return consumer id

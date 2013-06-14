@@ -1,6 +1,7 @@
 package org.opennaas.extensions.powernet.capability.mgt;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -273,6 +274,39 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 		delivery.getPowerConsumers().remove(consumer);
 		consumer.getPowerDeliveries().remove(delivery);
+	}
+
+	@Override
+	public List<String> getPowerSupplies() {
+		List<PowerSupply> elements = ((GIModel) resource.getModel()).getSupplies();
+
+		List<String> ids = new ArrayList<String>(elements.size());
+		for (PowerSupply element : elements) {
+			ids.add(element.getId());
+		}
+		return ids;
+	}
+
+	@Override
+	public List<String> getPowerDeliveries() {
+		List<PowerDelivery> elements = ((GIModel) resource.getModel()).getDeliveries();
+
+		List<String> ids = new ArrayList<String>(elements.size());
+		for (PowerDelivery element : elements) {
+			ids.add(element.getId());
+		}
+		return ids;
+	}
+
+	@Override
+	public List<String> getPowerConsumers() {
+		List<PowerConsumer> elements = ((GIModel) resource.getModel()).getConsumers();
+
+		List<String> ids = new ArrayList<String>(elements.size());
+		for (PowerConsumer element : elements) {
+			ids.add(element.getId());
+		}
+		return ids;
 	}
 
 }
