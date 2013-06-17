@@ -5,33 +5,19 @@ import java.util.List;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
 import org.opennaas.extensions.gim.model.core.IPowerMonitorLogging;
 import org.opennaas.extensions.gim.model.core.IPowerSupply;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.load.RatedLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-public class PowerSupply implements IPowerSupply, IPowerMonitorLogging {
+public class PowerSupply extends GIMElement implements IPowerSupply, IPowerMonitorLogging {
 
-	private String				id;
 	private PowerMonitorLog		powerMonitorLog;
 	private Energy				energy;
 	private double				pricePerUnit;
 	private RatedLoad			ratedLoad;
 	private List<PowerDelivery>	powerDeliveries;
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+	private List<PowerSource>	powerSources;
 
 	public PowerMonitorLog getPowerMonitorLog() {
 		return powerMonitorLog;
@@ -78,6 +64,21 @@ public class PowerSupply implements IPowerSupply, IPowerMonitorLogging {
 	 */
 	public void setPowerDeliveries(List<PowerDelivery> powerDeliveries) {
 		this.powerDeliveries = powerDeliveries;
+	}
+
+	/**
+	 * @return the powerSources this supply exposes
+	 */
+	public List<PowerSource> getPowerSources() {
+		return powerSources;
+	}
+
+	/**
+	 * @param powerSources
+	 *            the powerSources to set
+	 */
+	public void setPowerSources(List<PowerSource> powerSources) {
+		this.powerSources = powerSources;
 	}
 
 	@Override

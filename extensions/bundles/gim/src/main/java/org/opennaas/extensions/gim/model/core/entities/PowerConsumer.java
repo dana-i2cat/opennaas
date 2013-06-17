@@ -4,28 +4,14 @@ import java.util.List;
 
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerReceptor;
 import org.opennaas.extensions.gim.model.load.RatedLoad;
 
-public class PowerConsumer implements IPowerConsumer {
+public class PowerConsumer extends GIMElement implements IPowerConsumer {
 
-	private String				id;
 	private List<PowerDelivery>	powerDeliveries;
 	private RatedLoad			ratedLoad;
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+	private List<PowerReceptor>	powerReceptors;
 
 	public List<PowerDelivery> getPowerDeliveries() {
 		return powerDeliveries;
@@ -41,6 +27,21 @@ public class PowerConsumer implements IPowerConsumer {
 
 	public void setRatedLoad(RatedLoad ratedLoad) {
 		this.ratedLoad = ratedLoad;
+	}
+
+	/**
+	 * @return the powerReceptors
+	 */
+	public List<PowerReceptor> getPowerReceptors() {
+		return powerReceptors;
+	}
+
+	/**
+	 * @param powerReceptors
+	 *            the powerReceptors to set
+	 */
+	public void setPowerReceptors(List<PowerReceptor> powerReceptors) {
+		this.powerReceptors = powerReceptors;
 	}
 
 	@Override

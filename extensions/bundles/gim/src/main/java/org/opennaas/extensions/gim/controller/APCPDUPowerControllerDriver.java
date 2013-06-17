@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.opennaas.extensions.gim.controller.snmp.APCDriver_SNMP;
+import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
@@ -16,6 +17,7 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 
 	private APCDriver_SNMP			driver;
+	private PDU						pdu;
 
 	/**
 	 * A Map used to translate from ports in the model to targetOutletIndexes known for the driver
@@ -24,12 +26,27 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 	 */
 	private Map<String, Integer>	outletIndexes	= new HashMap<String, Integer>();
 
+	/**
+	 * @return the pdu
+	 */
+	public PDU getPdu() {
+		return pdu;
+	}
+
+	/**
+	 * @param pdu
+	 *            the pdu to set
+	 */
+	public void setPdu(PDU pdu) {
+		this.pdu = pdu;
+	}
+
 	public String getDeviceName() throws Exception {
 		return driver.getDeviceName();
 	}
 
-	public String getPortName(PDUPort port) throws Exception {
-		return driver.getOutletName(getOutletIndex(port));
+	public String getPortName(String portId) throws Exception {
+		return driver.getOutletName(getOutletIndex(portId));
 	}
 
 	public List<PDUPort> getPorts() throws Exception {
@@ -56,27 +73,31 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 		return ports;
 	}
 
-	public boolean getPowerStatus(PDUPort port) throws Exception {
-		return driver.getOutletStatus(getOutletIndex(port));
+	@Override
+	public boolean getPowerStatus(String portId) throws Exception {
+		return driver.getOutletStatus(getOutletIndex(portId));
 	}
 
-	public boolean powerOn(PDUPort port) throws Exception {
-		return driver.powerOnPort(getOutletIndex(port));
+	@Override
+	public boolean powerOn(String portId) throws Exception {
+		return driver.powerOnPort(getOutletIndex(portId));
 	}
 
-	public boolean powerOff(PDUPort port) throws Exception {
-		return driver.powerOffPort(getOutletIndex(port));
+	@Override
+	public boolean powerOff(String portId) throws Exception {
+		return driver.powerOffPort(getOutletIndex(portId));
 	}
 
-	public MeasuredLoad getCurrentPowerMetrics(PDUPort port) throws Exception {
-		MeasuredLoad ml = getCurrentPowerMetrics(getOutletIndex(port));
-		port.getPowerMonitorLog().add(ml);
+	@Override
+	public MeasuredLoad getCurrentPowerMetrics(String portId) throws Exception {
+		MeasuredLoad ml = getCurrentPowerMetrics(getOutletIndex(portId));
 		return ml;
 	}
 
-	public PowerMonitorLog getPowerMetricsByTimeRange(PDUPort port, Date from, Date to) throws Exception {
+	@Override
+	public PowerMonitorLog getPowerMetricsByTimeRange(String portId, Date from, Date to) throws Exception {
 		// FIXME return a log filtered copy including only desired measures.
-		return port.getPowerMonitorLog();
+		return getPDUPort(portId).getPowerMonitorLog();
 	}
 
 	/**
@@ -150,6 +171,10 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 	@Override
 	public List<PDUPort> listPorts() throws Exception {
 		return getPorts();
+	}
+
+	private PDUPort getPDUPort(String portId) throws ModelElementNotFoundException {
+		return GIMController.getPortById(getPdu(), portId);
 	}
 
 }
