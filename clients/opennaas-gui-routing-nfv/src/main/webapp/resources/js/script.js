@@ -564,7 +564,8 @@ $(function() {
 
         $("#submitUpdateConfig").button();
         $("#defaultValues").button();
-        $("#addButton").button();
+        $(".addRouteButton").button();
+        $(".addCtrlInfoButton").button();
         $(".deleteButton").button();
 
 	$("#button1").button();

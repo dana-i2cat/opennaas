@@ -91,12 +91,12 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
      *             if desired queueManagerService could not be retrieved.
      */
     private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
-        try {
+//        try {
             return Activator.getQueueManagerService(resourceId);
-        } catch (ActivatorException e) {
+/*        } catch (ActivatorException e) {
             throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
         }
-    }
+*/    }
 
     /**
      * @param the ipSource / ipDest / SwitchInfo
@@ -105,6 +105,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
      */
     @Override
     public String getPath(String ipSource, String ipDest, String switchMac, String inputPort) throws CapabilityException {
+        long initialTime = System.currentTimeMillis();
+        log.error("Start time... " + initialTime);
         String response = "";
         ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
         ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
@@ -126,71 +128,98 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         //Next-hop router
         String controllerInfo = "";
         Switch destSwInfo = null;
-        try{
-        destSwInfo = model.getTable().getDestinationSwitch(ipSource, ipDest, switchMac);
-            controllerInfo= model.getSwitchController().get(destSwInfo.getMacAddress());
-        } catch (NullPointerException e){
-            
+        try {
+            destSwInfo = model.getTable().getDestinationSwitch(ipSource, ipDest, switchMac);
+            controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
+        } catch (NullPointerException e) {
         }
         String ControllerIP = "opennaasNFV";
         String ControllerPort = "8080";
         final String Url = "http://" + controllerInfo + "/wm/staticflowentrypusher/json";
-                /*"http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";*/
+        /*"http://" + ControllerIP + ":" + ControllerPort + "/wm/staticflowentrypusher/json";*/
         String json[] = new String[4];
-json[0] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipSource+"\", \"dst-ip\":\""+ipDest+"\", \"ether-type\":\"0x800\", \"ingress-port\":\""+destSwInfo.getInputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getOutputPort()+"\"}";
-json[1] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipDest+"\", \"dst-ip\":\""+ipSource+"\", \"ether-type\":\"0x800\", \"ingress-port\":\""+destSwInfo.getOutputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getInputPort()+"\"}";
-json[2] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipSource+"\", \"dst-ip\":\""+ipDest+"\", \"ether-type\":\"0x806\", \"ingress-port\":\""+destSwInfo.getInputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getOutputPort()+"\"}";
-json[3] = "{\"switch\": \""+destSwInfo.getMacAddress()+"\", \"name\":\"flow-mod-"+(int)(Math.random() * ((1000 - 1) + 1))+"\", \"priority\":\"32767\", \"src-ip\":\""+ipDest+"\", \"dst-ip\":\""+ipSource+"\", \"ether-type\":\"0x806\", \"ingress-port\":\""+destSwInfo.getOutputPort()+"\",\"active\":\"true\", \"actions\":\"output="+destSwInfo.getInputPort()+"\"}";
 
+        json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"flow-mod-" + (int) (Math.random() * ((1000 - 1) + 1)) + "\", \"priority\":\"32767\", \"src-ip\":\"" + ipSource + "\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"0x806\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + destSwInfo.getOutputPort() + "\"}";
+        json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"flow-mod-" + (int) (Math.random() * ((1000 - 1) + 1)) + "\", \"priority\":\"32767\", \"src-ip\":\"" + ipSource + "\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"0x800\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + destSwInfo.getOutputPort() + "\"}";
+        json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"flow-mod-" + (int) (Math.random() * ((1000 - 1) + 1)) + "\", \"priority\":\"32767\", \"src-ip\":\"" + ipDest + "\", \"dst-ip\":\"" + ipSource + "\", \"ether-type\":\"0x806\", \"ingress-port\":\"" + destSwInfo.getOutputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+        json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"flow-mod-" + (int) (Math.random() * ((1000 - 1) + 1)) + "\", \"priority\":\"32767\", \"src-ip\":\"" + ipDest + "\", \"dst-ip\":\"" + ipSource + "\", \"ether-type\":\"0x800\", \"ingress-port\":\"" + destSwInfo.getOutputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+        log.error("Json0 " + json[0]);
+        try {
+            URL url = new URL(Url);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 
+            wr.write(json[0]);
+            log.error("write1");
+            wr.flush();
+            wr.close();
+            conn.connect();
+            conn.getResponseCode();
 
-for ( int i = 0; i<4; i++ ){
-    new MyThread(i, Url, json).start();
-}
+            url = new URL(Url);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            wr = new OutputStreamWriter(conn.getOutputStream());
 
-log.error("Return response");
+            wr.write(json[1]);
+            log.error("write2");
+            wr.flush();
+            wr.close();
+            conn.connect();
+            conn.getResponseCode();
+
+        } catch (Exception e) {
+        }
+        for (int i = 2; i < 4; i++) {
+            new MyThread(i, Url, json).start();
+        }
+
+        long totalTime = System.currentTimeMillis() - initialTime;
+        log.error("Return response, end exec: " + totalTime);
         return response;
     }
 
-public class MyThread extends Thread {
+    public class MyThread extends Thread {
 
-    private int i;
-    private String Url;
-    private String[] json;
-    
-   public MyThread(int i, String Url, String[] json) {
-       this.i = i;
-       this.Url = Url;
-       this.json = json;
-   }
+        private int i;
+        private String Url;
+        private String[] json;
 
-   public void run() {
-       try {
-                        log.error("try to send "+i);
-                        URL url = new URL(Url);
-                        URLConnection conn = url.openConnection();
-                        conn.setDoOutput(true);
-                        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+        public MyThread(int i, String Url, String[] json) {
+            this.i = i;
+            this.Url = Url;
+            this.json = json;
+        }
 
-                        wr = new OutputStreamWriter(conn.getOutputStream());
-                        wr.write(json[i]);
-                        log.error("write");
-                        wr.flush();
+        @Override
+        public void run() {
+            try {
+                log.error("try to send " + i);
+                URL url = new URL(Url);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 
-                        // Get the response 
-/*                        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                        String line;
-                        while ((line = rd.readLine()) != null) {
-                            System.out.println(line);
-                        }
-*/                        
-                        wr.close();
-//                        rd.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-   }
-}
+                wr.write(json[i]);
+                log.error("write " + i);
+                wr.flush();
+
+                // Get the response 
+/*                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                while ((line = rd.readLine()) != null) {
+                System.out.println(line);
+                }
+                 */
+                wr.close();
+                conn.connect();
+                conn.getResponseCode();
+            } catch (IOException ex) {
+                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     /**
      * @param
@@ -227,18 +256,20 @@ public class MyThread extends Thread {
         if (model.getTable() == null) {
             model.setTable(new Table());
         }
-
+if(!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && !inputPort.isEmpty() && !outputPort.isEmpty()){
         Switch switchInfo = new Switch(inputPort, inputPort, outputPort, switchMac);
         Route route = new Route(model.getTable().getRoute().size(), ipSource, ipDest, switchInfo);
         String response = model.getTable().addRoute(route);
         return response;
+}
+return "Some value is empty";
     }
 
     @Override
     public String getRegister() throws CapabilityException {
         return ((OfRoutingModel) resource.getModel()).getTable().getRegister().toString();
     }
-    
+
     @Override
     public Response putSwitchController(String ipController, String portController, String switchMac) throws CapabilityException {
         log.info("Put Switch-Controller info into table");
@@ -246,7 +277,12 @@ public class MyThread extends Thread {
         if (model.getTable() == null) {
             model.setTable(new Table());
         }
-        model.getSwitchController().put(switchMac, ipController+":"+portController);
+        model.getSwitchController().put(switchMac, ipController + ":" + portController);
         return Response.ok().build();
+    }
+    
+    @Override
+    public String getControllersInfo() throws CapabilityException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

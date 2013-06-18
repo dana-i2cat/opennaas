@@ -80,9 +80,9 @@
             </tr>
 
         </table>
-        <input id="addButton" onClick="addRout()" type="button" value="Add" name="addRoute"/>
+        <input class="addRouteButton" onClick="addRout()" type="button" value="Add" name="addRoute"/>
          <input id="submitUpdateConfig" class="button" type="submit" value="Update" />
     </div>
 </form:form>
-
- <input id="defaultValues" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>
+<br/><br/>
+ <input class="addRouteButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>

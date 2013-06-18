@@ -64,9 +64,9 @@
             </tr>
 
         </table>
-        <input id="addButton" onClick="addCtrl()" type="button" value="Add" name="addRoute"/>
+        <input class="addCtrlInfoButton" onClick="addCtrl()" type="button" value="Add" name="addRoute"/>
          <input id="submitUpdateConfig" class="button" type="submit" value="Update" />
     </div>
 </form:form>
 <br/><br/>
-<input id="defaultValues" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>
+<input class="addCtrlInfoButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>

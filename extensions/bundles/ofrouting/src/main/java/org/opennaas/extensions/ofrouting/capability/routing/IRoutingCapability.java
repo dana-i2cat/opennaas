@@ -6,13 +6,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import javax.ws.rs.core.Response;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.ofrouting.model.Switch;
 
 /**
  * 
@@ -82,15 +80,26 @@ public interface IRoutingCapability extends ICapability {
 	public String getRegister() throws CapabilityException;
         
         /**
-	 * Put Controller Infro
+	 * Put Controller Info
 	 * 
          * return ok or fail
 	 * @throws CapabilityException
 	 */
-	@Path("/putSwitchCOntroller")
+	@Path("/putSwitchController")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response putSwitchController(@FormParam("ipController") String ipController,
-        @FormParam("portController") String portController,
-        @FormParam("switchMac") String switchMac) throws CapabilityException;
+            @FormParam("portController") String portController,
+            @FormParam("switchMac") String switchMac) throws CapabilityException;
+        
+        /**
+	 * Get Info Controllers
+	 * 
+         * return json with the list of routes
+	 * @throws CapabilityException
+	 */
+	@Path("/getSwitchControllers")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getControllersInfo() throws CapabilityException;
 }

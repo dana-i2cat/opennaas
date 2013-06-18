@@ -3,22 +3,18 @@ NFV Routing Special CSS features
 ----------------------------------------------------------------------- */
 
 .ipInput{
-    width: 8em;
-}
+    width: 8em;}
 .macInput{
-    width: 11em;
-}
+    width: 11em;}
 .portInput{
-    width: 2em;
-}
+    width: 2em;}
 .controllerPort{
-    width: 2.5em;
-}
+    width: 2.5em;}
 #jsonTable thead {
-    cursor: pointer;
-}
-#addButton{
-float:right; margin-right: 11px;
-}
-#defaultValues{float: left; margin-top: 60px;}
-#submitUpdateConfig{float: right; margin-top: 60px;}
+    cursor: pointer;}
+.addRouteButton{
+    float:right; margin-right: 26px;}
+.addCtrlInfoButton{
+    float:right; margin-right: 65px;}
+#submitUpdateConfig{
+    float: right;}
