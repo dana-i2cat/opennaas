@@ -4,6 +4,12 @@ import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 import org.json.JSONException;
 import org.junit.Test;
 import org.opennaas.extensions.quantum.extensions.l3.model.Router;
@@ -12,15 +18,6 @@ import org.opennaas.extensions.quantum.extensions.l3.model.wrappers.SubnetIdPort
 import org.opennaas.extensions.quantum.model.helper.QuantumModelHelper;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
@@ -50,14 +47,14 @@ public class QuantumModelSerializingTest {
 	private final static String	l3NetworkRemoveRouterInterfaceResponseSample	= "quantum-api/extensions/l3/json/example_5.21_Remove_Router_Interface_JSON_Response.json";
 
 	@Test
-	public void serializeTest() throws JsonProcessingException {
+	public void serializeTest() throws JsonGenerationException, JsonMappingException, IOException {
 		QuantumModel sampleQuantumModel = QuantumModelHelper.generateSampleQuantumModel();
 		String serializedQuantumModel = serialize(sampleQuantumModel, true);
 		log.debug("Serialized QuantumModel:\n" + serializedQuantumModel);
 	}
 
 	@Test
-	public void deserializeTest() throws JSONException, JsonProcessingException, IOException {
+	public void deserializeTest() throws IOException, JSONException {
 		String originalSerializedNetwork1 = GetFileAsString(networkJsonSample1);
 		Network deserializedNetwork1 = (Network) deserialize(Network.class, originalSerializedNetwork1, false);
 		String serializedNetwork1 = serialize(deserializedNetwork1, false);
@@ -127,7 +124,7 @@ public class QuantumModelSerializingTest {
 	}
 
 	@Test
-	public void l3extensionTest() throws JSONException, JsonProcessingException, IOException {
+	public void l3extensionTest() throws IOException, JSONException {
 		String originalSerializedListRouterResponse = GetFileAsString(l3NetworkListRouterResponseSample);
 		QuantumModel deserializedListRouterResponse = (QuantumModel) deserialize(QuantumModel.class, originalSerializedListRouterResponse, true);
 		String serializedListRouterResponse = serialize(deserializedListRouterResponse, true);
@@ -210,21 +207,21 @@ public class QuantumModelSerializingTest {
 		return Resources.toString(Resources.getResource(filePath), Charsets.UTF_8);
 	}
 
-	private static String serialize(Object quantumModel, boolean rootObject) throws JsonProcessingException {
+	private static String serialize(Object quantumModel, boolean rootObject) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
-		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, !rootObject);
-		mapper.setSerializationInclusion(Include.NON_NULL);
-		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+		mapper.setAnnotationIntrospector(new JaxbAnnotationIntrospector());
+		mapper.configure(org.codehaus.jackson.map.SerializationConfig.Feature.WRAP_ROOT_VALUE, !rootObject);
+		mapper.setSerializationInclusion(Inclusion.NON_NULL);
+		mapper.configure(org.codehaus.jackson.map.SerializationConfig.Feature.INDENT_OUTPUT, true);
 		return mapper.writeValueAsString(quantumModel);
 	}
 
 	private static Object deserialize(Class<?> quantumObjectClass, String serializedObject, boolean rootObject) throws JsonParseException,
 			JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
-		mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, !rootObject);
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.setAnnotationIntrospector(new JaxbAnnotationIntrospector());
+		mapper.configure(org.codehaus.jackson.map.DeserializationConfig.Feature.UNWRAP_ROOT_VALUE, !rootObject);
+		mapper.configure(org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		return mapper.readValue(serializedObject, quantumObjectClass);
 	}
 

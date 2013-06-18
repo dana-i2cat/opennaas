@@ -1272,16 +1272,35 @@
 			<id>maven.i2cat.net</id>
 			<name>maven.i2cat.net-releases</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>i2cat</id>
 			<name>i2cat maven repository</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>i2cat libs-snapshot-local</id>
 			<name>maven.i2cat.net-snapshots</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>interval:1</updatePolicy>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>springsource-external</id>

@@ -1,5 +1,8 @@
 package org.opennaas.extensions.quantum.capability.apiv2;
 
+import java.io.IOException;
+import java.util.Dictionary;
+
 import javax.ws.rs.PathParam;
 
 import org.apache.commons.logging.Log;
@@ -9,10 +12,13 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.quantum.Activator;
 import org.opennaas.extensions.quantum.model.QuantumModel;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Julio Carlos Barrera
@@ -29,7 +35,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	public QuantumAPIV2Capability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
-		log.debug("Built new Quantum Networks Capability");
+		log.debug("Built new Quantum Capability");
 	}
 
 	@Override
@@ -65,6 +71,41 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	public void queueAction(IAction action) throws CapabilityException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	/**
+	 * Register the capability like a web service through DOSGi
+	 *
+	 * @param name
+	 * @param resourceId
+	 * @return
+	 * @throws CapabilityException
+	 */
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
+			String ifaceName, Dictionary<String, String> props) throws CapabilityException {
+		try {
+			ConfigurationAdminUtil configurationAdmin = new ConfigurationAdminUtil(bundleContext);
+			String url = configurationAdmin.getProperty("org.opennaas", "ws.rest.url");
+			if (props != null) {
+				// Rest
+				props.put("service.exported.interfaces", "*");
+				props.put("service.exported.configs", "org.apache.cxf.rs");
+				props.put("service.exported.intents", "HTTP");
+				props.put("org.apache.cxf.rs.httpservice.context", url + "/" + resourceType + "/" + resourceName + "/" + capabilityName);
+				props.put("org.apache.cxf.rs.address", "/");
+				props.put("org.apache.cxf.httpservice.requirefilter", "true");
+				// JSON provider
+				props.put("org.apache.cxf.rs.provider", "org.opennaas.extensions.quantum.utils.CustomJSONProvider");
+			}
+			log.info("Registering ws: \n " +
+					"in url: " + props.get("org.apache.cxf.rs.address") + "\n" +
+					"in context: " + props.get("org.apache.cxf.rs.httpservice.context"));
+			registration = bundleContext.registerService(ifaceName, this, props);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+		return registration;
 	}
 
 	// NETWORKS CRUD
