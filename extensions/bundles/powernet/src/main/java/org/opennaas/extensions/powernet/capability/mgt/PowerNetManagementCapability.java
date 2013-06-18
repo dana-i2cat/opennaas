@@ -12,13 +12,12 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.gim.controller.GIMController;
 import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
-import org.opennaas.extensions.gim.model.core.IPowerConsumer;
-import org.opennaas.extensions.gim.model.core.IPowerDelivery;
-import org.opennaas.extensions.gim.model.core.IPowerSupply;
 import org.opennaas.extensions.gim.model.core.entities.GIModel;
 import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
 import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
 import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerReceptor;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.energy.EnergyClass;
 import org.opennaas.extensions.gim.model.energy.EnergyType;
@@ -83,13 +82,12 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void deletePowerSupply(String supplyId) throws ModelElementNotFoundException {
-		IPowerSupply supply = getPowerSupply(supplyId);
+		PowerSupply supply = getPowerSupply(supplyId);
 		// disconnect it
-		if (!supply.getPowerDeliveries().isEmpty()) {
-			for (int i = 0; i < supply.getPowerDeliveries().size(); i++) {
-				disconnectSupplyDelivery(supplyId, supply.getPowerDeliveries().get(i).getId());
-			}
+		for (PowerSource source : supply.getPowerSources()) {
+			disconnectPowerSource(source);
 		}
+		supply.setPowerSources(null);
 
 		((GIModel) resource.getModel()).getSupplies().remove(supply);
 	}
@@ -103,21 +101,28 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	public void setPowerSupplyEnergy(String supplyId, String energyName, String energyClass, String energyType, double co2perUnit,
 			double greenPercentage) throws ModelElementNotFoundException {
 
-		EnergyClass eClass = EnergyClass.fromString(energyClass);
-		EnergyType eType = EnergyType.fromString(energyType);
-
-		Energy energy = new Energy(eClass, eType, co2perUnit, greenPercentage);
+		Energy energy = new Energy(EnergyClass.fromString(energyClass), EnergyType.fromString(energyType), co2perUnit, greenPercentage);
 		setPowerSupplyEnergy(supplyId, energy);
 	}
 
 	@Override
 	public void setPowerSupplyEnergy(String supplyId, Energy energy) throws ModelElementNotFoundException {
-		getPowerSupply(supplyId).setEnergy(energy);
+		PowerSupply supply = getPowerSupply(supplyId);
+		supply.setEnergy(energy);
+		// updateAllSources
+		for (PowerSource source : supply.getPowerSources()) {
+			source.setEnergy(energy);
+		}
 	}
 
 	@Override
 	public void setPowerSupplyPrice(String supplyId, double pricePerUnit) throws ModelElementNotFoundException {
-		getPowerSupply(supplyId).setPricePerUnit(pricePerUnit);
+		PowerSupply supply = getPowerSupply(supplyId);
+		supply.setPricePerUnit(pricePerUnit);
+		// updateAllSources
+		for (PowerSource source : supply.getPowerSources()) {
+			source.setPricePerUnit(pricePerUnit);
+		}
 	}
 
 	@Override
@@ -135,7 +140,12 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void setPowerSupplyRatedLoad(String supplyId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
-		getPowerSupply(supplyId).setRatedLoad(ratedLoad);
+		PowerSupply supply = getPowerSupply(supplyId);
+		supply.setRatedLoad(ratedLoad);
+		// updateAllSources
+		for (PowerSource source : supply.getPowerSources()) {
+			source.setRatedLoad(ratedLoad);
+		}
 	}
 
 	@Override
@@ -150,20 +160,19 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void deletePowerDelivery(String deliveryId) throws ModelElementNotFoundException {
-		IPowerDelivery delivery = getPowerDelivery(deliveryId);
-		// disconnect it from consumers
-		if (!delivery.getPowerConsumers().isEmpty()) {
-			for (int i = 0; i < delivery.getPowerConsumers().size(); i++) {
-				disconnectDeliveryConsumer(deliveryId, delivery.getPowerConsumers().get(i).getId());
-			}
-		}
+		PowerDelivery delivery = getPowerDelivery(deliveryId);
 
-		// disconnect it from supplies
-		if (!delivery.getPowerSupplies().isEmpty()) {
-			for (int i = 0; i < delivery.getPowerSupplies().size(); i++) {
-				disconnectSupplyDelivery(delivery.getPowerSupplies().get(i).getId(), deliveryId);
-			}
+		// disconnect its sources
+		for (PowerSource source : delivery.getPowerSources()) {
+			disconnectPowerSource(source);
 		}
+		delivery.setPowerSources(null);
+
+		// disconnect its receptors
+		for (PowerReceptor receptor : delivery.getPowerReceptors()) {
+			receptor.setAttachedTo(null);
+		}
+		delivery.setPowerReceptors(null);
 
 		((GIModel) resource.getModel()).getDeliveries().remove(delivery);
 	}
@@ -191,7 +200,26 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void setPowerDeliveryRatedLoad(String deliveryId, DeliveryRatedLoad load) throws ModelElementNotFoundException {
-		getPowerDelivery(deliveryId).setDeliveryRatedLoad(load);
+		PowerDelivery delivery = getPowerDelivery(deliveryId);
+		delivery.setDeliveryRatedLoad(load);
+		// updateAllSources
+		RatedLoad sourceLoad = new RatedLoad();
+		sourceLoad.setVoltage(load.getOutputVoltage());
+		sourceLoad.setCurrent(load.getOutputCurrent());
+		sourceLoad.setPower(load.getPower());
+		sourceLoad.setEnergy(load.getEnergy());
+		for (PowerSource source : delivery.getPowerSources()) {
+			source.setRatedLoad(sourceLoad);
+		}
+		// updateAllReceptors
+		RatedLoad receptorLoad = new RatedLoad();
+		receptorLoad.setVoltage(load.getVoltage());
+		receptorLoad.setCurrent(load.getCurrent());
+		receptorLoad.setPower(load.getPower());
+		receptorLoad.setEnergy(load.getEnergy());
+		for (PowerReceptor receptor : delivery.getPowerReceptors()) {
+			receptor.setRatedLoad(receptorLoad);
+		}
 	}
 
 	@Override
@@ -205,13 +233,12 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void deletePowerConsumer(String consumerId) throws ModelElementNotFoundException {
-		IPowerConsumer consumer = getPowerConsumer(consumerId);
+		PowerConsumer consumer = getPowerConsumer(consumerId);
 		// disconnect it from deliveries
-		if (!consumer.getPowerDeliveries().isEmpty()) {
-			for (int i = 0; i < consumer.getPowerDeliveries().size(); i++) {
-				disconnectDeliveryConsumer(consumer.getPowerDeliveries().get(i).getId(), consumerId);
-			}
+		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
+			receptor.setAttachedTo(null);
 		}
+		consumer.setPowerReceptors(null);
 
 		((GIModel) resource.getModel()).getConsumers().remove(consumer);
 	}
@@ -236,44 +263,61 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 
 	@Override
 	public void setPowerConsumerRatedLoad(String consumerId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
-		getPowerConsumer(consumerId).setRatedLoad(ratedLoad);
-	}
-
-	@Override
-	public void connectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException {
-
-		PowerSupply supply = getPowerSupply(supplyId);
-		PowerDelivery delivery = (PowerDelivery) getPowerDelivery(deliveryId);
-
-		supply.getPowerDeliveries().add(delivery);
-		delivery.getPowerSupplies().add(supply);
-	}
-
-	@Override
-	public void connectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException {
 		PowerConsumer consumer = getPowerConsumer(consumerId);
-		PowerDelivery delivery = getPowerDelivery(deliveryId);
-
-		delivery.getPowerConsumers().add(consumer);
-		consumer.getPowerDeliveries().add(delivery);
+		consumer.setRatedLoad(ratedLoad);
+		// updateAllReceptors
+		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
+			receptor.setRatedLoad(ratedLoad);
+		}
 	}
 
 	@Override
-	public void disconnectSupplyDelivery(String supplyId, String deliveryId) throws ModelElementNotFoundException {
+	public void connectSupplyDelivery(String supplyId, String supplySourceId, String deliveryId, String delivertReceptorId)
+			throws ModelElementNotFoundException {
+
 		PowerSupply supply = getPowerSupply(supplyId);
 		PowerDelivery delivery = getPowerDelivery(deliveryId);
 
-		supply.getPowerDeliveries().remove(delivery);
-		delivery.getPowerSupplies().remove(supply);
+		PowerSource source = (PowerSource) GIMController.getSocketById(supply.getPowerSources(), supplySourceId);
+		PowerReceptor receptor = (PowerReceptor) GIMController.getSocketById(delivery.getPowerReceptors(), delivertReceptorId);
+
+		receptor.setAttachedTo(source);
 	}
 
 	@Override
-	public void disconnectDeliveryConsumer(String deliveryId, String consumerId) throws ModelElementNotFoundException {
+	public void connectDeliveryConsumer(String deliveryId, String deliverySourceId, String consumerId, String consumerReceptorId)
+			throws ModelElementNotFoundException {
 		PowerConsumer consumer = getPowerConsumer(consumerId);
 		PowerDelivery delivery = getPowerDelivery(deliveryId);
 
-		delivery.getPowerConsumers().remove(consumer);
-		consumer.getPowerDeliveries().remove(delivery);
+		PowerSource source = (PowerSource) GIMController.getSocketById(delivery.getPowerSources(), deliverySourceId);
+		PowerReceptor receptor = (PowerReceptor) GIMController.getSocketById(consumer.getPowerReceptors(), consumerReceptorId);
+
+		receptor.setAttachedTo(source);
+	}
+
+	@Override
+	public void disconnectSupplyDelivery(String supplyId, String supplySourceId, String deliveryId, String delivertReceptorId)
+			throws ModelElementNotFoundException {
+		PowerSupply supply = getPowerSupply(supplyId);
+		PowerDelivery delivery = getPowerDelivery(deliveryId);
+
+		PowerSource source = (PowerSource) GIMController.getSocketById(supply.getPowerSources(), supplySourceId);
+		PowerReceptor receptor = (PowerReceptor) GIMController.getSocketById(delivery.getPowerReceptors(), delivertReceptorId);
+
+		receptor.setAttachedTo(null);
+	}
+
+	@Override
+	public void disconnectDeliveryConsumer(String deliveryId, String deliverySourceId, String consumerId, String consumerReceptorId)
+			throws ModelElementNotFoundException {
+		PowerConsumer consumer = getPowerConsumer(consumerId);
+		PowerDelivery delivery = getPowerDelivery(deliveryId);
+
+		PowerSource source = (PowerSource) GIMController.getSocketById(delivery.getPowerSources(), deliverySourceId);
+		PowerReceptor receptor = (PowerReceptor) GIMController.getSocketById(consumer.getPowerReceptors(), consumerReceptorId);
+
+		receptor.setAttachedTo(null);
 	}
 
 	@Override
@@ -307,6 +351,135 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 			ids.add(element.getId());
 		}
 		return ids;
+	}
+
+	private void disconnectPowerSource(PowerSource powerSource) {
+		// check consumers
+		for (PowerConsumer consumer : ((GIModel) resource.getModel()).getConsumers()) {
+			for (PowerReceptor receptor : consumer.getPowerReceptors()) {
+				if (powerSource.equals(receptor.getAttachedTo()))
+					receptor.setAttachedTo(null);
+			}
+		}
+		// check deliveries
+		for (PowerDelivery delivery : ((GIModel) resource.getModel()).getDeliveries()) {
+			for (PowerReceptor receptor : delivery.getPowerReceptors()) {
+				if (powerSource.equals(receptor.getAttachedTo()))
+					receptor.setAttachedTo(null);
+			}
+		}
+	}
+
+	@Override
+	public List<String> getPowerSupplySources(String supplyId) throws ModelElementNotFoundException {
+		List<PowerSource> sources = getPowerSupply(supplyId).getPowerSources();
+		List<String> ids = new ArrayList<String>(sources.size());
+		for (PowerSource source : sources) {
+			ids.add(source.getId());
+		}
+
+		return ids;
+	}
+
+	@Override
+	public PowerSource getPowerSupplySource(String supplyId, String sourceId) throws ModelElementNotFoundException {
+		return (PowerSource) GIMController.getSocketById(getPowerSupply(supplyId).getPowerSources(), sourceId);
+	}
+
+	@Override
+	public String addPowerSupplySource(String supplyId, String sourceId, PowerSource source) throws ModelElementNotFoundException {
+		source.setId(sourceId);
+		getPowerSupply(supplyId).getPowerSources().add(source);
+		return sourceId;
+	}
+
+	@Override
+	public void removePowerSupplySource(String supplyId, String sourceId) throws ModelElementNotFoundException {
+		getPowerSupply(supplyId).getPowerSources().remove(getPowerSupplySource(supplyId, sourceId));
+	}
+
+	@Override
+	public List<String> getPowerDeliverySources(String deliveryId) throws ModelElementNotFoundException {
+		List<PowerSource> sources = getPowerDelivery(deliveryId).getPowerSources();
+		List<String> ids = new ArrayList<String>(sources.size());
+		for (PowerSource source : sources) {
+			ids.add(source.getId());
+		}
+
+		return ids;
+	}
+
+	@Override
+	public PowerSource getPowerDeliverySource(String deliveryId, String sourceId) throws ModelElementNotFoundException {
+		return (PowerSource) GIMController.getSocketById(getPowerDelivery(deliveryId).getPowerSources(), sourceId);
+	}
+
+	@Override
+	public String addPowerDeliverySource(String deliveryId, String sourceId, PowerSource source) throws ModelElementNotFoundException {
+		source.setId(sourceId);
+		getPowerDelivery(deliveryId).getPowerSources().add(source);
+		return sourceId;
+	}
+
+	@Override
+	public void removePowerDeliverySource(String deliveryId, String sourceId) throws ModelElementNotFoundException {
+		getPowerDelivery(deliveryId).getPowerSources().remove(getPowerDeliverySource(deliveryId, sourceId));
+	}
+
+	@Override
+	public List<String> getPowerDeliveryReceptors(String deliveryId) throws ModelElementNotFoundException {
+		List<PowerReceptor> receptors = getPowerDelivery(deliveryId).getPowerReceptors();
+		List<String> ids = new ArrayList<String>(receptors.size());
+		for (PowerReceptor receptor : receptors) {
+			ids.add(receptor.getId());
+		}
+
+		return ids;
+	}
+
+	@Override
+	public PowerReceptor getPowerDeliveryReceptor(String deliveryId, String receptorId) throws ModelElementNotFoundException {
+		return (PowerReceptor) GIMController.getSocketById(getPowerDelivery(deliveryId).getPowerReceptors(), receptorId);
+	}
+
+	@Override
+	public String addPowerDeliveryReceptor(String deliveryId, String receptorId, PowerReceptor receptor) throws ModelElementNotFoundException {
+		receptor.setId(receptorId);
+		getPowerDelivery(deliveryId).getPowerReceptors().add(receptor);
+		return receptorId;
+	}
+
+	@Override
+	public void removePowerDeliveryReceptor(String deliveryId, String receptorId) throws ModelElementNotFoundException {
+		getPowerDelivery(deliveryId).getPowerReceptors().remove(getPowerDeliveryReceptor(deliveryId, receptorId));
+	}
+
+	@Override
+	public List<String> getPowerConsumerReceptors(String consumerId) throws ModelElementNotFoundException {
+		List<PowerReceptor> receptors = getPowerConsumer(consumerId).getPowerReceptors();
+		List<String> ids = new ArrayList<String>(receptors.size());
+		for (PowerReceptor receptor : receptors) {
+			ids.add(receptor.getId());
+		}
+
+		return ids;
+	}
+
+	@Override
+	public PowerReceptor getPowerConsumerReceptor(String consumerId, String receptorId) throws ModelElementNotFoundException {
+		return (PowerReceptor) GIMController.getSocketById(getPowerConsumer(consumerId).getPowerReceptors(), receptorId);
+	}
+
+	@Override
+	public String addPowerConsumerReceptor(String consumerId, String receptorId, PowerReceptor receptor) throws ModelElementNotFoundException {
+		receptor.setId(receptorId);
+		getPowerConsumer(consumerId).getPowerReceptors().add(receptor);
+		return receptorId;
+	}
+
+	@Override
+	public void removePowerConsumerReceptor(String consumerId, String receptorId) throws ModelElementNotFoundException {
+		getPowerConsumer(consumerId).getPowerReceptors().remove(getPowerConsumerReceptor(consumerId, receptorId));
 	}
 
 }

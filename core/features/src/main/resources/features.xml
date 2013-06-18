@@ -236,13 +236,12 @@
 	</feature>
 	
 	<feature name="opennaas-pdu" version="${project.version}">
-		<feature version="${project.version}">opennaas-gim</feature>
+		<feature version="${project.version}">opennaas-powernet</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.pdu/${project.version}</bundle>
 	</feature>
 	
-	<feature name="opennaas-power" version="${project.version}">
+	<feature name="opennaas-powernet" version="${project.version}">
 		<feature version="${project.version}">opennaas-gim</feature>
-		<feature version="${project.version}">opennaas-pdu</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.powernet/${project.version}</bundle>
 	</feature>
 	
