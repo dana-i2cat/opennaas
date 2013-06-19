@@ -7,14 +7,14 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
 
-@Command(scope = "gim", name = "setSupplyEnergy", description = "Set energy provided by given power supply")
-public class SetSupplyEnergyCommand extends GenericKarafCommand {
+@Command(scope = "gim", name = "setDeliveryEnergy", description = "Set energy provided by given power delivery")
+public class SetDeliveryEnergyCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id", required = true, multiValued = false)
 	private String	resourceName;
 
-	@Argument(index = 1, name = "supplyId", description = "The id of the supply.", required = true, multiValued = false)
-	private String	supplyId;
+	@Argument(index = 1, name = "deliveryId", description = "The id of the delivery.", required = true, multiValued = false)
+	private String	deliveryId;
 
 	@Argument(index = 2, name = "energyClass", description = "The energyClass.", required = true, multiValued = false)
 	private String	energyClass;
@@ -30,12 +30,12 @@ public class SetSupplyEnergyCommand extends GenericKarafCommand {
 	@Option(name = "--sourceId", aliases = "-s", description = "The id of the source.", required = false, multiValued = false)
 	private String	sourceId	= null;
 
-	@Option(name = "--allSources", aliases = "-A", description = "Causes the command to set energy to all sources in specified supply.", required = false, multiValued = false)
+	@Option(name = "--allSources", aliases = "-A", description = "Causes the command to set energy to all sources in specified delivery.", required = false, multiValued = false)
 	private boolean	allSources	= false;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("setSupplyEnergy");
+		printInitCommand("setDeliveryEnergy");
 
 		if (!allSources && sourceId == null) {
 			printError("Either sourceId or allSources option must be specified");
@@ -49,15 +49,15 @@ public class SetSupplyEnergyCommand extends GenericKarafCommand {
 					.getCapabilityByInterface(IPowerNetManagementCapability.class);
 
 			if (!allSources) {
-				capab.setPowerSupplySourceEnergy(supplyId, sourceId, energyName, energyClass, energyType, co2perUnit, greenPercentage);
+				capab.setPowerDeliverySourceEnergy(deliveryId, sourceId, energyName, energyClass, energyType, co2perUnit, greenPercentage);
 			} else {
-				for (String id : capab.getPowerSupplySources(supplyId)) {
-					capab.setPowerSupplySourceEnergy(supplyId, id, energyName, energyClass, energyType, co2perUnit, greenPercentage);
+				for (String id : capab.getPowerDeliverySources(deliveryId)) {
+					capab.setPowerDeliverySourceEnergy(deliveryId, id, energyName, energyClass, energyType, co2perUnit, greenPercentage);
 				}
 			}
 
 		} catch (Exception e) {
-			printError("Error in setSupplyEnergy in resource" + resourceName + " and supply " + supplyId);
+			printError("Error in setDeliveryEnergy in resource" + resourceName + " and delivery " + deliveryId);
 			printError(e);
 		} finally {
 			printEndCommand();

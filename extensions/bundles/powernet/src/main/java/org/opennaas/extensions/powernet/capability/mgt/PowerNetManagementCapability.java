@@ -21,7 +21,6 @@ import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.energy.EnergyClass;
 import org.opennaas.extensions.gim.model.energy.EnergyType;
-import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
 import org.opennaas.extensions.gim.model.load.RatedLoad;
 import org.opennaas.extensions.powernet.Activator;
 
@@ -98,57 +97,6 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public void setPowerSupplyEnergy(String supplyId, String energyName, String energyClass, String energyType, double co2perUnit,
-			double greenPercentage) throws ModelElementNotFoundException {
-
-		Energy energy = new Energy(EnergyClass.fromString(energyClass), EnergyType.fromString(energyType), co2perUnit, greenPercentage);
-		setPowerSupplyEnergy(supplyId, energy);
-	}
-
-	@Override
-	public void setPowerSupplyEnergy(String supplyId, Energy energy) throws ModelElementNotFoundException {
-		PowerSupply supply = getPowerSupply(supplyId);
-		supply.setEnergy(energy);
-		// updateAllSources
-		for (PowerSource source : supply.getPowerSources()) {
-			source.setEnergy(energy);
-		}
-	}
-
-	@Override
-	public void setPowerSupplyPrice(String supplyId, double pricePerUnit) throws ModelElementNotFoundException {
-		PowerSupply supply = getPowerSupply(supplyId);
-		supply.setPricePerUnit(pricePerUnit);
-		// updateAllSources
-		for (PowerSource source : supply.getPowerSources()) {
-			source.setPricePerUnit(pricePerUnit);
-		}
-	}
-
-	@Override
-	public void setPowerSupplyRatedLoad(String supplyId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
-			throws ModelElementNotFoundException {
-
-		RatedLoad load = new RatedLoad();
-		load.setVoltage(inputVoltage);
-		load.setCurrent(inputCurrent);
-		load.setPower(inputPower);
-		load.setEnergy(inputEnergy);
-
-		setPowerSupplyRatedLoad(supplyId, load);
-	}
-
-	@Override
-	public void setPowerSupplyRatedLoad(String supplyId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
-		PowerSupply supply = getPowerSupply(supplyId);
-		supply.setRatedLoad(ratedLoad);
-		// updateAllSources
-		for (PowerSource source : supply.getPowerSources()) {
-			source.setRatedLoad(ratedLoad);
-		}
-	}
-
-	@Override
 	public String createPowerDelivery(String id) {
 		PowerDelivery delivery = new PowerDelivery();
 		delivery.setId(id);
@@ -183,46 +131,6 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public void setPowerDeliveryRatedLoad(String deliveryId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy,
-			double outputVoltage, double outputCurrent) throws ModelElementNotFoundException {
-
-		DeliveryRatedLoad load = new DeliveryRatedLoad();
-		load.setVoltage(inputVoltage);
-		load.setCurrent(inputCurrent);
-		load.setPower(inputPower);
-		load.setEnergy(inputEnergy);
-
-		load.setOutputVoltage(outputVoltage);
-		load.setOutputCurrent(outputCurrent);
-
-		setPowerDeliveryRatedLoad(deliveryId, load);
-	}
-
-	@Override
-	public void setPowerDeliveryRatedLoad(String deliveryId, DeliveryRatedLoad load) throws ModelElementNotFoundException {
-		PowerDelivery delivery = getPowerDelivery(deliveryId);
-		delivery.setDeliveryRatedLoad(load);
-		// updateAllSources
-		RatedLoad sourceLoad = new RatedLoad();
-		sourceLoad.setVoltage(load.getOutputVoltage());
-		sourceLoad.setCurrent(load.getOutputCurrent());
-		sourceLoad.setPower(load.getPower());
-		sourceLoad.setEnergy(load.getEnergy());
-		for (PowerSource source : delivery.getPowerSources()) {
-			source.setRatedLoad(sourceLoad);
-		}
-		// updateAllReceptors
-		RatedLoad receptorLoad = new RatedLoad();
-		receptorLoad.setVoltage(load.getVoltage());
-		receptorLoad.setCurrent(load.getCurrent());
-		receptorLoad.setPower(load.getPower());
-		receptorLoad.setEnergy(load.getEnergy());
-		for (PowerReceptor receptor : delivery.getPowerReceptors()) {
-			receptor.setRatedLoad(receptorLoad);
-		}
-	}
-
-	@Override
 	public String createPowerConsumer(String id) {
 		PowerConsumer consumer = new PowerConsumer();
 		consumer.setId(id);
@@ -246,29 +154,6 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	@Override
 	public PowerConsumer getPowerConsumer(String consumerId) throws ModelElementNotFoundException {
 		return GIMController.getPowerConsumer((GIModel) resource.getModel(), consumerId);
-	}
-
-	@Override
-	public void setPowerConsumerRatedLoad(String consumerId, double inputVoltage, double inputCurrent, double inputPower, double inputEnergy)
-			throws ModelElementNotFoundException {
-
-		RatedLoad load = new RatedLoad();
-		load.setVoltage(inputVoltage);
-		load.setCurrent(inputCurrent);
-		load.setPower(inputPower);
-		load.setEnergy(inputEnergy);
-
-		setPowerConsumerRatedLoad(consumerId, load);
-	}
-
-	@Override
-	public void setPowerConsumerRatedLoad(String consumerId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
-		PowerConsumer consumer = getPowerConsumer(consumerId);
-		consumer.setRatedLoad(ratedLoad);
-		// updateAllReceptors
-		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			receptor.setRatedLoad(ratedLoad);
-		}
 	}
 
 	@Override
@@ -480,6 +365,102 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 	@Override
 	public void removePowerConsumerReceptor(String consumerId, String receptorId) throws ModelElementNotFoundException {
 		getPowerConsumer(consumerId).getPowerReceptors().remove(getPowerConsumerReceptor(consumerId, receptorId));
+	}
+
+	@Override
+	public void setPowerSupplySourceEnergy(String supplyId, String sourceId, String energyName, String energyClass, String energyType,
+			double co2perUnit, double greenPercentage) throws ModelElementNotFoundException {
+		setPowerSupplySourceEnergy(supplyId, sourceId, buildEnergy(energyName, energyClass, energyType, co2perUnit, greenPercentage));
+	}
+
+	@Override
+	public void setPowerSupplySourceEnergy(String supplyId, String sourceId, Energy energy) throws ModelElementNotFoundException {
+		getPowerSupplySource(supplyId, sourceId).setEnergy(energy);
+	}
+
+	@Override
+	public void setPowerSupplySourcePrice(String supplyId, String sourceId, double pricePerUnit) throws ModelElementNotFoundException {
+		getPowerSupplySource(supplyId, sourceId).setPricePerUnit(pricePerUnit);
+	}
+
+	@Override
+	public void setPowerSupplySourceRatedLoad(String supplyId, String sourceId, double inputVoltage, double inputCurrent, double inputPower,
+			double inputEnergy) throws ModelElementNotFoundException {
+
+	}
+
+	@Override
+	public void setPowerSupplySourceRatedLoad(String supplyId, String sourceId, RatedLoad ratedLoad) throws ModelElementNotFoundException {
+		getPowerSupplySource(supplyId, sourceId).setRatedLoad(ratedLoad);
+	}
+
+	@Override
+	public void setPowerDeliverySourceRatedLoad(String deliveryId, String sourceId, double voltage, double current, double power, double energy)
+			throws ModelElementNotFoundException {
+		RatedLoad load = new RatedLoad();
+		load.setVoltage(voltage);
+		load.setCurrent(current);
+		load.setPower(power);
+		load.setEnergy(energy);
+
+		setPowerDeliverySourceRatedLoad(deliveryId, sourceId, load);
+	}
+
+	@Override
+	public void setPowerDeliverySourceRatedLoad(String deliveryId, String sourceId, RatedLoad load) throws ModelElementNotFoundException {
+		getPowerDeliverySource(deliveryId, sourceId).setRatedLoad(load);
+	}
+
+	@Override
+	public void setPowerDeliveryReceptorRatedLoad(String deliveryId, String receptorId, RatedLoad load) throws ModelElementNotFoundException {
+		getPowerDeliveryReceptor(deliveryId, receptorId).setRatedLoad(load);
+	}
+
+	@Override
+	public void setPowerDeliverySourceEnergy(String deliveryId, String sourceId, String energyName, String energyClass, String energyType,
+			double co2perUnit, double greenPercentage) throws ModelElementNotFoundException {
+		setPowerDeliverySourceEnergy(deliveryId, sourceId, buildEnergy(energyName, energyClass, energyType, co2perUnit, greenPercentage));
+	}
+
+	@Override
+	public void setPowerDeliverySourceEnergy(String deliveryId, String sourceId, Energy energy) throws ModelElementNotFoundException {
+		getPowerDeliverySource(deliveryId, sourceId).setEnergy(energy);
+	}
+
+	@Override
+	public void setPowerDeliverySourcePrice(String deliveryId, String sourceId, double pricePerUnit) throws ModelElementNotFoundException {
+		getPowerDeliverySource(deliveryId, sourceId).setPricePerUnit(pricePerUnit);
+	}
+
+	@Override
+	public void setPowerConsumerReceptorRatedLoad(String consumerId, String receptorId, RatedLoad load) throws ModelElementNotFoundException {
+		getPowerConsumerReceptor(consumerId, receptorId).setRatedLoad(load);
+	}
+
+	@Override
+	public void setPowerDeliveryReceptorRatedLoad(String deliveryId, String receptorId, double voltage, double current, double power, double energy)
+			throws ModelElementNotFoundException {
+		setPowerDeliveryReceptorRatedLoad(deliveryId, receptorId, buildRatedLoad(voltage, current, power, energy));
+	}
+
+	@Override
+	public void setPowerConsumerReceptorRatedLoad(String consumerId, String receptorId, double voltage, double current, double power, double energy)
+			throws ModelElementNotFoundException {
+		setPowerConsumerReceptorRatedLoad(consumerId, receptorId, buildRatedLoad(voltage, current, power, energy));
+	}
+
+	private RatedLoad buildRatedLoad(double voltage, double current, double power, double energy) {
+		RatedLoad load = new RatedLoad();
+		load.setVoltage(voltage);
+		load.setCurrent(current);
+		load.setPower(power);
+		load.setEnergy(energy);
+		return load;
+	}
+
+	private Energy buildEnergy(String energyName, String energyClass, String energyType,
+			double co2perUnit, double greenPercentage) {
+		return new Energy(EnergyClass.fromString(energyClass), EnergyType.fromString(energyType), co2perUnit, greenPercentage);
 	}
 
 }
