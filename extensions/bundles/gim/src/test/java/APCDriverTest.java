@@ -209,7 +209,7 @@ public class APCDriverTest {
 
 		pduController = new PDUController();
 		pduController.setDeliveryController(deliveryController);
-		pduController.setPdu(pdu);
+		pduController.setDeliveryId(pdu.getId());
 		pduController.setDriver(apcDriver);
 
 		consumerController = new BasicConsumerController();

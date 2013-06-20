@@ -59,7 +59,10 @@ public class APCPDUPowerControllerDriver extends PDUPowerControllerDriver {
 		PDUPort port;
 		for (int i = 0; i < outlets.size(); i++) {
 			port = new PDUPort();
+			port.setName(outlets.get(i).toString());
+			// FIXME port.getId() SHOULD MATCH THE ONES IN powernet model!!!
 			port.setId(outlets.get(i).toString());
+			port.setOutletIndex(outlets.get(i));
 			port.setPowerMonitorLog(new PowerMonitorLog(1, 10));
 			ports.add(port);
 		}

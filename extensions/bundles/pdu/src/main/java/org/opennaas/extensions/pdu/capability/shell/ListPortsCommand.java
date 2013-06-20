@@ -6,7 +6,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.pdu.model.PDUModel;
 
 @Command(scope = "pdu", name = "listPorts", description = "Return ports known to this pdu")
@@ -20,7 +20,7 @@ public class ListPortsCommand extends GenericKarafCommand {
 		printInitCommand("listPorts of pdu: " + resourceId);
 
 		IResource resource = getResourceFromFriendlyName(resourceId);
-		List<PDUPort> ports = ((PDUModel) resource.getModel()).getPdu().getPduPorts();
+		List<PowerSource> ports = ((PDUModel) resource.getModel()).getPdu().getPowerSources();
 
 		printPorts(ports);
 
@@ -28,8 +28,8 @@ public class ListPortsCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private void printPorts(List<PDUPort> ports) {
-		for (PDUPort port : ports) {
+	private void printPorts(List<PowerSource> ports) {
+		for (PowerSource port : ports) {
 			printSymbol("Port id:" + port.getId());
 		}
 	}

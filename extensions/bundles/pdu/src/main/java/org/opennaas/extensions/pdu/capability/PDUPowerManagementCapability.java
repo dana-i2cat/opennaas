@@ -6,14 +6,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.gim.controller.GIMController;
 import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerManagementCapability;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 import org.opennaas.extensions.pdu.Activator;
 import org.opennaas.extensions.pdu.model.PDUModel;
 
-public class PDUPowerManagementCapability extends AbstractNotQueueingCapability implements IPDUPowerManagementIDsCapability {
+public class PDUPowerManagementCapability extends AbstractPDUCapability implements IPDUPowerManagementIDsCapability {
 
 	private static Log						log				= LogFactory.getLog(PDUPowerManagementCapability.class);
 
@@ -60,7 +59,7 @@ public class PDUPowerManagementCapability extends AbstractNotQueueingCapability 
 	 * @throws Exception
 	 */
 	public boolean getPowerStatus(String portId) throws Exception {
-		return getDriver().getPowerStatus(GIMController.getPortById(getPdu(), portId));
+		return getDriver().getPowerStatus(portId);
 	}
 
 	/**
@@ -72,7 +71,7 @@ public class PDUPowerManagementCapability extends AbstractNotQueueingCapability 
 	public boolean powerOn(String portId) throws Exception {
 		if (getPowerStatus(portId))
 			throw new Exception("Already powered on");
-		return getDriver().powerOn(GIMController.getPortById(getPdu(), portId));
+		return getDriver().powerOn(portId);
 	}
 
 	/**
@@ -84,7 +83,7 @@ public class PDUPowerManagementCapability extends AbstractNotQueueingCapability 
 	public boolean powerOff(String portId) throws Exception {
 		if (!getPowerStatus(portId))
 			throw new Exception("Already powered off");
-		return getDriver().powerOff(GIMController.getPortById(getPdu(), portId));
+		return getDriver().powerOff(portId);
 	}
 
 	private IPDUPowerManagementCapability getDriver() throws Exception {
@@ -99,11 +98,11 @@ public class PDUPowerManagementCapability extends AbstractNotQueueingCapability 
 	private IPDUPowerManagementCapability instantiateDriver() throws Exception {
 
 		String ip = getCapabilityDescriptor().getPropertyValue("pdu.driver.ipaddress");
-		PDU pdu = getPdu();
+		String deliveryId = getCapabilityDescriptor().getPropertyValue("powernet.delivery.id");
 
 		// FIXME PDUDriverInstantiator should be unknown for the capability
 		// capability should take the driver from an OSGI service.
-		return PDUDriverInstantiator.create(resourceId, pdu, ip);
+		return PDUDriverInstantiator.create(resourceId, getPowernetId(), deliveryId, ip);
 	}
 
 	private PDU getPdu() {
@@ -114,10 +113,7 @@ public class PDUPowerManagementCapability extends AbstractNotQueueingCapability 
 	public void resyncModel() throws Exception {
 		List<PDUPort> pduPorts = getDriver().listPorts();
 		PDU pdu = getPdu();
-		for (PDUPort port : pduPorts) {
-			port.setPdu(pdu);
-		}
-		pdu.setPduPorts(pduPorts);
+		pdu.setPowerSources(pduPorts);
 	}
 
 }

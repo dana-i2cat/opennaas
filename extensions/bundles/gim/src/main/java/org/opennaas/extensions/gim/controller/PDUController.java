@@ -7,8 +7,8 @@ import java.util.List;
 import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerManagementCapability;
 import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerMonitoringCapability;
 import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyCapability;
-import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
@@ -16,8 +16,8 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMonitoringCapability, IPowerSupplyCapability {
 
 	private PDUPowerControllerDriver	driver;
-	private PDU							pdu;
 	private IDeliveryController			deliveryController;
+	private String						deliveryId;
 
 	public PDUPowerControllerDriver getDriver() {
 		return driver;
@@ -25,14 +25,6 @@ public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMo
 
 	public void setDriver(PDUPowerControllerDriver driver) {
 		this.driver = driver;
-	}
-
-	public PDU getPdu() {
-		return pdu;
-	}
-
-	public void setPdu(PDU pdu) {
-		this.pdu = pdu;
 	}
 
 	/**
@@ -50,11 +42,26 @@ public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMo
 		this.deliveryController = deliveryController;
 	}
 
+	/**
+	 * @return the deliveryId
+	 */
+	public String getDeliveryId() {
+		return deliveryId;
+	}
+
+	/**
+	 * @param deliveryId
+	 *            the deliveryId to set
+	 */
+	public void setDeliveryId(String deliveryId) {
+		this.deliveryId = deliveryId;
+	}
+
 	@Override
 	public MeasuredLoad getCurrentPowerMetrics(String portId) throws Exception {
 		MeasuredLoad load = getDriver().getCurrentPowerMetrics(portId);
 		// update model
-		deliveryController.getPowerSource(pdu.getId(), portId).getPowerMonitorLog().add(load);
+		getPort(portId).getPowerMonitorLog().add(load);
 		return load;
 	}
 
@@ -67,14 +74,14 @@ public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMo
 		}
 
 		// TODO return a log filtered copy including only desired measures.
-		return deliveryController.getPowerSource(pdu.getId(), portId).getPowerMonitorLog();
+		return getPort(portId).getPowerMonitorLog();
 	}
 
 	@Override
 	public boolean getPowerStatus(String portId) throws Exception {
 		boolean status = getDriver().getPowerStatus(portId);
 		// update model
-		deliveryController.getPowerSource(pdu.getId(), portId).setPowerState(status);
+		getPort(portId).setPowerState(status);
 		return status;
 	}
 
@@ -83,7 +90,7 @@ public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMo
 		boolean isOk = getDriver().powerOn(portId);
 		if (isOk) {
 			// update model
-			deliveryController.getPowerSource(pdu.getId(), portId).setPowerState(true);
+			getPort(portId).setPowerState(true);
 		}
 		return isOk;
 	}
@@ -93,24 +100,28 @@ public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMo
 		boolean isOk = getDriver().powerOff(portId);
 		if (isOk) {
 			// update model
-			deliveryController.getPowerSource(pdu.getId(), portId).setPowerState(false);
+			getPort(portId).setPowerState(false);
 		}
 		return isOk;
 	}
 
 	@Override
 	public Energy getAggregatedEnergy() throws Exception {
-		return deliveryController.calculateSourceAggregatedEnergy(pdu.getId(), null);
+		return deliveryController.calculateSourceAggregatedEnergy(deliveryId, null);
 	}
 
 	@Override
 	public double getAggregatedPricePerEnergyUnit() throws Exception {
-		return deliveryController.calculateSourceAggregatedEnergyPrice(pdu.getId(), null);
+		return deliveryController.calculateSourceAggregatedEnergyPrice(deliveryId, null);
 	}
 
 	@Override
 	public List<PDUPort> listPorts() throws Exception {
 		return getDriver().listPorts();
+	}
+
+	private PowerSource getPort(String portId) throws Exception {
+		return deliveryController.getPowerSource(deliveryId, portId);
 	}
 
 }

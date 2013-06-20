@@ -5,12 +5,10 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyCapability;
-import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.pdu.Activator;
-import org.opennaas.extensions.pdu.model.PDUModel;
 
-public class PDUPowerSupplyCapability extends AbstractNotQueueingCapability implements IPDUPowerSupplyCapability {
+public class PDUPowerSupplyCapability extends AbstractPDUCapability implements IPDUPowerSupplyCapability {
 
 	private static Log				log				= LogFactory.getLog(PDUPowerSupplyCapability.class);
 
@@ -70,17 +68,16 @@ public class PDUPowerSupplyCapability extends AbstractNotQueueingCapability impl
 	private IPowerSupplyCapability instantiateDriver() throws Exception {
 
 		String ip = getCapabilityDescriptor().getPropertyValue("pdu.driver.ipaddress");
-		PDU pdu = ((PDUModel) resource.getModel()).getPdu();
+		String deliveryId = getCapabilityDescriptor().getPropertyValue("powernet.delivery.id");
 
 		// FIXME PDUDriverInstantiator should be unknown for the capability
 		// capability should take the driver from an OSGI service.
-		return PDUDriverInstantiator.create(resourceId, pdu, ip);
+		return PDUDriverInstantiator.create(resourceId, getPowernetId(), deliveryId, ip);
 	}
 
 	@Override
 	public void resyncModel() throws Exception {
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 }
