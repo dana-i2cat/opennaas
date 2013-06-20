@@ -75,6 +75,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 		PowerSupply supply = new PowerSupply();
 		supply.setId(id);
 		supply.setPowerDeliveries(new ArrayList<PowerDelivery>());
+		supply.setPowerSources(new ArrayList<PowerSource>());
 		((GIModel) resource.getModel()).getSupplies().add(supply);
 		return supply.getId();
 	}
@@ -102,6 +103,8 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 		delivery.setId(id);
 		delivery.setPowerConsumers(new ArrayList<PowerConsumer>());
 		delivery.setPowerSupplies(new ArrayList<PowerSupply>());
+		delivery.setPowerReceptors(new ArrayList<PowerReceptor>());
+		delivery.setPowerSources(new ArrayList<PowerSource>());
 		((GIModel) resource.getModel()).getDeliveries().add(delivery);
 		return delivery.getId();
 	}
@@ -135,6 +138,7 @@ public class PowerNetManagementCapability extends AbstractCapability implements 
 		PowerConsumer consumer = new PowerConsumer();
 		consumer.setId(id);
 		consumer.setPowerDeliveries(new ArrayList<PowerDelivery>());
+		consumer.setPowerReceptors(new ArrayList<PowerReceptor>());
 		((GIModel) resource.getModel()).getConsumers().add(consumer);
 		return consumer.getId();
 	}
