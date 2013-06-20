@@ -51,6 +51,7 @@
 							org.opennaas.extensions.gim.model.core;version="${project.version}",
 							org.opennaas.extensions.gim.model.core.entities;version="${project.version}",
 							org.opennaas.extensions.gim.model.core.entities.pdu;version="${project.version}",
+							org.opennaas.extensions.gim.model.core.entities.sockets;version="${project.version}",
 							org.opennaas.extensions.gim.model.energy;version="${project.version}",
 							org.opennaas.extensions.gim.model.load;version="${project.version}",
 							org.opennaas.extensions.gim.model.log;version="${project.version}"
