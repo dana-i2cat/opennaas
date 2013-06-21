@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 public class Table {
 
     private List<Route> route = new ArrayList<Route>();
+    private List<RouteSubnet> routeSubnet = new ArrayList<RouteSubnet>();
     private static final long serialVersionUID = -4002472167559948067L;
     Log log = LogFactory.getLog(Table.class);
     private StringBuilder register;
@@ -23,10 +24,28 @@ public class Table {
     public void setRoute(List<Route> route) {
         this.route = route;
     }
+
+    public List<RouteSubnet> getRouteSubnet() {
+        return routeSubnet;
+    }
+
+    public void setRouteSubnet(List<RouteSubnet> routeSubnet) {
+        this.routeSubnet = routeSubnet;
+    }
+    
+    
     
     public String addRoute(Route route){
         if(!RouteExists(route)){
             this.route.add(route);
+            return "Added";
+        }
+        return "Already exist";
+    }
+    
+    public String addRouteSub(RouteSubnet route){
+        if(!RouteExists(route)){
+            this.routeSubnet.add(route);
             return "Added";
         }
         return "Already exist";
@@ -43,9 +62,31 @@ public class Table {
         return false;
     }
     
+    public Boolean RouteExists(RouteSubnet route){
+        for (RouteSubnet r : this.routeSubnet){
+            if(r.equals(route)){
+                log.info("The route already exist!");
+                return true;
+            }
+        }
+        //log.info("Adding route...");
+        return false;
+    }
+    
     public String getOutputPort(Route route){
         log.error("Return output port");
         for (Route r : this.route){
+            if(r.equals(route)){
+                log.error("OutputPort = "+ r.getSwitchInfo().getOutputPort());
+                return r.getSwitchInfo().getOutputPort();
+            }
+        }
+        return "null";
+    }
+    
+    public String getOutputPort(RouteSubnet route){
+        log.error("Return output port");
+        for (RouteSubnet r : this.routeSubnet){
             if(r.equals(route)){
                 log.error("OutputPort = "+ r.getSwitchInfo().getOutputPort());
                 return r.getSwitchInfo().getOutputPort();
@@ -93,8 +134,20 @@ public class Table {
 
     public Switch getDestinationSwitch(String srcIp, String destIp, String originSwitch){
         for (Route r : this.route){
-            if(!originSwitch.equals(r.getSwitchInfo().getMacAddress())){
+            //Using subnet, this lines is comment. The route table contain less number of entries
+//            if(!originSwitch.equals(r.getSwitchInfo().getMacAddress())){
                 if(r.getSourceAddress().equals(srcIp) && r.getDestinationAddress().equals(destIp)){
+                    return r.getSwitchInfo();
+                }
+//            }
+        }
+        return null;
+    }
+    
+    public Switch getDestinationSwitchfromSub(String srcIp, String destIp, String originSwitch){
+        for (RouteSubnet r : this.routeSubnet){
+            if(!originSwitch.equals(r.getSwitchInfo().getMacAddress())){
+                if(r.getSourceSubnet().getIpAddressString().equals(srcIp) && r.getDestSubnet().getIpAddressString().equals(destIp)){
                     return r.getSwitchInfo();
                 }
             }

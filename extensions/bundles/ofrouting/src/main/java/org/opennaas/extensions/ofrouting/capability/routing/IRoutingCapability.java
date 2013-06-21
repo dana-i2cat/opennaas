@@ -35,7 +35,21 @@ public interface IRoutingCapability extends ICapability {
             @PathParam("inputPort") String inputPort
             //@PathParam("switch") Switch sw
                 ) throws CapabilityException;
-        
+        /**
+	 * Get Path
+	 * 
+	 * @throws CapabilityException
+	 */
+	@Path("/getSubPath/{ipSource}/{ipDest}/{switchip}/{inputPort}")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getSubPath(@PathParam("ipSource") String ipSource,
+            @PathParam("ipDest") String ipDest,
+            @PathParam("switchip") String switchip,
+            @PathParam("inputPort") String inputPort
+            //@PathParam("switch") Switch sw
+                ) throws CapabilityException;
+
         /**
 	 * Get Table of routes
 	 * 
@@ -62,6 +76,21 @@ public interface IRoutingCapability extends ICapability {
         @FormParam("inputPort") String inputPort,
         @FormParam("inputPort") String outputPort) throws CapabilityException;
 
+                /**
+	 * Insert new route
+	 * 
+         * return ok or fail
+	 * @throws CapabilityException
+	 */
+	@Path("/putSubRoute")
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
+	public String putSubRoute(@FormParam("ipSource") String ipSource,
+        @FormParam("ipDest") String ipDest,
+        @FormParam("switchMac") String switchMac,
+        @FormParam("inputPort") String inputPort,
+        @FormParam("inputPort") String outputPort) throws CapabilityException;
+        
 /**
 * Update route
 *
