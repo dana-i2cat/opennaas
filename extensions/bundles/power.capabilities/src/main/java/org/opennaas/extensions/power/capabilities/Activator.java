@@ -1,4 +1,4 @@
-package org.opennaas.extensions.pdu;
+package org.opennaas.extensions.power.capabilities;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,10 +1,8 @@
 package org.opennaas.extensions.power.capabilities;
 
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerManagementCapability;
-import org.opennaas.extensions.gim.controller.capabilities.IPowerManagementCapability;
-import org.opennaas.extensions.pdu.capability.PDUDriverInstantiator;
-
+import org.opennaas.extensions.gim.controller.capabilities.IPowerManagementController;
+import org.opennaas.extensions.power.capabilities.driver.ConsumerDriverInstantiator;
 
 public class PowerManagementCapability extends AbstractPowerConsumerCapability implements IPowerManagementCapability {
 
@@ -12,7 +10,7 @@ public class PowerManagementCapability extends AbstractPowerConsumerCapability i
 	
 	private String							resourceId		= "";
 	
-	private IPowerManagementCapability driver;
+	private IPowerManagementController driver;
 	
 	public PowerManagementCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -50,7 +48,7 @@ public class PowerManagementCapability extends AbstractPowerConsumerCapability i
 	
 	
 	
-	private IPowerManagementCapability getDriver() throws Exception {
+	private IPowerManagementController getDriver() throws Exception {
 		// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
 		if (driver == null)
 			driver = instantiateDriver();
@@ -59,7 +57,7 @@ public class PowerManagementCapability extends AbstractPowerConsumerCapability i
 	}
 
 	// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
-	private IPowerManagementCapability instantiateDriver() throws Exception {
+	private IPowerManagementController instantiateDriver() throws Exception {
 
 		// FIXME PDUDriverInstantiator should be unknown for the capability
 		// capability should take the driver from an OSGI service.

@@ -3,9 +3,10 @@ package org.opennaas.extensions.power.capabilities;
 import java.util.Date;
 
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.gim.controller.capabilities.IPowerMonitoringCapability;
+import org.opennaas.extensions.gim.controller.capabilities.IPowerMonitoringController;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
+import org.opennaas.extensions.power.capabilities.driver.ConsumerDriverInstantiator;
 
 public class PowerMonitoringCapability  extends AbstractPowerConsumerCapability implements IPowerMonitoringCapability {
 
@@ -13,7 +14,7 @@ public class PowerMonitoringCapability  extends AbstractPowerConsumerCapability 
 	
 	private String							resourceId		= "";
 	
-	private IPowerMonitoringCapability driver;
+	private IPowerMonitoringController driver;
 
 	
 	public PowerMonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
@@ -37,7 +38,7 @@ public class PowerMonitoringCapability  extends AbstractPowerConsumerCapability 
 		return getDriver().getPowerMetricsByTimeRange(from, to);
 	}
 	
-	private IPowerMonitoringCapability getDriver() throws Exception {
+	private IPowerMonitoringController getDriver() throws Exception {
 		// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
 		if (driver == null)
 			driver = instantiateDriver();
@@ -46,11 +47,11 @@ public class PowerMonitoringCapability  extends AbstractPowerConsumerCapability 
 	}
 
 	// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
-	private IPowerMonitoringCapability instantiateDriver() throws Exception {
+	private IPowerMonitoringController instantiateDriver() throws Exception {
 
 		// FIXME PDUDriverInstantiator should be unknown for the capability
 		// capability should take the driver from an OSGI service.
-		return (IPowerMonitoringCapability) ConsumerDriverInstantiator.create(resourceId, getPowernetId(), consumerId, descriptor);
+		return (IPowerMonitoringController) ConsumerDriverInstantiator.create(resourceId, getPowernetId(), consumerId, descriptor);
 	}
 
 	@Override

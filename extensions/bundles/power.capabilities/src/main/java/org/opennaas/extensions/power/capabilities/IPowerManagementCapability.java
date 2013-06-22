@@ -1,12 +1,9 @@
-package org.opennaas.extensions.gim.controller.capabilities;
+package org.opennaas.extensions.power.capabilities;
 
-/**
- * 
- * @author Isart Canyameres Gimenez (i2cat Foundation)
- * 
- */
-public interface IPowerManagementCapability {
+import org.opennaas.core.resources.capability.ICapability;
 
+public interface IPowerManagementCapability extends ICapability {
+	
 	/**
 	 * 
 	 * @return true if power is on, false otherwise.

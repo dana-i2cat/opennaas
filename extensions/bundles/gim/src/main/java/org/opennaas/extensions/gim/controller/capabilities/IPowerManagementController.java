@@ -1,14 +1,18 @@
 package org.opennaas.extensions.gim.controller.capabilities;
 
-
-public interface IPDUPowerManagementCapability extends IPDUInventaryCapability {
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat Foundation)
+ * 
+ */
+public interface IPowerManagementController {
 
 	/**
 	 * 
 	 * @return true if power is on, false otherwise.
 	 * @throws Exception
 	 */
-	public boolean getPowerStatus(String portId) throws Exception;
+	public boolean getPowerStatus() throws Exception;
 
 	/**
 	 * Turn on power.
@@ -16,7 +20,7 @@ public interface IPDUPowerManagementCapability extends IPDUInventaryCapability {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean powerOn(String portId) throws Exception;
+	public boolean powerOn() throws Exception;
 
 	/**
 	 * Turn off power.
@@ -24,6 +28,6 @@ public interface IPDUPowerManagementCapability extends IPDUInventaryCapability {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean powerOff(String portId) throws Exception;
+	public boolean powerOff() throws Exception;
 
 }

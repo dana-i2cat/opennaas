@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyCapability;
+import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyController;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.pdu.Activator;
 
@@ -15,7 +15,7 @@ public class PDUPowerSupplyCapability extends AbstractPDUCapability implements I
 	public static String			CAPABILITY_TYPE	= "pdu_pw_sup";
 	private String					resourceId		= "";
 
-	private IPowerSupplyCapability	driver;
+	private IPowerSupplyController	driver;
 
 	public PDUPowerSupplyCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -46,7 +46,7 @@ public class PDUPowerSupplyCapability extends AbstractPDUCapability implements I
 		return CAPABILITY_TYPE;
 	}
 
-	// IPowerSupplyCapability methods
+	// IPowerSupplyController methods
 
 	public Energy getAggregatedEnergy() throws Exception {
 		return getDriver().getAggregatedEnergy();
@@ -56,7 +56,7 @@ public class PDUPowerSupplyCapability extends AbstractPDUCapability implements I
 		return getDriver().getAggregatedPricePerEnergyUnit();
 	}
 
-	private IPowerSupplyCapability getDriver() throws Exception {
+	private IPowerSupplyController getDriver() throws Exception {
 		// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
 		if (driver == null)
 			driver = instantiateDriver();
@@ -65,7 +65,7 @@ public class PDUPowerSupplyCapability extends AbstractPDUCapability implements I
 	}
 
 	// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
-	private IPowerSupplyCapability instantiateDriver() throws Exception {
+	private IPowerSupplyController instantiateDriver() throws Exception {
 
 		String ip = getCapabilityDescriptor().getPropertyValue("pdu.driver.ipaddress");
 		String deliveryId = getCapabilityDescriptor().getPropertyValue("powernet.delivery.id");

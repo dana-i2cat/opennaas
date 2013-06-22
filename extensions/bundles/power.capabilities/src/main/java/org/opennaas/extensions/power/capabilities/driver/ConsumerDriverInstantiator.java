@@ -1,4 +1,4 @@
-package org.opennaas.extensions.power.capabilities;
+package org.opennaas.extensions.power.capabilities.driver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,15 +7,12 @@ import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.gim.controller.AbstractPDUPowerController;
 import org.opennaas.extensions.gim.controller.BasicConsumerController;
 import org.opennaas.extensions.gim.controller.GIMController;
 import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.controller.RouterWithPDUPowerController;
-import org.opennaas.extensions.gim.controller.capabilities.IPowerManagementCapability;
 import org.opennaas.extensions.gim.model.core.entities.GIModel;
 import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
-import org.opennaas.extensions.gim.model.core.entities.sockets.PowerReceptor;
 import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.pdu.Activator;
 import org.opennaas.extensions.pdu.capability.PDUResourcePowerController;

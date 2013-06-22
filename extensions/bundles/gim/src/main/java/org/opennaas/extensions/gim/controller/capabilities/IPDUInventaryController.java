@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 
-public interface IPDUInventaryCapability {
+public interface IPDUInventaryController {
 
 	public List<PDUPort> listPorts() throws Exception;
 
