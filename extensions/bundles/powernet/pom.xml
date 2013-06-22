@@ -48,7 +48,8 @@
 						<Bundle-Activator>org.opennaas.extensions.powernet.Activator</Bundle-Activator>
 						<Import-Package>org.slf4j,*</Import-Package>
 						<Export-Package>
-							org.opennaas.extensions.powernet.capability.mgt;version="${project.version}"
+							org.opennaas.extensions.powernet.capability.mgt;version="${project.version}",
+							org.opennaas.extensions.powernet.model;version="${project.version}"
 						</Export-Package>
 						</instructions>
 				</configuration>

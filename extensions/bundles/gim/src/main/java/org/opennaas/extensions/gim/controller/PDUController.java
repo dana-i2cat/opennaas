@@ -13,7 +13,7 @@ import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMonitoringCapability, IPowerSupplyCapability {
+public class PDUController extends AbstractPDUPowerController {
 
 	private PDUPowerControllerDriver	driver;
 	private IDeliveryController			deliveryController;

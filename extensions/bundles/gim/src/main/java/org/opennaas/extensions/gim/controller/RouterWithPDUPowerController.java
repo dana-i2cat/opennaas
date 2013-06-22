@@ -12,7 +12,7 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 
 	private IConsumerController	consumerController;
 	private String				consumerId;
-	private PDUController		pduController;
+	private AbstractPDUPowerController		pduController;
 
 	/**
 	 * @return the consumerController
@@ -47,7 +47,7 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 	/**
 	 * @return the pduController
 	 */
-	public PDUController getPduController() {
+	public AbstractPDUPowerController getPduController() {
 		return pduController;
 	}
 
@@ -55,7 +55,7 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 	 * @param pduController
 	 *            the pduController to set
 	 */
-	public void setPduController(PDUController pduController) {
+	public void setPduController(AbstractPDUPowerController pduController) {
 		this.pduController = pduController;
 	}
 

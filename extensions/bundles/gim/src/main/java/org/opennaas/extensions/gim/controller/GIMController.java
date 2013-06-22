@@ -1,5 +1,6 @@
 package org.opennaas.extensions.gim.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.gim.model.core.entities.GIModel;
@@ -10,6 +11,7 @@ import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 import org.opennaas.extensions.gim.model.core.entities.sockets.PowerReceptor;
 import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSocket;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
@@ -85,6 +87,17 @@ public class GIMController {
 			throw new ModelElementNotFoundException("No entries found in MonitoringLog " + log);
 
 		return log.getMeasuredLoads().get(log.getMeasuredLoads().size() - 1);
+	}
+	
+	public static List<PowerSource> getConsumerAttachedSources(PowerConsumer consumer) {
+		List<PowerSource> sources = new ArrayList<PowerSource>();
+		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
+			PowerSource source = receptor.getAttachedTo();
+			if (source != null) {
+				sources.add(source);
+			}
+		}
+		return sources;
 	}
 
 }
