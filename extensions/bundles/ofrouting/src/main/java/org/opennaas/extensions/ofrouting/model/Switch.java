@@ -15,13 +15,13 @@ public class Switch {
     private String outputPort;
     private String macAddress;
 
-    public Switch(String port,String inputPort, String outputPort, String macAddress) {
+    public Switch(String port, String inputPort, String outputPort, String macAddress) {
         listPorts.add(port);
         this.inputPort = inputPort;
         this.outputPort = outputPort;
         this.macAddress = macAddress;
     }
-    
+
     public Switch(String inputPort, String macAddress) {
         this.inputPort = inputPort;
         this.macAddress = macAddress;
@@ -84,7 +84,6 @@ public class Switch {
         }
         return true;
     }
-
 
     @Override
     public int hashCode() {

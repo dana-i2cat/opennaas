@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.opennaas.extensions.ofrouting.model;
 
 import java.net.InetAddress;
@@ -11,12 +7,12 @@ import java.net.InetAddress;
  * addresses are represented as all ones subnets. Zero subnets are also
  * allowed.
  */
-public class Subnet
-{
+public class Subnet {
+
     private final InetAddress ipAddress;
     private final int mask;
 
-    public Subnet(InetAddress ipAddress, int mask){
+    public Subnet(InetAddress ipAddress, int mask) {
         this.ipAddress = ipAddress;
         this.mask = mask;
     }
@@ -24,7 +20,7 @@ public class Subnet
     public InetAddress getIpAddress() {
         return ipAddress;
     }
-    
+
     public String getIpAddressString() {
         return ipAddress.getHostAddress();
     }
@@ -45,28 +41,24 @@ public class Subnet
      * @param pattern pattern to create a Subnet of
      * @return Subnet based on the given pattern
      */
-    public static Subnet forPattern(String pattern)
-    {
+    public static Subnet forPattern(String pattern) {
         final InetAddress ipAddress;
         final int mask;
         if (pattern.matches("(\\d+\\.)*\\*(\\.\\*)*")) // Asterisk subnet notation
         {
             String[] parts = pattern.split("\\.");
             int asteriskCount = 0;
-            for (int i = parts.length - 1; i >= 0 && parts[i].equals("*"); --i)
-            {
+            for (int i = parts.length - 1; i >= 0 && parts[i].equals("*"); --i) {
                 ++asteriskCount;
             }
             ipAddress = InetAddresses.forString(pattern.replace("*", "0"));
             mask = 32 - 8 * asteriskCount;
-        }
-        else if (pattern.contains("/")) // CIDR subnet notation
+        } else if (pattern.contains("/")) // CIDR subnet notation
         {
             final String[] addressComponents = pattern.split("/", 2);
             ipAddress = InetAddresses.forString(addressComponents[0]);
             mask = Integer.parseInt(addressComponents[1]);
-        }
-        else // Plain IP address (Treated as all ones subnet for matching purposes)
+        } else // Plain IP address (Treated as all ones subnet for matching purposes)
         {
             ipAddress = InetAddresses.forString(pattern);
             mask = 8 * ipAddress.getAddress().length;
@@ -80,8 +72,7 @@ public class Subnet
      * @param ipAddress ipAddress to create a subnet of
      * @return all ones subnet based on the given ip address
      */
-    public static Subnet forAddress(InetAddress ipAddress)
-    {
+    public static Subnet forAddress(InetAddress ipAddress) {
         return new Subnet(ipAddress, ipAddress.getAddress().length * 8);
     }
 
@@ -91,15 +82,11 @@ public class Subnet
      * @param pattern pattern to validate
      * @return true if the given pattern is a valid subnet pattern
      */
-    public static boolean isValidPattern(String pattern)
-    {
-        try
-        {
+    public static boolean isValidPattern(String pattern) {
+        try {
             forPattern(pattern);
             return true;
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
@@ -109,8 +96,7 @@ public class Subnet
      *
      * @return network address of this subnet
      */
-    public byte[] getAddress()
-    {
+    public byte[] getAddress() {
         return ipAddress.getAddress();
     }
 
@@ -119,28 +105,33 @@ public class Subnet
      *
      * @return network mask of this subnet
      */
-    public int getMask()
-    {
+    public int getMask() {
         return mask;
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Subnet subnet = (Subnet) o;
 
-        if (mask != subnet.mask) return false;
-        if (!ipAddress.equals(subnet.ipAddress)) return false;
+        if (mask != subnet.mask) {
+            return false;
+        }
+        if (!ipAddress.equals(subnet.ipAddress)) {
+            return false;
+        }
 
         return true;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = ipAddress.hashCode();
         result = 31 * result + mask;
         return result;

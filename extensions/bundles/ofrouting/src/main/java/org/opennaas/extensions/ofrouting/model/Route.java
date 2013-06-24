@@ -1,5 +1,7 @@
 package org.opennaas.extensions.ofrouting.model;
 
+import java.net.InetAddress;
+
 /**
  *
  * @author josep
@@ -7,40 +9,40 @@ package org.opennaas.extensions.ofrouting.model;
 public class Route {
 
     private int id;
-    private String sourceAddress;
-    private String destinationAddress;
+    private InetAddress sourceAddress;
+    private InetAddress destinationAddress;
     private Switch switchInfo;
     private Long timeToLive;
 
     public Route() {
     }
 
-    public Route(int id, String sourceIp, String destIp, Switch SwitchInfo) {
+    public Route(int id, InetAddress sourceIp, InetAddress destIp, Switch SwitchInfo) {
         this.id = id++;
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
         this.switchInfo = SwitchInfo;
     }
-    
-    public Route(String sourceIp, String destIp, Switch SwitchInfo) {
+
+    public Route(InetAddress sourceIp, InetAddress destIp, Switch SwitchInfo) {
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
         this.switchInfo = SwitchInfo;
     }
 
-    public String getDestinationAddress() {
+    public InetAddress getDestinationAddress() {
         return destinationAddress;
     }
 
-    public void setDestinationAddress(String destinationAddress) {
+    public void setDestinationAddress(InetAddress destinationAddress) {
         this.destinationAddress = destinationAddress;
     }
 
-    public String getSourceAddress() {
+    public InetAddress getSourceAddress() {
         return sourceAddress;
     }
 
-    public void setSourceAddress(String sourceAddress) {
+    public void setSourceAddress(InetAddress sourceAddress) {
         this.sourceAddress = sourceAddress;
     }
 
@@ -59,8 +61,6 @@ public class Route {
     public void setTimeToLive(Long timeToLive) {
         this.timeToLive = timeToLive;
     }
-    
-    
 
     @Override
     public boolean equals(Object obj) {
@@ -99,5 +99,4 @@ public class Route {
     public void setId(int id) {
         this.id = id;
     }
-    
 }

@@ -1,6 +1,4 @@
 package org.opennaas.extensions.ofrouting.model;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -13,7 +11,7 @@ public class RouteSubnet {
     private Subnet destSubnet;
     private Switch switchInfo;
     private Long timeToLive;
-    
+
     public RouteSubnet() {
     }
 
@@ -23,7 +21,7 @@ public class RouteSubnet {
         this.destSubnet = destSubnet;
         this.switchInfo = SwitchInfo;
     }
-    
+
     public RouteSubnet(Subnet sourceSubnet, Subnet destSubnet, Switch SwitchInfo) {
         this.sourceSubnet = sourceSubnet;
         this.destSubnet = destSubnet;
@@ -61,7 +59,7 @@ public class RouteSubnet {
     public void setSourceSubnet(Subnet sourceSubnet) {
         this.sourceSubnet = sourceSubnet;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -79,17 +77,17 @@ public class RouteSubnet {
             return false;
         }
         final RouteSubnet other = (RouteSubnet) obj;
-        
+
         if (this.sourceSubnet != other.sourceSubnet && (this.sourceSubnet == null || !this.sourceSubnet.equals(other.sourceSubnet))) {
             return false;
         }
         if (this.destSubnet != other.destSubnet && (this.destSubnet == null || !this.destSubnet.equals(other.destSubnet))) {
             return false;
         }
-/*        if (this.switchInfo != other.switchInfo && (this.switchInfo == null || !this.switchInfo.equals(other.switchInfo))) {
-            return false;
+        /*        if (this.switchInfo != other.switchInfo && (this.switchInfo == null || !this.switchInfo.equals(other.switchInfo))) {
+        return false;
         }
-*/        return true;
+         */ return true;
     }
 
     @Override
@@ -100,6 +98,4 @@ public class RouteSubnet {
         hash = 11 * hash + (this.switchInfo != null ? this.switchInfo.hashCode() : 0);
         return hash;
     }
-    
-    
 }
