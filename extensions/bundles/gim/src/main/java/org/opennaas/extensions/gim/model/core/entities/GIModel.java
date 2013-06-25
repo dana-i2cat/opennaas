@@ -2,17 +2,13 @@ package org.opennaas.extensions.gim.model.core.entities;
 
 import java.util.List;
 
-import org.opennaas.extensions.gim.model.core.IPowerConsumer;
-import org.opennaas.extensions.gim.model.core.IPowerDelivery;
-import org.opennaas.extensions.gim.model.core.IPowerSupply;
-
 public class GIModel {
 
-	private String					id;
+	private String				id;
 
-	private List<IPowerConsumer>	consumers;
-	private List<IPowerDelivery>	deliveries;
-	private List<IPowerSupply>		supplies;
+	private List<PowerConsumer>	consumers;
+	private List<PowerDelivery>	deliveries;
+	private List<PowerSupply>	supplies;
 
 	/**
 	 * @return the id
@@ -29,28 +25,33 @@ public class GIModel {
 		this.id = id;
 	}
 
-	public List<IPowerConsumer> getConsumers() {
+	public List<PowerConsumer> getConsumers() {
 		return consumers;
 	}
 
-	public void setConsumers(List<IPowerConsumer> consumers) {
+	public void setConsumers(List<PowerConsumer> consumers) {
 		this.consumers = consumers;
 	}
 
-	public List<IPowerDelivery> getDeliveries() {
+	public List<PowerDelivery> getDeliveries() {
 		return deliveries;
 	}
 
-	public void setDeliveries(List<IPowerDelivery> deliveries) {
+	public void setDeliveries(List<PowerDelivery> deliveries) {
 		this.deliveries = deliveries;
 	}
 
-	public List<IPowerSupply> getSupplies() {
+	public List<PowerSupply> getSupplies() {
 		return supplies;
 	}
 
-	public void setSupplies(List<IPowerSupply> supplies) {
+	public void setSupplies(List<PowerSupply> supplies) {
 		this.supplies = supplies;
+	}
+
+	@Override
+	public String toString() {
+		return "GIModel [id=" + id + ",\n consumers=" + consumers + ",\n deliveries=" + deliveries + ",\n supplies=" + supplies + "]";
 	}
 
 }

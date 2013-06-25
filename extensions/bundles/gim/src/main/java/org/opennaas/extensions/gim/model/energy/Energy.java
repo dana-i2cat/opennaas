@@ -1,21 +1,25 @@
 package org.opennaas.extensions.gim.model.energy;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author rcarroll
  * @version 1.0
  * @created 14-Feb-2013 16:29:35
  */
+@XmlRootElement
 public class Energy {
 
-	private double		CO2PerKw;
 	private String		energyName;
+
+	private EnergyClass	energyClass;
+	private EnergyType	energyType;
+
+	private double		CO2PerKw;
 	private double		percentageGreen;
 
-	private energyClass	energyClass;
-	private energyType	energyType;
-
 	@Deprecated
-	public Energy(energyClass energyclass, energyType energytype, double co2) {
+	public Energy(EnergyClass energyclass, EnergyType energytype, double co2) {
 
 		energyClass = energyclass;
 		CO2PerKw = co2;
@@ -23,7 +27,7 @@ public class Energy {
 		percentageGreen = getPercentageGreenFromEnergyClass(energyclass);
 	}
 
-	public Energy(energyClass energyclass, energyType energytype, double co2, double percentagegreen) {
+	public Energy(EnergyClass energyclass, EnergyType energytype, double co2, double percentagegreen) {
 
 		energyClass = energyclass;
 		CO2PerKw = co2;
@@ -56,15 +60,20 @@ public class Energy {
 	}
 
 	@Deprecated
-	private double getPercentageGreenFromEnergyClass(energyClass energyclass) {
-		if (energyclass.equals(energyClass.Green))
+	private double getPercentageGreenFromEnergyClass(EnergyClass energyclass) {
+		if (energyclass.equals(EnergyClass.Green))
 			return 100;
-		if (energyclass.equals(energyClass.Mixed))
+		if (energyclass.equals(EnergyClass.Mixed))
 			return 50;
-		if (energyclass.equals(energyClass.Brown))
+		if (energyclass.equals(EnergyClass.Brown))
 			return 0;
 
 		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Energy [energyName=" + energyName + ", energyClass=" + energyClass + ", energyType=" + energyType + ", CO2PerKw=" + CO2PerKw + ", percentageGreen=" + percentageGreen + "]";
 	}
 
 }
