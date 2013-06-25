@@ -25,7 +25,7 @@ public class GetCurrentPowerMetricsCommand extends GenericKarafCommand {
 		printInitCommand("getPowerMetrics of resource: " + resourceId);
 
 		IResource resource = getResourceFromFriendlyName(resourceId);
-		MeasuredLoad metrics = ((IPowerMonitoringController) resource.getCapabilityByInterface(IPowerMonitoringCapability.class))
+		MeasuredLoad metrics = ((IPowerMonitoringCapability) resource.getCapabilityByInterface(IPowerMonitoringCapability.class))
 				.getCurrentPowerMetrics();
 		printMetrics(metrics);
 

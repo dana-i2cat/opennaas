@@ -64,7 +64,10 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 		// causes pdu to update model with current values
 		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
 		for (PowerReceptor receptor : receptors) {
-			pduController.getCurrentPowerMetrics(receptor.getAttachedTo().getId());
+			//ignore not attached receptors
+			if (receptor.getAttachedTo() != null) {
+				pduController.getCurrentPowerMetrics(receptor.getAttachedTo().getId());
+			}
 		}
 
 		// calculates aggregated MeasuredLoad from last values
@@ -85,7 +88,10 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 	public boolean powerOn() throws Exception {
 		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
 		for (PowerReceptor receptor : receptors) {
-			pduController.powerOn(receptor.getAttachedTo().getId());
+			//ignore not attached receptors
+			if (receptor.getAttachedTo() != null) {
+				pduController.powerOn(receptor.getAttachedTo().getId());
+			}
 		}
 		return true;
 	}
@@ -94,7 +100,10 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 	public boolean powerOff() throws Exception {
 		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
 		for (PowerReceptor receptor : receptors) {
-			pduController.powerOff(receptor.getAttachedTo().getId());
+			//ignore not attached receptors
+			if (receptor.getAttachedTo() != null) {
+				pduController.powerOff(receptor.getAttachedTo().getId());
+			}
 		}
 		return true;
 	}

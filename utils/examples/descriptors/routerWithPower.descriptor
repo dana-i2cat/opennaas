@@ -59,30 +59,36 @@
 	</information>
     </capabilityDescriptors>
     
-    <capabilityDescriptors>
-        <capabilityProperty value="pdu" name="actionset.name"/>
-        <capabilityProperty value="10.10" name="actionset.version" />
-        <information>
+	<capabilityDescriptors>
+		<capabilityProperty name="powernet.id" value="dc1"/>
+		<capabilityProperty name="powernet.consumer.id" value="router:lola"/>
+		<capabilityProperty value="pdu" name="actionset.name"/>
+		<capabilityProperty value="10.10" name="actionset.version" />
+	<information>
 		<description>Power management capability</description>
 		<type>consumer_pw_mgt</type>
 	</information>
-    </capabilityDescriptors>
-    <capabilityDescriptors>
-        <capabilityProperty value="pdu" name="actionset.name"/>
-        <capabilityProperty value="10.10" name="actionset.version" />
-        <information>
+	</capabilityDescriptors>
+	<capabilityDescriptors>
+		<capabilityProperty name="powernet.id" value="dc1"/>
+		<capabilityProperty name="powernet.consumer.id" value="router:lola"/>
+		<capabilityProperty value="pdu" name="actionset.name"/>
+		<capabilityProperty value="10.10" name="actionset.version" />
+	<information>
 		<description>Power monitoring capability</description>
 		<type>consumer_pw_mon</type>
 	</information>
-    </capabilityDescriptors>
-    <capabilityDescriptors>
-        <capabilityProperty value="pdu" name="actionset.name"/>
-        <capabilityProperty value="10.10" name="actionset.version" />
-        <information>
+	</capabilityDescriptors>
+	<capabilityDescriptors>
+	<capabilityProperty name="powernet.id" value="dc1"/>
+		<capabilityProperty name="powernet.consumer.id" value="router:lola"/>
+		<capabilityProperty value="pdu" name="actionset.name"/>
+		<capabilityProperty value="10.10" name="actionset.version" />
+	<information>
 		<description>Power supply capability</description>
 		<type>consumer_pw_sup</type>
 	</information>
-    </capabilityDescriptors>
+	</capabilityDescriptors>
 
     <information>
         <type>router</type>

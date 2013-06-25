@@ -41,9 +41,11 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		List<Energy> energies = new ArrayList<Energy>(consumer.getPowerReceptors().size());
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			energies.add(getReceptorEnergy(consumerId, receptor.getId()));
+			//ignore not attached receptors computation will be done with attached ones
+			if (receptor.getAttachedTo() != null) {
+				energies.add(getReceptorEnergy(consumerId, receptor.getId()));
+			}
 		}
-
 		return calculateAggregaredEnergy(energies);
 	}
 
@@ -52,7 +54,10 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		List<Double> prices = new ArrayList<Double>(consumer.getPowerReceptors().size());
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			prices.add(getReceptorEnergyPrice(consumerId, receptor.getId()));
+			//ignore not attached receptors computation will be done with attached ones
+			if (receptor.getAttachedTo() != null) {
+				prices.add(getReceptorEnergyPrice(consumerId, receptor.getId()));
+			}
 		}
 		return calculateAggregaredEnergyPrice(prices);
 	}
@@ -63,9 +68,12 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		boolean powerStatus = false;
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			if (getReceptorPowerStatus(consumerId, receptor.getId())) {
-				powerStatus = true;
-				break;
+			//ignore not attached receptors computation will be done with attached ones
+			if (receptor.getAttachedTo() != null) {
+				if (getReceptorPowerStatus(consumerId, receptor.getId())) {
+					powerStatus = true;
+					break;
+				}
 			}
 		}
 		return powerStatus;
@@ -78,7 +86,10 @@ public class BasicConsumerController implements IConsumerController {
 	public void powerOn(String consumerId) throws ModelElementNotFoundException, Exception {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			powerOnReceptor(consumerId, receptor.getId());
+			//ignore not attached receptors 
+			if (receptor.getAttachedTo() != null) {
+				powerOnReceptor(consumerId, receptor.getId());
+			}
 		}
 	}
 
@@ -89,7 +100,10 @@ public class BasicConsumerController implements IConsumerController {
 	public void powerOff(String consumerId) throws ModelElementNotFoundException, Exception {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			powerOffReceptor(consumerId, receptor.getId());
+			//ignore not attached receptors 
+			if (receptor.getAttachedTo() != null) {
+				powerOffReceptor(consumerId, receptor.getId());
+			}
 		}
 	}
 
@@ -98,7 +112,10 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		List<MeasuredLoad> receptorMetrics = new ArrayList<MeasuredLoad>(consumer.getPowerReceptors().size());
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			receptorMetrics.add(getReceptorCurrentPowerMetrics(consumerId, receptor.getId()));
+			//ignore not attached receptors 
+			if (receptor.getAttachedTo() != null) {
+				receptorMetrics.add(getReceptorCurrentPowerMetrics(consumerId, receptor.getId()));
+			}
 		}
 		return calculateAggregaredPowerMetrics(receptorMetrics);
 	}
@@ -181,12 +198,12 @@ public class BasicConsumerController implements IConsumerController {
 		throw new Exception("Could not calculate PowerMetrics");
 	}
 
-	protected PowerSource getReceptorAttachedSource(String consumerId, String receptorId) throws ModelElementNotFoundException, Exception {
+	protected PowerSource getReceptorAttachedSource(String consumerId, String receptorId) throws ModelElementNotFoundException {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		PowerReceptor receptor = (PowerReceptor) GIMController.getSocketById(consumer.getPowerReceptors(), receptorId);
 
 		if (receptor.getAttachedTo() == null) {
-			throw new Exception("Failed to get receptor attached source, in receptor" + receptorId);
+			throw new ModelElementNotFoundException("Failed to get receptor attached source, in receptor " + receptorId);
 		}
 
 		return receptor.getAttachedTo();
