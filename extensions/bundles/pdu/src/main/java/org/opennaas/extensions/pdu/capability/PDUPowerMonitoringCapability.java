@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.gim.controller.GIMController;
 import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerMonitoringCapability;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
@@ -16,7 +15,7 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 import org.opennaas.extensions.pdu.Activator;
 import org.opennaas.extensions.pdu.model.PDUModel;
 
-public class PDUPowerMonitoringCapability extends AbstractNotQueueingCapability implements IPDUPowerMonitoringIDsCapability {
+public class PDUPowerMonitoringCapability extends AbstractPDUCapability implements IPDUPowerMonitoringIDsCapability {
 
 	private static Log						log				= LogFactory.getLog(PDUPowerMonitoringCapability.class);
 
@@ -63,7 +62,7 @@ public class PDUPowerMonitoringCapability extends AbstractNotQueueingCapability 
 	 * @throws Exception
 	 */
 	public MeasuredLoad getCurrentPowerMetrics(String portId) throws Exception {
-		return getDriver().getCurrentPowerMetrics(GIMController.getPortById(getPdu(), portId));
+		return getDriver().getCurrentPowerMetrics(portId);
 	}
 
 	/**
@@ -74,7 +73,7 @@ public class PDUPowerMonitoringCapability extends AbstractNotQueueingCapability 
 	 * @throws Exception
 	 */
 	public PowerMonitorLog getPowerMetricsByTimeRange(String portId, Date from, Date to) throws Exception {
-		return getDriver().getPowerMetricsByTimeRange(GIMController.getPortById(getPdu(), portId), from, to);
+		return getDriver().getPowerMetricsByTimeRange(portId, from, to);
 	}
 
 	private IPDUPowerMonitoringCapability getDriver() throws Exception {
@@ -89,11 +88,11 @@ public class PDUPowerMonitoringCapability extends AbstractNotQueueingCapability 
 	private IPDUPowerMonitoringCapability instantiateDriver() throws Exception {
 
 		String ip = getCapabilityDescriptor().getPropertyValue("pdu.driver.ipaddress");
-		PDU pdu = getPdu();
+		String deliveryId = getCapabilityDescriptor().getPropertyValue("powernet.delivery.id");
 
 		// FIXME PDUDriverInstantiator should be unknown for the capability
 		// capability should take the driver from an OSGI service.
-		return PDUDriverInstantiator.create(resourceId, pdu, ip);
+		return PDUDriverInstantiator.create(resourceId, getPowernetId(), deliveryId, ip);
 	}
 
 	private PDU getPdu() {
@@ -104,10 +103,7 @@ public class PDUPowerMonitoringCapability extends AbstractNotQueueingCapability 
 	public void resyncModel() throws Exception {
 		List<PDUPort> pduPorts = getDriver().listPorts();
 		PDU pdu = getPdu();
-		for (PDUPort port : pduPorts) {
-			port.setPdu(pdu);
-		}
-		pdu.setPduPorts(pduPorts);
+		pdu.setPowerSources(pduPorts);
 	}
 
 }

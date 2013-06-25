@@ -6,31 +6,19 @@ import org.opennaas.extensions.gim.model.core.IPowerConsumer;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
 import org.opennaas.extensions.gim.model.core.IPowerMonitorLogging;
 import org.opennaas.extensions.gim.model.core.IPowerSupply;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerReceptor;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.load.DeliveryRatedLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
+public class PowerDelivery extends GIMElement implements IPowerDelivery, IPowerMonitorLogging {
 
-	private String				id;
-	private PowerMonitorLog		powerMonitorLog;
-	private DeliveryRatedLoad	deliveryRatedLoad;
-	private List<PowerSupply>	powerSupplies;
-	private List<PowerConsumer>	powerConsumers;
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+	private PowerMonitorLog					powerMonitorLog;
+	private DeliveryRatedLoad				deliveryRatedLoad;
+	private List<? extends PowerSupply>		powerSupplies;
+	private List<? extends PowerConsumer>	powerConsumers;
+	private List<? extends PowerReceptor>	powerReceptors;
+	private List<? extends PowerSource>		powerSources;
 
 	public PowerMonitorLog getPowerMonitorLog() {
 		return powerMonitorLog;
@@ -41,7 +29,7 @@ public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
 	}
 
 	public List<PowerSupply> getPowerSupplies() {
-		return powerSupplies;
+		return (List<PowerSupply>) powerSupplies;
 	}
 
 	public void setPowerSupplies(List<PowerSupply> powerSupplies) {
@@ -57,15 +45,45 @@ public class PowerDelivery implements IPowerDelivery, IPowerMonitorLogging {
 	}
 
 	public List<PowerConsumer> getPowerConsumers() {
-		return powerConsumers;
+		return (List<PowerConsumer>) powerConsumers;
 	}
 
 	/**
 	 * @param powerConsumers
 	 *            the powerConsumers to set
 	 */
-	public void setPowerConsumers(List<PowerConsumer> powerConsumers) {
+	public void setPowerConsumers(List<? extends PowerConsumer> powerConsumers) {
 		this.powerConsumers = powerConsumers;
+	}
+
+	/**
+	 * @return the powerReceptors this delivery takes power from
+	 */
+	public List<PowerReceptor> getPowerReceptors() {
+		return (List<PowerReceptor>) powerReceptors;
+	}
+
+	/**
+	 * @param powerReceptors
+	 *            the powerReceptors to set
+	 */
+	public void setPowerReceptors(List<? extends PowerReceptor> powerReceptors) {
+		this.powerReceptors = powerReceptors;
+	}
+
+	/**
+	 * @return the powerSources this delivery exposes
+	 */
+	public List<PowerSource> getPowerSources() {
+		return (List<PowerSource>) powerSources;
+	}
+
+	/**
+	 * @param powerSources
+	 *            the powerSources to set
+	 */
+	public void setPowerSources(List<? extends PowerSource> powerSources) {
+		this.powerSources = powerSources;
 	}
 
 	@Override

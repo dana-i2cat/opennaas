@@ -1,30 +1,16 @@
 package org.opennaas.extensions.gim.model.core.entities.pdu;
 
-import java.util.List;
-
-import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
-import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
-import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat Foundation)
  * 
  */
-public class PDUPort extends PowerDelivery {
+public class PDUPort extends PowerSource {
 
-	private String			name;
-	private PowerMonitorLog	powerMonitorLog;
-
-	private PDU				pdu;
-
-	public PDU getPdu() {
-		return pdu;
-	}
-
-	public void setPdu(PDU pdu) {
-		this.pdu = pdu;
-	}
+	private String	name;
+	private int		outletIndex;
 
 	/**
 	 * @return the name
@@ -42,25 +28,17 @@ public class PDUPort extends PowerDelivery {
 	}
 
 	/**
-	 * Return @code{IPowerSupply}s associated to the PDU
+	 * @return the outletIndex
 	 */
-	public List<PowerSupply> getPowerSupplies() {
-		return pdu.getPowerSupplies();
+	public int getOutletIndex() {
+		return outletIndex;
 	}
 
 	/**
-	 * @return the powerMonitorLog
+	 * @param outletIndex the outletIndex to set
 	 */
-	public PowerMonitorLog getPowerMonitorLog() {
-		return powerMonitorLog;
-	}
-
-	/**
-	 * @param powerMonitorLog
-	 *            the powerMonitorLog to set
-	 */
-	public void setPowerMonitorLog(PowerMonitorLog powerMonitorLog) {
-		this.powerMonitorLog = powerMonitorLog;
+	public void setOutletIndex(int outletIndex) {
+		this.outletIndex = outletIndex;
 	}
 
 }

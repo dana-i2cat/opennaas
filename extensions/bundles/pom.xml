@@ -70,8 +70,9 @@
 		<module>vcpe</module>
 		
 		<module>gim</module>
-		<module>pdu</module>
 		<module>powernet</module>
+		<module>pdu</module>
+		
 		
 		<module>sampleresource</module>
 	</modules>

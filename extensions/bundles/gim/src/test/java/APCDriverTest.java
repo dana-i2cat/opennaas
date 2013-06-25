@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -10,9 +11,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opennaas.extensions.gim.controller.APCPDUPowerControllerDriver;
-import org.opennaas.extensions.gim.controller.PDUPortPowerController;
-import org.opennaas.extensions.gim.controller.PDUPowerController;
+import org.opennaas.extensions.gim.controller.BasicConsumerController;
+import org.opennaas.extensions.gim.controller.BasicDeliveryController;
+import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
+import org.opennaas.extensions.gim.controller.PDUController;
 import org.opennaas.extensions.gim.controller.PDUPowerControllerDriver;
+import org.opennaas.extensions.gim.controller.RouterWithPDUPowerController;
 import org.opennaas.extensions.gim.controller.snmp.APCDriver_SNMP;
 import org.opennaas.extensions.gim.model.core.entities.GIModel;
 import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
@@ -20,6 +24,8 @@ import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
 import org.opennaas.extensions.gim.model.core.entities.PowerSupply;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerReceptor;
+import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.energy.EnergyClass;
 import org.opennaas.extensions.gim.model.energy.EnergyType;
@@ -28,14 +34,16 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
 public class APCDriverTest {
 
-	private final String		pduIPAddress	= "udp:193.1.29.121/161";
+	private final String			pduIPAddress	= "udp:193.1.29.121/161";
 
-	private GIModel				model;
+	private GIModel					model;
 
-	APCDriver_SNMP				snmpDriver;
-	PDUPowerControllerDriver	apcDriver;
-	PDUPowerController			pduController;
-	PDUPortPowerController		routerController;
+	APCDriver_SNMP					snmpDriver;
+	PDUPowerControllerDriver		apcDriver;
+	PDUController					pduController;
+	RouterWithPDUPowerController	routerController;
+
+	BasicConsumerController			consumerController;
 
 	@Before
 	public void initModelAndControllers() throws IOException {
@@ -70,8 +78,8 @@ public class APCDriverTest {
 
 		Assert.assertEquals(model.getSupplies().get(0).getPricePerUnit(), routerController.getAggregatedPricePerEnergyUnit());
 
-		PDUPort port = (PDUPort) model.getDeliveries().get(0);
-		Assert.assertTrue(port.getPowerMonitorLog().getMeasuredLoads().contains(ml));
+		PowerSource source = model.getDeliveries().get(0).getPowerSources().get(0);
+		Assert.assertTrue(source.getPowerMonitorLog().getMeasuredLoads().contains(ml));
 	}
 
 	/**
@@ -98,34 +106,70 @@ public class APCDriverTest {
 		Assert.assertTrue("Must be powered on", status);
 	}
 
+	@Test
+	public void testConsumerController() throws ModelElementNotFoundException, Exception {
+
+		String consumerId = "consumer-0001";
+		String receptorId = "consumer-0001/receptor-0001";
+
+		Assert.assertEquals(model.getSupplies().get(0).getEnergy(), consumerController.getAggregatedEnergy(consumerId));
+
+		consumerController.getAggregatedEnergyPrice(consumerId);
+
+	}
+
 	private GIModel initModel() {
 
 		Energy e = new Energy(EnergyClass.Green, EnergyType.Wind, 0.11, 100);
 
 		PowerSupply supply = new PowerSupply();
+		supply.setId("supply-0001");
 		supply.setEnergy(e);
 		supply.setPricePerUnit(0.12);
 		// supply.setRatedLoad(ratedLoad);
 
-		PDU pdu = new PDU();
-		pdu.setPowerSupplies(new ArrayList<PowerSupply>(Arrays.asList(supply)));
-		// pdu.setDeliveryRatedLoad(deliveryRatedLoad);
+		PowerSource source = new PowerSource();
+		source.setEnergy(supply.getEnergy());
+		source.setPricePerUnit(supply.getPricePerUnit());
+		source.setPowerState(true);
+		source.setId("supply-0001/source-0001");
+		source.setElementId("supply-0001");
+		source.setPowerMonitorLog(new PowerMonitorLog(1, 2));
+		supply.setPowerSources(new ArrayList<PowerSource>(Arrays.asList(source)));
 
-		PDUPort port = new PDUPort();
-		port.setId("0001");
-		port.setPdu(pdu);
-		port.setPowerMonitorLog(new PowerMonitorLog(1, 2));
-		// port.setDeliveryRatedLoad(deliveryRatedLoad);
+		PowerDelivery delivery = new PowerDelivery();
+		delivery.setId("delivery-0001");
 
-		PowerConsumer router = new PowerConsumer();
-		router.setPowerDeliveries(new ArrayList<PowerDelivery>(Arrays.asList(port)));
-		// router.setRatedLoad(ratedLoad);
+		PowerReceptor receptor = new PowerReceptor();
+		receptor.setId("delivery-0001/receptor-0001");
+		receptor.setElementId("delivery-0001");
+		receptor.setPowerState(true);
+		receptor.setAttachedTo(source);
+		delivery.setPowerReceptors(new ArrayList<PowerReceptor>(Arrays.asList(receptor)));
 
-		port.setPowerConsumers(new ArrayList<PowerConsumer>(Arrays.asList(router)));
+		PowerSource source2 = new PowerSource();
+		source2.setEnergy(supply.getEnergy()); // this data should be filled in with the output of IDeliveryController calculateAggregatedEnergy
+		source2.setPricePerUnit(supply.getPricePerUnit()); // this data should be filled in with the output of IDeliveryController
+															// calculateAggregatedEnergyPrice
+		source2.setPowerState(true);
+		source2.setId("delivery-0001/source-0001");
+		source2.setElementId("delivery-0001");
+		source2.setPowerMonitorLog(new PowerMonitorLog(1, 2));
+		delivery.setPowerSources(new ArrayList<PowerSource>(Arrays.asList(source2)));
+
+		PowerConsumer consumer = new PowerConsumer();
+		consumer.setId("consumer-0001");
+
+		PowerReceptor receptor2 = new PowerReceptor();
+		receptor2.setId("consumer-0001/receptor-0001");
+		receptor2.setElementId("consumer-0001");
+		receptor2.setPowerState(true);
+		receptor2.setAttachedTo(source2);
+		consumer.setPowerReceptors(new ArrayList<PowerReceptor>(Arrays.asList(receptor2)));
 
 		GIModel model = new GIModel();
-		model.setConsumers(new ArrayList<PowerConsumer>(Arrays.asList(router)));
-		model.setDeliveries(new ArrayList<PowerDelivery>(Arrays.asList(port, pdu)));
+		model.setConsumers(new ArrayList<PowerConsumer>(Arrays.asList(consumer)));
+		model.setDeliveries(new ArrayList<PowerDelivery>(Arrays.asList(delivery)));
 		model.setSupplies(new ArrayList<PowerSupply>(Arrays.asList(supply)));
 
 		return model;
@@ -133,24 +177,47 @@ public class APCDriverTest {
 
 	private void initControllers() throws IOException {
 
+		PowerDelivery delivery = model.getDeliveries().get(0);
+		// create PDU model from delivery
+		PDU pdu = new PDU();
+		pdu.setId(delivery.getId());
+		List<PDUPort> pduPorts = new ArrayList<PDUPort>(delivery.getPowerSources().size());
+		PowerSource source;
+		for (int i = 0; i < delivery.getPowerSources().size(); i++) {
+			source = delivery.getPowerSources().get(i);
+			PDUPort port = new PDUPort();
+			port.setId(source.getId());
+			port.setOutletIndex(i + 1);
+			pduPorts.add(port);
+		}
+		pdu.setPowerSources(pduPorts);
+
 		snmpDriver = new APCDriver_SNMP(pduIPAddress);
-		PDUPort port = (PDUPort) model.getDeliveries().get(0);
+		PDUPort port = (PDUPort) pdu.getPowerSources().get(0);
 
 		Map<String, Integer> outletIndexes = new HashMap<String, Integer>();
-		outletIndexes.put(port.getId(), 1); // port has outletIndex = 1
+		outletIndexes.put(port.getId(), port.getOutletIndex());
 
 		APCPDUPowerControllerDriver apcDriver = new APCPDUPowerControllerDriver();
 		apcDriver.setDriver(snmpDriver);
 		apcDriver.setOutletIndexes(outletIndexes);
+		apcDriver.setPdu(pdu);
 		this.apcDriver = apcDriver;
 
-		pduController = new PDUPowerController();
-		pduController.setPdu(port.getPdu());
+		BasicDeliveryController deliveryController = new BasicDeliveryController();
+		deliveryController.setModel(model);
+
+		pduController = new PDUController();
+		pduController.setDeliveryController(deliveryController);
+		pduController.setDeliveryId(pdu.getId());
 		pduController.setDriver(apcDriver);
 
-		routerController = new PDUPortPowerController();
-		routerController.setPduController(pduController);
-		routerController.setPort(port);
+		consumerController = new BasicConsumerController();
+		consumerController.setModel(model);
 
+		routerController = new RouterWithPDUPowerController();
+		routerController.setConsumerController(consumerController);
+		routerController.setPduController(pduController);
+		routerController.setConsumerId("consumer-0001");
 	}
 }

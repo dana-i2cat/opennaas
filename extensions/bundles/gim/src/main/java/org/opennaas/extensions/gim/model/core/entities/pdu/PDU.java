@@ -1,9 +1,5 @@
 package org.opennaas.extensions.gim.model.core.entities.pdu;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.opennaas.extensions.gim.model.core.entities.PowerConsumer;
 import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
 
 /**
@@ -14,34 +10,7 @@ import org.opennaas.extensions.gim.model.core.entities.PowerDelivery;
  */
 public class PDU extends PowerDelivery {
 
-	private List<PDUPort>	pduPorts;
-	private String			name;
-
-	/**
-	 * @return the pduPorts
-	 */
-	public List<PDUPort> getPduPorts() {
-		return pduPorts;
-	}
-
-	/**
-	 * @param pduPorts
-	 *            the pduPorts to set
-	 */
-	public void setPduPorts(List<PDUPort> pduPorts) {
-		this.pduPorts = pduPorts;
-	}
-
-	/**
-	 * Return consumers associated to the PDU ports.
-	 */
-	public List<PowerConsumer> getPowerConsumers() {
-		List<PowerConsumer> allConsumers = new ArrayList<PowerConsumer>();
-		for (PDUPort port : pduPorts) {
-			allConsumers.addAll(port.getPowerConsumers());
-		}
-		return allConsumers;
-	}
+	private String	name;
 
 	/**
 	 * @return the name

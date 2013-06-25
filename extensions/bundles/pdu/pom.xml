@@ -24,6 +24,10 @@
 			<artifactId>org.opennaas.extensions.gim</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.powernet</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>

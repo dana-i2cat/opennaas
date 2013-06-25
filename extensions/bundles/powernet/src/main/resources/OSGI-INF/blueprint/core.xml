@@ -73,6 +73,7 @@
 				<null/>
 			</completers>
 		</command>
+		<!-- Create/remove/show consumer, delivery, supply -->
 		<command name="gim/createConsumer">
 			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateConsumerCommand"/>
 			<completers>
@@ -136,6 +137,63 @@
 				<null/>
 			</completers>
 		</command>
+		<!-- Create/remove source, receptor -->
+		<command name="gim/createConsumerReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateConsumerReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createDeliveryReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateDeliveryReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createDeliverySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateDeliverySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createSupplySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateSupplySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteConsumerReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteConsumerReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteDeliveryReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteDeliveryReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteDeliverySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteDeliverySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteSupplySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteSupplySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 		<!-- Setters -->
 		<command name="gim/setConsumerLoad">
 			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyLoadCommand"/>
@@ -144,8 +202,15 @@
 				<null/>
 			</completers>
 		</command>
-		<command name="gim/setDeliveryLoad">
-			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryLoadCommand"/>
+		<command name="gim/setDeliverySourceLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliverySourceLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+			<command name="gim/setDeliveryReceptorLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryReceptorLoadCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
@@ -167,6 +232,20 @@
 		</command>
 		<command name="gim/setSupplyPrice">
 			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyPriceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setDeliveryEnergy">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryEnergyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setDeliveryPrice">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryPriceCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

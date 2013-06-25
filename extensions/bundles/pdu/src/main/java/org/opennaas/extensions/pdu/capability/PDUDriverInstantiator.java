@@ -1,47 +1,37 @@
 package org.opennaas.extensions.pdu.capability;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.opennaas.extensions.gim.controller.APCPDUPowerControllerDriver;
-import org.opennaas.extensions.gim.controller.PDUPowerController;
+import org.opennaas.extensions.gim.controller.BasicDeliveryController;
+import org.opennaas.extensions.gim.controller.PDUController;
 import org.opennaas.extensions.gim.controller.snmp.APCDriver_SNMP;
-import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
-import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
-import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
+import org.opennaas.extensions.gim.model.core.entities.GIModel;
+import org.opennaas.extensions.pdu.Activator;
 
 public class PDUDriverInstantiator {
 
-	public static PDUPowerController create(String resourceId, PDU pdu, String pduIPAddress) throws Exception {
+	public static PDUController create(String resourceId, String powernetResourceName, String deliveryId, String pduIPAddress) throws Exception {
 
 		APCDriver_SNMP snmpDriver;
 		APCPDUPowerControllerDriver apcDriver;
-		PDUPowerController pduController;
+		BasicDeliveryController deliveryController;
+		PDUController pduController;
 
 		snmpDriver = new APCDriver_SNMP(pduIPAddress);
 
 		apcDriver = new APCPDUPowerControllerDriver();
 		apcDriver.setDriver(snmpDriver);
 
-		// FIXME ports should be read by the driver at capability startup.
-		// retrieve ports from driver
-		// List<PDUPort> ports = apcDriver.getPorts();
-		// pdu.setPduPorts(ports);
+		deliveryController = new BasicDeliveryController();
+		deliveryController.setModel(
+				(GIModel) Activator.getResourceManagerService().getResource(
+						Activator.getResourceManagerService().getIdentifierFromResourceName("powernet", powernetResourceName))
+						.getModel());
 
-		PDUPort port = new PDUPort();
-		port.setId("1");
-		port.setPdu(pdu);
-		port.setPowerMonitorLog(new PowerMonitorLog(1, 10));
-		pdu.setPduPorts(new ArrayList<PDUPort>(Arrays.asList(port)));
-
-		// FIXME apcDriver should populate outletIndexes when reading ports
-		apcDriver.getOutletIndexes().put(port.getId(), 1);
-
-		pduController = new PDUPowerController();
-		pduController.setPdu(pdu);
+		pduController = new PDUController();
+		pduController.setDeliveryController(deliveryController);
+		pduController.setDeliveryId(deliveryId);
 		pduController.setDriver(apcDriver);
 
 		return pduController;
 	}
-
 }

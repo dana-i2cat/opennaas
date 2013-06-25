@@ -7,23 +7,23 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
 
-@Command(scope = "gim", name = "setSupplyLoad", description = "Set load given power supply is designated to work with")
-public class SetSupplyLoadCommand extends GenericKarafCommand {
+@Command(scope = "gim", name = "setDeliverySourceLoad", description = "Set load given power delivery source is designated to work with")
+public class SetDeliverySourceLoadCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id", required = true, multiValued = false)
 	private String	resourceName;
 
-	@Argument(index = 1, name = "supplyId", description = "The id of the supply.", required = true, multiValued = false)
-	private String	supplyId;
+	@Argument(index = 1, name = "deliveryId", description = "The id of the delivery.", required = true, multiValued = false)
+	private String	deliveryId;
 
-	@Argument(index = 2, name = "voltage", description = "The input voltage.", required = true, multiValued = false)
-	private double	voltage;
-	@Argument(index = 3, name = "current", description = "The input current.", required = true, multiValued = false)
-	private double	current;
-	@Argument(index = 4, name = "power", description = "The input power.", required = true, multiValued = false)
-	private double	power;
-	@Argument(index = 5, name = "energy", description = "The input energy.", required = true, multiValued = false)
-	private double	energy;
+	@Argument(index = 2, name = "inputVoltage", description = "The input voltage.", required = true, multiValued = false)
+	private double	inputVoltage;
+	@Argument(index = 3, name = "inputCurrent", description = "The input current.", required = true, multiValued = false)
+	private double	inputCurrent;
+	@Argument(index = 4, name = "inputPower", description = "The input power.", required = true, multiValued = false)
+	private double	inputPower;
+	@Argument(index = 5, name = "inputEnergy", description = "The input energy.", required = true, multiValued = false)
+	private double	inputEnergy;
 
 	@Option(name = "--sourceId", aliases = "-s", description = "The id of the source.", required = false, multiValued = false)
 	private String	sourceId	= null;
@@ -33,7 +33,7 @@ public class SetSupplyLoadCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("setSupplyLoad");
+		printInitCommand("setDeliverySourceLoad");
 
 		if (!allSources && sourceId == null) {
 			printError("Either sourceId or allSources option must be specified");
@@ -47,15 +47,15 @@ public class SetSupplyLoadCommand extends GenericKarafCommand {
 					.getCapabilityByInterface(IPowerNetManagementCapability.class);
 
 			if (!allSources) {
-				capab.setPowerSupplySourceRatedLoad(supplyId, sourceId, voltage, current, power, energy);
+				capab.setPowerDeliverySourceRatedLoad(deliveryId, sourceId, inputVoltage, inputCurrent, inputPower, inputEnergy);
 			} else {
-				for (String id : capab.getPowerSupplySources(supplyId)) {
-					capab.setPowerSupplySourceRatedLoad(supplyId, id, voltage, current, power, energy);
+				for (String id : capab.getPowerDeliverySources(deliveryId)) {
+					capab.setPowerDeliverySourceRatedLoad(deliveryId, id, inputVoltage, inputCurrent, inputPower, inputEnergy);
 				}
 			}
 
 		} catch (Exception e) {
-			printError("Error in setSupplyLoad in resource" + resourceName + " and supply " + supplyId);
+			printError("Error in setDeliveryLoad in resource" + resourceName + " and delivery " + deliveryId);
 			printError(e);
 		} finally {
 			printEndCommand();
