@@ -86,7 +86,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	}
 
 	/**
-	 * @return the resource name through the resource descriptor
+	 * @return the resource type through the resource descriptor
 	 */
 	public String getResourceType() {
 		String resourceType = "";
