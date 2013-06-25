@@ -7,7 +7,7 @@ import org.opennaas.extensions.gim.model.energy.Energy;
  * @author Isart Canyameres Gimenez (i2cat Foundation)
  * 
  */
-public interface IPowerSupplyCapability {
+public interface IPowerSupplyController {
 
 	public Energy getAggregatedEnergy() throws Exception;
 

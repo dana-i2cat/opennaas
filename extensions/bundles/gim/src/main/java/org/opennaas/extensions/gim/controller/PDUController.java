@@ -4,16 +4,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerManagementCapability;
-import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerMonitoringCapability;
-import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyCapability;
+import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerManagementController;
+import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerMonitoringController;
+import org.opennaas.extensions.gim.controller.capabilities.IPowerSupplyController;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 import org.opennaas.extensions.gim.model.core.entities.sockets.PowerSource;
 import org.opennaas.extensions.gim.model.energy.Energy;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-public class PDUController implements IPDUPowerManagementCapability, IPDUPowerMonitoringCapability, IPowerSupplyCapability {
+public class PDUController extends AbstractPDUPowerController {
 
 	private PDUPowerControllerDriver	driver;
 	private IDeliveryController			deliveryController;

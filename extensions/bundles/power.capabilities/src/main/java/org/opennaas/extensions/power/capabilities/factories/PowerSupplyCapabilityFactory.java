@@ -1,25 +1,17 @@
-package org.opennaas.extensions.pdu.capability.example;
+package org.opennaas.extensions.power.capabilities.factories;
 
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.power.capabilities.PowerSupplyCapability;
 
-/**
- * 
- * @author Isart Canyameres Gimenez (i2cat Foundation)
- * 
- */
-public class ExampleCapabilityFactory extends AbstractCapabilityFactory {
+public class PowerSupplyCapabilityFactory extends AbstractCapabilityFactory {
 
-	/**
-	 * Create the capability
-	 */
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(ExampleCapability.CAPABILITY_TYPE),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(PowerSupplyCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
@@ -27,8 +19,7 @@ public class ExampleCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
-
-		return new ExampleCapability(capabilityDescriptor, resourceId);
+		return new PowerSupplyCapability(capabilityDescriptor, resourceId);
 	}
 
 }

@@ -7,7 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerMonitoringCapability;
+import org.opennaas.extensions.gim.controller.capabilities.IPDUPowerMonitoringController;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDUPort;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
@@ -22,7 +22,7 @@ public class PDUPowerMonitoringCapability extends AbstractPDUCapability implemen
 	public static String					CAPABILITY_TYPE	= "pdu_pw_mon";
 	private String							resourceId		= "";
 
-	private IPDUPowerMonitoringCapability	driver;
+	private IPDUPowerMonitoringController	driver;
 
 	public PDUPowerMonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -54,7 +54,7 @@ public class PDUPowerMonitoringCapability extends AbstractPDUCapability implemen
 		return CAPABILITY_TYPE;
 	}
 
-	// IPDUPowerMonitoringCapability methods
+	// IPDUPowerMonitoringController methods
 
 	/**
 	 * 
@@ -76,7 +76,7 @@ public class PDUPowerMonitoringCapability extends AbstractPDUCapability implemen
 		return getDriver().getPowerMetricsByTimeRange(portId, from, to);
 	}
 
-	private IPDUPowerMonitoringCapability getDriver() throws Exception {
+	private IPDUPowerMonitoringController getDriver() throws Exception {
 		// FIXME CAPABILITY SHOULD NOT INSTANTIATE ITS OWN DRIVER.
 		if (driver == null)
 			driver = instantiateDriver();
@@ -85,7 +85,7 @@ public class PDUPowerMonitoringCapability extends AbstractPDUCapability implemen
 	}
 
 	// FIXME CAPABILITY SHOULD NOT INSTANTIATE ITS OWN DRIVER.
-	private IPDUPowerMonitoringCapability instantiateDriver() throws Exception {
+	private IPDUPowerMonitoringController instantiateDriver() throws Exception {
 
 		String ip = getCapabilityDescriptor().getPropertyValue("pdu.driver.ipaddress");
 		String deliveryId = getCapabilityDescriptor().getPropertyValue("powernet.delivery.id");

@@ -1,7 +1,7 @@
 package org.opennaas.extensions.gim.controller.capabilities;
 
 
-public interface IPDUPowerManagementCapability extends IPDUInventaryCapability {
+public interface IPDUPowerManagementController extends IPDUInventaryController {
 
 	/**
 	 * 

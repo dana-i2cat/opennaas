@@ -5,7 +5,7 @@ package org.opennaas.extensions.gim.controller.capabilities;
  * @author Isart Canyameres Gimenez (i2cat Foundation)
  * 
  */
-public interface IPowerManagementCapability {
+public interface IPowerManagementController {
 
 	/**
 	 * 

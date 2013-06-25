@@ -51,7 +51,6 @@
 						<Bundle-Activator>org.opennaas.extensions.pdu.Activator</Bundle-Activator>
 						<Import-Package>
 							org.slf4j,
-							org.opennaas.extensions.gim.controller;version="${opennaas.gim.version}",
 							org.opennaas.extensions.gim.controller.capabilities;version="${opennaas.gim.version}",
 							org.opennaas.extensions.gim.controller.snmp;version="${opennaas.gim.version}",
 							org.opennaas.extensions.gim.model.core;version="${opennaas.gim.version}",
@@ -63,7 +62,9 @@
 							*
 						</Import-Package>
 						<Export-Package>
-							org.opennaas.extensions.pdu.capability.example;version="${project.version}"
+							org.opennaas.extensions.pdu;version="${project.version}",
+							org.opennaas.extensions.pdu.capability;version="${project.version}",
+							org.opennaas.extensions.pdu.model;version="${project.version}"
 						</Export-Package>
 						</instructions>
 				</configuration>

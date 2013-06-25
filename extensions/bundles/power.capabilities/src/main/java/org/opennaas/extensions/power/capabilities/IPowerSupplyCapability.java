@@ -1,4 +1,4 @@
-package org.opennaas.extensions.pdu.capability;
+package org.opennaas.extensions.power.capabilities;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -7,8 +7,8 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.gim.model.energy.Energy;
 
 @Path("/")
-public interface IPDUPowerSupplyCapability extends ICapability {
-
+public interface IPowerSupplyCapability extends ICapability {
+	
 	@Path("/energy")
 	@GET
 	public Energy getAggregatedEnergy() throws Exception;

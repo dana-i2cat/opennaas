@@ -20,14 +20,9 @@
 			<artifactId>org.opennaas.extensions.gim</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>
@@ -48,7 +43,8 @@
 						<Bundle-Activator>org.opennaas.extensions.powernet.Activator</Bundle-Activator>
 						<Import-Package>org.slf4j,*</Import-Package>
 						<Export-Package>
-							org.opennaas.extensions.powernet.capability.mgt;version="${project.version}"
+							org.opennaas.extensions.powernet.capability.mgt;version="${project.version}",
+							org.opennaas.extensions.powernet.model;version="${project.version}"
 						</Export-Package>
 						</instructions>
 				</configuration>

@@ -5,7 +5,7 @@ import java.util.Date;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
-public interface IPDUPowerMonitoringCapability extends IPDUInventaryCapability {
+public interface IPDUPowerMonitoringController extends IPDUInventaryController {
 
 	/**
 	 * 
