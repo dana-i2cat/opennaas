@@ -107,12 +107,20 @@ public class PDUController extends AbstractPDUPowerController {
 
 	@Override
 	public Energy getAggregatedEnergy() throws Exception {
-		return deliveryController.calculateSourceAggregatedEnergy(deliveryId, null);
+		Energy energy = deliveryController.calculateSourceAggregatedEnergy(deliveryId, null);
+		// TODO update model
+		// for each PowerSource in PDU model
+		// deliveryController.setSourceEnergy(deliveryId, sourceId, energy);
+		return energy;
 	}
 
 	@Override
 	public double getAggregatedPricePerEnergyUnit() throws Exception {
-		return deliveryController.calculateSourceAggregatedEnergyPrice(deliveryId, null);
+		double price = deliveryController.calculateSourceAggregatedEnergyPrice(deliveryId, null);
+		// TODO update model
+		// for each PowerSource in PDU model
+		// deliveryController.setSourceEnergyPrice(deliveryId, sourceId, price);
+		return price;
 	}
 
 	@Override
