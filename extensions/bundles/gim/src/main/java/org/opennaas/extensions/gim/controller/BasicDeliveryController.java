@@ -108,7 +108,9 @@ public class BasicDeliveryController implements IDeliveryController {
 		PowerDelivery delivery = GIMController.getPowerDelivery(model, deliveryId);
 		List<Energy> energies = new ArrayList<Energy>(delivery.getPowerReceptors().size());
 		for (PowerReceptor receptor : delivery.getPowerReceptors()) {
-			energies.add(getReceptorEnergy(deliveryId, receptor.getId()));
+			//ignore not attached receptors
+			if (receptor.getAttachedTo() != null)
+				energies.add(getReceptorEnergy(deliveryId, receptor.getId()));
 		}
 
 		return calculateAggregaredEnergy(energies);
@@ -118,7 +120,9 @@ public class BasicDeliveryController implements IDeliveryController {
 		PowerDelivery delivery = GIMController.getPowerDelivery(model, deliveryId);
 		List<Double> prices = new ArrayList<Double>(delivery.getPowerReceptors().size());
 		for (PowerReceptor receptor : delivery.getPowerReceptors()) {
-			prices.add(getReceptorEnergyPrice(deliveryId, receptor.getId()));
+			//ignore not attached receptors
+			if (receptor.getAttachedTo() != null)
+				prices.add(getReceptorEnergyPrice(deliveryId, receptor.getId()));
 		}
 		return calculateAggregaredEnergyPrice(prices);
 	}
