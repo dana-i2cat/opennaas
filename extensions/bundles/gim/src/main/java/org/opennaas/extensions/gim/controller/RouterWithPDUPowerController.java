@@ -81,6 +81,14 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 
 	@Override
 	public boolean getPowerStatus() throws Exception {
+		//ask pdu for current power status (don't trust last read status)
+		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
+		for (PowerReceptor receptor : receptors) {
+			//ignore not attached receptors
+			if (receptor.getAttachedTo() != null) {
+				pduController.getPowerStatus(receptor.getAttachedTo().getId());
+			}
+		}
 		return consumerController.getPowerStatus(getConsumerId());
 	}
 
