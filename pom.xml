@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.20</version>
+	<version>0.21</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -98,6 +98,7 @@
 		<servicemix.ehcache.version>1.6.2_2</servicemix.ehcache.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
+		<snmp4j.version>2.1.0_1</snmp4j.version>
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<spring.security.version>3.0.8.RELEASE</spring.security.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
@@ -108,6 +109,8 @@
 		<westhawk.snmp.version>4_13</westhawk.snmp.version>
 		<xbean.version>3.9</xbean.version>
 		<xmlschema.version>1.4.7</xmlschema.version>
+		<!-- OpenNaaS extensions versions -->
+		<opennaas.gim.version>0.21</opennaas.gim.version>
 	</properties>
 
 	<dependencyManagement>
@@ -338,7 +341,22 @@
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.vnmapper</artifactId>
 				<version>${project.version}</version>
-			</dependency>			
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.gim</artifactId>
+				<version>${opennaas.gim.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.pdu</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.powernet</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>

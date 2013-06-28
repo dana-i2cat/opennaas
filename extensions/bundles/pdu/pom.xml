@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>org.opennaas.extensions.bundles</artifactId>
+    <groupId>org.opennaas</groupId>
+    <version>0.21</version>
+  </parent>
+  <artifactId>org.opennaas.extensions.pdu</artifactId>
+  	<!--  Maven configuration -->
+  	<modelVersion>4.0.0</modelVersion>
+  	<packaging>bundle</packaging>
+	<name>OpenNaaS :: PDU Resource </name>
+	<description>PDU Resource  Implementation</description>
+ 	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.gim</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.powernet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.karaf.shell</groupId>
+			<artifactId>org.apache.karaf.shell.console</artifactId>
+		</dependency>
+ 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.opennaas.extensions.pdu.Activator</Bundle-Activator>
+						<Import-Package>
+							org.slf4j,
+							org.opennaas.extensions.gim.controller.capabilities;version="${opennaas.gim.version}",
+							org.opennaas.extensions.gim.controller.snmp;version="${opennaas.gim.version}",
+							org.opennaas.extensions.gim.model.core;version="${opennaas.gim.version}",
+							org.opennaas.extensions.gim.model.core.entities;version="${opennaas.gim.version}",
+							org.opennaas.extensions.gim.model.core.entities.pdu;version="${opennaas.gim.version}",
+							org.opennaas.extensions.gim.model.energy;version="${opennaas.gim.version}",
+							org.opennaas.extensions.gim.model.load;version="${opennaas.gim.version}",
+							org.opennaas.extensions.gim.model.log;version="${opennaas.gim.version}",
+							*
+						</Import-Package>
+						<Export-Package>
+							org.opennaas.extensions.pdu;version="${project.version}",
+							org.opennaas.extensions.pdu.capability;version="${project.version}",
+							org.opennaas.extensions.pdu.model;version="${project.version}"
+						</Export-Package>
+						</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

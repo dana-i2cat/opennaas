@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>0.21</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
+	<artifactId>org.opennaas.extensions.gim</artifactId>
+	<version>0.21</version>
+	<name>GIM :: GIModel and APC PDU driver</name>
+	<description>APC PDU driver for GIM model using SNMP</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.snmp4j</artifactId>
+			<version>${snmp4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.opennaas.extensions.gim.Activator</Bundle-Activator>
+						<Import-Package>org.slf4j,*</Import-Package>
+						<Export-Package>
+							org.opennaas.extensions.gim.controller;version="${project.version}",
+							org.opennaas.extensions.gim.controller.capabilities;version="${project.version}",
+							org.opennaas.extensions.gim.controller.snmp;version="${project.version}",
+							org.opennaas.extensions.gim.model;version="${project.version}",
+							org.opennaas.extensions.gim.model.core;version="${project.version}",
+							org.opennaas.extensions.gim.model.core.entities;version="${project.version}",
+							org.opennaas.extensions.gim.model.core.entities.pdu;version="${project.version}",
+							org.opennaas.extensions.gim.model.core.entities.sockets;version="${project.version}",
+							org.opennaas.extensions.gim.model.energy;version="${project.version}",
+							org.opennaas.extensions.gim.model.load;version="${project.version}",
+							org.opennaas.extensions.gim.model.log;version="${project.version}"
+						</Export-Package>
+						</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
