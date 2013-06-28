@@ -53,6 +53,7 @@ public class APCDriverTest {
 	}
 
 	@Test
+	@Ignore
 	public void testPowerMonitorAndSupplyFromRouterController() throws Exception {
 
 		boolean status = routerController.getPowerStatus();
