@@ -70,7 +70,7 @@
 			<security:filter-security-metadata-source>
 				<!-- Require ROLE_USER in all other methods -->
 				<!-- TODO secure WS endpoints dinamically, with roles!! -->
-				<security:intercept-url pattern="/**"
+				<security:intercept-url pattern="/opennaas/**"
 					access="ROLE_USER" />
 			</security:filter-security-metadata-source>
 		</property>
