@@ -1,5 +1,7 @@
 package org.opennaas.extensions.quantum.capability.apiv2;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,7 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.quantum.model.QuantumModel;
+import org.opennaas.extensions.quantum.model.Network;
+import org.opennaas.extensions.quantum.model.Port;
+import org.opennaas.extensions.quantum.model.Subnet;
 
 /**
  * Quantum Networking API v2.0<br />
@@ -29,24 +33,24 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@Path("/networks")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel listNetworks();
+	public List<Network> listNetworks();
 
 	@Path("/networks")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel createNetwork(QuantumModel network);
+	public Network createNetwork(Network network);
 
 	@Path("/networks/{network_id}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel showNetwork(@PathParam("network_id") String networkId);
+	public Network showNetwork(@PathParam("network_id") String networkId);
 
 	@Path("/networks/{network_id}")
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel updateNetwork(@PathParam("network_id") String networkId, QuantumModel updatedNetwork);
+	public Network updateNetwork(@PathParam("network_id") String networkId, Network updatedNetwork);
 
 	@Path("/networks/{network_id}")
 	@DELETE
@@ -57,24 +61,24 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@Path("/ports")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel listPorts();
+	public List<Port> listPorts();
 
 	@Path("/ports")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel createPort(QuantumModel port);
+	public Port createPort(Port port);
 
 	@Path("/ports/{port_id}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel showPort(@PathParam("port_id") String portId);
+	public Port showPort(@PathParam("port_id") String portId);
 
 	@Path("/ports/{port_id}")
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel updatePort(@PathParam("port_id") String portId, QuantumModel updatedPort);
+	public Port updatePort(@PathParam("port_id") String portId, Port updatedPort);
 
 	@Path("/ports/{port_id}")
 	@DELETE
@@ -85,24 +89,24 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@Path("/subnets")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel listSubnets();
+	public List<Subnet> listSubnets();
 
 	@Path("/subnets")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel createSubnet(QuantumModel subnet);
+	public Subnet createSubnet(Subnet subnet);
 
 	@Path("/subnets/{subnet_id}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel showSubnet(@PathParam("subnet_id") String subnetId);
+	public Subnet showSubnet(@PathParam("subnet_id") String subnetId);
 
 	@Path("/subnets/{subnet_id}")
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public QuantumModel updateSubnet(@PathParam("subnet_id") String subnetId, QuantumModel updatedSubnet);
+	public Subnet updateSubnet(@PathParam("subnet_id") String subnetId, Subnet updatedSubnet);
 
 	@Path("/subnets/{subnet_id}")
 	@DELETE

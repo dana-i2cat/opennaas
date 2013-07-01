@@ -2,6 +2,7 @@ package org.opennaas.extensions.quantum.capability.apiv2;
 
 import java.io.IOException;
 import java.util.Dictionary;
+import java.util.List;
 
 import javax.ws.rs.PathParam;
 
@@ -16,7 +17,11 @@ import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.quantum.Activator;
-import org.opennaas.extensions.quantum.model.QuantumModel;
+import org.opennaas.extensions.quantum.capability.extensions.l3.shell.IQuantumL3Capability;
+import org.opennaas.extensions.quantum.model.Network;
+import org.opennaas.extensions.quantum.model.Port;
+import org.opennaas.extensions.quantum.model.Subnet;
+import org.opennaas.extensions.quantum.model.helper.QuantumModelHelper;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -24,7 +29,7 @@ import org.osgi.framework.ServiceRegistration;
  * @author Julio Carlos Barrera
  * 
  */
-public class QuantumAPIV2Capability extends AbstractCapability implements IQuantumAPIV2Capability {
+public class QuantumAPIV2Capability extends AbstractCapability implements IQuantumAPIV2Capability, IQuantumL3Capability {
 
 	public static final String	CAPABILITY_TYPE	= "quantum-apiv2";
 
@@ -92,9 +97,10 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 				props.put("service.exported.interfaces", "*");
 				props.put("service.exported.configs", "org.apache.cxf.rs");
 				props.put("service.exported.intents", "HTTP");
-				props.put("org.apache.cxf.rs.httpservice.context", url + "/" + resourceType + "/" + resourceName + "/" + capabilityName);
+				// props.put("org.apache.cxf.rs.httpservice.context", url + "/" + resourceType + "/" + resourceName + "/" + capabilityName);
+				props.put("org.apache.cxf.rs.httpservice.context", "/");
 				props.put("org.apache.cxf.rs.address", "/");
-				props.put("org.apache.cxf.httpservice.requirefilter", "true");
+				props.put("org.apache.cxf.httpservice.requirefilter", "false");
 				// JSON provider
 				props.put("org.apache.cxf.rs.provider", "org.opennaas.extensions.quantum.utils.CustomJSONProvider");
 			}
@@ -111,97 +117,109 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	// NETWORKS CRUD
 
 	@Override
-	public QuantumModel listNetworks() {
+	public List<Network> listNetworks() {
+		log.debug("Quantum API - listNetworks()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleQuantumModel().getNetworks();
 	}
 
 	@Override
-	public QuantumModel createNetwork(QuantumModel network) {
+	public Network createNetwork(Network network) {
+		log.debug("Quantum API - createNetwork()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleNetwork(0);
 	}
 
 	@Override
-	public QuantumModel showNetwork(@PathParam("network_id") String networkId) {
+	public Network showNetwork(@PathParam("network_id") String networkId) {
+		log.debug("Quantum API - showNetwork()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleNetwork(0);
 	}
 
 	@Override
-	public QuantumModel updateNetwork(@PathParam("network_id") String networkId, QuantumModel updatedNetwork) {
+	public Network updateNetwork(@PathParam("network_id") String networkId, Network updatedNetwork) {
+		log.debug("Quantum API - updateNetwork()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleNetwork(0);
 	}
 
 	@Override
 	public void deleteNetwork(@PathParam("network_id") String networkId) {
+		log.debug("Quantum API - deleteNetwork()");
 		// TODO Auto-generated method stub
-
 	}
 
 	// PORTS CRUD
 
 	@Override
-	public QuantumModel listPorts() {
+	public List<Port> listPorts() {
+		log.debug("Quantum API - listPorts()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleQuantumModel().getNetworks().get(0).getPorts();
 	}
 
 	@Override
-	public QuantumModel createPort(QuantumModel port) {
+	public Port createPort(Port port) {
+		log.debug("Quantum API - createPort()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSamplePort(0, 0);
 	}
 
 	@Override
-	public QuantumModel showPort(@PathParam("port_id") String portId) {
+	public Port showPort(@PathParam("port_id") String portId) {
+		log.debug("Quantum API - showPort()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSamplePort(0, 0);
 	}
 
 	@Override
-	public QuantumModel updatePort(@PathParam("port_id") String portId, QuantumModel updatedPort) {
+	public Port updatePort(@PathParam("port_id") String portId, Port updatedPort) {
+		log.debug("Quantum API - updatePort()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSamplePort(0, 0);
 	}
 
 	@Override
 	public void removePort(@PathParam("port_id") String portId) {
+		log.debug("Quantum API - removePort()");
 		// TODO Auto-generated method stub
-
 	}
 
 	// SUBNETS CRUD
 
 	@Override
-	public QuantumModel listSubnets() {
+	public List<Subnet> listSubnets() {
+		log.debug("Quantum API - listSubnets()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleQuantumModel().getNetworks().get(0).getSubnets();
 	}
 
 	@Override
-	public QuantumModel createSubnet(QuantumModel subnet) {
+	public Subnet createSubnet(Subnet subnet) {
+		log.debug("Quantum API - createSubnet()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleSubnet(0, 0);
 	}
 
 	@Override
-	public QuantumModel showSubnet(@PathParam("subnet_id") String subnetId) {
+	public Subnet showSubnet(@PathParam("subnet_id") String subnetId) {
+		log.debug("Quantum API - showSubnet()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleSubnet(0, 0);
 	}
 
 	@Override
-	public QuantumModel updateSubnet(@PathParam("subnet_id") String subnetId, QuantumModel updatedSubnet) {
+	public Subnet updateSubnet(@PathParam("subnet_id") String subnetId, Subnet updatedSubnet) {
+		log.debug("Quantum API - updateSubnet()");
 		// TODO Auto-generated method stub
-		return null;
+		return QuantumModelHelper.generateSampleSubnet(0, 0);
 	}
 
 	@Override
 	public void removeSubnet(@PathParam("subnet_id") String subnetId) {
+		log.debug("Quantum API - removeSubnet()");
 		// TODO Auto-generated method stub
-
 	}
 
 }
