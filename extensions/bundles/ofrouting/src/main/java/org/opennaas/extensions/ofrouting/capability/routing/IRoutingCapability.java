@@ -28,10 +28,10 @@ public interface IRoutingCapability extends ICapability {
     @Path("/getPath/{ipSource}/{ipDest}/{switchip}/{inputPort}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getPath(@PathParam("ipSource") String ipSource,
+    public int getPath(@PathParam("ipSource") String ipSource,
             @PathParam("ipDest") String ipDest,
             @PathParam("switchip") String switchip,
-            @PathParam("inputPort") String inputPort
+            @PathParam("inputPort") int inputPort
             ) throws CapabilityException;
 
     /**
@@ -39,13 +39,14 @@ public interface IRoutingCapability extends ICapability {
      * 
      * @throws CapabilityException
      */
-    @Path("/getSubPath/{ipSource}/{ipDest}/{switchip}/{inputPort}")
+    @Path("/getSubPath/{ipSource}/{ipDest}/{switchip}/{inputPort}/{action}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getSubPath(@PathParam("ipSource") String ipSource,
             @PathParam("ipDest") String ipDest,
             @PathParam("switchip") String switchip,
-            @PathParam("inputPort") String inputPort
+            @PathParam("inputPort") int inputPort,
+            @PathParam("proactive") boolean proactive
             ) throws CapabilityException;
 
     /**
@@ -71,8 +72,8 @@ public interface IRoutingCapability extends ICapability {
     public String putRoute(@FormParam("ipSource") String ipSource,
             @FormParam("ipDest") String ipDest,
             @FormParam("switchMac") String switchMac,
-            @FormParam("inputPort") String inputPort,
-            @FormParam("inputPort") String outputPort) throws CapabilityException;
+            @FormParam("inputPort") int inputPort,
+            @FormParam("inputPort") int outputPort) throws CapabilityException;
 
     /**
      * Insert new route
@@ -86,8 +87,8 @@ public interface IRoutingCapability extends ICapability {
     public String putSubRoute(@FormParam("ipSource") String ipSource,
             @FormParam("ipDest") String ipDest,
             @FormParam("switchMac") String switchMac,
-            @FormParam("inputPort") String inputPort,
-            @FormParam("inputPort") String outputPort) throws CapabilityException;
+            @FormParam("inputPort") int inputPort,
+            @FormParam("inputPort") int outputPort) throws CapabilityException;
 
     /**
      * Update route
@@ -117,4 +118,16 @@ public interface IRoutingCapability extends ICapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getControllersInfo() throws CapabilityException;
+    
+    /**
+     * Insert Routes from file
+     * 
+     * return json with the list of routes
+     * @throws CapabilityException
+     */
+    @Path("/insertRouteFromFile/{fileName}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String insertRouteFile(@PathParam("fileName") String ipSource) throws CapabilityException;
+    
 }

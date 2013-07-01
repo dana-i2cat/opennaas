@@ -11,18 +11,21 @@ public class Switch {
 
     private int numberPorts;
     private List<String> listPorts = new ArrayList<String>();
-    private String inputPort;
-    private String outputPort;
+    private int inputPort;
+    private int outputPort;
     private String macAddress;
 
-    public Switch(String port, String inputPort, String outputPort, String macAddress) {
+    public Switch(){
+        
+    }
+    public Switch(String port, int inputPort, int outputPort, String macAddress) {
         listPorts.add(port);
         this.inputPort = inputPort;
         this.outputPort = outputPort;
         this.macAddress = macAddress;
     }
 
-    public Switch(String inputPort, String macAddress) {
+    public Switch(int inputPort, String macAddress) {
         this.inputPort = inputPort;
         this.macAddress = macAddress;
     }
@@ -51,19 +54,19 @@ public class Switch {
         this.numberPorts = numberPorts;
     }
 
-    public String getInputPort() {
+    public int getInputPort() {
         return inputPort;
     }
 
-    public void setInputPort(String inputPort) {
+    public void setInputPort(int inputPort) {
         this.inputPort = inputPort;
     }
 
-    public String getOutputPort() {
+    public int getOutputPort() {
         return outputPort;
     }
 
-    public void setOutputPort(String outputPort) {
+    public void setOutputPort(int outputPort) {
         this.outputPort = outputPort;
     }
 
@@ -76,7 +79,10 @@ public class Switch {
             return false;
         }
         final Switch other = (Switch) obj;
-        if ((this.inputPort == null) ? (other.inputPort != null) : !this.inputPort.equals(other.inputPort)) {
+        if (this.inputPort != other.inputPort) {
+            return false;
+        }
+        if (this.outputPort != other.outputPort) {
             return false;
         }
         if ((this.macAddress == null) ? (other.macAddress != null) : !this.macAddress.equals(other.macAddress)) {

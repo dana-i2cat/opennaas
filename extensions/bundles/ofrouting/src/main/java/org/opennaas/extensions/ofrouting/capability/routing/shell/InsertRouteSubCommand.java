@@ -23,9 +23,9 @@ public class InsertRouteSubCommand extends GenericKarafCommand {
     @Argument(index = 3, name = "switchMac", description = "Mac of the Switch", required = true, multiValued = false)
     private String switchMac;
     @Argument(index = 4, name = "inputPort", description = "Input Port of the Switch.", required = true, multiValued = false)
-    private String inputPort;
+    private int inputPort;
     @Argument(index = 5, name = "outputPort", description = "Output Port of the Switch.", required = true, multiValued = false)
-    private String outputPort;
+    private int outputPort;
 
     @Override
     protected Object doExecute() throws Exception {

@@ -23,18 +23,18 @@ public class InsertRouteCommand extends GenericKarafCommand {
     @Argument(index = 3, name = "switchMac", description = "Mac of the Switch", required = true, multiValued = false)
     private String switchMac;
     @Argument(index = 4, name = "inputPort", description = "Input Port of the Switch.", required = true, multiValued = false)
-    private String inputPort;
+    private int inputPort;
     @Argument(index = 5, name = "outputPort", description = "Output Port of the Switch.", required = true, multiValued = false)
-    private String outputPort;
+    private int outputPort;
 
     @Override
     protected Object doExecute() throws Exception {
-        printInitCommand("Get Path");
+        printInitCommand("Insert Route");
         try {
             IResource resource = getResourceFromFriendlyName(resourceName);
             RoutingCapability capab = (RoutingCapability) resource.getCapabilityByType("routing");
             String greeting = capab.putRoute(ipSource, ipDest, switchMac, inputPort, outputPort);
-            printInfo("The outputport is: " + greeting);
+            printInfo("Inserting... " + greeting);
         } catch (Exception e) {
             printError("Error greeting from resource " + resourceName);
             printError(e);
