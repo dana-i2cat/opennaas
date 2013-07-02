@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.Port;
@@ -39,7 +40,7 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Network createNetwork(Network network);
+	public Network createNetwork(Network network) throws CapabilityException;
 
 	@Path("/networks/{network_id}")
 	@GET

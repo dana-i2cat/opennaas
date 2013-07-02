@@ -26,6 +26,8 @@ public class Network implements HasId, HasTenant {
 	private Boolean			admin_state_up;
 	private Boolean			shared;
 
+	private String			gateway;
+
 	@Override
 	public String getId() {
 		return id;
@@ -92,6 +94,14 @@ public class Network implements HasId, HasTenant {
 		this.shared = shared;
 	}
 
+	public String getGateway() {
+		return gateway;
+	}
+
+	public void setGateway(String gateway) {
+		this.gateway = gateway;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -116,6 +126,8 @@ public class Network implements HasId, HasTenant {
 		if (!admin_state_up.equals(other.isAdmin_state_up()))
 			return false;
 		if (!shared.equals(other.isShared()))
+			return false;
+		if (!gateway.equals(other.getGateway()))
 			return false;
 		return true;
 	}
