@@ -15,7 +15,7 @@
 	<!-- from https://josh.media.berkeley.edu/?p=61 -->
 	<bean id="mySecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
 		<security:filter-chain-map path-type="ant">
-			<security:filter-chain pattern="/**"
+			<security:filter-chain pattern="/opennaas/**"
 				filters="securityContextPersistenceFilterWithASCFalseSkippingClearContext,
 				basicAuthenticationFilter,
 				exceptionTranslationFilter,
