@@ -35,6 +35,14 @@ public class QuantumModel implements IModel {
 	@XmlAttribute
 	private List<FloatingIP>	floatingIPs;
 
+	public QuantumModel() {
+		networks = new ArrayList<Network>();
+		ports = new ArrayList<Port>();
+		subnets = new ArrayList<Subnet>();
+		routers = new ArrayList<Router>();
+		floatingIPs = new ArrayList<FloatingIP>();
+	}
+
 	public List<Network> getNetworks() {
 		return networks;
 	}

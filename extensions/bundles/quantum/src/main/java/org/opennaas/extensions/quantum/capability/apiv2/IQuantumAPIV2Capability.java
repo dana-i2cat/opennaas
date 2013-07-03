@@ -36,11 +36,11 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Network> listNetworks();
 
-	@Path("/networks")
+	@Path("/tenants/{tenant_id}/networks")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Network createNetwork(Network network) throws CapabilityException;
+	public Network createNetwork(@PathParam("tenant_id") String tenant_id, Network network) throws CapabilityException;
 
 	@Path("/networks/{network_id}")
 	@GET
@@ -55,7 +55,7 @@ public interface IQuantumAPIV2Capability extends ICapability {
 
 	@Path("/networks/{network_id}")
 	@DELETE
-	public void deleteNetwork(@PathParam("network_id") String networkId);
+	public void deleteNetwork(@PathParam("network_id") String networkId) throws CapabilityException;
 
 	// PORTS CRUD
 

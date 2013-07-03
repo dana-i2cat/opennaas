@@ -109,7 +109,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 				props.put("service.exported.configs", "org.apache.cxf.rs");
 				props.put("service.exported.intents", "HTTP");
 				// props.put("org.apache.cxf.rs.httpservice.context", url + "/" + resourceType + "/" + resourceName + "/" + capabilityName);
-				props.put("org.apache.cxf.rs.httpservice.context", "/");
+				props.put("org.apache.cxf.rs.httpservice.context", "/networkService/v1.1");
 				props.put("org.apache.cxf.rs.address", "/");
 				props.put("org.apache.cxf.httpservice.requirefilter", "false");
 				// JSON provider
@@ -135,7 +135,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public Network createNetwork(Network network) throws CapabilityException {
+	public Network createNetwork(String tenant_id, Network network) throws CapabilityException {
 
 		log.info("Quantum API - Create Network request received.");
 
@@ -177,9 +177,27 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public void deleteNetwork(@PathParam("network_id") String networkId) {
+	public void deleteNetwork(@PathParam("network_id") String networkId) throws CapabilityException {
 		log.debug("Quantum API - deleteNetwork()");
-		// TODO Auto-generated method stub
+
+		try {
+
+			IResource quantumResource = getResource();
+			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
+
+			controller.removeNetwork(quantumModel, networkId);
+
+		} catch (ActivatorException ae) {
+			log.error("Error creating Quantum network - ", ae);
+			throw new CapabilityException(ae);
+		} catch (ResourceException re) {
+			log.error("Error creating Quantum network - ", re);
+			throw new CapabilityException(re);
+		} catch (QuantumException qe) {
+			throw new CapabilityException(qe);
+		}
+
+		log.info("Quantum API - Network created.");
 	}
 
 	// PORTS CRUD

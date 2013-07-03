@@ -24,4 +24,26 @@ public class QuantumModelController {
 		log.debug("Network " + network.getName() + " added to Quantum model.");
 
 	}
+
+	public void removeNetwork(QuantumModel quantumModel, String networkId) throws QuantumException {
+
+		log.debug("Trying to remove network " + networkId + " from Quantum model.");
+
+		Network network = getNetwork(quantumModel, networkId);
+
+		if (network == null)
+			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
+
+		quantumModel.getNetworks().remove(network);
+
+	}
+
+	private Network getNetwork(QuantumModel quantumModel, String networkId) {
+
+		for (Network network : quantumModel.getNetworks())
+			if (network.getId().equals(networkId))
+				return network;
+
+		return null;
+	}
 }
