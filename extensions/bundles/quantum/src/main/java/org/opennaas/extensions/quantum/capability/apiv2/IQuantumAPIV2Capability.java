@@ -47,11 +47,12 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Network showNetwork(@PathParam("network_id") String networkId);
 
-	@Path("/networks/{network_id}")
+	@Path("/tenants/{tenant_id}/networks/{network_id}")
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Network updateNetwork(@PathParam("network_id") String networkId, Network updatedNetwork);
+	public Network updateNetwork(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, Network updatedNetwork)
+			throws CapabilityException;
 
 	@Path("/tenants/{tenant_id}/networks/{network_id}")
 	@DELETE

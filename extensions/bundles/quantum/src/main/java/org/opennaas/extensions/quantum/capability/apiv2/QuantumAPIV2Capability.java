@@ -157,7 +157,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			throw new CapabilityException(qe);
 		}
 
-		log.info("Quantum API - Network created.");
+		log.info("Quantum API - Network " + network.getId() + " created.");
 
 		return network;
 
@@ -171,15 +171,32 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public Network updateNetwork(@PathParam("network_id") String networkId, Network updatedNetwork) {
-		log.debug("Quantum API - updateNetwork()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleNetwork(0);
+	public Network updateNetwork(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, Network updatedNetwork)
+			throws CapabilityException {
+		log.info("Quantum API - Update network " + networkId + " request received.");
+		try {
+
+			IResource quantumResource = getResource();
+			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
+
+			controller.updateNetwork(networkId, quantumModel, updatedNetwork);
+
+		} catch (ActivatorException ae) {
+			log.error("Error creating Quantum network - ", ae);
+			throw new CapabilityException(ae);
+		} catch (ResourceException re) {
+			log.error("Error creating Quantum network - ", re);
+			throw new CapabilityException(re);
+		} catch (QuantumException qe) {
+			throw new CapabilityException(qe);
+		}
+
+		return updatedNetwork;
 	}
 
 	@Override
 	public void deleteNetwork(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId) throws CapabilityException {
-		log.debug("Quantum API - deleteNetwork()");
+		log.info("Quantum API - Delete network " + networkId + " request received");
 
 		try {
 
@@ -199,7 +216,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			throw new CapabilityException(qe);
 		}
 
-		log.info("Quantum API - Network removed.");
+		log.info("Quantum API - Network " + networkId + " removed.");
 	}
 
 	// PORTS CRUD
