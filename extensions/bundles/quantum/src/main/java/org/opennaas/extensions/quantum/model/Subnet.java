@@ -1,5 +1,6 @@
 package org.opennaas.extensions.quantum.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -37,10 +38,16 @@ public class Subnet implements HasId, HasTenant {
 	private Boolean					shared;
 
 	public Subnet() {
+		allocation_pools = new ArrayList<IPAllocationPool>();
+		dns_nameservers = new ArrayList<DNSNameServer>();
+		routes = new ArrayList<SubnetRoute>();
 	}
 
 	public Subnet(String id) {
 		this.id = id;
+		allocation_pools = new ArrayList<IPAllocationPool>();
+		dns_nameservers = new ArrayList<DNSNameServer>();
+		routes = new ArrayList<SubnetRoute>();
 	}
 
 	@Override

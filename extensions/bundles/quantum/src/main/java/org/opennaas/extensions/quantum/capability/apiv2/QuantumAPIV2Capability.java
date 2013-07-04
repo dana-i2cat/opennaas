@@ -33,6 +33,7 @@ import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello (i2CAT)
  * 
  */
 public class QuantumAPIV2Capability extends AbstractCapability implements IQuantumAPIV2Capability, IQuantumL3Capability {
@@ -135,7 +136,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public Network createNetwork(String tenant_id, Network network) throws CapabilityException {
+	public Network createNetwork(String tenantId, Network network) throws CapabilityException {
 
 		log.info("Quantum API - Create Network request received.");
 
@@ -177,7 +178,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public void deleteNetwork(@PathParam("network_id") String networkId) throws CapabilityException {
+	public void deleteNetwork(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId) throws CapabilityException {
 		log.debug("Quantum API - deleteNetwork()");
 
 		try {
@@ -194,10 +195,11 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			log.error("Error creating Quantum network - ", re);
 			throw new CapabilityException(re);
 		} catch (QuantumException qe) {
+			log.error("Error creating Quantum network - ", qe);
 			throw new CapabilityException(qe);
 		}
 
-		log.info("Quantum API - Network created.");
+		log.info("Quantum API - Network removed.");
 	}
 
 	// PORTS CRUD

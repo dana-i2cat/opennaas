@@ -1,5 +1,6 @@
 package org.opennaas.extensions.quantum.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,6 +28,12 @@ public class Port implements HasId, HasTenant {
 	private String				status;
 	private String				device_id;
 	private String				device_owner;
+
+	public Port() {
+
+		fixed_ips = new ArrayList<IPAllocation>();
+
+	}
 
 	@Override
 	public String getId() {

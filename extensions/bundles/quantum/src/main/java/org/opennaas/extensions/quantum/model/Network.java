@@ -1,5 +1,6 @@
 package org.opennaas.extensions.quantum.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,6 +28,11 @@ public class Network implements HasId, HasTenant {
 	private Boolean			shared;
 
 	private String			gateway;
+
+	public Network() {
+		ports = new ArrayList<Port>();
+		subnets = new ArrayList<Subnet>();
+	}
 
 	@Override
 	public String getId() {

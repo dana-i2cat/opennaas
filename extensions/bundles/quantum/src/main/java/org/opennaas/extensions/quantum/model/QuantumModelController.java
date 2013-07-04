@@ -6,6 +6,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.extensions.quantum.QuantumException;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 public class QuantumModelController {
 
 	private Log	log	= LogFactory.getLog(QuantumModelController.class);
@@ -34,7 +39,24 @@ public class QuantumModelController {
 		if (network == null)
 			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
 
+		removeNetworkSubnets(quantumModel, network);
+		removeNetworkPorts(quantumModel, network);
+
 		quantumModel.getNetworks().remove(network);
+
+	}
+
+	private void removeNetworkSubnets(QuantumModel quantumModel, Network network) {
+
+		for (Subnet net : network.getSubnets())
+			quantumModel.getPorts().remove(net);
+
+	}
+
+	private void removeNetworkPorts(QuantumModel quantumModel, Network network) {
+
+		for (Port port : network.getPorts())
+			quantumModel.getPorts().remove(port);
 
 	}
 
@@ -46,4 +68,5 @@ public class QuantumModelController {
 
 		return null;
 	}
+
 }

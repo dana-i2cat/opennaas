@@ -1,5 +1,6 @@
 package org.opennaas.extensions.quantum.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -25,6 +26,10 @@ public class IPAllocationPool implements HasId {
 	@XmlElement(name = "end")
 	private String						last_ip;
 	private List<IPAvailabilityRange>	available_ranges;
+
+	public IPAllocationPool() {
+		available_ranges = new ArrayList<IPAvailabilityRange>();
+	}
 
 	@Override
 	public String getId() {
