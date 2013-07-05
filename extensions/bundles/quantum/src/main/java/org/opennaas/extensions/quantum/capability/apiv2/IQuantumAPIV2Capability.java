@@ -65,22 +65,23 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Port> listPorts();
 
-	@Path("/ports")
+	@Path("/tenants/{tenant_id}/networks/{network_id}/ports")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Port createPort(Port port);
+	public Port createPort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, Port port) throws CapabilityException;
 
 	@Path("/ports/{port_id}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Port showPort(@PathParam("port_id") String portId);
 
-	@Path("/ports/{port_id}")
+	@Path("/tenants/{tenant_id}/networks/{network_id}/ports/{port_id}")
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Port updatePort(@PathParam("port_id") String portId, Port updatedPort);
+	public Port updatePort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, @PathParam("port_id") String portId,
+			Port updatedPort) throws CapabilityException;
 
 	@Path("/ports/{port_id}")
 	@DELETE

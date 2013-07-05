@@ -70,12 +70,64 @@ public class QuantumModelController {
 		if (originalNetwork == null)
 			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
 
-		if (!originalNetwork.equals(updatedNetwork)) {
-			quantumModel.getNetworks().remove(originalNetwork);
-			quantumModel.getNetworks().add(updatedNetwork);
-		}
+		quantumModel.getNetworks().remove(originalNetwork);
+
+		quantumModel.getNetworks().add(updatedNetwork);
 
 		log.debug("Network " + networkId + " successfully removed from Quantum model.");
+	}
+
+	public void createPort(QuantumModel quantumModel, String networkId, Port newPort) throws QuantumException {
+		log.debug("Trying to create port " + newPort.getId() + " from network " + networkId);
+
+		Network network = getNetwork(quantumModel, networkId);
+
+		if (network == null)
+			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
+
+		network.getPorts().add(newPort);
+
+		log.debug("Port " + newPort.getId() + " from network " + networkId + " updated.");
+
+	}
+
+	/**
+	 * Update or create a new port instance in network's port list.
+	 * 
+	 * @FIXME Even though this method is called by the client with a PUT method, we create a new port here because BigSwitch plugin tries to update a
+	 *        new port without using the POST method.
+	 * 
+	 * @param quantumModel
+	 * @param networkId
+	 * @param updatedPort
+	 * @throws QuantumException
+	 */
+	public void updatePort(QuantumModel quantumModel, String networkId, Port updatedPort) throws QuantumException {
+
+		log.debug("Trying to update port " + updatedPort.getId() + " from network " + networkId);
+
+		Network network = getNetwork(quantumModel, networkId);
+
+		if (network == null)
+			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
+
+		Port originalPort = getNetworkPortFromId(network, updatedPort.getId());
+		if (originalPort != null)
+			network.getPorts().remove(originalPort);
+
+		network.getPorts().add(updatedPort);
+
+		log.debug("Port " + updatedPort.getId() + " from network " + networkId + " updated.");
+
+	}
+
+	private Port getNetworkPortFromId(Network network, String portId) {
+
+		for (Port port : network.getPorts())
+			if (port.getId().equals(portId))
+				return port;
+
+		return null;
 	}
 
 	private void removeNetworkSubnets(QuantumModel quantumModel, Network network) {

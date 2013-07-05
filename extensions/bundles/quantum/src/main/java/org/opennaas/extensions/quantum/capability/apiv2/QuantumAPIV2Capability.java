@@ -229,10 +229,30 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public Port createPort(Port port) {
-		log.debug("Quantum API - createPort()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSamplePort(0, 0);
+	public Port createPort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, Port port) throws CapabilityException {
+		log.info("Quantum API - Creating port request received.");
+
+		try {
+
+			IResource quantumResource = getResource();
+			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
+
+			controller.createPort(quantumModel, networkId, port);
+
+		} catch (ActivatorException ae) {
+			log.error("Error updating Quantum port - ", ae);
+			throw new CapabilityException(ae);
+		} catch (ResourceException re) {
+			log.error("Error updating Quantum port - ", re);
+			throw new CapabilityException(re);
+		} catch (QuantumException qe) {
+			log.error("Error updating Quantum port - ", qe);
+			throw new CapabilityException(qe);
+		}
+
+		log.info("Quantum API - Port created in Quantum model.");
+
+		return port;
 	}
 
 	@Override
@@ -243,10 +263,29 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public Port updatePort(@PathParam("port_id") String portId, Port updatedPort) {
-		log.debug("Quantum API - updatePort()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSamplePort(0, 0);
+	public Port updatePort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, @PathParam("port_id") String portId,
+			Port updatedPort) throws CapabilityException {
+		log.info("Quantum API - Updating port " + portId + " from network " + networkId);
+
+		try {
+
+			IResource quantumResource = getResource();
+			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
+
+			controller.updatePort(quantumModel, networkId, updatedPort);
+
+		} catch (ActivatorException ae) {
+			log.error("Error updating Quantum port - ", ae);
+			throw new CapabilityException(ae);
+		} catch (ResourceException re) {
+			log.error("Error updating Quantum port - ", re);
+			throw new CapabilityException(re);
+		} catch (QuantumException qe) {
+			log.error("Error updating Quantum port - ", qe);
+			throw new CapabilityException(qe);
+		}
+
+		return updatedPort;
 	}
 
 	@Override
