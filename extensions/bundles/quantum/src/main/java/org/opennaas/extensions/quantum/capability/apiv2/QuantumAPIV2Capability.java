@@ -2,7 +2,6 @@ package org.opennaas.extensions.quantum.capability.apiv2;
 
 import java.io.IOException;
 import java.util.Dictionary;
-import java.util.List;
 
 import javax.ws.rs.PathParam;
 
@@ -27,7 +26,6 @@ import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.Port;
 import org.opennaas.extensions.quantum.model.QuantumModel;
 import org.opennaas.extensions.quantum.model.QuantumModelController;
-import org.opennaas.extensions.quantum.model.helper.QuantumModelHelper;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -129,13 +127,6 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	// NETWORKS CRUD
 
 	@Override
-	public List<Network> listNetworks() {
-		log.debug("Quantum API - listNetworks()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleQuantumModel().getNetworks();
-	}
-
-	@Override
 	public Network createNetwork(String tenantId, Network network) throws CapabilityException {
 
 		log.info("Quantum API - Create Network request received.");
@@ -161,13 +152,6 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 
 		return network;
 
-	}
-
-	@Override
-	public Network showNetwork(@PathParam("network_id") String networkId) {
-		log.debug("Quantum API - showNetwork()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleNetwork(0);
 	}
 
 	@Override
@@ -222,13 +206,6 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	// PORTS CRUD
 
 	@Override
-	public List<Port> listPorts() {
-		log.debug("Quantum API - listPorts()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleQuantumModel().getNetworks().get(0).getPorts();
-	}
-
-	@Override
 	public Port createPort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, Port port) throws CapabilityException {
 		log.info("Quantum API - Creating port request received.");
 
@@ -253,13 +230,6 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 		log.info("Quantum API - Port created in Quantum model.");
 
 		return port;
-	}
-
-	@Override
-	public Port showPort(@PathParam("port_id") String portId) {
-		log.debug("Quantum API - showPort()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSamplePort(0, 0);
 	}
 
 	@Override
@@ -318,15 +288,6 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 		log.info("Quantum API - Port removed.");
 	}
 
-	private IResource getResource() throws ResourceException, ActivatorException {
-		IResourceManager resourceManager = getResourceManager();
-		return resourceManager.getResourceById(resourceId);
-	}
-
-	private IResourceManager getResourceManager() throws ActivatorException {
-		return Activator.getResourceManagerService();
-	}
-
 	@Override
 	public Attachment createAttachment(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId,
 			@PathParam("port_id") String portId, Attachment attachment) throws CapabilityException {
@@ -368,6 +329,15 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			@PathParam("port_id") String portId, @PathParam("attachment_id") String attachmentId) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private IResource getResource() throws ResourceException, ActivatorException {
+		IResourceManager resourceManager = getResourceManager();
+		return resourceManager.getResourceById(resourceId);
+	}
+
+	private IResourceManager getResourceManager() throws ActivatorException {
+		return Activator.getResourceManagerService();
 	}
 
 }

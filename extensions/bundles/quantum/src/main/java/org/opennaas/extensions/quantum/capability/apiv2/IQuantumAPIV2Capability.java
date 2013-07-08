@@ -1,10 +1,7 @@
 package org.opennaas.extensions.quantum.capability.apiv2;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -31,21 +28,11 @@ public interface IQuantumAPIV2Capability extends ICapability {
 
 	// NETWORKS CRUD
 
-	@Path("/networks")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Network> listNetworks();
-
 	@Path("/tenants/{tenant_id}/networks")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Network createNetwork(@PathParam("tenant_id") String tenantId, Network network) throws CapabilityException;
-
-	@Path("/networks/{network_id}")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Network showNetwork(@PathParam("network_id") String networkId);
 
 	@Path("/tenants/{tenant_id}/networks/{network_id}")
 	@PUT
@@ -60,21 +47,11 @@ public interface IQuantumAPIV2Capability extends ICapability {
 
 	// PORTS CRUD
 
-	@Path("/ports")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Port> listPorts();
-
 	@Path("/tenants/{tenant_id}/networks/{network_id}/ports")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Port createPort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, Port port) throws CapabilityException;
-
-	@Path("/ports/{port_id}")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Port showPort(@PathParam("port_id") String portId);
 
 	@Path("/tenants/{tenant_id}/networks/{network_id}/ports/{port_id}")
 	@PUT
