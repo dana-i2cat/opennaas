@@ -17,7 +17,6 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.quantum.model.Attachment;
 import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.Port;
-import org.opennaas.extensions.quantum.model.Subnet;
 
 /**
  * Quantum Networking API v2.0<br />
@@ -84,37 +83,10 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	public Port updatePort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, @PathParam("port_id") String portId,
 			Port updatedPort) throws CapabilityException;
 
-	@Path("/ports/{port_id}")
+	@Path("/tenants/{tenant_id}/networks/{network_id}/ports/{port_id}")
 	@DELETE
-	public void removePort(@PathParam("port_id") String portId);
-
-	// SUBNETS CRUD
-
-	@Path("/subnets")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Subnet> listSubnets();
-
-	@Path("/subnets")
-	@POST
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Subnet createSubnet(Subnet subnet);
-
-	@Path("/subnets/{subnet_id}")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Subnet showSubnet(@PathParam("subnet_id") String subnetId);
-
-	@Path("/subnets/{subnet_id}")
-	@PUT
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Subnet updateSubnet(@PathParam("subnet_id") String subnetId, Subnet updatedSubnet);
-
-	@Path("/subnets/{subnet_id}")
-	@DELETE
-	public void removeSubnet(@PathParam("subnet_id") String subnetId);
+	public void removePort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, @PathParam("port_id") String portId)
+			throws CapabilityException;
 
 	// ATTACHMENTS CRUD
 

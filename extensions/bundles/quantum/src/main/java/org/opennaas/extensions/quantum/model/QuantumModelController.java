@@ -121,6 +121,25 @@ public class QuantumModelController {
 
 	}
 
+	public void removePort(QuantumModel quantumModel, String networkId, String portId) throws QuantumException {
+
+		log.debug("Trying to remove port " + portId + " from network " + networkId);
+
+		Network network = getNetwork(quantumModel, networkId);
+
+		if (network == null)
+			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
+
+		Port portToRemove = getNetworkPortFromId(network, portId);
+		if (portToRemove == null)
+			throw new QuantumException("Network " + networkId + " does not contain port " + portId);
+
+		network.getPorts().remove(portToRemove);
+
+		log.debug("Port " + portId + " from network " + networkId + " removed.");
+
+	}
+
 	public void updateAttachment(QuantumModel quantumModel, String networkId, String portId, Attachment attachment) throws QuantumException {
 
 		log.debug("Creating attachment for port " + portId + " in network " + networkId);

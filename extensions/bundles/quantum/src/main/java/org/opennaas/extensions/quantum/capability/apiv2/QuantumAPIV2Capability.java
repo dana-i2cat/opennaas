@@ -27,7 +27,6 @@ import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.Port;
 import org.opennaas.extensions.quantum.model.QuantumModel;
 import org.opennaas.extensions.quantum.model.QuantumModelController;
-import org.opennaas.extensions.quantum.model.Subnet;
 import org.opennaas.extensions.quantum.model.helper.QuantumModelHelper;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -293,45 +292,30 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	}
 
 	@Override
-	public void removePort(@PathParam("port_id") String portId) {
-		log.debug("Quantum API - removePort()");
-		// TODO Auto-generated method stub
-	}
+	public void removePort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, @PathParam("port_id") String portId)
+			throws CapabilityException {
 
-	// SUBNETS CRUD
+		log.info("Quantum API - Remove port request received");
 
-	@Override
-	public List<Subnet> listSubnets() {
-		log.debug("Quantum API - listSubnets()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleQuantumModel().getNetworks().get(0).getSubnets();
-	}
+		try {
 
-	@Override
-	public Subnet createSubnet(Subnet subnet) {
-		log.debug("Quantum API - createSubnet()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleSubnet(0, 0);
-	}
+			IResource quantumResource = getResource();
+			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
 
-	@Override
-	public Subnet showSubnet(@PathParam("subnet_id") String subnetId) {
-		log.debug("Quantum API - showSubnet()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleSubnet(0, 0);
-	}
+			controller.removePort(quantumModel, networkId, portId);
 
-	@Override
-	public Subnet updateSubnet(@PathParam("subnet_id") String subnetId, Subnet updatedSubnet) {
-		log.debug("Quantum API - updateSubnet()");
-		// TODO Auto-generated method stub
-		return QuantumModelHelper.generateSampleSubnet(0, 0);
-	}
+		} catch (ActivatorException ae) {
+			log.error("Error updating Quantum port - ", ae);
+			throw new CapabilityException(ae);
+		} catch (ResourceException re) {
+			log.error("Error updating Quantum port - ", re);
+			throw new CapabilityException(re);
+		} catch (QuantumException qe) {
+			log.error("Error updating Quantum port - ", qe);
+			throw new CapabilityException(qe);
+		}
 
-	@Override
-	public void removeSubnet(@PathParam("subnet_id") String subnetId) {
-		log.debug("Quantum API - removeSubnet()");
-		// TODO Auto-generated method stub
+		log.info("Quantum API - Port removed.");
 	}
 
 	private IResource getResource() throws ResourceException, ActivatorException {
