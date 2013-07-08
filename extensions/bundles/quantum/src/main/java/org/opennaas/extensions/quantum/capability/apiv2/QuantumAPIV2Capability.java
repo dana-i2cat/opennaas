@@ -22,6 +22,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.quantum.Activator;
 import org.opennaas.extensions.quantum.QuantumException;
 import org.opennaas.extensions.quantum.capability.extensions.l3.shell.IQuantumL3Capability;
+import org.opennaas.extensions.quantum.model.Attachment;
 import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.Port;
 import org.opennaas.extensions.quantum.model.QuantumModel;
@@ -265,6 +266,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	@Override
 	public Port updatePort(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId, @PathParam("port_id") String portId,
 			Port updatedPort) throws CapabilityException {
+
 		log.info("Quantum API - Updating port " + portId + " from network " + networkId);
 
 		try {
@@ -284,6 +286,8 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			log.error("Error updating Quantum port - ", qe);
 			throw new CapabilityException(qe);
 		}
+
+		log.info("Quantum API - Port updated.");
 
 		return updatedPort;
 	}
@@ -337,6 +341,49 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 
 	private IResourceManager getResourceManager() throws ActivatorException {
 		return Activator.getResourceManagerService();
+	}
+
+	@Override
+	public Attachment createAttachment(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId,
+			@PathParam("port_id") String portId, Attachment attachment) throws CapabilityException {
+		// TODO Auto-generated method stub
+
+		return attachment;
+	}
+
+	@Override
+	public Attachment updateAttachment(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId,
+			@PathParam("port_id") String portId, Attachment attachment) throws CapabilityException {
+		log.info("Quantum API - Creating attachment for port " + portId);
+
+		try {
+
+			IResource quantumResource = getResource();
+			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
+
+			controller.updateAttachment(quantumModel, networkId, portId, attachment);
+
+		} catch (ActivatorException ae) {
+			log.error("Error updating Quantum port - ", ae);
+			throw new CapabilityException(ae);
+		} catch (ResourceException re) {
+			log.error("Error updating Quantum port - ", re);
+			throw new CapabilityException(re);
+		} catch (QuantumException qe) {
+			log.error("Error updating Quantum port - ", qe);
+			throw new CapabilityException(qe);
+		}
+
+		log.info("Quantum API - Attachment created");
+
+		return attachment;
+	}
+
+	@Override
+	public void removeAttachment(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId,
+			@PathParam("port_id") String portId, @PathParam("attachment_id") String attachmentId) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

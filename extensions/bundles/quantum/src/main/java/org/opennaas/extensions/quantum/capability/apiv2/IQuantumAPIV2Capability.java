@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.quantum.model.Attachment;
 import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.Port;
 import org.opennaas.extensions.quantum.model.Subnet;
@@ -114,4 +115,25 @@ public interface IQuantumAPIV2Capability extends ICapability {
 	@Path("/subnets/{subnet_id}")
 	@DELETE
 	public void removeSubnet(@PathParam("subnet_id") String subnetId);
+
+	// ATTACHMENTS CRUD
+
+	@Path("/tenants/{tenant_id}/networks/{network_id}/ports/{port_id}/attachment")
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Attachment createAttachment(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId,
+			@PathParam("port_id") String portId, Attachment attachment) throws CapabilityException;
+
+	@Path("/tenants/{tenant_id}/networks/{network_id}/ports/{port_id}/attachment")
+	@PUT
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Attachment updateAttachment(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId,
+			@PathParam("port_id") String portId, Attachment attachment) throws CapabilityException;
+
+	@Path("/tenants/{tenant_id}/networks/{network_id}/ports/{port_id}/attachment/{attachment_id}")
+	@DELETE
+	public void removeAttachment(@PathParam("tenant_id") String tenantId, @PathParam("network_id") String networkId,
+			@PathParam("port_id") String portId, @PathParam("attachment_id") String attachmentId);
 }

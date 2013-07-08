@@ -121,6 +121,26 @@ public class QuantumModelController {
 
 	}
 
+	public void updateAttachment(QuantumModel quantumModel, String networkId, String portId, Attachment attachment) throws QuantumException {
+
+		log.debug("Creating attachment for port " + portId + " in network " + networkId);
+
+		Network network = getNetwork(quantumModel, networkId);
+
+		if (network == null)
+			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
+
+		Port port = getNetworkPortFromId(network, portId);
+
+		if (port == null)
+			throw new QuantumException("Port " + portId + " does not exist in Quantum model");
+
+		port.setAttachment(attachment);
+
+		log.debug("Created attachment for port " + portId + " in network " + networkId);
+
+	}
+
 	private Port getNetworkPortFromId(Network network, String portId) {
 
 		for (Port port : network.getPorts())

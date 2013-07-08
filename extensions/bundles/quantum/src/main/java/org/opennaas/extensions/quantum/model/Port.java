@@ -28,6 +28,7 @@ public class Port implements HasId, HasTenant {
 	private String				status;
 	private String				device_id;
 	private String				device_owner;
+	private Attachment			attachment;
 
 	public Port() {
 
@@ -117,6 +118,18 @@ public class Port implements HasId, HasTenant {
 		this.device_owner = device_owner;
 	}
 
+	public Attachment getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(Attachment attachment) {
+		this.attachment = attachment;
+	}
+
+	public Boolean getAdmin_state_up() {
+		return admin_state_up;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -145,6 +158,8 @@ public class Port implements HasId, HasTenant {
 		if (!device_id.equals(other.getDevice_id()))
 			return false;
 		if (!device_owner.equals(other.getDevice_owner()))
+			return false;
+		if (!attachment.equals(other.getAttachment()))
 			return false;
 		return true;
 	}
