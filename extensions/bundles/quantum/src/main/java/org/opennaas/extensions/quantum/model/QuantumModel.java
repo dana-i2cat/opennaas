@@ -35,12 +35,18 @@ public class QuantumModel implements IModel {
 	@XmlAttribute
 	private List<FloatingIP>	floatingIPs;
 
+	// OpenNaaS mapping model
+	@XmlIDREF
+	@XmlAttribute
+	private List<NetworkModel>	networksModel;
+
 	public QuantumModel() {
 		networks = new ArrayList<Network>();
 		ports = new ArrayList<Port>();
 		subnets = new ArrayList<Subnet>();
 		routers = new ArrayList<Router>();
 		floatingIPs = new ArrayList<FloatingIP>();
+		networksModel = new ArrayList<NetworkModel>();
 	}
 
 	public List<Network> getNetworks() {
@@ -93,6 +99,22 @@ public class QuantumModel implements IModel {
 		this.floatingIPs = floatingIPs;
 	}
 
+	public List<NetworkModel> getNetworksModel() {
+		return networksModel;
+	}
+
+	public void setNetworksModel(List<NetworkModel> networksModel) {
+		this.networksModel = networksModel;
+	}
+
+	public void addNetworkModel(NetworkModel netModel) {
+		this.getNetworksModel().add(netModel);
+	}
+
+	public void removeNetworkModel(NetworkModel netModel) {
+		this.getNetworksModel().remove(netModel);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -102,15 +124,35 @@ public class QuantumModel implements IModel {
 		if (getClass() != obj.getClass())
 			return false;
 		QuantumModel other = (QuantumModel) obj;
-		if (!networks.equals(other.getNetworks()))
+		if (floatingIPs == null) {
+			if (other.floatingIPs != null)
+				return false;
+		} else if (!floatingIPs.equals(other.floatingIPs))
 			return false;
-		if (!ports.equals(other.getPorts()))
+		if (networks == null) {
+			if (other.networks != null)
+				return false;
+		} else if (!networks.equals(other.networks))
 			return false;
-		if (!subnets.equals(other.getSubnets()))
+		if (networksModel == null) {
+			if (other.networksModel != null)
+				return false;
+		} else if (!networksModel.equals(other.networksModel))
 			return false;
-		if (!routers.equals(other.getRouters()))
+		if (ports == null) {
+			if (other.ports != null)
+				return false;
+		} else if (!ports.equals(other.ports))
 			return false;
-		if (!floatingIPs.equals(other.getFloatingIPs()))
+		if (routers == null) {
+			if (other.routers != null)
+				return false;
+		} else if (!routers.equals(other.routers))
+			return false;
+		if (subnets == null) {
+			if (other.subnets != null)
+				return false;
+		} else if (!subnets.equals(other.subnets))
 			return false;
 		return true;
 	}
