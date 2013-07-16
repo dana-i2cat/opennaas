@@ -144,7 +144,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			controller.addNetwork(quantumModel, network);
 			NetworkModel builtModel = networkBuilder.buildNetwork(network);
 
-			quantumModel.setNetworkModel(builtModel);
+			quantumModel.addNetworkModel(builtModel);
 
 		} catch (ActivatorException ae) {
 			log.error("Error creating Quantum network - ", ae);
