@@ -28,6 +28,10 @@
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.opennaas</groupId>
+  			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+		</dependency>		
+		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>

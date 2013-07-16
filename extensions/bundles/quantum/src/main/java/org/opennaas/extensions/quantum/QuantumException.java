@@ -1,5 +1,10 @@
 package org.opennaas.extensions.quantum;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 public class QuantumException extends Exception {
 
 	private static final long	serialVersionUID	= 7019386975673834177L;

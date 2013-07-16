@@ -23,9 +23,12 @@ import org.opennaas.extensions.quantum.QuantumException;
 import org.opennaas.extensions.quantum.capability.extensions.l3.shell.IQuantumL3Capability;
 import org.opennaas.extensions.quantum.model.Attachment;
 import org.opennaas.extensions.quantum.model.Network;
+import org.opennaas.extensions.quantum.model.NetworkModel;
 import org.opennaas.extensions.quantum.model.Port;
 import org.opennaas.extensions.quantum.model.QuantumModel;
 import org.opennaas.extensions.quantum.model.QuantumModelController;
+import org.opennaas.extensions.quantum.network.builder.AutobahnBuilder;
+import org.opennaas.extensions.quantum.network.builder.NetworkBuilder;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -43,12 +46,14 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 	private String					resourceId		= "";
 
 	private QuantumModelController	controller;
+	private NetworkBuilder			networkBuilder;
 
 	public QuantumAPIV2Capability(CapabilityDescriptor descriptor, String resourceId) {
 
 		super(descriptor);
 		this.resourceId = resourceId;
 		controller = new QuantumModelController();
+		networkBuilder = new AutobahnBuilder();
 
 		log.debug("Built new Quantum Capability");
 	}
@@ -137,6 +142,9 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
 
 			controller.addNetwork(quantumModel, network);
+			NetworkModel builtModel = networkBuilder.buildNetwork(network);
+
+			quantumModel.setNetworkModel(builtModel);
 
 		} catch (ActivatorException ae) {
 			log.error("Error creating Quantum network - ", ae);
