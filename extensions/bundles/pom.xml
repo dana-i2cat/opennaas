@@ -23,6 +23,7 @@
 	</dependencies>
 	<modules>
 		<module>router.actionsets.junos</module>
+		<module>router.actionsets.opener</module>
 		<module>router.repository</module>
 		<module>router.capability.chassis</module>
 		<module>router.capability.ip</module>
