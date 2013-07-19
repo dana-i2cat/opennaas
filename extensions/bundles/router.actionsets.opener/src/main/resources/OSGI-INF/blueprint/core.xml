@@ -30,4 +30,13 @@
 			<entry key="actionset.version" value="0.01"/>
 		</service-properties>
 	</service>
+	
+	<!--  	Protocol Session Factory  -->
+	<bean id="openerProtocolSessionFactory" class="org.opennaas.extensions.router.opener.protocol.OpenerProtocolSessionFactory"/>
+	<service ref="openerProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="opener"/>
+			<entry key="protocol.version" value="0.01"/>
+		</service-properties>
+	</service>
 </blueprint>
