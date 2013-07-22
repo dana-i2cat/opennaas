@@ -41,24 +41,24 @@ public class QuantumModelController {
 	 * Removes a network from the quantum resource model, and also its ports and subnetworks.
 	 * 
 	 * @param quantumModel
-	 * @param networkId
+	 * @param netModel
 	 * @throws QuantumException
 	 */
-	public void removeNetwork(QuantumModel quantumModel, String networkId) throws QuantumException {
+	public void removeNetwork(QuantumModel quantumModel, NetworkModel netModel) throws QuantumException {
 
-		log.debug("Trying to remove network " + networkId + " from Quantum model.");
+		log.debug("Trying to remove network " + netModel.getQuantumNetworkId() + " from Quantum model.");
 
-		Network network = getNetwork(quantumModel, networkId);
+		Network network = getNetwork(quantumModel, netModel.getQuantumNetworkId());
 
 		if (network == null)
-			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
+			throw new QuantumException("Network " + netModel + " does not exist in Quantum model");
 
 		removeNetworkSubnets(quantumModel, network);
 		removeNetworkPorts(quantumModel, network);
 
 		quantumModel.getNetworks().remove(network);
 
-		log.debug("Network " + networkId + " successfully removed from Quantum model.");
+		log.debug("Network " + netModel + " successfully removed from Quantum model.");
 
 	}
 
@@ -158,6 +158,24 @@ public class QuantumModelController {
 
 		log.debug("Created attachment for port " + portId + " in network " + networkId);
 
+	}
+
+	public void addNetworkModelToQuantumModel(QuantumModel model, NetworkModel netModel) throws QuantumException {
+
+		for (NetworkModel quantumNetworkModels : model.getNetworksModel())
+			if (quantumNetworkModels.getQuantumNetworkId().equals(netModel.getQuantumNetworkId()))
+				throw new QuantumException("There's already a networkModel for Quantum network " + netModel.getQuantumNetworkId());
+
+		model.addNetworkModel(netModel);
+
+	}
+
+	public void removeNetworkModelFromQuantumModel(QuantumModel model, NetworkModel netModel) throws QuantumException {
+
+		if (!model.getNetworksModel().contains(netModel))
+			throw new QuantumException("There's no networkModel for Quantum network " + netModel.getQuantumNetworkId());
+
+		model.removeNetworkModel(netModel);
 	}
 
 	private Port getNetworkPortFromId(Network network, String portId) {

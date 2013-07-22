@@ -2,12 +2,18 @@ package org.opennaas.extensions.quantum.network.builder;
 
 import java.util.List;
 
+import org.opennaas.core.resources.Activator;
+import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.quantum.model.Network;
+import org.opennaas.extensions.quantum.model.NetworkModel;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public abstract class NetworkBuilderHelper {
@@ -40,4 +46,40 @@ public abstract class NetworkBuilderHelper {
 		return toReturn;
 	}
 
+	public static NetworkModel getNetworkModelFromQuantumNetworkId(List<NetworkModel> netModels, String quantumNetworkId) {
+
+		for (NetworkModel model : netModels)
+			if (model.getQuantumNetworkId().equals(quantumNetworkId))
+				return model;
+
+		return null;
+	}
+
+	public static Network getQuantumNetworkFromId(List<Network> networks, String networkId) {
+
+		for (Network network : networks)
+			if (network.getId().equals(networkId))
+				return network;
+
+		return null;
+	}
+
+	public static IResource getResourceByTypeAndName(String resourceName, String resourceType) throws ActivatorException, ResourceException {
+
+		IResourceManager resourceManager = Activator.getResourceManagerService();
+
+		IResourceIdentifier resourceIdentifier = resourceManager.getIdentifierFromResourceName(resourceType, resourceName);
+
+		IResource autobahnResource = resourceManager.getResource(resourceIdentifier);
+
+		return autobahnResource;
+
+	}
+
+	public static IResource getResourceById(String resourceId) throws ActivatorException, ResourceException {
+		IResourceManager resourceManager = Activator.getResourceManagerService();
+		IResource resource = resourceManager.getResourceById(resourceId);
+
+		return resource;
+	}
 }

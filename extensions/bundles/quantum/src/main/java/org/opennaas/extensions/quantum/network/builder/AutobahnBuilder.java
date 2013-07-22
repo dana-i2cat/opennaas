@@ -8,12 +8,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.junit.Assert;
-import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
@@ -24,7 +22,9 @@ import org.opennaas.extensions.quantum.QuantumException;
 import org.opennaas.extensions.quantum.model.AutobahnElement;
 import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.NetworkModel;
+import org.opennaas.extensions.quantum.model.QuantumModel;
 import org.opennaas.extensions.quantum.model.Resource;
+import org.opennaas.extensions.quantum.model.ResourceElement;
 
 /**
  * 
@@ -53,9 +53,10 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 			Properties props = loadAutobahnProperties();
 
-			requestParams = createL2BoDCreateConnectionRequest(props);
+			IResource autobahnResource = NetworkBuilderHelper.getResourceByTypeAndName(props.getProperty(AutobahnPropertiesConstants.RESOURCE_NAME),
+					"bod");
 
-			IResource autobahnResource = getAutobahnResourceByName(props.getProperty(AutobahnPropertiesConstants.RESOURCE_NAME));
+			requestParams = createL2BoDCreateConnectionRequest(props);
 
 			IL2BoDCapability capability = (IL2BoDCapability) autobahnResource.getCapabilityByInterface(IL2BoDCapability.class);
 			capability.requestConnection(requestParams);
@@ -64,21 +65,12 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 			org.opennaas.extensions.network.model.NetworkModel model = (org.opennaas.extensions.network.model.NetworkModel) autobahnResource
 					.getModel();
-
 			BoDLink link = getBoDLinkByRequestConnection(model, requestParams);
 
 			if (link == null)
 				throw new QuantumException("There's no link in Autobahn model with the requested parameters.");
 
-			AutobahnElement autobahnElement = new AutobahnElement();
-			autobahnElement.addLink(link);
-
-			Resource resource = new Resource();
-			resource.addResourceElement(autobahnElement);
-
-			NetworkModel builtModel = new NetworkModel();
-			builtModel.setQuantumNetworkId(network.getId());
-			builtModel.addResource(resource);
+			NetworkModel builtModel = createBuiltModel(network.getId(), link);
 
 			log.info("Autobahn network built");
 
@@ -93,6 +85,44 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 	@Override
 	public void destroyNetwork(IResource quantumResource, Network network) throws QuantumException {
+
+		log.info("Destroying Autobahn network");
+
+		IResource autobahnResource;
+
+		try {
+
+			String netId = network.getId();
+			QuantumModel model = (QuantumModel) quantumResource.getModel();
+
+			NetworkModel netModel = NetworkBuilderHelper.getNetworkModelFromQuantumNetworkId(model.getNetworksModel(), netId);
+			if (netModel == null)
+				throw new QuantumException("There's no resource referenced by Quantum network " + network.getName());
+
+			String resourceId = netModel.getQuantumNetworkId();
+			autobahnResource = NetworkBuilderHelper.getResourceById(resourceId);
+
+			for (Resource resource : netModel.getResources())
+				for (ResourceElement element : resource.getResourceElement())
+					if (element instanceof AutobahnElement)
+						removeAutobahnLinks(autobahnResource, (AutobahnElement) element);
+
+		} catch (Exception e) {
+			log.error("Error destroying Autobahn Network : " + e.getMessage());
+			throw new QuantumException(e);
+		}
+	}
+
+	private void removeAutobahnLinks(IResource autobahnResource, AutobahnElement autobahnElem) throws ResourceException, ProtocolException {
+
+		for (BoDLink link : autobahnElem.getLinks()) {
+
+			IL2BoDCapability capability = (IL2BoDCapability) autobahnResource.getCapabilityByInterface(IL2BoDCapability.class);
+			capability.shutDownConnection(link);
+
+		}
+
+		NetworkBuilderHelper.executeResourceQueue(autobahnResource);
 
 	}
 
@@ -143,7 +173,8 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 		log.debug("Building Autobahn request to create a new connection");
 
-		IResource autobahnResource = getAutobahnResourceByName(props.getProperty(AutobahnPropertiesConstants.RESOURCE_NAME));
+		IResource autobahnResource = NetworkBuilderHelper.getResourceByTypeAndName(props.getProperty(AutobahnPropertiesConstants.RESOURCE_NAME),
+				"bod");
 		org.opennaas.extensions.network.model.NetworkModel autobahNModel = (org.opennaas.extensions.network.model.NetworkModel) autobahnResource
 				.getModel();
 
@@ -167,17 +198,18 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 	}
 
-	private IResource getAutobahnResourceByName(String resourceName) throws ActivatorException, ResourceException {
+	private NetworkModel createBuiltModel(String networkId, BoDLink link) {
+		AutobahnElement autobahnElement = new AutobahnElement();
+		autobahnElement.addLink(link);
 
-		IResourceManager resourceManager = Activator.getResourceManagerService();
+		Resource resource = new Resource();
+		resource.addResourceElement(autobahnElement);
 
-		IResourceIdentifier resourceIdentifier = resourceManager.getIdentifierFromResourceName("bod",
-				resourceName);
+		NetworkModel builtModel = new NetworkModel();
+		builtModel.setQuantumNetworkId(networkId);
+		builtModel.addResource(resource);
 
-		IResource autobahnResource = resourceManager.getResource(resourceIdentifier);
-
-		return autobahnResource;
-
+		return builtModel;
 	}
 
 }

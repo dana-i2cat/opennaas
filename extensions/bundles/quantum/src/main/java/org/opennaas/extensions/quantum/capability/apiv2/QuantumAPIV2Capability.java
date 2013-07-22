@@ -29,6 +29,7 @@ import org.opennaas.extensions.quantum.model.QuantumModel;
 import org.opennaas.extensions.quantum.model.QuantumModelController;
 import org.opennaas.extensions.quantum.network.builder.AutobahnBuilder;
 import org.opennaas.extensions.quantum.network.builder.NetworkBuilder;
+import org.opennaas.extensions.quantum.network.builder.NetworkBuilderHelper;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -144,7 +145,7 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			controller.addNetwork(quantumModel, network);
 			NetworkModel builtModel = networkBuilder.buildNetwork(network);
 
-			quantumModel.addNetworkModel(builtModel);
+			controller.addNetworkModelToQuantumModel(quantumModel, builtModel);
 
 		} catch (ActivatorException ae) {
 			log.error("Error creating Quantum network - ", ae);
@@ -195,7 +196,18 @@ public class QuantumAPIV2Capability extends AbstractCapability implements IQuant
 			IResource quantumResource = getResource();
 			QuantumModel quantumModel = (QuantumModel) quantumResource.getModel();
 
-			controller.removeNetwork(quantumModel, networkId);
+			Network network = NetworkBuilderHelper.getQuantumNetworkFromId(quantumModel.getNetworks(), networkId);
+
+			if (network == null)
+				throw new QuantumException("There's no network in Quantum model with id " + networkId);
+
+			NetworkModel netModel = NetworkBuilderHelper.getNetworkModelFromQuantumNetworkId(quantumModel.getNetworksModel(), networkId);
+			if (netModel == null)
+				throw new QuantumException("There's no networkModel for Quantum network " + networkId);
+
+			networkBuilder.destroyNetwork(quantumResource, network);
+			controller.removeNetwork(quantumModel, netModel);
+			controller.removeNetworkModelFromQuantumModel(quantumModel, netModel);
 
 		} catch (ActivatorException ae) {
 			log.error("Error creating Quantum network - ", ae);
