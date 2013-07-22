@@ -39,10 +39,10 @@
 						<configuration>
 							<wsdlOptions>
 								<wsdlOption>
-									<wsdl>${basedir}/src/main/resources/META-INF/wsdl/useraccesspoint.wsdl</wsdl>
+									<wsdl>${basedir}/src/main/resources/META-INF/wsdl/uap.wsdl</wsdl>
 									<extraargs>
 										<extraarg>-wsdlLocation</extraarg>
-										<wsdlUrl>classpath:META-INF/wsdl/useraccesspoint.wsdl</wsdlUrl>
+										<wsdlUrl>classpath:META-INF/wsdl/uap.wsdl</wsdlUrl>
 									</extraargs>
 								</wsdlOption>
 								<wsdlOption>

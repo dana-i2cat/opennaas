@@ -2,9 +2,7 @@ package org.opennaas.extensions.bod.autobahn.security;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -39,8 +37,6 @@ import org.w3c.dom.NodeList;
  */
 public class WSSecurity {
 
-	public URL					edugain, securityUrl;
-	public String				security;
 	private final static Logger	log						= Logger.getLogger(WSSecurity.class);
 	private URL					WSS4J_PROPS;
 	private String				activatedStr, timestampStr, encryptStr, edugainAct, securityUser;
@@ -49,18 +45,25 @@ public class WSSecurity {
 	public final String			PROPERTY_TIMESTAMP		= "net.geant.autobahn.edugain.timestamp";
 	public final String			PROPERTY_EDUGAIN		= "net.geant.autobahn.edugain.activated";
 	public final String			PROPERTY_USER			= "org.apache.ws.security.crypto.merlin.keystore.alias";
-	public final String			WSS_X509_TOKENPROFILE	= "http://docs.oasis-open"
-																+ ".org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
+	public final String			WSS_X509_TOKENPROFILE	= "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
+	public static final int		DEFAULT_TIMEOUT			= 1200 * 1000;
+	public URL					edugain, securityUrl;
+	public String				security;
+	public XPathExpression		xpath;
 
-	public static final int		DEFAULT_TIMEOUT			= 1200 * 1000;																	// 20 minutes
-
-	XPathExpression				xpath;
-
+	/**
+	 * @throws XPathException
+	 */
 	public WSSecurity() throws XPathException {
 		xpath = compileXpathExpression();
 	}
 
-	public WSSecurity(String commonPath) throws XPathException {
+	/**
+	 * @param commonPath
+	 * @throws XPathException
+	 * @throws IOException 
+	 */
+	public WSSecurity(String commonPath) throws XPathException, IOException {
 
 		xpath = compileXpathExpression();
 		ClassLoader securityLoader = getClass().getClassLoader();
@@ -68,16 +71,20 @@ public class WSSecurity {
 		this.edugain = securityLoader.getResource(commonPath + "/edugain/edugain.properties");
 		this.securityUrl = securityLoader.getResource(commonPath + "/security.properties");
 		this.WSS4J_PROPS = securityLoader.getResource(commonPath + "/security.properties");
+		
+		readProperties();
 	}
 
+	/**
+	 * @return
+	 */
 	public Properties convertFileToProps() {
 
 		Properties props = new Properties();
 		String key = "org.apache.ws.security.crypto.merlin.file";
-		String path = "";
+
 		try {
 			props.load(WSS4J_PROPS.openStream());
-			path = WSS4J_PROPS.getPath();
 		} catch (Exception e) {
 			log.debug("Error in converting properties file to properties object. "
 					+ e.getMessage());
@@ -86,26 +93,85 @@ public class WSSecurity {
 		if (props.getProperty(key) != null) {
 
 			String s = props.getProperty(key);
-
-			if (s != null) {
-
-				// If the path is a file, keep only the directory part
-				if (s.charAt(0) != '/') {
-
-					path = path.substring(0, path.lastIndexOf('/') + 1);
-					try {
-						path = URLDecoder.decode(path, "UTF-8");
-					} catch (UnsupportedEncodingException e) {
-						log.debug("Error in decoding URL to String. " + e.getMessage());
-					}
-
-					s = path + s;
-					props.setProperty(key, s);
-				}
-			}
+			props.setProperty(key, s);
 		}
 
 		return props;
+	}
+
+	/**
+	 * @return the activatedStr
+	 */
+	public String getActivatedStr() {
+		return activatedStr;
+	}
+
+	/**
+	 * @param activatedStr
+	 *            the activatedStr to set
+	 */
+	public void setActivatedStr(String activatedStr) {
+		this.activatedStr = activatedStr;
+	}
+
+	/**
+	 * @return the timestampStr
+	 */
+	public String getTimestampStr() {
+		return timestampStr;
+	}
+
+	/**
+	 * @param timestampStr
+	 *            the timestampStr to set
+	 */
+	public void setTimestampStr(String timestampStr) {
+		this.timestampStr = timestampStr;
+	}
+
+	/**
+	 * @return the encryptStr
+	 */
+	public String getEncryptStr() {
+		return encryptStr;
+	}
+
+	/**
+	 * @param encryptStr
+	 *            the encryptStr to set
+	 */
+	public void setEncryptStr(String encryptStr) {
+		this.encryptStr = encryptStr;
+	}
+
+	/**
+	 * @return the edugainAct
+	 */
+	public String getEdugainAct() {
+		return edugainAct;
+	}
+
+	/**
+	 * @param edugainAct
+	 *            the edugainAct to set
+	 */
+	public void setEdugainAct(String edugainAct) {
+		this.edugainAct = edugainAct;
+	}
+
+	/**
+	 * @return the securityUser
+	 */
+	public String getSecurityUser() {
+		return securityUser;
+	}
+
+	/**
+	 * @param securityUser
+	 *            the securityUser to set
+	 */
+	public void setSecurityUser(String securityUser) {
+		this.securityUser = securityUser;
 	}
 
 	public static void setClientTimeout(Object clientInterface) {

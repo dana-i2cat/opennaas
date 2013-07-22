@@ -1275,7 +1275,7 @@
   </wsdl:binding>
   <wsdl:service name="AdministrationService">
     <wsdl:port binding="tns:AdministrationServiceSoapBinding" name="AdministrationPort">
-      <soap:address location="http://193.1.219.80:8080/autobahn/administration" />
+      <soap:address location="http://193.1.219.80:8080/autobahn/administration2" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -5,6 +5,7 @@ import static org.opennaas.core.resources.protocol.IProtocolSession.Status.CONNE
 import static org.opennaas.core.resources.protocol.IProtocolSession.Status.DISCONNECTED_BY_USER;
 import static org.opennaas.core.resources.protocol.ProtocolSessionContext.PROTOCOL_URI;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -16,8 +17,6 @@ import javax.xml.xpath.XPathException;
 import net.geant.autobahn.administration.Administration;
 import net.geant.autobahn.useraccesspoint.UserAccessPoint;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
@@ -41,13 +40,15 @@ public class AutobahnProtocolSession implements IProtocolSession
 	private final static QName		ADMINISTRATION_PORT			=
 																		new QName("http://administration.autobahn.geant.net/",
 																				"AdministrationPort");
-	private final static Boolean	SECURITY_ENABLED			= true;
 
-	private final Log				log							= LogFactory.getLog(AutobahnProtocolSession.class);
+	private final static String		UAP_PATH					= "uap2";
+	private final static String		UAP_SECURE_PATH				= "uap";
+	private final static String		ADMINISTRATION_PATH			= "administration2";
 
 	private ProtocolSessionContext	protocolSessionContext;
 	private String					sessionID;
 
+	private WSSecurity				security;
 	private UserAccessPoint			uapService;
 	private Administration			administrationService;
 
@@ -60,6 +61,13 @@ public class AutobahnProtocolSession implements IProtocolSession
 		this.protocolSessionContext = protocolSessionContext;
 		this.sessionID = sessionID;
 		this.status = DISCONNECTED_BY_USER;
+		try {
+			security = new WSSecurity("etc/security");
+		} catch (XPathException e) {
+			throw new ProtocolException(e);
+		} catch (IOException e) {
+			throw new ProtocolException(e);
+		}
 	}
 
 	@Override
@@ -77,10 +85,9 @@ public class AutobahnProtocolSession implements IProtocolSession
 	@Override
 	public void connect() throws ProtocolException
 	{
-		uapService =
-				createUserAccessPointService(getServiceUri() + "uap");
-		administrationService =
-				createAdministrationService(getServiceUri() + "administration");
+		String uap = security.getActivatedStr().equals("true") ? UAP_SECURE_PATH : UAP_PATH;
+		uapService = createUserAccessPointService(getServiceUri() + uap);
+		administrationService = createAdministrationService(getServiceUri() + ADMINISTRATION_PATH);
 		status = CONNECTED;
 	}
 
@@ -169,46 +176,16 @@ public class AutobahnProtocolSession implements IProtocolSession
 			QName portName)
 			throws ProtocolException
 	{
-		/*
-		 * The JAXWS SPI uses the context class loader to locate an implementation. We therefore make sure the context class loader is set to our
-		 * class loader.
-		 */
-		Thread thread = Thread.currentThread();
-		ClassLoader oldLoader = thread.getContextClassLoader();
+		UserAccessPoint uap = createSoapService(uri, serviceName, portName, UserAccessPoint.class);
+		WSSecurity.setClientTimeout(uap);
 		try {
-			thread.setContextClassLoader(getClass().getClassLoader());
-			Service service = Service.create(serviceName);
-			service.addPort(portName, SOAPBinding.SOAP11HTTP_BINDING, uri);
-
-			if (SECURITY_ENABLED) {
-				UserAccessPoint uap = service.getPort(portName, UserAccessPoint.class);
-
-				WSSecurity userAccessPoint = null;
-
-				try {
-					userAccessPoint = new WSSecurity("etc/security");
-				} catch (XPathException e) {
-					e.printStackTrace();
-				}
-
-				WSSecurity.setClientTimeout(uap);
-
-				try {
-					userAccessPoint.configureEndpoint(uap);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-
-			return service.getPort(portName, UserAccessPoint.class);
+			security.configureEndpoint(uap);
 		} catch (Exception e) {
-			throw new ProtocolException("Failed to create Autobahn session: " +
-					e.getMessage(), e);
-		} finally {
-			thread.setContextClassLoader(oldLoader);
+			e.printStackTrace();
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
+		return uap;
 	}
 
 	private <T> T createSoapService(String uri,
@@ -240,9 +217,16 @@ public class AutobahnProtocolSession implements IProtocolSession
 	private UserAccessPoint createUserAccessPointService(String uri)
 			throws ProtocolException
 	{
-		return createSoapServiceSecure(uri,
-				USER_ACCESS_POINT_SERVICE,
-				USER_ACCESS_POINT_PORT);
+		if (security.getActivatedStr().equals("true")) {
+			return createSoapServiceSecure(uri,
+					USER_ACCESS_POINT_SERVICE,
+					USER_ACCESS_POINT_PORT);
+		} else {
+			return createSoapService(uri,
+					USER_ACCESS_POINT_SERVICE,
+					USER_ACCESS_POINT_PORT,
+					UserAccessPoint.class);
+		}
 	}
 
 	private Administration createAdministrationService(String uri)

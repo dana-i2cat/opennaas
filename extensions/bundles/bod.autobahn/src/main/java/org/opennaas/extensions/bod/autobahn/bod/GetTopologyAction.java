@@ -102,7 +102,7 @@ public class GetTopologyAction extends AutobahnAction
 		UserAccessPoint userAccessPoint =
 				getUserAccessPointService(protocolSessionManager);
 		List<PortType> clientPorts = userAccessPoint.getAllClientPorts();
-		List<PortType> idcpPorts = userAccessPoint.getIdcpPorts();
+		List<PortType> idcpPorts = userAccessPoint.getIdcpPorts("");
 		return concat(clientPorts, idcpPorts);
 	}
 

@@ -3,6 +3,16 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="useraccesspoint.autobahn.geant.net" xmlns:ns1="http://useraccesspoint.autobahn.geant.net/" xmlns:ns2="aai.autobahn.geant.net" xmlns:tns="useraccesspoint.autobahn.geant.net" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <xs:import namespace="http://useraccesspoint.autobahn.geant.net/" />
 <xs:import namespace="aai.autobahn.geant.net" />
+<xs:complexType name="PortType">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" type="xs:string" />
+<xs:element minOccurs="0" name="mode" type="ns1:mode" />
+<xs:element name="vlan" type="xs:int" />
+<xs:element minOccurs="0" name="description" type="xs:string" />
+<xs:element name="isIdcp" type="xs:boolean" />
+<xs:element name="isClient" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
 <xs:complexType name="ServiceRequest">
 <xs:sequence>
 <xs:element minOccurs="0" name="userName" type="xs:string" />
@@ -29,16 +39,6 @@
 <xs:element name="bidirectional" type="xs:boolean" />
 <xs:element name="processNow" type="xs:boolean" />
 <xs:element minOccurs="0" name="authParameters" type="ns2:UserAuthParameters" />
-</xs:sequence>
-</xs:complexType>
-<xs:complexType name="PortType">
-<xs:sequence>
-<xs:element minOccurs="0" name="address" type="xs:string" />
-<xs:element minOccurs="0" name="mode" type="ns1:mode" />
-<xs:element name="vlan" type="xs:int" />
-<xs:element minOccurs="0" name="description" type="xs:string" />
-<xs:element name="isIdcp" type="xs:boolean" />
-<xs:element name="isClient" type="xs:boolean" />
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="PathInfo">
@@ -107,6 +107,12 @@
 <xs:element name="getDomainClientPortsResponse" type="tns:getDomainClientPortsResponse" />
 <xs:element name="getIdcpPorts" type="tns:getIdcpPorts" />
 <xs:element name="getIdcpPortsResponse" type="tns:getIdcpPortsResponse" />
+<xs:element name="getIdcpProviders" type="tns:getIdcpProviders" />
+<xs:element name="getIdcpProvidersResponse" type="tns:getIdcpProvidersResponse" />
+<xs:element name="getNsiPorts" type="tns:getNsiPorts" />
+<xs:element name="getNsiPortsResponse" type="tns:getNsiPortsResponse" />
+<xs:element name="getNsiProviders" type="tns:getNsiProviders" />
+<xs:element name="getNsiProvidersResponse" type="tns:getNsiProvidersResponse" />
 <xs:element name="modifyReservation" type="tns:modifyReservation" />
 <xs:element name="modifyReservationResponse" type="tns:modifyReservationResponse" />
 <xs:element name="queryService" type="tns:queryService" />
@@ -117,6 +123,16 @@
 <xs:element name="submitServiceAndRegister" type="tns:submitServiceAndRegister" />
 <xs:element name="submitServiceAndRegisterResponse" type="tns:submitServiceAndRegisterResponse" />
 <xs:element name="submitServiceResponse" type="tns:submitServiceResponse" />
+<xs:complexType name="getNsiPorts">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getNsiPortsResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="PortTypes" type="ns1:PortType" />
+</xs:sequence>
+</xs:complexType>
 <xs:complexType name="registerCallback">
 <xs:sequence>
 <xs:element minOccurs="0" name="serviceID" type="xs:string" />
@@ -151,6 +167,14 @@
 <xs:complexType name="getAllLinksResponse">
 <xs:sequence>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="Links" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getNsiProviders">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getNsiProvidersResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="nsiProviders" type="xs:string" />
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="checkReservationPossibility">
@@ -197,6 +221,14 @@
 <xs:complexType name="modifyReservationResponse">
 <xs:sequence />
 </xs:complexType>
+<xs:complexType name="getIdcpProviders">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getIdcpProvidersResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="idcpProviders" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
 <xs:complexType name="queryService">
 <xs:sequence>
 <xs:element minOccurs="0" name="serviceID" type="xs:string" />
@@ -208,7 +240,9 @@
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="getIdcpPorts">
-<xs:sequence />
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string" />
+</xs:sequence>
 </xs:complexType>
 <xs:complexType name="getIdcpPortsResponse">
 <xs:sequence>
@@ -295,12 +329,12 @@
 </xs:complexType>
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="cancelService">
-    <wsdl:part element="tns:cancelService" name="parameters">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="queryServiceResponse">
     <wsdl:part element="tns:queryServiceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelService">
+    <wsdl:part element="tns:cancelService" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getAllClientPortsResponse">
@@ -315,8 +349,20 @@
     <wsdl:part element="tns:getAllLinks_NonClientResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getNsiPortsResponse">
+    <wsdl:part element="tns:getNsiPortsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="UserAccessPointException">
     <wsdl:part element="tns:UserAccessPointException" name="UserAccessPointException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getNsiPorts">
+    <wsdl:part element="tns:getNsiPorts" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getNsiProviders">
+    <wsdl:part element="tns:getNsiProviders" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="submitServiceResponse">
@@ -327,12 +373,16 @@
     <wsdl:part element="tns:getAllDomains_NonClientResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getAllLinks_NonClient">
-    <wsdl:part element="tns:getAllLinks_NonClient" name="parameters">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="getIdcpPortsResponse">
     <wsdl:part element="tns:getIdcpPortsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getNsiProvidersResponse">
+    <wsdl:part element="tns:getNsiProvidersResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllLinks_NonClient">
+    <wsdl:part element="tns:getAllLinks_NonClient" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="checkReservationPossibility">
@@ -347,12 +397,12 @@
     <wsdl:part element="tns:getAllLinksResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="cancelServiceResponse">
-    <wsdl:part element="tns:cancelServiceResponse" name="parameters">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="queryService">
     <wsdl:part element="tns:queryService" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelServiceResponse">
+    <wsdl:part element="tns:cancelServiceResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="submitServiceAndRegister">
@@ -375,6 +425,10 @@
     <wsdl:part element="tns:registerCallbackResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getIdcpProvidersResponse">
+    <wsdl:part element="tns:getIdcpProvidersResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="registerCallback">
     <wsdl:part element="tns:registerCallback" name="parameters">
     </wsdl:part>
@@ -391,12 +445,16 @@
     <wsdl:part element="tns:submitServiceAndRegisterResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getAllDomains">
+    <wsdl:part element="tns:getAllDomains" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="modifyReservationResponse">
     <wsdl:part element="tns:modifyReservationResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getAllDomains">
-    <wsdl:part element="tns:getAllDomains" name="parameters">
+  <wsdl:message name="getIdcpProviders">
+    <wsdl:part element="tns:getIdcpProviders" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getAllDomainsResponse">
@@ -412,6 +470,12 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="UserAccessPoint">
+    <wsdl:operation name="getNsiPorts">
+      <wsdl:input message="tns:getNsiPorts" name="getNsiPorts">
+    </wsdl:input>
+      <wsdl:output message="tns:getNsiPortsResponse" name="getNsiPortsResponse">
+    </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="registerCallback">
       <wsdl:input message="tns:registerCallback" name="registerCallback">
     </wsdl:input>
@@ -438,6 +502,12 @@
       <wsdl:input message="tns:getAllLinks" name="getAllLinks">
     </wsdl:input>
       <wsdl:output message="tns:getAllLinksResponse" name="getAllLinksResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNsiProviders">
+      <wsdl:input message="tns:getNsiProviders" name="getNsiProviders">
+    </wsdl:input>
+      <wsdl:output message="tns:getNsiProvidersResponse" name="getNsiProvidersResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="checkReservationPossibility">
@@ -476,6 +546,12 @@
       <wsdl:output message="tns:modifyReservationResponse" name="modifyReservationResponse">
     </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="getIdcpProviders">
+      <wsdl:input message="tns:getIdcpProviders" name="getIdcpProviders">
+    </wsdl:input>
+      <wsdl:output message="tns:getIdcpProvidersResponse" name="getIdcpProvidersResponse">
+    </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="queryService">
       <wsdl:input message="tns:queryService" name="queryService">
     </wsdl:input>
@@ -511,6 +587,15 @@
   </wsdl:portType>
   <wsdl:binding name="UserAccessPointServiceSoapBinding" type="tns:UserAccessPoint">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getNsiPorts">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getNsiPorts">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getNsiPortsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="registerCallback">
       <soap:operation soapAction="" style="document" />
       <wsdl:input name="registerCallback">
@@ -550,6 +635,15 @@
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="getAllLinksResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNsiProviders">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getNsiProviders">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getNsiProvidersResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -597,6 +691,15 @@
       <wsdl:fault name="UserAccessPointException">
         <soap:fault name="UserAccessPointException" use="literal" />
       </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIdcpProviders">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getIdcpProviders">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getIdcpProvidersResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="modifyReservation">
       <soap:operation soapAction="" style="document" />
