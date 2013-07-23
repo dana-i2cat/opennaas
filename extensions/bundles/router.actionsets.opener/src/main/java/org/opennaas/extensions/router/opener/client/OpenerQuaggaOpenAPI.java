@@ -14,6 +14,7 @@ import org.opennaas.extensions.router.opener.client.rpc.DeleteInterfaceIPRequest
 import org.opennaas.extensions.router.opener.client.rpc.GetInterfaceResponse;
 import org.opennaas.extensions.router.opener.client.rpc.GetInterfacesResponse;
 import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceIPRequest;
+import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceResponse;
 
 @Path("/linux/")
 public interface OpenerQuaggaOpenAPI {
@@ -29,7 +30,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@GET
 	@Path("getInterface/{interfaceName}")
-	@Produces("text/xml")
+	@Consumes("text/xml;charset=UTF-8")
+	@Produces("text/xml;charset=UTF-8")
 	public GetInterfaceResponse getInterface(@PathParam("interfaceName") String interfaceName) throws Exception;
 	
 	/**
@@ -40,7 +42,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@GET
 	@Path("getInterfaces")
-	@Produces("text/xml")
+	@Consumes("text/xml;charset=UTF-8")
+	@Produces("text/xml;charset=UTF-8")
 	public GetInterfacesResponse getInterfaces() throws Exception;
 	
 	/**
@@ -57,8 +60,9 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@PUT
 	@Path("setInterface")
-	@Consumes("text/xml")
-	public void setInterfaceIPAddress(SetInterfaceIPRequest request, @QueryParam("pip") int keepCurrentAddresses) throws Exception;
+	@Consumes("text/xml;charset=UTF-8")
+	@Produces("text/xml;charset=UTF-8")
+	public SetInterfaceResponse setInterfaceIPAddress(SetInterfaceIPRequest request, @QueryParam("pip") int keepCurrentAddresses) throws Exception;
 	
 	/**
 	 * The deleteInterfaceIP REST call can be used to delete an IP address associated with a given interface. 
@@ -71,8 +75,9 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@PUT
 	@Path("deleteInterfaceIP")
-	@Consumes("text/xml")
-	public void deleteInterfaceIPAddress(DeleteInterfaceIPRequest request) throws Exception;
+	@Consumes("text/xml;charset=UTF-8")
+	@Produces("text/xml;charset=UTF-8")
+	public SetInterfaceResponse deleteInterfaceIPAddress(DeleteInterfaceIPRequest request) throws Exception;
 	
 	/**
 	 * The addInterface REST call adds a new virtual interface. 
@@ -84,10 +89,11 @@ public interface OpenerQuaggaOpenAPI {
 	 * @param interfaceName
 	 * @throws Exception
 	 */
-	@PUT
+	@POST
 	@Path("addInterface")
-	@Consumes("text/xml")
-	public void addInterface(AddInterfaceRequest request) throws Exception;
+	@Consumes("text/xml;charset=UTF-8")
+	@Produces("text/xml;charset=UTF-8")
+	public SetInterfaceResponse addInterface(AddInterfaceRequest request) throws Exception;
 	
 	/**
 	 * The deleteInterface REST call deletes a virtual interface created by addInterface REST call. 
@@ -98,7 +104,9 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@GET
 	@Path("deleteInterface/{interfaceName}")
-	public void deleteInterface(@PathParam("interfaceName") String interfaceName) throws Exception;
+	@Consumes("text/xml;charset=UTF-8")
+	@Produces("text/xml;charset=UTF-8")
+	public SetInterfaceResponse deleteInterface(@PathParam("interfaceName") String interfaceName) throws Exception;
 	
 	// TODO METHODS REGARDING UP/DOWN INTERFACES MISSING
 	// TODO METHODS REGARDING ROUTES MISSING 

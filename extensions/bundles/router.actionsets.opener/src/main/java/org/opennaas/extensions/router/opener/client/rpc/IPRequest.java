@@ -5,8 +5,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.opennaas.extensions.router.opener.client.model.IPData;
-
 
 @XmlRootElement(namespace="http://www.craax.upc.edu/axis2/quagga_openapi")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -16,7 +14,7 @@ public class IPRequest {
 	private String name;
 	
 	@XmlElement(name="ip")
-	private IPData ip;
+	private IPDataRequest ip;
 
 	public String getName() {
 		return name;
@@ -26,11 +24,11 @@ public class IPRequest {
 		this.name = name;
 	}
 
-	public IPData getIp() {
+	public IPDataRequest getIp() {
 		return ip;
 	}
 
-	public void setIp(IPData ip) {
+	public void setIp(IPDataRequest ip) {
 		this.ip = ip;
 	}
 
