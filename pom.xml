@@ -338,7 +338,13 @@
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.vnmapper</artifactId>
 				<version>${project.version}</version>
-			</dependency>			
+			</dependency>	
+	  		<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.quantum</artifactId>
+				<version>${project.version}</version>				
+			</dependency>
+					
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>

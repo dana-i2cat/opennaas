@@ -83,4 +83,18 @@ public abstract class NetworkBuilderHelper {
 		return resource;
 	}
 
+	public static Network createSampleNetwork(String netId, String netName, String tenantId) {
+
+		Network sampleNetwork = new Network();
+		sampleNetwork.setId(netId);
+		sampleNetwork.setName(netName);
+		sampleNetwork.setShared(false);
+		sampleNetwork.setAdmin_state_up(true);
+		sampleNetwork.setStatus("Active");
+		sampleNetwork.setTenant_id(tenantId);
+
+		return sampleNetwork;
+
+	}
+
 }
