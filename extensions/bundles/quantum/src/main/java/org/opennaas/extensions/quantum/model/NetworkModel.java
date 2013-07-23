@@ -1,5 +1,6 @@
 package org.opennaas.extensions.quantum.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,6 +22,10 @@ public class NetworkModel {
 
 	private String			quantumNetworkId;
 	private List<Resource>	resources;
+
+	public NetworkModel() {
+		resources = new ArrayList<Resource>();
+	}
 
 	public String getQuantumNetworkId() {
 		return quantumNetworkId;

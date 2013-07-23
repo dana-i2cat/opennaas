@@ -1,5 +1,6 @@
 package org.opennaas.extensions.quantum.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -11,6 +12,10 @@ import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 public class AutobahnElement extends ResourceElement {
 
 	private List<BoDLink>	links;
+
+	public AutobahnElement() {
+		links = new ArrayList<BoDLink>();
+	}
 
 	public List<BoDLink> getLinks() {
 		return links;

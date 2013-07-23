@@ -2,6 +2,7 @@ package org.opennaas.extensions.quantum.network.builder;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -10,10 +11,14 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
+import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.quantum.model.AutobahnElement;
 import org.opennaas.extensions.quantum.model.Network;
 import org.opennaas.extensions.quantum.model.NetworkModel;
+import org.opennaas.extensions.quantum.model.Resource;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public abstract class NetworkBuilderHelper {
@@ -97,4 +102,41 @@ public abstract class NetworkBuilderHelper {
 
 	}
 
+	public static BoDLink createSampleBoDLink(String iface1Name, String iface2Name, int capacity, int vlanid) {
+
+		DateTime startTime = new DateTime(1234);
+		DateTime endTime = new DateTime(2345);
+
+		BoDLink link = new BoDLink();
+
+		Interface ifaceSource = createSampleBoDInterface(iface1Name);
+		Interface ifaceSink = createSampleBoDInterface(iface2Name);
+		RequestConnectionParameters requestParameters = new RequestConnectionParameters(ifaceSource, ifaceSink, capacity, vlanid, startTime, endTime);
+
+		link.setSource(ifaceSource);
+		link.setSink(ifaceSink);
+		link.setRequestParameters(requestParameters);
+
+		return link;
+
+	}
+
+	public static Interface createSampleBoDInterface(String interfaceName) {
+
+		Interface iface = new Interface();
+		iface.setName(interfaceName);
+
+		return iface;
+
+	}
+
+	public static Resource createSampleAutobahnResource(String resourceId, AutobahnElement autobahnElem) {
+
+		Resource resource = new Resource();
+		resource.setResourceId(resourceId);
+		resource.addResourceElement(autobahnElem);
+
+		return resource;
+
+	}
 }

@@ -70,7 +70,7 @@ public class AutobahnBuilder implements NetworkBuilder {
 			if (link == null)
 				throw new QuantumException("There's no link in Autobahn model with the requested parameters.");
 
-			NetworkModel builtModel = createBuiltModel(network.getId(), link);
+			NetworkModel builtModel = createBuiltModel(network.getId(), autobahnResource.getResourceIdentifier().getId(), link);
 
 			log.info("Autobahn network built");
 
@@ -99,14 +99,13 @@ public class AutobahnBuilder implements NetworkBuilder {
 			if (netModel == null)
 				throw new QuantumException("There's no resource referenced by Quantum network " + network.getName());
 
-			String resourceId = netModel.getQuantumNetworkId();
-			autobahnResource = NetworkBuilderHelper.getResourceById(resourceId);
-
-			for (Resource resource : netModel.getResources())
+			for (Resource resource : netModel.getResources()) {
+				String resourceId = resource.getResourceId();
+				autobahnResource = NetworkBuilderHelper.getResourceById(resourceId);
 				for (ResourceElement element : resource.getResourceElement())
 					if (element instanceof AutobahnElement)
 						removeAutobahnLinks(autobahnResource, (AutobahnElement) element);
-
+			}
 		} catch (Exception e) {
 			log.error("Error destroying Autobahn Network : " + e.getMessage());
 			throw new QuantumException(e);
@@ -198,11 +197,12 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 	}
 
-	private NetworkModel createBuiltModel(String networkId, BoDLink link) {
+	private NetworkModel createBuiltModel(String networkId, String resourceId, BoDLink link) {
 		AutobahnElement autobahnElement = new AutobahnElement();
 		autobahnElement.addLink(link);
 
 		Resource resource = new Resource();
+		resource.setResourceId(resourceId);
 		resource.addResourceElement(autobahnElement);
 
 		NetworkModel builtModel = new NetworkModel();
