@@ -241,6 +241,52 @@ public class ControllerTest {
 		Assert.assertFalse("Quantum model should not contain netmodel2.", quantumModel.getNetworksModel().contains(model2));
 	}
 
+	@Test(expected = QuantumException.class)
+	public void addSameNetworkModelTwice() throws QuantumException {
+		Resource resource1 = prepareAutobahnResource(IFACE1_NAME, IFACE2_NAME, LINK_CAPACITY, VLAN_ID_25);
+		quantumModel = new QuantumModel();
+		controller = new QuantumModelController();
+		model1 = new NetworkModel();
+		model1.setQuantumNetworkId(NET01_ID);
+		model1.addResource(resource1);
+
+		Assert.assertTrue("Quantum model should not contain any network model.", quantumModel.getNetworksModel().isEmpty());
+
+		controller.addNetworkModelToQuantumModel(quantumModel, model1);
+
+		Assert.assertEquals("Quantum model should only contain one network model.", 1, quantumModel.getNetworksModel().size());
+		Assert.assertTrue("Quantum model should contain netmodel1.", quantumModel.getNetworksModel().contains(model1));
+
+		controller.addNetworkModelToQuantumModel(quantumModel, model1);
+
+	}
+
+	@Test(expected = QuantumException.class)
+	public void removeUnexistingNetworkModel() throws QuantumException {
+		Resource resource1 = prepareAutobahnResource(IFACE1_NAME, IFACE2_NAME, LINK_CAPACITY, VLAN_ID_25);
+		Resource resource2 = prepareAutobahnResource(IFACE3_NAME, IFACE4_NAME, LINK_CAPACITY, VLAN_ID_26);
+
+		quantumModel = new QuantumModel();
+		controller = new QuantumModelController();
+		model1 = new NetworkModel();
+		model1.setQuantumNetworkId(NET01_ID);
+		model1.addResource(resource1);
+		model2 = new NetworkModel();
+		model2.setQuantumNetworkId(NET02_ID);
+		model2.addResource(resource2);
+
+		Assert.assertTrue("Quantum model should not contain any network model.", quantumModel.getNetworksModel().isEmpty());
+
+		controller.addNetworkModelToQuantumModel(quantumModel, model1);
+
+		Assert.assertEquals("Quantum model should only contain one network model.", 1, quantumModel.getNetworksModel().size());
+		Assert.assertTrue("Quantum model should contain netmodel1.", quantumModel.getNetworksModel().contains(model1));
+		Assert.assertFalse("Quantum model should not contain netmodel2.", quantumModel.getNetworksModel().contains(model2));
+
+		controller.removeNetworkModelFromQuantumModel(quantumModel, model2);
+
+	}
+
 	private Resource prepareAutobahnResource(String iface1Name, String iface2Name, int linkCapacity, int vlanId) {
 
 		AutobahnElement autobahnElem = new AutobahnElement();
