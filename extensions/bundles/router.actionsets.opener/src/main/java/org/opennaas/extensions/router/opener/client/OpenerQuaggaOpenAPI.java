@@ -16,7 +16,7 @@ import org.opennaas.extensions.router.opener.client.rpc.GetInterfacesResponse;
 import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceIPRequest;
 import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceResponse;
 
-@Path("/linux/")
+@Path("/")
 public interface OpenerQuaggaOpenAPI {
 	
 	/**

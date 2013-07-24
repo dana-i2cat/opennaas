@@ -19,7 +19,7 @@ public class OpenerClientTest {
 	
 	private static final String host = "opener.opennaas.org";
 	private static final String port = "9090";
-	private static final String path = "axis2/services/quagga_openapi";
+	private static final String path = "axis2/services/quagga_openapi/linux";
 	
 	private static final String managementInterface = "eth0";
 	private static final String testInterface = "eth1";
