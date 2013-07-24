@@ -46,7 +46,7 @@ public interface IRoutingCapability extends ICapability {
             @PathParam("ipDest") String ipDest,
             @PathParam("switchip") String switchip,
             @PathParam("inputPort") int inputPort,
-            @PathParam("proactive") boolean proactive
+            @PathParam("action") boolean proactive
             ) throws CapabilityException;
 
     /**

@@ -1,0 +1,15 @@
+shell:echo Script to insert the information of each controller and the default routes implementing NFV
+
+#create resource from descriptor
+
+#start resource
+resource:start ofrouting:VM-Routing1
+resource:list
+
+#insert controller information
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8191 00:00:00:00:00:00:00:01
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8192 00:00:00:00:00:00:00:02
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8193 00:00:00:00:00:00:00:03
+
+#insert routes from json file
+routing:insertfileroute ofrouting:VM-Routing1 routes.json

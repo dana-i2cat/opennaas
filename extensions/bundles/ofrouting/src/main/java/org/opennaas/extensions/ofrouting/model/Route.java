@@ -17,20 +17,13 @@ public class Route {
     public Route() {
     }
 
-    public Route(int id, InetAddress sourceIp, InetAddress destIp, Switch SwitchInfo) {
-        this.id = id++;
-        this.sourceAddress = sourceIp;
-        this.destinationAddress = destIp;
-        this.switchInfo = SwitchInfo;
-    }
-
     public Route(InetAddress sourceIp, InetAddress destIp, Switch SwitchInfo) {
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
         this.switchInfo = SwitchInfo;
     }
-
-    public InetAddress getDestinationAddress() {
+    
+    public InetAddress getDestinationAddress(){
         return destinationAddress;
     }
 
@@ -77,7 +70,10 @@ public class Route {
         if ((this.destinationAddress == null) ? (other.destinationAddress != null) : !this.destinationAddress.equals(other.destinationAddress)) {
             return false;
         }
-        if (this.switchInfo != other.switchInfo && (this.switchInfo == null || !this.switchInfo.equals(other.switchInfo))) {
+        if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
+            return false;
+        }
+        if (this.switchInfo.getInputPort() != other.switchInfo.getInputPort()) {
             return false;
         }
         return true;
@@ -99,4 +95,5 @@ public class Route {
     public void setId(int id) {
         this.id = id;
     }
+    
 }

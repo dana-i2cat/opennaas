@@ -54,9 +54,11 @@ public class Table {
         log.error("version "+version);
         if (!RouteExists(route, version)) {
             if (version == 4) {
+                route.setId(this.routeIPv4.size());
                 this.routeIPv4.add(route);
                 return "Added";
             } else if (version == 6) {
+                route.setId(this.routeIPv6.size());
                 this.routeIPv6.add(route);
                 return "Added";
             }
@@ -66,6 +68,7 @@ public class Table {
 
     public String addRouteSub(RouteSubnet route) {
         if (!RouteExistsSubnet(route)) {
+            route.setId(this.routeSubnet.size());
             this.routeSubnet.add(route);
             return "Added";
         }
@@ -88,8 +91,31 @@ public class Table {
                 }
             }
         }
+        log.error("This route no exists.");
         //log.info("Adding route...");
         return false;
+    }
+    
+    public List<RouteSubnet> otherRouteExists(RouteSubnet route, Switch srcInf, Switch dstInf) {
+        List<RouteSubnet> subnetList = new ArrayList<RouteSubnet>();
+        RouteSubnet route2 = new RouteSubnet();
+        route2.setSourceSubnet(route.getDestSubnet());
+        route2.setDestSubnet(route.getSourceSubnet());
+            for (RouteSubnet r : this.routeSubnet) {
+
+                if (r.equalsOtherSubRoute(route) && !r.getSwitchInfo().getMacAddress().equals(srcInf.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstInf.getMacAddress())) {
+                    log.error("Match other RouteSubnet");
+                    subnetList.add(r);
+//                    return true;
+                }else if(r.equalsOtherSubRoute(route2) && !r.getSwitchInfo().getMacAddress().equals(srcInf.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstInf.getMacAddress())){
+                     log.error("Match other RouteSubnet");
+                    subnetList.add(r);
+                }
+            }
+        
+        log.error("Returning List of Subnets");
+        //log.info("Adding route...");
+        return subnetList;
     }
 
     public Boolean RouteExistsSubnet(RouteSubnet route) {
@@ -99,12 +125,13 @@ public class Table {
                 return true;
             }
         }
+        log.error("This subnetwork does not exist!");
         //log.info("Adding route...");
         return false;
     }
 
     public int getOutputPort(Route route, int version) {
-        log.error("Return output port");
+        log.error("Return output port from route");
         if (version == 4) {        
             for (Route r : this.routeIPv4) {
                 if (r.equals(route)) {
@@ -124,7 +151,7 @@ public class Table {
     }
 
     public int getOutputPort(RouteSubnet route) {
-        log.error("Return output port");
+        log.error("Return output port from subnetwork");
         for (RouteSubnet r : this.routeSubnet) {
             if (r.equals(route)) {
                 log.error("OutputPort = " + r.getSwitchInfo().getOutputPort());
@@ -162,8 +189,9 @@ public class Table {
                 //Using subnet, this lines is comment. The route table contain less number of entries
     //            if(!originSwitch.equals(r.getSwitchInfo().getMacAddress())){
                 if (InetAddresses.toAddrString(r.getSourceAddress()).equals(srcIp) && InetAddresses.toAddrString(r.getDestinationAddress()).equals(destIp)) {
-                    log.error("DINS");
-                    log.error(r.getSwitchInfo().getMacAddress());
+                    log.error("src "+srcIp);
+                    log.error("dst "+destIp);
+                    log.error("dins "+r.getSwitchInfo().getMacAddress());
                     return r.getSwitchInfo();
                 }
     //            }

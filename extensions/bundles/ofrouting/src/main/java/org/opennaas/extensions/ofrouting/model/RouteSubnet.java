@@ -15,17 +15,15 @@ public class RouteSubnet {
     public RouteSubnet() {
     }
 
-    public RouteSubnet(int id, Subnet sourceSubnet, Subnet destSubnet, Switch SwitchInfo) {
-        this.id = id++;
-        this.sourceSubnet = sourceSubnet;
-        this.destSubnet = destSubnet;
-        this.switchInfo = SwitchInfo;
-    }
-
     public RouteSubnet(Subnet sourceSubnet, Subnet destSubnet, Switch SwitchInfo) {
         this.sourceSubnet = sourceSubnet;
         this.destSubnet = destSubnet;
         this.switchInfo = SwitchInfo;
+    }
+    
+    public RouteSubnet(Subnet sourceSubnet, Subnet destSubnet) {
+        this.sourceSubnet = sourceSubnet;
+        this.destSubnet = destSubnet;
     }
 
     public Switch getSwitchInfo() {
@@ -84,10 +82,10 @@ public class RouteSubnet {
         if (this.destSubnet != other.destSubnet && (this.destSubnet == null || !this.destSubnet.equals(other.destSubnet))) {
             return false;
         }
-        /*        if (this.switchInfo != other.switchInfo && (this.switchInfo == null || !this.switchInfo.equals(other.switchInfo))) {
-        return false;
+        if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
+            return false;
         }
-         */ return true;
+         return true;
     }
 
     @Override
@@ -95,7 +93,25 @@ public class RouteSubnet {
         int hash = 7;
         hash = 11 * hash + (this.sourceSubnet != null ? this.sourceSubnet.hashCode() : 0);
         hash = 11 * hash + (this.destSubnet != null ? this.destSubnet.hashCode() : 0);
-        hash = 11 * hash + (this.switchInfo != null ? this.switchInfo.hashCode() : 0);
+//        hash = 11 * hash + (this.switchInfo != null ? this.switchInfo.hashCode() : 0);
         return hash;
+    }
+    
+    public boolean equalsOtherSubRoute(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RouteSubnet other = (RouteSubnet) obj;
+
+        if (this.sourceSubnet != other.sourceSubnet && (this.sourceSubnet == null || !this.sourceSubnet.equals(other.sourceSubnet))) {
+            return false;
+        }
+        if (this.destSubnet != other.destSubnet && (this.destSubnet == null || !this.destSubnet.equals(other.destSubnet))) {
+            return false;
+        }
+         return true;
     }
 }

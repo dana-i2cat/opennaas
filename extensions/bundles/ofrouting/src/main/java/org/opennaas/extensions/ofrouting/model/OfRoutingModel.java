@@ -35,12 +35,11 @@ public class OfRoutingModel implements IModel{
         this.table = table;
     }
 
-    public Map<String, String> getSwitchController() {
+   public Map<String, String> getSwitchController() {
         return switchController;
     }
 
     public void setSwitchController(Map<String, String> switchController) {
         this.switchController = switchController;
-    }
-    
+    }       
 }

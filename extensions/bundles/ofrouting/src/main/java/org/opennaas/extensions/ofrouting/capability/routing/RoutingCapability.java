@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Response;
@@ -200,7 +201,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     public String getSubPath(String ipSource, String ipDest, String switchMac, int inputPort, boolean proactive) throws CapabilityException {
         long initialTime = System.currentTimeMillis();
         log.error("Start time... " + initialTime);
-        String response = "";
+        log.error("Proactive? "+proactive);
+        int outPortSW1 = 0;
         int version = 4;//IP version
 	if(Utils.isIPv4Address(ipSource)){
 	    ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
@@ -220,21 +222,21 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         log.error("Path: " + ipSource + " " + ipDest + " " + switchMac + " " + inputPort);
         Switch switchInfo = new Switch(inputPort, switchMac);
 
-
         RouteSubnet route = null;
+
         String subSource = "";
         String subDest = "";
         try {
             for (RouteSubnet subnet : model.getTable().getRouteSubnet()) {
 		log.error(subnet.getSourceSubnet().getIpAddressString());
                 if (matches(subnet.getSourceSubnet(), InetAddress.getByName(ipSource))) {
-			log.error("entra");
                     for (RouteSubnet subnet1 : model.getTable().getRouteSubnet()) {
-                        log.error("tmb entra");
                         if (matches(subnet1.getDestSubnet(), InetAddress.getByName(ipDest))) {
                             route = new RouteSubnet(subnet.getSourceSubnet(), subnet1.getDestSubnet(), switchInfo);
                             subDest = InetAddresses.toAddrString(subnet1.getDestSubnet().getIpAddress());
                             subSource = InetAddresses.toAddrString(subnet.getSourceSubnet().getIpAddress());
+//                            log.error(subnet.getSourceSubnet().getIpAddressString());
+//                            log.error(subnet1.getDestSubnet().getIpAddressString());
                             break;
                         }
                     }
@@ -245,84 +247,132 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
         log.error("Subnets: " + subSource + " " + subDest);
-
-
-        if (model.getTable().RouteExistsSubnet(route)) {
-            response = Integer.toString(model.getTable().getOutputPort(route));
-        }
-
-        //Next-hop router
-        String controllerInfo = "";
-        Switch destSwInfo = null;
+        Route srcRoute = null;
         try {
-            destSwInfo = model.getTable().getDestinationSwitch(subSource, ipDest, switchMac, version);
-            controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
-        } catch (NullPointerException e) {
-            log.error("Null Switch Info: "+e.getMessage());
-            return null;
-        }
-        
-        if(controllerInfo == null){
-            log.error("No information about the controller");
-            return null;
-        }
-
-        Route route1 = null;
-        try {
-            route1 = new Route(InetAddress.getByName(subSource), InetAddress.getByName(ipDest), destSwInfo);
-        } catch (UnknownHostException ex) {
+            srcRoute = new Route(InetAddress.getByName(subSource), InetAddress.getByName(ipDest), switchInfo);
+/*            log.error("Route is: "+srcRoute.getSourceAddress());
+            log.error("Route is: "+srcRoute.getDestinationAddress());
+            log.error("Route is: "+srcRoute.getSwitchInfo().getMacAddress());
+            log.error("Route is: "+srcRoute.getSwitchInfo().getInputPort());
+*/        } catch (UnknownHostException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String outputPortSW2 = "";
-        if (model.getTable().RouteExists(route1, version)) {
-            outputPortSW2 = Integer.toString(model.getTable().getOutputPort(route1, version));
+        if (model.getTable().RouteExistsSubnet(route)) {
+            outPortSW1 = model.getTable().getOutputPort(route);
+        }else if (model.getTable().RouteExists(srcRoute, version)) {            
+            outPortSW1 = model.getTable().getOutputPort(srcRoute, version);
+        }else{
+            outPortSW1 = 0;
         }
-        log.error("Out "+outputPortSW2);
-        if(outputPortSW2 == null){
-            log.error("NO output port");
-        }
-
         String returnedSrcSub = subSource;
         String returnedDstSub = subDest;
-        subSource = subSource + "/24";
-        subDest = subDest + "/24";
-
-        final String Url = "http://" + controllerInfo + "/wm/staticflowentrypusher/json";
-        String json[] = new String[4];
-        String ethertype = "";
-        String ethertype2 = "";
-        if(version == 4){
-            ethertype = "0x806";
-            ethertype2 = "0x800";
-        }else if(version == 6){
-            ethertype = "0x86DD";
-        }
-        
-        if (!destSwInfo.getMacAddress().equals(switchMac) && proactive) {         
-            json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arp-mod-" + subSource + ipDest + "\", \"priority\":\"32767\", \"src-ip\":\"" + subSource + "\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\""+ethertype+"\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
-            json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arp-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"src-ip\":\"" + subDest + "\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\""+ethertype+"\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
-            json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4-mod-" + subSource + ipDest + "\", \"priority\":\"32767\", \"src-ip\":\"" + subSource + "\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\""+ethertype2+"\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
-            json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"src-ip\":\"" + subDest + "\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\""+ethertype2+"\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+        //Next-hop router
+            log.error(proactive);
+        if (proactive) {
+            log.error("PROACTIVE");
+            String controllerInfo = "";
+            Switch destSwInfo = null;
             try {
-                httpRequest(Url, json[0]);
-                log.error("write1: "+json[0]);
-                httpRequest(Url, json[1]);
-                log.error("write2: "+json[1]);
-            } catch (Exception e) {
+                destSwInfo = model.getTable().getDestinationSwitch(subSource, ipDest, switchMac, version);
+                controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
+            } catch (NullPointerException e) {
+                log.error("Null Switch Info: "+e.getMessage());
+                return null;
             }
+
+            if(controllerInfo == null){
+                log.error("No information about the controller");
+                return null;
+            }
+
+            Route route1 = null;
+            try {
+                route1 = new Route(InetAddress.getByName(subSource), InetAddress.getByName(ipDest), destSwInfo);
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String outputPortSW2 = "";
+            if (model.getTable().RouteExists(route1, version)) {
+                outputPortSW2 = Integer.toString(model.getTable().getOutputPort(route1, version));
+            }
+            log.error("Out "+outputPortSW2);
+            if(outputPortSW2 == null){
+                log.error("NO output port");
+            }
+
+            subSource = subSource + "/24";
+            subDest = subDest + "/24";
+
+            final String Url = "http://" + controllerInfo + "/wm/staticflowentrypusher/json";
+            String json[] = new String[4];
+            String ethertype = "";
+            String ethertype2 = "";
             if(version == 4){
-                for (int i = 2; i < 4; i++) {
-                    new MyThread(i, Url, json).start();
+                ethertype = "0x806";
+                ethertype2 = "0x800";
+            }else if(version == 6){
+                ethertype = "0x86DD";
+            }
+log.error("Switcmac "+switchMac);
+log.error("dest "+destSwInfo.getMacAddress());
+            if (!destSwInfo.getMacAddress().equals(switchMac)) {   
+              json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpin-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\""+ethertype+"\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
+              json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpto-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\""+ethertype+"\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+              json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4in-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\""+ethertype2+"\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
+              json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4to-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\""+ethertype2+"\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+              try {
+                  httpRequest(Url, json[0]);
+                  log.error("write1: "+json[0]);
+                  httpRequest(Url, json[1]);
+                  log.error("write2: "+json[1]);
+		  httpRequest(Url, json[2]);
+                  log.error("write3: "+json[2]);
+                  httpRequest(Url, json[3]);
+                  log.error("write4: "+json[3]);
+
+              } catch (Exception e) {
+              }
+/*              if(version == 4){
+                  for (int i = 2; i < 4; i++) {
+                      new MyThread(i, Url, json).start();
+                  }
+              }
+*/          }
+            
+            //other siwthces
+log.error("OtherSiwtches");
+            String otherOutput = "";
+            List<RouteSubnet> routeSubnetList= model.getTable().otherRouteExists(route, switchInfo, destSwInfo);
+            if(routeSubnetList.size()>1){
+                for (RouteSubnet r: routeSubnetList){
+                    destSwInfo = r.getSwitchInfo();
+                    controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
+                    String Url2 = "http://" + controllerInfo + "/wm/staticflowentrypusher/json";
+                    json[0] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"arpto-mod-" + r.getSourceSubnet().getIpAddressString() + r.getSourceSubnet().getIpAddressString() + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestSubnet().getIpAddressString() + "/24\", \"ether-type\":\""+ethertype+"\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
+                    json[1] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"ip4in-mod-" + r.getSourceSubnet().getIpAddressString() + r.getSourceSubnet().getIpAddressString() + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestSubnet().getIpAddressString() + "/24\", \"ether-type\":\""+ethertype2+"\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
+                  try {
+                      httpRequest(Url2, json[0]);
+                      log.error("write_other: "+json[0]);
+                      httpRequest(Url2, json[1]);
+                      log.error("write_other2: "+json[1]);
+
+
+                  } catch (Exception e) {
+                  }
+                    outputPortSW2 = Integer.toString(model.getTable().getOutputPort(route1, version));
                 }
             }
-        } else {
-            response = outputPortSW2;
+            log.error("Out "+outputPortSW2);
+            if(outputPortSW2 == null){
+                log.error("NO output port");
+            }        
+                    
         }
         
 
         long totalTime = System.currentTimeMillis() - initialTime;
         log.error("Return response, end exec: " + totalTime);
-        return response + ":" + returnedSrcSub + ":" + returnedDstSub;
+        return Integer.toString(outPortSW1) + ":" + returnedSrcSub + ":" + returnedDstSub;
     }
 
     public class MyThread extends Thread {
@@ -398,7 +448,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             Switch switchInfo = new Switch(Integer.toString(inputPort), inputPort, outputPort, switchMac);
             Route route = null;
             try {
-                route = new Route(model.getTable().getRoute(version).size(), InetAddress.getByName(ipSource), InetAddress.getByName(ipDest), switchInfo);
+                route = new Route(InetAddress.getByName(ipSource), InetAddress.getByName(ipDest), switchInfo);
             } catch (UnknownHostException ex) {
                 Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -420,12 +470,12 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         if (model.getTable() == null) {
             model.setTable(new Table());
         }
-        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && inputPort !=0 && outputPort != 0) {
+        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && outputPort != 0) {
             Switch switchInfo = new Switch(Integer.toString(inputPort), inputPort, outputPort, switchMac);
             RouteSubnet route;
             String response = null;
             try {
-                route = new RouteSubnet(model.getTable().getRouteSubnet().size(), new Subnet(InetAddress.getByName(ipSource), 24), new Subnet(InetAddress.getByName(ipDest), 24), switchInfo);
+                route = new RouteSubnet(new Subnet(InetAddress.getByName(ipSource), 24), new Subnet(InetAddress.getByName(ipDest), 24), switchInfo);
                 response = model.getTable().addRouteSub(route);
             } catch (UnknownHostException ex) {
                 Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
@@ -461,8 +511,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                 model.setTable(new Table());
             }
 
-            String response = "No content";
-            
+            String response = "ok!";
+           
             JsonFactory f = new MappingJsonFactory();
             JsonParser jp = f.createJsonParser(new File(filename));
             JsonToken current = jp.nextToken();
@@ -475,7 +525,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                 // move from field name to field value
                 current = jp.nextToken();
 //                Table table = new Table();
-                if (fieldName.equals("route")) {
+                if (fieldName.equals("routeIPv4")) {
                     if (current == JsonToken.START_ARRAY) {
                         // For each of the records in the array
                         while (jp.nextToken() != JsonToken.END_ARRAY) {
@@ -486,28 +536,86 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                             // And now we have random access to everything in the object
                             Route newRoute = new Route();
                             Switch newSwitch = new Switch();
-                            newRoute.setSourceAddress(InetAddress.getByName(node.get("sourceAddress").getValueAsText()));
-                            newRoute.setDestinationAddress(InetAddress.getByName(node.get("destinationAddress").getValueAsText()));
-                            newSwitch.setInputPort(Integer.parseInt(node.get("switchInfo").getPath("inputPort").getValueAsText()));
-                            newSwitch.setOutputPort(Integer.parseInt(node.get("switchInfo").getPath("outputPort").getValueAsText()));
-                            newSwitch.setMacAddress(node.get("switchInfo").getPath("macAddress").getValueAsText());
+                            newRoute.setSourceAddress(InetAddress.getByName(node.get("srcAddr").getValueAsText()));
+                            newRoute.setDestinationAddress(InetAddress.getByName(node.get("dstAddr").getValueAsText()));
+                            newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
+                            newSwitch.setOutputPort(Integer.parseInt(node.get("swInfo").getPath("outPort").getValueAsText()));
+                            newSwitch.setMacAddress(node.get("swInfo").getPath("macAddr").getValueAsText());
                             newRoute.setSwitchInfo(newSwitch);
                             model.getTable().addRoute(newRoute, 4);
                         }
                     } else {
                         log.error("Error: records should be an array: skipping.");
+                        response = "Error: records should be an array: skipping.";
+                        jp.skipChildren();
+                    }
+                }else if (fieldName.equals("routeIPv6")) {
+                    if (current == JsonToken.START_ARRAY) {
+                        // For each of the records in the array
+                        while (jp.nextToken() != JsonToken.END_ARRAY) {
+                            // read the record into a tree model,
+                            // this moves the parsing position to the end of it
+                            JsonNode node = jp.readValueAsTree();
+                            String field = jp.getCurrentName();
+                            // And now we have random access to everything in the object
+                            Route newRoute = new Route();
+                            Switch newSwitch = new Switch();
+                            newRoute.setSourceAddress(InetAddress.getByName(node.get("srcAddr").getValueAsText()));
+                            newRoute.setDestinationAddress(InetAddress.getByName(node.get("dstAddr").getValueAsText()));
+                            newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
+                            newSwitch.setOutputPort(Integer.parseInt(node.get("swInfo").getPath("outPort").getValueAsText()));
+                            newSwitch.setMacAddress(node.get("swInfo").getPath("macAddr").getValueAsText());
+                            newRoute.setSwitchInfo(newSwitch);
+                            model.getTable().addRoute(newRoute, 6);
+                        }
+                    } else {
+                        log.error("Error: records should be an array: skipping.");
+                        response = "Error: records should be an array: skipping.";
+                        jp.skipChildren();
+                    }
+                }else if (fieldName.equals("routeSubnet")) {
+                    if (current == JsonToken.START_ARRAY) {
+                        // For each of the records in the array
+                        while (jp.nextToken() != JsonToken.END_ARRAY) {
+                            // read the record into a tree model,
+                            // this moves the parsing position to the end of it
+                            JsonNode node = jp.readValueAsTree();
+                            String field = jp.getCurrentName();
+                            // And now we have random access to everything in the object
+                            RouteSubnet newRouteSubnet = new RouteSubnet();
+                            Switch newSwitch = new Switch();
+                            InetAddress srcAddr = InetAddress.getByName(node.get("srcSubnet").getPath("ip").getValueAsText());
+                            int mask = Integer.parseInt(node.get("srcSubnet").getPath("mask").getValueAsText());
+                            Subnet subnet = new Subnet(srcAddr, mask);
+                            newRouteSubnet.setSourceSubnet(subnet);
+                            srcAddr = InetAddress.getByName(node.get("dstSubnet").getPath("ip").getValueAsText());
+                            mask = Integer.parseInt(node.get("dstSubnet").getPath("mask").getValueAsText());
+                            subnet = new Subnet(srcAddr, mask);
+                            newRouteSubnet.setDestSubnet(subnet);
+                            
+                            
+                            newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
+                            newSwitch.setOutputPort(Integer.parseInt(node.get("swInfo").getPath("outPort").getValueAsText()));
+                            newSwitch.setMacAddress(node.get("swInfo").getPath("macAddr").getValueAsText());
+                            newRouteSubnet.setSwitchInfo(newSwitch);
+                            model.getTable().addRouteSub(newRouteSubnet);
+                        }
+                    } else {
+                        log.error("Error: records should be an array: skipping.");
+                        response = "Error: records should be an array: skipping.";
                         jp.skipChildren();
                     }
                 } else {
                     log.error("Unprocessed property: " + fieldName);
+                    response = "Unprocessed property: " + fieldName;
                     jp.skipChildren();
                 }
-            }                
+            }               
             return response;
         } catch (IOException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "ok";
+        return "Some error. Check it.";
     }
     
     private boolean matches(Subnet subnet, InetAddress ipAddress) {
