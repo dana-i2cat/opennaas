@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
@@ -18,6 +19,7 @@ import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.quantum.Activator;
 import org.opennaas.extensions.quantum.QuantumException;
 import org.opennaas.extensions.quantum.model.AutobahnElement;
 import org.opennaas.extensions.quantum.model.Network;
@@ -35,7 +37,7 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 	private Log					log				= LogFactory.getLog(AutobahnBuilder.class);
 
-	private static final String	PROPERTIES_PATH	= "/org.opennaas.extensions.quantum.autobahn.cfg";
+	private static final String	PROPERTIES_PATH	= "org.opennaas.extensions.quantum.autobahn";
 
 	/**
 	 * Set link capacity to 100 MB/s
@@ -131,7 +133,7 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 		for (NetworkElement link : links) {
 			BoDLink bodLink = (BoDLink) link;
-			if (bodLink.getRequestParameters().equals(requestParams))
+			if (compareRequestParameters(bodLink.getRequestParameters(), requestParams))
 				return bodLink;
 		}
 
@@ -149,8 +151,7 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 		log.debug("Loading autobahn properties from config file " + PROPERTIES_PATH);
 
-		Properties props = new Properties();
-		props.load(this.getClass().getResourceAsStream(PROPERTIES_PATH));
+		Properties props = loadProperties();
 
 		Assert.assertNotNull("Autobahn configuration file does not contain any property with name \"autobahn.resource.name\"",
 				props.get(AutobahnPropertiesConstants.RESOURCE_NAME));
@@ -212,4 +213,33 @@ public class AutobahnBuilder implements NetworkBuilder {
 		return builtModel;
 	}
 
+	private Properties loadProperties() throws IOException {
+		Properties props = ConfigurationAdminUtil.getProperties(Activator.getContext(), PROPERTIES_PATH);
+		if (props == null)
+			throw new IOException("Failed to load physicalInfrastructure configuration file " + PROPERTIES_PATH);
+
+		return props;
+	}
+
+	private boolean compareRequestParameters(RequestConnectionParameters requestParams1, RequestConnectionParameters requestParams2) {
+
+		if (requestParams1.capacity != requestParams2.capacity)
+			return false;
+
+		if (requestParams1.interface1 == null) {
+			if (requestParams2.interface1 != null)
+				return false;
+		}
+		if (requestParams1.interface2 == null) {
+			if (requestParams2.interface2 != null)
+				return false;
+		}
+		if (requestParams1.vlanid1 != requestParams2.vlanid1)
+			return false;
+		if (requestParams1.vlanid2 != requestParams2.vlanid2)
+			return false;
+
+		return true;
+
+	}
 }

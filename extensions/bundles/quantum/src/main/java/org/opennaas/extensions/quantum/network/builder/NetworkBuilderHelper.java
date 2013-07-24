@@ -102,7 +102,7 @@ public abstract class NetworkBuilderHelper {
 
 	}
 
-	public static BoDLink createSampleBoDLink(String iface1Name, String iface2Name, int capacity, int vlanid) {
+	public static BoDLink createSampleBoDLink(String iface1Name, String iface2Name, int capacity, int srcVlanId, int dstVlanId) {
 
 		DateTime startTime = new DateTime(1234);
 		DateTime endTime = new DateTime(2345);
@@ -111,7 +111,8 @@ public abstract class NetworkBuilderHelper {
 
 		Interface ifaceSource = createSampleBoDInterface(iface1Name);
 		Interface ifaceSink = createSampleBoDInterface(iface2Name);
-		RequestConnectionParameters requestParameters = new RequestConnectionParameters(ifaceSource, ifaceSink, capacity, vlanid, startTime, endTime);
+		RequestConnectionParameters requestParameters = new RequestConnectionParameters(ifaceSource, ifaceSink, capacity, srcVlanId, dstVlanId,
+				startTime, endTime);
 
 		link.setSource(ifaceSource);
 		link.setSink(ifaceSink);

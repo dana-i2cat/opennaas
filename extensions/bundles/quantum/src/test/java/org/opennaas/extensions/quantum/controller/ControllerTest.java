@@ -290,7 +290,7 @@ public class ControllerTest {
 	private Resource prepareAutobahnResource(String iface1Name, String iface2Name, int linkCapacity, int vlanId) {
 
 		AutobahnElement autobahnElem = new AutobahnElement();
-		BoDLink link = NetworkBuilderHelper.createSampleBoDLink(iface1Name, iface2Name, linkCapacity, vlanId);
+		BoDLink link = NetworkBuilderHelper.createSampleBoDLink(iface1Name, iface2Name, linkCapacity, vlanId, vlanId);
 		autobahnElem.addLink(link);
 		Resource resource = NetworkBuilderHelper.createSampleAutobahnResource(AUTOBAHN_RESOURCE_ID, autobahnElem);
 
