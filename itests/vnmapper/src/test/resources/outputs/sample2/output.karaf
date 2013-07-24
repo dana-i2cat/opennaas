@@ -1,19 +1,19 @@
 Physical Nodes:
-node 0--router:junos20
-node 1--router:junos30
-node 2--router:junos40
+node 0--router:junos20 , Capacity : 16
+node 1--router:junos30 , Capacity : 16
+node 2--router:junos40 , Capacity : 16
 Physical links:
-link : 0--1
-link : 0--2
-link : 1--2
+link : 0--1 , Bandwidth : 100
+link : 0--2 , Bandwidth : 100
+link : 1--2 , Bandwidth : 100
 
 Required Virtual Nodes:
-node 0
-node 1
-node 2
+node 0 , Capacity : 1
+node 1 , Capacity : 1
+node 2 , Capacity : 1
 Required Virtual links
-link : 0--1
-link : 1--2
+link : 0--1 , Bandwidth : 25
+link : 1--2 , Bandwidth : 25
 
 Successful Matching
 Successful Mapping
@@ -23,5 +23,5 @@ vnodes:
 1--2
 2--1
 vlinks: 
-0--1:0--2--
-1--2:2--1--
+0--1:0--2
+1--2:2--1
