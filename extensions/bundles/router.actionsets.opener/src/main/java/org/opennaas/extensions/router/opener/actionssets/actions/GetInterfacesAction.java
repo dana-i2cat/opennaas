@@ -77,7 +77,7 @@ public class GetInterfacesAction extends OpenerAction {
 			
 			//parse interface
 			NetworkPort port;
-			if (iface.getName().startsWith("eth")) {
+			if (iface.getName()!= null && iface.getName().startsWith("eth")) {
 				port = new EthernetPort();
 				port.setLinkTechnology(LinkTechnology.ETHERNET);
 			} else {
@@ -113,11 +113,17 @@ public class GetInterfacesAction extends OpenerAction {
 	}
 	
 	private String getPortName(Interface iface) {
+		if(iface.getName() == null || iface.getName().isEmpty())
+			return "";
+		
 		String[] nameAndUnit = iface.getName().split("\\.");
 		return nameAndUnit[0];
 	}
 	
 	private int getPortNumber(Interface iface) {
+		if(iface.getName() == null || iface.getName().isEmpty())
+			return 0;
+		
 		String[] nameAndUnit = iface.getName().split("\\.");
 		if (nameAndUnit.length < 2)
 			return 0;
@@ -126,14 +132,20 @@ public class GetInterfacesAction extends OpenerAction {
 	}
 	
 	private OperationalStatus getOperationalStatus(Interface iface) {
+		
 		OperationalStatus opStatus;
-		if (iface.getStatus().equals("up")) {
-			opStatus = OperationalStatus.OK;
-		} else if (iface.getStatus().equals("down")) {
-			opStatus = OperationalStatus.STOPPED;
-		} else {
+		if (iface.getStatus() == null) {
 			opStatus = OperationalStatus.UNKNOWN;
+		} else {
+			if (iface.getStatus().equals("up")) {
+				opStatus = OperationalStatus.OK;
+			} else if (iface.getStatus().equals("down")) {
+				opStatus = OperationalStatus.STOPPED;
+			} else {
+				opStatus = OperationalStatus.UNKNOWN;
+			}
 		}
+		
 		return opStatus;
 	}
 	
