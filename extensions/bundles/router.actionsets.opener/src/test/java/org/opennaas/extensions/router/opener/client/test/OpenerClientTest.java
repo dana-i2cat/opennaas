@@ -3,6 +3,7 @@ package org.opennaas.extensions.router.opener.client.test;
 import junit.framework.Assert;
 
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.router.opener.client.OpenerQuaggaOpenAPI;
@@ -28,7 +29,7 @@ public class OpenerClientTest {
 	private static final String testIPAddress = "192.168.1.12";
 	private static final String testIPPrefix = "24";
 	
-	
+	@Ignore
 	@Test
 	public void openerClientTest() throws Exception {
 		
@@ -92,7 +93,7 @@ public class OpenerClientTest {
 		
 	}
 	
-	
+	@Ignore
 	@Test
 	public void openerProtocolSessionTest() throws Exception {
 		
