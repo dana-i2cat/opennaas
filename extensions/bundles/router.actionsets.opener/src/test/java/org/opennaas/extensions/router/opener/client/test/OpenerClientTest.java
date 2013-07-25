@@ -4,16 +4,17 @@ import junit.framework.Assert;
 
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.junit.Test;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.router.opener.client.OpenerQuaggaOpenAPI;
 import org.opennaas.extensions.router.opener.client.model.Interface;
-import org.opennaas.extensions.router.opener.client.model.InterfaceID;
-import org.opennaas.extensions.router.opener.client.rpc.AddInterfaceRequest;
 import org.opennaas.extensions.router.opener.client.rpc.DeleteInterfaceIPRequest;
 import org.opennaas.extensions.router.opener.client.rpc.GetInterfaceResponse;
 import org.opennaas.extensions.router.opener.client.rpc.GetInterfacesResponse;
 import org.opennaas.extensions.router.opener.client.rpc.IPDataRequest;
 import org.opennaas.extensions.router.opener.client.rpc.IPRequest;
 import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceIPRequest;
+import org.opennaas.extensions.router.opener.protocol.OpenerProtocolSession;
+import org.opennaas.extensions.router.opener.protocol.OpenerProtocolSessionFactory;
 
 public class OpenerClientTest {
 	
@@ -29,7 +30,7 @@ public class OpenerClientTest {
 	
 	
 	@Test
-	public void OpenerTest() throws Exception {
+	public void openerClientTest() throws Exception {
 		
 		OpenerQuaggaOpenAPI proxy = JAXRSClientFactory.create("http://"+host+":"+port+"/"+path, OpenerQuaggaOpenAPI.class);
 		
@@ -90,5 +91,26 @@ public class OpenerClientTest {
 //		proxy.deleteInterface(vifaceId.getName());
 		
 	}
+	
+	@Test
+	public void openerProtocolSessionTest() throws Exception {
+		
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, OpenerProtocolSession.OPENER_PROTOCOL_TYPE);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "http://"+host+":"+port+"/"+path);
+		
+		OpenerProtocolSessionFactory factory = new OpenerProtocolSessionFactory();
+		OpenerProtocolSession session = (OpenerProtocolSession) factory.createProtocolSession("OPENER-SESSION-001", protocolSessionContext);
+		
+		session.connect();
+		OpenerQuaggaOpenAPI openerClient = session.getOpenerClientForUse();
+		GetInterfacesResponse response = openerClient.getInterfaces();
+		Assert.assertNotNull(response);
+		
+		
+		session.disconnect();
+		
+	}
+	
 
 }
