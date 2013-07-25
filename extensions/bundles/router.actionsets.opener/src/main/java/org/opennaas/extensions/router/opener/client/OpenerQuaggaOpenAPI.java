@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.opennaas.extensions.router.opener.client.rpc.AddInterfaceRequest;
 import org.opennaas.extensions.router.opener.client.rpc.DeleteInterfaceIPRequest;
@@ -30,8 +31,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@GET
 	@Path("getInterface/{interfaceName}")
-	@Consumes("text/xml;charset=UTF-8")
-	@Produces("text/xml;charset=UTF-8")
+	@Consumes(MediaType.TEXT_XML + ";charset=UTF-8")
+	@Produces(MediaType.TEXT_XML + ";charset=UTF-8")
 	public GetInterfaceResponse getInterface(@PathParam("interfaceName") String interfaceName) throws Exception;
 	
 	/**
@@ -42,8 +43,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@GET
 	@Path("getInterfaces")
-	@Consumes("text/xml;charset=UTF-8")
-	@Produces("text/xml;charset=UTF-8")
+	@Consumes(MediaType.TEXT_XML + ";charset=UTF-8")
+	@Produces(MediaType.TEXT_XML + ";charset=UTF-8")
 	public GetInterfacesResponse getInterfaces() throws Exception;
 	
 	/**
@@ -60,8 +61,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@PUT
 	@Path("setInterface")
-	@Consumes("text/xml;charset=UTF-8")
-	@Produces("text/xml;charset=UTF-8")
+	@Consumes(MediaType.TEXT_XML + ";charset=UTF-8")
+	@Produces(MediaType.TEXT_XML + ";charset=UTF-8")
 	public SetInterfaceResponse setInterfaceIPAddress(SetInterfaceIPRequest request, @QueryParam("pip") int keepCurrentAddresses) throws Exception;
 	
 	/**
@@ -75,8 +76,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@PUT
 	@Path("deleteInterfaceIP")
-	@Consumes("text/xml;charset=UTF-8")
-	@Produces("text/xml;charset=UTF-8")
+	@Consumes(MediaType.TEXT_XML + ";charset=UTF-8")
+	@Produces(MediaType.TEXT_XML + ";charset=UTF-8")
 	public SetInterfaceResponse deleteInterfaceIPAddress(DeleteInterfaceIPRequest request) throws Exception;
 	
 	/**
@@ -91,8 +92,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@POST
 	@Path("addInterface")
-	@Consumes("text/xml;charset=UTF-8")
-	@Produces("text/xml;charset=UTF-8")
+	@Consumes(MediaType.TEXT_XML + ";charset=UTF-8")
+	@Produces(MediaType.TEXT_XML + ";charset=UTF-8")
 	public SetInterfaceResponse addInterface(AddInterfaceRequest request) throws Exception;
 	
 	/**
@@ -104,8 +105,8 @@ public interface OpenerQuaggaOpenAPI {
 	 */
 	@GET
 	@Path("deleteInterface/{interfaceName}")
-	@Consumes("text/xml;charset=UTF-8")
-	@Produces("text/xml;charset=UTF-8")
+	@Consumes(MediaType.TEXT_XML + ";charset=UTF-8")
+	@Produces(MediaType.TEXT_XML + ";charset=UTF-8")
 	public SetInterfaceResponse deleteInterface(@PathParam("interfaceName") String interfaceName) throws Exception;
 	
 	// TODO METHODS REGARDING UP/DOWN INTERFACES MISSING
