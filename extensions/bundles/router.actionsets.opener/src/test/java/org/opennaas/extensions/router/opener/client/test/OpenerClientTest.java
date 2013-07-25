@@ -53,7 +53,7 @@ public class OpenerClientTest {
 		//set IP Address
 		SetInterfaceIPRequest setIPRequest = new SetInterfaceIPRequest();
 		setIPRequest.setIface(ipReq);
-		proxy.setInterfaceIPAddress(setIPRequest, 1);
+		proxy.setInterfaceIPAddress(setIPRequest, 0);
 		
 		
 		//remove IP Address
@@ -91,6 +91,7 @@ public class OpenerClientTest {
 //		proxy.deleteInterface(vifaceId.getName());
 		
 	}
+	
 	
 	@Test
 	public void openerProtocolSessionTest() throws Exception {
