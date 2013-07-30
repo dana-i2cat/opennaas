@@ -21,6 +21,7 @@ import org.opennaas.extensions.quantum.model.Port;
  * Operations</a>
  * 
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello (i2CAT)
  * 
  */
 @Path("/")

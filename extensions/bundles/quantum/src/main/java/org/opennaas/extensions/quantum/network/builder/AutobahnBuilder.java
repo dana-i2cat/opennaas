@@ -7,12 +7,12 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
-import org.junit.Assert;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
 import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
@@ -129,10 +129,10 @@ public class AutobahnBuilder implements NetworkBuilder {
 
 	private BoDLink getBoDLinkByRequestConnection(org.opennaas.extensions.network.model.NetworkModel model, RequestConnectionParameters requestParams) {
 
-		List<NetworkElement> links = NetworkModelHelper.getNetworkElementsByClassName(BoDLink.class, model.getNetworkElements());
+		List<NetworkElement> links = NetworkModelHelper.getNetworkElementsByClassName(AutobahnLink.class, model.getNetworkElements());
 
 		for (NetworkElement link : links) {
-			BoDLink bodLink = (BoDLink) link;
+			AutobahnLink bodLink = (AutobahnLink) link;
 			if (compareRequestParameters(bodLink.getRequestParameters(), requestParams))
 				return bodLink;
 		}
@@ -146,23 +146,24 @@ public class AutobahnBuilder implements NetworkBuilder {
 	 * 
 	 * @return
 	 * @throws IOException
+	 * @throws QuantumException
 	 */
-	private Properties loadAutobahnProperties() throws IOException {
+	private Properties loadAutobahnProperties() throws IOException, QuantumException {
 
 		log.debug("Loading autobahn properties from config file " + PROPERTIES_PATH);
 
 		Properties props = loadProperties();
 
-		Assert.assertNotNull("Autobahn configuration file does not contain any property with name \"autobahn.resource.name\"",
-				props.get(AutobahnPropertiesConstants.RESOURCE_NAME));
-		Assert.assertNotNull("Autobahn configuration file does not contain any property with name \"autobahn.port.src\"",
-				props.get(AutobahnPropertiesConstants.PORT_SRC));
-		Assert.assertNotNull("Autobahn configuration file does not contain any property with name \"autobahn.port.dst\"",
-				props.get(AutobahnPropertiesConstants.PORT_DST));
-		Assert.assertNotNull("Autobahn configuration file does not contain any property with name \"autobahn.vlan.src\"",
-				props.get(AutobahnPropertiesConstants.VLAN_SRC));
-		Assert.assertNotNull("Autobahn configuration file does not contain any property with name \"autobahn.vlan.dst\"",
-				props.get(AutobahnPropertiesConstants.VLAN_DST));
+		if (props.get(AutobahnPropertiesConstants.RESOURCE_NAME) == null)
+			throw new QuantumException("Autobahn configuration file does not contain any property with name \"autobahn.resource.name\"");
+		if (props.get(AutobahnPropertiesConstants.PORT_SRC) == null)
+			throw new QuantumException("Autobahn configuration file does not contain any property with name \"autobahn.port.src\"");
+		if (props.get(AutobahnPropertiesConstants.PORT_DST) == null)
+			throw new QuantumException("Autobahn configuration file does not contain any property with name \"autobahn.port.dst\"");
+		if (props.get(AutobahnPropertiesConstants.VLAN_SRC) == null)
+			throw new QuantumException("Autobahn configuration file does not contain any property with name \"autobahn.vlan.src\"");
+		if (props.get(AutobahnPropertiesConstants.VLAN_DST) == null)
+			throw new QuantumException("Autobahn configuration file does not contain any property with name \"autobahn.vlan.dst\"");
 
 		log.debug("Autobahn properties loaded.");
 

@@ -8,6 +8,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AutobahnElement extends ResourceElement {
 

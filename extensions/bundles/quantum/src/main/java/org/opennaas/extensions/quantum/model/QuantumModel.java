@@ -12,6 +12,11 @@ import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.quantum.extensions.l3.model.FloatingIP;
 import org.opennaas.extensions.quantum.extensions.l3.model.Router;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 public class QuantumModel implements IModel {
 
 	private static final long	serialVersionUID	= -1626483965904441993L;

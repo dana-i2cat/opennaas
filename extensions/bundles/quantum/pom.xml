@@ -32,6 +32,12 @@
   			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
 		</dependency>		
 		<dependency>
+			<groupId>org.opennaas</groupId>
+		  	<artifactId>org.opennaas.extensions.bod.autobahn</artifactId>
+		</dependency>	
+		
+		
+		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>
@@ -70,11 +76,7 @@
 			<version>${jsonassert.version}</version>
 		</dependency>
 		
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <scope>compile</scope>
-      </dependency>				
+			
 	</dependencies>
 	<build>
 		<plugins>

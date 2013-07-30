@@ -53,9 +53,6 @@ public class QuantumModelController {
 		if (network == null)
 			throw new QuantumException("Network " + netModel + " does not exist in Quantum model");
 
-		removeNetworkSubnets(quantumModel, network);
-		removeNetworkPorts(quantumModel, network);
-
 		quantumModel.getNetworks().remove(network);
 
 		log.debug("Network " + netModel + " successfully removed from Quantum model.");
@@ -128,15 +125,18 @@ public class QuantumModelController {
 		Network network = getNetwork(quantumModel, networkId);
 
 		if (network == null)
-			throw new QuantumException("Network " + networkId + " does not exist in Quantum model");
+			log.warn("Network " + networkId + " does not exist in Quantum model. Ignoring removePort request");
 
-		Port portToRemove = getNetworkPortFromId(network, portId);
-		if (portToRemove == null)
-			throw new QuantumException("Network " + networkId + " does not contain port " + portId);
+		else {
 
-		network.getPorts().remove(portToRemove);
+			Port portToRemove = getNetworkPortFromId(network, portId);
+			if (portToRemove == null)
+				throw new QuantumException("Network " + networkId + " does not contain port " + portId);
 
-		log.debug("Port " + portId + " from network " + networkId + " removed.");
+			network.getPorts().remove(portToRemove);
+
+			log.debug("Port " + portId + " from network " + networkId + " removed.");
+		}
 
 	}
 
