@@ -95,6 +95,8 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 
 	public VNMapperOutput mapVN(String networkResourceId, VNTRequest request) throws CapabilityException {
 
+		log.info("Mapping Virtual Network.");
+
 		try {
 
 			IResource resource = getNetworkResource(networkResourceId);
@@ -110,12 +112,16 @@ public class VNMappingCapability extends AbstractCapability implements IVNMappin
 			InPNetwork net = getInPNetworkFromNetworkTopology(resource.getModel());
 			VNMapperInput input = new VNMapperInput(net, request);
 
+			log.info("Processing virtual network request: \n" + request.toString());
+
 			MappingResult result = executeAlgorithm(vNTMapperConfiguration, request, net);
 
 			NetworkModel topologyResult = transformMapperOutputToNetworkTopology(resource.getModel(), net, result);
 
 			IResourceManager resourceManager = Activator.getResourceManagerService();
 			IResource networkResource = resourceManager.getResourceById(resourceId);
+
+			log.info("Virtual Network mapped.");
 
 			return new VNMapperOutput(result, input, networkResource, topologyResult);
 		} catch (IOException io) {

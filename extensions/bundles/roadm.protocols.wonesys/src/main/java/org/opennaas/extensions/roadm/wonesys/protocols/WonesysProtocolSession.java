@@ -69,10 +69,12 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 
 		log.debug("Initializing transport");
 		/* is mock or not */
-		if (WonesysProtocolSessionContextUtils.isMock(protocolSessionContext))
+		if (WonesysProtocolSessionContextUtils.isMock(protocolSessionContext)) {
+			log.info("Using MockTransport connected to a Proteus ROADM simulator");
 			wonesysTransport = new MockTransport();
-		else
+		} else {
 			wonesysTransport = new WonesysTransport(protocolSessionContext);
+		}
 
 		String timeoutParam = (String) protocolSessionContext.getSessionParameters().get("protocol.responsetimeout");
 		if (timeoutParam != null)

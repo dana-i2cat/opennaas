@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ILifecycle.State;
@@ -164,6 +165,7 @@ public class VNMapperCapabilityTest {
 		assertEquals(MAPPING_CAPABILITY_TYPE, vnmapperResource.getCapabilities().get(0).getCapabilityInformation().getType());
 	}
 
+	@Ignore
 	@Test
 	public void Sample1Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
 
@@ -267,6 +269,7 @@ public class VNMapperCapabilityTest {
 
 	}
 
+	@Ignore
 	@Test
 	public void Sample2Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
 
@@ -378,6 +381,10 @@ public class VNMapperCapabilityTest {
 
 	@Test
 	public void Sample3Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
+
+		log.info("#############################");
+		log.info("##         TEST 3          ##");
+		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample3/topology.xml"));
 		VNTRequest vnt =
@@ -506,6 +513,7 @@ public class VNMapperCapabilityTest {
 		Assert.assertTrue(pathLinks.contains(vlink3));
 	}
 
+	@Ignore
 	@Test
 	public void Sample4Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
 
@@ -675,6 +683,7 @@ public class VNMapperCapabilityTest {
 
 	}
 
+	@Ignore
 	@Test
 	public void Sample5Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
 
@@ -760,6 +769,10 @@ public class VNMapperCapabilityTest {
 
 	@Test
 	public void Sample6Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
+
+		log.info("#############################");
+		log.info("##         TEST 7          ##");
+		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample6/topology.xml"));
 		VNTRequest vnt =
@@ -875,6 +888,10 @@ public class VNMapperCapabilityTest {
 
 	@Test
 	public void Sample7Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
+
+		log.info("#############################");
+		log.info("##         TEST 1          ##");
+		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample7/topology.xml"));
 		VNTRequest vnt =
@@ -1010,6 +1027,10 @@ public class VNMapperCapabilityTest {
 
 	@Test
 	public void Sample8Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
+
+		log.info("#############################");
+		log.info("##         TEST 2          ##");
+		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample8/topology.xml"));
 		NetworkModel physicalModel = (NetworkModel)
@@ -1211,6 +1232,10 @@ public class VNMapperCapabilityTest {
 	@Test
 	public void overloadVNodeCapacityTest() throws Exception {
 
+		log.info("#############################");
+		log.info("##         TEST 4          ##");
+		log.info("#############################");
+
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample9/topology.xml"));
 
 		VNTRequest vnt = loadRequestFromFile("/inputs/sample9/request.xml");
@@ -1235,6 +1260,10 @@ public class VNMapperCapabilityTest {
 	@Test
 	public void overloadVNodeNumTest() throws Exception {
 
+		log.info("#############################");
+		log.info("##         TEST 5         ##");
+		log.info("#############################");
+
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample11/topology.xml"));
 
 		VNTRequest vnt = loadRequestFromFile("/inputs/sample11/request.xml");
@@ -1258,6 +1287,10 @@ public class VNMapperCapabilityTest {
 	 */
 	@Test
 	public void overloadLinkCapacityTest() throws Exception {
+
+		log.info("#############################");
+		log.info("##         TEST 6          ##");
+		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample10/topology.xml"));
 

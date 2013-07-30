@@ -101,7 +101,7 @@ public class InPNetwork implements Serializable {
 		for (int i = 0; i < nodeNum; i++)
 		{
 			// System.out.println("node " + nodes.get(i).id + "--" + nodes.get(i).pnodeID+ "--" + nodes.get(i).capacity );
-			netString += "node " + nodes.get(i).getId() + "--" + nodes.get(i).getPnodeID() + "\n";
+			netString += "node " + nodes.get(i).getId() + "--" + nodes.get(i).getPnodeID() + " , Capacity : " + nodes.get(i).getCapacity() + "\n";
 
 		}
 		// System.out.println("------------------------------------------------------------------------------------");
@@ -111,7 +111,7 @@ public class InPNetwork implements Serializable {
 		{
 			// System.out.println("link : " + links.get(i).node1Id + "--" + links.get(i).node2Id + " : " + links.get(i).capacity + " , " +
 			// links.get(i).delay);
-			netString += "link : " + links.get(i).getNode1Id() + "--" + links.get(i).getNode2Id() + "\n";
+			netString += "link : " + links.get(i).getNode1Id() + "--" + links.get(i).getNode2Id() + " , Bandwidth : " + links.get(i).getCapacity() + "\n";
 		}
 
 		return netString;

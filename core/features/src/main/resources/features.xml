@@ -237,6 +237,23 @@
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/1.9.12</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.quantum/${project.version}</bundle>		
 	</feature>
+	
+	<feature name="opennaas-powernet" version="${project.version}">
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.snmp4j/${snmp4j.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.gim/${opennaas.gim.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.powernet/${project.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-pdu" version="${project.version}">
+		<feature version="${project.version}">opennaas-powernet</feature>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.pdu/${project.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-power" version="${project.version}">
+		<feature version="${project.version}">opennaas-powernet</feature>
+		<feature version="${project.version}">opennaas-pdu</feature>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.power.capabilities/${project.version}</bundle>
+	</feature>
 
 	<feature name="opennaas" version="${project.version}">
 		<feature version="${project.version}">opennaas-router</feature>
@@ -251,6 +268,9 @@
 		<feature version="${project.version}">opennaas-vnmapper</feature>
 		<feature version="${project.version}">opennaas-cisco</feature>
 		<feature version="${project.version}">opennaas-vcpe</feature>
+		<feature version="${project.version}">opennaas-powernet</feature>
+		<feature version="${project.version}">opennaas-pdu</feature>
+		<feature version="${project.version}">opennaas-power</feature>
 		<feature version="${project.version}">opennaas-ws-rest</feature>
 <!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 		<feature version="${project.version}">opennaas-quantum</feature>
