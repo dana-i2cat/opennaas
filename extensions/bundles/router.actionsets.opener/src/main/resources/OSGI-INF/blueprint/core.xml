@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!--  	chassisActionSet  -->
+	<bean id="chassisActionSet" class="org.opennaas.extensions.router.opener.actionssets.ChassisActionSetImplementation"/>
+	<service ref="chassisActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="opener"/>
+			<entry key="actionset.capability" value="chassis"/>
+			<entry key="actionset.version" value="0.01"/>
+		</service-properties>
+	</service>
+	<!--  	ipActionSet  -->
+	<bean id="ipActionSet" class="org.opennaas.extensions.router.opener.actionssets.IPActionSetImplementation"/>
+	<service ref="ipActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="opener"/>
+			<entry key="actionset.capability" value="ip"/>
+			<entry key="actionset.version" value="0.01"/>
+		</service-properties>
+	</service>
+	<!--  	queueActionSet  -->
+	<bean id="queueActionSet" class="org.opennaas.extensions.router.opener.actionssets.QueueActionSetImplementation"/>
+	<service ref="queueActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="opener"/>
+			<entry key="actionset.capability" value="queue"/>
+			<entry key="actionset.version" value="0.01"/>
+		</service-properties>
+	</service>
+	
+	<!--  	Protocol Session Factory  -->
+	<bean id="openerProtocolSessionFactory" class="org.opennaas.extensions.router.opener.protocol.OpenerProtocolSessionFactory"/>
+	<service ref="openerProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="opener"/>
+			<entry key="protocol.version" value="0.01"/>
+		</service-properties>
+	</service>
+</blueprint>

@@ -1,0 +1,14 @@
+resource:create $descriptors.path/routerOpener.descriptor
+
+protocols:context router:opener1 opener noauth http://opener.opennaas.org:9090/axis2/services/quagga_openapi/linux
+
+resource:start router:opener1
+
+chassis:showinterfaces router:opener1
+ip:list router:opener1
+
+ip:setip router:opener1 eth1.0 192.168.1.44/24
+queue:execute router:opener1 
+
+ip:list router:opener1
+
