@@ -39,10 +39,6 @@ public class EthernetPort extends NetworkPort implements Serializable {
 	public EthernetPort() {
 	};
 
-	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property networkAddresses.
-	 */
-	private String[]	networkAddresses;
 
 	/**
 	 * This method returns the EthernetPort.networkAddresses property value. This property is described as follows:
@@ -57,7 +53,7 @@ public class EthernetPort extends NetworkPort implements Serializable {
 	@Override
 	public String[] getNetworkAddresses() {
 
-		return this.networkAddresses;
+		return super.getNetworkAddresses();
 	} // getNetworkAddresses
 
 	/**
@@ -73,7 +69,7 @@ public class EthernetPort extends NetworkPort implements Serializable {
 	 */
 	public void setNetworkAddresses(String[] networkAddresses) {
 
-		this.networkAddresses = networkAddresses;
+		super.setNetworkAddresses(networkAddresses);
 	} // setNetworkAddresses
 
 	/**
