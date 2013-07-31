@@ -135,6 +135,8 @@
 		<feature version="${project.version}">opennaas-cim</feature>
 		<feature version="${project.version}">opennaas-router</feature>
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>
 	</feature>

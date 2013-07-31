@@ -67,6 +67,11 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-bundle-minimal</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -89,10 +94,17 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
+						<Import-Package>
+							javax.ws.rs,
+							javax.ws.rs.core,
+							org.apache.cxf.jaxrs.client;version="2.7.4",
+							*
+						</Import-Package>
 						<Export-Package>
 							   org.opennaas.extensions.router.opener.commandsets.*;version="${project.version}",
              				   org.opennaas.extensions.router.opener.actionssets;version="${project.version}",
-             				   org.opennaas.extensions.router.opener.actionssets.actions;version="${project.version}"
+             				   org.opennaas.extensions.router.opener.actionssets.actions;version="${project.version}",
+             				   org.opennaas.extensions.router.opener.protocol;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>
