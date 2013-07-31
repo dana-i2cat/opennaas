@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent  -->
+	<parent>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>0.22-SNAPSHOT</version>
+	</parent>
+	<!--  POM id -->
+	<artifactId>org.opennaas.extensions.router.actionsets.opener</artifactId>
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
+	<name>OpenNaaS :: Router :: Opener ActionSet </name>
+	<description>Opener ActionSet Implementation</description>
+	<dependencies>
+		<!-- Internal OpenNaaS dependencies -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
+		</dependency>
+		<!-- Implemented capabilities -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
+		</dependency>
+		<!--
+			specify the last version from xerces-impl to work with the digester
+			parser
+		-->
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
+		</dependency>
+		<!--  library to build commands -->
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.velocity</artifactId>
+		</dependency>
+		<!--
+			specify the last version from org.apache.commons.lang to use velocity
+		-->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.guava-osgi</groupId>
+			<artifactId>guava-osgi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-minimal</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<!--
+							| assume public classes are in the top package, and private
+							classes are under ".internal"
+						-->
+						<Import-Package>
+							javax.ws.rs,
+							javax.ws.rs.core,
+							org.apache.cxf.jaxrs.client;version="2.7.4",
+							*
+						</Import-Package>
+						<Export-Package>
+							   org.opennaas.extensions.router.opener.commandsets.*;version="${project.version}",
+             				   org.opennaas.extensions.router.opener.actionssets;version="${project.version}",
+             				   org.opennaas.extensions.router.opener.actionssets.actions;version="${project.version}",
+             				   org.opennaas.extensions.router.opener.protocol;version="${project.version}"
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

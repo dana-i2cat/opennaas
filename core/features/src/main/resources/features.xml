@@ -130,6 +130,16 @@
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.junos/${project.version}</bundle>
 	</feature>
+	
+	<feature name="opennaas-router-driver-opener" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+		<feature version="${project.version}">opennaas-router</feature>
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>
+	</feature>
 
 	<feature name="opennaas-router" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
@@ -255,6 +265,7 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
 		<feature version="${project.version}">opennaas-junos</feature>
+		<feature version="${project.version}">opennaas-router-driver-opener</feature>
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
 		<feature version="${project.version}">opennaas-sampleresource</feature>
 		<feature version="${project.version}">opennaas-vnmapper</feature>
