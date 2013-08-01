@@ -212,7 +212,7 @@ public class VNTRequest
 		for (int i = 0; i < vnodeNum; i++)
 		{
 			// vntString += "node " + vnodes.get(i).getId() + " : " + vnodes.get(i).getCapacity() + "\n";
-			vntString += "node " + vnodes.get(i).getId() + " : " + vnodes.get(i).getCapacity() + "\n";
+			vntString += "node " + vnodes.get(i).getId() + " , Capacity : " + vnodes.get(i).getCapacity() + "\n";
 			// System.out.println("node " + vnodes.get(i).id + "--" + vnodes.get(i).pnodeID );
 
 		}
@@ -221,7 +221,7 @@ public class VNTRequest
 		for (int i = 0; i < vlinks.size(); i++)
 		{
 			// vntString += "link : " + vlinks.get(i).getNode1Id() + "--" + vlinks.get(i).getNode2Id() + " : " + vlinks.get(i).getCapacity() + "\n";
-			vntString += "link : " + vlinks.get(i).getNode1Id() + "--" + vlinks.get(i).getNode2Id() + " : " + vlinks.get(i).getCapacity() + "\n";
+			vntString += "link : " + vlinks.get(i).getNode1Id() + "--" + vlinks.get(i).getNode2Id() + " , Bandwidth : " + vlinks.get(i).getCapacity() + "\n";
 		}
 
 		return vntString;
