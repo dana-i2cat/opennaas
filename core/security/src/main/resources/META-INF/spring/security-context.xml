@@ -15,7 +15,7 @@
 	<!-- from https://josh.media.berkeley.edu/?p=61 -->
 	<bean id="mySecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
 		<security:filter-chain-map path-type="ant">
-			<security:filter-chain pattern="/**"
+			<security:filter-chain pattern="/opennaas/**"
 				filters="securityContextPersistenceFilterWithASCFalseSkippingClearContext,
 				basicAuthenticationFilter,
 				exceptionTranslationFilter,
@@ -70,7 +70,7 @@
 			<security:filter-security-metadata-source>
 				<!-- Require ROLE_USER in all other methods -->
 				<!-- TODO secure WS endpoints dinamically, with roles!! -->
-				<security:intercept-url pattern="/**"
+				<security:intercept-url pattern="/opennaas/**"
 					access="ROLE_USER" />
 			</security:filter-security-metadata-source>
 		</property>
