@@ -341,7 +341,13 @@
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.vnmapper</artifactId>
 				<version>${project.version}</version>
+			</dependency>	
+	  		<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.quantum</artifactId>
+				<version>${project.version}</version>				
 			</dependency>
+
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.gim</artifactId>
@@ -1106,6 +1112,11 @@
 					</dependencies>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-wadl2java-plugin</artifactId>
+					<version>${cxf.version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.7</version>
@@ -1285,16 +1296,35 @@
 			<id>maven.i2cat.net</id>
 			<name>maven.i2cat.net-releases</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>i2cat</id>
 			<name>i2cat maven repository</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>i2cat libs-snapshot-local</id>
 			<name>maven.i2cat.net-snapshots</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>interval:1</updatePolicy>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>springsource-external</id>
