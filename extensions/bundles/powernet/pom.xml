@@ -2,7 +2,7 @@
   <parent>
     <artifactId>org.opennaas.extensions.bundles</artifactId>
     <groupId>org.opennaas</groupId>
-    <version>0.22-SNAPSHOT</version>
+    <version>0.23-SNAPSHOT</version>
   </parent>
   <artifactId>org.opennaas.extensions.powernet</artifactId>
   	<!--  Maven configuration -->
