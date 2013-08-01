@@ -771,7 +771,7 @@ public class VNMapperCapabilityTest {
 	public void Sample6Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
 
 		log.info("#############################");
-		log.info("##         TEST 7          ##");
+		log.info("##         TEST 6          ##");
 		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample6/topology.xml"));
@@ -890,7 +890,7 @@ public class VNMapperCapabilityTest {
 	public void Sample7Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
 
 		log.info("#############################");
-		log.info("##         TEST 1          ##");
+		log.info("##         TEST 7          ##");
 		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample7/topology.xml"));
@@ -1029,7 +1029,7 @@ public class VNMapperCapabilityTest {
 	public void Sample8Test() throws ResourceException, IOException, SerializationException, ParserConfigurationException, SAXException {
 
 		log.info("#############################");
-		log.info("##         TEST 2          ##");
+		log.info("##         TEST 8          ##");
 		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample8/topology.xml"));
@@ -1233,7 +1233,7 @@ public class VNMapperCapabilityTest {
 	public void overloadVNodeCapacityTest() throws Exception {
 
 		log.info("#############################");
-		log.info("##         TEST 4          ##");
+		log.info("##         TEST 9          ##");
 		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample9/topology.xml"));
@@ -1258,11 +1258,8 @@ public class VNMapperCapabilityTest {
 	 * Sample topology as sample 1, but request contains more Vnodes than available.
 	 */
 	@Test
+	@Ignore
 	public void overloadVNodeNumTest() throws Exception {
-
-		log.info("#############################");
-		log.info("##         TEST 5         ##");
-		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample11/topology.xml"));
 
@@ -1286,11 +1283,9 @@ public class VNMapperCapabilityTest {
 	 * Sample topology as sample 1, but there's a link in virtual request requiring more capacity than available.
 	 */
 	@Test
+	@Ignore
 	public void overloadLinkCapacityTest() throws Exception {
 
-		log.info("#############################");
-		log.info("##         TEST 6          ##");
-		log.info("#############################");
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample10/topology.xml"));
 
