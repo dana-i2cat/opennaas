@@ -1,0 +1,13 @@
+<resourceDescriptor>
+	<!-- Capability information -->
+	<capabilityDescriptors>
+		<information><type>quantum-apiv2</type></information>
+	</capabilityDescriptors>
+	
+	<!-- Resource information. It specify type and name-->
+	<information>
+		<type>quantumresource</type>
+		<name>quantum1</name>
+	</information>
+	<properties/>
+</resourceDescriptor>

@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.21</version>
+		<version>0.22</version>
 	</parent>
 	<name>OpenNaaS :: Core</name>
 	<artifactId>org.opennaas.core</artifactId>
