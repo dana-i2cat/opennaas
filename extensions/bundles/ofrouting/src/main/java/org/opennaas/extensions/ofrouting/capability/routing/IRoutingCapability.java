@@ -59,6 +59,17 @@ public interface IRoutingCapability extends ICapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getRouteTable() throws CapabilityException;
+    
+    /**
+     * Get Table of routes
+     * 
+     * return json with the list of routes
+     * @throws CapabilityException
+     */
+    @Path("/getRouteTable/{type}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getRouteTable(@PathParam("type") int type) throws CapabilityException;
 
     /**
      * Insert new route

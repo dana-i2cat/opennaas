@@ -15,7 +15,7 @@ routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8195 00:00:00:
 
 routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8191 00:00:00:00:00:00:00:0a
 routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8192 00:00:00:00:00:00:00:0c
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8193 00:00:00:00:00:00:00:0d
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8193 00:00:00:00:00:00:00:0d
 
 #routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8191 00:00:00:00:00:00:00:70
 #routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8192 00:00:00:00:00:00:00:71
@@ -23,12 +23,12 @@ routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8193 00:00:00:0
 
 routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8191 00:00:00:00:00:00:00:46
 routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8192 00:00:00:00:00:00:00:47
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8193 00:00:00:00:00:00:00:48
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8193 00:00:00:00:00:00:00:48
 
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:14
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:15
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:16
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:17
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8191 00:00:00:00:00:00:00:14
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8191 00:00:00:00:00:00:00:15
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8192 00:00:00:00:00:00:00:16
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8192 00:00:00:00:00:00:00:17
 
 #insert routes from json file
 routing:insertfileroute ofrouting:VM-Routing1 routes.json

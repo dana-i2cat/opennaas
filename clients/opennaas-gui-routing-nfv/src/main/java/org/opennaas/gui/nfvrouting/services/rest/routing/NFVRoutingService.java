@@ -28,12 +28,19 @@ public class NFVRoutingService extends GenericRestService {
      * @return true if the environment has been created
      * @throws RestServiceException
      */
-    public String getRouteTable(String request) throws RestServiceException {
+    public String getRouteTable(String request, String type) throws RestServiceException {
         String response = null;
+        int typ = 0;
+        if (type.equals("IPv4"))
+                typ = 0;
+        else if (type.equals("IPv6"))
+               typ = 1;
+        else if (type.equals("subnet"))
+                typ = 2;
         try {
             LOGGER.info("Calling get Route Table service");
             request = "VM-Routing1";
-            String url = getURL("ofrouting/" + request + "/routing/getRouteTable");
+            String url = getURL("ofrouting/" + request + "/routing/getRouteTable/"+typ);
             Client client = Client.create();
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
@@ -89,6 +96,23 @@ public class NFVRoutingService extends GenericRestService {
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).post(String.class, fm);
             LOGGER.info("Route table: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
+
+    public String getInfoControllers() {
+        String response = null;
+        try {
+            LOGGER.info("Calling get Route Table service");
+            String request = "VM-Routing1";
+            String url = getURL("ofrouting/" + request + "/routing/getSwitchControllers/");
+            Client client = Client.create();
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Controller info: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;

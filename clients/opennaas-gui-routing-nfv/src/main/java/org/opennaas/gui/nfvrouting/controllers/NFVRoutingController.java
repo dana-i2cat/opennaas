@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Josep
@@ -43,11 +44,11 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRouteTable")
-    public String getRouteTable(Model model, Locale locale) {
+    public String getRouteTable(@RequestParam("type") String type, Model model, Locale locale) {
 
         LOGGER.debug("------------------");
         try {
-            String response = nfvRoutingBO.getRouteTable("test");
+            String response = nfvRoutingBO.getRouteTable("VM-Routing1", type);
             LOGGER.info("received json: "+response);
             model.addAttribute("json", response);
         } catch (Exception e) {

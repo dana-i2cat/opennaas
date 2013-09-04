@@ -37,11 +37,11 @@ public class HomeController {
     public String home(Model model, Locale locale, HttpSession session) {
         LOGGER.debug("home");
         try {
-            String response = nfvRoutingBO.getRouteTable("test");
+            String response = nfvRoutingBO.getInfoControllers();
             model.addAttribute("json", response);
         } catch (Exception e) {
             return "home";
         }
-        return "table";
+        return "controllerInfo";
     }
 }

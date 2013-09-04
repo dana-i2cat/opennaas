@@ -57,5 +57,10 @@
 		<put-attribute name="title" value="Insert Controller Information" />
 		<put-attribute name="body" value="/WEB-INF/views/nfvRouting/insertCtrlInfo.jsp" />
 	</definition>
+        
+        <definition name="controllerInfo" extends="base.definition">
+		<put-attribute name="title" value="Information about the connected controllers" />
+		<put-attribute name="body" value="/WEB-INF/views/nfvRouting/controllerInfo.jsp" />
+	</definition>
 
 </tiles-definitions>

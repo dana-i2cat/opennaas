@@ -24,9 +24,9 @@ public class NFVRoutingBO {
      * @return
      * @throws RestServiceException
      */
-    public String getRouteTable(String routingName) throws RestServiceException {
+    public String getRouteTable(String routingName, String type) throws RestServiceException {
         LOGGER.debug("Get the Route Table: " + routingName);
-        return nfvRoutingService.getRouteTable(routingName);
+        return nfvRoutingService.getRouteTable(routingName, type);
     }
 
     /**
@@ -42,5 +42,9 @@ public class NFVRoutingBO {
 
     public String insertCtrlInfo(ControllerInfo ctrl) {
          return nfvRoutingService.insertRoute(ctrl);
+    }
+
+    public String getInfoControllers() {
+        return nfvRoutingService.getInfoControllers();
     }
 }

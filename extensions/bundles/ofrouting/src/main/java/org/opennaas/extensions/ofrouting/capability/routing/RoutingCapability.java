@@ -40,9 +40,9 @@ import org.opennaas.extensions.ofrouting.utils.Utils;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 /**
- * 
+ *
  * @author Josep Batalle
- * 
+ *
  */
 public class RoutingCapability extends AbstractCapability implements IRoutingCapability {
 
@@ -93,10 +93,10 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     }
 
     /**
-     * 
+     *
      * @return QueuemanagerService this capability is associated to.
-     * @throws CapabilityException
-     *             if desired queueManagerService could not be retrieved.
+     * @throws CapabilityException if desired queueManagerService could not be
+     * retrieved.
      */
     private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
         try {
@@ -109,7 +109,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     /**
      * @param the ipSource / ipDest / SwitchInfo
      * @return the greeting message
-     * 
+     *
      */
     @Override
     public int getPath(String ipSource, String ipDest, String switchMac, int inputPort) throws CapabilityException {
@@ -179,7 +179,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
     private void httpRequest(String Url, String json) {
         try {
-            log.error("URl "+Url);
+            log.debug("URL: " + Url);
             URL url = new URL(Url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
@@ -190,27 +190,24 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             wr.close();
             conn.connect();
             conn.getResponseCode();
-        }catch (UnknownHostException e){
+        } catch (UnknownHostException e) {
             log.error("Url is null. Maybe the controllers are not registred.");
         } catch (Exception ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
     @Override
     public String getSubPath(String ipSource, String ipDest, String switchMac, int inputPort, boolean proactive) throws CapabilityException {
         long initialTime = System.currentTimeMillis();
-        log.error("Start time... " + initialTime);
-        log.error("Proactive? "+proactive);
         int outPortSW1 = 0;
         int version = 4;//IP version
-	if(Utils.isIPv4Address(ipSource)){
-	    ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
-	    ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
-	}
-        else{
+        if (Utils.isIPv4Address(ipSource)) {
+            ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
+            ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
+        } else {
             ipSource = Utils.tryToCompressIPv6(ipSource);
-	    ipDest = Utils.tryToCompressIPv6(ipDest);
+            ipDest = Utils.tryToCompressIPv6(ipDest);
             version = 6;
         }
 
@@ -219,16 +216,15 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             model.setTable(new Table());
             return "null";
         }
-        log.error("Path: " + ipSource + " " + ipDest + " " + switchMac + " " + inputPort);
+        log.info("Path: " + ipSource + " " + ipDest + " " + switchMac + " " + inputPort);
         Switch switchInfo = new Switch(inputPort, switchMac);
 
         RouteSubnet route = null;
-
         String subSource = "";
         String subDest = "";
         try {
             for (RouteSubnet subnet : model.getTable().getRouteSubnet()) {
-		log.error(subnet.getSourceSubnet().getIpAddressString());
+                log.info(subnet.getSourceSubnet().getIpAddressString());
                 if (matches(subnet.getSourceSubnet(), InetAddress.getByName(ipSource))) {
                     for (RouteSubnet subnet1 : model.getTable().getRouteSubnet()) {
                         if (matches(subnet1.getDestSubnet(), InetAddress.getByName(ipDest))) {
@@ -246,41 +242,37 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         } catch (UnknownHostException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        log.error("Subnets: " + subSource + " " + subDest);
+        log.info("Subnets: " + subSource + " " + subDest);
         Route srcRoute = null;
         try {
             srcRoute = new Route(InetAddress.getByName(subSource), InetAddress.getByName(ipDest), switchInfo);
-/*            log.error("Route is: "+srcRoute.getSourceAddress());
-            log.error("Route is: "+srcRoute.getDestinationAddress());
-            log.error("Route is: "+srcRoute.getSwitchInfo().getMacAddress());
-            log.error("Route is: "+srcRoute.getSwitchInfo().getInputPort());
-*/        } catch (UnknownHostException ex) {
+        } catch (UnknownHostException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (model.getTable().RouteExistsSubnet(route)) {
             outPortSW1 = model.getTable().getOutputPort(route);
-        }else if (model.getTable().RouteExists(srcRoute, version)) {            
+        } else if (model.getTable().RouteExists(srcRoute, version)) {
             outPortSW1 = model.getTable().getOutputPort(srcRoute, version);
-        }else{
+        } else {
             outPortSW1 = 0;
         }
         String returnedSrcSub = subSource;
         String returnedDstSub = subDest;
         //Next-hop router
-            log.error(proactive);
+        log.error(proactive);
         if (proactive) {
-            log.error("PROACTIVE");
+            log.info("PROACTIVE");
             String controllerInfo = "";
             Switch destSwInfo = null;
             try {
                 destSwInfo = model.getTable().getDestinationSwitch(subSource, ipDest, switchMac, version);
                 controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
             } catch (NullPointerException e) {
-                log.error("Null Switch Info: "+e.getMessage());
+                log.error("Null Switch Info: " + e.getMessage());
                 return null;
             }
 
-            if(controllerInfo == null){
+            if (controllerInfo == null) {
                 log.error("No information about the controller");
                 return null;
             }
@@ -295,8 +287,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             if (model.getTable().RouteExists(route1, version)) {
                 outputPortSW2 = Integer.toString(model.getTable().getOutputPort(route1, version));
             }
-            log.error("Out "+outputPortSW2);
-            if(outputPortSW2 == null){
+            log.info("Out " + outputPortSW2);
+            if (outputPortSW2 == null) {
                 log.error("NO output port");
             }
 
@@ -307,71 +299,62 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             String json[] = new String[4];
             String ethertype = "";
             String ethertype2 = "";
-            if(version == 4){
+            if (version == 4) {
                 ethertype = "0x806";
                 ethertype2 = "0x800";
-            }else if(version == 6){
+            } else if (version == 6) {
                 ethertype = "0x86DD";
             }
-log.error("Switcmac "+switchMac);
-log.error("dest "+destSwInfo.getMacAddress());
-            if (!destSwInfo.getMacAddress().equals(switchMac)) {   
-              json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpin-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\""+ethertype+"\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
-              json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpto-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\""+ethertype+"\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
-              json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4in-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\""+ethertype2+"\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
-              json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4to-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\""+ethertype2+"\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
-              try {
-                  httpRequest(Url, json[0]);
-                  log.error("write1: "+json[0]);
-                  httpRequest(Url, json[1]);
-                  log.error("write2: "+json[1]);
-		  httpRequest(Url, json[2]);
-                  log.error("write3: "+json[2]);
-                  httpRequest(Url, json[3]);
-                  log.error("write4: "+json[3]);
+            log.debug("Origin Switch: " + switchMac);
+            log.debug("Dest Switch: " + destSwInfo.getMacAddress());
+            if (!destSwInfo.getMacAddress().equals(switchMac)) {
+                json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpin-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
+                json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpto-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\"" + ethertype + "\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+                json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4in-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype2 + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
+                json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4to-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\"" + ethertype2 + "\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+                try {
+                    for (int i = 0; i < json.length; i++) {
+                        httpRequest(Url, json[i]);
+                    }
+                } catch (Exception e) {
+                }
+                /*              if(version == 4){
+                 for (int i = 2; i < 4; i++) {
+                 new MyThread(i, Url, json).start();
+                 }
+                 }
+                 */            }
 
-              } catch (Exception e) {
-              }
-/*              if(version == 4){
-                  for (int i = 2; i < 4; i++) {
-                      new MyThread(i, Url, json).start();
-                  }
-              }
-*/          }
-            
             //other siwthces
-log.error("OtherSiwtches");
-            String otherOutput = "";
-            List<RouteSubnet> routeSubnetList= model.getTable().otherRouteExists(route, switchInfo, destSwInfo);
-            if(routeSubnetList.size()>1){
-                for (RouteSubnet r: routeSubnetList){
+log.info("Find routes in other Siwtches");
+            List<RouteSubnet> routeSubnetList = model.getTable().otherRouteExists(route, switchInfo, destSwInfo);
+            if (routeSubnetList.size() > 1) {
+                for (RouteSubnet r : routeSubnetList) {
                     destSwInfo = r.getSwitchInfo();
                     controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
+                    subSource = r.getSourceSubnet().getIpAddressString() + "/24";
+                    subDest = r.getDestSubnet().getIpAddressString() + "/24";
                     String Url2 = "http://" + controllerInfo + "/wm/staticflowentrypusher/json";
-                    json[0] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"arpto-mod-" + r.getSourceSubnet().getIpAddressString() + r.getSourceSubnet().getIpAddressString() + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestSubnet().getIpAddressString() + "/24\", \"ether-type\":\""+ethertype+"\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
-                    json[1] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"ip4in-mod-" + r.getSourceSubnet().getIpAddressString() + r.getSourceSubnet().getIpAddressString() + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestSubnet().getIpAddressString() + "/24\", \"ether-type\":\""+ethertype2+"\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
-                  try {
-                      httpRequest(Url2, json[0]);
-                      log.error("write_other: "+json[0]);
-                      httpRequest(Url2, json[1]);
-                      log.error("write_other2: "+json[1]);
-
-
-                  } catch (Exception e) {
-                  }
+                    json[0] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"arpto-mod-" + subSource + subDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestSubnet().getIpAddressString() + "/24\", \"ether-type\":\"" + ethertype + "\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
+                    json[1] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"ip4to-mod-" + subSource + subDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestSubnet().getIpAddressString() + "/24\", \"ether-type\":\"" + ethertype2 + "\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
+                    try {
+                        for (int i = 0; i < json.length; i++) {
+                            httpRequest(Url2, json[i]);
+                        }
+                    } catch (Exception e) {
+                    }
                     outputPortSW2 = Integer.toString(model.getTable().getOutputPort(route1, version));
                 }
             }
-            log.error("Out "+outputPortSW2);
-            if(outputPortSW2 == null){
+            log.info("Out " + outputPortSW2);
+            if (outputPortSW2 == null) {
                 log.error("NO output port");
-            }        
-                    
+            }
+
         }
-        
 
         long totalTime = System.currentTimeMillis() - initialTime;
-        log.error("Return response, end exec: " + totalTime);
+        log.info("Return response, end exec time: " + totalTime);
         return Integer.toString(outPortSW1) + ":" + returnedSrcSub + ":" + returnedDstSub;
     }
 
@@ -399,9 +382,8 @@ log.error("OtherSiwtches");
     }
 
     /**
-     * @param
-     * @return the greeting message
-     * 
+     * @param @return the greeting message
+     *
      */
     @Override
     public String getRouteTable() throws CapabilityException {
@@ -422,9 +404,37 @@ log.error("OtherSiwtches");
     }
 
     /**
+     * @param @return the greeting message
+     *
+     */
+    @Override
+    public String getRouteTable(int type) throws CapabilityException {
+        log.info("Get Route Table");
+        OfRoutingModel model = (OfRoutingModel) resource.getModel();
+        if (model.getTable() == null) {
+            model.setTable(new Table());
+        }
+
+        String response = "No content";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            if (type == 0) {
+                response = mapper.writeValueAsString(model.getTable().getRouteIPv4());
+            } else if (type == 1) {
+                response = mapper.writeValueAsString(model.getTable().getRouteIPv6());
+            } else if (type == 2) {
+                response = mapper.writeValueAsString(model.getTable().getRouteSubnet());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return response;
+    }
+
+    /**
      * @param the ipSource / ipDest / SwitchInfo
      * @return the greeting message
-     * 
+     *
      */
     @Override
     public String putRoute(String ipSource, String ipDest, String switchMac, int inputPort, int outputPort) throws CapabilityException {
@@ -434,17 +444,17 @@ log.error("OtherSiwtches");
             model.setTable(new Table());
         }
         int version = 0;
-        if(Utils.isIpAddress(ipSource) == 4 && Utils.isIpAddress(ipDest) == 4){
+        if (Utils.isIpAddress(ipSource) == 4 && Utils.isIpAddress(ipDest) == 4) {
             log.error("Is version 4");
             version = 4;
-        }else if(Utils.isIpAddress(ipSource)  == 6 && Utils.isIpAddress(ipDest)  == 6){
+        } else if (Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
             log.error("Is version 6");
             version = 6;
-        }else{
-            log.error("Is version "+version);
+        } else {
+            log.error("Is version " + version);
             return "The IP version is not detected. Analyze the IP.";
         }
-        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && inputPort !=0 && outputPort != 0) {
+        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && inputPort != 0 && outputPort != 0) {
             Switch switchInfo = new Switch(Integer.toString(inputPort), inputPort, outputPort, switchMac);
             Route route = null;
             try {
@@ -461,7 +471,7 @@ log.error("OtherSiwtches");
     /**
      * @param the ipSource / ipDest / SwitchInfo
      * @return the greeting message
-     * 
+     *
      */
     @Override
     public String putSubRoute(String ipSource, String ipDest, String switchMac, int inputPort, int outputPort) throws CapabilityException {
@@ -499,7 +509,15 @@ log.error("OtherSiwtches");
 
     @Override
     public String getControllersInfo() throws CapabilityException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        OfRoutingModel model = (OfRoutingModel) resource.getModel();
+        String response = "No content";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            response = mapper.writeValueAsString(model.getSwitchController());
+        } catch (IOException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return response;
     }
 
     @Override
@@ -512,7 +530,7 @@ log.error("OtherSiwtches");
             }
 
             String response = "ok!";
-           
+
             JsonFactory f = new MappingJsonFactory();
             JsonParser jp = f.createJsonParser(new File(filename));
             JsonToken current = jp.nextToken();
@@ -549,7 +567,7 @@ log.error("OtherSiwtches");
                         response = "Error: records should be an array: skipping.";
                         jp.skipChildren();
                     }
-                }else if (fieldName.equals("routeIPv6")) {
+                } else if (fieldName.equals("routeIPv6")) {
                     if (current == JsonToken.START_ARRAY) {
                         // For each of the records in the array
                         while (jp.nextToken() != JsonToken.END_ARRAY) {
@@ -573,7 +591,7 @@ log.error("OtherSiwtches");
                         response = "Error: records should be an array: skipping.";
                         jp.skipChildren();
                     }
-                }else if (fieldName.equals("routeSubnet")) {
+                } else if (fieldName.equals("routeSubnet")) {
                     if (current == JsonToken.START_ARRAY) {
                         // For each of the records in the array
                         while (jp.nextToken() != JsonToken.END_ARRAY) {
@@ -592,8 +610,8 @@ log.error("OtherSiwtches");
                             mask = Integer.parseInt(node.get("dstSubnet").getPath("mask").getValueAsText());
                             subnet = new Subnet(srcAddr, mask);
                             newRouteSubnet.setDestSubnet(subnet);
-                            
-                            
+
+
                             newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
                             newSwitch.setOutputPort(Integer.parseInt(node.get("swInfo").getPath("outPort").getValueAsText()));
                             newSwitch.setMacAddress(node.get("swInfo").getPath("macAddr").getValueAsText());
@@ -610,14 +628,14 @@ log.error("OtherSiwtches");
                     response = "Unprocessed property: " + fieldName;
                     jp.skipChildren();
                 }
-            }               
+            }
             return response;
         } catch (IOException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "Some error. Check it.";
     }
-    
+
     private boolean matches(Subnet subnet, InetAddress ipAddress) {
         int nMaskBits = subnet.getMask();
         int oddBits = nMaskBits % 8;

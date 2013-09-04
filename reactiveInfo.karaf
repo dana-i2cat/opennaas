@@ -1,0 +1,30 @@
+shell:echo Script to insert the information of each controller and the default routes implementing NFV
+
+#create resource from descriptor
+
+#start resource
+resource:start ofrouting:VM-Routing1
+resource:list
+
+#insert controller information
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:01
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:02
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8093 00:00:00:00:00:00:00:03
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8094 00:00:00:00:00:00:00:04
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8095 00:00:00:00:00:00:00:05
+
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:0a
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:0c
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8093 00:00:00:00:00:00:00:0d
+
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:46
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:47
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8093 00:00:00:00:00:00:00:48
+
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:14
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:15
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:16
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:17
+
+#insert routes from json file
+routing:insertfileroute ofrouting:VM-Routing1 routes.json

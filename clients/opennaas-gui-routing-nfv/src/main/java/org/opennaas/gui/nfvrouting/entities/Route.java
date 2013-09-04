@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class Route {
 
-    protected String id;
+    protected int id;
     @NotBlank(message = "{message.error.field.mandatory}")
     @NotEmpty
     private String sourceAddress;
@@ -22,6 +22,15 @@ public class Route {
         this.switchInfo = new Switch();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
     public String getDestinationAddress() {
         return destinationAddress;
     }
