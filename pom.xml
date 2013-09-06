@@ -347,7 +347,11 @@
 				<artifactId>org.opennaas.extensions.quantum</artifactId>
 				<version>${project.version}</version>				
 			</dependency>
-
+	  		<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openflowsiwtch</artifactId>
+				<version>${project.version}</version>				
+			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.gim</artifactId>
