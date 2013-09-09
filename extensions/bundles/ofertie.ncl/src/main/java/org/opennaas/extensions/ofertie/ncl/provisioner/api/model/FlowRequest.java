@@ -1,11 +1,17 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.api.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Defines a flow with its QoS network requirement.
  * 
  * @author Isart Canyameres Gimenez (i2cat) 
  *
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class FlowRequest {
 	
 	private String sourceIPAddress;

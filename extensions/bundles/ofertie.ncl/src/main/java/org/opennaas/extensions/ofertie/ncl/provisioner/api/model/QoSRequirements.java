@@ -1,5 +1,8 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.api.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  * Contains QoS network requirements for a flow.
  * 
@@ -10,6 +13,7 @@ package org.opennaas.extensions.ofertie.ncl.provisioner.api.model;
  * @author Isart Canyameres Gimenez (i2cat) 
  *
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class QoSRequirements {
 	
 	private int minDelay;

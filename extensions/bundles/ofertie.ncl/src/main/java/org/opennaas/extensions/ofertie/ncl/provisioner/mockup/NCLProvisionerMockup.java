@@ -30,7 +30,7 @@ public class NCLProvisionerMockup implements INCLProvisioner {
 		
 		Flow flow = new Flow();
 		flow.setId(String.valueOf(++lastId));
-		flow.setRequest(flowRequest);
+		flow.setFlowRequest(flowRequest);
 		flows.put(flow.getId(), flow);
 
 		return flow.getId();
@@ -41,7 +41,7 @@ public class NCLProvisionerMockup implements INCLProvisioner {
 			throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
 		
-		flows.get(flowId).setRequest(updatedFlowRequest);
+		flows.get(flowId).setFlowRequest(updatedFlowRequest);
 		return flowId;
 	}
 
