@@ -6,15 +6,15 @@
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 
 	<feature name="opennaas-spring-jdbc" version="${project.version}">
- 		<feature version="${spring.version}">spring</feature>
+		<feature version="${spring.version}">spring</feature>
 		<bundle>mvn:org.springframework/spring-tx/${spring.version}</bundle>
 		<bundle>mvn:org.springframework/spring-jdbc/${spring.version}</bundle>
- 	</feature>
+	</feature>
 
 	<feature name="opennaas-spring-security" version="${project.version}">
 		<feature version="${project.version}">opennaas-persistence</feature>
 		<feature version="${project.version}">opennaas-spring-jdbc</feature>
-	
+
 		<feature version="${spring.version}">spring</feature>
 		<feature version="${spring.version}">spring-web</feature>
 		<feature version="${spring.osgi.version}">spring-dm</feature>
@@ -27,7 +27,7 @@
 		<bundle dependency="true">mvn:org.springframework.security/spring-security-config/${spring.security.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.security/spring-security-acl/${spring.security.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.security/spring-security-web/${spring.security.version}</bundle>
-		
+
 		<bundle>mvn:org.opennaas/org.opennaas.core.security/${project.version}</bundle>
 	</feature>
 
@@ -115,9 +115,9 @@
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/${spring.osgi.version}</bundle>
-		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/${spring.osgi.version}</bundle>							
-		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>		
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>		
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/${spring.osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
 	</feature>
 
@@ -245,7 +245,7 @@
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/1.9.12</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/1.9.12</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/1.9.12</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.quantum/${project.version}</bundle>		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.quantum/${project.version}</bundle>
 	</feature>
 	
 	<feature name="opennaas-powernet" version="${project.version}">
@@ -263,6 +263,10 @@
 		<feature version="${project.version}">opennaas-powernet</feature>
 		<feature version="${project.version}">opennaas-pdu</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.power.capabilities/${project.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-ofertie-ncl" version="${project.version}">
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">
@@ -285,6 +289,7 @@
 		<feature version="${project.version}">opennaas-ws-rest</feature>
 <!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 		<feature version="${project.version}">opennaas-quantum</feature>
+		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
 	</feature>
 
 	<feature name="nexus-testprofile" version="${project.version}">

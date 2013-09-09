@@ -78,5 +78,7 @@
 		<module>sampleresource</module>
 		
 		<module>quantum</module>
+		
+		<module>ofertie.ncl</module>
 	</modules>
 </project>
