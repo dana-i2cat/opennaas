@@ -2,6 +2,16 @@ package org.opennaas.extensions.ofertie.ncl.provisioner.api;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFoundException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
@@ -13,6 +23,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
  * @author Isart Canyameres Gimenez (i2cat) 
  *
  */
+@Path("/flows")
 public interface INCLProvisioner {
 	
 	/**
@@ -23,6 +34,9 @@ public interface INCLProvisioner {
 	 * @throws AllocationException
 	 * @throws ProvisionerException
 	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
 	public String allocateFlow(FlowRequest flowRequest) throws FlowAllocationException, ProvisionerException;
 	
 	/**
@@ -35,7 +49,11 @@ public interface INCLProvisioner {
 	 * @throws FlowNotFoundException
 	 * @throws ProvisionerException
 	 */
-	public String updateFlow(String flowId, FlowRequest updatedFlowRequest) throws FlowAllocationException, FlowNotFoundException, ProvisionerException;
+	@Path("/{id}")
+	@PUT
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public String updateFlow(@PathParam("id") String flowId, FlowRequest updatedFlowRequest) throws FlowAllocationException, FlowNotFoundException, ProvisionerException;
 	
 	/**
 	 * Deallocates an allocated flow.
@@ -44,7 +62,9 @@ public interface INCLProvisioner {
 	 * @throws FlowNotFoundException
 	 * @throws ProvisionerException
 	 */
-	public void deallocateFlow(String flowId) throws FlowNotFoundException, ProvisionerException;
+	@Path("/{id}")
+	@DELETE
+	public void deallocateFlow(@PathParam("id") String flowId) throws FlowNotFoundException, ProvisionerException;
 	
 	/**
 	 * Returns currently allocated flows.
@@ -52,6 +72,8 @@ public interface INCLProvisioner {
 	 * @return Currently allocated flows
 	 * @throws ProvisionerException
 	 */
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
 	public Collection<Flow> readAllocatedFlows() throws ProvisionerException;
 	
 
