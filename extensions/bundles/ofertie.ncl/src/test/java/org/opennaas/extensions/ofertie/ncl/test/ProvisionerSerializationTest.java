@@ -9,7 +9,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 
-public class ProvisionerTest {
+public class ProvisionerSerializationTest {
 	
 	@Test
 	public void flowSerializationTest() throws SerializationException {

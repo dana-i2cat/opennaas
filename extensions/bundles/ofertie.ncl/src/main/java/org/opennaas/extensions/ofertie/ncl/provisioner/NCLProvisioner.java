@@ -99,6 +99,8 @@ public class NCLProvisioner implements INCLProvisioner {
 			
 			return flowId;
 		
+		} catch (FlowAllocationException fae) {
+			throw fae;
 		} catch(Exception e){
 			throw new ProvisionerException(e);
 		}
