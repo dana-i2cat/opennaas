@@ -16,6 +16,12 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.i2cat</groupId>
+			<artifactId>net.floodlight.controller</artifactId>
+		</dependency>
+		
+		
  	</dependencies>
 
 	<build>
