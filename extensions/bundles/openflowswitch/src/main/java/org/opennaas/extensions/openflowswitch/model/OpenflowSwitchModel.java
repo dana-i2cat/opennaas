@@ -20,7 +20,12 @@ public class OpenflowSwitchModel implements IModel {
 	private static final long	serialVersionUID	= 1377911113047348716L;
 
 	private String				switchId;
-	private List<OFFlowTable>		ofTables;
+	private List<OFFlowTable>	ofTables;
+
+	public OpenflowSwitchModel() {
+		switchId = new String();
+		ofTables = new ArrayList<OFFlowTable>();
+	}
 
 	public String getSwitchId() {
 		return switchId;

@@ -1,8 +1,7 @@
 package org.opennaas.extensions.openflowswitch.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import org.openflow.protocol.OFFlowMod;
 
 /**
  * 
@@ -11,8 +10,13 @@ import org.openflow.protocol.OFFlowMod;
  */
 public class OFFlowTable {
 
-	private String			tableId;
-	private List<OFFlowMod>	ofMatches;
+	private String					tableId;
+	private List<OFForwardingRule>	ofForwardingRules;
+
+	public OFFlowTable() {
+		tableId = new String();
+		ofForwardingRules = new ArrayList<OFForwardingRule>();
+	}
 
 	public String getTableId() {
 		return tableId;
@@ -22,19 +26,19 @@ public class OFFlowTable {
 		this.tableId = tableId;
 	}
 
-	public List<OFFlowMod> getOfMatches() {
-		return ofMatches;
+	public List<OFForwardingRule> getOfForwardingRules() {
+		return ofForwardingRules;
 	}
 
-	public void setOfMatches(List<OFFlowMod> ofMatches) {
-		this.ofMatches = ofMatches;
+	public void setOfForwardingRules(List<OFForwardingRule> ofForwardingRules) {
+		this.ofForwardingRules = ofForwardingRules;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ofMatches == null) ? 0 : ofMatches.hashCode());
+		result = prime * result + ((ofForwardingRules == null) ? 0 : ofForwardingRules.hashCode());
 		result = prime * result + ((tableId == null) ? 0 : tableId.hashCode());
 		return result;
 	}
@@ -48,10 +52,10 @@ public class OFFlowTable {
 		if (getClass() != obj.getClass())
 			return false;
 		OFFlowTable other = (OFFlowTable) obj;
-		if (ofMatches == null) {
-			if (other.ofMatches != null)
+		if (ofForwardingRules == null) {
+			if (other.ofForwardingRules != null)
 				return false;
-		} else if (!ofMatches.equals(other.ofMatches))
+		} else if (!ofForwardingRules.equals(other.ofForwardingRules))
 			return false;
 		if (tableId == null) {
 			if (other.tableId != null)
