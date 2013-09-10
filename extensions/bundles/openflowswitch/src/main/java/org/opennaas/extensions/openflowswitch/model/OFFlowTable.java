@@ -9,7 +9,7 @@ import org.openflow.protocol.OFFlowMod;
  * @author Adrian Rosello (i2CAT)
  * 
  */
-public class OFTable {
+public class OFFlowTable {
 
 	private String			tableId;
 	private List<OFFlowMod>	ofMatches;
@@ -47,7 +47,7 @@ public class OFTable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		OFTable other = (OFTable) obj;
+		OFFlowTable other = (OFFlowTable) obj;
 		if (ofMatches == null) {
 			if (other.ofMatches != null)
 				return false;

@@ -20,7 +20,7 @@ public class OpenflowSwitchModel implements IModel {
 	private static final long	serialVersionUID	= 1377911113047348716L;
 
 	private String				switchId;
-	private List<OFTable>		ofTables;
+	private List<OFFlowTable>		ofTables;
 
 	public String getSwitchId() {
 		return switchId;
@@ -30,11 +30,11 @@ public class OpenflowSwitchModel implements IModel {
 		this.switchId = switchId;
 	}
 
-	public List<OFTable> getOfTables() {
+	public List<OFFlowTable> getOfTables() {
 		return ofTables;
 	}
 
-	public void setOfTables(List<OFTable> ofTables) {
+	public void setOfTables(List<OFFlowTable> ofTables) {
 		this.ofTables = ofTables;
 	}
 
