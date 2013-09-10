@@ -190,6 +190,8 @@
 	<feature name="opennaas-openflow-switch" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
 	
+		<bundle dependency="true">mvn:net.i2cat/net.floodlight.controller/${floodlight.version}</bundle>
+		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch/${project.version}</bundle>
 				
 	</feature>
@@ -197,7 +199,7 @@
 	<feature name="opennaas-vnmapper" version="${project.version}">
 		<feature version="${project.version}">opennaas-network</feature>
 		
-		<bundle>mvn:org.opennaas/org.opennaas.extesnions.vnmapper/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.vnmapper/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-sampleresource" version="${project.version}">
