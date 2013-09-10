@@ -5,6 +5,11 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ResourceRepository;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 public class OpenflowSwitchRepository extends ResourceRepository {
 
 	Log	log	= LogFactory.getLog(OpenflowSwitchRepository.class);
