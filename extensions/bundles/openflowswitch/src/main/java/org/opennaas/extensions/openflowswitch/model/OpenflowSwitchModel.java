@@ -48,4 +48,35 @@ public class OpenflowSwitchModel implements IModel {
 		return ObjectSerializer.toXml(this);
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ofTables == null) ? 0 : ofTables.hashCode());
+		result = prime * result + ((switchId == null) ? 0 : switchId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OpenflowSwitchModel other = (OpenflowSwitchModel) obj;
+		if (ofTables == null) {
+			if (other.ofTables != null)
+				return false;
+		} else if (!ofTables.equals(other.ofTables))
+			return false;
+		if (switchId == null) {
+			if (other.switchId != null)
+				return false;
+		} else if (!switchId.equals(other.switchId))
+			return false;
+		return true;
+	}
+
 }
