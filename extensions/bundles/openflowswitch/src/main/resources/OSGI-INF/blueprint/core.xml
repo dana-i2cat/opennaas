@@ -11,7 +11,7 @@
  
  	<bean id="openflowSwitchRepository" class="org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository"
           init-method="init">
-		<argument value="switch"/>
+		<argument value="openflowswitch"/>
 		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 		<property name="resourceBootstrapperFactory" ref="openflowSwitchBootstrapperFactory"/>
 	</bean>   

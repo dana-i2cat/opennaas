@@ -34,6 +34,28 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		log.debug("Built new Openflow Forwarding Capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.caactivatepability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IOpenflowForwardingCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		registration.unregister();
+		super.deactivate();
+	}
+
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
