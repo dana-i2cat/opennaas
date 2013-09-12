@@ -75,8 +75,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 	@Override
 	public void removeOpenflowForwardingRule(String flowId) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -87,11 +86,14 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		try {
 
 			OpenflowSwitchModel model = getResourceModel();
+			log.debug("Reading forwarding rules from model.");
 			forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
 
 		} catch (ActivatorException ae) {
+			log.error("Error getting resource model - " + ae.getMessage());
 			throw new CapabilityException(ae);
 		} catch (ResourceException re) {
+			log.error("Error getting resource model - " + re.getMessage());
 			throw new CapabilityException(re);
 		}
 
@@ -131,6 +133,8 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	private OpenflowSwitchModel getResourceModel() throws ActivatorException, ResourceException {
+
+		log.debug("Getting resource model.");
 
 		IResourceManager resourceManager = getResourceManager();
 
