@@ -11,7 +11,7 @@
  
  	<bean id="openflowSwitchRepository" class="org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository"
           init-method="init">
-		<argument value="switch"/>
+		<argument value="openflowswitch"/>
 		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 		<property name="resourceBootstrapperFactory" ref="openflowSwitchBootstrapperFactory"/>
 	</bean>   
@@ -23,8 +23,21 @@
 	
 	<service ref="openflowSwitchRepository" interface="org.opennaas.core.resources.IResourceRepository">
 		<service-properties>
-			<entry key="type" value="switch"/>
+			<entry key="type" value="openflowswitch"/>
 			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>	
+	
+	<bean id="openflowForwardingCapabilityFactory" class="org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapabilityFactory">
+		<property name="type" value="offorwarding"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="openflowForwardingCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="offorwarding"/>
+			<entry key="capability.model" value="openflowswitch"/>
+			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>	
 	
