@@ -21,7 +21,11 @@
 			<artifactId>net.floodlight.controller</artifactId>
 		</dependency>
 		
-		
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+				
  	</dependencies>
 
 	<build>
