@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.openflowswitch.model.OFForwardingRule;
 
@@ -34,6 +35,6 @@ public interface IOpenflowForwardingCapability extends ICapability {
 	@GET
 	@Path("/getOFForwardingRules")
 	@Produces(MediaType.APPLICATION_XML)
-	public List<OFForwardingRule> getOpenflowForwardingRules();
+	public List<OFForwardingRule> getOpenflowForwardingRules() throws CapabilityException;
 
 }
