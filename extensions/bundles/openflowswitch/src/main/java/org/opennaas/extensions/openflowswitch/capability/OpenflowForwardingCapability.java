@@ -58,7 +58,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		registration.unregister();
+		unregisterService();
 		super.deactivate();
 	}
 
