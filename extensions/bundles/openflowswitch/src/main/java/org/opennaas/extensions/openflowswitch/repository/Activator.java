@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -81,5 +82,12 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
+	}
+
+	public static IResourceManager getResourceManagerService() throws ActivatorException {
+
+		log.debug("Calling ResourceManager service");
+
+		return (IResourceManager) getServiceFromRegistry(context, IResourceManager.class.getName());
 	}
 }
