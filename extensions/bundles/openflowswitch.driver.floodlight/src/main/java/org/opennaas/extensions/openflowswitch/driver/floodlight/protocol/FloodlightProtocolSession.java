@@ -13,7 +13,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.protocol.IProtocolSession.Status;
 
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 
 public class FloodlightProtocolSession implements IProtocolSession {
 
@@ -28,7 +28,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 	private Map<String, IProtocolSessionListener>	protocolListeners		= null;
 	private Map<String, IProtocolMessageFilter>		protocolMessageFilters	= null;
 	
-	IFloodlightClient floodlightClient;
+	IFloodlightStaticFlowPusherClient floodlightStaticFlowPusherClient;
 
 	public FloodlightProtocolSession(String sessionID,
 			ProtocolSessionContext protocolSessionContext) throws ProtocolException {
@@ -75,7 +75,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 			throw new ProtocolException(
 					"Cannot connect because the session is already connected");
 		}
-		this.floodlightClient = instantiateClient(getSessionContext());
+		this.floodlightStaticFlowPusherClient = instantiateClient(getSessionContext());
 		setStatus(Status.CONNECTED);
 	}
 
@@ -87,7 +87,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 							+ status);
 		}
 		
-		this.floodlightClient = null;
+		this.floodlightStaticFlowPusherClient = null;
 		setStatus(Status.DISCONNECTED_BY_USER);
 	}
 
@@ -119,17 +119,17 @@ public class FloodlightProtocolSession implements IProtocolSession {
 	
 	/**
 	 * This method should NOT be used in Actions to retrieve the client.
-	 * In Actions use getFloodlightFlowEntryPusherClientForUse instead.
+	 * In Actions use getFloodlightClientForUse instead.
 	 * 
-	 * @return floodlightClient
-	 * @see getFloodlightFlowEntryPusherClientForUse()
+	 * @return floodlightStaticFlowPusherClient
+	 * @see getFloodlightClientForUse()
 	 */
-	public IFloodlightClient getFloodlightClient() {
-		return floodlightClient;
+	public IFloodlightStaticFlowPusherClient getFloodlightClient() {
+		return floodlightStaticFlowPusherClient;
 	}
 
-	public void setFloodlightClient(IFloodlightClient floodlightClient) {
-		this.floodlightClient = floodlightClient;
+	public void setFloodlightClient(IFloodlightStaticFlowPusherClient floodlightStaticFlowPusherClient) {
+		this.floodlightStaticFlowPusherClient = floodlightStaticFlowPusherClient;
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 	 * @return initialized client.
 	 * @throws ProtocolException if this ProtocolSession is not connected.
 	 */
-	public IFloodlightClient getFloodlightClientForUse() throws ProtocolException {
+	public IFloodlightStaticFlowPusherClient getFloodlightClientForUse() throws ProtocolException {
 		if (!status.equals(Status.CONNECTED)) {
 			throw new ProtocolException(
 					"Cannot use client. Session is not connected. Current session status is " + status);
@@ -152,12 +152,12 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		this.status = status;
 	}
 	
-	private IFloodlightClient instantiateClient(ProtocolSessionContext sessionContext) {
+	private IFloodlightStaticFlowPusherClient instantiateClient(ProtocolSessionContext sessionContext) {
 		String uri = (String) sessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
 		String switchId = (String) sessionContext.getSessionParameters().get(SWITCHID_CONTEXT_PARAM_NAME);
 		//TODO use switch id to instantiate the client
 		
-		return JAXRSClientFactory.create(uri, IFloodlightClient.class);
+		return JAXRSClientFactory.create(uri, IFloodlightStaticFlowPusherClient.class);
 	}
 	
 	private void checkProtocolSessionContext(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
