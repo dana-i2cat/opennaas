@@ -80,5 +80,6 @@
 		<module>quantum</module>
 		
 		<module>openflowswitch</module>
+		<module>openflowswitch.driver.floodlight</module>
 	</modules>
 </project>

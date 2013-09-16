@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.opennaas</groupId>
+    <artifactId>org.opennaas.extensions.bundles</artifactId>
+    <version>0.23-SNAPSHOT</version>
+  </parent>
+  <artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
+  	<!--  Maven configuration -->
+  	<packaging>bundle</packaging>
+	<name>OpenNaaS :: OpenFlow Switch :: Floodlight driver v0.90 </name>
+	<description>OpenFlow Switch driver using Floodlight v0.90</description>
+
+ 	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat</groupId>
+			<artifactId>net.floodlight.controller</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
+		</dependency>
+		<!-- Required in FloodlightProtocolSession to implement a Floodlight client -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-minimal</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
+		</dependency>
+ 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.opennaas.extensions.openflowswitch.driver.floodlight.Activator</Bundle-Activator>	
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
