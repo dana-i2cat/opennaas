@@ -193,7 +193,15 @@
 		<bundle dependency="true">mvn:net.i2cat/net.floodlight.controller/${floodlight.version}</bundle>
 		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch/${project.version}</bundle>
-				
+	</feature>
+	
+	<feature name="opennaas-openflow-switch-driver-floodlight" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-openflow-switch</feature>
+		<bundle dependency="true">mvn:net.i2cat/net.floodlight.controller/${floodlight.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.floodlight/${project.version}</bundle>
 	</feature>
 	
 	<feature name="opennaas-vnmapper" version="${project.version}">
@@ -293,6 +301,7 @@
 		<feature version="${project.version}">opennaas-power</feature>
 		<feature version="${project.version}">opennaas-ws-rest</feature>
 		<feature version="${project.version}">opennaas-openflow-switch</feature>
+		<feature version="${project.version}">opennaas-openflow-switch-driver-floodlight</feature>
 		
 <!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 		<feature version="${project.version}">opennaas-quantum</feature>
