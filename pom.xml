@@ -355,6 +355,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.gim</artifactId>
 				<version>${opennaas.gim.version}</version>
 			</dependency>
