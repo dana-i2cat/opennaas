@@ -9,6 +9,7 @@ import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -90,4 +91,10 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 		return (IResourceManager) getServiceFromRegistry(context, IResourceManager.class.getName());
 	}
+
+	public static IProtocolManager getProtocolManagerService() throws ActivatorException {
+		log.debug("Calling QueueManagerService");
+		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
+	}
+
 }

@@ -9,12 +9,17 @@ import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
 import org.opennaas.extensions.openflowswitch.model.OFForwardingRule;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
@@ -68,8 +73,30 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public void createOpenflowForwardingRule(OFForwardingRule forwardingRule) {
-		// TODO Auto-generated method stub
+	public void createOpenflowForwardingRule(OFForwardingRule forwardingRule) throws CapabilityException {
+
+		log.info("Start of createOpenflowForwardingRule call");
+
+		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
+
+		try {
+			ActionResponse response = executeAction(action);
+
+			if (!response.getStatus().equals(ActionResponse.STATUS.OK))
+				throw new ActionException(response.getResponses().get(0).toString());
+
+		} catch (ProtocolException pe) {
+			log.error("Error getting OFswitch protocol session - " + pe.getMessage());
+			throw new CapabilityException(pe);
+		} catch (ActivatorException ae) {
+			log.error("Error getting Protocol Session Manager - " + ae.getMessage());
+			throw new CapabilityException();
+		} catch (ActionException ae) {
+			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
+			throw (ae);
+		}
+
+		log.info("End of createOpenflowForwardingRule call");
 
 	}
 
@@ -142,4 +169,15 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 		return (OpenflowSwitchModel) switchResource.getModel();
 	}
+
+	private ActionResponse executeAction(IAction action) throws ProtocolException, ActionException, ActivatorException {
+
+		IProtocolManager protocolManager = Activator.getProtocolManagerService();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
+
+		ActionResponse response = action.execute(protocolSessionManager);
+
+		return response;
+	}
+
 }
