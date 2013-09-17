@@ -25,7 +25,7 @@ public interface IOpenflowForwardingCapability extends ICapability {
 	@POST
 	@Path("/createOFFForwardingRule")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void createOpenflowForwardingRule(OFForwardingRule forwardingRule);
+	public void createOpenflowForwardingRule(OFForwardingRule forwardingRule) throws CapabilityException;
 
 	@DELETE
 	@Path("/removeOFForwardingRule")

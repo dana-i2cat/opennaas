@@ -4,9 +4,9 @@ import org.opennaas.core.resources.action.IActionSetDefinition;
 
 public class OpenflowForwardingActionSet implements IActionSetDefinition {
 
-	public static final String	createOFForwardingRule	= "createOFForwardingRule";
-	public static final String	removeOFForwardingRule	= "removeOFForwardingRule";
+	public static final String	CREATEOFFORWARDINGRULE	= "createOFForwardingRule";
+	public static final String	REMOVEOFFORWARDINGRULE	= "removeOFForwardingRule";
 
-	public static final String	getFlows				= "getFlows";
-	public static final String	getPorts				= "getPorts";
+	public static final String	GETFLOWS				= "getFlows";
+	public static final String	GETPORTS				= "getPorts";
 }
