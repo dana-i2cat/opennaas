@@ -11,8 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.model.FloodlightOFFlow;
-
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 @Path("/wm/staticflowentrypusher")
 public interface IFloodlightStaticFlowPusherClient {
