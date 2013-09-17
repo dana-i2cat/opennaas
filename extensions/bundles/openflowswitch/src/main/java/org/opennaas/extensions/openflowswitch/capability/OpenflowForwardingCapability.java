@@ -89,7 +89,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 			log.error("Error getting OFswitch protocol session - " + pe.getMessage());
 			throw new CapabilityException(pe);
 		} catch (ActivatorException ae) {
-			log.error("Error getting Protocol Session Manager - " + ae.getMessage());
+			log.error("Protocol error - " + ae.getMessage());
 			throw new CapabilityException();
 		} catch (ActionException ae) {
 			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
