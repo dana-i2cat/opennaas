@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.model;
+package org.opennaas.extensions.openflowswitch.model;
 
 public class FloodlightOFMatch {
 	

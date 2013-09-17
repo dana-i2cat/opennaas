@@ -3,7 +3,7 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 public interface IFloodlightStaticFlowPusherClient {
 

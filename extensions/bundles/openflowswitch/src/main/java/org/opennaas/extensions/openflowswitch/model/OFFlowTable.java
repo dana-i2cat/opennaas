@@ -11,11 +11,11 @@ import java.util.List;
 public class OFFlowTable {
 
 	private String					tableId;
-	private List<OFForwardingRule>	ofForwardingRules;
+	private List<FloodlightOFFlow>	ofForwardingRules;
 
 	public OFFlowTable() {
 		tableId = new String();
-		ofForwardingRules = new ArrayList<OFForwardingRule>();
+		ofForwardingRules = new ArrayList<FloodlightOFFlow>();
 	}
 
 	public String getTableId() {
@@ -26,11 +26,11 @@ public class OFFlowTable {
 		this.tableId = tableId;
 	}
 
-	public List<OFForwardingRule> getOfForwardingRules() {
+	public List<FloodlightOFFlow> getOfForwardingRules() {
 		return ofForwardingRules;
 	}
 
-	public void setOfForwardingRules(List<OFForwardingRule> ofForwardingRules) {
+	public void setOfForwardingRules(List<FloodlightOFFlow> ofForwardingRules) {
 		this.ofForwardingRules = ofForwardingRules;
 	}
 
