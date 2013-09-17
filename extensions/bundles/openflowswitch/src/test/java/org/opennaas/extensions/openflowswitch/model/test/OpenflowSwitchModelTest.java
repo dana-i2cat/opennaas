@@ -5,6 +5,8 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.core.resources.ObjectSerializer;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
@@ -43,6 +45,20 @@ public class OpenflowSwitchModelTest {
 
 		Assert.assertEquals("2", originalRule2.getPriority());
 		Assert.assertEquals("2", originalRule2.getMatch().getDstPort());
+
+	}
+
+	@Test
+	public void modelSerializerTest() throws SerializationException {
+
+		OpenflowSwitchModel originalModel = OpenflowSwitchModelHelper.generateSampleModel();
+		String xmlModel = originalModel.toXml();
+
+		OpenflowSwitchModel loadedModel = (OpenflowSwitchModel) ObjectSerializer.fromXml(xmlModel, OpenflowSwitchModel.class);
+		String xmlLoadedModel = loadedModel.toXml();
+
+		Assert.assertEquals(originalModel, loadedModel);
+		Assert.assertEquals(xmlModel, xmlLoadedModel);
 
 	}
 }

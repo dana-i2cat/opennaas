@@ -1,10 +1,14 @@
 package org.opennaas.extensions.openflowswitch.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class FloodlightOFAction {
-	
-	protected String type;
-	
-	protected String value;
+
+	protected String	type;
+
+	protected String	value;
 
 	/**
 	 * @return the type
@@ -14,7 +18,8 @@ public class FloodlightOFAction {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -28,13 +33,16 @@ public class FloodlightOFAction {
 	}
 
 	/**
-	 * @param value the value to set
+	 * @param value
+	 *            the value to set
 	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -46,7 +54,9 @@ public class FloodlightOFAction {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

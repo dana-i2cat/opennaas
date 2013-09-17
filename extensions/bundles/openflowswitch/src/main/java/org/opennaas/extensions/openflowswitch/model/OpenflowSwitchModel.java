@@ -3,6 +3,10 @@ package org.opennaas.extensions.openflowswitch.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
@@ -12,6 +16,8 @@ import org.opennaas.core.resources.SerializationException;
  * @author Adrian Rosello (i2CAT)
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OpenflowSwitchModel implements IModel {
 
 	/**

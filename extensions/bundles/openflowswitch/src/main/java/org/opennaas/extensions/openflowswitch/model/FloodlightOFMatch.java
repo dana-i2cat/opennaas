@@ -1,238 +1,259 @@
 package org.opennaas.extensions.openflowswitch.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class FloodlightOFMatch {
-	
-	protected String wildcards;
+
+	protected String	wildcards;
 	/**
 	 * switch port on which the packet is received. <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String ingressPort;
+	protected String	ingressPort;
 	/**
-	 * <mac address> 	xx:xx:xx:xx:xx:xx
+	 * <mac address> xx:xx:xx:xx:xx:xx
 	 */
-	protected String srcMac;
+	protected String	srcMac;
 	/**
-	 * <mac address> 	xx:xx:xx:xx:xx:xx
+	 * <mac address> xx:xx:xx:xx:xx:xx
 	 */
-	protected String dstMac;
+	protected String	dstMac;
 	/**
-	 * <number> 	Can be hexadecimal (with leading 0x) or decimal
+	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String vlanId;
+	protected String	vlanId;
 	/**
-	 * <number> 	Can be hexadecimal (with leading 0x) or decimal
+	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String vlanPriority;
+	protected String	vlanPriority;
 	/**
-	 * <number> 	Can be hexadecimal (with leading 0x) or decimal
+	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String etherType;
+	protected String	etherType;
 	/**
-	 * <number> 	Can be hexadecimal (with leading 0x) or decimal
+	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String tosBits;
+	protected String	tosBits;
 	/**
-	 * <number> 	Can be hexadecimal (with leading 0x) or decimal
+	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String protocol;
+	protected String	protocol;
 	/**
-	 * <ip address> 	xx.xx.xx.xx
+	 * <ip address> xx.xx.xx.xx
 	 */
-	protected String srcIp;
+	protected String	srcIp;
 	/**
-	 * <ip address> 	xx.xx.xx.xx
+	 * <ip address> xx.xx.xx.xx
 	 */
-	protected String dstIp;
+	protected String	dstIp;
 	/**
-	 * <number> 	Can be hexadecimal (with leading 0x) or decimal
+	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String srcPort;
+	protected String	srcPort;
 	/**
-	 * <number> 	Can be hexadecimal (with leading 0x) or decimal 
+	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String dstPort;
-	
+	protected String	dstPort;
+
 	/**
 	 * @return the wildcards
 	 */
 	public String getWildcards() {
 		return wildcards;
 	}
-	
+
 	/**
-	 * @param wildcards the wildcards to set
+	 * @param wildcards
+	 *            the wildcards to set
 	 */
 	public void setWildcards(String wildcards) {
 		this.wildcards = wildcards;
 	}
-	
+
 	/**
 	 * @return the ingressPort
 	 */
 	public String getIngressPort() {
 		return ingressPort;
 	}
-	
+
 	/**
-	 * @param ingressPort the ingressPort to set
+	 * @param ingressPort
+	 *            the ingressPort to set
 	 */
 	public void setIngressPort(String ingressPort) {
 		this.ingressPort = ingressPort;
 	}
-	
+
 	/**
 	 * @return the srcMac
 	 */
 	public String getSrcMac() {
 		return srcMac;
 	}
-	
+
 	/**
-	 * @param srcMac the srcMac to set
+	 * @param srcMac
+	 *            the srcMac to set
 	 */
 	public void setSrcMac(String srcMac) {
 		this.srcMac = srcMac;
 	}
-	
+
 	/**
 	 * @return the dstMac
 	 */
 	public String getDstMac() {
 		return dstMac;
 	}
-	
+
 	/**
-	 * @param dstMac the dstMac to set
+	 * @param dstMac
+	 *            the dstMac to set
 	 */
 	public void setDstMac(String dstMac) {
 		this.dstMac = dstMac;
 	}
+
 	/**
 	 * @return the vlanId
 	 */
 	public String getVlanId() {
 		return vlanId;
 	}
-	
+
 	/**
-	 * @param vlanId the vlanId to set
+	 * @param vlanId
+	 *            the vlanId to set
 	 */
 	public void setVlanId(String vlanId) {
 		this.vlanId = vlanId;
 	}
+
 	/**
 	 * @return the vlanPriority
 	 */
 	public String getVlanPriority() {
 		return vlanPriority;
 	}
-	
+
 	/**
-	 * @param vlanPriority the vlanPriority to set
+	 * @param vlanPriority
+	 *            the vlanPriority to set
 	 */
 	public void setVlanPriority(String vlanPriority) {
 		this.vlanPriority = vlanPriority;
 	}
-	
+
 	/**
 	 * @return the etherType
 	 */
 	public String getEtherType() {
 		return etherType;
 	}
-	
+
 	/**
-	 * @param etherType the etherType to set
+	 * @param etherType
+	 *            the etherType to set
 	 */
 	public void setEtherType(String etherType) {
 		this.etherType = etherType;
 	}
-	
+
 	/**
 	 * @return the tosBits
 	 */
 	public String getTosBits() {
 		return tosBits;
 	}
-	
+
 	/**
-	 * @param tosBits the tosBits to set
+	 * @param tosBits
+	 *            the tosBits to set
 	 */
 	public void setTosBits(String tosBits) {
 		this.tosBits = tosBits;
 	}
-	
+
 	/**
 	 * @return the protocol
 	 */
 	public String getProtocol() {
 		return protocol;
 	}
-	
+
 	/**
-	 * @param protocol the protocol to set
+	 * @param protocol
+	 *            the protocol to set
 	 */
 	public void setProtocol(String protocol) {
 		this.protocol = protocol;
 	}
-	
+
 	/**
 	 * @return the srcIp
 	 */
 	public String getSrcIp() {
 		return srcIp;
 	}
-	
+
 	/**
-	 * @param srcIp the srcIp to set
+	 * @param srcIp
+	 *            the srcIp to set
 	 */
 	public void setSrcIp(String srcIp) {
 		this.srcIp = srcIp;
 	}
-	
+
 	/**
 	 * @return the dstIp
 	 */
 	public String getDstIp() {
 		return dstIp;
 	}
-	
+
 	/**
-	 * @param dstIp the dstIp to set
+	 * @param dstIp
+	 *            the dstIp to set
 	 */
 	public void setDstIp(String dstIp) {
 		this.dstIp = dstIp;
 	}
-	
+
 	/**
 	 * @return the srcPort
 	 */
 	public String getSrcPort() {
 		return srcPort;
 	}
-	
+
 	/**
-	 * @param srcPort the srcPort to set
+	 * @param srcPort
+	 *            the srcPort to set
 	 */
 	public void setSrcPort(String srcPort) {
 		this.srcPort = srcPort;
 	}
-	
+
 	/**
 	 * @return the dstPort
 	 */
 	public String getDstPort() {
 		return dstPort;
 	}
-	
+
 	/**
-	 * @param dstPort the dstPort to set
+	 * @param dstPort
+	 *            the dstPort to set
 	 */
 	public void setDstPort(String dstPort) {
 		this.dstPort = dstPort;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -259,8 +280,10 @@ public class FloodlightOFMatch {
 				+ ((wildcards == null) ? 0 : wildcards.hashCode());
 		return result;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

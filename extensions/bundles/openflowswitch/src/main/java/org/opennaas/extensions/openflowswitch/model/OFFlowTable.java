@@ -3,11 +3,15 @@ package org.opennaas.extensions.openflowswitch.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  * 
  * @author Adrian Rosello (i2CAT)
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OFFlowTable {
 
 	private String					tableId;
