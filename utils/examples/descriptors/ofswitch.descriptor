@@ -1,17 +1,10 @@
 <resourceDescriptor>
     <!--  Basic capability information. It specifies device model and version. IT IS OBLIGATORY -->
     <capabilityDescriptors>
-        <capabilityProperty value="openflowswitch" name="actionset.name"/>
-        <capabilityProperty value="1.0" name="actionset.version" />
+        <capabilityProperty value="floodlight" name="actionset.name"/>
+        <capabilityProperty value="0.90" name="actionset.version" />
         <information><type>offorwarding</type></information>
     </capabilityDescriptors>
-
-	<capabilityDescriptors>
-        <capabilityProperty name="actionset.name" value="openflowswitch" />
-        <capabilityProperty name="actionset.version" value="" />
-        <information><type>queue</type></information>
-    </capabilityDescriptors>
-
 
     <!-- Resource information. It specify type and name-->
     <information>
@@ -19,5 +12,6 @@
         <name>ofswitch</name>
     </information>
     <properties/> 
+
 </resourceDescriptor>
 
