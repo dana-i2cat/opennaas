@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
@@ -14,6 +14,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.protocol.IProtocolSession.Status;
 
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.serializers.json.CustomJSONProvider;
 
 public class FloodlightProtocolSession implements IProtocolSession {
 
@@ -157,7 +158,12 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		String switchId = (String) sessionContext.getSessionParameters().get(SWITCHID_CONTEXT_PARAM_NAME);
 		//TODO use switch id to instantiate the client
 		
-		return JAXRSClientFactory.create(uri, IFloodlightStaticFlowPusherClient.class);
+		
+		JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
+		bean.setAddress(uri);
+		bean.setProvider(new CustomJSONProvider());
+		bean.setResourceClass(IFloodlightStaticFlowPusherClient.class);
+		return (IFloodlightStaticFlowPusherClient) bean.create();
 	}
 	
 	private void checkProtocolSessionContext(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
