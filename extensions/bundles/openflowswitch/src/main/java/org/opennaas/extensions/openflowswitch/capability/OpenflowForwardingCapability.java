@@ -21,7 +21,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
-import org.opennaas.extensions.openflowswitch.model.OFForwardingRule;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -73,7 +73,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public void createOpenflowForwardingRule(OFForwardingRule forwardingRule) throws CapabilityException {
+	public void createOpenflowForwardingRule(FloodlightOFFlow forwardingRule) throws CapabilityException {
 
 		log.info("Start of createOpenflowForwardingRule call");
 
@@ -89,7 +89,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 			log.error("Error getting OFswitch protocol session - " + pe.getMessage());
 			throw new CapabilityException(pe);
 		} catch (ActivatorException ae) {
-			log.error("Error getting Protocol Session Manager - " + ae.getMessage());
+			log.error("Protocol error - " + ae.getMessage());
 			throw new CapabilityException();
 		} catch (ActionException ae) {
 			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
@@ -106,10 +106,10 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public List<OFForwardingRule> getOpenflowForwardingRules() throws CapabilityException {
+	public List<FloodlightOFFlow> getOpenflowForwardingRules() throws CapabilityException {
 		log.info("Start of getOpenflowForwardingRules call");
 
-		List<OFForwardingRule> forwardingRules = new ArrayList<OFForwardingRule>();
+		List<FloodlightOFFlow> forwardingRules = new ArrayList<FloodlightOFFlow>();
 		try {
 
 			OpenflowSwitchModel model = getResourceModel();

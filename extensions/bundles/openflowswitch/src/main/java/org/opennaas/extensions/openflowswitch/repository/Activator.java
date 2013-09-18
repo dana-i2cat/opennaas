@@ -93,7 +93,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	}
 
 	public static IProtocolManager getProtocolManagerService() throws ActivatorException {
-		log.debug("Calling QueueManagerService");
+		log.debug("Calling ProtocolManager service");
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
 

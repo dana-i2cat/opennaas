@@ -9,10 +9,9 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
-
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.model.FloodlightOFAction;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.model.FloodlightOFFlow;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 public class FloodlightOFFlowJSONDeserializer extends
 		JsonDeserializer<FloodlightOFFlow> {
@@ -27,11 +26,11 @@ public class FloodlightOFFlowJSONDeserializer extends
 		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>(0);
 
 		JsonToken token;
-		
-//		token = jp.nextToken();
-//		if ((token = jp.getCurrentToken()) != JsonToken.START_OBJECT) {
-//			throw new IOException("Expected START_OBJECT");
-//		}
+
+		// token = jp.nextToken();
+		// if ((token = jp.getCurrentToken()) != JsonToken.START_OBJECT) {
+		// throw new IOException("Expected START_OBJECT");
+		// }
 
 		while ((token = jp.nextToken()) != JsonToken.END_OBJECT) {
 			if ((token = jp.getCurrentToken()) != JsonToken.FIELD_NAME) {
@@ -80,7 +79,7 @@ public class FloodlightOFFlowJSONDeserializer extends
 			else if (n == "dst-port")
 				match.setDstPort(jp.getText());
 		}
-		
+
 		flow.setMatch(match);
 		flow.setActions(actions);
 		return flow;
@@ -106,7 +105,7 @@ public class FloodlightOFFlowJSONDeserializer extends
 				currentAction = new FloodlightOFAction();
 				currentAction.setType(type);
 				currentAction.setValue(value);
-				
+
 				actions.add(currentAction);
 			}
 		}

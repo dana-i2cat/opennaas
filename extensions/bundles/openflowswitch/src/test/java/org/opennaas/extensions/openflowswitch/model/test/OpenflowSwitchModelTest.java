@@ -5,8 +5,10 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.core.resources.ObjectSerializer;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
-import org.opennaas.extensions.openflowswitch.model.OFForwardingRule;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 public class OpenflowSwitchModelTest {
@@ -16,34 +18,47 @@ public class OpenflowSwitchModelTest {
 
 		OpenflowSwitchModel model = OpenflowSwitchModelHelper.generateSampleModel();
 
-		List<OFForwardingRule> originalRules = model.getOfTables().get(0).getOfForwardingRules();
+		List<FloodlightOFFlow> originalRules = model.getOfTables().get(0).getOfForwardingRules();
 
-		OFForwardingRule originalRule1 = originalRules.get(0);
-		OFForwardingRule originalRule2 = originalRules.get(1);
+		FloodlightOFFlow originalRule1 = originalRules.get(0);
+		FloodlightOFFlow originalRule2 = originalRules.get(1);
 
-		List<OFForwardingRule> forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
+		List<FloodlightOFFlow> forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
 
 		Assert.assertEquals(2, forwardingRules.size());
 		Assert.assertEquals(originalRules.size(), forwardingRules.size());
 
-		OFForwardingRule rule1 = forwardingRules.get(0);
-		OFForwardingRule rule2 = forwardingRules.get(1);
+		FloodlightOFFlow rule1 = forwardingRules.get(0);
+		FloodlightOFFlow rule2 = forwardingRules.get(1);
 
-		Assert.assertEquals("1", rule1.getFlowId());
+		Assert.assertEquals("1", rule1.getName());
 		Assert.assertEquals(originalRule1, rule1);
 
-		Assert.assertEquals("2", rule2.getFlowId());
+		Assert.assertEquals("2", rule2.getName());
 		Assert.assertEquals(originalRule2, rule2);
 
-		Assert.assertEquals(rule1.getOfFlowMod().getPriority(), originalRule1.getOfFlowMod().getPriority());
-		Assert.assertTrue(1 == originalRule1.getOfFlowMod().getPriority());
-		Assert.assertEquals(rule1.getOfFlowMod().getOutPort(), originalRule1.getOfFlowMod().getOutPort());
-		Assert.assertTrue(1 == originalRule1.getOfFlowMod().getOutPort());
+		Assert.assertTrue(rule1.equals(originalRule1));
+		Assert.assertTrue(rule2.equals(originalRule2));
 
-		Assert.assertEquals(rule2.getOfFlowMod().getPriority(), originalRule2.getOfFlowMod().getPriority());
-		Assert.assertTrue(2 == originalRule2.getOfFlowMod().getPriority());
-		Assert.assertEquals(rule2.getOfFlowMod().getOutPort(), originalRule2.getOfFlowMod().getOutPort());
-		Assert.assertTrue(2 == originalRule2.getOfFlowMod().getOutPort());
+		Assert.assertEquals("1", originalRule1.getPriority());
+		Assert.assertEquals("1", originalRule1.getMatch().getDstPort());
+
+		Assert.assertEquals("2", originalRule2.getPriority());
+		Assert.assertEquals("2", originalRule2.getMatch().getDstPort());
+
+	}
+
+	@Test
+	public void modelSerializerTest() throws SerializationException {
+
+		OpenflowSwitchModel originalModel = OpenflowSwitchModelHelper.generateSampleModel();
+		String xmlModel = originalModel.toXml();
+
+		OpenflowSwitchModel loadedModel = (OpenflowSwitchModel) ObjectSerializer.fromXml(xmlModel, OpenflowSwitchModel.class);
+		String xmlLoadedModel = loadedModel.toXml();
+
+		Assert.assertEquals(originalModel, loadedModel);
+		Assert.assertEquals(xmlModel, xmlLoadedModel);
 
 	}
 }

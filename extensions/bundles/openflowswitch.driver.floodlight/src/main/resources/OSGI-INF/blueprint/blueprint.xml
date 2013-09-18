@@ -8,4 +8,18 @@
 			<entry key="protocol.version" value="0.90"/>
 		</service-properties>
 	</service>
+	
+	
+	<!--  	ofForwardingActionSet  -->
+	<bean id="ofForwardingActionset" class="org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.OFForwardingActionsetImplementation"/>
+	<service ref="ofForwardingActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="floodlight"/>
+			<entry key="actionset.capability" value="offorwarding"/>
+			<entry key="actionset.version" value="0.90"/>
+		</service-properties>
+	</service>	
+	
+	
 </blueprint>
