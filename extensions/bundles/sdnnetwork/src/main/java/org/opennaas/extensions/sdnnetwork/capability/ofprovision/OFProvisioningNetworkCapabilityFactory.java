@@ -1,13 +1,10 @@
 package org.opennaas.extensions.sdnnetwork.capability.ofprovision;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapability;
 
 /**
  * 
