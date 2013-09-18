@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
@@ -42,6 +43,10 @@ public class OpenflowResourceRepositoryIntegrationTest {
 	@Inject
 	@Filter("(type=switch)")
 	private IResourceRepository	resourceRepository;
+
+	@Inject
+	@Filter("(capability=offorwarding)")
+	private ICapabilityFactory	ofForwardingCapabilityFactory;
 
 	@Configuration
 	public static Option[] configuration() {

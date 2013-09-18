@@ -3,18 +3,48 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.act
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
+import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 public class CreateOFForwardingAction extends FloodlightAction {
 
 	private static final String	FORWARDING_ACTION	= "output";
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			// TODO we have to find another place where we could put switchId in model.
+			setSwitchIdInModel(protocolSessionManager);
+
+			setSwitchIdToFlow();
+
+			FloodlightOFFlow flow = (FloodlightOFFlow) params;
+			IFloodlightStaticFlowPusherClient client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
+			client.addFlow(flow);
+
+			populateModelWithNewFlow(flow);
+
+		} catch (ProtocolException e) {
+			throw new ActionException(e);
+		}
+
+		ActionResponse response = new ActionResponse();
+		response.setStatus(ActionResponse.STATUS.OK);
+
+		return response;
 	}
 
 	@Override
@@ -46,4 +76,33 @@ public class CreateOFForwardingAction extends FloodlightAction {
 		return true;
 
 	}
+
+	private void setSwitchIdToFlow() {
+
+		OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
+		FloodlightOFFlow flowRule = (FloodlightOFFlow) params;
+
+		flowRule.setSwitchId(model.getSwitchId());
+	}
+
+	private void populateModelWithNewFlow(FloodlightOFFlow flow) {
+
+		OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
+		OFFlowTable table = model.getOfTables().get(0);
+
+		table.getOfForwardingRules().add(flow);
+
+	}
+
+	private void setSwitchIdInModel(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
+
+		ProtocolSessionContext sessionContext = getFloodlightProtocolSession(protocolSessionManager).getSessionContext();
+
+		String switchId = (String) sessionContext.getSessionParameters().get(FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME);
+
+		OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
+		model.setSwitchId(switchId);
+
+	}
+
 }
