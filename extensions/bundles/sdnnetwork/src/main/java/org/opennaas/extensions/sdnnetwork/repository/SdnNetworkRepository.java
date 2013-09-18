@@ -5,6 +5,11 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ResourceRepository;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ *
+ */
 public class SdnNetworkRepository  extends ResourceRepository {
 	
 	Log	log	= LogFactory.getLog(SdnNetworkRepository.class);

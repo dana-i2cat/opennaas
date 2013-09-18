@@ -9,7 +9,11 @@ import org.opennaas.core.resources.IResourceManager;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ *
+ */
 public class Activator extends AbstractActivator implements BundleActivator {
 
 	private static BundleContext	context;

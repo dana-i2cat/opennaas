@@ -4,6 +4,11 @@ import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ *
+ */
 public class SdnNetworkBootstrapper implements IResourceBootstrapper {
 
 	@Override

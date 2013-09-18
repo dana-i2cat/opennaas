@@ -8,6 +8,11 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ *
+ */
 public class OFProvisioningNetworkCapability extends AbstractCapability implements IOFProvisioningNetworkCapability {
 	
 	public static String	CAPABILITY_TYPE	= "ofprovisionnet";

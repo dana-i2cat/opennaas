@@ -9,6 +9,11 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapability;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ *
+ */
 public class OFProvisioningNetworkCapabilityFactory extends AbstractCapabilityFactory {
 	
 	@Override
