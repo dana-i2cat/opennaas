@@ -113,11 +113,15 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
 			throw new ActionException(response.getResponses().get(0).toString());
 
-		log.info("End of getAllocatedFlows call");
+		Collection<SDNNetworkOFFlow> result;
+		if (response.getResult() != null && response.getResult() instanceof Collection<?>){
+			result =  (Collection<SDNNetworkOFFlow>) response.getResult();
+		} else{
+			throw new CapabilityException("Failed to retrieve result from action response of action " + action.getActionID());
+		}
 		
-		// FIXME return result from Action
-		// return response.getResult();
-		return null;
+		log.info("End of getAllocatedFlows call");
+		return result;
 	}
 	
 	@Override
