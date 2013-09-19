@@ -39,6 +39,17 @@
 			<entry key="capability.model" value="sdnnetwork"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
+	</service>
+	
+	<!--  Internal ActionSet  -->
+	<bean id="sdnNetworkInternalActionSet" class="org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.SDNNetworkInternalActionsetImplementation"/>
+	<service ref="sdnNetworkInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="ofprovisionnet"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
 	</service>	
 	
 	<!-- Forces this bundle to wait for dataSourceResources being published -->

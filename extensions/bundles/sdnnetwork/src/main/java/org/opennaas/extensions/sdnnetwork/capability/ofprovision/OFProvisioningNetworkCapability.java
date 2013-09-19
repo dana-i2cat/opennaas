@@ -70,7 +70,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		String flowId = generateFlowId(flowWithRoute);
 		flowWithRoute.setName(flowId);
 
-		IAction action = createActionAndCheckParams(OpenflowProvisioningNetworkActionSet.ALLOCATEFLOW, flowWithRoute);
+		IAction action = createActionAndCheckParams(OFProvisioningNetworkActionSet.ALLOCATEFLOW, flowWithRoute);
 
 		ActionResponse response = executeAction(action);
 
@@ -90,7 +90,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 	public void deallocateOFFlow(String flowId) throws CapabilityException {
 		log.info("Start of deallocateOFFlow call");
 
-		IAction action = createActionAndCheckParams(OpenflowProvisioningNetworkActionSet.DEALLOCATEFLOW, flowId);
+		IAction action = createActionAndCheckParams(OFProvisioningNetworkActionSet.DEALLOCATEFLOW, flowId);
 
 		ActionResponse response = executeAction(action);
 
@@ -106,7 +106,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		
 		log.info("Start of getAllocatedFlows call");
 
-		IAction action = createActionAndCheckParams(OpenflowProvisioningNetworkActionSet.GETALLOCATEDFLOWS, null);
+		IAction action = createActionAndCheckParams(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS, null);
 
 		ActionResponse response = executeAction(action);
 

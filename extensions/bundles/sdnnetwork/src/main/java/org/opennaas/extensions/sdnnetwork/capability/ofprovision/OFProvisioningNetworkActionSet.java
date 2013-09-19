@@ -7,7 +7,7 @@ import org.opennaas.core.resources.action.IActionSetDefinition;
  * @author Isart Canyameres Gimenez (i2cat)
  *
  */
-public class OpenflowProvisioningNetworkActionSet implements IActionSetDefinition {
+public class OFProvisioningNetworkActionSet implements IActionSetDefinition {
 
 	/**
 	 * An Action that allocates the flow in the network.
