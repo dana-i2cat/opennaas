@@ -129,7 +129,7 @@ public class VRRPCapability extends AbstractCapability implements IVRRPCapabilit
 		VRRPProtocolEndpoint param = (VRRPProtocolEndpoint) vrrpCopy.getProtocolEndpoint().get(0);
 		param.setPriority(vrrpProtocolEndpoint.getPriority());
 
-		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_VIRTUAL_IP_ADDRESS, vrrpProtocolEndpoint);
+		IAction action = createActionAndCheckParams(VRRPActionSet.VRRP_UPDATE_VIRTUAL_IP_ADDRESS, param);
 		queueAction(action);
 		log.info("End of updateVRRPVirtualIPAddress call");
 	}
