@@ -19,8 +19,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.IResourceRepository;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
@@ -29,7 +27,6 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-import org.ops4j.pax.exam.util.Filter;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -39,14 +36,6 @@ public class OpenflowResourceRepositoryIntegrationTest {
 
 	@Inject
 	private IResourceManager	resourceManager;
-
-	@Inject
-	@Filter("(type=switch)")
-	private IResourceRepository	resourceRepository;
-
-	@Inject
-	@Filter("(capability=offorwarding)")
-	private ICapabilityFactory	ofForwardingCapabilityFactory;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -60,7 +49,7 @@ public class OpenflowResourceRepositoryIntegrationTest {
 	@Test
 	public void createAndRemoveResourceTest() throws Exception {
 
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("switch");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("openflowswitch");
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(ResourceHelper.newQueueCapabilityDescriptor());

@@ -24,7 +24,6 @@ import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
-import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 /**
  * 
@@ -130,16 +129,8 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
-		getQueueManager(resourceId).queueAction(action);
 
-	}
-
-	private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
-		try {
-			return Activator.getQueueManagerService(resourceId);
-		} catch (ActivatorException e) {
-			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
-		}
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
