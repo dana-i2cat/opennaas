@@ -7,7 +7,7 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.Floodli
 
 public abstract class FloodlightAction extends Action {
 
-	protected FloodlightProtocolSession getfloodlightProtocolSession(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
+	protected FloodlightProtocolSession getFloodlightProtocolSession(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
 		return (FloodlightProtocolSession) protocolSessionManager.obtainSessionByProtocol(
 				FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE, false);
 	}
