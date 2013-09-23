@@ -1,41 +1,47 @@
-package org.opennaas.extensions.openflowswitch.model;
+package org.opennaas.extensions.sdnnetwork.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.opennaas.extensions.network.model.topology.Path;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
+
 /**
+ * A class representing a flow crossing a network, from a single source port to a single destination port.
+ * 
+ * Ingress port in match attribute is the source port of the flow in the network.
+ * The flow MUST include an FloodlightOFAction with type=="output". The value of that FloodlightOFAction is the destination port of the flow in the network.
+ * 
+ * Route represents the path of the flow in the network topology.
+ * The route MUST be composed of CrossConnect and Link elements. 
+ * CrossConnects represent FloodlightOFFlow entries in each switch.
+ * Links represent network connections between switches which are traversed by this SDNNetworkOFFlow.
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  *
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FloodlightOFFlow extends OFFlow {
-
-	/**
-	 * <switch ID> ID of the switch (data path) that this rule should be added to xx:xx:xx:xx:xx:xx:xx:xx
-	 */
-	protected String					switchId;
+public class SDNNetworkOFFlow extends OFFlow {
 	
+	protected Path route;
+
 	/**
-	 * @return the switchId
+	 * @return the route
 	 */
-	public String getSwitchId() {
-		return switchId;
+	public Path getRoute() {
+		return route;
 	}
 
 	/**
-	 * @param switchId
-	 *            the switchId to set
+	 * @param route the route to set
 	 */
-	public void setSwitchId(String switchId) {
-		this.switchId = switchId;
+	public void setRoute(Path route) {
+		this.route = route;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -49,13 +55,11 @@ public class FloodlightOFFlow extends OFFlow {
 		result = prime * result
 				+ ((priority == null) ? 0 : priority.hashCode());
 		result = prime * result
-				+ ((switchId == null) ? 0 : switchId.hashCode());
+				+ ((route == null) ? 0 : route.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -66,7 +70,7 @@ public class FloodlightOFFlow extends OFFlow {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FloodlightOFFlow other = (FloodlightOFFlow) obj;
+		SDNNetworkOFFlow other = (SDNNetworkOFFlow) obj;
 		if (actions == null) {
 			if (other.actions != null)
 				return false;
@@ -89,11 +93,12 @@ public class FloodlightOFFlow extends OFFlow {
 				return false;
 		} else if (!priority.equals(other.priority))
 			return false;
-		if (switchId == null) {
-			if (other.switchId != null)
+		if (route == null) {
+			if (other.route != null)
 				return false;
-		} else if (!switchId.equals(other.switchId))
+		} else if (!route.equals(other.route))
 			return false;
 		return true;
 	}
+
 }
