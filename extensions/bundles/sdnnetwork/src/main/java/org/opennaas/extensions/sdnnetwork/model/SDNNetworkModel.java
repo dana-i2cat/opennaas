@@ -12,6 +12,11 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ *
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SDNNetworkModel implements IModel {
