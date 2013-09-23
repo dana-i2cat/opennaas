@@ -1,5 +1,7 @@
 package org.opennaas.extensions.openflowswitch.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,31 +13,97 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FloodlightOFFlow extends OFFlow {
-
-	/**
-	 * <switch ID> ID of the switch (data path) that this rule should be added to xx:xx:xx:xx:xx:xx:xx:xx
-	 */
-	protected String					switchId;
+public class OFFlow {
 	
 	/**
-	 * @return the switchId
+	 * <string> Name of the flow entry, this is the primary key, it MUST be unique
 	 */
-	public String getSwitchId() {
-		return switchId;
+	protected String					name;
+	/**
+	 * <number> default is 32767. maximum value is 32767.
+	 */
+	protected String					priority;
+	protected boolean					active;
+
+	protected List<FloodlightOFAction>	actions;
+	protected FloodlightOFMatch			match;
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param switchId
-	 *            the switchId to set
+	 * @param name
+	 *            the name to set
 	 */
-	public void setSwitchId(String switchId) {
-		this.switchId = switchId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
+	 * @return the priority
+	 */
+	public String getPriority() {
+		return priority;
+	}
+
+	/**
+	 * @param priority
+	 *            the priority to set
+	 */
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * @param active
+	 *            the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	/**
+	 * @return the actions
+	 */
+	public List<FloodlightOFAction> getActions() {
+		return actions;
+	}
+
+	/**
+	 * @param actions
+	 *            the actions to set
+	 */
+	public void setActions(List<FloodlightOFAction> actions) {
+		this.actions = actions;
+	}
+
+	/**
+	 * @return the match
+	 */
+	public FloodlightOFMatch getMatch() {
+		return match;
+	}
+
+	/**
+	 * @param match
+	 *            the match to set
+	 */
+	public void setMatch(FloodlightOFMatch match) {
+		this.match = match;
+	}
+
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -48,14 +116,10 @@ public class FloodlightOFFlow extends OFFlow {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result
 				+ ((priority == null) ? 0 : priority.hashCode());
-		result = prime * result
-				+ ((switchId == null) ? 0 : switchId.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -66,7 +130,7 @@ public class FloodlightOFFlow extends OFFlow {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FloodlightOFFlow other = (FloodlightOFFlow) obj;
+		OFFlow other = (OFFlow) obj;
 		if (actions == null) {
 			if (other.actions != null)
 				return false;
@@ -89,11 +153,7 @@ public class FloodlightOFFlow extends OFFlow {
 				return false;
 		} else if (!priority.equals(other.priority))
 			return false;
-		if (switchId == null) {
-			if (other.switchId != null)
-				return false;
-		} else if (!switchId.equals(other.switchId))
-			return false;
 		return true;
 	}
+
 }
