@@ -59,7 +59,7 @@ public class OpenflowSwitchRepository extends ResourceRepository {
 			IProtocolSession session = sessionManager.obtainSessionByProtocol("floodlight", false);
 			ProtocolSessionContext sessionContext = session.getSessionContext();
 
-			if (!(sessionContext.getSessionParameters().containsKey("protocol.floodlight.switchId")))
+			if (!(sessionContext.getSessionParameters().containsKey("protocol.floodlight.switchid")))
 				throw new ResourceException("There is no switch id in resource " + resourceId + " session context.");
 
 		} catch (ResourceException e) {
