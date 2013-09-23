@@ -92,6 +92,21 @@ public class SingleProviderController extends VCPENetworkController {
 	}
 
 	/**
+	 * Update a single provider VCPE Network (admin user)
+	 * 
+	 * @param logical
+	 * @param result
+	 * @param model
+	 * @param locale
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/singleProvider/update")
+	public String updateAdmin(@Valid @ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			BindingResult result, Model model, Locale locale, HttpSession session) {
+		return update(logical, result, model, locale, session);
+	}
+
+	/**
 	 * Update a single provider VCPE Network
 	 * 
 	 * @param logical
@@ -150,7 +165,7 @@ public class SingleProviderController extends VCPENetworkController {
 	}
 
 	/**
-	 * Method for the client user to update the VRRP Ip
+	 * Modify the VRRP IP address (admin user)
 	 * 
 	 * @param singleProviderLogical
 	 * @param model
@@ -158,14 +173,14 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/updateVRRPIp")
-	public String updateVRRPIpClient(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/singleProvider/updateVRRPIp")
+	public String updateVRRPIpAdmin(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
 			Model model, Locale locale) {
 		return updateVRRPIp(logical, model, locale);
 	}
 
 	/**
-	 * Modifiy the VRRP Ip
+	 * Modify the VRRP IP address (NOC user)
 	 * 
 	 * @param singleProviderLogical
 	 * @param model
@@ -174,6 +189,21 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/updateVRRPIp")
+	public String updateVRRPIpNoc(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			Model model, Locale locale) {
+		return updateVRRPIp(logical, model, locale);
+	}
+
+	/**
+	 * Modify the VRRP IP address
+	 * 
+	 * @param singleProviderLogical
+	 * @param model
+	 * @param locale
+	 * @return
+	 * @throws RestServiceException
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/updateVRRPIp")
 	public String updateVRRPIp(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
 			Model model, Locale locale) {
 		LOGGER.debug("update VRRP ip of VCPENetwork: " + logical);
@@ -191,7 +221,21 @@ public class SingleProviderController extends VCPENetworkController {
 	}
 
 	/**
-	 * Change the priority in VRRP
+	 * Change the priority in VRRP (admin user)
+	 * 
+	 * @param singleProviderLogical
+	 * @param model
+	 * @param locale
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/singleProvider/changeVRRPPriority")
+	public String changeVRRPPriorityAdmin(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			Model model, Locale locale) {
+		return changeVRRPPriority(logical, model, locale);
+	}
+
+	/**
+	 * Change the priority in VRRP (NOC user)
 	 * 
 	 * @param singleProviderLogical
 	 * @param model
@@ -199,6 +243,20 @@ public class SingleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/singleProvider/changeVRRPPriority")
+	public String changeVRRPPriorityNoc(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
+			Model model, Locale locale) {
+		return changeVRRPPriority(logical, model, locale);
+	}
+
+	/**
+	 * Change the priority in VRRP
+	 * 
+	 * @param singleProviderLogical
+	 * @param model
+	 * @param locale
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/singleProvider/changeVRRPPriority")
 	public String changeVRRPPriority(@ModelAttribute("logicalInfrastructure") SingleProviderLogical logical,
 			Model model, Locale locale) {
 		LOGGER.debug("change priority VRRP of VCPENetwork: " + logical);
