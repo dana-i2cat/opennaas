@@ -23,10 +23,6 @@
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat</groupId>
-			<artifactId>net.floodlight.controller</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
 		</dependency>
@@ -63,6 +59,9 @@
 			<artifactId>jsonassert</artifactId>
 			<version>${jsonassert.version}</version>
 		</dependency>
+		
+	
+				
  	</dependencies>
 
 	<build>
