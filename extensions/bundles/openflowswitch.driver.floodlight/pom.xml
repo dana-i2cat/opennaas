@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.opennaas</groupId>
+    <artifactId>org.opennaas.extensions.bundles</artifactId>
+    <version>0.23-SNAPSHOT</version>
+  </parent>
+  <artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
+  	<!--  Maven configuration -->
+  	<packaging>bundle</packaging>
+	<name>OpenNaaS :: OpenFlow Switch :: Floodlight driver v0.90 </name>
+	<description>OpenFlow Switch driver using Floodlight v0.90</description>
+	<properties>
+	<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
+			http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->
+		<jackson.version>1.9.12</jackson.version>
+		<jsonassert.version>1.2.0</jsonassert.version>
+	</properties>
+
+ 	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
+		</dependency>
+		<!-- Required in FloodlightProtocolSession to implement a Floodlight client -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-minimal</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
+		</dependency>
+		<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
+			http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<!-- JSON Assert (https://github.com/skyscreamer/JSONassert) -->
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<version>${jsonassert.version}</version>
+		</dependency>
+		
+	
+				
+ 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.opennaas.extensions.openflowswitch.driver.floodlight.Activator</Bundle-Activator>	
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
