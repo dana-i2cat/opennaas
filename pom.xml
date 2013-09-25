@@ -46,9 +46,10 @@
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
-		<cxf.dosgi.version>1.4.0</cxf.dosgi.version>
+		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
+		<floodlight.version>0.90</floodlight.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
 		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
@@ -347,7 +348,21 @@
 				<artifactId>org.opennaas.extensions.quantum</artifactId>
 				<version>${project.version}</version>				
 			</dependency>
-
+	  		<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
+				<version>${project.version}</version>				
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.sdnnetwork</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.gim</artifactId>
@@ -1037,6 +1052,11 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernate-validator}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.i2cat</groupId>
+				<artifactId>net.floodlight.controller</artifactId>
+				<version>${floodlight.version}</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 
@@ -1315,6 +1335,11 @@
 			</snapshots>
 		</repository>
 		<repository>
+			<id>i2cat ext-release-local</id>
+			<name>i2cat maven repository for third party libraries</name>
+			<url>http://maven.i2cat.net:8081/artifactory/ext-release-local</url>
+		</repository>
+		<repository>
 			<id>i2cat libs-snapshot-local</id>
 			<name>maven.i2cat.net-snapshots</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
@@ -1325,7 +1350,7 @@
 				<enabled>true</enabled>
 				<updatePolicy>interval:1</updatePolicy>
 			</snapshots>
-		</repository>
+		</repository>		
 		<repository>
 			<id>springsource-external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Bundle
