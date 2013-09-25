@@ -61,9 +61,9 @@ public class FloodlightMockClient implements IFloodlightStaticFlowPusherClient {
 	}
 
 	@Override
-	public void deleteFlowsForSwitch(@PathParam("switchId") long dpid) {
+	public void deleteFlowsForSwitch(@PathParam("switchId") String dpid) {
 
-		flows.get(String.valueOf(dpid)).clear();
+		flows.get(dpid).clear();
 
 	}
 
