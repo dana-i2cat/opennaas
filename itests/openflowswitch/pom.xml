@@ -27,11 +27,17 @@
 			<artifactId>org.opennaas.extensions.sdnnetwork</artifactId>
 		</dependency>
 
+ 		<dependency>
+			<groupId>org.opennaas</groupId>
+	        <artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
+		</dependency>	 
+  
 		<dependency>
 			<groupId>org.opennaas.itests</groupId>
 			<artifactId>org.opennaas.itests.helpers</artifactId>
 		</dependency>	  
-  
+
+
   
   </dependencies>	  
   
