@@ -5,16 +5,19 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
-import org.apache.cxf.jaxrs.client.ProxyClassLoader;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.FloodlightClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.serializers.json.CustomJSONProvider;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat Foundation)
+ * 
+ */
 public class FloodlightProtocolSession implements IProtocolSession {
 
 	public static final String						FLOODLIGHT_PROTOCOL_TYPE	= "floodlight";
@@ -27,6 +30,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 	private Map<String, IProtocolSessionListener>	protocolListeners			= null;
 	private Map<String, IProtocolMessageFilter>		protocolMessageFilters		= null;
 
+	FloodlightClientFactory							clientFactory;
 	IFloodlightStaticFlowPusherClient				floodlightStaticFlowPusherClient;
 
 	public FloodlightProtocolSession(String sessionID,
@@ -37,6 +41,8 @@ public class FloodlightProtocolSession implements IProtocolSession {
 
 		this.protocolListeners = new HashMap<String, IProtocolSessionListener>();
 		this.protocolMessageFilters = new HashMap<String, IProtocolMessageFilter>();
+
+		this.clientFactory = new FloodlightClientFactory();
 
 		this.status = Status.DISCONNECTED_BY_USER;
 
@@ -74,7 +80,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 			throw new ProtocolException(
 					"Cannot connect because the session is already connected");
 		}
-		this.floodlightStaticFlowPusherClient = instantiateClient(getSessionContext());
+		this.floodlightStaticFlowPusherClient = this.clientFactory.createClient((getSessionContext()));
 		setStatus(Status.CONNECTED);
 	}
 
@@ -86,7 +92,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 							+ status);
 		}
 
-		this.floodlightStaticFlowPusherClient = null;
+		this.floodlightStaticFlowPusherClient = clientFactory.destroyClient();
 		setStatus(Status.DISCONNECTED_BY_USER);
 	}
 
@@ -130,6 +136,14 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		this.floodlightStaticFlowPusherClient = floodlightStaticFlowPusherClient;
 	}
 
+	public FloodlightClientFactory getClientFactory() {
+		return clientFactory;
+	}
+
+	public void setClientFactory(FloodlightClientFactory clientFactory) {
+		this.clientFactory = clientFactory;
+	}
+
 	/**
 	 * Retrieve Client and checks session is connected. This method may be used in Actions to retrieve the client and call its methods afterwards.
 	 * 
@@ -147,23 +161,6 @@ public class FloodlightProtocolSession implements IProtocolSession {
 
 	protected void setStatus(Status status) {
 		this.status = status;
-	}
-
-	private IFloodlightStaticFlowPusherClient instantiateClient(ProtocolSessionContext sessionContext) {
-		String uri = (String) sessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
-		String switchId = (String) sessionContext.getSessionParameters().get(SWITCHID_CONTEXT_PARAM_NAME);
-		// TODO use switch id to instantiate the client
-
-		ProxyClassLoader classLoader = new ProxyClassLoader();
-		classLoader.addLoader(IFloodlightStaticFlowPusherClient.class.getClassLoader());
-		classLoader.addLoader(JAXRSClientFactoryBean.class.getClassLoader());
-
-		JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
-		bean.setAddress(uri);
-		bean.setProvider(new CustomJSONProvider());
-		bean.setResourceClass(IFloodlightStaticFlowPusherClient.class);
-		bean.setClassLoader(classLoader);
-		return (IFloodlightStaticFlowPusherClient) bean.create();
 	}
 
 	private void checkProtocolSessionContext(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
