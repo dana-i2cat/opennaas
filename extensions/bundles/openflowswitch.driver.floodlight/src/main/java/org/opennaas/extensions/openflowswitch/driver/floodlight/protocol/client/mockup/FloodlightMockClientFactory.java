@@ -1,6 +1,8 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup;
 
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.FloodlightClientFactory;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 
 /**
  * 
