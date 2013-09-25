@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.ws.rs.PathParam;
 
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 /**
