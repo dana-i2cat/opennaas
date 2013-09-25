@@ -60,11 +60,7 @@
 			<version>${jsonassert.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.opensaml</artifactId>
-			<version>2.4.1_1</version>
-		</dependency>		
+	
 				
  	</dependencies>
 
