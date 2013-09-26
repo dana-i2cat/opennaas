@@ -1,10 +1,16 @@
 package org.opennaas.extensions.sdnnetwork.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Port {
 
 	private String	deviceId;
