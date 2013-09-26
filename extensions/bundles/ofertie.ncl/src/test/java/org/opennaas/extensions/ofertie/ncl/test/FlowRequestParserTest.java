@@ -13,6 +13,11 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.sdnnetwork.model.Route;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 public class FlowRequestParserTest {
 
 	@Test

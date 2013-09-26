@@ -57,7 +57,8 @@
 						<Export-Package>
 						org.opennaas.extensions.ofertie.ncl.provisioner.api,
 						org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions,
-						org.opennaas.extensions.ofertie.ncl.provisioner.api.model
+						org.opennaas.extensions.ofertie.ncl.provisioner.api.model,
+						org.opennaas.extensions.ofertie.ncl.controller.api
 						</Export-Package>
 						</instructions>
 				</configuration>
