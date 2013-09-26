@@ -24,6 +24,11 @@ import org.opennaas.core.resources.SerializationException;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SDNNetworkModel implements IModel {
 
+	/**
+	 * Auto-generated serial version number
+	 */
+	private static final long				serialVersionUID	= -3223373735906486372L;
+
 	private Collection<SDNNetworkOFFlow>	flows;
 
 	/**
@@ -56,11 +61,6 @@ public class SDNNetworkModel implements IModel {
 	public void setDeviceResourceMap(Map<String, String> deviceResourceMap) {
 		this.deviceResourceMap = deviceResourceMap;
 	}
-
-	/**
-	 * Auto-generated serial version number
-	 */
-	private static final long	serialVersionUID	= -3223373735906486372L;
 
 	@Override
 	public List<String> getChildren() {
