@@ -2,6 +2,14 @@ package org.opennaas.extensions.sdnnetwork.capability.ofprovision;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
@@ -12,6 +20,7 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
  * @author Julio Carlos Barrera
  * 
  */
+@Path("/")
 public interface IOFProvisioningNetworkCapability extends ICapability {
 
 	/**
@@ -22,6 +31,10 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 	 * @return flowId of created SDNNetworkOFFlow
 	 * @throws CapabilityException
 	 */
+	@Path("/allocateOFFlow")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
 	public String allocateOFFlow(SDNNetworkOFFlow flowWithRoute) throws CapabilityException;
 
 	/**
@@ -30,13 +43,18 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 	 * @param flowId
 	 * @throws CapabilityException
 	 */
-	public void deallocateOFFlow(String flowId) throws CapabilityException;
+	@Path("/deallocateOFFlow/{flowId}")
+	@GET
+	public void deallocateOFFlow(@PathParam("flowId") String flowId) throws CapabilityException;
 
 	/**
 	 * 
 	 * @return allocated flows
 	 * @throws CapabilityException
 	 */
+	@Path("/getAllocatedFlows")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
 	public Collection<SDNNetworkOFFlow> getAllocatedFlows() throws CapabilityException;
 
 	/**
@@ -49,7 +67,11 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 	 * @return flowId of created SDNNetworkOFFlow
 	 * @throws CapabilityException
 	 */
-	public String updateAllocatedOFFlow(String flowId, SDNNetworkOFFlow flowWithRoute) throws CapabilityException;
+	@Path("/updateAllocatedOFFlow/{flowId}")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public String updateAllocatedOFFlow(@PathParam("flowId") String flowId, SDNNetworkOFFlow flowWithRoute) throws CapabilityException;
 
 	/**
 	 * Maps a Floodlight device with an OpenNaaS resource
@@ -59,11 +81,16 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 	 * @param resourceID
 	 *            of the OpenNaaS resource
 	 */
-	public void mapDeviceResource(String deviceId, String resourceID) throws CapabilityException;
+	@Path("/mapDeviceResource/{deviceId}/{resourceID}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	public void mapDeviceResource(@PathParam("deviceId") String deviceId, @PathParam("resourceID") String resourceID) throws CapabilityException;
 
 	/**
 	 * Clears the map of Floodlight devices - OpenNaaS resources
 	 */
+	@Path("/mapDeviceResource")
+	@GET
 	public void clearMap();
 
 }
