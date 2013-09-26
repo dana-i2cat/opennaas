@@ -10,23 +10,23 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFou
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Route;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
+import org.opennaas.extensions.sdnnetwork.model.Route;
 
 /**
  * 
- * @author Isart Canyameres Gimenez (i2cat) 
- *
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
  */
 public class NCLProvisioner implements INCLProvisioner {
-	
-	private IQoSPDP qoSPDP;
-	private INetworkSelector networkSelector;
-	private IPathFinder pathFinder;
-	private INCLController nclController;
-	
+
+	private IQoSPDP				qoSPDP;
+	private INetworkSelector	networkSelector;
+	private IPathFinder			pathFinder;
+	private INCLController		nclController;
+
 	/**
 	 * @return the qoSPDP
 	 */
@@ -35,7 +35,8 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	/**
-	 * @param qoSPDP the qoSPDP to set
+	 * @param qoSPDP
+	 *            the qoSPDP to set
 	 */
 	public void setQoSPDP(IQoSPDP qoSPDP) {
 		this.qoSPDP = qoSPDP;
@@ -49,7 +50,8 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	/**
-	 * @param networkSelector the networkSelector to set
+	 * @param networkSelector
+	 *            the networkSelector to set
 	 */
 	public void setNetworkSelector(INetworkSelector networkSelector) {
 		this.networkSelector = networkSelector;
@@ -63,12 +65,13 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	/**
-	 * @param pathFinder the pathFinder to set
+	 * @param pathFinder
+	 *            the pathFinder to set
 	 */
 	public void setPathFinder(IPathFinder pathFinder) {
 		this.pathFinder = pathFinder;
 	}
-	
+
 	public INCLController getNclController() {
 		return nclController;
 	}
@@ -77,31 +80,30 @@ public class NCLProvisioner implements INCLProvisioner {
 		this.nclController = nclController;
 	}
 
-
-	/////////////////////////////
+	// ///////////////////////////
 	// INCLProvisioner Methods //
-	/////////////////////////////
+	// ///////////////////////////
 
 	@Override
 	public String allocateFlow(FlowRequest flowRequest)
 			throws FlowAllocationException, ProvisionerException {
-		
+
 		try {
-			
+
 			String userId = "alice";
-			if (! getQoSPDP().shouldAcceptRequest(userId, flowRequest)) {
+			if (!getQoSPDP().shouldAcceptRequest(userId, flowRequest)) {
 				throw new FlowAllocationRejectedException("Rejected by policy");
 			}
-			
+
 			String netId = getNetworkSelector().findNetworkForRequest(flowRequest);
 			Route route = getPathFinder().findPathForRequest(flowRequest, netId);
 			String flowId = getNclController().allocateFlow(flowRequest, route, netId);
-			
+
 			return flowId;
-		
+
 		} catch (FlowAllocationException fae) {
 			throw fae;
-		} catch(Exception e){
+		} catch (Exception e) {
 			throw new ProvisionerException(e);
 		}
 	}

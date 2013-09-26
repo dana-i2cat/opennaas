@@ -28,6 +28,10 @@
 			<artifactId>easymock</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+  			<artifactId>org.opennaas.extensions.sdnnetwork</artifactId>
+		</dependency>		
  	</dependencies>
 	<build>
 		<plugins>
