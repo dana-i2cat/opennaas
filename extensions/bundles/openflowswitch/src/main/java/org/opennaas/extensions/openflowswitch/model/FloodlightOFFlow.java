@@ -29,6 +29,18 @@ public class FloodlightOFFlow extends OFFlow {
 	 * 
 	 * @param floodlightOFFlow
 	 */
+	public FloodlightOFFlow(FloodlightOFFlow floodlightOFFlow) {
+		super(floodlightOFFlow);
+		this.switchId = floodlightOFFlow.switchId;
+	}
+
+	/**
+	 * Copy constructor based on OFFlow and switchId
+	 * 
+	 * @param ofFlow
+	 *            OFFlow to copy
+	 * @param switchId
+	 */
 	public FloodlightOFFlow(OFFlow ofFlow, String switchId) {
 		super(ofFlow);
 		this.switchId = switchId;

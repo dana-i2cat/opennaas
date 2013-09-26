@@ -34,7 +34,7 @@ public class AllocateFlowAction extends Action {
 		List<NetworkConnection> connections = flow.getRoute().getNetworkConnections();
 		for (int i = 0; i < connections.size(); i++) {
 			NetworkConnection networkConnection = connections.get(i);
-			provisionLink(networkConnection.getSource(), networkConnection.getDestination(), flow, i == connections.size() - 1);
+			provisionLink(networkConnection.getSource(), networkConnection.getDestination(), new SDNNetworkOFFlow(flow), i == connections.size() - 1);
 		}
 		return ActionResponse.okResponse(getActionID());
 	}
@@ -66,11 +66,14 @@ public class AllocateFlowAction extends Action {
 			} catch (ResourceException e) {
 				throw new ActionException("Error getting IOpenflowForwardingCapability from resource with Id: " + resourceId, e);
 			}
+
 			// construct FloodlightOFFlow based on SDNNetworkOFFlow, source Port, destination Port and lastLink
 			FloodlightOFFlow flow = new FloodlightOFFlow(sdnNetworkOFFlow, deviceId);
 
 			flow.getMatch().setIngressPort(source.getPortNumber());
 
+			// Only last link in the flow should apply actions other than forwarding.
+			// The rest of the links should have only forwarding actions.
 			List<FloodlightOFAction> actions = flow.getActions();
 			if (!lastLink) {
 				FloodlightOFAction outputAction = null;
