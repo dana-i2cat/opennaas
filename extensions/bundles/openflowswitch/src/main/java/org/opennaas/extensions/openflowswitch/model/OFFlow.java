@@ -1,5 +1,6 @@
 package org.opennaas.extensions.openflowswitch.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,12 +10,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OFFlow {
-	
+
 	/**
 	 * <string> Name of the flow entry, this is the primary key, it MUST be unique
 	 */
@@ -27,6 +28,31 @@ public class OFFlow {
 
 	protected List<FloodlightOFAction>	actions;
 	protected FloodlightOFMatch			match;
+
+	/**
+	 * Default constructor
+	 */
+	public OFFlow() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param ofFlow
+	 *            OFFlow to copy
+	 */
+	public OFFlow(OFFlow ofFlow) {
+		this.name = ofFlow.name;
+		this.priority = ofFlow.priority;
+		this.active = ofFlow.active;
+
+		this.actions = new ArrayList<FloodlightOFAction>(ofFlow.actions.size());
+		for (FloodlightOFAction floodlightOFAction : ofFlow.actions) {
+			this.actions.add(new FloodlightOFAction(floodlightOFAction));
+		}
+
+		this.match = new FloodlightOFMatch(ofFlow.match);
+	}
 
 	/**
 	 * @return the name
@@ -103,7 +129,9 @@ public class OFFlow {
 		this.match = match;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -119,7 +147,9 @@ public class OFFlow {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

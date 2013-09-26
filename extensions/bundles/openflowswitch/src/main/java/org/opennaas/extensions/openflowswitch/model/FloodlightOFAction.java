@@ -36,6 +36,23 @@ public class FloodlightOFAction {
 	protected String			value;
 
 	/**
+	 * Deafult constructor
+	 */
+	public FloodlightOFAction() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param floodlightOFAction
+	 *            FloodlightOFAction to get a copy
+	 */
+	public FloodlightOFAction(FloodlightOFAction floodlightOFAction) {
+		this.type = floodlightOFAction.type;
+		this.value = floodlightOFAction.value;
+	}
+
+	/**
 	 * @return the type
 	 */
 	public String getType() {

@@ -1,15 +1,39 @@
 package org.opennaas.extensions.sdnnetwork.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class NetworkConnection {
 
 	private String	id;
 	private Port	source;
 	private Port	destination;
+
+	/**
+	 * Default constructor
+	 */
+	public NetworkConnection() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param networkConnection
+	 *            NetworkConnection to copy
+	 */
+	public NetworkConnection(NetworkConnection networkConnection) {
+		this.id = networkConnection.id;
+		this.source = new Port(networkConnection.source);
+		this.destination = new Port(networkConnection.destination);
+	}
 
 	public String getId() {
 		return id;
