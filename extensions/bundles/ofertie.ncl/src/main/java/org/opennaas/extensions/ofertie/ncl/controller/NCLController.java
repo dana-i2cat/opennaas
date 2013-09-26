@@ -6,9 +6,9 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
+import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.sdnnetwork.model.Route;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
@@ -27,7 +27,7 @@ public class NCLController implements INCLController {
 
 		try {
 
-			SDNNetworkOFFlow flowWithRoute = parseFlowRequestIntoSDNFlow(flowRequest, route);
+			SDNNetworkOFFlow flowWithRoute = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
 
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
@@ -52,12 +52,4 @@ public class NCLController implements INCLController {
 		return resource;
 	}
 
-	private SDNNetworkOFFlow parseFlowRequestIntoSDNFlow(FlowRequest flowRequest, Route route) {
-
-		SDNNetworkOFFlow sdnNetworkOFFlow = new SDNNetworkOFFlow();
-
-		FloodlightOFMatch match = new FloodlightOFMatch();
-
-		return sdnNetworkOFFlow;
-	}
 }
