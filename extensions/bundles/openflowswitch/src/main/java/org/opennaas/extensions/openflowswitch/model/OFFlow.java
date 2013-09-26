@@ -1,5 +1,6 @@
 package org.opennaas.extensions.openflowswitch.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,13 +39,19 @@ public class OFFlow {
 	 * Copy constructor
 	 * 
 	 * @param ofFlow
+	 *            OFFlow to copy
 	 */
 	public OFFlow(OFFlow ofFlow) {
-		this.name = ofFlow.getName();
-		this.priority = ofFlow.getPriority();
-		this.active = ofFlow.isActive();
-		this.actions = ofFlow.getActions();
-		this.match = ofFlow.getMatch();
+		this.name = ofFlow.name;
+		this.priority = ofFlow.priority;
+		this.active = ofFlow.active;
+
+		this.actions = new ArrayList<FloodlightOFAction>(ofFlow.actions.size());
+		for (FloodlightOFAction floodlightOFAction : ofFlow.actions) {
+			this.actions.add(new FloodlightOFAction(floodlightOFAction));
+		}
+
+		this.match = new FloodlightOFMatch(ofFlow.match);
 	}
 
 	/**

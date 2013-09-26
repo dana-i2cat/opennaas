@@ -25,6 +25,23 @@ public class SDNNetworkOFFlow extends OFFlow {
 	protected Route	route;
 
 	/**
+	 * Default constructor
+	 */
+	public SDNNetworkOFFlow() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param sdnNetworkOFFlow
+	 *            SDNNetworkOFFlow to copy
+	 */
+	public SDNNetworkOFFlow(SDNNetworkOFFlow sdnNetworkOFFlow) {
+		super(sdnNetworkOFFlow);
+		this.route = new Route(sdnNetworkOFFlow.route);
+	}
+
+	/**
 	 * @return the route
 	 */
 	public Route getRoute() {

@@ -57,6 +57,34 @@ public class FloodlightOFMatch {
 	protected String	dstPort;
 
 	/**
+	 * Default constructor
+	 */
+	public FloodlightOFMatch() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param floodlightOFMatch
+	 *            FloodlightOFMatch to copy
+	 */
+	public FloodlightOFMatch(FloodlightOFMatch floodlightOFMatch) {
+		this.wildcards = floodlightOFMatch.wildcards;
+		this.ingressPort = floodlightOFMatch.ingressPort;
+		this.srcMac = floodlightOFMatch.srcMac;
+		this.dstMac = floodlightOFMatch.dstMac;
+		this.vlanId = floodlightOFMatch.vlanId;
+		this.vlanPriority = floodlightOFMatch.vlanPriority;
+		this.etherType = floodlightOFMatch.etherType;
+		this.tosBits = floodlightOFMatch.tosBits;
+		this.protocol = floodlightOFMatch.protocol;
+		this.srcIp = floodlightOFMatch.srcIp;
+		this.dstIp = floodlightOFMatch.dstIp;
+		this.srcPort = floodlightOFMatch.srcPort;
+		this.dstPort = floodlightOFMatch.dstPort;
+	}
+
+	/**
 	 * @return the wildcards
 	 */
 	public String getWildcards() {

@@ -17,6 +17,24 @@ public class NetworkConnection {
 	private Port	source;
 	private Port	destination;
 
+	/**
+	 * Default constructor
+	 */
+	public NetworkConnection() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param networkConnection
+	 *            NetworkConnection to copy
+	 */
+	public NetworkConnection(NetworkConnection networkConnection) {
+		this.id = networkConnection.id;
+		this.source = new Port(networkConnection.source);
+		this.destination = new Port(networkConnection.destination);
+	}
+
 	public String getId() {
 		return id;
 	}
