@@ -40,7 +40,7 @@ public class FloodlightMsgSerializationTest {
 		flow.setMatch(match);
 
 		FloodlightOFAction action = new FloodlightOFAction();
-		action.setType("output");
+		action.setType(FloodlightOFAction.TYPE_OUTPUT);
 		action.setValue("2");
 
 		flow.setActions(Arrays.asList(action));
