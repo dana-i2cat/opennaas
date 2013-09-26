@@ -4,44 +4,44 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.opennaas.extensions.network.model.topology.Path;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 
 /**
  * A class representing a flow crossing a network, from a single source port to a single destination port.
  * 
- * Ingress port in match attribute is the source port of the flow in the network.
- * The flow MUST include an FloodlightOFAction with type=="output". The value of that FloodlightOFAction is the destination port of the flow in the network.
+ * Ingress port in match attribute is the source port of the flow in the network. The flow MUST include an FloodlightOFAction with type=="output". The
+ * value of that FloodlightOFAction is the destination port of the flow in the network.
  * 
- * Route represents the path of the flow in the network topology.
- * The route MUST be composed of CrossConnect and Link elements. 
- * CrossConnects represent FloodlightOFFlow entries in each switch.
- * Links represent network connections between switches which are traversed by this SDNNetworkOFFlow.
+ * Route represents the path of the flow in the network topology. The route MUST be composed of NetworkConnection elements.
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * @author Julio Carlos Barrera
+ * 
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SDNNetworkOFFlow extends OFFlow {
-	
-	protected Path route;
+
+	protected Route	route;
 
 	/**
 	 * @return the route
 	 */
-	public Path getRoute() {
+	public Route getRoute() {
 		return route;
 	}
 
 	/**
-	 * @param route the route to set
+	 * @param route
+	 *            the route to set
 	 */
-	public void setRoute(Path route) {
+	public void setRoute(Route route) {
 		this.route = route;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -59,7 +59,9 @@ public class SDNNetworkOFFlow extends OFFlow {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
