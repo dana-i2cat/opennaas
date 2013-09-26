@@ -2,7 +2,9 @@ package org.opennaas.extensions.sdnnetwork.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,14 +17,20 @@ import org.opennaas.core.resources.SerializationException;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * @author Julio Carlos Barrera
+ * 
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SDNNetworkModel implements IModel {
-	
-	private Collection<SDNNetworkOFFlow> flows;
-	
+
+	private Collection<SDNNetworkOFFlow>	flows;
+
+	/**
+	 * Maps device ID in SDNNetworkModel and resource ID in OpenNaaS
+	 */
+	private Map<String, String>				deviceResourceMap;
+
 	/**
 	 * @return the flows
 	 */
@@ -31,16 +39,28 @@ public class SDNNetworkModel implements IModel {
 	}
 
 	/**
-	 * @param flows the flows to set
+	 * @param flows
+	 *            the flows to set
 	 */
 	public void setFlows(Collection<SDNNetworkOFFlow> flows) {
 		this.flows = flows;
 	}
 
+	public Map<String, String> getDeviceResourceMap() {
+		if (deviceResourceMap == null) {
+			deviceResourceMap = new HashMap<String, String>();
+		}
+		return deviceResourceMap;
+	}
+
+	public void setDeviceResourceMap(Map<String, String> deviceResourceMap) {
+		this.deviceResourceMap = deviceResourceMap;
+	}
+
 	/**
 	 * Auto-generated serial version number
 	 */
-	private static final long serialVersionUID = -3223373735906486372L;
+	private static final long	serialVersionUID	= -3223373735906486372L;
 
 	@Override
 	public List<String> getChildren() {
