@@ -8,10 +8,17 @@ import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Route;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
+import org.opennaas.extensions.sdnnetwork.model.Route;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
 public class NCLController implements INCLController {
 
 	@Override
@@ -47,9 +54,10 @@ public class NCLController implements INCLController {
 
 	private SDNNetworkOFFlow parseFlowRequestIntoSDNFlow(FlowRequest flowRequest, Route route) {
 
-		// TODO merge with sdnnetwork needed before implementing method.
+		SDNNetworkOFFlow sdnNetworkOFFlow = new SDNNetworkOFFlow();
 
-		return null;
+		FloodlightOFMatch match = new FloodlightOFMatch();
+
+		return sdnNetworkOFFlow;
 	}
-
 }
