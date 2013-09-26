@@ -6,6 +6,7 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
@@ -23,7 +24,9 @@ public class OpenflowSwitchBootstrapper implements IResourceBootstrapper {
 	public void bootstrap(Resource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 
-		resource.setModel(new OpenflowSwitchModel());
+		OpenflowSwitchModel model = prepareNewModel();
+
+		resource.setModel(model);
 
 	}
 
@@ -43,4 +46,12 @@ public class OpenflowSwitchBootstrapper implements IResourceBootstrapper {
 
 	}
 
+	private OpenflowSwitchModel prepareNewModel() {
+
+		OpenflowSwitchModel model = new OpenflowSwitchModel();
+		OFFlowTable flowTable = new OFFlowTable();
+		model.getOfTables().add(flowTable);
+
+		return model;
+	}
 }
