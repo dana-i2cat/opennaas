@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.ws.rs.PathParam;
 
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 /**
@@ -60,9 +61,9 @@ public class FloodlightMockClient implements IFloodlightStaticFlowPusherClient {
 	}
 
 	@Override
-	public void deleteFlowsForSwitch(@PathParam("switchId") long dpid) {
+	public void deleteFlowsForSwitch(@PathParam("switchId") String dpid) {
 
-		flows.get(String.valueOf(dpid)).clear();
+		flows.get(dpid).clear();
 
 	}
 

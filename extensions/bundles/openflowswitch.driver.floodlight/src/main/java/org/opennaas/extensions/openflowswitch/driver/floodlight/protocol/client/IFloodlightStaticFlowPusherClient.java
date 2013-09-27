@@ -45,7 +45,7 @@ public interface IFloodlightStaticFlowPusherClient {
 	 *            The DPID of the switch to delete flows for.
 	 */
 	@Path("clear/{switchId}/json")
-	public void deleteFlowsForSwitch(@PathParam("switchId") long dpid);
+	public void deleteFlowsForSwitch(@PathParam("switchId") String dpid);
 
 	/**
 	 * Deletes all flows.
