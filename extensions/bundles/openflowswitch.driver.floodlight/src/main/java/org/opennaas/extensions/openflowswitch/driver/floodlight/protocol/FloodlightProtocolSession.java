@@ -5,43 +5,47 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.protocol.IProtocolSession.Status;
-
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.FloodlightClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.serializers.json.CustomJSONProvider;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat Foundation)
+ * 
+ */
 public class FloodlightProtocolSession implements IProtocolSession {
 
-	public static final String FLOODLIGHT_PROTOCOL_TYPE = "floodlight";
-	public static final String SWITCHID_CONTEXT_PARAM_NAME = "protocol." + FLOODLIGHT_PROTOCOL_TYPE + ".switchid";
+	public static final String						FLOODLIGHT_PROTOCOL_TYPE	= "floodlight";
+	public static final String						SWITCHID_CONTEXT_PARAM_NAME	= "protocol." + FLOODLIGHT_PROTOCOL_TYPE + ".switchid";
 
-	
-	private ProtocolSessionContext					sessionContext	= null;
-	private String									sessionId				= null;
-	private Status									status					= null;
-	
-	private Map<String, IProtocolSessionListener>	protocolListeners		= null;
-	private Map<String, IProtocolMessageFilter>		protocolMessageFilters	= null;
-	
-	IFloodlightStaticFlowPusherClient floodlightStaticFlowPusherClient;
+	private ProtocolSessionContext					sessionContext				= null;
+	private String									sessionId					= null;
+	private Status									status						= null;
+
+	private Map<String, IProtocolSessionListener>	protocolListeners			= null;
+	private Map<String, IProtocolMessageFilter>		protocolMessageFilters		= null;
+
+	FloodlightClientFactory							clientFactory;
+	IFloodlightStaticFlowPusherClient				floodlightStaticFlowPusherClient;
 
 	public FloodlightProtocolSession(String sessionID,
 			ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 		super();
 		setSessionId(sessionID);
 		setSessionContext(protocolSessionContext);
-		
+
 		this.protocolListeners = new HashMap<String, IProtocolSessionListener>();
 		this.protocolMessageFilters = new HashMap<String, IProtocolMessageFilter>();
-		
+
+		this.clientFactory = new FloodlightClientFactory();
+
 		this.status = Status.DISCONNECTED_BY_USER;
-		
+
 		checkProtocolSessionContext(protocolSessionContext);
 	}
 
@@ -76,7 +80,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 			throw new ProtocolException(
 					"Cannot connect because the session is already connected");
 		}
-		this.floodlightStaticFlowPusherClient = instantiateClient(getSessionContext());
+		this.floodlightStaticFlowPusherClient = this.clientFactory.createClient((getSessionContext()));
 		setStatus(Status.CONNECTED);
 	}
 
@@ -87,8 +91,8 @@ public class FloodlightProtocolSession implements IProtocolSession {
 					"Cannot disconnect because the session is already disconnected. Current state: "
 							+ status);
 		}
-		
-		this.floodlightStaticFlowPusherClient = null;
+
+		this.floodlightStaticFlowPusherClient = clientFactory.destroyClient();
 		setStatus(Status.DISCONNECTED_BY_USER);
 	}
 
@@ -117,10 +121,9 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		protocolListeners.remove(idListener);
 
 	}
-	
+
 	/**
-	 * This method should NOT be used in Actions to retrieve the client.
-	 * In Actions use getFloodlightClientForUse instead.
+	 * This method should NOT be used in Actions to retrieve the client. In Actions use getFloodlightClientForUse instead.
 	 * 
 	 * @return floodlightStaticFlowPusherClient
 	 * @see getFloodlightClientForUse()
@@ -132,13 +135,21 @@ public class FloodlightProtocolSession implements IProtocolSession {
 	public void setFloodlightClient(IFloodlightStaticFlowPusherClient floodlightStaticFlowPusherClient) {
 		this.floodlightStaticFlowPusherClient = floodlightStaticFlowPusherClient;
 	}
-	
+
+	public FloodlightClientFactory getClientFactory() {
+		return clientFactory;
+	}
+
+	public void setClientFactory(FloodlightClientFactory clientFactory) {
+		this.clientFactory = clientFactory;
+	}
+
 	/**
-	 * Retrieve Client and checks session is connected.
-	 * This method may be used in Actions to retrieve the client and call its methods afterwards.
-	 *  
+	 * Retrieve Client and checks session is connected. This method may be used in Actions to retrieve the client and call its methods afterwards.
+	 * 
 	 * @return initialized client.
-	 * @throws ProtocolException if this ProtocolSession is not connected.
+	 * @throws ProtocolException
+	 *             if this ProtocolSession is not connected.
 	 */
 	public IFloodlightStaticFlowPusherClient getFloodlightClientForUse() throws ProtocolException {
 		if (!status.equals(Status.CONNECTED)) {
@@ -148,44 +159,30 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		return getFloodlightClient();
 	}
 
-
-	protected void setStatus(Status status){
+	protected void setStatus(Status status) {
 		this.status = status;
 	}
-	
-	private IFloodlightStaticFlowPusherClient instantiateClient(ProtocolSessionContext sessionContext) {
-		String uri = (String) sessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
-		String switchId = (String) sessionContext.getSessionParameters().get(SWITCHID_CONTEXT_PARAM_NAME);
-		//TODO use switch id to instantiate the client
-		
-		
-		JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
-		bean.setAddress(uri);
-		bean.setProvider(new CustomJSONProvider());
-		bean.setResourceClass(IFloodlightStaticFlowPusherClient.class);
-		return (IFloodlightStaticFlowPusherClient) bean.create();
-	}
-	
+
 	private void checkProtocolSessionContext(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
-		
+
 		String protocol = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
-		if ((protocol == null) || (protocol.length() == 0) || ! protocol.equals(FLOODLIGHT_PROTOCOL_TYPE)) {
+		if ((protocol == null) || (protocol.length() == 0) || !protocol.equals(FLOODLIGHT_PROTOCOL_TYPE)) {
 			throw new ProtocolException(
 					"Protocols FLOODLIGHT: Invalid protocol type: " + protocol + ". Protocol type must be " + FLOODLIGHT_PROTOCOL_TYPE);
 		}
-	
+
 		String uri = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
 		if ((uri == null) || (uri.length() == 0)) {
 			throw new ProtocolException(
 					"Protocols FLOODLIGHT: Couldn't get " + ProtocolSessionContext.PROTOCOL_URI + " from protocolSessionContext.");
 		}
-		
+
 		String switchId = (String) sessionContext.getSessionParameters().get(SWITCHID_CONTEXT_PARAM_NAME);
 		if ((uri == null) || (uri.length() == 0)) {
 			throw new ProtocolException(
 					"Protocols FLOODLIGHT: Couldn't get " + SWITCHID_CONTEXT_PARAM_NAME + " from protocolSessionContext.");
 		}
-		
+
 		// check given uri is a valid URI
 		try {
 			new URI(uri);
