@@ -1,15 +1,15 @@
 <resourceDescriptor>
     <!--  Basic capability information. It specifies device model and version. IT IS OBLIGATORY -->
     <capabilityDescriptors>
-        <capabilityProperty name="actionset.name" value="floodlight" />
-        <capabilityProperty name="actionset.version" value="0.90" />
-        <information><type>offorwarding</type></information>
+        <capabilityProperty name="actionset.name" value="internal" />
+        <capabilityProperty name="actionset.version" value="1.0.0" />
+        <information><type>ofprovisionnet</type></information>
     </capabilityDescriptors>
 
     <!-- Resource information. It specify type and name-->
     <information>
-        <type>openflowswitch</type>
-        <name>ofswitch</name>
+        <type>sdnnetwork</type>
+        <name>sdn1</name>
     </information>
     <properties/>
 </resourceDescriptor>
