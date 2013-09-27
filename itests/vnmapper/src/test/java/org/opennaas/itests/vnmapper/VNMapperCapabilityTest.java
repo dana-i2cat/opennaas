@@ -32,6 +32,7 @@ import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.SerializationException;
@@ -58,6 +59,8 @@ import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -91,6 +94,13 @@ public class VNMapperCapabilityTest {
 
 	IResource						networkResource;
 	IResource						vnmapperResource;
+	
+	/**
+	 * Make sure blueprint for org.opennaas.extensions.vnmapper bundle has finished its initialization
+	 */
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.vnmapper)")
+	private BlueprintContainer	vnMapperBlueprintContainer;
 
 	@Configuration
 	public static Option[] configuration() {
