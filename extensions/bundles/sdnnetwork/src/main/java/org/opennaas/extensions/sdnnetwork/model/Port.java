@@ -34,7 +34,7 @@ public class Port {
 	}
 
 	public String getId() {
-		return deviceId + portNumber;
+		return deviceId + "-" + portNumber;
 	}
 
 	public String getDeviceId() {
