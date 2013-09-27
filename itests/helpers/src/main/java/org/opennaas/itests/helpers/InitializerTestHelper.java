@@ -2,6 +2,7 @@ package org.opennaas.itests.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
@@ -103,4 +104,21 @@ public class InitializerTestHelper {
 		return protocolSessionManager;
 	}
 
+	public static IProtocolSessionManager addSessionContextWithSessionParams(IProtocolManager protocolManager, String resourceId, String resourceURI,
+			String protocol, Map<String, Object> sessionParameters) throws ProtocolException {
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI, resourceURI);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				protocol);
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
+
+		protocolSessionContext.getSessionParameters().putAll(sessionParameters);
+
+		protocolSessionManager.registerContext(protocolSessionContext);
+
+		return protocolSessionManager;
+	}
 }
