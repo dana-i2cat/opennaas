@@ -1,16 +1,44 @@
 package org.opennaas.extensions.sdnnetwork.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Route {
 
 	private String					id;
 	private List<NetworkConnection>	networkConnections;
+
+	/**
+	 * Default constructor
+	 */
+	public Route() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param route
+	 *            Route to copy
+	 */
+	public Route(Route route) {
+		this.id = route.id;
+
+		this.networkConnections = new ArrayList<NetworkConnection>(route.networkConnections.size());
+		for (NetworkConnection networkConnection : route.networkConnections) {
+			this.networkConnections.add(new NetworkConnection(networkConnection));
+		}
+	}
 
 	public String getId() {
 		return id;
