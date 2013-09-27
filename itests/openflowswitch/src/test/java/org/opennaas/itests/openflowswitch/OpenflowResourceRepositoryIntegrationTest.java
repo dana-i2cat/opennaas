@@ -27,12 +27,21 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class OpenflowResourceRepositoryIntegrationTest {
 
 	private final static Log	log	= LogFactory.getLog(OpenflowResourceRepositoryIntegrationTest.class);
+
+	/**
+	 * Make sure blueprint for org.opennaas.extensions.opernflowswitch bundle has finished its initialization
+	 */
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)")
+	private BlueprintContainer	blueprintContainer;
 
 	@Inject
 	private IResourceManager	resourceManager;
