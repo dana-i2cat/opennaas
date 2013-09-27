@@ -8,11 +8,13 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
-public class SdnNetworkRepository  extends ResourceRepository {
-	
-	Log	log	= LogFactory.getLog(SdnNetworkRepository.class);
+public class SdnNetworkRepository extends ResourceRepository {
+
+	public static final String	SDN_NETWORK_RESOURCE_TYPE	= "sdnnetwork";
+
+	Log							log							= LogFactory.getLog(SdnNetworkRepository.class);
 
 	public SdnNetworkRepository(String resourceType) {
 		super(resourceType);

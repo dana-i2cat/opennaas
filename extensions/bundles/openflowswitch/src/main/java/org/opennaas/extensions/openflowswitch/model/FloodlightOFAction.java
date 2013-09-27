@@ -6,9 +6,51 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FloodlightOFAction {
 
-	protected String	type;
+	public static final String	TYPE_OUTPUT				= "output";
+	public static final String	TYPE_ALL				= "all";
+	public static final String	TYPE_CONTROLLER			= "controller";
+	public static final String	TYPE_LOCAL				= "local";
+	public static final String	TYPE_INGRESS_PORT		= "ingress-port";
+	public static final String	TYPE_NORMAL				= "normal";
+	public static final String	TYPE_FLOOD				= "flood";
+	public static final String	TYPE_ENQUEUE			= "enqueue";
+	public static final String	TYPE_STRIP_VLAN			= "strip-vlan";
+	public static final String	TYPE_SET_VLAN_ID		= "set-vlan-id";
+	public static final String	TYPE_SET_VLAN_PRIORITY	= "set-vlan-priority";
+	public static final String	TYPE_SET_SRC_MAC		= "set-src-mac";
+	public static final String	TYPE_SET_DST_MAC		= "set-dst-mac";
+	public static final String	TYPE_TOS_BITS			= "set-tos-bits";
+	public static final String	TYPE_SET_SRC_IP			= "set-src-ip";
+	public static final String	TYPE_SET_DST_IP			= "set-dst-ip";
+	public static final String	TYPE_SET_SRC_PORT		= "set-src-port";
+	public static final String	TYPE_SET_DST_PORT		= "set-dst-port";
 
-	protected String	value;
+	/**
+	 * FloodlightOFAction type
+	 * 
+	 * @see <a href="http://docs.projectfloodlight.org/display/floodlightcontroller/Static+Flow+Pusher+API+%28New%29">Floodlight documentation: Static
+	 *      Flow Pusher API (New)</a>
+	 */
+	protected String			type;
+
+	protected String			value;
+
+	/**
+	 * Deafult constructor
+	 */
+	public FloodlightOFAction() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param floodlightOFAction
+	 *            FloodlightOFAction to get a copy
+	 */
+	public FloodlightOFAction(FloodlightOFAction floodlightOFAction) {
+		this.type = floodlightOFAction.type;
+		this.value = floodlightOFAction.value;
+	}
 
 	/**
 	 * @return the type

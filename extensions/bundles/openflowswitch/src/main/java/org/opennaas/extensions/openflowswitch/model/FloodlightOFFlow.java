@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -16,8 +16,36 @@ public class FloodlightOFFlow extends OFFlow {
 	/**
 	 * <switch ID> ID of the switch (data path) that this rule should be added to xx:xx:xx:xx:xx:xx:xx:xx
 	 */
-	protected String					switchId;
-	
+	protected String	switchId;
+
+	/**
+	 * Default constructor
+	 */
+	public FloodlightOFFlow() {
+	}
+
+	/**
+	 * Copy constructor
+	 * 
+	 * @param floodlightOFFlow
+	 */
+	public FloodlightOFFlow(FloodlightOFFlow floodlightOFFlow) {
+		super(floodlightOFFlow);
+		this.switchId = floodlightOFFlow.switchId;
+	}
+
+	/**
+	 * Copy constructor based on OFFlow and switchId
+	 * 
+	 * @param ofFlow
+	 *            OFFlow to copy
+	 * @param switchId
+	 */
+	public FloodlightOFFlow(OFFlow ofFlow, String switchId) {
+		super(ofFlow);
+		this.switchId = switchId;
+	}
+
 	/**
 	 * @return the switchId
 	 */

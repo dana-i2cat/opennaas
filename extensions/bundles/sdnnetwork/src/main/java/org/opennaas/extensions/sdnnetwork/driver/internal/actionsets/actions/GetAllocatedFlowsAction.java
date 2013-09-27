@@ -9,6 +9,7 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 public class GetAllocatedFlowsAction extends Action {
