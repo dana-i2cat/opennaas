@@ -4,8 +4,10 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,10 +28,12 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.ops4j.pax.exam.Option;
@@ -74,6 +78,23 @@ public class NCLProvisionerTest {
 	private static final String	SDN_RESOURCE_NAME				= "sdnNetwork";
 	private static final String	SDNNETWORK_RESOURCE_TYPE		= "sdnnetwork";
 
+	/* FLOW REQUEST PARAMS */
+	private static final String	SRC_IP_ADDRESS					= "192.168.2.10";
+	private static final String	DST_IP_ADDRESS					= "192.168.2.11";
+	private static final int	SRC_PORT						= 0;
+	private static final int	DST_PORT						= 1;
+	private static final int	TOS								= 0;
+	private static final int	SRC_VLAN_ID						= 22;
+	private static final int	DST_VLAN_ID						= 22;
+	private static final int	QOS_MIN_DELAY					= 5;
+	private static final int	QOS_MAX_DELAY					= 10;
+	private static final int	QOS_MIN_JITTER					= 2;
+	private static final int	QOS_MAX_JITTER					= 4;
+	private static final int	QOS_MIN_BANDWIDTH				= 100;
+	private static final int	QOS_MAX_BANDWIDTH				= 1000;
+	private static final int	QOS_MIN_PACKET_LOSS				= 0;
+	private static final int	QOS_MAX_PACKET_LOSS				= 1;
+
 	@Inject
 	private IProtocolManager	protocolManager;
 
@@ -88,15 +109,47 @@ public class NCLProvisionerTest {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-ofertie-ncl", "opennaas-openflow-switch", "opennaas-openflow-switch-driver-floodlight"),
 				includeTestHelper(),
+				openDebugSocket(),
+				systemTimeout(1000 * 60 * 10),
 				noConsole(),
 				keepRuntimeFolder());
 	}
 
 	@Test
-	public void test() throws ResourceException, ProtocolException {
+	public void test() throws Exception {
 		createSwitches();
 		createSDNNetwork();
 
+		FlowRequest flowRequest = generateSampleFlowRequest();
+		String flowId = provisioner.allocateFlow(flowRequest);
+
+	}
+
+	private FlowRequest generateSampleFlowRequest() {
+
+		FlowRequest myRequest = new FlowRequest();
+		QoSRequirements myQoSRequirements = new QoSRequirements();
+
+		myRequest.setSourceIPAddress(SRC_IP_ADDRESS);
+		myRequest.setDestinationIPAddress(DST_IP_ADDRESS);
+		myRequest.setSourcePort(SRC_PORT);
+		myRequest.setDestinationPort(DST_PORT);
+		myRequest.setTos(TOS);
+		myRequest.setSourceVlanId(SRC_VLAN_ID);
+		myRequest.setDestinationVlanId(DST_VLAN_ID);
+
+		myQoSRequirements.setMinDelay(QOS_MIN_DELAY);
+		myQoSRequirements.setMaxDelay(QOS_MAX_DELAY);
+		myQoSRequirements.setMinJitter(QOS_MIN_JITTER);
+		myQoSRequirements.setMaxJitter(QOS_MAX_JITTER);
+		myQoSRequirements.setMinBandwidth(QOS_MIN_BANDWIDTH);
+		myQoSRequirements.setMaxBandwidth(QOS_MAX_BANDWIDTH);
+		myQoSRequirements.setMinPacketLoss(QOS_MIN_PACKET_LOSS);
+		myQoSRequirements.setMaxPacketLoss(QOS_MAX_PACKET_LOSS);
+
+		myRequest.setQoSRequirements(myQoSRequirements);
+
+		return myRequest;
 	}
 
 	private void createSwitches() throws ResourceException, ProtocolException {
