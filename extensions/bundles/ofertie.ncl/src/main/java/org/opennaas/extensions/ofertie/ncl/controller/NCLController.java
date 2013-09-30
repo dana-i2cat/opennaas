@@ -28,6 +28,13 @@ public class NCLController implements INCLController {
 		try {
 
 			SDNNetworkOFFlow flowWithRoute = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
+			flowWithRoute.setActive(true);
+			flowWithRoute.setPriority("32768");
+			// FIXME requesting a flow that won't filter by IP, by now
+			flowWithRoute.getMatch().setSrcIp(null);
+			flowWithRoute.getMatch().setDstIp(null);
+			// FIXME requesting a flow that won't filter by ToS, by now
+			flowWithRoute.getMatch().setTosBits(null);
 
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource

@@ -6,6 +6,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightConstants;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
@@ -32,6 +33,9 @@ public class CreateOFForwardingAction extends FloodlightAction {
 			setSwitchIdToFlow();
 
 			FloodlightOFFlow flow = (FloodlightOFFlow) params;
+
+			flow = updateFlowWithControllerRequiredValues(flow);
+
 			IFloodlightStaticFlowPusherClient client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
 			client.addFlow(flow);
 
@@ -47,6 +51,21 @@ public class CreateOFForwardingAction extends FloodlightAction {
 		return response;
 	}
 
+	private FloodlightOFFlow updateFlowWithControllerRequiredValues(FloodlightOFFlow flow) {
+		if (flow.getPriority() == null || flow.getPriority().isEmpty()) {
+			flow.setPriority(FloodlightConstants.DEFAULT_PRIORITY);
+		}
+
+		if (flow.getMatch().getSrcIp() != null || flow.getMatch().getDstIp() != null || flow.getMatch().getTosBits() != null) {
+			// To avoid following message in floodlight controller:
+			// Warning! Pushing a static flow entry that matches IP fields without matching for IP payload (ether-type 2048)
+			// will cause the switch to wildcard higher level fields.
+			flow.getMatch().setEtherType("2048");
+		}
+
+		return flow;
+	}
+
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 
@@ -55,15 +74,15 @@ public class CreateOFForwardingAction extends FloodlightAction {
 
 		FloodlightOFFlow flowRule = (FloodlightOFFlow) params;
 
-		if (flowRule.getName().isEmpty())
+		if (flowRule.getName() == null || flowRule.getName().isEmpty())
 			throw new ActionException("No flow id given to params in action " + this.actionID);
 
 		for (FloodlightOFAction action : flowRule.getActions()) {
 
-			if (action.getType().isEmpty())
+			if (action.getType() == null || action.getType().isEmpty())
 				throw new ActionException("No OFAction type given to params in action " + this.actionID);
 
-			if (action.getValue().isEmpty())
+			if (action.getValue() == null || action.getValue().isEmpty())
 				throw new ActionException("No OFAction value given to params in action " + this.actionID);
 
 			if (!(action.getType().equals(FORWARDING_ACTION)))

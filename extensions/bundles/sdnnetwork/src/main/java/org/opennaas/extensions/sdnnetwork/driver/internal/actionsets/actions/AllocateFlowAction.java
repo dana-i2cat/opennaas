@@ -36,23 +36,7 @@ public class AllocateFlowAction extends Action {
 		for (int i = 0; i < connections.size(); i++) {
 			NetworkConnection networkConnection = connections.get(i);
 			try {
-
-				SDNNetworkOFFlow copy = new SDNNetworkOFFlow(flow);
-				// FIXME following changes should be introduced in the NCLcontroller, not here!
-				copy.setActive(true);
-				copy.setPriority("32768");
-				copy.getMatch().setSrcIp(null);
-				copy.getMatch().setDstIp(null);
-
-				// FIXME Following logic should go in floodlight controller driver implementation.
-				if (copy.getMatch().getSrcIp() != null || copy.getMatch().getDstIp() != null) {
-					// To avoid following message in floodlight controller:
-					// Warning! Pushing a static flow entry that matches IP fields without matching for IP payload (ether-type 2048)
-					// will cause the switch to wildcard higher level fields.
-					copy.getMatch().setEtherType("2048");
-				}
-
-				provisionLink(networkConnection.getSource(), networkConnection.getDestination(), copy,
+				provisionLink(networkConnection.getSource(), networkConnection.getDestination(), new SDNNetworkOFFlow(flow),
 						i == connections.size() - 1);
 			} catch (Exception e) {
 				throw new ActionException("Error provisioning link : ", e);

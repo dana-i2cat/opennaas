@@ -52,8 +52,18 @@ public abstract class FlowRequestParser {
 		match.setSrcPort(String.valueOf(flowRequest.getSourcePort()));
 		match.setDstPort(String.valueOf(flowRequest.getDestinationPort()));
 		match.setTosBits(String.valueOf(flowRequest.getTos()));
-		match.setSrcIp(flowRequest.getSourceIPAddress());
-		match.setDstIp(flowRequest.getDestinationIPAddress());
+		if (flowRequest.getSourceIPAddress() == null || flowRequest.getSourceIPAddress().isEmpty()) {
+			// remove empty strings, use null instead
+			match.setSrcIp(null);
+		} else {
+			match.setSrcIp(flowRequest.getSourceIPAddress());
+		}
+		if (flowRequest.getDestinationIPAddress() == null || flowRequest.getDestinationIPAddress().isEmpty()) {
+			// remove empty strings, use null instead
+			match.setDstIp(null);
+		} else {
+			match.setDstIp(flowRequest.getDestinationIPAddress());
+		}
 
 		String ingressPort = route.getNetworkConnections().get(0).getSource().getId();
 		match.setIngressPort(ingressPort);
