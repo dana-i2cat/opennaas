@@ -45,6 +45,48 @@ public class AllocateFlowAction extends Action {
 		return ActionResponse.okResponse(getActionID());
 	}
 
+	/**
+	 * private void provisionLink(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink) throws ActionException { if
+	 * (source.getDeviceId() != destination.getDeviceId()) { // link between different devices, assume it exists or it is provisioned } else { // link
+	 * inside same device, use device internal capability to provision it // get OpenNaaS resource Id from the map in the model String deviceId =
+	 * source.getDeviceId(); String resourceId = ((SDNNetworkModel) getModelToUpdate()).getDeviceResourceMap().get(deviceId); if (resourceId == null)
+	 * { throw new ActionException("No resource Id found from device Id: " + deviceId); }
+	 * 
+	 * // get switch resource from Resource Manager using resource Id IResource resource = null; try { resource =
+	 * Activator.getResourceManagerService().getResourceById(resourceId); } catch (Exception e) { throw new
+	 * ActionException("Error getting switch resource from Resource Manager", e); }
+	 * 
+	 * // get IOpenflowForwardingCapability from the obtained resource IOpenflowForwardingCapability capability = null; try { capability =
+	 * (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class); } catch (ResourceException e) { throw
+	 * new ActionException("Error getting IOpenflowForwardingCapability from resource with Id: " + resourceId, e); }
+	 * 
+	 * // construct FloodlightOFFlow based on SDNNetworkOFFlow, source Port, destination Port and lastLink FloodlightOFFlow flow = new
+	 * FloodlightOFFlow(sdnNetworkOFFlow, deviceId);
+	 * 
+	 * flow.getMatch().setIngressPort(source.getPortNumber());
+	 * 
+	 * // Only last link in the flow should apply actions other than forwarding. // The rest of the links should have only forwarding actions.
+	 * List<FloodlightOFAction> actions = flow.getActions(); if (!lastLink) { FloodlightOFAction outputAction = null; for (FloodlightOFAction
+	 * floodlightOFAction : actions) { if (floodlightOFAction.getType() == FloodlightOFAction.TYPE_OUTPUT) { outputAction = floodlightOFAction; } } if
+	 * (outputAction == null) { throw new ActionException("No output action found in FloodlightOFFlow."); } // clear list and add output action
+	 * actions.clear(); actions.add(outputAction); }
+	 * 
+	 * // invoke IOpenflowForwardingCapability try { capability.createOpenflowForwardingRule(flow); } catch (CapabilityException e) { throw new
+	 * ActionException("Error executing IOpenflowForwardingCapability from resource with Id: " + resourceId, e); } } }
+	 **/
+
+	/**
+	 * The commented code is the right way to do it, but since there's no way yo set the mapping between the switchID and the deviceID and we have a
+	 * demo tomorrow, we will take the switch resource from the ResourceManager. Every switch contains in its model its floodlight switchId, so we can
+	 * use it as a work around.
+	 * 
+	 * @param source
+	 * @param destination
+	 * @param sdnNetworkOFFlow
+	 * @param lastLink
+	 * @throws ResourceException
+	 * @throws ActivatorException
+	 */
 	private void provisionLink(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink) throws ResourceException,
 			ActivatorException {
 		if (source.getDeviceId() != destination.getDeviceId()) {
