@@ -312,7 +312,12 @@
 	</feature>
 	
 	<feature name="opennaas-ofertie-ncl" version="${project.version}">
+		<feature version="${project.version}">opennaas-sdn-network</feature>
+		
+		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${project.version}</bundle>
+		
+		
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">
