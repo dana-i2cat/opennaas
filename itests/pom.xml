@@ -22,6 +22,8 @@
 		<module>vcpe</module>
 		<module>vnmapper</module>
 		<module>security</module>
+		<module>openflowswitch</module>
+		<module>ofertie.ncl</module>
 	</modules>
 
 	<dependencies>

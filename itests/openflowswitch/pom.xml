@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.opennaas</groupId>
+    <artifactId>org.opennaas.itests</artifactId>
+    <version>0.23-SNAPSHOT</version>
+  </parent>
+  <groupId>org.opennaas.itests.openflowswitch</groupId>
+  <artifactId>org.opennaas.itests.openflowswitch</artifactId>
+  <name>OpenNaaS :: iTests :: Openflow Switch</name>
+  <packaging>jar</packaging>  
+  
+  <dependencies>
+	
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>  
+		
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.sdnnetwork</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas.itests</groupId>
+			<artifactId>org.opennaas.itests.helpers</artifactId>
+		</dependency>
+
+  </dependencies>
+  
+</project>
