@@ -36,7 +36,7 @@ public class FlowRequestParserTest {
 		Assert.assertEquals("Destination port should match", String.valueOf(flowRequest.getDestinationPort()), match.getDstPort());
 		Assert.assertEquals("ToS should match", String.valueOf(flowRequest.getTos()), match.getTosBits());
 
-		String ingressPort = route.getNetworkConnections().get(0).getSource().getPortNumber();
+		String ingressPort = route.getNetworkConnections().get(0).getSource().getId();
 		Assert.assertEquals("Ingress port should be source port of first network connection.", ingressPort, match.getIngressPort());
 
 		Assert.assertEquals("Route should match by the provided one.", route, sdnNetOFFlow.getRoute());
@@ -46,6 +46,6 @@ public class FlowRequestParserTest {
 
 		FloodlightOFAction action = actions.get(0);
 		Assert.assertEquals("output", action.getType());
-		Assert.assertEquals("Output value should be \"1\".", "device021", action.getValue());
+		Assert.assertEquals("Output value should be \"device02-1\".", "device02-1", action.getValue());
 	}
 }

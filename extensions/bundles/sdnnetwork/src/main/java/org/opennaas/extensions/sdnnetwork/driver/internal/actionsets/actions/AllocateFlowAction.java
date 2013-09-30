@@ -2,12 +2,14 @@ package org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.actions;
 
 import java.util.List;
 
+import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
@@ -16,7 +18,6 @@ import org.opennaas.extensions.sdnnetwork.Activator;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.Port;
 import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
@@ -34,69 +35,65 @@ public class AllocateFlowAction extends Action {
 		List<NetworkConnection> connections = flow.getRoute().getNetworkConnections();
 		for (int i = 0; i < connections.size(); i++) {
 			NetworkConnection networkConnection = connections.get(i);
-			provisionLink(networkConnection.getSource(), networkConnection.getDestination(), new SDNNetworkOFFlow(flow), i == connections.size() - 1);
+			try {
+				provisionLink(networkConnection.getSource(), networkConnection.getDestination(), new SDNNetworkOFFlow(flow),
+						i == connections.size() - 1);
+			} catch (Exception e) {
+				throw new ActionException("Error provisioning link : ", e);
+			}
 		}
 		return ActionResponse.okResponse(getActionID());
 	}
 
-	private void provisionLink(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink) throws ActionException {
+	private void provisionLink(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink) throws ResourceException,
+			ActivatorException {
 		if (source.getDeviceId() != destination.getDeviceId()) {
 			/* link between different devices, assume it exists or it is provisioned */
 		} else {
 			/* link inside same device, use device internal capability to provision it */
-			// get OpenNaaS resource Id from the map in the model
-			String deviceId = source.getDeviceId();
-			String resourceId = ((SDNNetworkModel) getModelToUpdate()).getDeviceResourceMap().get(deviceId);
-			if (resourceId == null) {
-				throw new ActionException("No resource Id found from device Id: " + deviceId);
-			}
+			String resourceName = source.getDeviceId();
+			IResource resource = getResourceByName(resourceName);
 
-			// get switch resource from Resource Manager using resource Id
-			IResource resource = null;
-			try {
-				resource = Activator.getResourceManagerService().getResourceById(resourceId);
-			} catch (Exception e) {
-				throw new ActionException("Error getting switch resource from Resource Manager", e);
-			}
+			IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource
+					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-			// get IOpenflowForwardingCapability from the obtained resource
-			IOpenflowForwardingCapability capability = null;
-			try {
-				capability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-			} catch (ResourceException e) {
-				throw new ActionException("Error getting IOpenflowForwardingCapability from resource with Id: " + resourceId, e);
-			}
+			FloodlightOFFlow flow = generateOFFlow(sdnNetworkOFFlow, source, destination, lastLink);
 
-			// construct FloodlightOFFlow based on SDNNetworkOFFlow, source Port, destination Port and lastLink
-			FloodlightOFFlow flow = new FloodlightOFFlow(sdnNetworkOFFlow, deviceId);
+			forwardingCapability.createOpenflowForwardingRule(flow);
 
-			flow.getMatch().setIngressPort(source.getPortNumber());
-
-			// Only last link in the flow should apply actions other than forwarding.
-			// The rest of the links should have only forwarding actions.
-			List<FloodlightOFAction> actions = flow.getActions();
-			if (!lastLink) {
-				FloodlightOFAction outputAction = null;
-				for (FloodlightOFAction floodlightOFAction : actions) {
-					if (floodlightOFAction.getType() == FloodlightOFAction.TYPE_OUTPUT) {
-						outputAction = floodlightOFAction;
-					}
-				}
-				if (outputAction == null) {
-					throw new ActionException("No output action found in FloodlightOFFlow.");
-				}
-				// clear list and add output action
-				actions.clear();
-				actions.add(outputAction);
-			}
-
-			// invoke IOpenflowForwardingCapability
-			try {
-				capability.createOpenflowForwardingRule(flow);
-			} catch (CapabilityException e) {
-				throw new ActionException("Error executing IOpenflowForwardingCapability from resource with Id: " + resourceId, e);
-			}
 		}
+	}
+
+	private FloodlightOFFlow generateOFFlow(SDNNetworkOFFlow sdnNetworkOFFlow, Port source, Port destination, boolean lastLink)
+			throws ActionException {
+
+		FloodlightOFFlow flow = new FloodlightOFFlow(sdnNetworkOFFlow, null);
+		flow.getMatch().setIngressPort(source.getPortNumber());
+
+		List<FloodlightOFAction> actions = flow.getActions();
+		if (!lastLink) {
+			FloodlightOFAction outputAction = null;
+			for (FloodlightOFAction floodlightOFAction : actions) {
+				if (floodlightOFAction.getType() == FloodlightOFAction.TYPE_OUTPUT) {
+					outputAction = floodlightOFAction;
+				}
+			}
+			if (outputAction == null) {
+				throw new ActionException("No output action found in FloodlightOFFlow.");
+			}
+			// clear list and add output action
+			actions.clear();
+			actions.add(outputAction);
+		}
+
+		return flow;
+	}
+
+	private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
+		IResourceManager resourceManager = Activator.getResourceManagerService();
+		IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
+
+		return resourceManager.getResource(resourceId);
 	}
 
 	@Override
