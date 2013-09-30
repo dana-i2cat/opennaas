@@ -9,6 +9,11 @@ import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.Port;
 import org.opennaas.extensions.sdnnetwork.model.Route;
 
+/**
+ * 
+ * @author Adrian Rosello (i2CAT)
+ * 
+ */
 public abstract class FlowRequestHelper {
 
 	public static FlowRequest generateSampleFlowRequest() {

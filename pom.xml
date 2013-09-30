@@ -377,6 +377,12 @@
 				<artifactId>org.opennaas.extensions.powernet</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+	 			<artifactId>org.opennaas.extensions.ofertie.ncl</artifactId>
+				<version>${project.version}</version>	 			
+			</dependency>			
+			
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>

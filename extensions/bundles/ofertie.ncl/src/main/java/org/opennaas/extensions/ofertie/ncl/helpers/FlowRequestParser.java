@@ -55,7 +55,7 @@ public abstract class FlowRequestParser {
 		match.setSrcIp(flowRequest.getSourceIPAddress());
 		match.setDstIp(flowRequest.getDestinationIPAddress());
 
-		String ingressPort = route.getNetworkConnections().get(0).getSource().getPortNumber();
+		String ingressPort = route.getNetworkConnections().get(0).getSource().getId();
 		match.setIngressPort(ingressPort);
 
 		return match;
