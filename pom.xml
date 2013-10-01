@@ -72,7 +72,7 @@
 		<karaf.version>2.2.2-fuse-04-06</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
-		<netconf4j.version>0.0.3</netconf4j.version>
+		<netconf4j.version>0.0.4</netconf4j.version>
 		<nmr.version>1.5.1-fuse-03-06</nmr.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
