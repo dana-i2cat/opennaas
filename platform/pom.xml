@@ -167,7 +167,7 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.sampleresource</artifactId>
-		</dependency>				
+		</dependency>
 		<dependency>
 			<groupId>org.opennaas.itests</groupId>
 			<artifactId>org.opennaas.itests.helpers</artifactId>
