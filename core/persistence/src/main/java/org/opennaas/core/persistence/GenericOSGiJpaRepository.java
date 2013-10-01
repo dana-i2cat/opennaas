@@ -1,7 +1,6 @@
 package org.opennaas.core.persistence;
 
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.persistence.EntityManager;

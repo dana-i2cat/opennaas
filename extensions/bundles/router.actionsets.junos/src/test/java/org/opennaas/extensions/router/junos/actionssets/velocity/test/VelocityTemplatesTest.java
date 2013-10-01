@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.commandsets.velocity.VelocityEngine;
-import org.opennaas.extensions.router.model.GRETunnelConfiguration;
-import org.opennaas.extensions.router.model.GRETunnelEndpoint;
-import org.opennaas.extensions.router.model.GRETunnelService;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +11,11 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
+import org.opennaas.extensions.router.junos.commandsets.velocity.VelocityEngine;
+import org.opennaas.extensions.router.model.GRETunnelConfiguration;
+import org.opennaas.extensions.router.model.GRETunnelEndpoint;
+import org.opennaas.extensions.router.model.GRETunnelService;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class VelocityTemplatesTest {
 	// This class if for testing the velocity templates

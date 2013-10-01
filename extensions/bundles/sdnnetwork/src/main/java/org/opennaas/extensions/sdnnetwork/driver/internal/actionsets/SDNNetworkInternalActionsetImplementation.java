@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
-
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkActionSet;
 import org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.actions.AllocateFlowAction;
 import org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.actions.GetAllocatedFlowsAction;

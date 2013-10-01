@@ -1,13 +1,13 @@
 package org.opennaas.extensions.roadm.wonesys.protocols.listeners;
 
-import java.util.concurrent.CountDownLatch;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
-import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 import org.osgi.service.event.Event;
 
 /**

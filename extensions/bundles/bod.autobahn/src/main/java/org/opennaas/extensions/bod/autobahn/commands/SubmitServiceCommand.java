@@ -1,6 +1,9 @@
 package org.opennaas.extensions.bod.autobahn.commands;
 
-import net.geant.autobahn.useraccesspoint.ReservationRequest;
+import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static net.geant.autobahn.useraccesspoint.State.ACTIVE;
+import static net.geant.autobahn.useraccesspoint.State.SCHEDULED;
 import net.geant.autobahn.useraccesspoint.ReservationResponse;
 import net.geant.autobahn.useraccesspoint.ServiceRequest;
 import net.geant.autobahn.useraccesspoint.ServiceResponse;
@@ -10,10 +13,6 @@ import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.command.Response;
-
-import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Iterables.getOnlyElement;
-import static net.geant.autobahn.useraccesspoint.State.*;
 
 public class SubmitServiceCommand extends AutobahnCommand
 {

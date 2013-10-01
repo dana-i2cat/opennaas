@@ -33,7 +33,6 @@ import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import org.opennaas.core.resources.helpers.Config;
 
 public class TestConfig {

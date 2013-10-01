@@ -9,7 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -21,9 +20,7 @@ import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;

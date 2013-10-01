@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 
 public class ProteusOpticalSwitch extends org.opennaas.extensions.router.model.System {
 

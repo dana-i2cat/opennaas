@@ -14,12 +14,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator;
-import org.opennaas.core.events.EventFilter;
-import org.opennaas.core.resources.ActivatorException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 

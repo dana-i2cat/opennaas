@@ -3,7 +3,6 @@ package org.opennaas.extensions.roadm.wonesys.protocols.alarms;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.osgi.service.event.Event;
 

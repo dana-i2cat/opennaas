@@ -1,5 +1,11 @@
 package org.opennaas.extensions.macbridge.ios.resource.actionssets.actions.vlanawarebridge;
 
+import org.opennaas.core.resources.action.Action;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.capability.macbridge.model.MACBridge;
 import org.opennaas.extensions.capability.macbridge.vlanawarebridge.VLANAwareBridgeActionSet;
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.ConfigureTerminalCommand;
@@ -8,13 +14,6 @@ import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.Enabl
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.ExitCommand;
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.IOSCommand;
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.VLANCommand;
-
-import org.opennaas.core.resources.action.Action;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
 
 /**
  * @author Eduard Grasa

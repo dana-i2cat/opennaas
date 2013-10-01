@@ -1,5 +1,9 @@
 package org.opennaas.extensions.bod.autobahn.commands;
 
+import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static net.geant.autobahn.useraccesspoint.State.CANCELLED;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import net.geant.autobahn.administration.ReservationType;
@@ -9,23 +13,15 @@ import net.geant.autobahn.useraccesspoint.ReservationRequest;
 import net.geant.autobahn.useraccesspoint.ReservationResponse;
 import net.geant.autobahn.useraccesspoint.Resiliency;
 import net.geant.autobahn.useraccesspoint.ServiceRequest;
-import net.geant.autobahn.useraccesspoint.UserAccessPoint;
-import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 import net.geant.autobahn.useraccesspoint.ServiceResponse;
 import net.geant.autobahn.useraccesspoint.State;
-
-import static net.geant.autobahn.useraccesspoint.State.*;
+import net.geant.autobahn.useraccesspoint.UserAccessPoint;
+import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 
 import org.joda.time.DateTime;
-
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.command.Response;
-
-import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
-
-import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Iterables.getOnlyElement;
 
 public class CancelServiceCommand extends AutobahnCommand
 {

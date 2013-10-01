@@ -1,6 +1,9 @@
 package org.opennaas.extensions.bod.autobahn.protocol;
 
-import com.google.common.base.Strings;
+import static com.google.common.base.Preconditions.checkState;
+import static org.opennaas.core.resources.protocol.IProtocolSession.Status.CONNECTED;
+import static org.opennaas.core.resources.protocol.IProtocolSession.Status.DISCONNECTED_BY_USER;
+import static org.opennaas.core.resources.protocol.ProtocolSessionContext.PROTOCOL_URI;
 
 import java.util.Map;
 
@@ -9,21 +12,18 @@ import javax.xml.ws.Service;
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPBinding;
 
-import net.geant.autobahn.useraccesspoint.UserAccessPoint;
 import net.geant.autobahn.administration.Administration;
+import net.geant.autobahn.useraccesspoint.UserAccessPoint;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import static com.google.common.base.Preconditions.*;
-import static org.opennaas.core.resources.protocol.ProtocolSessionContext.*;
-import static org.opennaas.core.resources.protocol.IProtocolSession.Status.*;
+import com.google.common.base.Strings;
 
 public class AutobahnProtocolSession implements IProtocolSession
 {

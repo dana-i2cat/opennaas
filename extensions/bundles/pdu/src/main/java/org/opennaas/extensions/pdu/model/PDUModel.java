@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.SerializationException;
-
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 
 /**

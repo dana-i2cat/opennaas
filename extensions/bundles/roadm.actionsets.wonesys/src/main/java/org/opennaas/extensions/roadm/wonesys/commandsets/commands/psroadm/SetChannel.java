@@ -2,11 +2,10 @@ package org.opennaas.extensions.roadm.wonesys.commandsets.commands.psroadm;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;

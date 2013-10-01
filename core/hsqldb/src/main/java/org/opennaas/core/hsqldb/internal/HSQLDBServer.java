@@ -6,15 +6,13 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-//import org.hsqldb.Server;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hsqldb.ServerConfiguration;
 import org.hsqldb.ServerConstants;
 import org.hsqldb.persist.HsqlProperties;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class HSQLDBServer implements InitializingBean, DisposableBean {
 

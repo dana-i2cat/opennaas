@@ -4,9 +4,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
-import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
+import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
 
 @Command(scope = "gim", name = "showConsumer", description = "Shows a power consumer")
 public class ShowConsumerCommand extends GenericKarafCommand {

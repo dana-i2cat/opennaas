@@ -1,14 +1,15 @@
 package org.opennaas.extensions.bod.autobahn.commands;
 
+import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.getFirst;
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.List;
+
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.queue.QueueConstants;
-
-import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Iterables.getFirst;
-import static com.google.common.collect.Lists.newArrayList;
 
 public class Transaction
 {

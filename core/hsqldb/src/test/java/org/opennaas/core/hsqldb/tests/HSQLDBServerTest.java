@@ -3,12 +3,10 @@ package org.opennaas.core.hsqldb.tests;
 import java.util.Properties;
 
 import org.apache.commons.dbcp.BasicDataSource;
-//import org.junit.Before;
-import org.junit.Test;
-
-import org.opennaas.core.hsqldb.internal.HSQLDBServer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
+import org.opennaas.core.hsqldb.internal.HSQLDBServer;
 
 public class HSQLDBServerTest {
 	protected static Log		log	= LogFactory.getLog(HSQLDBServerTest.class);

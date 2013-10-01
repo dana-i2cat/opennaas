@@ -1,14 +1,11 @@
 package org.opennaas.extensions.network.capability.basic.tests;
 
-import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapabilityFactory;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
-
-import junit.framework.TestCase;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 
 public class TopologyManagerImplTest extends TestCase {
 

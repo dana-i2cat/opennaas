@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.command.Response;
 
 public class MockActionFactory {

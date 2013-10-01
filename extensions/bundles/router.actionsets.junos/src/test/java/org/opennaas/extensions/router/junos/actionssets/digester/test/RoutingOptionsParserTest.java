@@ -6,6 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import junit.framework.Assert;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
 import org.opennaas.extensions.router.junos.commandsets.digester.RoutingOptionsParser;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
@@ -17,10 +21,6 @@ import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.RouteCalculationService;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.System;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
 
 public class RoutingOptionsParserTest {
 

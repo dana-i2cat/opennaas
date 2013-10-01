@@ -8,7 +8,6 @@ import org.apache.karaf.shell.console.Completer;
 import org.apache.karaf.shell.console.completer.StringsCompleter;
 import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
 
 public class ResourceNameCompleter implements Completer {
 

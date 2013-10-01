@@ -1,15 +1,14 @@
 package org.opennaas.extensions.bod.autobahn.commands;
 
+import static java.util.Arrays.asList;
+
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.opennaas.core.resources.command.Command;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
-
-import static java.util.Arrays.asList;
 
 public abstract class AutobahnCommand
 		extends Command

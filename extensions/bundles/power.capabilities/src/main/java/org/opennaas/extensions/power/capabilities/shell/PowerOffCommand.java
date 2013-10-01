@@ -4,7 +4,6 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.pdu.capability.IPDUPowerManagementIDsCapability;
 import org.opennaas.extensions.power.capabilities.IPowerManagementCapability;
 
 @Command(scope = "power", name = "powerOff", description = "Turns power off for specified consuemr")

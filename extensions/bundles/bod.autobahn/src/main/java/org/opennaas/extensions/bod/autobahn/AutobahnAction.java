@@ -7,7 +7,6 @@ import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-
 import org.opennaas.extensions.bod.autobahn.protocol.AutobahnProtocolSession;
 
 public abstract class AutobahnAction extends Action

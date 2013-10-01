@@ -11,7 +11,6 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.protocol.IProtocolSession.Status;
 import org.opennaas.extensions.router.opener.client.OpenerQuaggaOpenAPI;
 
 public class OpenerProtocolSession implements IProtocolSession {

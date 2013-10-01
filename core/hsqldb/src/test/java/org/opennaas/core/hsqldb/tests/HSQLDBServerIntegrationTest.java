@@ -1,10 +1,9 @@
 package org.opennaas.core.hsqldb.tests;
 
 import org.junit.Test;
+import org.opennaas.core.hsqldb.internal.HSQLDBServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
-
-import org.opennaas.core.hsqldb.internal.HSQLDBServer;
 
 @SuppressWarnings("deprecation")
 public class HSQLDBServerIntegrationTest extends

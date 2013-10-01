@@ -2,18 +2,16 @@ package org.opennaas.extensions.roadm.wonesys.protocols.listeners;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.alarms.SessionAlarm;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmFactory;
 import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
-import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.alarms.SessionAlarm;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 

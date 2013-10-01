@@ -1,10 +1,7 @@
 package org.opennaas.extensions.gim.controller.snmp;
 
 import java.io.IOException;
-import java.util.Date;
 
-import org.opennaas.extensions.gim.model.load.MeasuredLoad;
-import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
 import org.snmp4j.ScopedPDU;
@@ -17,7 +14,6 @@ import org.snmp4j.mp.MPv3;
 import org.snmp4j.mp.SnmpConstants;
 import org.snmp4j.security.AuthMD5;
 import org.snmp4j.security.SecurityLevel;
-import org.snmp4j.security.SecurityModel;
 import org.snmp4j.security.SecurityModels;
 import org.snmp4j.security.SecurityProtocols;
 import org.snmp4j.security.USM;
@@ -27,7 +23,6 @@ import org.snmp4j.smi.GenericAddress;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
-import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 

@@ -14,10 +14,10 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.util.Collection;
 
-import org.junit.Assert;
-import org.junit.Test;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Test;
 
 import uk.co.westhawk.snmp.pdu.OneTrapPduv2;
 import uk.co.westhawk.snmp.stack.AsnInteger;
