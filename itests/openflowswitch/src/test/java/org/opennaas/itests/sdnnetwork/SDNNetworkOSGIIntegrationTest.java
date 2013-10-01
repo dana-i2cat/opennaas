@@ -38,13 +38,12 @@ import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
-
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class SDNNetworkOSGIIntegrationTest {
-	
+
 	private final static Log	log	= LogFactory.getLog(SDNNetworkOSGIIntegrationTest.class);
 
 	/**
@@ -53,23 +52,23 @@ public class SDNNetworkOSGIIntegrationTest {
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sdnnetwork)")
 	private BlueprintContainer	sdnNetworkBlueprintContainer;
-	
+
 	@Inject
 	private IResourceManager	resourceManager;
 
 	@Inject
 	@Filter("(type=sdnnetwork)")
 	private IResourceRepository	sdnNetworkRepository;
-	
+
 	@Inject
 	@Filter("(type=ofprovisionnet)")
 	private ICapabilityFactory	capabilityFactory;
-	
+
 	@Inject
-	@Filter("(&(actionset.name=internal)(actionset.capability=ofprovisionnet)")
-	private IActionSet	actionset;
-	
-	private ResourceDescriptor resourceDescriptor;
+	@Filter("(&(actionset.name=internal)(actionset.capability=ofprovisionnet))")
+	private IActionSet			actionset;
+
+	private ResourceDescriptor	resourceDescriptor;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -84,33 +83,34 @@ public class SDNNetworkOSGIIntegrationTest {
 	public void initializeDescriptor() {
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("sdnnetwork");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor(SDNNetworkInternalActionsetImplementation.ACTIONSET_ID, "1.0.0", OFProvisioningNetworkCapability.CAPABILITY_TYPE, null));
+		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor(SDNNetworkInternalActionsetImplementation.ACTIONSET_ID, "1.0.0",
+				OFProvisioningNetworkCapability.CAPABILITY_TYPE, null));
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 		this.resourceDescriptor = resourceDescriptor;
 	}
-	
+
 	@Before
 	@After
 	public void clearRM() throws ResourceException {
 		resourceManager.destroyAllResources();
 	}
-	
+
 	@Test
 	public void resourceWorkflowTest() throws Exception {
 
 		IResource resource = resourceManager.createResource(resourceDescriptor);
 		Assert.assertEquals(State.INITIALIZED, resource.getState());
 		Assert.assertFalse(resourceManager.listResources().isEmpty());
-		
+
 		resourceManager.startResource(resource.getResourceIdentifier());
 		Assert.assertEquals(State.ACTIVE, resource.getState());
-		
-		//retrieve capability, will throw exception if unable
+
+		// retrieve capability, will throw exception if unable
 		resource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-		
+
 		resourceManager.stopResource(resource.getResourceIdentifier());
 		Assert.assertEquals(State.INITIALIZED, resource.getState());
-		
+
 		resourceManager.removeResource(resource.getResourceIdentifier());
 		Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}

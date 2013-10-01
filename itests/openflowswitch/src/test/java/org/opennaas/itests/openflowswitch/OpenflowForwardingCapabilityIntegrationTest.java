@@ -36,8 +36,8 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
@@ -73,15 +73,21 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 	private IResource			ofSwitchResource;
 
+	/**
+	 * Make sure blueprint for specified bundle has finished its initialization
+	 */
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)")
+	private BlueprintContainer	switchBlueprintContainer;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch.driver.floodlight)")
+	private BlueprintContainer	floodlightDriverBundleContainer;
+
 	@Inject
 	private IResourceManager	resourceManager;
 
 	@Inject
 	private IProtocolManager	protocolManager;
-
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch.driver.floodlight)")
-	private BlueprintContainer	floodlightDriverBundleContainer;
 
 	@Configuration
 	public static Option[] configuration() {
