@@ -4,7 +4,6 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
@@ -41,6 +40,8 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -54,6 +55,13 @@ public class NCLProvisionerTest {
 	private IResource			switch8;
 
 	private IResource			sdnNetResource;
+
+	private static final String	SWITCH_3_NAME					= "s3";
+	private static final String	SWITCH_4_NAME					= "s4";
+	private static final String	SWITCH_5_NAME					= "s5";
+	private static final String	SWITCH_6_NAME					= "s6";
+	private static final String	SWITCH_7_NAME					= "s7";
+	private static final String	SWITCH_8_NAME					= "s8";
 
 	private static final String	SWITCH_3_ID						= "00:00:00:00:00:00:00:03";
 	private static final String	SWITCH_4_ID						= "00:00:00:00:00:00:00:04";
@@ -73,7 +81,7 @@ public class NCLProvisionerTest {
 	private static final String	RESOURCE_URI					= "mock://user:pass@host.net:2212/mocksubsystem";
 
 	private static final String	SDN_ACTIONSET_NAME				= "internal";
-	private static final String	SDN_ACTIONSET_VERSION			= "1.0";
+	private static final String	SDN_ACTIONSET_VERSION			= "1.0.0";
 
 	private static final String	SDN_RESOURCE_NAME				= "sdnNetwork";
 	private static final String	SDNNETWORK_RESOURCE_TYPE		= "sdnnetwork";
@@ -95,6 +103,22 @@ public class NCLProvisionerTest {
 	private static final int	QOS_MIN_PACKET_LOSS				= 0;
 	private static final int	QOS_MAX_PACKET_LOSS				= 1;
 
+	/**
+	 * Make sure blueprint for specified bundle has finished its initialization
+	 */
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)")
+	private BlueprintContainer	switchBlueprintContainer;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch.driver.floodlight)")
+	private BlueprintContainer	floodlightDriverBundleContainer;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sdnnetwork)")
+	private BlueprintContainer	sdnNetworkBlueprintContainer;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofertie.ncl)")
+	private BlueprintContainer	nclBlueprintContainer;
+
 	@Inject
 	private IProtocolManager	protocolManager;
 
@@ -106,10 +130,11 @@ public class NCLProvisionerTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-ofertie-ncl", "opennaas-openflow-switch", "opennaas-openflow-switch-driver-floodlight"),
+		return options(
+				opennaasDistributionConfiguration(),
+				includeFeatures("opennaas-openflow-switch", "opennaas-openflow-switch-driver-floodlight", "opennaas-sdn-network",
+						"opennaas-ofertie-ncl"),
 				includeTestHelper(),
-				openDebugSocket(),
 				systemTimeout(1000 * 60 * 10),
 				noConsole(),
 				keepRuntimeFolder());
@@ -153,12 +178,12 @@ public class NCLProvisionerTest {
 	}
 
 	private void createSwitches() throws ResourceException, ProtocolException {
-		createSwitch(switch3, SWITCH_3_ID);
-		createSwitch(switch4, SWITCH_4_ID);
-		createSwitch(switch5, SWITCH_5_ID);
-		createSwitch(switch6, SWITCH_6_ID);
-		createSwitch(switch7, SWITCH_7_ID);
-		createSwitch(switch8, SWITCH_8_ID);
+		createSwitch(switch3, SWITCH_3_ID, SWITCH_3_NAME);
+		createSwitch(switch4, SWITCH_4_ID, SWITCH_4_NAME);
+		createSwitch(switch5, SWITCH_5_ID, SWITCH_5_NAME);
+		createSwitch(switch6, SWITCH_6_ID, SWITCH_6_NAME);
+		createSwitch(switch7, SWITCH_7_ID, SWITCH_7_NAME);
+		createSwitch(switch8, SWITCH_8_ID, SWITCH_8_NAME);
 	}
 
 	private void createSDNNetwork() throws ResourceException {
@@ -178,7 +203,7 @@ public class NCLProvisionerTest {
 
 	}
 
-	private void createSwitch(IResource switchResource, String switchId) throws ResourceException, ProtocolException {
+	private void createSwitch(IResource switchResource, String switchId, String switchName) throws ResourceException, ProtocolException {
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
 		CapabilityDescriptor ofForwardingDescriptor = ResourceHelper.newCapabilityDescriptor(FLOODLIGHT_ACTIONSET_NAME,
@@ -189,7 +214,7 @@ public class NCLProvisionerTest {
 
 		// OFSwitch Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, OFSWITCH_RESOURCE_TYPE,
-				RESOURCE_URI, switchId);
+				RESOURCE_URI, switchName);
 
 		switchResource = resourceManager.createResource(resourceDescriptor);
 
