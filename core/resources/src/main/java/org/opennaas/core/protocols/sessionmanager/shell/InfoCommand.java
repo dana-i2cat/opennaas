@@ -12,9 +12,9 @@ import org.apache.felix.gogo.commands.Command;
 
 /**
  * List the device ids registere do the protocol manager
- *
+ * 
  * @author Pau Minoves
- *
+ * 
  */
 @Command(scope = "protocols", name = "info", description = "Provide extended information on a protocol session.")
 public class InfoCommand extends GenericKarafCommand {

@@ -216,7 +216,7 @@ public class SetChannel extends WonesysCommand {
 	/**
 	 * Create connections from ALL ports owned by srcCard to port portNum. If portNum is an internal port, then connections to ALL ports connected to
 	 * it are created.
-	 *
+	 * 
 	 * @param srcCard
 	 * @param dwdmChannel
 	 * @param portNum
@@ -308,7 +308,7 @@ public class SetChannel extends WonesysCommand {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param srcPort
 	 * @return true if given port has connections and all of them are connected to ports in the same System than given port, or false otherwise.
 	 */

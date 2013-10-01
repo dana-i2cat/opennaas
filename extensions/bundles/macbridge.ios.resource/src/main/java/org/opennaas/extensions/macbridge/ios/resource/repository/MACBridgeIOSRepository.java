@@ -29,7 +29,7 @@ public class MACBridgeIOSRepository extends ResourceRepository {
 			if (sessionManager.getRegisteredContexts().isEmpty()) {
 				String name = resource.getResourceDescriptor().getInformation().getName();
 				String type = resource.getResourceDescriptor().getInformation().getType();
-				String resourceId = type+":"+name;
+				String resourceId = type + ":" + name;
 				throw new ResourceException(
 						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
 			}
@@ -60,6 +60,5 @@ public class MACBridgeIOSRepository extends ResourceRepository {
 		IProtocolManager protocolManager = Activator.getProtocolManagerService();
 		return protocolManager.getProtocolSessionManager(resourceId);
 	}
-
 
 }

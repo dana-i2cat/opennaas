@@ -8,7 +8,6 @@ import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapabi
 import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
 
-
 @Command(scope = "gim", name = "showDelivery", description = "Shows a power delivery")
 public class ShowDeliveryCommand extends GenericKarafCommand {
 
@@ -36,7 +35,7 @@ public class ShowDeliveryCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
+
 	private void printDelivery(IPowerDelivery delivery) {
 		printSymbol(delivery.toString());
 	}

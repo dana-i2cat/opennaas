@@ -37,13 +37,13 @@ import com.wonesys.emsModule.hwd.HwdOp;
 import com.wonesys.emsModule.hwd.IMessageArrivalListener;
 
 /**
- *
+ * 
  * @author mbeltran
  * @author Isart Canyameres @ Fundació i2cat
  */
 public class EMSmoduleTest implements IMessageArrivalListener {
 
-	Log						log			= LogFactory.getLog(EMSmoduleTest.class);
+	Log							log			= LogFactory.getLog(EMSmoduleTest.class);
 
 	private static final int	ALARM_PORT	= 32162;
 
@@ -98,7 +98,7 @@ public class EMSmoduleTest implements IMessageArrivalListener {
 
 	/**
 	 * Checks to see if a specific port is available.
-	 *
+	 * 
 	 * @param port
 	 *            the port to check for availability
 	 */
@@ -144,7 +144,7 @@ public class EMSmoduleTest implements IMessageArrivalListener {
 
 	/**
 	 * Simulates an alarm has been received.
-	 *
+	 * 
 	 * @throws IOException
 	 */
 	private void sendSNMPTrap() throws IOException {

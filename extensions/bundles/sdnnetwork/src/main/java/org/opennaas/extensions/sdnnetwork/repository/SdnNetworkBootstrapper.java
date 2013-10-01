@@ -11,12 +11,12 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
 public class SdnNetworkBootstrapper implements IResourceBootstrapper {
-	
-	Log log	= LogFactory.getLog(SdnNetworkBootstrapper.class);
-	
+
+	Log				log	= LogFactory.getLog(SdnNetworkBootstrapper.class);
+
 	private IModel	oldModel;
 
 	@Override
@@ -33,8 +33,8 @@ public class SdnNetworkBootstrapper implements IResourceBootstrapper {
 	}
 
 	/**
-	 * Since we're not going to read information from real switches, we would not implement the reset model method,
-	 * so no one can delete the modelinformation. Model will be reset only during bootstrap.
+	 * Since we're not going to read information from real switches, we would not implement the reset model method, so no one can delete the
+	 * modelinformation. Model will be reset only during bootstrap.
 	 * 
 	 */
 	@Override

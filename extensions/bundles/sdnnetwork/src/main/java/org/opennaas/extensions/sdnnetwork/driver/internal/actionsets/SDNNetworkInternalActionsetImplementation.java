@@ -10,14 +10,13 @@ import org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.actions.All
 import org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.actions.GetAllocatedFlowsAction;
 
 /**
- * An ActionSet Implementation for SDNNetwork capabilities that delegates to 
- * OFSwitches in the network.
+ * An ActionSet Implementation for SDNNetwork capabilities that delegates to OFSwitches in the network.
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
 public class SDNNetworkInternalActionsetImplementation extends ActionSet {
-	
+
 	public static final String	ACTIONSET_ID	= "internal";
 
 	public SDNNetworkInternalActionsetImplementation() {

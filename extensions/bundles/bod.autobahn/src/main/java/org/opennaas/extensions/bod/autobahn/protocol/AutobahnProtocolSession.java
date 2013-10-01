@@ -27,32 +27,32 @@ import static org.opennaas.core.resources.protocol.IProtocolSession.Status.*;
 
 public class AutobahnProtocolSession implements IProtocolSession
 {
-	private final static QName USER_ACCESS_POINT_SERVICE =
-		new QName("http://useraccesspoint.autobahn.geant.net/",
-				  "UserAccessPointService");
-	private final static QName USER_ACCESS_POINT_PORT =
-		new QName("http://useraccesspoint.autobahn.geant.net/",
-				  "UserAccessPointPort");
-	private final static QName ADMINISTRATION_SERVICE =
-		new QName("http://administration.autobahn.geant.net/",
-				  "AdministrationService");
-	private final static QName ADMINISTRATION_PORT =
-		new QName("http://administration.autobahn.geant.net/",
-				  "AdministrationPort");
+	private final static QName		USER_ACCESS_POINT_SERVICE	=
+																		new QName("http://useraccesspoint.autobahn.geant.net/",
+																				"UserAccessPointService");
+	private final static QName		USER_ACCESS_POINT_PORT		=
+																		new QName("http://useraccesspoint.autobahn.geant.net/",
+																				"UserAccessPointPort");
+	private final static QName		ADMINISTRATION_SERVICE		=
+																		new QName("http://administration.autobahn.geant.net/",
+																				"AdministrationService");
+	private final static QName		ADMINISTRATION_PORT			=
+																		new QName("http://administration.autobahn.geant.net/",
+																				"AdministrationPort");
 
-	private final Log log = LogFactory.getLog(AutobahnProtocolSession.class);
+	private final Log				log							= LogFactory.getLog(AutobahnProtocolSession.class);
 
-	private ProtocolSessionContext protocolSessionContext;
-	private String sessionID;
+	private ProtocolSessionContext	protocolSessionContext;
+	private String					sessionID;
 
-	private UserAccessPoint uapService;
-	private Administration administrationService;
+	private UserAccessPoint			uapService;
+	private Administration			administrationService;
 
-	private Status status;
+	private Status					status;
 
 	public AutobahnProtocolSession(ProtocolSessionContext protocolSessionContext,
-								   String sessionID)
-		throws ProtocolException
+			String sessionID)
+			throws ProtocolException
 	{
 		this.protocolSessionContext = protocolSessionContext;
 		this.sessionID = sessionID;
@@ -75,9 +75,9 @@ public class AutobahnProtocolSession implements IProtocolSession
 	public void connect() throws ProtocolException
 	{
 		uapService =
-			createUserAccessPointService(getServiceUri() + "uap2");
+				createUserAccessPointService(getServiceUri() + "uap2");
 		administrationService =
-			createAdministrationService(getServiceUri() + "administration2");
+				createAdministrationService(getServiceUri() + "administration2");
 		status = CONNECTED;
 	}
 
@@ -109,16 +109,16 @@ public class AutobahnProtocolSession implements IProtocolSession
 
 	@Override
 	public void
-		registerProtocolSessionListener(IProtocolSessionListener protocolSessionListener,
-										IProtocolMessageFilter protocolMessageFilter,
-										String idListener)
+			registerProtocolSessionListener(IProtocolSessionListener protocolSessionListener,
+					IProtocolMessageFilter protocolMessageFilter,
+					String idListener)
 	{
 	}
 
 	@Override
 	public void
-		unregisterProtocolSessionListener(IProtocolSessionListener protocolSessionListener,
-										  String idListener)
+			unregisterProtocolSessionListener(IProtocolSessionListener protocolSessionListener,
+					String idListener)
 	{
 	}
 
@@ -147,10 +147,10 @@ public class AutobahnProtocolSession implements IProtocolSession
 	}
 
 	private String getServiceUri()
-		throws ProtocolException
+			throws ProtocolException
 	{
-		Map<String,Object> parameters =
-			protocolSessionContext.getSessionParameters();
+		Map<String, Object> parameters =
+				protocolSessionContext.getSessionParameters();
 		String uri = (String) parameters.get(PROTOCOL_URI);
 		if (Strings.isNullOrEmpty(uri)) {
 			throw new ProtocolException(PROTOCOL_URI + " is missing in protocol session context.");
@@ -162,14 +162,14 @@ public class AutobahnProtocolSession implements IProtocolSession
 	}
 
 	private <T> T createSoapService(String uri,
-									QName serviceName,
-									QName portName,
-									Class<T> clazz)
-		throws ProtocolException
+			QName serviceName,
+			QName portName,
+			Class<T> clazz)
+			throws ProtocolException
 	{
-		/* The JAXWS SPI uses the context class loader to locate an
-		 * implementation. We therefore make sure the context class
-		 * loader is set to our class loader.
+		/*
+		 * The JAXWS SPI uses the context class loader to locate an implementation. We therefore make sure the context class loader is set to our
+		 * class loader.
 		 */
 		Thread thread = Thread.currentThread();
 		ClassLoader oldLoader = thread.getContextClassLoader();
@@ -180,27 +180,27 @@ public class AutobahnProtocolSession implements IProtocolSession
 			return service.getPort(portName, clazz);
 		} catch (WebServiceException e) {
 			throw new ProtocolException("Failed to create Autobahn session: " +
-										e.getMessage(), e);
+					e.getMessage(), e);
 		} finally {
 			thread.setContextClassLoader(oldLoader);
 		}
 	}
 
 	private UserAccessPoint createUserAccessPointService(String uri)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		return createSoapService(uri,
-								 USER_ACCESS_POINT_SERVICE,
-								 USER_ACCESS_POINT_PORT,
-								 UserAccessPoint.class);
+				USER_ACCESS_POINT_SERVICE,
+				USER_ACCESS_POINT_PORT,
+				UserAccessPoint.class);
 	}
 
 	private Administration createAdministrationService(String uri)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		return createSoapService(uri,
-								 ADMINISTRATION_SERVICE,
-								 ADMINISTRATION_PORT,
-								 Administration.class);
+				ADMINISTRATION_SERVICE,
+				ADMINISTRATION_PORT,
+				Administration.class);
 	}
 }

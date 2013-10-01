@@ -37,12 +37,12 @@ import org.xml.sax.SAXException;
  */
 @Command(scope = "resource", name = "create", description = "Create one or more resources from a given descriptor")
 public class CreateResourceCommand extends GenericKarafCommand {
-	private final String NAME_SCHEMA = "/descriptor.xsd";
+	private final String	NAME_SCHEMA	= "/descriptor.xsd";
 
 	@Argument(index = 0, name = "paths or urls", description = "A space delimited list of file paths or urls to resource descriptors ", required = true, multiValued = true)
-	private List<String> paths;
+	private List<String>	paths;
 	@Option(name = "--profile", aliases = { "-p" }, description = "Allows explicit declaration of profile to be used")
-	String profileName;
+	String					profileName;
 
 	@Override
 	protected Object doExecute() throws Exception {

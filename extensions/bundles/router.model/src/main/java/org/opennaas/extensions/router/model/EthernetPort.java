@@ -39,7 +39,6 @@ public class EthernetPort extends NetworkPort implements Serializable {
 	public EthernetPort() {
 	};
 
-
 	/**
 	 * This method returns the EthernetPort.networkAddresses property value. This property is described as follows:
 	 * 

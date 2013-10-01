@@ -41,8 +41,7 @@ public class TestConfig {
 	 * Simple test to test property file related issues.
 	 * 
 	 * @author Alexander Willner (willner@cs.uni-bonn.de)
-	 * @version $Id: TestProperties.java 3328 2008-07-01 13:53:48Z
-	 *          wagners@cs.uni-bonn.de $
+	 * @version $Id: TestProperties.java 3328 2008-07-01 13:53:48Z wagners@cs.uni-bonn.de $
 	 */
 	@Test
 	public final void testProperties() {

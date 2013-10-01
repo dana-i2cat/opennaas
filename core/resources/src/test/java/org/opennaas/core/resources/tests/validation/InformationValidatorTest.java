@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
@@ -17,9 +16,9 @@ import org.springframework.validation.FieldError;
 
 /**
  * Test the InformationValidator class
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 public class InformationValidatorTest {
 	Log						logger		= LogFactory.getLog(InformationValidatorTest.class);

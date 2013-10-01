@@ -31,10 +31,10 @@ public class DeleteVLANConfigurationAction extends Action {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		if (params == null || ! (params instanceof Integer)){
+		if (params == null || !(params instanceof Integer)) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -42,33 +42,33 @@ public class DeleteVLANConfigurationAction extends Action {
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		IOSCommand command = null;
 		Integer vlanID = (Integer) this.getParams();
-		
-		try{
+
+		try {
 			IProtocolSession protocol = protocolSessionManager.obtainSessionByProtocol("cli", false);
 			protocol.connect();
-			
-			//Login and enter enable mode
+
+			// Login and enter enable mode
 			command = new EnableCommand();
 			protocol.sendReceive(command.getCommand());
-			command = new EnablePasswordCommand((String)protocol.getSessionContext().getSessionParameters().get("protocol.enablepassword"));
+			command = new EnablePasswordCommand((String) protocol.getSessionContext().getSessionParameters().get("protocol.enablepassword"));
 			protocol.sendReceive(command.getCommand());
-			
-			//Remove the VLAN from the VLAN database
+
+			// Remove the VLAN from the VLAN database
 			command = new ConfigureTerminalCommand();
 			protocol.sendReceive(command.getCommand());
 			command = new VLANCommand(vlanID.intValue(), true);
 			protocol.sendReceive(command.getCommand());
 			command = new ExitCommand();
 			protocol.sendReceive(command.getCommand());
-			
+
 			protocol.disconnect();
-		}catch(ProtocolException ex){
+		} catch (ProtocolException ex) {
 			throw new ActionException(ex);
 		}
-		
+
 		MACBridge macBridgeModel = (MACBridge) this.getModelToUpdate();
 		macBridgeModel.getVLANDatabase().remove(vlanID);
-		
+
 		return ActionResponse.okResponse(this.getActionID());
 	}
 

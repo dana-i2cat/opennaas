@@ -12,7 +12,7 @@ import org.opennaas.extensions.bod.autobahn.protocol.AutobahnProtocolSession;
 
 public abstract class AutobahnAction extends Action
 {
-	private final static String AUTOBAHN = "autobahn";
+	private final static String	AUTOBAHN	= "autobahn";
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException
@@ -21,23 +21,22 @@ public abstract class AutobahnAction extends Action
 	}
 
 	protected AutobahnProtocolSession
-		getAutobahnProtocolSession(IProtocolSessionManager manager)
-		throws ProtocolException
+			getAutobahnProtocolSession(IProtocolSessionManager manager)
+					throws ProtocolException
 	{
-		return (AutobahnProtocolSession)
-			manager.obtainSessionByProtocol(AUTOBAHN, false);
+		return (AutobahnProtocolSession) manager.obtainSessionByProtocol(AUTOBAHN, false);
 	}
 
 	protected UserAccessPoint
-		getUserAccessPointService(IProtocolSessionManager manager)
-		throws ProtocolException
+			getUserAccessPointService(IProtocolSessionManager manager)
+					throws ProtocolException
 	{
 		return getAutobahnProtocolSession(manager).getUserAccessPointService();
 	}
 
 	protected Administration
-		getAdministrationService(IProtocolSessionManager manager)
-		throws ProtocolException
+			getAdministrationService(IProtocolSessionManager manager)
+					throws ProtocolException
 	{
 		return getAutobahnProtocolSession(manager).getAdministrationService();
 	}

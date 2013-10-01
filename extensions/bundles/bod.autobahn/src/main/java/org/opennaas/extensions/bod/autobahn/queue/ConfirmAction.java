@@ -10,7 +10,7 @@ import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 
 public class ConfirmAction extends AutobahnAction
 {
-	public final static String ACTIONID = QueueConstants.CONFIRM;
+	public final static String	ACTIONID	= QueueConstants.CONFIRM;
 
 	public ConfirmAction()
 	{
@@ -19,7 +19,7 @@ public class ConfirmAction extends AutobahnAction
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
-		throws ActionException
+			throws ActionException
 	{
 		return Transaction.getInstance().commit();
 	}

@@ -33,7 +33,7 @@ public class GetPowerMetricsLogCommand extends GenericKarafCommand {
 
 		IResource resource = getResourceFromFriendlyName(resourceId);
 		PowerMonitorLog log = ((IPowerMonitoringCapability) resource.getCapabilityByInterface(IPowerMonitoringCapability.class))
-				.getPowerMetricsByTimeRange( dateFormat.parse(from), dateFormat.parse(to));
+				.getPowerMetricsByTimeRange(dateFormat.parse(from), dateFormat.parse(to));
 
 		printLog(log);
 

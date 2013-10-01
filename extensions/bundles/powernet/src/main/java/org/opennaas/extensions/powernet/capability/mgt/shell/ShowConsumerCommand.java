@@ -8,7 +8,6 @@ import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapabi
 import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.model.core.IPowerConsumer;
 
-
 @Command(scope = "gim", name = "showConsumer", description = "Shows a power consumer")
 public class ShowConsumerCommand extends GenericKarafCommand {
 
@@ -36,7 +35,7 @@ public class ShowConsumerCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
+
 	private void printConsumer(IPowerConsumer consumer) {
 		printSymbol(consumer.toString());
 	}

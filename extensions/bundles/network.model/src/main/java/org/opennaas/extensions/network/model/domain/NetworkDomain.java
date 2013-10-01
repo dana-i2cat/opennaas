@@ -8,21 +8,23 @@ import org.opennaas.extensions.network.model.topology.NetworkElement;
 
 public class NetworkDomain extends NetworkElement {
 
-	List<Device> hasDevice;
-	List<ConnectionPoint> hasInterface;
+	List<Device>			hasDevice;
+	List<ConnectionPoint>	hasInterface;
 
 	public List<Device> getHasDevice() {
 		return hasDevice;
 	}
+
 	public void setHasDevice(List<Device> hasDevice) {
 		this.hasDevice = hasDevice;
 	}
+
 	public List<ConnectionPoint> getHasInterface() {
 		return hasInterface;
 	}
+
 	public void setHasInterface(List<ConnectionPoint> hasInterface) {
 		this.hasInterface = hasInterface;
 	}
-
 
 }

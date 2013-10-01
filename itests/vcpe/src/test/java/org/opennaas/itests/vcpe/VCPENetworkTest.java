@@ -103,8 +103,6 @@ public class VCPENetworkTest {
 		}
 
 	}
-	
-	
 
 	private IResource createResource() throws ResourceException {
 

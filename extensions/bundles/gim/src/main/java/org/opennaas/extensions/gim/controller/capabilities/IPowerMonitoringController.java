@@ -1,12 +1,9 @@
 package org.opennaas.extensions.gim.controller.capabilities;
 
-
-
 import java.util.Date;
 
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
-
 
 /**
  * 

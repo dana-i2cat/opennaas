@@ -12,10 +12,10 @@ import org.opennaas.core.resources.command.Response;
 import static java.util.Arrays.asList;
 
 public abstract class AutobahnCommand
-	extends Command
-	implements IAutobahnCommand
+		extends Command
+		implements IAutobahnCommand
 {
-	protected Log log = LogFactory.getLog(AutobahnCommand.class);
+	protected Log	log	= LogFactory.getLog(AutobahnCommand.class);
 
 	protected Response okResponse(String message, String information)
 	{

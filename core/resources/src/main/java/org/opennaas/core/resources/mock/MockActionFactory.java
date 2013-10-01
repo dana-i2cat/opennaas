@@ -9,7 +9,6 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.command.Response;
 
-
 public class MockActionFactory {
 
 	public static IAction newMockActionAnError(String actionID) {
@@ -94,7 +93,7 @@ public class MockActionFactory {
 
 		return action;
 	}
-	
+
 	public static IAction newMockActionExceptionOnExecute(String actionID) {
 		MockActionExceptionOnExecute action = new MockActionExceptionOnExecute();
 		action.setActionID(actionID);

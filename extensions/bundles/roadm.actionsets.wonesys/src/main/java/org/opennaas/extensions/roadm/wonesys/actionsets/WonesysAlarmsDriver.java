@@ -21,7 +21,7 @@ public class WonesysAlarmsDriver {
 		CardType cardType = getAlarmCardType(wonesysAlarm, (ProteusOpticalSwitch) model);
 		String alarmCode = getAlarmCode(cardType, wonesysAlarm);
 
-		Map<String,Object> properties = loadResourceAlarmProperties(wonesysAlarm, alarmCode, resourceId);
+		Map<String, Object> properties = loadResourceAlarmProperties(wonesysAlarm, alarmCode, resourceId);
 
 		return new ResourceAlarm(properties);
 	}

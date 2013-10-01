@@ -10,7 +10,7 @@ import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 
 public class RestoreAction extends AutobahnAction
 {
-	public final static String ACTIONID = QueueConstants.RESTORE;
+	public final static String	ACTIONID	= QueueConstants.RESTORE;
 
 	public RestoreAction()
 	{
@@ -19,7 +19,7 @@ public class RestoreAction extends AutobahnAction
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
-		throws ActionException
+			throws ActionException
 	{
 		return Transaction.getInstance().rollback();
 	}

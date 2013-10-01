@@ -13,7 +13,6 @@ public class GetPowerStatusCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id.", required = true, multiValued = false)
 	private String	resourceId;
 
-
 	@Override
 	protected Object doExecute() throws Exception {
 

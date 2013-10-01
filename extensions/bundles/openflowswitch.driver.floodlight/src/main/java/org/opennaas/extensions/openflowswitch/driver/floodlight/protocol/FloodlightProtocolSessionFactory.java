@@ -8,16 +8,16 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class FloodlightProtocolSessionFactory implements IProtocolSessionFactory {
-	
+
 	Log	log	= LogFactory.getLog(FloodlightProtocolSessionFactory.class);
 
 	public FloodlightProtocolSessionFactory() {
 		super();
 		log.info("FLOODLIGHT Protocol Session Factory created");
 	}
-	
+
 	@Override
-	public IProtocolSession createProtocolSession(String sessionID, 
+	public IProtocolSession createProtocolSession(String sessionID,
 			ProtocolSessionContext context) throws ProtocolException {
 		FloodlightProtocolSession session = new FloodlightProtocolSession(sessionID, context);
 		return session;

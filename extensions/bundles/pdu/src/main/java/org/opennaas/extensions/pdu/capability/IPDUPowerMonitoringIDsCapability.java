@@ -12,7 +12,7 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
 @Path("/")
 public interface IPDUPowerMonitoringIDsCapability extends ICapability {
-	
+
 	/**
 	 * 
 	 * @return return current MeasuredLoad.
@@ -32,6 +32,5 @@ public interface IPDUPowerMonitoringIDsCapability extends ICapability {
 	@Path("/powerlog/{portId}")
 	@GET
 	public PowerMonitorLog getPowerMetricsByTimeRange(@PathParam("portId") String portId, Date from, Date to) throws Exception;
-
 
 }

@@ -26,13 +26,13 @@ import org.osgi.service.event.EventHandler;
 /**
  * Creates a Socket and uses it to send and receive messages. Messages to send are expected to be HexStrings. Received messages are expected to be
  * byte chunks , and will be transformed to HexString.
- *
+ * 
  * Notifies listeners when a message is received, connection is closed or an error occurs during reading from socket.
- *
+ * 
  * Notice it uses osgi events without using EventManager
- *
+ * 
  * @author isart
- *
+ * 
  */
 public class RawSocketTransport {
 
@@ -47,8 +47,7 @@ public class RawSocketTransport {
 	public static final String		MESSAGE_PROPERTY_NAME					= "message";
 	public static final String		ERROR_PROPERTY_NAME						= "error";
 	public static final String		TRANSPORT_ID_PROPERTY_NAME				= "transportid";
-	public static final String		ARRIVAL_TIME_PROPERTY_NAME					= "arrivalTime";
-
+	public static final String		ARRIVAL_TIME_PROPERTY_NAME				= "arrivalTime";
 
 	public static final int			DEFAULT_PORT							= 27773;
 	public static final int			DEFAULT_TIMEOUT							= 1000;
@@ -175,11 +174,11 @@ public class RawSocketTransport {
 
 	/**
 	 * Thread that listens the socket for messages arrival, until socket is closed.
-	 *
+	 * 
 	 * When a message arrives, listeners are notified.
-	 *
+	 * 
 	 * @author isart
-	 *
+	 * 
 	 */
 	class SocketReader extends Thread {
 

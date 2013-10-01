@@ -103,15 +103,15 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	 */
 	@Override
 	synchronized public Object sendReceive(Object requestMessage)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		try {
 			String message = (String) requestMessage;
 			CommandResponseListener responseListener =
-				new CommandResponseListener(message);
+					new CommandResponseListener(message);
 			int serviceId =
-				registerToTransport(responseListener,
-									RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
+					registerToTransport(responseListener,
+							RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
 			try {
 				wonesysTransport.sendMsg(message);
 				log.info("Message sent");
@@ -127,7 +127,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	}
 
 	private int registerToTransport(EventHandler listener, String topic)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		try {
 			Properties properties = new Properties();
@@ -142,7 +142,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	}
 
 	private String waitResponse(CommandResponseListener responseListener)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		try {
 			long start = System.currentTimeMillis();

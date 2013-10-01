@@ -38,7 +38,7 @@ public class ShowSupplyCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
+
 	private void printSupply(IPowerSupply supply) {
 		printSymbol(supply.toString());
 	}

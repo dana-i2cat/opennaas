@@ -32,8 +32,6 @@ public class PrepareAction extends JunosAction {
 		try {
 			/* lock commnad */
 
-
-
 			/* discard changes */
 			DiscardNetconfCommand discardCommand = new DiscardNetconfCommand();
 			discardCommand.initialize();

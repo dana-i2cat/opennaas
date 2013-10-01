@@ -26,10 +26,10 @@ public class VCPENetworkBuilderFactory {
 		} else if (templateName.equals(ITemplate.MP_VCPE_TEMPLATE)) {
 			builder = new VCPEMultipleProvider();
 		}
-		
+
 		if (builder == null)
 			throw new CapabilityException("Failed to get builder. Unknown templateId: " + templateName);
-		
+
 		return builder;
 	}
 }

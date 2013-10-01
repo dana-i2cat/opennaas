@@ -1,6 +1,5 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.queue;
 
-
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommitNetconfCommand;
 import org.opennaas.extensions.router.junos.commandsets.commands.UnlockNetconfCommand;
@@ -35,7 +34,7 @@ public class ConfirmAction extends JunosAction {
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
 
-			//TODO test unlock command
+			// TODO test unlock command
 			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
 			unlockCommand.initialize();
 			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);

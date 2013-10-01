@@ -54,7 +54,7 @@ public class BGPModelFactory {
 
 		loadProperties(path);
 	}
-	
+
 	public BGPModelFactory(InputStream input) throws IOException {
 		loadProperties(input);
 	}
@@ -64,7 +64,7 @@ public class BGPModelFactory {
 		File file = new File(path);
 		props.load(new FileInputStream(file));
 	}
-	
+
 	private void loadProperties(InputStream input) throws IOException {
 		props = new Properties();
 		props.load(input);
@@ -128,7 +128,7 @@ public class BGPModelFactory {
 
 			for (int j = 0; j < Integer.parseInt(props.getProperty("bgp.group." + i + ".sessions.size")); j++) {
 				BGPProtocolEndpoint session = new BGPProtocolEndpoint();
-				
+
 				String description = props.getProperty("bgp.group." + i + ".session." + j + ".description");
 				if (description == null) {
 					description = "description";

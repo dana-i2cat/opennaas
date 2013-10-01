@@ -2,7 +2,6 @@ package org.opennaas.core.resources.shell.profile;
 
 import java.util.List;
 
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.profile.IProfile;
@@ -12,10 +11,10 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 /**
  * Add a Profile to ProfileManager. <br/>
  * NOTE: Profiles are automatically added when an OSGi bundle exporting IProfile interface is registered in OSGi registry.
- *
+ * 
  * @author Evelyn Torras (i2cat)
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
 @Command(scope = "profile", name = "create", description = "Create a new Profile.")
 public class CreateProfileCommand extends GenericKarafCommand {

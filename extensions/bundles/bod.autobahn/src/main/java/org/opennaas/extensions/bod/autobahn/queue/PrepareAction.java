@@ -13,7 +13,7 @@ import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 
 public class PrepareAction extends AutobahnAction
 {
-	public final static String ACTIONID = QueueConstants.PREPARE;
+	public final static String	ACTIONID	= QueueConstants.PREPARE;
 
 	public PrepareAction()
 	{
@@ -22,7 +22,7 @@ public class PrepareAction extends AutobahnAction
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
-		throws ActionException
+			throws ActionException
 	{
 		checkAlive(protocolSessionManager);
 		Transaction.getInstance().begin();
@@ -30,11 +30,11 @@ public class PrepareAction extends AutobahnAction
 	}
 
 	private void checkAlive(IProtocolSessionManager protocolSessionManager)
-		throws ActionException
+			throws ActionException
 	{
 		try {
 			Administration administration =
-				getAdministrationService(protocolSessionManager);
+					getAdministrationService(protocolSessionManager);
 			administration.getStatus();
 		} catch (ProtocolException e) {
 			throw new ActionException("Protocol failure: " + e.getMessage(), e);

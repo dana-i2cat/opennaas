@@ -9,7 +9,7 @@ import org.opennaas.extensions.bod.autobahn.AutobahnAction;
 
 public class IsAliveAction extends AutobahnAction
 {
-	public final static String ACTIONID = QueueConstants.ISALIVE;
+	public final static String	ACTIONID	= QueueConstants.ISALIVE;
 
 	public IsAliveAction()
 	{
@@ -18,7 +18,7 @@ public class IsAliveAction extends AutobahnAction
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
-		throws ActionException
+			throws ActionException
 	{
 		return ActionResponse.okResponse(getActionID());
 	}

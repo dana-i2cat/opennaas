@@ -30,7 +30,7 @@ public class AlarmsRepository implements IAlarmsRepository, EventHandler {
 
 	/**
 	 * Blueprint callback (executed when EventManager is available)
-	 *
+	 * 
 	 * @param eventManager
 	 */
 	public void setEventManager(IEventManager eventManager) {

@@ -5,33 +5,33 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(namespace="http://www.craax.upc.edu/axis2/quagga_openapi")
+@XmlRootElement(namespace = "http://www.craax.upc.edu/axis2/quagga_openapi")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Interface {
-	
-	@XmlElement(name="name")
-	private String name;
-	
-	@XmlElement(name="familytype")
-	private String familyType;
-	
-	@XmlElement(name="ip")
-	private IPData ip;
-	
-	@XmlElement(name="ip6")
-	private IPData ip6;
-	
-	@XmlElement(name="hardware-address")
-	private String hardwareAddress;
-	
-	@XmlElement(name="status")
-	private String status;
-	
-	@XmlElement(name="mtu")
-	private String mtu;
-	
-	@XmlElement(name="metric")
-	private String metric;
+
+	@XmlElement(name = "name")
+	private String	name;
+
+	@XmlElement(name = "familytype")
+	private String	familyType;
+
+	@XmlElement(name = "ip")
+	private IPData	ip;
+
+	@XmlElement(name = "ip6")
+	private IPData	ip6;
+
+	@XmlElement(name = "hardware-address")
+	private String	hardwareAddress;
+
+	@XmlElement(name = "status")
+	private String	status;
+
+	@XmlElement(name = "mtu")
+	private String	mtu;
+
+	@XmlElement(name = "metric")
+	private String	metric;
 
 	public String getName() {
 		return name;

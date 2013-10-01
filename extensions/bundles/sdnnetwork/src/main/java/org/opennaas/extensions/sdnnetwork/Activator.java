@@ -19,7 +19,7 @@ import org.osgi.framework.InvalidSyntaxException;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
 public class Activator extends AbstractActivator implements BundleActivator {
 
@@ -44,22 +44,22 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		log.debug("Calling ResourceManager service");
 		return (IResourceManager) getServiceFromRegistry(context, IResourceManager.class.getName());
 	}
-	
+
 	public static IProtocolManager getProtocolManagerService() throws ActivatorException {
 		log.debug("Calling ProtocolManager service");
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
-	
+
 	public static IActionSet getActionSetService(
 			String capability, String driverName, String driverVersion) throws ActivatorException {
-		log.debug("Calling ActionSetService: Capability="+capability+",Driver="+driverName+",Version="+driverVersion);
+		log.debug("Calling ActionSetService: Capability=" + capability + ",Driver=" + driverName + ",Version=" + driverVersion);
 		try {
 			return (IActionSet) getServiceFromRegistry(context, createFilterActionSet(capability, driverName, driverVersion));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
 		}
 	}
-	
+
 	private static Filter createFilterActionSet(String capability, String driverName, String driverVersion) throws InvalidSyntaxException {
 		Properties properties = new Properties();
 		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, capability);

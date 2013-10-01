@@ -19,11 +19,11 @@ public class PDUModel implements IModel {
 	 * 
 	 */
 	private static final long	serialVersionUID	= -4002472167559948067L;
-	
+
 	/**
 	 * A live reference to the PDU in GIM model
 	 */
-	private PDU pdu;
+	private PDU					pdu;
 
 	public PDU getPdu() {
 		return pdu;

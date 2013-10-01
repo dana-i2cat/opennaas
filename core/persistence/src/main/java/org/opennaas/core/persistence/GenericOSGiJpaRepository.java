@@ -18,9 +18,9 @@ import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * GenericJPARepository that gets the EntityManagerFactory from the OSGi registry
- *
+ * 
  * @author eduardgrasa
- *
+ * 
  * @param <T>
  * @param <ID>
  */
@@ -57,14 +57,14 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 		setEntityManager(entityManagerFactory.createEntityManager());
 	}
 
-    public void close() {
-        EntityManager entityManager = getEntityManager();
-        if (entityManager != null) {
+	public void close() {
+		EntityManager entityManager = getEntityManager();
+		if (entityManager != null) {
 			logger.debug("Closing entity manager: " + entityManager);
-            entityManager.close();
-            setEntityManager(null);
-        }
-    }
+			entityManager.close();
+			setEntityManager(null);
+		}
+	}
 
 	private EntityManagerFactory getEntityManagerFactoryFromOSGiRegistry(String persistenceUnit) {
 		EntityManagerFactory entityManagerFactory = null;
@@ -122,7 +122,7 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 		StringBuilder query = new StringBuilder();
 		query.append("(&");
 		query.append("(").append(Constants.OBJECTCLASS).append("=").append(clazz).append(")");
-		for (String key: properties.stringPropertyNames()) {
+		for (String key : properties.stringPropertyNames()) {
 			String value = properties.getProperty(key);
 			query.append("(").append(key).append("=").append(value).append(")");
 		}

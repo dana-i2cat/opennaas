@@ -6,5 +6,6 @@ import org.opennaas.core.resources.command.Response;
 public interface IAutobahnCommand
 {
 	Response execute();
+
 	Response undo();
 }

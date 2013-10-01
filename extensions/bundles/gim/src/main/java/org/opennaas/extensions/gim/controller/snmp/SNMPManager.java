@@ -1,9 +1,7 @@
 package org.opennaas.extensions.gim.controller.snmp;
 
-
 import java.io.IOException;
 import java.util.Date;
-
 
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
@@ -33,184 +31,181 @@ import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
-
 public class SNMPManager {
-Snmp snmp = null;
-String address = null;
+	Snmp	snmp				= null;
+	String	address				= null;
 
-int SNMPversion = 3; 
+	int		SNMPversion			= 3;
 
-String ver3Username = "apc1";
-String ver3AuthPasscode = "admin user phrase";
+	String	ver3Username		= "apc1";
+	String	ver3AuthPasscode	= "admin user phrase";
 
-/**
-* Constructor
-* @param add
-*/
+	/**
+	 * Constructor
+	 * 
+	 * @param add
+	 */
 
-public SNMPManager(String add)
-{
-address = add;
-}
-
- 
-
-/**
-* Start the Snmp session. If you forget the listen() method you will not
-* get any answers because the communication is asynchronous
-* and the listen() method listens for answers.
-* @throws IOException
-*/
-
-public void start() throws IOException {
-TransportMapping transport = new DefaultUdpTransportMapping();
-
-if(SNMPversion ==3){
-	USM usm = new USM(SecurityProtocols.getInstance(), new OctetString(MPv3.createLocalEngineID()), 0);
-	SecurityModels.getInstance().addSecurityModel(usm);
-}
-snmp = new Snmp(transport);
-
-if(SNMPversion == 3)
-	snmp.getUSM().addUser(new OctetString(ver3Username), new UsmUser(new OctetString(ver3Username), AuthMD5.ID, new OctetString(ver3AuthPasscode), null, null));
-
-
-// Do not forget this line!
-transport.listen();
-}
-
-/**
-* Method which takes a single OID and returns the response from the agent as a String.
-* @param oid
-* @return
-* @throws IOException
-*/
-
-public String getAsString(OID oid) throws IOException {
-	ResponseEvent event = get(new OID[] { oid });
-	return event.getResponse().get(0).getVariable().toString();
-}
-
-public String setIntFromString(int value, OID oid) throws IOException {
-
-	ResponseEvent event = set(new OID[] { oid }, value);
-	
-	return event.getResponse().get(0).getVariable().toString();
-	
-}
-
-
-public ResponseEvent set(OID oids[], int value) throws IOException {
-	
-	
-	PDU pdu;
-	
-	if(SNMPversion == 3)
-		 pdu = new ScopedPDU();
-	else  pdu = new PDU();
-	
-	 
-	for (OID oid : oids) {
-		pdu.add(new VariableBinding(oid,new Integer32(value)));
+	public SNMPManager(String add)
+	{
+		address = add;
 	}
-	
-	pdu.setType(PDU.SET);
-	ResponseEvent event = null;
-	
-	try{
-		if(SNMPversion == 3)
-			event = snmp.send(pdu, getSNMPv3Target(), null);
-		else event = snmp.send(pdu, getTarget(), null);	
 
-	
-	}catch(IOException ioe){
-		System.out.println("Error SNMP SET");
+	/**
+	 * Start the Snmp session. If you forget the listen() method you will not get any answers because the communication is asynchronous and the
+	 * listen() method listens for answers.
+	 * 
+	 * @throws IOException
+	 */
+
+	public void start() throws IOException {
+		TransportMapping transport = new DefaultUdpTransportMapping();
+
+		if (SNMPversion == 3) {
+			USM usm = new USM(SecurityProtocols.getInstance(), new OctetString(MPv3.createLocalEngineID()), 0);
+			SecurityModels.getInstance().addSecurityModel(usm);
+		}
+		snmp = new Snmp(transport);
+
+		if (SNMPversion == 3)
+			snmp.getUSM().addUser(new OctetString(ver3Username),
+					new UsmUser(new OctetString(ver3Username), AuthMD5.ID, new OctetString(ver3AuthPasscode), null, null));
+
+		// Do not forget this line!
+		transport.listen();
 	}
-	
-	if(event != null) {
-		return event;
+
+	/**
+	 * Method which takes a single OID and returns the response from the agent as a String.
+	 * 
+	 * @param oid
+	 * @return
+	 * @throws IOException
+	 */
+
+	public String getAsString(OID oid) throws IOException {
+		ResponseEvent event = get(new OID[] { oid });
+		return event.getResponse().get(0).getVariable().toString();
+	}
+
+	public String setIntFromString(int value, OID oid) throws IOException {
+
+		ResponseEvent event = set(new OID[] { oid }, value);
+
+		return event.getResponse().get(0).getVariable().toString();
+
+	}
+
+	public ResponseEvent set(OID oids[], int value) throws IOException {
+
+		PDU pdu;
+
+		if (SNMPversion == 3)
+			pdu = new ScopedPDU();
+		else
+			pdu = new PDU();
+
+		for (OID oid : oids) {
+			pdu.add(new VariableBinding(oid, new Integer32(value)));
+		}
+
+		pdu.setType(PDU.SET);
+		ResponseEvent event = null;
+
+		try {
+			if (SNMPversion == 3)
+				event = snmp.send(pdu, getSNMPv3Target(), null);
+			else
+				event = snmp.send(pdu, getTarget(), null);
+
+		} catch (IOException ioe) {
+			System.out.println("Error SNMP SET");
+		}
+
+		if (event != null) {
+			return event;
 		}
 		throw new RuntimeException("SET timed out");
-}
+	}
 
+	/**
+	 * This method is capable of handling multiple OIDs
+	 * 
+	 * @param oids
+	 * @return
+	 * @throws IOException
+	 */
 
-/**
-* This method is capable of handling multiple OIDs
-* @param oids
-* @return
-* @throws IOException
-*/
+	public ResponseEvent get(OID oids[]) throws IOException {
+		PDU pdu;
 
-public ResponseEvent get(OID oids[]) throws IOException {
-	PDU pdu;
-	
-	if(SNMPversion == 3)
-		 pdu = new ScopedPDU();
-	else  pdu = new PDU();
+		if (SNMPversion == 3)
+			pdu = new ScopedPDU();
+		else
+			pdu = new PDU();
 
-for (OID oid : oids) {
-	pdu.add(new VariableBinding(oid));
-}
+		for (OID oid : oids) {
+			pdu.add(new VariableBinding(oid));
+		}
 
-pdu.setType(PDU.GET);
+		pdu.setType(PDU.GET);
 
-ResponseEvent response;
+		ResponseEvent response;
 
-if(SNMPversion == 3)
-	response = snmp.send(pdu, getSNMPv3Target());
-else response = snmp.send(pdu, getTarget());
+		if (SNMPversion == 3)
+			response = snmp.send(pdu, getSNMPv3Target());
+		else
+			response = snmp.send(pdu, getTarget());
 
-	
-if(response != null) {
-	PDU responsePDU = response.getResponse();
-    if (responsePDU != null) {
-        if (responsePDU.getErrorStatus() == PDU.noError) {
-            return response;
-        }
-    }throw new RuntimeException("reposne was null");
-}
-throw new RuntimeException("GET timed out");
-}
+		if (response != null) {
+			PDU responsePDU = response.getResponse();
+			if (responsePDU != null) {
+				if (responsePDU.getErrorStatus() == PDU.noError) {
+					return response;
+				}
+			}
+			throw new RuntimeException("reposne was null");
+		}
+		throw new RuntimeException("GET timed out");
+	}
 
-/**
-* This method returns a Target, which contains information about
-* where the data should be fetched and how.
-* @return
-*/
+	/**
+	 * This method returns a Target, which contains information about where the data should be fetched and how.
+	 * 
+	 * @return
+	 */
 
-private Target getSNMPv3Target() {
-	Address targetAddress = GenericAddress.parse(address);
-	UserTarget target = new UserTarget();
-	
-	target.setAddress(targetAddress);
-	
-    target.setVersion(SnmpConstants.version3); //SnmpConstants.version3
-    target.setRetries(2);
-    target.setTimeout(2500);
-    target.setSecurityLevel(SecurityLevel.AUTH_NOPRIV); //SecurityLevel.AUTH_NOPRIV
-    target.setSecurityName(new OctetString(ver3Username));
-    
-    return target;
-}
+	private Target getSNMPv3Target() {
+		Address targetAddress = GenericAddress.parse(address);
+		UserTarget target = new UserTarget();
 
+		target.setAddress(targetAddress);
 
-private Target getTarget() {
+		target.setVersion(SnmpConstants.version3); // SnmpConstants.version3
+		target.setRetries(2);
+		target.setTimeout(2500);
+		target.setSecurityLevel(SecurityLevel.AUTH_NOPRIV); // SecurityLevel.AUTH_NOPRIV
+		target.setSecurityName(new OctetString(ver3Username));
 
-Address targetAddress = GenericAddress.parse(address);
-CommunityTarget target = new CommunityTarget();
+		return target;
+	}
 
+	private Target getTarget() {
 
-target.setCommunity(new OctetString("public"));
+		Address targetAddress = GenericAddress.parse(address);
+		CommunityTarget target = new CommunityTarget();
 
-target.setAddress(targetAddress);
+		target.setCommunity(new OctetString("public"));
 
-target.setRetries(2);
+		target.setAddress(targetAddress);
 
-target.setTimeout(1500);
+		target.setRetries(2);
 
-target.setVersion(SnmpConstants.version2c);
+		target.setTimeout(1500);
 
-return target;
-}
+		target.setVersion(SnmpConstants.version2c);
+
+		return target;
+	}
 
 }

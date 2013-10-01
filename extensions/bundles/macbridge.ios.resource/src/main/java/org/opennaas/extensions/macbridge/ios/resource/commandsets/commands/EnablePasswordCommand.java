@@ -6,8 +6,8 @@ import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 
 public class EnablePasswordCommand extends IOSCommand {
 
-	private String password = null;
-	
+	private String	password	= null;
+
 	public EnablePasswordCommand(String password) {
 		this.password = password;
 	}
@@ -21,7 +21,7 @@ public class EnablePasswordCommand extends IOSCommand {
 	public String getCommand() {
 		return password;
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

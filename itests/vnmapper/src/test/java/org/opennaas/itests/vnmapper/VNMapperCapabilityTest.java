@@ -94,13 +94,13 @@ public class VNMapperCapabilityTest {
 
 	IResource						networkResource;
 	IResource						vnmapperResource;
-	
+
 	/**
 	 * Make sure blueprint for org.opennaas.extensions.vnmapper bundle has finished its initialization
 	 */
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.vnmapper)")
-	private BlueprintContainer	vnMapperBlueprintContainer;
+	private BlueprintContainer		vnMapperBlueprintContainer;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -1295,7 +1295,6 @@ public class VNMapperCapabilityTest {
 	@Test
 	@Ignore
 	public void overloadLinkCapacityTest() throws Exception {
-
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample10/topology.xml"));
 

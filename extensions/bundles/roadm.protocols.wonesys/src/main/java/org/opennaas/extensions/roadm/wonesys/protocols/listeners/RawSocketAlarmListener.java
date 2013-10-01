@@ -23,7 +23,7 @@ public class RawSocketAlarmListener implements EventHandler {
 
 	private String		sessionId;
 
-	private long creationTime;
+	private long		creationTime;
 
 	public RawSocketAlarmListener(String sessionID) {
 		this.sessionId = sessionID;
@@ -47,13 +47,14 @@ public class RawSocketAlarmListener implements EventHandler {
 						isOld = true;
 				}
 
-				//Only publish if event arrived after listener creation
-				if (!isOld){
+				// Only publish if event arrived after listener creation
+				if (!isOld) {
 					try {
 						log.info("Session received an alarm: " + message + " created in " + arrivalTime);
 						createAndPublishAlarm(message);
 					} catch (ProtocolException e) {
-						log.error("Error publishing received alarm: " + message + ". Received alarm will be unavailable for the rest of the system", e);
+						log.error("Error publishing received alarm: " + message + ". Received alarm will be unavailable for the rest of the system",
+								e);
 					}
 				} else {
 					log.debug("Skipping old alarm: " + message);
