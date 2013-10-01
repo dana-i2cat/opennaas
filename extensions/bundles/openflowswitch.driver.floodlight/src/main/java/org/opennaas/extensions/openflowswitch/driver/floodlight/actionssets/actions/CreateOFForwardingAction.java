@@ -56,11 +56,13 @@ public class CreateOFForwardingAction extends FloodlightAction {
 			flow.setPriority(FloodlightConstants.DEFAULT_PRIORITY);
 		}
 
-		if (flow.getMatch().getSrcIp() != null || flow.getMatch().getDstIp() != null || flow.getMatch().getTosBits() != null) {
-			// To avoid following message in floodlight controller:
-			// Warning! Pushing a static flow entry that matches IP fields without matching for IP payload (ether-type 2048)
-			// will cause the switch to wildcard higher level fields.
-			flow.getMatch().setEtherType("2048");
+		if (flow.getMatch() != null) {
+			if (flow.getMatch().getSrcIp() != null || flow.getMatch().getDstIp() != null || flow.getMatch().getTosBits() != null) {
+				// To avoid following message in floodlight controller:
+				// Warning! Pushing a static flow entry that matches IP fields without matching for IP payload (ether-type 2048)
+				// will cause the switch to wildcard higher level fields.
+				flow.getMatch().setEtherType("2048");
+			}
 		}
 
 		return flow;

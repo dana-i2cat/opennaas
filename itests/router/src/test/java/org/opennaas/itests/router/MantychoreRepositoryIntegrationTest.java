@@ -59,6 +59,16 @@ public class MantychoreRepositoryIntegrationTest
 {
 	private final static Log	log	= LogFactory.getLog(MantychoreRepositoryIntegrationTest.class);
 
+	/**
+	 * Make sure blueprint for specified bundle has finished its initialization
+	 */
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	repositoryBlueprintContainer;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
+	private BlueprintContainer	chassisCapabilityBlueprintContainer;
+
 	@Inject
 	private IResourceManager	resourceManager;
 
@@ -71,10 +81,6 @@ public class MantychoreRepositoryIntegrationTest
 
 	@Inject
 	private IProtocolManager	protocolManager;
-
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
-	private BlueprintContainer	chassisService;
 
 	@Configuration
 	public static Option[] configuration() {
