@@ -1,6 +1,5 @@
 package org.opennaas.extensions.router.model;
 
-
 public class PrefixListFilterEntry extends FilterEntryBase {
 
 	private IPAddressPrefixList	prefixList;

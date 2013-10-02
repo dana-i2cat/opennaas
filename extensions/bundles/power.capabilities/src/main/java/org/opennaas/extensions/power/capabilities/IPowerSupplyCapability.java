@@ -8,7 +8,7 @@ import org.opennaas.extensions.gim.model.energy.Energy;
 
 @Path("/")
 public interface IPowerSupplyCapability extends ICapability {
-	
+
 	@Path("/energy")
 	@GET
 	public Energy getAggregatedEnergy() throws Exception;

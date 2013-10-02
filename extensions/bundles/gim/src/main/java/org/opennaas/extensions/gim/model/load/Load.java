@@ -7,7 +7,7 @@ package org.opennaas.extensions.gim.model.load;
  */
 public class Load {
 
-	public Load(){
+	public Load() {
 
 	}
 

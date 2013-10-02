@@ -1,7 +1,6 @@
 package org.opennaas.core.resources.alarms;
 
 import java.util.Map;
-import java.util.Properties;
 
 import org.osgi.service.event.Event;
 

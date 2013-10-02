@@ -1,11 +1,11 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions;
 
 public class FlowNotFoundException extends Exception {
-	
+
 	/**
 	 * Auto-generated serial number.
 	 */
-	private static final long serialVersionUID = 4838623572545196501L;
+	private static final long	serialVersionUID	= 4838623572545196501L;
 
 	public FlowNotFoundException() {
 		super();
@@ -22,6 +22,5 @@ public class FlowNotFoundException extends Exception {
 	public FlowNotFoundException(Throwable cause) {
 		super(cause);
 	}
-	
 
 }

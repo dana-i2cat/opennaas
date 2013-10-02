@@ -1,15 +1,11 @@
 package org.opennaas.extensions.powernet.capability.mgt.shell;
 
-import java.lang.StringBuffer;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
-import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.model.core.IPowerSupply;
-import org.opennaas.extensions.gim.model.core.IPowerDelivery;
+import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
 
 @Command(scope = "gim", name = "showSupply", description = "Shows a power supply")
 public class ShowSupplyCommand extends GenericKarafCommand {
@@ -38,7 +34,7 @@ public class ShowSupplyCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
+
 	private void printSupply(IPowerSupply supply) {
 		printSymbol(supply.toString());
 	}

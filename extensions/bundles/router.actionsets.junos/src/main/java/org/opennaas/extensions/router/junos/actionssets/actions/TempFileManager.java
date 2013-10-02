@@ -10,9 +10,9 @@ import java.io.IOException;
 
 /**
  * This class is not used. Save and load configuration in a local system provides corrupt configurations.
- *
+ * 
  * @author Carlos Baez Ruiz
- *
+ * 
  */
 @Deprecated
 public class TempFileManager {

@@ -50,7 +50,7 @@ public class WonesysResponse extends Response {
 	/**
 	 * Fills this Response errors list with errors contained in wonesysMessage (if any). If no errors are present, errors is filled with an empty
 	 * list.
-	 *
+	 * 
 	 * @param wonesysMessage
 	 */
 	private void fillErrors(WonesysMessage wonesysMessage) {

@@ -8,25 +8,24 @@ import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 import org.opennaas.extensions.power.capabilities.driver.ConsumerDriverInstantiator;
 
-public class PowerMonitoringCapability  extends AbstractPowerConsumerCapability implements IPowerMonitoringCapability {
+public class PowerMonitoringCapability extends AbstractPowerConsumerCapability implements IPowerMonitoringCapability {
 
-	public static String					CAPABILITY_TYPE	= "consumer_pw_mon";
-	
-	private String							resourceId		= "";
-	
-	private IPowerMonitoringController driver;
+	public static String				CAPABILITY_TYPE	= "consumer_pw_mon";
 
-	
+	private String						resourceId		= "";
+
+	private IPowerMonitoringController	driver;
+
 	public PowerMonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
 	}
-	
+
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
-	
+
 	@Override
 	public MeasuredLoad getCurrentPowerMetrics() throws Exception {
 		return getDriver().getCurrentPowerMetrics();
@@ -37,7 +36,7 @@ public class PowerMonitoringCapability  extends AbstractPowerConsumerCapability 
 			throws Exception {
 		return getDriver().getPowerMetricsByTimeRange(from, to);
 	}
-	
+
 	private IPowerMonitoringController getDriver() throws Exception {
 		// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
 		if (driver == null)

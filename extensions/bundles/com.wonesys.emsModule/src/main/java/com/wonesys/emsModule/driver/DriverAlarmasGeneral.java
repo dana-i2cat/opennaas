@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author mbeltran
  */
 public class DriverAlarmasGeneral extends Driver {
@@ -25,29 +25,29 @@ public class DriverAlarmasGeneral extends Driver {
 
 	/*
 	 * public void setParams(Alarm alarma, String params) {
-	 *
+	 * 
 	 * String[] paramsSplit = params.split("#");
-	 *
+	 * 
 	 * String oidAlarm = paramsSplit[0];
-	 *
+	 * 
 	 * if(oidAlarm.equals(SNMPTrapsColdStart)) {
-	 *
+	 * 
 	 * setTipo(alarma,"COLDSTART");
-	 *
+	 * 
 	 * } else if(oidAlarm.equals(SNMPTrapsWarmStart)) {
-	 *
+	 * 
 	 * setTipo(alarma,"WARMSTART");
-	 *
+	 * 
 	 * } else if(oidAlarm.equals(SNMPTrapsLinkDown)) {
-	 *
+	 * 
 	 * setTipo(alarma,"LINKDOWN");
-	 *
+	 * 
 	 * } else if(oidAlarm.equals(SNMPTrapsLinkUp)) {
-	 *
+	 * 
 	 * setTipo(alarma, "LINKUP");
-	 *
+	 * 
 	 * }
-	 *
+	 * 
 	 * }
 	 */
 

@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-//TODO avoid these imports, they refer to plugin-related data 
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 

@@ -84,7 +84,7 @@ public class SnmpTrapListener_old implements TrapListener {
 
 		/*
 		 * S'ha tret el context fora i s'han afegit destroy() fora, per evitar el IOException que no mola.
-		 *
+		 * 
 		 * Idea: Obrir el context nomes un cop al iniciar i fer servir el mateix sempre.
 		 */
 

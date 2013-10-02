@@ -1,12 +1,9 @@
 package org.opennaas.extensions.gim.model.log;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
-
 
 /**
  * @author rcarroll

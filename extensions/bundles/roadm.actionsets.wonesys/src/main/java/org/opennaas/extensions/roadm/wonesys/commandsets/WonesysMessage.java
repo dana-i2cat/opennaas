@@ -5,11 +5,11 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Wonesys messages are byte chunks with the following format:
- *
+ * 
  * Header (2B) | DeviceID (2B) | Reserved (2B) | CommandID (2B) | Reserved (4B) | DataLength (2B) | Data | XOR (1B) | EOS (1B)
- *
+ * 
  * @author isart
- *
+ * 
  */
 public final class WonesysMessage {
 
@@ -109,7 +109,7 @@ public final class WonesysMessage {
 	// }
 
 	/**
-	 *
+	 * 
 	 * @param data
 	 * @return data length as an HexString in BigEndian. Returned String must be 4 chars long
 	 */

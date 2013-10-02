@@ -19,11 +19,12 @@ public class SetIPv4Action extends OpenerAction {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 			throws ActionException {
-		
+
 		SetInterfaceIPRequest request = prepareRequest((NetworkPort) params);
-		
+
 		try {
-			SetInterfaceResponse openerResponse = getOpenerProtocolSession(protocolSessionManager).getOpenerClientForUse().setInterfaceIPAddress(request, 0);
+			SetInterfaceResponse openerResponse = getOpenerProtocolSession(protocolSessionManager).getOpenerClientForUse().setInterfaceIPAddress(
+					request, 0);
 			ActionResponse response = actionResposeFromSetInterfaceResponse(openerResponse);
 			response.setActionID(IPActionSet.SET_IPv4);
 			return response;
@@ -46,21 +47,21 @@ public class SetIPv4Action extends OpenerAction {
 			throw new ActionException("No IP address given to action " + getActionID());
 		}
 
-		if (((IPProtocolEndpoint) (((LogicalPort) params).getProtocolEndpoint().get(0))).getProtocolIFType() == null || 
-				! ((IPProtocolEndpoint) (((LogicalPort) params).getProtocolEndpoint().get(0))).getProtocolIFType().equals(ProtocolIFType.IPV4)) {
+		if (((IPProtocolEndpoint) (((LogicalPort) params).getProtocolEndpoint().get(0))).getProtocolIFType() == null ||
+				!((IPProtocolEndpoint) (((LogicalPort) params).getProtocolEndpoint().get(0))).getProtocolIFType().equals(ProtocolIFType.IPV4)) {
 			throw new ActionException("Invalid IP protocol type given to action " + getActionID() + ". Required " + ProtocolIFType.IPV4);
 		}
-		
+
 		if (((IPProtocolEndpoint) (((LogicalPort) params).getProtocolEndpoint().get(0))).getIPv4Address() == null ||
 				((IPProtocolEndpoint) (((LogicalPort) params).getProtocolEndpoint().get(0))).getIPv4Address().isEmpty()) {
 			throw new ActionException("No IP address given to action " + getActionID());
 		}
-		
+
 		return true;
 	}
-	
+
 	private SetInterfaceIPRequest prepareRequest(NetworkPort subInterface) {
-		
+
 		IPProtocolEndpoint ipPep = (IPProtocolEndpoint) subInterface.getProtocolEndpoint().get(0);
 		String subInterfaceName;
 		if (subInterface.getPortNumber() == 0) {
@@ -68,10 +69,10 @@ public class SetIPv4Action extends OpenerAction {
 		} else {
 			subInterfaceName = subInterface.getName() + "." + subInterface.getPortNumber();
 		}
-		
+
 		// assuming ipPep.getProtocolIFType().equals(ProtocolIFType.IPV4)
 		String prefixLength = IPUtilsHelper.parseLongToShortIpv4NetMask(ipPep.getSubnetMask());
-		
+
 		return Utils.createSetInterfaceIPRequest(subInterfaceName, ipPep.getIPv4Address(), prefixLength);
 	}
 

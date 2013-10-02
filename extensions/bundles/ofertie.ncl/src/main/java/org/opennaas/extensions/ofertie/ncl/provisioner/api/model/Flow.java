@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
- * @author Isart Canyameres Gimenez (i2cat) 
- *
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Flow {
-	
-	private String id;
-	
-	private FlowRequest flowRequest;
+
+	private String		id;
+
+	private FlowRequest	flowRequest;
 
 	/**
 	 * @return the id
@@ -25,7 +25,8 @@ public class Flow {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -39,13 +40,16 @@ public class Flow {
 	}
 
 	/**
-	 * @param request the request to set
+	 * @param request
+	 *            the request to set
 	 */
 	public void setFlowRequest(FlowRequest flowRequest) {
 		this.flowRequest = flowRequest;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -57,7 +61,9 @@ public class Flow {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

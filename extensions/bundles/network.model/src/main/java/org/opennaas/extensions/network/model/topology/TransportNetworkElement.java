@@ -4,7 +4,7 @@ import org.opennaas.extensions.network.model.layer.Layer;
 
 public class TransportNetworkElement extends NetworkElement {
 
-	Layer layer;
+	Layer	layer;
 
 	public Layer getLayer() {
 		return layer;

@@ -2,7 +2,7 @@ package org.opennaas.core.resources.protocol;
 
 /**
  * Base exception for protocol-related matters.
- *
+ * 
  * @author eduardgrasa
  */
 public class ProtocolException extends Exception {

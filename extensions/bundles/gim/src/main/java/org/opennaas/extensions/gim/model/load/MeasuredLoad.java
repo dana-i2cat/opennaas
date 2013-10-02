@@ -9,27 +9,24 @@ import java.util.Date;
  */
 public class MeasuredLoad extends ElectricalLoad {
 
-	private Date reading_time;
-	//private double inputVoltage;
-	//private double inputCurrent;
-	//private double inputPower;
+	private Date	reading_time;
 
-	public MeasuredLoad(){
+	// private double inputVoltage;
+	// private double inputCurrent;
+	// private double inputPower;
+
+	public MeasuredLoad() {
 
 	}
 
-	public void setReadingTime(Date dt){
+	public void setReadingTime(Date dt) {
 		reading_time = dt;
 	}
-	
-	public Date getReadingTime(){
+
+	public Date getReadingTime() {
 		return reading_time;
 	}
-	
-	
-	
-	
-	
+
 	public void finalize() throws Throwable {
 		super.finalize();
 	}

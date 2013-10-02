@@ -36,10 +36,10 @@ public class ProteusOpticalSwitchCard extends LogicalModule implements IOpticalS
 	/**
 	 * Type and subtype of the card
 	 */
-	private int	type;
-	private int	subtype;
+	private int					type;
+	private int					subtype;
 
-	private int	chasis;
+	private int					chasis;
 
 	public enum CardType {
 		ROADM_ADD, ROADM_DROP, OPOSNL, PSTN25G, OPTR10G, OPTR25G, OPTR25GPM, PSEDFA, TDCM, PS_OPM

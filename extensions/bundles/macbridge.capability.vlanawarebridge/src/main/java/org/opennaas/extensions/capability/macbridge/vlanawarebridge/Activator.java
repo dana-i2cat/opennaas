@@ -74,7 +74,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 * @return Filter
 	 * @throws InvalidSyntaxException
 	 */
-	protected static Filter createFilterQueueManager(String resourceId)throws InvalidSyntaxException {
+	protected static Filter createFilterQueueManager(String resourceId) throws InvalidSyntaxException {
 		Properties properties = new Properties();
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME,

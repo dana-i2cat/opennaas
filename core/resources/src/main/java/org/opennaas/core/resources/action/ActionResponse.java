@@ -15,7 +15,7 @@ public class ActionResponse {
 	private String			actionID;
 	private String			information;
 	private List<Response>	responses	= new ArrayList<Response>();
-	private Object result;
+	private Object			result;
 
 	public String getActionID() {
 		return actionID;
@@ -55,7 +55,7 @@ public class ActionResponse {
 
 	/**
 	 * 
-	 * @return the result of the action. It should be null when getStatus() is not OK. It may be null even when getStatus() is OK. 
+	 * @return the result of the action. It should be null when getStatus() is not OK. It may be null even when getStatus() is OK.
 	 */
 	public Object getResult() {
 		return result;

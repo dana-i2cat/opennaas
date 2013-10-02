@@ -9,13 +9,14 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
- *
+ * 
  */
 public class OFProvisioningNetworkCapabilityFactory extends AbstractCapabilityFactory {
-	
+
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(OFProvisioningNetworkCapability.CAPABILITY_TYPE),
+		ICapability capability = this.create(resource.getResourceDescriptor()
+				.getCapabilityDescriptor(OFProvisioningNetworkCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;

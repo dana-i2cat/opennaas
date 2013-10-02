@@ -2,6 +2,10 @@ package org.opennaas.extensions.router.model.tests;
 
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -13,11 +17,6 @@ import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.Won
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import org.opennaas.extensions.router.model.utils.OpticalSwitchCardFactory;
 import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class OpticalSwitchCardLoadingTest {
 

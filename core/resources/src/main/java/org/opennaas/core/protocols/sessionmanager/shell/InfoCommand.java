@@ -1,5 +1,7 @@
 package org.opennaas.core.protocols.sessionmanager.shell;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -7,14 +9,11 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-
 /**
  * List the device ids registere do the protocol manager
- *
+ * 
  * @author Pau Minoves
- *
+ * 
  */
 @Command(scope = "protocols", name = "info", description = "Provide extended information on a protocol session.")
 public class InfoCommand extends GenericKarafCommand {

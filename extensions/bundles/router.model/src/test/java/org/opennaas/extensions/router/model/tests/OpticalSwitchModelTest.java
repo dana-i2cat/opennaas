@@ -1,12 +1,12 @@
 package org.opennaas.extensions.router.model.tests;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.model.opticalSwitch.ITUGrid;
-import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.opennaas.extensions.router.model.opticalSwitch.ITUGrid;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
 
 public class OpticalSwitchModelTest {
 

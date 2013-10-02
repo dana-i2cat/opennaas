@@ -1,6 +1,5 @@
 package org.opennaas.core.resources.alarms;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
