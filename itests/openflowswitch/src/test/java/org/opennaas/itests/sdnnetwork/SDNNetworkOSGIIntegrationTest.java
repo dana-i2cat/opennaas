@@ -49,8 +49,9 @@ public class SDNNetworkOSGIIntegrationTest {
 	/**
 	 * Make sure blueprint for org.opennaas.extensions.sdnnetwork bundle has finished its initialization
 	 */
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sdnnetwork)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sdnnetwork)", timeout = 20000)
 	private BlueprintContainer	sdnNetworkBlueprintContainer;
 
 	@Inject

@@ -65,12 +65,14 @@ public class OSPFv3IntegrationTest
 	@Inject
 	protected BundleContext			bundleContext;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)", timeout = 20000)
 	private BlueprintContainer		netconfService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer		routerRepoService;
 
 	private static final Log		log					= LogFactory

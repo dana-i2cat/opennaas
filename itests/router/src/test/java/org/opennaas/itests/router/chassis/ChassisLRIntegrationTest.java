@@ -83,16 +83,19 @@ public class ChassisLRIntegrationTest
 	private String				LRName				= "cpe2";
 	private String				interfaceName		= "fe-0/0/3.1";
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer	routerRepoService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)", timeout = 20000)
 	private BlueprintContainer	ipService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)", timeout = 20000)
 	private BlueprintContainer	queueService;
 
 	@Configuration

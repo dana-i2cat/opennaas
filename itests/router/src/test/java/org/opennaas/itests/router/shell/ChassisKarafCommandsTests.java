@@ -85,16 +85,19 @@ public class ChassisKarafCommandsTests extends AbstractKarafCommandTest
 	@Inject
 	private BundleContext		bundleContext;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer	routerService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)", timeout = 20000)
 	private BlueprintContainer	queueService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)", timeout = 20000)
 	private BlueprintContainer	chassisService;
 
 	@Configuration

@@ -62,11 +62,13 @@ public class MantychoreRepositoryIntegrationTest
 	/**
 	 * Make sure blueprint for specified bundle has finished its initialization
 	 */
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer	repositoryBlueprintContainer;
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)", timeout = 20000)
 	private BlueprintContainer	chassisCapabilityBlueprintContainer;
 
 	@Inject
