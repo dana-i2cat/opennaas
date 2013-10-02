@@ -54,6 +54,7 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * Tests new queue operations. In the sprint for the week 26, it is planned to add new features in the queue.
@@ -84,6 +85,16 @@ public class QueueTest
 	private MockResource			mockResource;
 	private IQueueManagerCapability	queueCapability;
 	private IQueueManagerCapability	queueManagerService;
+
+	@SuppressWarnings("unused")
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
+	private BlueprintContainer		routerService;
+
+	@SuppressWarnings("unused")
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)", timeout = 20000)
+	private BlueprintContainer		queueService;
 
 	@Inject
 	private IProtocolManager		protocolManager;
