@@ -97,6 +97,7 @@ public class VNMapperCapabilityTest {
 	/**
 	 * Make sure blueprint for org.opennaas.extensions.vnmapper bundle has finished its initialization
 	 */
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.vnmapper)", timeout = 20000)
 	private BlueprintContainer		vnMapperBlueprintContainer;

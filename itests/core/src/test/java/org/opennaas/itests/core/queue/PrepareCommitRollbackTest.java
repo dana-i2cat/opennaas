@@ -78,10 +78,12 @@ public class PrepareCommitRollbackTest
 	@Filter("(capability=queue)")
 	private ICapabilityFactory		queueManagerFactory;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer		routerService;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)", timeout = 20000)
 	private BlueprintContainer		queueService;

@@ -71,10 +71,12 @@ public class VRRPIntegrationTest {
 	@Inject
 	private IProtocolManager	protocolManager;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)", timeout = 20000)
 	private BlueprintContainer	netconfService;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer	routerRepoService;

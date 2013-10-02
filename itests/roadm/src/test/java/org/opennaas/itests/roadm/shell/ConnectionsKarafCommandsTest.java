@@ -70,10 +70,12 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.connections)", timeout = 20000)
 	private BlueprintContainer	connectionService;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)", timeout = 20000)
 	private BlueprintContainer	wonesysProtocolService;

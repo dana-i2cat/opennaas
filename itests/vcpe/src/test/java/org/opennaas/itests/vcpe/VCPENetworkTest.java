@@ -44,6 +44,7 @@ public class VCPENetworkTest {
 	@Filter("(type=vcpenet)")
 	private IResourceRepository	resourceRepo;
 
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.vcpe)", timeout = 20000)
 	private BlueprintContainer	vcpeBundleBlueprintContainer;

@@ -76,9 +76,11 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	/**
 	 * Make sure blueprint for specified bundle has finished its initialization
 	 */
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)", timeout = 20000)
 	private BlueprintContainer	switchBlueprintContainer;
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch.driver.floodlight)", timeout = 20000)
 	private BlueprintContainer	floodlightDriverBundleContainer;

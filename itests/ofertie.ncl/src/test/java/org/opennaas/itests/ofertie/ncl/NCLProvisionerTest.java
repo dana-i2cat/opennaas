@@ -106,15 +106,19 @@ public class NCLProvisionerTest {
 	/**
 	 * Make sure blueprint for specified bundle has finished its initialization
 	 */
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)", timeout = 20000)
 	private BlueprintContainer	switchBlueprintContainer;
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch.driver.floodlight)", timeout = 20000)
 	private BlueprintContainer	floodlightDriverBundleContainer;
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sdnnetwork)", timeout = 20000)
 	private BlueprintContainer	sdnNetworkBlueprintContainer;
+	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofertie.ncl)", timeout = 20000)
 	private BlueprintContainer	nclBlueprintContainer;
