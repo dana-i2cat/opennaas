@@ -55,7 +55,6 @@ public class UpdateVRRPVirtualIPAddressAction extends JunosAction {
 		validateAction(actionResponse);
 	}
 
-	
 	@Override
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
 		// TODO Auto-generated method stub
@@ -63,13 +62,9 @@ public class UpdateVRRPVirtualIPAddressAction extends JunosAction {
 	}
 
 	/**
-	 * Required params:
-	 * A VRRPProtocolEndpoint with
-	 * - getService() being a VRRPGroup
-	 * - getProtocolIFType set to ProtocolIFType.IPV4 or to ProtocolIFType.IPV6
-	 * - getBindedProtocolEndpoints containing a single IPProtocolEndpoint (protocolEndpoint)
-	 * - protocolEndpoint getProtocolIFType() set to VRRPProtocolEndpoint.getProtocolIFType()
-	 * - protocolEndpoint.getLogicalPorts() containing a single NetworkPort
+	 * Required params: A VRRPProtocolEndpoint with - getService() being a VRRPGroup - getProtocolIFType set to ProtocolIFType.IPV4 or to
+	 * ProtocolIFType.IPV6 - getBindedProtocolEndpoints containing a single IPProtocolEndpoint (protocolEndpoint) - protocolEndpoint
+	 * getProtocolIFType() set to VRRPProtocolEndpoint.getProtocolIFType() - protocolEndpoint.getLogicalPorts() containing a single NetworkPort
 	 */
 	@Override
 	public boolean checkParams(Object params) throws ActionException {

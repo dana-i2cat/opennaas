@@ -370,7 +370,6 @@ public class NetworkModelHelper {
 		return clientLinks;
 	}
 
-
 	public static List<Link> getAllLinksBetweenTwoDevices(NetworkModel networkModel, String firstDeviceId, String secondDeviceId) {
 
 		List<Link> links = new ArrayList<Link>();

@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.extensions.router.opener.client.model.InterfaceID;
 
-@XmlRootElement(namespace="http://www.craax.upc.edu/axis2/quagga_openapi")
+@XmlRootElement(namespace = "http://www.craax.upc.edu/axis2/quagga_openapi")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AddInterfaceRequest {
-	
-	@XmlElement(name="interface")
-	private InterfaceID id;
+
+	@XmlElement(name = "interface")
+	private InterfaceID	id;
 
 	public InterfaceID getId() {
 		return id;

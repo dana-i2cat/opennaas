@@ -7,34 +7,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Defines a flow with its QoS network requirement.
  * 
- * @author Isart Canyameres Gimenez (i2cat) 
- *
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FlowRequest {
-	
-	private String sourceIPAddress;
-	private String destinationIPAddress;
-	
+
+	private String			sourceIPAddress;
+	private String			destinationIPAddress;
+
 	/**
 	 * TCP/UDP/SCTP source port
 	 */
-	private int sourcePort;
+	private int				sourcePort;
 	/**
 	 * TCP/UDP/SCTP destination port
 	 */
-	private int destinationPort;
-	
+	private int				destinationPort;
+
 	/**
 	 * Type of Service (ToS) value
 	 */
-	private int tos;
-	
-	private int sourceVlanId;
-	private int destinationVlanId;
-	
-	private QoSRequirements qoSRequirements;
+	private int				tos;
+
+	private int				sourceVlanId;
+	private int				destinationVlanId;
+
+	private QoSRequirements	qoSRequirements;
 
 	/**
 	 * @return the sourceIPAddress
@@ -44,7 +44,8 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param sourceIPAddress the sourceIPAddress to set
+	 * @param sourceIPAddress
+	 *            the sourceIPAddress to set
 	 */
 	public void setSourceIPAddress(String sourceIPAddress) {
 		this.sourceIPAddress = sourceIPAddress;
@@ -58,7 +59,8 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param destinationIPAddress the destinationIPAddress to set
+	 * @param destinationIPAddress
+	 *            the destinationIPAddress to set
 	 */
 	public void setDestinationIPAddress(String destinationIPAddress) {
 		this.destinationIPAddress = destinationIPAddress;
@@ -72,7 +74,8 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param sourcePort the sourcePort to set
+	 * @param sourcePort
+	 *            the sourcePort to set
 	 */
 	public void setSourcePort(int sourcePort) {
 		this.sourcePort = sourcePort;
@@ -86,7 +89,8 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param destinationPort the destinationPort to set
+	 * @param destinationPort
+	 *            the destinationPort to set
 	 */
 	public void setDestinationPort(int destinationPort) {
 		this.destinationPort = destinationPort;
@@ -100,7 +104,8 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param tos the tos to set
+	 * @param tos
+	 *            the tos to set
 	 */
 	public void setTos(int tos) {
 		this.tos = tos;
@@ -114,7 +119,8 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param sourceVlanId the sourceVlanId to set
+	 * @param sourceVlanId
+	 *            the sourceVlanId to set
 	 */
 	public void setSourceVlanId(int sourceVlanId) {
 		this.sourceVlanId = sourceVlanId;
@@ -128,7 +134,8 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param destinationVlanId the destinationVlanId to set
+	 * @param destinationVlanId
+	 *            the destinationVlanId to set
 	 */
 	public void setDestinationVlanId(int destinationVlanId) {
 		this.destinationVlanId = destinationVlanId;
@@ -142,13 +149,16 @@ public class FlowRequest {
 	}
 
 	/**
-	 * @param qoSRequirements the qoSRequirements to set
+	 * @param qoSRequirements
+	 *            the qoSRequirements to set
 	 */
 	public void setQoSRequirements(QoSRequirements qoSRequirements) {
 		this.qoSRequirements = qoSRequirements;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -171,7 +181,9 @@ public class FlowRequest {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

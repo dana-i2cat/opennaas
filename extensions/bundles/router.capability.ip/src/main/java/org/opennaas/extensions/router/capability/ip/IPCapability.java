@@ -69,8 +69,8 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void setIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of setIPv4 call");
-		
-		//copy of iface
+
+		// copy of iface
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
 		if (iface instanceof NetworkPort) {
@@ -78,7 +78,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
 		}
 
-		//copy of ipProtocolEndpoint
+		// copy of ipProtocolEndpoint
 		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
 		ipEndpoint.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
 		ipEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());

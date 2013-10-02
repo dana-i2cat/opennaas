@@ -2,9 +2,8 @@ package org.opennaas.extensions.roadm.wonesys.actionsets.actions.alarms;
 
 import java.util.Properties;
 
-import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
-import org.opennaas.extensions.roadm.wonesys.actionsets.Activator;
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
@@ -14,9 +13,9 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
+import org.opennaas.extensions.roadm.wonesys.actionsets.Activator;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.osgi.service.event.EventHandler;
 
 public class RegisterAsListenerAction extends Action {

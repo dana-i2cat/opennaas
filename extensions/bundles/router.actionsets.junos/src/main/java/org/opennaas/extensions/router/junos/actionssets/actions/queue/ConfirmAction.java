@@ -1,10 +1,5 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.queue;
 
-
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.CommitNetconfCommand;
-import org.opennaas.extensions.router.junos.commandsets.commands.UnlockNetconfCommand;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
@@ -12,6 +7,9 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.CommitNetconfCommand;
+import org.opennaas.extensions.router.junos.commandsets.commands.UnlockNetconfCommand;
 
 public class ConfirmAction extends JunosAction {
 
@@ -35,7 +33,7 @@ public class ConfirmAction extends JunosAction {
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
 
-			//TODO test unlock command
+			// TODO test unlock command
 			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
 			unlockCommand.initialize();
 			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);

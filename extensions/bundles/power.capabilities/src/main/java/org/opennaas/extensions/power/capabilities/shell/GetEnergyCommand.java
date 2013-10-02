@@ -5,7 +5,6 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.gim.model.energy.Energy;
-import org.opennaas.extensions.pdu.capability.IPDUPowerSupplyCapability;
 import org.opennaas.extensions.power.capabilities.IPowerSupplyCapability;
 
 @Command(scope = "power", name = "getEnergy", description = "Reads energy source of specified resource")

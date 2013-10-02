@@ -5,16 +5,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
-@XmlRootElement(namespace="http://www.craax.upc.edu/axis2/quagga_openapi")
+@XmlRootElement(namespace = "http://www.craax.upc.edu/axis2/quagga_openapi")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IPRequest {
-	
-	@XmlElement(name="name")
-	private String name;
-	
-	@XmlElement(name="ip")
-	private IPDataRequest ip;
+
+	@XmlElement(name = "name")
+	private String			name;
+
+	@XmlElement(name = "ip")
+	private IPDataRequest	ip;
 
 	public String getName() {
 		return name;

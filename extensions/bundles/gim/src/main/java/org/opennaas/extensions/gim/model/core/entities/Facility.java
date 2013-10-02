@@ -6,11 +6,10 @@ package org.opennaas.extensions.gim.model.core.entities;
  */
 public class Facility {
 
-	private int facilityID;
-	private int PUE;
+	private int	facilityID;
+	private int	PUE;
 
-
-	public Facility(){
+	public Facility() {
 
 	}
 

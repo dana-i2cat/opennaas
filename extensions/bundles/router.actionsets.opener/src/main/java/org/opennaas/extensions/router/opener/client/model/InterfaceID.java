@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InterfaceID {
-	
-	@XmlElement(name="name")
-	private String name;
+
+	@XmlElement(name = "name")
+	private String	name;
 
 	public String getName() {
 		return name;

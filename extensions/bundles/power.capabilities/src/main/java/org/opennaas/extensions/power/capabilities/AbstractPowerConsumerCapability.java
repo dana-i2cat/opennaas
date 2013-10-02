@@ -4,10 +4,10 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.pdu.capability.AbstractNotQueueingCapability;
 
 public abstract class AbstractPowerConsumerCapability extends AbstractNotQueueingCapability {
-	
+
 	protected String	powernetId;
 	protected String	consumerId;
-	
+
 	public AbstractPowerConsumerCapability(CapabilityDescriptor descriptor) {
 		super(descriptor);
 		this.powernetId = descriptor.getPropertyValue("powernet.id");
@@ -43,6 +43,5 @@ public abstract class AbstractPowerConsumerCapability extends AbstractNotQueuein
 	public void setConsumerId(String consumerId) {
 		this.consumerId = consumerId;
 	}
-	
 
 }

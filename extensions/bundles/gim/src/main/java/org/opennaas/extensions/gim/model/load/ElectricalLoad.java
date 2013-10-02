@@ -7,47 +7,47 @@ package org.opennaas.extensions.gim.model.load;
  */
 public class ElectricalLoad extends Load {
 
-	private double inputVoltage;
-	private double inputCurrent;
-	private double inputPower;
-	private double inputEnergy;
+	private double	inputVoltage;
+	private double	inputCurrent;
+	private double	inputPower;
+	private double	inputEnergy;
 
-	public ElectricalLoad(){
+	public ElectricalLoad() {
 
 	}
 
-	public void setVoltage(double voltage){
+	public void setVoltage(double voltage) {
 		inputVoltage = voltage;
 	}
-	
-	public void setCurrent(double current){
+
+	public void setCurrent(double current) {
 		inputCurrent = current;
 	}
-	
-	public void setPower(double power){
+
+	public void setPower(double power) {
 		inputPower = power;
 	}
-	
-	public void setEnergy(double energy){
+
+	public void setEnergy(double energy) {
 		inputEnergy = energy;
 	}
-	
-	public double getVoltage(){
+
+	public double getVoltage() {
 		return inputVoltage;
 	}
-	
-	public double getCurrent(){
+
+	public double getCurrent() {
 		return inputCurrent;
 	}
-	
-	public double getPower(){
+
+	public double getPower() {
 		return inputPower;
 	}
-	
-	public double getEnergy(){
+
+	public double getEnergy() {
 		return inputEnergy;
 	}
-	
+
 	public void finalize() throws Throwable {
 		super.finalize();
 	}

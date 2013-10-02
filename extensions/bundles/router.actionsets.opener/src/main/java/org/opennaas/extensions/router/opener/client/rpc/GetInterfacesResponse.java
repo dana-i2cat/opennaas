@@ -8,13 +8,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="getInterfaces", namespace="http://www.craax.upc.edu/axis2/quagga_openapi")
+@XmlRootElement(name = "getInterfaces", namespace = "http://www.craax.upc.edu/axis2/quagga_openapi")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GetInterfacesResponse {
-	
-	@XmlElementWrapper(name="interfaces")
-	@XmlElement(name="interface")
-	List<String> interfaces;
+
+	@XmlElementWrapper(name = "interfaces")
+	@XmlElement(name = "interface")
+	List<String>	interfaces;
 
 	public List<String> getInterfaces() {
 		return interfaces;

@@ -1,5 +1,6 @@
 package org.opennaas.extensions.router.junos.actionssets;
 
+import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.AddOSPFInterfaceInAreaAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ClearOSPFAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ConfigureOSPFAction;
@@ -9,8 +10,6 @@ import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ConfigureOS
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.GetOSPFConfigAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.RemoveOSPFAreaAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.RemoveOSPFInterfaceInAreaAction;
-
-import org.opennaas.core.resources.action.ActionSet;
 
 public class OSPFActionSet extends ActionSet {
 

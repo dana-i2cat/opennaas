@@ -20,12 +20,12 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 
 /**
  * 
- * @author Isart Canyameres Gimenez (i2cat) 
- *
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
  */
 @Path("/flows")
 public interface INCLProvisioner {
-	
+
 	/**
 	 * Allocates a flow.
 	 * 
@@ -38,11 +38,12 @@ public interface INCLProvisioner {
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public String allocateFlow(FlowRequest flowRequest) throws FlowAllocationException, ProvisionerException;
-	
+
 	/**
 	 * Updates already allocated flow having flowId. May cause re-allocating the flow.
 	 * 
-	 * @param flowId of flow to update
+	 * @param flowId
+	 *            of flow to update
 	 * @param updatedFlowRequest
 	 * @return flowId of allocated flow
 	 * @throws AllocationException
@@ -53,19 +54,21 @@ public interface INCLProvisioner {
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public String updateFlow(@PathParam("id") String flowId, FlowRequest updatedFlowRequest) throws FlowAllocationException, FlowNotFoundException, ProvisionerException;
-	
+	public String updateFlow(@PathParam("id") String flowId, FlowRequest updatedFlowRequest) throws FlowAllocationException, FlowNotFoundException,
+			ProvisionerException;
+
 	/**
 	 * Deallocates an allocated flow.
 	 * 
-	 * @param flowId id of flow to deallocate
+	 * @param flowId
+	 *            id of flow to deallocate
 	 * @throws FlowNotFoundException
 	 * @throws ProvisionerException
 	 */
 	@Path("/{id}")
 	@DELETE
 	public void deallocateFlow(@PathParam("id") String flowId) throws FlowNotFoundException, ProvisionerException;
-	
+
 	/**
 	 * Returns currently allocated flows.
 	 * 
@@ -75,6 +78,5 @@ public interface INCLProvisioner {
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public Collection<Flow> readAllocatedFlows() throws ProvisionerException;
-	
 
 }

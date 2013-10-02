@@ -1,8 +1,11 @@
 package org.opennaas.itests.router.shell;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,6 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalDevice;
@@ -39,6 +41,7 @@ import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStat
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.itests.router.helpers.ExistanceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;

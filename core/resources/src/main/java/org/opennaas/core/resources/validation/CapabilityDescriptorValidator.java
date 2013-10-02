@@ -10,25 +10,25 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-
 /**
  * Basic validation on the CapabilityDescriptor
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 public class CapabilityDescriptorValidator implements Validator
 {
-	Errors informationErrors = null;
-	Errors descriptorErrors = null;
+	Errors	informationErrors	= null;
+	Errors	descriptorErrors	= null;
 
 	public boolean supports(Class<?> clazz) {
 		return CapabilityDescriptor.class.isAssignableFrom(clazz);
 	}
 
 	/**
-	 * validate the object. This is a conveinence method to calling the validate(Obj, Errors) method of the
-	 * Validator interface so the calling class doesn't have to supply it's own Errors object
+	 * validate the object. This is a conveinence method to calling the validate(Obj, Errors) method of the Validator interface so the calling class
+	 * doesn't have to supply it's own Errors object
+	 * 
 	 * @param obj
 	 */
 	public void validate(Object obj) {

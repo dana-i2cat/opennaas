@@ -6,12 +6,12 @@ import org.opennaas.extensions.power.capabilities.driver.ConsumerDriverInstantia
 
 public class PowerManagementCapability extends AbstractPowerConsumerCapability implements IPowerManagementCapability {
 
-	public static String					CAPABILITY_TYPE	= "consumer_pw_mgt";
-	
-	private String							resourceId		= "";
-	
-	private IPowerManagementController driver;
-	
+	public static String				CAPABILITY_TYPE	= "consumer_pw_mgt";
+
+	private String						resourceId		= "";
+
+	private IPowerManagementController	driver;
+
 	public PowerManagementCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
@@ -45,9 +45,7 @@ public class PowerManagementCapability extends AbstractPowerConsumerCapability i
 	public void resyncModel() throws Exception {
 		// Nothing to do
 	}
-	
-	
-	
+
 	private IPowerManagementController getDriver() throws Exception {
 		// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
 		if (driver == null)

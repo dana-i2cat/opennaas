@@ -13,5 +13,5 @@ public class TaggedEthernetLayer extends Layer {
 	public String getName() {
 		return name;
 	}
-	
+
 }

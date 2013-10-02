@@ -11,7 +11,7 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
 @Path("/")
 public interface IPowerMonitoringCapability extends ICapability {
-	
+
 	/**
 	 * 
 	 * @return return current MeasuredLoad.

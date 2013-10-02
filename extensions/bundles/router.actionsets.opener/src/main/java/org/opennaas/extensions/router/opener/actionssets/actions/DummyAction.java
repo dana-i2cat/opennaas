@@ -6,8 +6,9 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 
 /**
  * An Action returning OK. It does nothing.
+ * 
  * @author isart
- *
+ * 
  */
 public class DummyAction extends OpenerAction {
 
@@ -18,7 +19,7 @@ public class DummyAction extends OpenerAction {
 		ActionResponse response = new ActionResponse();
 		response.setActionID("DUMMY");
 		response.setStatus(ActionResponse.STATUS.OK);
-		
+
 		return response;
 	}
 

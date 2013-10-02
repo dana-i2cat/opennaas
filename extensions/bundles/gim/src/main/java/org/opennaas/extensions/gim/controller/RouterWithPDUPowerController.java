@@ -10,9 +10,9 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 
 public class RouterWithPDUPowerController extends AbstractPowerController {
 
-	private IConsumerController	consumerController;
-	private String				consumerId;
-	private AbstractPDUPowerController		pduController;
+	private IConsumerController			consumerController;
+	private String						consumerId;
+	private AbstractPDUPowerController	pduController;
 
 	/**
 	 * @return the consumerController
@@ -64,7 +64,7 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 		// causes pdu to update model with current values
 		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
 		for (PowerReceptor receptor : receptors) {
-			//ignore not attached receptors
+			// ignore not attached receptors
 			if (receptor.getAttachedTo() != null) {
 				pduController.getCurrentPowerMetrics(receptor.getAttachedTo().getId());
 			}
@@ -81,10 +81,10 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 
 	@Override
 	public boolean getPowerStatus() throws Exception {
-		//ask pdu for current power status (don't trust last read status)
+		// ask pdu for current power status (don't trust last read status)
 		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
 		for (PowerReceptor receptor : receptors) {
-			//ignore not attached receptors
+			// ignore not attached receptors
 			if (receptor.getAttachedTo() != null) {
 				pduController.getPowerStatus(receptor.getAttachedTo().getId());
 			}
@@ -96,7 +96,7 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 	public boolean powerOn() throws Exception {
 		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
 		for (PowerReceptor receptor : receptors) {
-			//ignore not attached receptors
+			// ignore not attached receptors
 			if (receptor.getAttachedTo() != null) {
 				pduController.powerOn(receptor.getAttachedTo().getId());
 			}
@@ -108,7 +108,7 @@ public class RouterWithPDUPowerController extends AbstractPowerController {
 	public boolean powerOff() throws Exception {
 		List<PowerReceptor> receptors = consumerController.getPowerReceptors(getConsumerId());
 		for (PowerReceptor receptor : receptors) {
-			//ignore not attached receptors
+			// ignore not attached receptors
 			if (receptor.getAttachedTo() != null) {
 				pduController.powerOff(receptor.getAttachedTo().getId());
 			}

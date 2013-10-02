@@ -5,8 +5,6 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
-import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
-
 
 @Command(scope = "gim", name = "deleteConsumer", description = "Deletes a power consumer")
 public class DeleteConsumerCommand extends GenericKarafCommand {
