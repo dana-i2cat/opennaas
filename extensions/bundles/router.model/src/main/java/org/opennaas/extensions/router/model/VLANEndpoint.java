@@ -24,7 +24,7 @@ public class VLANEndpoint extends ProtocolEndpoint implements Serializable {
 	 * 
 	 */
 	private static final long	serialVersionUID	= 2489810476171193958L;
-	private int	vlanID;
+	private int					vlanID;
 
 	public void setVlanID(int vlanID) {
 		this.vlanID = vlanID;

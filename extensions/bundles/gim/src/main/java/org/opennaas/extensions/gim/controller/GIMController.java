@@ -88,7 +88,7 @@ public class GIMController {
 
 		return log.getMeasuredLoads().get(log.getMeasuredLoads().size() - 1);
 	}
-	
+
 	public static List<PowerSource> getConsumerAttachedSources(PowerConsumer consumer) {
 		List<PowerSource> sources = new ArrayList<PowerSource>();
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {

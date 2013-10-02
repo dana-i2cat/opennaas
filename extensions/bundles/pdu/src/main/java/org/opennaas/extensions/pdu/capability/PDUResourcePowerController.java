@@ -13,8 +13,8 @@ import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
 import org.opennaas.extensions.pdu.model.PDUModel;
 
 public class PDUResourcePowerController extends AbstractPDUPowerController {
-	
-	private IResource pduResource;
+
+	private IResource	pduResource;
 
 	public IResource getPduResource() {
 		return pduResource;
@@ -70,7 +70,7 @@ public class PDUResourcePowerController extends AbstractPDUPowerController {
 	@Override
 	public List<PDUPort> listPorts() throws Exception {
 		List<PowerSource> ports = ((PDUModel) pduResource.getModel()).getPdu().getPowerSources();
-		//TODO 
+		// TODO
 		return null;
 	}
 

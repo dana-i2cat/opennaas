@@ -8,7 +8,7 @@ import org.opennaas.core.resources.capability.ICapability;
 
 @Path("/")
 public interface IPowerManagementCapability extends ICapability {
-	
+
 	/**
 	 * 
 	 * @return true if power is on, false otherwise.

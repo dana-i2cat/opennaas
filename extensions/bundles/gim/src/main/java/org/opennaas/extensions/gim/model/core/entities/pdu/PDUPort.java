@@ -35,7 +35,8 @@ public class PDUPort extends PowerSource {
 	}
 
 	/**
-	 * @param outletIndex the outletIndex to set
+	 * @param outletIndex
+	 *            the outletIndex to set
 	 */
 	public void setOutletIndex(int outletIndex) {
 		this.outletIndex = outletIndex;

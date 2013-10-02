@@ -9,7 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -21,9 +20,7 @@ import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
@@ -37,12 +34,12 @@ import org.xml.sax.SAXException;
  */
 @Command(scope = "resource", name = "create", description = "Create one or more resources from a given descriptor")
 public class CreateResourceCommand extends GenericKarafCommand {
-	private final String NAME_SCHEMA = "/descriptor.xsd";
+	private final String	NAME_SCHEMA	= "/descriptor.xsd";
 
 	@Argument(index = 0, name = "paths or urls", description = "A space delimited list of file paths or urls to resource descriptors ", required = true, multiValued = true)
-	private List<String> paths;
+	private List<String>	paths;
 	@Option(name = "--profile", aliases = { "-p" }, description = "Allows explicit declaration of profile to be used")
-	String profileName;
+	String					profileName;
 
 	@Override
 	protected Object doExecute() throws Exception {

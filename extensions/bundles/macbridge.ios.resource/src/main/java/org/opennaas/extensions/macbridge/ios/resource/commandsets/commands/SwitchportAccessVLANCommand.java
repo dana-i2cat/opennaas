@@ -6,9 +6,9 @@ import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 
 public class SwitchportAccessVLANCommand extends IOSCommand {
 
-	private int vlanID = 0;
-	private boolean flag = false;
-	
+	private int		vlanID	= 0;
+	private boolean	flag	= false;
+
 	public SwitchportAccessVLANCommand(int vlanID, boolean flag) {
 		this.vlanID = vlanID;
 		this.flag = flag;
@@ -23,16 +23,16 @@ public class SwitchportAccessVLANCommand extends IOSCommand {
 	public String getCommand() {
 		String command = null;
 
-		if (flag){
+		if (flag) {
 			command = "no ";
-		}else{
+		} else {
 			command = "";
 		}
 
 		command = command + "switchport access vlan " + vlanID;
 		return command;
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

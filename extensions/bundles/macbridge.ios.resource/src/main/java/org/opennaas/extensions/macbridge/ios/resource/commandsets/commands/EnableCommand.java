@@ -12,14 +12,14 @@ public class EnableCommand extends IOSCommand {
 	@Override
 	public void initialize() throws CommandException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public String getCommand() {
 		return "enable";
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

@@ -5,7 +5,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
 /**
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 public class CapabilityException extends ResourceException {
 	private static final long		serialVersionUID	= 1522408034870437847L;

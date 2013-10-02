@@ -1,7 +1,7 @@
 package org.opennaas.extensions.roadm.wonesys.commandsets.commands.opm;
 
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
 import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
 
 public class GetPowerOSNR extends WonesysCommand {
 

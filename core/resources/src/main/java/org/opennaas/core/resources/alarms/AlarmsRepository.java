@@ -7,12 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ResourceNotFoundException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -30,7 +29,7 @@ public class AlarmsRepository implements IAlarmsRepository, EventHandler {
 
 	/**
 	 * Blueprint callback (executed when EventManager is available)
-	 *
+	 * 
 	 * @param eventManager
 	 */
 	public void setEventManager(IEventManager eventManager) {

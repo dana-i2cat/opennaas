@@ -196,7 +196,6 @@ public class IPUtilsHelper {
 		return (validateIPv6Address(ipAddress) || validateIpAddressPattern(ipAddress));
 	}
 
-
 	// TODO test for simplified addresses
 	public static String parseShortToLongIPv6Prefix(String address, short prefix) {
 		if (!validateIpAddressPattern(address) && (validateIPv6Address(address)) && (validateIPv6Prefix(prefix))) {

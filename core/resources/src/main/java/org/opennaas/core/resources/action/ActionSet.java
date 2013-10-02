@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-@SuppressWarnings({ })
+@SuppressWarnings({})
 public class ActionSet implements IActionSet {
 	public String								actionsetId		= null;
 

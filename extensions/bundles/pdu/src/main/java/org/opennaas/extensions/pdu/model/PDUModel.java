@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.SerializationException;
-
 import org.opennaas.extensions.gim.model.core.entities.pdu.PDU;
 
 /**
@@ -19,11 +18,11 @@ public class PDUModel implements IModel {
 	 * 
 	 */
 	private static final long	serialVersionUID	= -4002472167559948067L;
-	
+
 	/**
 	 * A live reference to the PDU in GIM model
 	 */
-	private PDU pdu;
+	private PDU					pdu;
 
 	public PDU getPdu() {
 		return pdu;

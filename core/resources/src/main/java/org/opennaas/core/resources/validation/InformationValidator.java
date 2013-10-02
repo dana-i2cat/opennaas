@@ -5,11 +5,11 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-
 /**
  * Validate that the Information Object has the mandatory fields initialized
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 public class InformationValidator implements Validator
 {

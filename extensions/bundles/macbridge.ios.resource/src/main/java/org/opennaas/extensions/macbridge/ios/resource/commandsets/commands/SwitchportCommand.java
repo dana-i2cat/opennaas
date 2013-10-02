@@ -6,8 +6,8 @@ import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 
 public class SwitchportCommand extends IOSCommand {
 
-	private boolean flag = false;
-	
+	private boolean	flag	= false;
+
 	public SwitchportCommand(boolean flag) {
 		this.flag = flag;
 	}
@@ -20,18 +20,18 @@ public class SwitchportCommand extends IOSCommand {
 	@Override
 	public String getCommand() {
 		String command = null;
-		
-		if (!flag){
+
+		if (!flag) {
 			command = "no ";
-		}else{
+		} else {
 			command = "";
 		}
 
 		command = command + "switchport";
-		
+
 		return command;
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

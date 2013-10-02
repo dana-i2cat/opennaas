@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+	<!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
+	<cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+
+	<!-- NCL Provisioner Mockup -->
+	<bean id="nclProvisionerMockup" class="org.opennaas.extensions.ofertie.ncl.provisioner.mockup.NCLProvisionerMockup"/>
+	<service ref="nclProvisionerMockup" interface="org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner">
+		<service-properties>
+			<!-- Rest -->
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="service.exported.intents" value="HTTP"/>
+			<entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/ofertie/mockup/ncl"/>
+			<entry key="org.apache.cxf.rs.address" value="/"/>
+			<entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
+		</service-properties>
+	</service>
+	
+	<!-- Get a reference to OpenNaaS resource manager service -->
+	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
+	
+	<!-- Instantiate NCLProvisioner components -->
+	<bean id="qosPDP" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.QoSPDPMockup"/>
+	<bean id="pathFinder" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.PathFinderMockup"/>
+	<bean id="networkSelector" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+	<bean id="nclController" class="org.opennaas.extensions.ofertie.ncl.controller.NCLController"/>
+	
+	<!-- Instantiate NCLProvisioner and publish it -->
+	<bean id="nclProvisioner" class="org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner">
+		<property name="qoSPDP" ref="qosPDP" />
+		<property name="pathFinder" ref="pathFinder" />
+		<property name="networkSelector" ref="networkSelector" />
+		<property name="nclController" ref="nclController" />
+	</bean>
+	<service ref="nclProvisioner" interface="org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner">
+		<service-properties>
+			<!-- Rest -->
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="service.exported.intents" value="HTTP"/>
+			<entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/ofertie/ncl"/>
+			<entry key="org.apache.cxf.rs.address" value="/"/>
+			<entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
+		</service-properties>
+	</service>
+</blueprint>

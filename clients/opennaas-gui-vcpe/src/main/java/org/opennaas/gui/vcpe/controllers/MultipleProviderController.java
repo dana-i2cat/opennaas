@@ -96,6 +96,22 @@ public class MultipleProviderController extends VCPENetworkController {
 	}
 
 	/**
+	 * Update a multiple provider VCPE Network (admin user)
+	 * 
+	 * @param singleProviderLogical
+	 * @param result
+	 * @param model
+	 * @param locale
+	 * @return
+	 * @throws RestServiceException
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/multipleProvider/update")
+	public String updateAdmin(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
+			BindingResult result, Model model, Locale locale, HttpSession session) {
+		return update(logical, result, model, locale, session);
+	}
+
+	/**
 	 * Update a multiple provider VCPE Network
 	 * 
 	 * @param singleProviderLogical

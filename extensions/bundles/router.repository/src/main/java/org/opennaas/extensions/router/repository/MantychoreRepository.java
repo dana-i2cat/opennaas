@@ -1,16 +1,14 @@
 package org.opennaas.extensions.router.repository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.Activator;
-import org.opennaas.core.resources.CorruptStateException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceRepository;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class MantychoreRepository extends ResourceRepository {
 
@@ -30,7 +28,7 @@ public class MantychoreRepository extends ResourceRepository {
 			if (sessionManager.getRegisteredContexts().isEmpty()) {
 				String name = resource.getResourceDescriptor().getInformation().getName();
 				String type = resource.getResourceDescriptor().getInformation().getType();
-				String resourceId = type+":"+name;
+				String resourceId = type + ":" + name;
 				throw new ResourceException(
 						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
 			}
@@ -61,6 +59,5 @@ public class MantychoreRepository extends ResourceRepository {
 		IProtocolManager protocolManager = Activator.getProtocolManagerService();
 		return protocolManager.getProtocolSessionManager(resourceId);
 	}
-
 
 }

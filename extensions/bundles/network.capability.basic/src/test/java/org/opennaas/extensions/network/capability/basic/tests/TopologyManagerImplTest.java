@@ -1,22 +1,19 @@
 package org.opennaas.extensions.network.capability.basic.tests;
 
-import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapabilityFactory;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
-
-import junit.framework.TestCase;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 
 public class TopologyManagerImplTest extends TestCase {
 
-	INetworkBasicCapability topologyManager;
+	INetworkBasicCapability	topologyManager;
 
-	IResource network;
-	IResource router1;
-	IResource router2;
+	IResource				network;
+	IResource				router1;
+	IResource				router2;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -37,56 +34,57 @@ public class TopologyManagerImplTest extends TestCase {
 	public void testAddResource() {
 		// TODO
 	}
-//
-//	@Test
-//	public void addResourceTwiceTest() {
-//
-//	}
-//
-//	@Test
-//	public void addResourcesTest() {
-//
-//	}
-//
-//	@Test
-//	public void removeResourceTest() {
-//
-//	}
-//
-//	@Test
-//	public void removeUnexistentResourceTest() {
-//
-//	}
-//
-//	@Test
-//	public void L2AttachInterfacesTest() {
-//
-//	}
-//
-//	@Test
-//	public void L2AttachInterfacesTwiceTest() {
-//
-//	}
-//
-//	@Test
-//	public void L2AttachUnexistentInterfacesTest() {
-//
-//	}
-//
-//	@Test
-//	public void L2DetachInterfacesTest() {
-//
-//	}
-//
-//	@Test
-//	public void L2DetachUnexistentInterfacesTest() {
-//
-//	}
-//
-//	@Test
-//	public void L2DetachUnattachedInterfacesTest() {
-//
-//	}
+
+	//
+	// @Test
+	// public void addResourceTwiceTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void addResourcesTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void removeResourceTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void removeUnexistentResourceTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void L2AttachInterfacesTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void L2AttachInterfacesTwiceTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void L2AttachUnexistentInterfacesTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void L2DetachInterfacesTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void L2DetachUnexistentInterfacesTest() {
+	//
+	// }
+	//
+	// @Test
+	// public void L2DetachUnattachedInterfacesTest() {
+	//
+	// }
 
 	private INetworkBasicCapability createNetworkBasicCapability(IResource network) throws CapabilityException {
 		// NetworkBasicCapability capab = (NetworkBasicCapability) new NetworkBasicCapabilityFactory().create(network);

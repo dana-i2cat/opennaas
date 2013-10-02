@@ -6,9 +6,9 @@ import org.opennaas.core.events.EventFilter;
 
 /**
  * Filter matching wonesys alarms
- *
+ * 
  * @author isart
- *
+ * 
  */
 public class WonesysAlarmEventFilter extends EventFilter {
 
@@ -23,7 +23,7 @@ public class WonesysAlarmEventFilter extends EventFilter {
 
 	/**
 	 * Constructor of filters matching wonesys alarms with specified properties
-	 *
+	 * 
 	 * @param propertiesFilter
 	 */
 	public WonesysAlarmEventFilter(String propertiesFilter) {
@@ -32,7 +32,7 @@ public class WonesysAlarmEventFilter extends EventFilter {
 
 	/**
 	 * Constructor of filters matching wonesys alarms with specified properties
-	 *
+	 * 
 	 * @param propertiesFilter
 	 */
 	public WonesysAlarmEventFilter(Properties properties) {

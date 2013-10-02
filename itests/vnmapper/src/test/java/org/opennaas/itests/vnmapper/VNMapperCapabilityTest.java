@@ -58,6 +58,8 @@ import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -91,6 +93,14 @@ public class VNMapperCapabilityTest {
 
 	IResource						networkResource;
 	IResource						vnmapperResource;
+
+	/**
+	 * Make sure blueprint for org.opennaas.extensions.vnmapper bundle has finished its initialization
+	 */
+	@SuppressWarnings("unused")
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.vnmapper)", timeout = 20000)
+	private BlueprintContainer		vnMapperBlueprintContainer;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -1285,7 +1295,6 @@ public class VNMapperCapabilityTest {
 	@Test
 	@Ignore
 	public void overloadLinkCapacityTest() throws Exception {
-
 
 		networkResource.setModel(loadNetworkTopologyFromFile("/inputs/sample10/topology.xml"));
 

@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import net.i2cat.netconf.rpc.Reply;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.GetOSPFConfigAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -12,11 +17,6 @@ import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
-import net.i2cat.netconf.rpc.Reply;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.opennaas.core.resources.action.ActionException;
 
 public class GetOSPFConfigActionTest {
 

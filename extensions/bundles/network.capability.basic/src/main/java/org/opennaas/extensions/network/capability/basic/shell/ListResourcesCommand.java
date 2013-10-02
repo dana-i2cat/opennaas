@@ -1,14 +1,12 @@
 package org.opennaas.extensions.network.capability.basic.shell;
 
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
 
 @Command(scope = "net", name = "listResources", description = "List resource of the network")
 public class ListResourcesCommand extends GenericKarafCommand {
