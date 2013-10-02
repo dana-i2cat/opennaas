@@ -40,7 +40,7 @@ public class OpenflowResourceRepositoryIntegrationTest {
 	 * Make sure blueprint for org.opennaas.extensions.opernflowswitch bundle has finished its initialization
 	 */
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)", timeout = 20000)
 	private BlueprintContainer	blueprintContainer;
 
 	@Inject

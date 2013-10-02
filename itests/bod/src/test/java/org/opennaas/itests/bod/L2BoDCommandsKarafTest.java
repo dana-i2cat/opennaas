@@ -81,11 +81,11 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 	private ProtocolSessionManager	protocolSessionManager;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)", timeout = 20000)
 	private BlueprintContainer		bodCapabilityService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)", timeout = 20000)
 	private BlueprintContainer		bodRepositoryService;
 
 	private IResource				resource;

@@ -71,11 +71,11 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 	private IProtocolManager	protocolManager;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.connections)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.connections)", timeout = 20000)
 	private BlueprintContainer	connectionService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)", timeout = 20000)
 	private BlueprintContainer	wonesysProtocolService;
 
 	String						resourceName	= "pedrosa";
