@@ -45,7 +45,8 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		}
 	}
 
-	private static Filter createFilterVRRPActionSet(String capabilityName, String actionsetName, String actionsetVersion) throws InvalidSyntaxException {
+	private static Filter createFilterVRRPActionSet(String capabilityName, String actionsetName, String actionsetVersion)
+			throws InvalidSyntaxException {
 		Properties properties = new Properties();
 		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, capabilityName);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, actionsetName);

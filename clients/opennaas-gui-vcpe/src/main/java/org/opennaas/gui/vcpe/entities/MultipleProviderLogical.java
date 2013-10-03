@@ -28,7 +28,8 @@ public class MultipleProviderLogical extends LogicalInfrastructure {
 	}
 
 	/**
-	 * @param providerNetwork1 the providerNetwork1 to set
+	 * @param providerNetwork1
+	 *            the providerNetwork1 to set
 	 */
 	public void setProviderNetwork1(Network providerNetwork1) {
 		this.providerNetwork1 = providerNetwork1;
@@ -42,7 +43,8 @@ public class MultipleProviderLogical extends LogicalInfrastructure {
 	}
 
 	/**
-	 * @param providerNetwork2 the providerNetwork2 to set
+	 * @param providerNetwork2
+	 *            the providerNetwork2 to set
 	 */
 	public void setProviderNetwork2(Network providerNetwork2) {
 		this.providerNetwork2 = providerNetwork2;
@@ -56,7 +58,8 @@ public class MultipleProviderLogical extends LogicalInfrastructure {
 	}
 
 	/**
-	 * @param clientNetwork the clientNetwork to set
+	 * @param clientNetwork
+	 *            the clientNetwork to set
 	 */
 	public void setClientNetwork(Network clientNetwork) {
 		this.clientNetwork = clientNetwork;
@@ -70,7 +73,8 @@ public class MultipleProviderLogical extends LogicalInfrastructure {
 	}
 
 	/**
-	 * @param providerLR1 the providerLR1 to set
+	 * @param providerLR1
+	 *            the providerLR1 to set
 	 */
 	public void setProviderLR1(LogicalRouter providerLR1) {
 		this.providerLR1 = providerLR1;
@@ -84,7 +88,8 @@ public class MultipleProviderLogical extends LogicalInfrastructure {
 	}
 
 	/**
-	 * @param providerLR2 the providerLR2 to set
+	 * @param providerLR2
+	 *            the providerLR2 to set
 	 */
 	public void setProviderLR2(LogicalRouter providerLR2) {
 		this.providerLR2 = providerLR2;
@@ -98,7 +103,8 @@ public class MultipleProviderLogical extends LogicalInfrastructure {
 	}
 
 	/**
-	 * @param clientLR the clientLR to set
+	 * @param clientLR
+	 *            the clientLR to set
 	 */
 	public void setClientLR(LogicalRouter clientLR) {
 		this.clientLR = clientLR;

@@ -41,7 +41,7 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		List<Energy> energies = new ArrayList<Energy>(consumer.getPowerReceptors().size());
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			//ignore not attached receptors computation will be done with attached ones
+			// ignore not attached receptors computation will be done with attached ones
 			if (receptor.getAttachedTo() != null) {
 				energies.add(getReceptorEnergy(consumerId, receptor.getId()));
 			}
@@ -54,7 +54,7 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		List<Double> prices = new ArrayList<Double>(consumer.getPowerReceptors().size());
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			//ignore not attached receptors computation will be done with attached ones
+			// ignore not attached receptors computation will be done with attached ones
 			if (receptor.getAttachedTo() != null) {
 				prices.add(getReceptorEnergyPrice(consumerId, receptor.getId()));
 			}
@@ -68,7 +68,7 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		boolean powerStatus = false;
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			//ignore not attached receptors computation will be done with attached ones
+			// ignore not attached receptors computation will be done with attached ones
 			if (receptor.getAttachedTo() != null) {
 				if (getReceptorPowerStatus(consumerId, receptor.getId())) {
 					powerStatus = true;
@@ -86,7 +86,7 @@ public class BasicConsumerController implements IConsumerController {
 	public void powerOn(String consumerId) throws ModelElementNotFoundException, Exception {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			//ignore not attached receptors 
+			// ignore not attached receptors
 			if (receptor.getAttachedTo() != null) {
 				powerOnReceptor(consumerId, receptor.getId());
 			}
@@ -100,7 +100,7 @@ public class BasicConsumerController implements IConsumerController {
 	public void powerOff(String consumerId) throws ModelElementNotFoundException, Exception {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			//ignore not attached receptors 
+			// ignore not attached receptors
 			if (receptor.getAttachedTo() != null) {
 				powerOffReceptor(consumerId, receptor.getId());
 			}
@@ -112,7 +112,7 @@ public class BasicConsumerController implements IConsumerController {
 		PowerConsumer consumer = GIMController.getPowerConsumer(model, consumerId);
 		List<MeasuredLoad> receptorMetrics = new ArrayList<MeasuredLoad>(consumer.getPowerReceptors().size());
 		for (PowerReceptor receptor : consumer.getPowerReceptors()) {
-			//ignore not attached receptors 
+			// ignore not attached receptors
 			if (receptor.getAttachedTo() != null) {
 				receptorMetrics.add(getReceptorCurrentPowerMetrics(consumerId, receptor.getId()));
 			}

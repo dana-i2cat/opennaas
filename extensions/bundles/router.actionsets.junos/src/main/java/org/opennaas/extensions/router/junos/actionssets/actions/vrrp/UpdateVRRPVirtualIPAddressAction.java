@@ -61,6 +61,11 @@ public class UpdateVRRPVirtualIPAddressAction extends JunosAction {
 
 	}
 
+	/**
+	 * Required params: A VRRPProtocolEndpoint with - getService() being a VRRPGroup - getProtocolIFType set to ProtocolIFType.IPV4 or to
+	 * ProtocolIFType.IPV6 - getBindedProtocolEndpoints containing a single IPProtocolEndpoint (protocolEndpoint) - protocolEndpoint
+	 * getProtocolIFType() set to VRRPProtocolEndpoint.getProtocolIFType() - protocolEndpoint.getLogicalPorts() containing a single NetworkPort
+	 */
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		if (params == null) {

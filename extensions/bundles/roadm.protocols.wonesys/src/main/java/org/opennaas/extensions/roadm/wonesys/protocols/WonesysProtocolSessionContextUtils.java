@@ -72,7 +72,7 @@ public class WonesysProtocolSessionContextUtils {
 			throw new ProtocolException("Invalid ProtocolSessionContext. It should contain a protocol uri.");
 		}
 
-		//check if URIs query contains mock=true
+		// check if URIs query contains mock=true
 		try {
 
 			URI uri = new URI(uriStr);
@@ -88,7 +88,7 @@ public class WonesysProtocolSessionContextUtils {
 
 				Map<String, String> queryParams = getQueryMap(query);
 
-				if (queryParams.containsKey("mock")){
+				if (queryParams.containsKey("mock")) {
 					return queryParams.get("mock").equals("true");
 				}
 			}
@@ -99,21 +99,19 @@ public class WonesysProtocolSessionContextUtils {
 		}
 	}
 
-
 	private static Map<String, String> getQueryMap(String query) {
-	    String[] params = query.split("&");
-	    Map<String, String> map = new HashMap<String, String>();
-	    for (String param : params)
-	    {
-	    	String[] nameValue = param.split("=");
-	    	if (nameValue.length == 2) {
-	    		String name = nameValue[0];
-		        String value = nameValue[1];
-		        map.put(name, value);
-	    	}
-	    }
-	    return map;
+		String[] params = query.split("&");
+		Map<String, String> map = new HashMap<String, String>();
+		for (String param : params)
+		{
+			String[] nameValue = param.split("=");
+			if (nameValue.length == 2) {
+				String name = nameValue[0];
+				String value = nameValue[1];
+				map.put(name, value);
+			}
+		}
+		return map;
 	}
-
 
 }

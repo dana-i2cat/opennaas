@@ -7,20 +7,20 @@ import org.junit.Test;
 import org.opennaas.extensions.transports.virtual.VirtualTransport;
 
 public class VirtualTransportTest {
-	
-	private static VirtualTransport virtualTransport = null;
-	
+
+	private static VirtualTransport	virtualTransport	= null;
+
 	@BeforeClass
-	public static void setUp(){
-		try{
+	public static void setUp() {
+		try {
 			virtualTransport = new VirtualTransport(new MockVirtualTransportProvider());
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	@Test
-	public void testStreamTransport(){
+	public void testStreamTransport() {
 		String request = "ACT-USER::admin:::opterasm";
 		try {
 			virtualTransport.send(request.toCharArray());
@@ -30,9 +30,9 @@ public class VirtualTransportTest {
 			Assert.assertNotNull(null);
 		}
 	}
-	
+
 	@Test
-	public void testMessageTransport(){
+	public void testMessageTransport() {
 		String request = "ACT-USER::admin:::opterasm";
 		try {
 			Object response = virtualTransport.sendMessage(request);

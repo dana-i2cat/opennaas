@@ -9,7 +9,6 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.gim.model.load.MeasuredLoad;
 import org.opennaas.extensions.gim.model.log.PowerMonitorLog;
-import org.opennaas.extensions.pdu.capability.IPDUPowerMonitoringIDsCapability;
 import org.opennaas.extensions.power.capabilities.IPowerMonitoringCapability;
 
 @Command(scope = "power", name = "getPowerMetricsLog", description = "Reads power metrics from specified consumer")
@@ -33,7 +32,7 @@ public class GetPowerMetricsLogCommand extends GenericKarafCommand {
 
 		IResource resource = getResourceFromFriendlyName(resourceId);
 		PowerMonitorLog log = ((IPowerMonitoringCapability) resource.getCapabilityByInterface(IPowerMonitoringCapability.class))
-				.getPowerMetricsByTimeRange( dateFormat.parse(from), dateFormat.parse(to));
+				.getPowerMetricsByTimeRange(dateFormat.parse(from), dateFormat.parse(to));
 
 		printLog(log);
 

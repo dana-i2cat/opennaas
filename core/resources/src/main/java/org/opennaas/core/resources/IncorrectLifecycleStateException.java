@@ -4,7 +4,7 @@ import org.opennaas.core.resources.ILifecycle.State;
 
 /**
  * Indicates an operation has not been executed because target is not in an appropiated state.
- *
+ * 
  * @author isart
  */
 public class IncorrectLifecycleStateException extends Exception {
@@ -12,8 +12,8 @@ public class IncorrectLifecycleStateException extends Exception {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 1L;
-	State	resourceState;
+	private static final long	serialVersionUID	= 1L;
+	State						resourceState;
 
 	public IncorrectLifecycleStateException() {
 		super();

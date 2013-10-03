@@ -15,17 +15,17 @@ public class DeleteVLANConfigCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to delete the VLAN configuration on", required = true, multiValued = false)
 	private String	resourceId;
-	
+
 	@Argument(index = 1, name = "vlanID", description = "ID of the VLAN", required = true, multiValued = false)
-	private int	vlanID;
-	
+	private int		vlanID;
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Delete VLAN Configuration ");
 		try {
 			IResource macBridge = getResourceFromFriendlyName(resourceId);
-			IVLANAwareBridgeCapability vlanAwareBridgeCapability = 
-				(IVLANAwareBridgeCapability) macBridge.getCapabilityByInterface(IVLANAwareBridgeCapability.class);
+			IVLANAwareBridgeCapability vlanAwareBridgeCapability =
+					(IVLANAwareBridgeCapability) macBridge.getCapabilityByInterface(IVLANAwareBridgeCapability.class);
 			vlanAwareBridgeCapability.deleteVLANConfiguration(vlanID);
 		} catch (ResourceException e) {
 			printError(e);

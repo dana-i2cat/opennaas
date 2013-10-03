@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.22</version>
+        <version>0.23</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -22,6 +22,8 @@
 		<module>vcpe</module>
 		<module>vnmapper</module>
 		<module>security</module>
+		<module>openflowswitch</module>
+		<module>ofertie.ncl</module>
 	</modules>
 
 	<dependencies>

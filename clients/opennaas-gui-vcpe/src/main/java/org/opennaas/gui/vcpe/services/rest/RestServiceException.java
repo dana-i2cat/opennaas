@@ -3,7 +3,6 @@
  */
 package org.opennaas.gui.vcpe.services.rest;
 
-
 /**
  * @author Jordi
  */

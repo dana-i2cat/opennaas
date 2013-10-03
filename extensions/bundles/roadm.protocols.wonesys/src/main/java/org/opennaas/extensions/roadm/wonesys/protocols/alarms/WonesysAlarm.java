@@ -1,7 +1,6 @@
 package org.opennaas.extensions.roadm.wonesys.protocols.alarms;
 
 import java.util.Map;
-import java.util.Properties;
 
 import org.opennaas.core.resources.alarms.SessionAlarm;
 

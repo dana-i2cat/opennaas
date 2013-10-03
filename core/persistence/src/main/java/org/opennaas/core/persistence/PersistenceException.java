@@ -1,10 +1,11 @@
 package org.opennaas.core.persistence;
+
 /**
- *
+ * 
  * @author Valery Abu-Eid (Dynamic Java.org)
  */
 public class PersistenceException extends RuntimeException {
-	private String persistenceUnit;
+	private String	persistenceUnit;
 
 	public PersistenceException() {
 		super();
@@ -29,6 +30,7 @@ public class PersistenceException extends RuntimeException {
 	public void setPersistenceUnit(String persistenceUnit) {
 		this.persistenceUnit = persistenceUnit;
 	}
-	private static final long serialVersionUID = ("urn:" + PersistenceException.class.getName()).hashCode();
+
+	private static final long	serialVersionUID	= ("urn:" + PersistenceException.class.getName()).hashCode();
 
 }

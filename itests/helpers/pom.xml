@@ -3,7 +3,7 @@
     <!-- Skip /itests/pom.xml and use root's as parent to avoid cyclic dependency on platform -->
     <artifactId>opennaas</artifactId>
     <groupId>org.opennaas</groupId>
-    <version>0.22</version>
+    <version>0.23</version>
     <relativePath>../..</relativePath>
   </parent>
 

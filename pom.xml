@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.22</version>
+	<version>0.23</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -46,7 +46,7 @@
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
-		<cxf.dosgi.version>1.4.0</cxf.dosgi.version>
+		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -72,7 +72,7 @@
 		<karaf.version>2.2.2-fuse-04-06</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
-		<netconf4j.version>0.0.3</netconf4j.version>
+		<netconf4j.version>0.0.4</netconf4j.version>
 		<nmr.version>1.5.1-fuse-03-06</nmr.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
@@ -110,7 +110,7 @@
 		<xbean.version>3.9</xbean.version>
 		<xmlschema.version>1.4.7</xmlschema.version>
 		<!-- OpenNaaS extensions versions -->
-		<opennaas.gim.version>0.22</opennaas.gim.version>
+		<opennaas.gim.version>0.23</opennaas.gim.version>
 	</properties>
 
 	<dependencyManagement>
@@ -347,7 +347,21 @@
 				<artifactId>org.opennaas.extensions.quantum</artifactId>
 				<version>${project.version}</version>				
 			</dependency>
-
+	  		<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
+				<version>${project.version}</version>				
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.sdnnetwork</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.gim</artifactId>
@@ -363,6 +377,12 @@
 				<artifactId>org.opennaas.extensions.powernet</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+	 			<artifactId>org.opennaas.extensions.ofertie.ncl</artifactId>
+				<version>${project.version}</version>	 			
+			</dependency>			
+			
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>
@@ -1315,6 +1335,11 @@
 			</snapshots>
 		</repository>
 		<repository>
+			<id>i2cat ext-release-local</id>
+			<name>i2cat maven repository for third party libraries</name>
+			<url>http://maven.i2cat.net:8081/artifactory/ext-release-local</url>
+		</repository>
+		<repository>
 			<id>i2cat libs-snapshot-local</id>
 			<name>maven.i2cat.net-snapshots</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
@@ -1325,7 +1350,7 @@
 				<enabled>true</enabled>
 				<updatePolicy>interval:1</updatePolicy>
 			</snapshots>
-		</repository>
+		</repository>		
 		<repository>
 			<id>springsource-external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Bundle

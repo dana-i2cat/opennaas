@@ -9,26 +9,26 @@ import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceResponse;
 import org.opennaas.extensions.router.opener.protocol.OpenerProtocolSession;
 
 public abstract class OpenerAction extends Action {
-	
+
 	protected OpenerProtocolSession getOpenerProtocolSession(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
 		return (OpenerProtocolSession) protocolSessionManager.obtainSessionByProtocol(
 				OpenerProtocolSession.OPENER_PROTOCOL_TYPE, false);
 	}
-	
+
 	protected ActionResponse actionResposeFromSetInterfaceResponse(SetInterfaceResponse openerResponse) {
-		
+
 		ActionResponse actionResponse = new ActionResponse();
 		STATUS actionStatus;
-		
+
 		if (openerResponse.getError() != null) {
-			
+
 			actionResponse.setStatus(STATUS.ERROR);
 			actionResponse.setInformation(openerResponse.getError());
-		
+
 		} else {
-			
+
 			if (openerResponse.getResponse() != null || openerResponse.getResponse().isEmpty()) {
-				if (Integer.parseInt(openerResponse.getResponse()) >=200  && Integer.parseInt(openerResponse.getResponse()) < 300) {
+				if (Integer.parseInt(openerResponse.getResponse()) >= 200 && Integer.parseInt(openerResponse.getResponse()) < 300) {
 					actionStatus = STATUS.OK;
 				} else {
 					actionStatus = STATUS.ERROR;
@@ -38,10 +38,8 @@ public abstract class OpenerAction extends Action {
 			}
 			actionResponse.setStatus(actionStatus);
 		}
-		
+
 		return actionResponse;
 	}
-	
-	
 
 }

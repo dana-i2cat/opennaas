@@ -3,12 +3,11 @@ package org.opennaas.extensions.router.junos.actionssets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.gretunnel.CreateTunnelAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.gretunnel.DeleteTunnelAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.gretunnel.GetTunnelConfigurationAction;
-
-import org.opennaas.core.resources.action.ActionSet;
 
 public class GRETunnelActionSet extends ActionSet {
 

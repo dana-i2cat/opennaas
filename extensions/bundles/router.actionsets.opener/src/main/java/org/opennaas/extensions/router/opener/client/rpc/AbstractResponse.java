@@ -6,15 +6,15 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractResponse {
-	
-	@XmlElement(name="request-hook")
-	protected String requestHook;
-	
-	@XmlElement(name="response")
-	protected String response;
-	
-	@XmlElement(name="error")
-	protected String error;
+
+	@XmlElement(name = "request-hook")
+	protected String	requestHook;
+
+	@XmlElement(name = "response")
+	protected String	response;
+
+	@XmlElement(name = "error")
+	protected String	error;
 
 	public String getRequestHook() {
 		return requestHook;

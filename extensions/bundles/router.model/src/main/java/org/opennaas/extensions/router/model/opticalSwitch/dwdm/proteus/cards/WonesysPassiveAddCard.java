@@ -22,11 +22,11 @@ public class WonesysPassiveAddCard extends ProteusOpticalSwitchCard {
 	/**
 	 * Used in order to interlink several modules in a single rack. It is often linked to a drop card.
 	 */
-	private FCPort	expressPort;
+	private FCPort				expressPort;
 	/**
 	 * Is the output of the multiplexed signal going to the network. The only output port of this card.
 	 */
-	private FCPort	commonPort;
+	private FCPort				commonPort;
 
 	public WonesysPassiveAddCard(int chasis, int slot, int type, int subtype) {
 		super(chasis, slot, type, subtype);

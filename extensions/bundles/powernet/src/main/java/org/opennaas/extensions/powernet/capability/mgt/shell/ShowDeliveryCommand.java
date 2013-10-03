@@ -4,10 +4,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
-import org.opennaas.extensions.gim.controller.ModelElementNotFoundException;
 import org.opennaas.extensions.gim.model.core.IPowerDelivery;
-
+import org.opennaas.extensions.powernet.capability.mgt.IPowerNetManagementCapability;
 
 @Command(scope = "gim", name = "showDelivery", description = "Shows a power delivery")
 public class ShowDeliveryCommand extends GenericKarafCommand {
@@ -36,7 +34,7 @@ public class ShowDeliveryCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
+
 	private void printDelivery(IPowerDelivery delivery) {
 		printSymbol(delivery.toString());
 	}

@@ -3,15 +3,13 @@ package org.opennaas.extensions.roadm.wonesys.actionsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
+import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
-
-import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.alarms.ResourceAlarm;
 
 public class WonesysAlarmsDriver {
 
@@ -21,7 +19,7 @@ public class WonesysAlarmsDriver {
 		CardType cardType = getAlarmCardType(wonesysAlarm, (ProteusOpticalSwitch) model);
 		String alarmCode = getAlarmCode(cardType, wonesysAlarm);
 
-		Map<String,Object> properties = loadResourceAlarmProperties(wonesysAlarm, alarmCode, resourceId);
+		Map<String, Object> properties = loadResourceAlarmProperties(wonesysAlarm, alarmCode, resourceId);
 
 		return new ResourceAlarm(properties);
 	}

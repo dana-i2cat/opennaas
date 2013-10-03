@@ -2,11 +2,10 @@ package org.opennaas.extensions.roadm.wonesys.commandsets.commands.psroadm;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -216,7 +215,7 @@ public class SetChannel extends WonesysCommand {
 	/**
 	 * Create connections from ALL ports owned by srcCard to port portNum. If portNum is an internal port, then connections to ALL ports connected to
 	 * it are created.
-	 *
+	 * 
 	 * @param srcCard
 	 * @param dwdmChannel
 	 * @param portNum
@@ -308,7 +307,7 @@ public class SetChannel extends WonesysCommand {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param srcPort
 	 * @return true if given port has connections and all of them are connected to ports in the same System than given port, or false otherwise.
 	 */

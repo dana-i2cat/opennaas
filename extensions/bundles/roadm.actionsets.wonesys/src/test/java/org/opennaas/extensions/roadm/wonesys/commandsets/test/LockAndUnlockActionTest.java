@@ -2,13 +2,11 @@ package org.opennaas.extensions.roadm.wonesys.commandsets.test;
 
 import java.util.HashMap;
 
-import org.opennaas.extensions.roadm.wonesys.actionsets.actions.queue.ConfirmAction;
-import org.opennaas.extensions.roadm.wonesys.actionsets.actions.queue.PrepareAction;
-import org.opennaas.extensions.roadm.wonesys.actionsets.actions.queue.RestoreAction;
-import org.opennaas.extensions.roadm.wonesys.commandsets.test.mock.MockProtocolSessionManager;
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
@@ -18,12 +16,13 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.queue.ConfirmAction;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.queue.PrepareAction;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.queue.RestoreAction;
+import org.opennaas.extensions.roadm.wonesys.commandsets.test.mock.MockProtocolSessionManager;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 
 public class LockAndUnlockActionTest {
 	Log								log			= LogFactory.getLog(LockAndUnlockActionTest.class);

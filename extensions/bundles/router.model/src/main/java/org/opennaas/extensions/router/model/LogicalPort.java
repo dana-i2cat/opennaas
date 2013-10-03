@@ -92,6 +92,7 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 
 	/**
 	 * MANUALLY ADDED TO CIM (22/04/2013) <br>
+	 * 
 	 * @param specific
 	 *            ProtocolEndpoint.class
 	 * @return

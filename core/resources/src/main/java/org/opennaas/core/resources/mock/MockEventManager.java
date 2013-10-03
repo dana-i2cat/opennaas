@@ -7,7 +7,7 @@ import org.osgi.service.event.EventHandler;
 
 public class MockEventManager implements IEventManager {
 
-	int count = 0;
+	int	count	= 0;
 
 	@Override
 	public int registerEventHandler(EventHandler handler, EventFilter filter) {

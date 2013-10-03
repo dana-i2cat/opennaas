@@ -5,18 +5,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
-import org.opennaas.extensions.router.model.OSPFService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.opennaas.core.resources.helpers.XmlHelper;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
+import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * This class if for testing the ospf velocity templates to check input params and the output

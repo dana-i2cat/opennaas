@@ -6,9 +6,9 @@ import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 
 public class VLANCommand extends IOSCommand {
 
-	private int vlanID = 0;
-	private boolean flag = false;
-	
+	private int		vlanID	= 0;
+	private boolean	flag	= false;
+
 	public VLANCommand(int vlanID, boolean flag) {
 		this.vlanID = vlanID;
 		this.flag = flag;
@@ -23,9 +23,9 @@ public class VLANCommand extends IOSCommand {
 	public String getCommand() {
 		String command = null;
 
-		if (flag){
+		if (flag) {
 			command = "no ";
-		}else{
+		} else {
 			command = "";
 		}
 
@@ -33,7 +33,7 @@ public class VLANCommand extends IOSCommand {
 
 		return command;
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

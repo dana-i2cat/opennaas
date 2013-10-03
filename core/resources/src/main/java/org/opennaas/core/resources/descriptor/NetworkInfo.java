@@ -11,11 +11,10 @@ import javax.xml.bind.annotation.XmlElement;
 @Embeddable
 public class NetworkInfo {
 
-	/* list of resources*/
+	/* list of resources */
 
 	@OneToMany(cascade = CascadeType.ALL)
-	List<ResourceId> resources;
-
+	List<ResourceId>	resources;
 
 	@XmlElement(name = "resources")
 	public List<ResourceId> getResources() {

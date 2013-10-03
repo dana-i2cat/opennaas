@@ -7,12 +7,12 @@ import org.opennaas.extensions.power.capabilities.driver.ConsumerDriverInstantia
 
 public class PowerSupplyCapability extends AbstractPowerConsumerCapability implements IPowerSupplyCapability {
 
-	public static String					CAPABILITY_TYPE	= "consumer_pw_sup";
-	
-	private String							resourceId		= "";
-	
-	private IPowerSupplyController driver;
-	
+	public static String			CAPABILITY_TYPE	= "consumer_pw_sup";
+
+	private String					resourceId		= "";
+
+	private IPowerSupplyController	driver;
+
 	public PowerSupplyCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
@@ -35,9 +35,9 @@ public class PowerSupplyCapability extends AbstractPowerConsumerCapability imple
 
 	@Override
 	public void resyncModel() throws Exception {
-		//Nothing to do
+		// Nothing to do
 	}
-	
+
 	private IPowerSupplyController getDriver() throws Exception {
 		// FIXME CAPABILITY SHOULD NOT INSTANTIATE IT'S OWN DRIVER.
 		if (driver == null)
@@ -53,8 +53,5 @@ public class PowerSupplyCapability extends AbstractPowerConsumerCapability imple
 		// capability should take the driver from an OSGI service.
 		return (IPowerSupplyController) ConsumerDriverInstantiator.create(resourceId, getPowernetId(), consumerId, descriptor);
 	}
-	
-	
-	
 
 }

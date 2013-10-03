@@ -2,13 +2,6 @@ package org.opennaas.extensions.roadm.wonesys.actionsets.actions;
 
 import java.util.Vector;
 
-import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
-import org.opennaas.extensions.roadm.wonesys.commandsets.commands.psroadm.SetChannel;
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
-import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.WDMFCPort;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -18,6 +11,13 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
+import org.opennaas.extensions.roadm.wonesys.commandsets.commands.psroadm.SetChannel;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.WDMFCPort;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 
 public class RemoveConnectionAction extends Action {
 

@@ -1,0 +1,15 @@
+<resourceDescriptor>
+    <!--  Basic capability information. It specifies device model and version. IT IS OBLIGATORY -->
+    <capabilityDescriptors>
+        <capabilityProperty name="actionset.name" value="internal" />
+        <capabilityProperty name="actionset.version" value="1.0.0" />
+        <information><type>ofprovisionnet</type></information>
+    </capabilityDescriptors>
+
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>sdnnetwork</type>
+        <name>sdn1</name>
+    </information>
+    <properties/>
+</resourceDescriptor>

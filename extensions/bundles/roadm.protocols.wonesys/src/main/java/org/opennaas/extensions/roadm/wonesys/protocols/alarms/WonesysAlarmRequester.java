@@ -8,26 +8,25 @@ import java.util.TimerTask;
 import com.wonesys.emsModule.alarms.Alarm;
 import com.wonesys.emsModule.alarms.AlarmsControler;
 
-
 /**
  * Allows periodically request of alarms
+ * 
  * @author isart
- *
+ * 
  */
 public class WonesysAlarmRequester extends TimerTask {
 
 	/**
 	 * EMSModule alarms controller
 	 */
-	AlarmsControler acontroller = null;
-
+	AlarmsControler	acontroller			= null;
 
 	/**
 	 * Date of reception of last alarm
 	 */
-	long lastReceptionDate = 0;
+	long			lastReceptionDate	= 0;
 
-	public WonesysAlarmRequester(AlarmsControler acontroller){
+	public WonesysAlarmRequester(AlarmsControler acontroller) {
 		this.acontroller = acontroller;
 
 	}
@@ -37,25 +36,26 @@ public class WonesysAlarmRequester extends TimerTask {
 		notifyAlarmsToListeners(alarms);
 	}
 
-	private Collection<Alarm> requestAlarmsSync(){
+	private Collection<Alarm> requestAlarmsSync() {
 
 		Collection<Alarm> alarms = acontroller.getAlarmsList();
 		return alarms;
 	}
 
-	private void notifyAlarmsToListeners(Collection<Alarm> alarms){
+	private void notifyAlarmsToListeners(Collection<Alarm> alarms) {
 
-		if (alarms == null) return;
+		if (alarms == null)
+			return;
 
 		Iterator<Alarm> it = alarms.iterator();
 		long lastReceptionDate_tmp = lastReceptionDate;
 		Collection<Alarm> newAlarms = new ArrayList<Alarm>();
-		//filter alarms by Date
-		while (it.hasNext()){
+		// filter alarms by Date
+		while (it.hasNext()) {
 			Alarm alarm = it.next();
 			long receptionDate = alarm.getDataRecepcio();
-			if (receptionDate > lastReceptionDate){
-				if (receptionDate > lastReceptionDate_tmp){
+			if (receptionDate > lastReceptionDate) {
+				if (receptionDate > lastReceptionDate_tmp) {
 					lastReceptionDate_tmp = receptionDate;
 				}
 				newAlarms.add(alarm);
@@ -63,14 +63,14 @@ public class WonesysAlarmRequester extends TimerTask {
 		}
 		lastReceptionDate = lastReceptionDate_tmp;
 
-		for (Alarm alarm: newAlarms){
-			//notify event
-			//there's no need of using same EventManager for publishing and for handling
+		for (Alarm alarm : newAlarms) {
+			// notify event
+			// there's no need of using same EventManager for publishing and for handling
 			new WonesysEventManager().publishEvent(createAlarmEvent(alarm));
 		}
 	}
 
-	private WonesysAlarmEvent createAlarmEvent(Alarm alarm){
+	private WonesysAlarmEvent createAlarmEvent(Alarm alarm) {
 		return new WonesysAlarmEvent(alarm);
 	}
 

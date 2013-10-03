@@ -1,10 +1,10 @@
 package org.opennaas.extensions.roadm.wonesys.actionsets.actions;
 
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
 
 public abstract class WonesysAction extends Action {
 
@@ -36,8 +36,8 @@ public abstract class WonesysAction extends Action {
 	}
 
 	/**
-	 *
-	 *
+	 * 
+	 * 
 	 * @param data
 	 * @param numberOfBytes
 	 * @return

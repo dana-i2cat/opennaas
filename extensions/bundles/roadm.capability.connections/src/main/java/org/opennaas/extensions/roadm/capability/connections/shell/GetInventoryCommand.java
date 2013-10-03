@@ -1,14 +1,13 @@
 package org.opennaas.extensions.roadm.capability.connections.shell;
 
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 
 @Command(scope = "connections", name = "getInventory", description = "Shows given resource cards and connections information.")
 public class GetInventoryCommand extends GenericKarafCommand {

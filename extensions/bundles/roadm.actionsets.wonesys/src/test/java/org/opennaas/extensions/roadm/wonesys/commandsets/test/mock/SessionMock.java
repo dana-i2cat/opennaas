@@ -1,11 +1,11 @@
 package org.opennaas.extensions.roadm.wonesys.commandsets.test.mock;
 
-import org.opennaas.extensions.roadm.wonesys.transports.mock.ProteusMock;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
-import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.transports.mock.ProteusMock;
 
 public class SessionMock implements IProtocolSession {
 

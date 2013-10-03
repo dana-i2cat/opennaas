@@ -1,6 +1,5 @@
 package org.opennaas.extensions.gim.model.core.entities.sockets;
 
-
 public class PowerReceptor extends PowerSocket {
 
 	private PowerSource	attachedTo;

@@ -10,9 +10,9 @@ import org.opennaas.core.resources.ResourceManager;
 
 /**
  * List the Resources that are in the IaaS Container
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 @Command(scope = "resource", name = "remove", description = "Remove one or more resources from the platform")
 public class RemoveResourceCommand extends GenericKarafCommand {
@@ -47,7 +47,7 @@ public class RemoveResourceCommand extends GenericKarafCommand {
 						printInfo("Resource " + id + " removed.");
 					} else {
 						printError("Resource " + id +
-										" not found on repository.");
+								" not found on repository.");
 					}
 				} catch (ResourceException e) {
 					printError(e);

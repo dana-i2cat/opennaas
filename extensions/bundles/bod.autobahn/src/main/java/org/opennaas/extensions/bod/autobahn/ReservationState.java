@@ -18,7 +18,7 @@ public enum ReservationState
 	CANCELLED(22),
 	FAILED(23);
 
-	public final int value;
+	public final int	value;
 
 	ReservationState(int value)
 	{
@@ -27,7 +27,7 @@ public enum ReservationState
 
 	public static ReservationState valueOf(int value)
 	{
-		for (ReservationState state: ReservationState.values()) {
+		for (ReservationState state : ReservationState.values()) {
 			if (state.value == value) {
 				return state;
 			}

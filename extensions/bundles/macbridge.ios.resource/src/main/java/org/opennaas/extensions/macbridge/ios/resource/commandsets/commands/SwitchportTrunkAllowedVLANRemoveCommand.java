@@ -6,8 +6,8 @@ import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 
 public class SwitchportTrunkAllowedVLANRemoveCommand extends IOSCommand {
 
-	private int vlanID = 0;
-	
+	private int	vlanID	= 0;
+
 	public SwitchportTrunkAllowedVLANRemoveCommand(int vlanID) {
 		this.vlanID = vlanID;
 	}
@@ -23,7 +23,7 @@ public class SwitchportTrunkAllowedVLANRemoveCommand extends IOSCommand {
 		command = "switchport trunk allowed vlan remove " + vlanID;
 		return command;
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

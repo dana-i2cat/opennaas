@@ -1,9 +1,7 @@
 package org.opennaas.extensions.roadm.wonesys.actionsets.actions.alarms;
 
-import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
-import org.opennaas.extensions.roadm.wonesys.actionsets.Activator;
-import org.opennaas.extensions.roadm.wonesys.actionsets.WonesysAlarmsDriver;
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.Action;
@@ -12,9 +10,10 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
+import org.opennaas.extensions.roadm.wonesys.actionsets.Activator;
+import org.opennaas.extensions.roadm.wonesys.actionsets.WonesysAlarmsDriver;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.osgi.service.event.Event;
 
 public class ProcessAlarmAction extends Action {

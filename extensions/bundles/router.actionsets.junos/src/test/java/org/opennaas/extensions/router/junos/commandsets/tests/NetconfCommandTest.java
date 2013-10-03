@@ -1,5 +1,10 @@
 package org.opennaas.extensions.router.junos.commandsets.tests;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommitNetconfCommand;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
@@ -9,12 +14,6 @@ import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 public class NetconfCommandTest {
 	public static final String	CONFIGURESUBINTERFACE	= "CreateSubinterface";
