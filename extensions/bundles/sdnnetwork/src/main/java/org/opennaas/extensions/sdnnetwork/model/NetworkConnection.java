@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NetworkConnection {
 
+	private String	id;
 	private String	name;
 	private Port	source;
 	private Port	destination;
@@ -30,9 +31,18 @@ public class NetworkConnection {
 	 *            NetworkConnection to copy
 	 */
 	public NetworkConnection(NetworkConnection networkConnection) {
+		this.id = networkConnection.id;
 		this.name = networkConnection.name;
 		this.source = new Port(networkConnection.source);
 		this.destination = new Port(networkConnection.destination);
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -64,6 +74,7 @@ public class NetworkConnection {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		return result;
@@ -82,6 +93,11 @@ public class NetworkConnection {
 			if (other.destination != null)
 				return false;
 		} else if (!destination.equals(other.destination))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (name == null) {
 			if (other.name != null)
