@@ -75,7 +75,7 @@ public abstract class FlowRequestHelper {
 
 		connection.setSource(srcPort);
 		connection.setDestination(dstPort);
-		connection.setId(name);
+		connection.setName(name);
 
 		return connection;
 	}
