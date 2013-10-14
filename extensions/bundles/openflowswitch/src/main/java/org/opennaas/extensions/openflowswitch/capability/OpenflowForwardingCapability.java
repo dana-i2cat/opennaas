@@ -97,8 +97,30 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public void removeOpenflowForwardingRule(String flowId) {
-		throw new UnsupportedOperationException();
+	public void removeOpenflowForwardingRule(String flowId) throws CapabilityException {
+
+		log.info("Start of removeOpenflowForwardingRule call");
+
+		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, flowId);
+
+		try {
+			ActionResponse response = executeAction(action);
+
+			if (!response.getStatus().equals(ActionResponse.STATUS.OK))
+				throw new ActionException(response.getResponses().get(0).toString());
+
+		} catch (ProtocolException pe) {
+			log.error("Error getting OFswitch protocol session - " + pe.getMessage());
+			throw new CapabilityException(pe);
+		} catch (ActivatorException ae) {
+			log.error("Protocol error - " + ae.getMessage());
+			throw new CapabilityException();
+		} catch (ActionException ae) {
+			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
+			throw (ae);
+		}
+
+		log.info("End of removeOpenflowForwardingRule call");
 	}
 
 	@Override
