@@ -6,9 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -109,19 +106,10 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		log.info("Start of getOpenflowForwardingRules call");
 
 		List<FloodlightOFFlow> forwardingRules = new ArrayList<FloodlightOFFlow>();
-		try {
 
-			OpenflowSwitchModel model = getResourceModel();
-			log.debug("Reading forwarding rules from model.");
-			forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
-
-		} catch (ActivatorException ae) {
-			log.error("Error getting resource model - " + ae.getMessage());
-			throw new CapabilityException(ae);
-		} catch (ResourceException re) {
-			log.error("Error getting resource model - " + re.getMessage());
-			throw new CapabilityException(re);
-		}
+		OpenflowSwitchModel model = getResourceModel();
+		log.debug("Reading forwarding rules from model.");
+		forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
 
 		log.info("End of getOpenflowForwardingRules call");
 		return forwardingRules;
@@ -146,19 +134,8 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		}
 	}
 
-	private IResourceManager getResourceManager() throws ActivatorException {
-		return Activator.getResourceManagerService();
-	}
-
-	private OpenflowSwitchModel getResourceModel() throws ActivatorException, ResourceException {
-
-		log.debug("Getting resource model.");
-
-		IResourceManager resourceManager = getResourceManager();
-
-		IResource switchResource = resourceManager.getResourceById(this.resourceId);
-
-		return (OpenflowSwitchModel) switchResource.getModel();
+	private OpenflowSwitchModel getResourceModel() {
+		return (OpenflowSwitchModel) resource.getModel();
 	}
 
 	private ActionResponse executeAction(IAction action) throws ProtocolException, ActionException, ActivatorException {
