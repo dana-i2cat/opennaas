@@ -18,6 +18,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.sdnnetwork.Activator;
+import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
@@ -69,10 +70,10 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 
 		log.info("Start of allocateOFFlow call");
 
-		String flowId = generateFlowId(flowWithRoute);
-		flowWithRoute.setName(flowId);
+		SDNNetworkOFFlow flowCopy = new SDNNetworkOFFlow(flowWithRoute);
+		flowCopy = generateFlowAndRouteIds(flowCopy);
 
-		IAction action = createActionAndCheckParams(OFProvisioningNetworkActionSet.ALLOCATEFLOW, flowWithRoute);
+		IAction action = createActionAndCheckParams(OFProvisioningNetworkActionSet.ALLOCATEFLOW, flowCopy);
 
 		ActionResponse response = executeAction(action);
 
@@ -81,11 +82,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 
 		log.info("End of allocateOFFlow call");
 
-		return flowId;
-	}
-
-	private String generateFlowId(SDNNetworkOFFlow flow) {
-		return UUID.randomUUID().toString();
+		return flowCopy.getName();
 	}
 
 	@Override
@@ -163,6 +160,29 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 
 	private IProtocolManager getProtocolManagerService() throws ActivatorException {
 		return Activator.getProtocolManagerService();
+	}
+
+	private String generateRandomFlowId() {
+		return UUID.randomUUID().toString();
+	}
+
+	/**
+	 * Updates given flow with a name and all its NetworkConnections with an different id.
+	 * 
+	 * @param flow
+	 * @return flow with name set to its id and with network connections in given flow route having an id.
+	 */
+	private SDNNetworkOFFlow generateFlowAndRouteIds(SDNNetworkOFFlow flow) {
+
+		String flowId = generateRandomFlowId();
+		flow.setName(flowId);
+
+		if (flow.getRoute() != null && flow.getRoute().getNetworkConnections() != null) {
+			for (NetworkConnection connection : flow.getRoute().getNetworkConnections()) {
+				connection.setId(generateRandomFlowId());
+			}
+		}
+		return flow;
 	}
 
 }
