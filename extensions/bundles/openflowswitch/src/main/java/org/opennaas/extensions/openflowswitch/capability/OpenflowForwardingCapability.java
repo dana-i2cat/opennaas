@@ -25,6 +25,7 @@ import org.opennaas.extensions.openflowswitch.repository.Activator;
 /**
  * 
  * @author Adrian Rosello (i2CAT)
+ * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
 public class OpenflowForwardingCapability extends AbstractCapability implements IOpenflowForwardingCapability {
