@@ -80,6 +80,10 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
 			throw new ActionException(response.getResponses().get(0).toString());
 
+		// assuming allocated flow has not been modified by underlying functionality.
+		// FIXME replace flowCopy with flow obtained from response.
+		addAllocatedFlowToModel(flowCopy, (SDNNetworkModel) resource.getModel());
+
 		log.info("End of allocateOFFlow call");
 
 		return flowCopy.getName();
@@ -183,6 +187,10 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 			}
 		}
 		return flow;
+	}
+
+	private void addAllocatedFlowToModel(SDNNetworkOFFlow flow, SDNNetworkModel model) {
+		model.getFlows().add(flow);
 	}
 
 }
