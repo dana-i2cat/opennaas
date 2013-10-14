@@ -75,25 +75,9 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
 
-		try {
-			ActionResponse response = executeAction(action);
-
-			if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-				throw new ActionException(response.getResponses().get(0).toString());
-
-		} catch (ProtocolException pe) {
-			log.error("Error getting OFswitch protocol session - " + pe.getMessage());
-			throw new CapabilityException(pe);
-		} catch (ActivatorException ae) {
-			log.error("Protocol error - " + ae.getMessage());
-			throw new CapabilityException();
-		} catch (ActionException ae) {
-			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
-			throw (ae);
-		}
+		ActionResponse response = executeAction(action);
 
 		log.info("End of createOpenflowForwardingRule call");
-
 	}
 
 	@Override
@@ -103,22 +87,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, flowId);
 
-		try {
-			ActionResponse response = executeAction(action);
-
-			if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-				throw new ActionException(response.getResponses().get(0).toString());
-
-		} catch (ProtocolException pe) {
-			log.error("Error getting OFswitch protocol session - " + pe.getMessage());
-			throw new CapabilityException(pe);
-		} catch (ActivatorException ae) {
-			log.error("Protocol error - " + ae.getMessage());
-			throw new CapabilityException();
-		} catch (ActionException ae) {
-			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
-			throw (ae);
-		}
+		ActionResponse response = executeAction(action);
 
 		log.info("End of removeOpenflowForwardingRule call");
 	}
@@ -160,13 +129,31 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		return (OpenflowSwitchModel) resource.getModel();
 	}
 
-	private ActionResponse executeAction(IAction action) throws ProtocolException, ActionException, ActivatorException {
+	private ActionResponse executeAction(IAction action) throws CapabilityException {
+		ActionResponse response;
+		try {
+			IProtocolManager protocolManager = Activator.getProtocolManagerService();
+			IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
 
-		IProtocolManager protocolManager = Activator.getProtocolManagerService();
-		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
+			response = action.execute(protocolSessionManager);
 
-		ActionResponse response = action.execute(protocolSessionManager);
+		} catch (ProtocolException pe) {
+			log.error("Error with protocol session - " + pe.getMessage());
+			throw new CapabilityException(pe);
+		} catch (ActivatorException ae) {
+			String errorMsg = "Error getting protocol manager - " + ae.getMessage();
+			log.error(errorMsg);
+			throw new CapabilityException(errorMsg, ae);
+		} catch (ActionException ae) {
+			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
+			throw (ae);
+		}
 
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			String errMsg = "Error executing " + action.getActionID() + " action - " + response.getInformation();
+			log.error(errMsg);
+			throw new ActionException(errMsg);
+		}
 		return response;
 	}
 
