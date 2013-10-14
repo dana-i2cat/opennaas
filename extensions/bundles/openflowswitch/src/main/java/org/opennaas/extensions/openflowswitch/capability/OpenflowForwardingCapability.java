@@ -18,6 +18,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
 
@@ -131,10 +132,30 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 	/**
 	 * This method retrieves flows in the switch by calling GETFLOWS action and sets them in the switch model.
+	 * 
+	 * @return retrieved flows
+	 * @throws CapabilityException
 	 */
-	private void refreshModelFlows() {
-		// TODO Auto-generated method stub
+	private List<FloodlightOFFlow> refreshModelFlows() throws CapabilityException {
+		log.info("Start of refreshModelFlows call");
 
+		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.GETFLOWS, null);
+
+		ActionResponse response = executeAction(action);
+
+		// assuming the action returns what it is meant to
+		List<FloodlightOFFlow> currentFlows = (List<FloodlightOFFlow>) response.getResult();
+
+		// assuming only one table may exist in switch model
+		// thats true with OpenFlow version 1.0
+		if (getResourceModel().getOfTables().isEmpty())
+			getResourceModel().getOfTables().add(new OFFlowTable());
+
+		getResourceModel().getOfTables().get(0).setOfForwardingRules(currentFlows);
+
+		log.info("End of refreshModelFlows call");
+
+		return currentFlows;
 	}
 
 	private OpenflowSwitchModel getResourceModel() {
