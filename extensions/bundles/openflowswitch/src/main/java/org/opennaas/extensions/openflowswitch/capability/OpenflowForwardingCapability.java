@@ -1,6 +1,5 @@
 package org.opennaas.extensions.openflowswitch.capability;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -77,6 +76,8 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 		ActionResponse response = executeAction(action);
 
+		refreshModelFlows();
+
 		log.info("End of createOpenflowForwardingRule call");
 	}
 
@@ -89,6 +90,8 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
 		ActionResponse response = executeAction(action);
 
+		refreshModelFlows();
+
 		log.info("End of removeOpenflowForwardingRule call");
 	}
 
@@ -96,11 +99,12 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	public List<FloodlightOFFlow> getOpenflowForwardingRules() throws CapabilityException {
 		log.info("Start of getOpenflowForwardingRules call");
 
-		List<FloodlightOFFlow> forwardingRules = new ArrayList<FloodlightOFFlow>();
+		List<FloodlightOFFlow> forwardingRules;
 
-		OpenflowSwitchModel model = getResourceModel();
+		refreshModelFlows();
+
 		log.debug("Reading forwarding rules from model.");
-		forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
+		forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(getResourceModel());
 
 		log.info("End of getOpenflowForwardingRules call");
 		return forwardingRules;
@@ -123,6 +127,14 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 			throw new CapabilityException(e);
 
 		}
+	}
+
+	/**
+	 * This method retrieves flows in the switch by calling GETFLOWS action and sets them in the switch model.
+	 */
+	private void refreshModelFlows() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private OpenflowSwitchModel getResourceModel() {
