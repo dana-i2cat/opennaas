@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.ws.rs.PathParam;
 
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.wrappers.FloodlightOFFlowsWrapper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 /**
@@ -87,9 +88,11 @@ public class FloodlightMockClient implements IFloodlightStaticFlowPusherClient {
 	}
 
 	@Override
-	public List<FloodlightOFFlow> getFlows(@PathParam("switchId") String dpid) {
+	public FloodlightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid) {
+		FloodlightOFFlowsWrapper flowsWrapper = new FloodlightOFFlowsWrapper();
+		flowsWrapper.addAll(flows.get(String.valueOf(dpid)));
 
-		return flows.get(String.valueOf(dpid));
+		return flowsWrapper;
 	}
 
 }
