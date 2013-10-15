@@ -36,7 +36,7 @@ public interface IFloodlightStaticFlowPusherClient {
 	@Path("/json")
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void deleteFlow(String name);
+	public void deleteFlow(FloodlightOFFlow flow);
 
 	/**
 	 * Deletes all static flows for a particular switch
