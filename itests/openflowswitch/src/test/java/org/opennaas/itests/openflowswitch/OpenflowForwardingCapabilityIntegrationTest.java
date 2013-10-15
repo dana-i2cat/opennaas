@@ -125,7 +125,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	}
 
 	/**
-	 * This test checks that, when a flow is created, the action populates the model if there's no error in its execution.
+	 * This test checks that, when a flow is created, the model is populated if there's no error in capability method execution.
 	 * 
 	 * @throws ResourceException
 	 * @throws ProtocolException
@@ -135,7 +135,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 		IModel model = ofSwitchResource.getModel();
 		Assert.assertNotNull("Openflowswitch model should not be null after starting.", model);
-		Assert.assertTrue(model instanceof OpenflowSwitchModel);
+		Assert.assertTrue("Model is OpenflowSwitchModel", model instanceof OpenflowSwitchModel);
 
 		OpenflowSwitchModel switchModel = (OpenflowSwitchModel) model;
 		Assert.assertNotNull("Openflowswitch model should contain forwardingRule tables.", switchModel.getOfTables());
@@ -168,7 +168,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		Assert.assertEquals("Openflowswitch model should contain one forwardingRule table after action execution.", 1, switchModel.getOfTables()
 				.size());
 
-		Assert.assertEquals(SWITCH_ID, switchModel.getSwitchId());
+		Assert.assertEquals("Incorrect switchId in model", SWITCH_ID, switchModel.getSwitchId());
 
 		OFFlowTable ofNewTable = switchModel.getOfTables().get(0);
 
@@ -196,7 +196,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		Assert.assertEquals("Openflowswitch model should contain one forwardingRule table after action execution.", 1, switchModel.getOfTables()
 				.size());
 
-		Assert.assertEquals(SWITCH_ID, switchModel.getSwitchId());
+		Assert.assertEquals("Incorrect switchId in model", SWITCH_ID, switchModel.getSwitchId());
 
 		OFFlowTable ofModelTable = switchModel.getOfTables().get(0);
 

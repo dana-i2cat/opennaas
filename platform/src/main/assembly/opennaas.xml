@@ -45,6 +45,7 @@
 				<exclude>servicemix.bat</exclude>
 			</excludes>
 			<directoryMode>0755</directoryMode>
+			<fileMode>0755</fileMode>
 		</fileSet>
 	</fileSets>
 
