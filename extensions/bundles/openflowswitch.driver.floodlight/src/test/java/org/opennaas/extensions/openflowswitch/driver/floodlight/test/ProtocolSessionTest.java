@@ -75,7 +75,7 @@ public class ProtocolSessionTest {
 	@Test
 	public void clientTest() {
 		client.addFlow(flow);
-		client.deleteFlow(flow.getName());
+		client.deleteFlow(flow);
 
 		// Cannot check with asserts because getFlows() method does not work yet
 		// Map<String,List<FloodlightOFFlow>> flows = client.getFlows(SWITCH_ID);
