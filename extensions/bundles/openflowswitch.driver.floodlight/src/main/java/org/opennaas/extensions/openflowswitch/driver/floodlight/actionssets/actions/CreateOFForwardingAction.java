@@ -5,13 +5,13 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingActionSet;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightAction;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightConstants;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
-import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
@@ -39,16 +39,11 @@ public class CreateOFForwardingAction extends FloodlightAction {
 			IFloodlightStaticFlowPusherClient client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
 			client.addFlow(flow);
 
-			populateModelWithNewFlow(flow);
-
 		} catch (ProtocolException e) {
 			throw new ActionException(e);
 		}
 
-		ActionResponse response = new ActionResponse();
-		response.setStatus(ActionResponse.STATUS.OK);
-
-		return response;
+		return ActionResponse.okResponse(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE);
 	}
 
 	private FloodlightOFFlow updateFlowWithControllerRequiredValues(FloodlightOFFlow flow) {
@@ -104,15 +99,6 @@ public class CreateOFForwardingAction extends FloodlightAction {
 		FloodlightOFFlow flowRule = (FloodlightOFFlow) params;
 
 		flowRule.setSwitchId(model.getSwitchId());
-	}
-
-	private void populateModelWithNewFlow(FloodlightOFFlow flow) {
-
-		OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
-		OFFlowTable table = model.getOfTables().get(0);
-
-		table.getOfForwardingRules().add(flow);
-
 	}
 
 	private void setSwitchIdInModel(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
