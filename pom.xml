@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.23</version>
+	<version>0.24-SNAPSHOT</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -65,7 +65,6 @@
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>
-		<jetty.version>7.4.2.v20110526</jetty.version>
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<junit.version>4.10</junit.version>
@@ -110,7 +109,7 @@
 		<xbean.version>3.9</xbean.version>
 		<xmlschema.version>1.4.7</xmlschema.version>
 		<!-- OpenNaaS extensions versions -->
-		<opennaas.gim.version>0.23</opennaas.gim.version>
+		<opennaas.gim.version>0.24-SNAPSHOT</opennaas.gim.version>
 	</properties>
 
 	<dependencyManagement>
@@ -1041,11 +1040,6 @@
 				<artifactId>joda-time-jsptags</artifactId>
 				<version>${joda-time-jsptags.version}</version>
 				<scope>runtime</scope>
-			</dependency>	
-			<dependency>
-				<groupId>org.eclipse.jetty.aggregate</groupId>
-				<artifactId>jetty-all-server</artifactId>
-				<version>${jetty.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.validation</groupId>
