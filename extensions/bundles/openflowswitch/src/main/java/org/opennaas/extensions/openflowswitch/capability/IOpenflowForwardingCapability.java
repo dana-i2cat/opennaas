@@ -30,7 +30,7 @@ public interface IOpenflowForwardingCapability extends ICapability {
 	@DELETE
 	@Path("/removeOFForwardingRule")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void removeOpenflowForwardingRule(String flowId);
+	public void removeOpenflowForwardingRule(String flowId) throws CapabilityException;
 
 	@GET
 	@Path("/getOFForwardingRules")
