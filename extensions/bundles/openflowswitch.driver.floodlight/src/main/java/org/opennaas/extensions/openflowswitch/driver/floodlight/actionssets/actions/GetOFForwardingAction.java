@@ -22,8 +22,10 @@ public class GetOFForwardingAction extends FloodlightAction {
 		List<FloodlightOFFlow> flows;
 
 		try {
+			// obtain the switch ID from the protocol session
+			String switchId = getSwitchIdFromSession(protocolSessionManager);
 			IFloodlightStaticFlowPusherClient client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
-			flows = client.getFlows((String) params);
+			flows = client.getFlows(switchId);
 
 		} catch (ProtocolException e) {
 			throw new ActionException(e);
@@ -38,7 +40,7 @@ public class GetOFForwardingAction extends FloodlightAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		if (params == null || !(params instanceof String) || ((String) params).isEmpty())
+		if (params != null)
 			throw new ActionException("Invalid parameters for action " + this.actionID);
 
 		return true;

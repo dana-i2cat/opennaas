@@ -2,8 +2,12 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
@@ -16,6 +20,8 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<FloodlightOFFlowsWrapper> {
+
+	private Log	log	= LogFactory.getLog(FloodlightOFFlowsWrapperJSONDeserializer.class);
 
 	@Override
 	public FloodlightOFFlowsWrapper deserialize(JsonParser jp, DeserializationContext ctx) throws IOException, JsonProcessingException {
@@ -32,7 +38,12 @@ public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<F
 			String switchId = jp.getCurrentName();
 
 			// expect switch start object
-			if (jp.nextToken() != JsonToken.START_OBJECT) {
+			JsonToken token = jp.nextToken();
+			if (token == JsonToken.VALUE_NULL) {
+				// no object inside, stop deserializing
+				break;
+			}
+			else if (token != JsonToken.START_OBJECT) {
 				throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
 			}
 
@@ -54,11 +65,10 @@ public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<F
 				FloodlightOFMatch match = new FloodlightOFMatch();
 				List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>(0);
 
-				// expect flow start object
 				if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
 					throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
 				}
-
+				// flow fields loop
 				while ((jp.nextToken()) != JsonToken.END_OBJECT) {
 					if ((jp.getCurrentToken()) != JsonToken.FIELD_NAME) {
 						throw new IOException("Expected FIELD_NAME and it was " + jp.getCurrentToken());
@@ -75,8 +85,6 @@ public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<F
 						actions = parseActions(jp);
 					} else if (nodeName == "priority")
 						flow.setPriority(jp.getText());
-					else if (nodeName == "active")
-						flow.setActive(Boolean.parseBoolean(jp.getText()));
 					else if (nodeName == "match") {
 						match = parseMatch(jp);
 					}
@@ -85,6 +93,8 @@ public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<F
 				// set flows and match
 				flow.setMatch(match);
 				flow.setActions(actions);
+				// set active true, it is never sent by Floodlight, if the flow is returned it is active
+				flow.setActive(true);
 				// add flow
 				wrapper.add(flow);
 			}
@@ -110,22 +120,34 @@ public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<F
 				throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
 			}
 
+			Map<String, String> actionMap = new HashMap<String, String>();
 			// action fields loop
 			while (jp.nextToken() != JsonToken.END_OBJECT) {
 				if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
 					throw new IOException("Expected FIELD_NAME and it was " + jp.getCurrentToken());
 				}
-				FloodlightOFAction action = new FloodlightOFAction();
-
 				// get field name and go to next token
 				String fieldName = jp.getCurrentName();
 				jp.nextToken();
 
-				action.setType(fieldName);
-				action.setValue(jp.getText());
+				actionMap.put(fieldName.toLowerCase(), jp.getText());
+			}
+
+			// fill action list following some rules, by now only OUTPUT actions are parsed
+			if (actionMap.get("type").equalsIgnoreCase(FloodlightOFAction.TYPE_OUTPUT.toLowerCase())) {
+				// fill action
+				FloodlightOFAction action = new FloodlightOFAction();
+
+				// set type and value
+				action.setType(FloodlightOFAction.TYPE_OUTPUT.toLowerCase());
+				action.setValue(actionMap.get("port"));
 
 				actions.add(action);
+			} else {
+				// no more types known
+				log.info("Property type unknown: " + actionMap.get("type"));
 			}
+
 		}
 		return actions;
 	}
