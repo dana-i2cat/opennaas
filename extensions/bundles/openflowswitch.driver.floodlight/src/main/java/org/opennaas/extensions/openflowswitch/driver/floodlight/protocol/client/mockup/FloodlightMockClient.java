@@ -43,15 +43,15 @@ public class FloodlightMockClient implements IFloodlightStaticFlowPusherClient {
 	}
 
 	@Override
-	public void deleteFlow(String name) {
+	public void deleteFlow(FloodlightOFFlow flow) {
 
 		for (String switchId : flows.keySet()) {
 
 			List<FloodlightOFFlow> switchFlows = flows.get(switchId);
 			List<FloodlightOFFlow> flowsToRemove = new ArrayList<FloodlightOFFlow>();
 
-			for (FloodlightOFFlow flow : switchFlows)
-				if (flow.getName().equals(name))
+			for (FloodlightOFFlow existingFlow : switchFlows)
+				if (existingFlow.getName().equals(flow.getName()))
 					flowsToRemove.add(flow);
 
 			switchFlows.removeAll(flowsToRemove);
