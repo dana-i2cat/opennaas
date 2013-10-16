@@ -29,7 +29,7 @@
         appendTxt = appendTxt + "<td><input class=\"macInput\" id=\"listRoutes" + count + ".switchInfo.macAddress\" name=\"listRoutes[" + count + "].switchInfo.macAddress\" type=\"text\" value=\"\"/></td>";
         appendTxt = appendTxt + "<td><input class=\"portInput\" id=\"listRoutes" + count + ".switchInfo.inputPort\" name=\"listRoutes[" + count + "].switchInfo.inputPort\" type=\"text\" value=\"\"/></td>";
         appendTxt = appendTxt + "<td><input class=\"portInput\" id=\"listRoutes" + count + ".switchInfo.outputPort\" name=\"listRoutes[" + count + "].switchInfo.outputPort\" type=\"text\" value=\"\"/></td>";
-        appendTxt = appendTxt + "<td class=\"td-last\"><input class=\"deleteButton\" type=\"button\" value=\"Delete\"/></td>";
+        appendTxt = appendTxt + "<td class=\"td-last\"><input style=\"float:right\" class=\"deleteButton\" type=\"button\" value=\"Delete\"/></td>";
         $("#Routes tr:last").after(appendTxt);
         count = count + 1;
         $(".deleteButton").button();
@@ -61,28 +61,28 @@
 
 <form:form modelAttribute="insertRoutes" name="frm" method="post" onSubmit="return Validate();"> 
     <div class="config4">
-        <table id="Routes"><tr>
+        <table id="Routes" class="TableSorter"><thead><tr>
                 <th><form:label path="">Source Address</form:label></th>
                 <th><form:label path="">Destination Address</form:label></th>
                 <th><form:label path="">Switch Mac</form:label></th>
                 <th><form:label path="">Input Port</form:label></th>
                 <th><form:label path="">Output Port</form:label></th>
                 <th></th>
-            </tr>
+            </tr></thead>
             <tr>
-                <td><form:input class="ipInput" path="listRoutes[0].sourceAddress" type="text" value="1"/></td>                    
-                <td><form:input class="ipInput" path="listRoutes[0].destinationAddress" type="text" value="2"/></td>
-                <td><form:input class="macInput" path="listRoutes[0].switchInfo.macAddress" type="text" value="3"/></td>
-                <td><form:input class="portInput" path="listRoutes[0].switchInfo.inputPort" type="text" value="4"/></td>
-                <td><form:input class="portInput" path="listRoutes[0].switchInfo.outputPort" type="text" value="5"/></td>
-                <td class="td-last"><input class="deleteButton" type="button" value="Delete"/>
+                <td><form:input class="ipInput" path="listRoutes[0].sourceAddress" type="text" value="192.168.1.1"/></td>                    
+                <td><form:input class="ipInput" path="listRoutes[0].destinationAddress" type="text" value="192.168.2.1"/></td>
+                <td><form:input class="macInput" path="listRoutes[0].switchInfo.macAddress" type="text" value="00:00:00:00:00:00:00:10"/></td>
+                <td><form:input class="portInput" path="listRoutes[0].switchInfo.inputPort" type="text" value="1"/></td>
+                <td><form:input class="portInput" path="listRoutes[0].switchInfo.outputPort" type="text" value="2"/></td>
+                <td class="td-last"><input style="float:right" class="deleteButton" type="button" value="Delete"/>
                 </td>
             </tr>
 
         </table>
-        <input class="addRouteButton" onClick="addRout()" type="button" value="Add" name="addRoute"/>
+        <input style="margin-right: 11.5px" class="addRouteButton" onClick="addRout()" type="button" value="Add" name="addRoute"/>
          <input id="submitUpdateConfig" class="button" type="submit" value="Update" />
     </div>
 </form:form>
 <br/><br/>
- <input class="addRouteButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>
+ <input style="margin-right: 11.5px" class="addRouteButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>

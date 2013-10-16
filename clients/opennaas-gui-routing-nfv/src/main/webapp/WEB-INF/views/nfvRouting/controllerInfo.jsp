@@ -19,19 +19,30 @@
                 '{' + number + '}';
         });
     };
-
+    
+    function contentDisp(url){
+        var result = "";
+        $.ajax({
+            url : "controllerStatus/"+url,
+            async: false,
+            success : function (data) {
+                $("#dynamicContent").html(data);
+                result = data;                 
+            }
+        });
+        return result;
+    }
     function ConvertJsonToTable(parsedJson, tableId, tableClassName, linkText){
-        //Patterns for links and NULL value
+        //Patterns for links and NULL valu
         var italic = '<i>{0}</i>';
-        var link = linkText ? '<a href="{0}">' + linkText + '</a>' :
-            '<a href="{0}">{0}</a>';
+        var link = linkText ? '<a href="{0}" target="_blank">' + linkText + '</a>' :
+            '<a href="{0}" >{0}</a>';
 
         //Pattern for table                          
         var idMarkup = tableId ? ' id="' + tableId + '"' :
             '';
 
-        var classMarkup = tableClassName ? ' class="' + tableClassName + '"' :
-            '';
+        var classMarkup = tableClassName ? ' class="' + tableClassName + '"' : '';
 
         var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
 
@@ -62,10 +73,10 @@
                 headers = array_keys(parsedJson[0]);
                 headers[0] = "Switch DPIP";
                 headers[1] = "Controller";
-                headers[2] = "Url";
+                headers[2] = "Status";
+                headers[3] = "Url";
                 for (i = 0 ; i < headers.length; i++){
                     thCon += thRow.format(headers[i]);
-                    
                 }
         
             }
@@ -87,8 +98,15 @@
                                 tbCon += tdRow.format(key);
                             }else if(j==1){
                                 tbCon += tdRow.format(parsedJson[key]);
+                            }else if(j==2){
+                                response = contentDisp(parsedJson[key]);
+                                if (response == "Online"){
+                                    tbCon += tdRow.format("<img alt='online' src='/opennaas-routing-nfv/resources/images/online.png'>");
+                                }else{
+                                    tbCon += tdRow.format("<img alt='offline' src='/opennaas-routing-nfv/resources/images/offline.png'>");
+                                }
                             }else{
-                                tbCon += tdRow.format(link.format(parsedJson[key]+"/ui/index.html"));
+                                tbCon += tdRow.format(link.format("http://"+parsedJson[key]+"/ui/index.html"));
                             }
                         }
                         trCon += tr.format(tbCon);
@@ -134,8 +152,8 @@
     objectArray = test;
     var jsonHtmlTable = ConvertJsonToTable(objectArray, 'jsonTable', null, 'Go to');
     document.write(jsonHtmlTable);
-    
+   
 </script>
 
 <table id="jsonTable" class="tablesorter">
-</table>
+</table> 

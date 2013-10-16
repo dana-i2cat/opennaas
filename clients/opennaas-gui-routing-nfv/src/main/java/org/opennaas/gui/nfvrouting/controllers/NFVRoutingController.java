@@ -1,10 +1,6 @@
 package org.opennaas.gui.nfvrouting.controllers;
 
 import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.insertCtrlInfo;
 import org.opennaas.gui.nfvrouting.beans.insertRoutes;
@@ -13,12 +9,10 @@ import org.opennaas.gui.nfvrouting.entities.ControllerInfo;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -127,12 +121,15 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/insertCtrlInfo")
     public String insertCtrlInfo(insertCtrlInfo ctrlInfo, BindingResult result, ModelMap model) {
-        LOGGER.error("Insert route------------------"+ctrlInfo.getListCtrl());
-        
-//        LOGGER.error(route.getSourceAddress());
-
+        LOGGER.error("Insert Controller information------------------"+ctrlInfo.getListCtrl());
         try {
             for(ControllerInfo r : ctrlInfo.getListCtrl()){
+                if (r.getControllerIp().equals("192.168.0.6"))
+                        r.setControllerIp("controllersVM");
+                else if (r.getControllerIp().equals("192.168.0.10"))
+                        r.setControllerIp("controllersVM2");
+                else
+                    model.addAttribute("errorMsg", "This IP does not correspond to any controller in this demo");
                 String response = nfvRoutingBO.insertCtrlInfo(r);
                 model.addAttribute("json", response);
             }

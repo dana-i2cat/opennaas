@@ -1,18 +1,16 @@
 package org.opennaas.gui.nfvrouting.services.rest.routing;
 
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.representation.Form;
 import javax.ws.rs.core.MediaType;
-
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.entities.ControllerInfo;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.opennaas.gui.nfvrouting.services.rest.GenericRestService;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.representation.Form;
 
 /**
  * @author Josep
@@ -82,7 +80,7 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
-    public String insertRoute(ControllerInfo ctrl) {
+    public String insertControllerInfo(ControllerInfo ctrl) {
         String response = null;
         try {
             LOGGER.info("Calling get Route Table service");
@@ -103,10 +101,14 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
+    /*
+     * Receive a json that contains a table with the controller-switch information.
+     * 
+     */
     public String getInfoControllers() {
         String response = null;
         try {
-            LOGGER.info("Calling get Route Table service");
+            LOGGER.info("Calling get Controller Information");
             String request = "VM-Routing1";
             String url = getURL("ofrouting/" + request + "/routing/getSwitchControllers/");
             Client client = Client.create();
@@ -119,5 +121,20 @@ public class NFVRoutingService extends GenericRestService {
         }
         return response;
     }
-
+    public String getControllerStatus(String ip) {
+        String response = null;
+        try {
+            LOGGER.info("Calling get Controller Status");
+            String request = "VM-Routing1";
+            String url = getURL("ofrouting/" + request + "/routing/getControllerStatus/"+ip);
+            Client client = Client.create();
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Controller status: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
 }

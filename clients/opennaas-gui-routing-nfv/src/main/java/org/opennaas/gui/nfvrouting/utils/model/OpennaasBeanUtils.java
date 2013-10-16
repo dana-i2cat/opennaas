@@ -17,7 +17,7 @@ import org.opennaas.gui.nfvrouting.enums.Template;
 /**
  * This class provides the methods to convert OpenNaaS beans to VCPE GUI beans
  * 
- * @author Jordi
+ * @author Josep
  */
 public class OpennaasBeanUtils {
 

@@ -22,9 +22,9 @@ routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:0
 routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM2 8093 00:00:00:00:00:00:00:48
 
 routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:14
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:00:00:00:00:15
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:16
-routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:17
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:15
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8093 00:00:00:00:00:00:00:16
+routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8094 00:00:00:00:00:00:00:17
 
 #insert routes from json file
 routing:insertfileroute ofrouting:VM-Routing1 routes.json

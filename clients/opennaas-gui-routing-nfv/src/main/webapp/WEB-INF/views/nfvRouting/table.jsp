@@ -51,11 +51,11 @@
 
             // Create table headers from JSON data
             // If JSON data is a simple string array we create a single table header
-                if(isStringArray)
+/*                if(isStringArray)
                     thCon += thRow.format('value');
                 else{
-                    // If JSON data is an object array, headers are automatically computed
-                    if(typeof(parsedJson[0]) == 'object'){
+*/                    // If JSON data is an object array, headers are automatically computed
+//                    if(typeof(parsedJson[0]) == 'object'){
                         headers = array_keys(parsedJson[0]);
                         headers[0] = "Id";
                         headers[1] = "Source IP";
@@ -72,8 +72,8 @@
 
                         for (i = 0; i < headers.length; i++)
                             thCon += thRow.format(headers[i]);
-                }
-            }
+//                }
+//            }
             headers = array_keys(parsedJson[0]);
             th = th.format(tr.format(thCon));
 
@@ -117,7 +117,7 @@
                                         tbCon += tdRow.format(value);
                                     }
                                 } else {    // If value == null we format it like PhpMyAdmin NULL values
-                                    tbCon += tdRow.format(italic.format(value).toUpperCase());
+                                    tbCon += tdRow.format(value);
                                 }
                             }
                         }
@@ -134,29 +134,25 @@
         return null;
     }
 
-    function array_keys(input, search_value, argStrict)
-    {
-    var search = typeof search_value !== 'undefined', tmp_arr = [], strict = !!argStrict, include = true, key = '';
+    function array_keys(input, search_value, argStrict){
+        var search = typeof search_value !== 'undefined', tmp_arr = [], strict = !!argStrict, include = true, key = '';
 
-    if (input && typeof input === 'object' && input.change_key_case) { // Duck-type check for our own array()-created PHPJS_Array
-    return input.keys(search_value, argStrict);
-    }
+        if (input && typeof input === 'object' && input.change_key_case) { // Duck-type check for our own array()-created PHPJS_Array
+            return input.keys(search_value, argStrict);
+        }
 
-    for (key in input)
-    {
-    if (input.hasOwnProperty(key))
-    {
-    include = true;
-    if (search)
-    {
-    if (strict && input[key] !== search_value)
-    include = false;
-    else if (input[key] != search_value)
-    include = false;
-    } 
-    if (include)
-    tmp_arr[tmp_arr.length] = key;
-    }
+    for (key in input){
+        if (input.hasOwnProperty(key)){
+            include = true;
+        if (search){
+            if (strict && input[key] !== search_value)
+                include = false;
+            else if (input[key] != search_value)
+                include = false;
+        } 
+        if (include)
+            tmp_arr[tmp_arr.length] = key;
+        }
     }
     return tmp_arr;
     }
@@ -172,8 +168,7 @@
     }
 </script>
 
-Routing table...
-${json}
+<!--${json}-->
 
 <table id="jsonTable" class="tablesorter">
 

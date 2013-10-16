@@ -1,6 +1,5 @@
 package org.opennaas.gui.nfvrouting.bos;
 
-
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.entities.ControllerInfo;
 import org.opennaas.gui.nfvrouting.entities.Route;
@@ -41,10 +40,14 @@ public class NFVRoutingBO {
     }
 
     public String insertCtrlInfo(ControllerInfo ctrl) {
-         return nfvRoutingService.insertRoute(ctrl);
+         return nfvRoutingService.insertControllerInfo(ctrl);
     }
 
     public String getInfoControllers() {
         return nfvRoutingService.getInfoControllers();
+    }
+    
+    public String getControllerStatus(String ip) {
+        return nfvRoutingService.getControllerStatus(ip);
     }
 }

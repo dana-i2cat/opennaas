@@ -7,7 +7,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import javax.ws.rs.core.Response;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -84,7 +83,7 @@ public interface IRoutingCapability extends ICapability {
             @FormParam("ipDest") String ipDest,
             @FormParam("switchMac") String switchMac,
             @FormParam("inputPort") int inputPort,
-            @FormParam("inputPort") int outputPort) throws CapabilityException;
+            @FormParam("outputPort") int outputPort) throws CapabilityException;
 
     /**
      * Insert new route
@@ -99,7 +98,7 @@ public interface IRoutingCapability extends ICapability {
             @FormParam("ipDest") String ipDest,
             @FormParam("switchMac") String switchMac,
             @FormParam("inputPort") int inputPort,
-            @FormParam("inputPort") int outputPort) throws CapabilityException;
+            @FormParam("outputPort") int outputPort) throws CapabilityException;
 
     /**
      * Update route
@@ -113,7 +112,7 @@ public interface IRoutingCapability extends ICapability {
      * @throws CapabilityException
      */
     @Path("/putSwitchController")
-    @GET
+    @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response putSwitchController(@FormParam("ipController") String ipController,
             @FormParam("portController") String portController,
@@ -141,4 +140,15 @@ public interface IRoutingCapability extends ICapability {
     @Produces(MediaType.TEXT_PLAIN)
     public String insertRouteFile(@PathParam("fileName") String ipSource) throws CapabilityException;
     
+    
+    /**
+     * Get Controller Status
+     * 
+     * return json with the list of routes
+     * @throws CapabilityException
+     */
+    @Path("/getControllerStatus/{ip-port}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getControllerStatus(@PathParam("ip-port") String ip) throws CapabilityException;
 }

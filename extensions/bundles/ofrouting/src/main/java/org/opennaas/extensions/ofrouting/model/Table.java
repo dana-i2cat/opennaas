@@ -51,7 +51,7 @@ public class Table {
     }
 
     public String addRoute(Route route, int version) {
-        log.error("version "+version);
+        log.info("Adding route with version "+version);
         if (!RouteExists(route, version)) {
             if (version == 4) {
                 route.setId(this.routeIPv4.size());
@@ -131,18 +131,18 @@ public class Table {
     }
 
     public int getOutputPort(Route route, int version) {
-        log.error("Return output port from route");
+        log.info("Return output port from route");
         if (version == 4) {        
             for (Route r : this.routeIPv4) {
                 if (r.equals(route)) {
-                    log.error("OutputPort ipv4 = " + r.getSwitchInfo().getOutputPort());
+                    log.info("OutputPort ipv4 = " + r.getSwitchInfo().getOutputPort());
                     return r.getSwitchInfo().getOutputPort();
                 }
             }
         } else  if (version == 6) {   
             for (Route r : this.routeIPv6) {
                 if (r.equals(route)) {
-                    log.error("OutputPort ipv6 = " + r.getSwitchInfo().getOutputPort());
+                    log.info("OutputPort ipv6 = " + r.getSwitchInfo().getOutputPort());
                     return r.getSwitchInfo().getOutputPort();
                 }
             }
@@ -151,10 +151,10 @@ public class Table {
     }
 
     public int getOutputPort(RouteSubnet route) {
-        log.error("Return output port from subnetwork");
+        log.info("Return output port from subnetwork");
         for (RouteSubnet r : this.routeSubnet) {
             if (r.equals(route)) {
-                log.error("OutputPort = " + r.getSwitchInfo().getOutputPort());
+                log.info("OutputPort = " + r.getSwitchInfo().getOutputPort());
                 return r.getSwitchInfo().getOutputPort();
             }
         }
@@ -189,9 +189,7 @@ public class Table {
                 //Using subnet, this lines is comment. The route table contain less number of entries
     //            if(!originSwitch.equals(r.getSwitchInfo().getMacAddress())){
                 if (InetAddresses.toAddrString(r.getSourceAddress()).equals(srcIp) && InetAddresses.toAddrString(r.getDestinationAddress()).equals(destIp)) {
-                    log.error("src "+srcIp);
-                    log.error("dst "+destIp);
-                    log.error("dins "+r.getSwitchInfo().getMacAddress());
+                    log.info("GetDestSwitch with src "+srcIp +", dst "+destIp +", dins "+r.getSwitchInfo().getMacAddress());
                     return r.getSwitchInfo();
                 }
     //            }
@@ -201,8 +199,6 @@ public class Table {
             //Using subnet, this lines is comment. The route table contain less number of entries
 //            if(!originSwitch.equals(r.getSwitchInfo().getMacAddress())){
             if (InetAddresses.toAddrString(r.getSourceAddress()).equals(srcIp) && InetAddresses.toAddrString(r.getDestinationAddress()).equals(destIp)) {
-                log.error("DINS");
-                log.error(r.getSwitchInfo().getMacAddress());
                 return r.getSwitchInfo();
             }
 //            }

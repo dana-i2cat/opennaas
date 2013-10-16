@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,6 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.MappingJsonFactory;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IAction;
@@ -157,15 +156,15 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"flow-mod-" + (int) (Math.random() * ((1000 - 1) + 1)) + "\", \"priority\":\"32767\", \"src-ip\":\"" + ipDest + "\", \"dst-ip\":\"" + ipSource + "\", \"ether-type\":\"0x800\", \"ingress-port\":\"" + destSwInfo.getOutputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
 
         long midTime = System.currentTimeMillis() - (System.currentTimeMillis() - initialTime);
-        log.error("Start time... " + midTime + " Initial: " + (System.currentTimeMillis() - initialTime));
+        log.info("Start time... " + midTime + " Initial: " + (System.currentTimeMillis() - initialTime));
         try {
             httpRequest(Url, json[0]);
             midTime = System.currentTimeMillis() - midTime;
-            log.error("GetResponse1... " + midTime + " Initial: " + (System.currentTimeMillis() - initialTime));
+            log.info("Time Response1... " + midTime + " Initial: " + (System.currentTimeMillis() - initialTime));
 
             httpRequest(Url, json[1]);
             midTime = System.currentTimeMillis() - midTime;
-            log.error("GetResponse2... " + midTime + " Initial: " + (System.currentTimeMillis() - initialTime));
+            log.error("GTime Response2... " + midTime + " Initial: " + (System.currentTimeMillis() - initialTime));
         } catch (Exception e) {
         }
         for (int i = 2; i < 4; i++) {
@@ -173,13 +172,13 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         }
 
         long totalTime = System.currentTimeMillis() - initialTime;
-        log.error("Return response, end exec: " + totalTime);
+        log.info("Return response, end exec: " + totalTime);
         return response;
     }
 
     private void httpRequest(String Url, String json) {
         try {
-            log.debug("URL: " + Url);
+            log.info("Request to: " + Url);
             URL url = new URL(Url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
@@ -259,10 +258,9 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         String returnedSrcSub = subSource;
         String returnedDstSub = subDest;
         //Next-hop router
-        log.error(proactive);
         if (proactive) {
-            log.info("PROACTIVE");
-            String controllerInfo = "";
+            log.info("Proactive Routing. Searching the last Switch of the Route...");
+            String controllerInfo;
             Switch destSwInfo = null;
             try {
                 destSwInfo = model.getTable().getDestinationSwitch(subSource, ipDest, switchMac, version);
@@ -273,10 +271,9 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             }
 
             if (controllerInfo == null) {
-                log.error("No information about the controller");
+                log.error("No information about the controller. Stop find route...");
                 return null;
             }
-
             Route route1 = null;
             try {
                 route1 = new Route(InetAddress.getByName(subSource), InetAddress.getByName(ipDest), destSwInfo);
@@ -287,10 +284,10 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             if (model.getTable().RouteExists(route1, version)) {
                 outputPortSW2 = Integer.toString(model.getTable().getOutputPort(route1, version));
             }
-            log.info("Out " + outputPortSW2);
             if (outputPortSW2 == null) {
-                log.error("NO output port");
+                log.error("NO output port in the last Switch.");
             }
+            log.info("Output port of the last Switch: " + outputPortSW2);
 
             subSource = subSource + "/24";
             subDest = subDest + "/24";
@@ -305,14 +302,14 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             } else if (version == 6) {
                 ethertype = "0x86DD";
             }
-            log.debug("Origin Switch: " + switchMac);
-            log.debug("Dest Switch: " + destSwInfo.getMacAddress());
+            log.info("Origin Switch: " + switchMac+ ", Dest Switch: " + destSwInfo.getMacAddress());
             if (!destSwInfo.getMacAddress().equals(switchMac)) {
                 json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpin-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
                 json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpto-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\"" + ethertype + "\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
                 json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4in-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype2 + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
                 json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4to-mod-" + subDest + subSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + subSource + "\", \"ether-type\":\"" + ethertype2 + "\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
                 try {
+                    log.info("Inserting flows in the destination switch...");
                     for (int i = 0; i < json.length; i++) {
                         httpRequest(Url, json[i]);
                     }
@@ -323,10 +320,11 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                  new MyThread(i, Url, json).start();
                  }
                  }
-                 */            }
+                 */            
+            }
 
-            //other siwthces
-log.info("Find routes in other Siwtches");
+            //other switches
+            log.info("Find routes in other Siwtches. Switches in the middle. Scenario 2 and 3");
             List<RouteSubnet> routeSubnetList = model.getTable().otherRouteExists(route, switchInfo, destSwInfo);
             if (routeSubnetList.size() > 1) {
                 for (RouteSubnet r : routeSubnetList) {
@@ -346,11 +344,6 @@ log.info("Find routes in other Siwtches");
                     outputPortSW2 = Integer.toString(model.getTable().getOutputPort(route1, version));
                 }
             }
-            log.info("Out " + outputPortSW2);
-            if (outputPortSW2 == null) {
-                log.error("NO output port");
-            }
-
         }
 
         long totalTime = System.currentTimeMillis() - initialTime;
@@ -358,8 +351,30 @@ log.info("Find routes in other Siwtches");
         return Integer.toString(outPortSW1) + ":" + returnedSrcSub + ":" + returnedDstSub;
     }
 
-    public class MyThread extends Thread {
+    /*
+     * Request to the controller page. If is offline, return the response.
+     * Used only by the GUI.
+     */
+    @Override
+    public String getControllerStatus(String ip) throws CapabilityException {
+        ip = ip.replace("-", ".");
+        ip = ip.replace("%3A", ":");
+        log.info("Request Controller status witht he following IP: "+ip);
+        try {
+            String Url = "http://" + ip + "/wm/core/controller/switches/json";
+            URLConnection connection = new URL(Url).openConnection();
+            //connection.setRequestProperty("Accept-Charset", charset);
+            connection.getInputStream();
+            log.info("Status: Online");
+            return "Online";
+        } catch (IOException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            log.info("Status: Offline");
+            return "Offline";
+        }
+    }
 
+    public class MyThread extends Thread {
         private int i;
         private String Url;
         private String[] json;
@@ -373,10 +388,10 @@ log.info("Find routes in other Siwtches");
         @Override
         public void run() {
             long initialTime = System.currentTimeMillis();
-            log.error("try to send " + i);
+            log.info("try to send " + i);
             httpRequest(Url, json[i]);
             long midTime = System.currentTimeMillis() - initialTime;
-            log.error("GetResponse" + i + "... " + midTime + "Initial: " + initialTime);
+            log.info("GetResponse" + i + "... " + midTime + "Initial: " + initialTime);
 
         }
     }
@@ -387,7 +402,7 @@ log.info("Find routes in other Siwtches");
      */
     @Override
     public String getRouteTable() throws CapabilityException {
-        log.info("Get Route Table");
+        log.info("Get entire Route Table");
         OfRoutingModel model = (OfRoutingModel) resource.getModel();
         if (model.getTable() == null) {
             model.setTable(new Table());
@@ -404,12 +419,12 @@ log.info("Find routes in other Siwtches");
     }
 
     /**
-     * @param @return the greeting message
+     * return the table requested. IPv4 -> 0, IPv6 -> 1, Subnet addresses -> 2
      *
      */
     @Override
     public String getRouteTable(int type) throws CapabilityException {
-        log.info("Get Route Table");
+        log.info("Get entire Route Table of version "+type);
         OfRoutingModel model = (OfRoutingModel) resource.getModel();
         if (model.getTable() == null) {
             model.setTable(new Table());
@@ -438,20 +453,20 @@ log.info("Find routes in other Siwtches");
      */
     @Override
     public String putRoute(String ipSource, String ipDest, String switchMac, int inputPort, int outputPort) throws CapabilityException {
-        log.info("Put Route into table");
+        log.info("Put Route into table. Src: "+ipSource+" Dst: "+ipDest+" In: "+inputPort+" Out: "+outputPort);
         OfRoutingModel model = (OfRoutingModel) resource.getModel();
         if (model.getTable() == null) {
             model.setTable(new Table());
         }
         int version = 0;
         if (Utils.isIpAddress(ipSource) == 4 && Utils.isIpAddress(ipDest) == 4) {
-            log.error("Is version 4");
+            log.info("Is version 4");
             version = 4;
         } else if (Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
-            log.error("Is version 6");
+            log.info("Is version 6");
             version = 6;
         } else {
-            log.error("Is version " + version);
+            log.error("IP version error. THe detected version is: " + version);
             return "The IP version is not detected. Analyze the IP.";
         }
         if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && inputPort != 0 && outputPort != 0) {
@@ -530,7 +545,6 @@ log.info("Find routes in other Siwtches");
             }
 
             String response = "ok!";
-
             JsonFactory f = new MappingJsonFactory();
             JsonParser jp = f.createJsonParser(new File(filename));
             JsonToken current = jp.nextToken();
