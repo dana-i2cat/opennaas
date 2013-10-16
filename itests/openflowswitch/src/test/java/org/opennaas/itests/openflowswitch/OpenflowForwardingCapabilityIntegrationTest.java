@@ -2,7 +2,6 @@ package org.opennaas.itests.openflowswitch;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -94,8 +93,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflow-switch", "opennaas-openflow-switch-driver-floodlight"),
-				includeTestHelper(),
+				includeFeatures("opennaas-openflow-switch", "opennaas-openflow-switch-driver-floodlight", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
