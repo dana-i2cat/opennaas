@@ -61,7 +61,7 @@ public class SDNNetworkOSGIIntegrationTest {
 	private IResourceRepository	sdnNetworkRepository;
 
 	@Inject
-	@Filter("(type=ofprovisionnet)")
+	@Filter("(capability=ofprovisionnet)")
 	private ICapabilityFactory	capabilityFactory;
 
 	@Inject
