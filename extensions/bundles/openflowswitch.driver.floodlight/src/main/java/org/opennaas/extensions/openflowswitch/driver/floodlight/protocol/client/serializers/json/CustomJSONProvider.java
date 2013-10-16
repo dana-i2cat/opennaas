@@ -4,6 +4,7 @@ import org.codehaus.jackson.Version;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.wrappers.FloodlightOFFlowsWrapper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 public class CustomJSONProvider extends JacksonJsonProvider {
@@ -16,6 +17,7 @@ public class CustomJSONProvider extends JacksonJsonProvider {
 		SimpleModule myModule = new SimpleModule("MyFloodlightOFFlowJSONSerializerDeserializerModule", new Version(1, 0, 0, null));
 		myModule.addSerializer(new FloodlightOFFlowJSONSerializer()); // assuming FloodlightOFFlowJSONSerializer declares correct class to bind to
 		myModule.addDeserializer(FloodlightOFFlow.class, new FloodlightOFFlowJSONDeserializer());
+		myModule.addDeserializer(FloodlightOFFlowsWrapper.class, new FloodlightOFFlowsWrapperJSONDeserializer());
 		mapper.registerModule(myModule);
 
 		mapper.configure(org.codehaus.jackson.map.SerializationConfig.Feature.WRAP_ROOT_VALUE, false);
