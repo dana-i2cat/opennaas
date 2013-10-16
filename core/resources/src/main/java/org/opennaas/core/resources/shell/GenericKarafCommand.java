@@ -1,7 +1,6 @@
 package org.opennaas.core.resources.shell;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -304,8 +303,10 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		commandSession.getConsole().append(displayMessage + "\n");
 		commandSession.getConsole().flush();
 
-		ConsoleReader consoleReader = new ConsoleReader(commandSession.getKeyboard(), new OutputStreamWriter(
-				commandSession.getConsole()));
+		// ConsoleReader consoleReader = new ConsoleReader(commandSession.getKeyboard(), new OutputStreamWriter(
+		// commandSession.getConsole()));
+
+		ConsoleReader consoleReader = new ConsoleReader();
 		String password = consoleReader.readLine(new Character((char) 0));
 
 		return password;

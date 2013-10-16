@@ -172,11 +172,12 @@
 			<groupId>org.opennaas.itests</groupId>
 			<artifactId>org.opennaas.itests.helpers</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.servicemix</groupId>
-			<artifactId>apache-servicemix</artifactId>
-		</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix</groupId>
+				<artifactId>apache-servicemix</artifactId>
+				<version>${servicemix.version}</version>
+				<type>tar.gz</type>
+			</dependency>
 		
 	</dependencies>
 
@@ -199,6 +200,7 @@
 								<artifactItem>
 									<groupId>org.apache.servicemix</groupId>
 									<artifactId>apache-servicemix</artifactId>
+									<type>tar.gz</type>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
@@ -235,7 +237,7 @@
 								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
 								<!-- <descriptor>mvn:org.apache.activemq/activemq-karaf/5.5.1-fuse-03-06/xml/features</descriptor> -->
 								<!-- Other featuresRepositories our ones depend on -->
-								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/2.2.6/xml/features</descriptor>
+								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<!-- Our featuresRepositories -->
 								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
 							</descriptors>

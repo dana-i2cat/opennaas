@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
-	<repository>mvn:org.apache.karaf.assemblies.features/standard/2.2.6/xml/features</repository>
+	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
 	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
@@ -19,6 +19,9 @@
 		<feature version="${spring.version}">spring-web</feature>
 		<feature version="${spring.osgi.version}">spring-dm</feature>
 		<feature version="${spring.osgi.version}">spring-dm-web</feature>
+		
+		
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>		
 		
 		<bundle dependency="true">mvn:org.springframework/org.springframework.transaction/${spring.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/${servicemix.ehcache.version}</bundle>
@@ -52,13 +55,15 @@
 	</feature>
 
 	<feature name="org.opennaas.core" version="${project.version}">
-		<feature>xml-specs</feature>
+		<feature>xml-specs-api</feature>
+		<feature>cxf-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
 		<feature version="${project.version}">opennaas-spring-security</feature>
-
+		
 		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
+		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/${felix.eventadmin.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/${servicemix.specs.version}</bundle> 
 
 		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
 	</feature>
@@ -104,13 +109,16 @@
 
 	<feature name="opennaas-ws-rest" version="${project.version}">
 		<feature>jetty</feature>
-		<feature version="${opennaas.version}">cxf-minimal</feature>
 
+		
+		<feature version="${opennaas.version}">cxf-minimal</feature>
+		
+		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
-		<bundle dependency="true">mvn:org.codehaus.woodstox/stax2-api/3.1.1</bundle>
-		<bundle dependency="true">mvn:org.codehaus.woodstox/woodstox-core-asl/4.2.0</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dom4j/1.6.1_5</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/2.2.0</bundle>
+		<bundle dependency="true">mvn:org.codehaus.woodstox/stax2-api/${stax2.api.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.woodstox/woodstox-core-asl/${woodstox.asl.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dom4j/${dom4j.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/${servicemix.specs.version}</bundle> 
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>
@@ -123,19 +131,22 @@
 	</feature>
 	
 	<feature name="cxf-minimal" version="${project.version}">
+		<feature>cxf-specs</feature>
 		
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlresolver/1.2_1</bundle>
+	<!-- <bundle dependency="true">mvn:javax.xml.soap/javax.xml.soap-api/1.3.7</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/2.2.0</bundle>  -->	
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlresolver/${xml.resolver.version}</bundle>
 		<bundle dependency="true">mvn:joda-time/joda-time/1.6.2</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.opensaml/2.4.1_1</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jdom/1.1_4</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.opensaml/${opensaml.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jdom/${jdom.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.ws.xmlschema/xmlschema-core/2.0</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/1.8.0</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.saaj-api-1.3/1.8.0</bundle>		
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.wsdl4j/1.6.2_5</bundle>		
-		<bundle dependency="true">mvn:org.apache.neethi/neethi/3.0.0</bundle>		
-		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/1.1.3</bundle>	
+	<!--  	<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/1.8.0</bundle> -->
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.saaj-api-1.3/${servicemix.saaj.specs}</bundle>		
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.wsdl4j/${wsdl4j.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.neethi/neethi/${neethi.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/${geronimo.wsmetadata.version}</bundle>	
 
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle>
 	
 	
 	</feature>
@@ -155,7 +166,7 @@
 		<feature version="${project.version}">opennaas-router</feature>
 		
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>
@@ -218,16 +229,15 @@
 		<feature version="${opennaas.version}">opennaas-openflow-switch</feature>
 		<feature version="${opennaas.version}">opennaas-ws-rest</feature>
 		
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/1.9.12</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/1.9.12</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/1.9.12</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/1.9.12</bundle>	
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>	
 			
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.floodlight/${project.version}</bundle>
 	</feature>
 	
 	<feature name="opennaas-sdn-network" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<feature version="${opennaas.version}">opennaas-openflow-switch</feature>
 		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.sdnnetwork/${project.version}</bundle>
@@ -246,12 +256,18 @@
 	</feature>
 
 	<feature name="opennaas-autobahn" version="${project.version}">
-		<feature>cxf</feature>
-		<feature version="${project.version}">opennaas-bod</feature>
+		<feature version="${project.version}">opennaas-jaxws</feature>	
+		<feature version="${project.version}">opennaas-bod</feature>	
+		<!-- <feature>cxf</feature>  -->
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.autobahn/${project.version}</bundle>
 	</feature>
-
+	
+	<feature name="opennaas-jaxws" version="${project.version}">
+		<bundle dependency="true">mvn:javax.xml.soap/javax.xml.soap-api/${xml.soap.api.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/${servicemix.specs.version}</bundle>
+	</feature>
+	
 	<feature name="opennaas-luminis" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
@@ -287,10 +303,11 @@
 	</feature>
 	
 	<feature name="opennaas-quantum" version="${project.version}">
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/1.9.12</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/1.9.12</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/1.9.12</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/1.9.12</bundle>
+		<feature version="${project.version}">opennaas-autobahn</feature>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.quantum/${project.version}</bundle>
 	</feature>
 	
@@ -354,6 +371,8 @@
 
 	<feature name="itests-helpers" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
+		
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
 		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>
 	</feature>
 	
