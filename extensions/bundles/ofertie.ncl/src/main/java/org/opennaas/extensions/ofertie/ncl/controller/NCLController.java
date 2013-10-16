@@ -51,6 +51,24 @@ public class NCLController implements INCLController {
 		}
 	}
 
+	@Override
+	public String deallocateFlow(String flowId, String networkId) throws FlowAllocationException {
+
+		try {
+			IResource networkResource = getResource(networkId);
+			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
+					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+
+			provisionCapab.deallocateOFFlow(flowId);
+			return flowId;
+
+		} catch (ActivatorException e) {
+			throw new FlowAllocationException(e);
+		} catch (ResourceException e) {
+			throw new FlowAllocationException(e);
+		}
+	}
+
 	private IResource getResource(String networkId) throws ActivatorException, ResourceException {
 
 		IResourceManager resourceManager = Activator.getResourceManagerService();
@@ -58,5 +76,4 @@ public class NCLController implements INCLController {
 
 		return resource;
 	}
-
 }
