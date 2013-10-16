@@ -1018,7 +1018,7 @@
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
 				<version>${servicemix.version}</version>
-				<type>tar.gz</type>
+				<type>zip</type>
 			</dependency>
 			<!-- Misc -->
 			<dependency>
