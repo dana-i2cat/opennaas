@@ -12,7 +12,8 @@ public class BGPPropertiesLoaderTest {
 	private static final String	BGP_PROPERTIES_PATH	= "/absolute/path/to/bgp.properties";
 
 	public static void main(String args[]) throws Exception {
-		checkPropertiesAreCorrect(BGP_PROPERTIES_PATH);
+		checkPropertiesAreCorrect(args[0]);
+		System.out.println("Properties loaded without error");
 	}
 
 	private static void checkPropertiesAreCorrect(String path) throws IOException {
