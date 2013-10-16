@@ -306,7 +306,8 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		// ConsoleReader consoleReader = new ConsoleReader(commandSession.getKeyboard(), new OutputStreamWriter(
 		// commandSession.getConsole()));
 
-		ConsoleReader consoleReader = new ConsoleReader();
+		ConsoleReader consoleReader = new ConsoleReader(commandSession.getKeyboard(), commandSession.getConsole());
+
 		String password = consoleReader.readLine(new Character((char) 0));
 
 		return password;
