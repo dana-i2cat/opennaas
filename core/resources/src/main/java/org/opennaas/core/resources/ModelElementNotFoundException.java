@@ -1,5 +1,11 @@
 package org.opennaas.core.resources;
 
+/**
+ * An Exception to tell a lookup in a resource model failed.
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
+ */
 public class ModelElementNotFoundException extends Exception {
 
 	/**
