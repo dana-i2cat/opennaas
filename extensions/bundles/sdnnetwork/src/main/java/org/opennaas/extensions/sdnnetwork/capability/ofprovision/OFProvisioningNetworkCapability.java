@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.ModelElementNotFoundException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -20,6 +21,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.sdnnetwork.Activator;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
+import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModelHelper;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
@@ -93,12 +95,22 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 	public void deallocateOFFlow(String flowId) throws CapabilityException {
 		log.info("Start of deallocateOFFlow call");
 
+		// check flow exists in model
+		SDNNetworkOFFlow flow;
+		try {
+			flow = SDNNetworkModelHelper.getFlowFromModelByName(flowId, (SDNNetworkModel) resource.getModel());
+		} catch (ModelElementNotFoundException e) {
+			throw new CapabilityException(e);
+		}
+
 		IAction action = createActionAndCheckParams(OFProvisioningNetworkActionSet.DEALLOCATEFLOW, flowId);
 
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
 			throw new ActionException(response.getResponses().get(0).toString());
+
+		removeDeallocatedFlowFromModel(flow, (SDNNetworkModel) resource.getModel());
 
 		log.info("End of deallocateOFFlow call");
 	}
@@ -191,6 +203,10 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 
 	private void addAllocatedFlowToModel(SDNNetworkOFFlow flow, SDNNetworkModel model) {
 		model.getFlows().add(flow);
+	}
+
+	private void removeDeallocatedFlowFromModel(SDNNetworkOFFlow flow, SDNNetworkModel model) {
+		model.getFlows().remove(flow);
 	}
 
 }
