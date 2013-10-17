@@ -123,7 +123,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		try {
 
 			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
-			getNclController().deallocateFlow(netId, flowId);
+			getNclController().deallocateFlow(flowId, netId);
 
 		} catch (Exception e) {
 			throw new ProvisionerException(e);
