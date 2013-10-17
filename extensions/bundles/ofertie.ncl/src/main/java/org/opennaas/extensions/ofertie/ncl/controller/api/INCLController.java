@@ -21,4 +21,13 @@ public interface INCLController {
 	 */
 	public String allocateFlow(FlowRequest flowRequest, Route route, String networkId) throws FlowAllocationException;
 
+	/**
+	 * 
+	 * @param flowId
+	 * @param networkId
+	 * @return flowId of deallocated flow
+	 * @throws FlowAllocationException
+	 */
+	public String deallocateFlow(String flowId, String networkId) throws FlowAllocationException;
+
 }

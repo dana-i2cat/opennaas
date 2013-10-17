@@ -9,12 +9,17 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
@@ -27,6 +32,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapability;
@@ -43,6 +49,12 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
+/**
+ * 
+ * @author Adrian Rosello (i2cat)
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
+ */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class NCLProvisionerTest {
@@ -144,13 +156,43 @@ public class NCLProvisionerTest {
 				keepRuntimeFolder());
 	}
 
-	@Test
-	public void test() throws Exception {
+	@Before
+	public void createResources() throws Exception {
 		createSwitches();
 		createSDNNetwork();
+	}
+
+	@After
+	public void deleteResources() throws Exception {
+		resourceManager.destroyAllResources();
+	}
+
+	@Test
+	public void test() throws Exception {
 
 		FlowRequest flowRequest = generateSampleFlowRequest();
 		String flowId = provisioner.allocateFlow(flowRequest);
+
+		Collection<Flow> flows = provisioner.readAllocatedFlows();
+		Flow allocatedFlow = null;
+		for (Flow flow : flows) {
+			if (flow.getId().equals(flowId)) {
+				allocatedFlow = flow;
+				break;
+			}
+		}
+		Assert.assertNotNull("readAllocatedFlows() must contain allocated flow", allocatedFlow);
+
+		provisioner.deallocateFlow(flowId);
+		flows = provisioner.readAllocatedFlows();
+		Flow deallocatedFlow = null;
+		for (Flow flow : flows) {
+			if (flow.getId().equals(flowId)) {
+				deallocatedFlow = flow;
+				break;
+			}
+		}
+		Assert.assertNull("readAllocatedFlows() must not contain deallocated flow", deallocatedFlow);
 
 	}
 

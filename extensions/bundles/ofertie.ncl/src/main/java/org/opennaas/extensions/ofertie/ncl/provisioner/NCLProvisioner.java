@@ -119,8 +119,15 @@ public class NCLProvisioner implements INCLProvisioner {
 	@Override
 	public void deallocateFlow(String flowId) throws FlowNotFoundException,
 			ProvisionerException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented");
+
+		try {
+
+			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
+			getNclController().deallocateFlow(flowId, netId);
+
+		} catch (Exception e) {
+			throw new ProvisionerException(e);
+		}
 	}
 
 	@Override
