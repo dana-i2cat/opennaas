@@ -30,6 +30,11 @@ public class NetworkSelectorMockup implements INetworkSelector {
 		return getFirstSDNNetworkInOpenNaaS();
 	}
 
+	@Override
+	public String findNetworkForFlowId(String flowId) throws Exception {
+		return getFirstSDNNetworkInOpenNaaS();
+	}
+
 	/**
 	 * It assumes OpenNaaS supports SDN networks and there is at least one of them active.
 	 * 
