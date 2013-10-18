@@ -36,6 +36,11 @@ public class SDNNetworkModel implements IModel {
 	 */
 	private Map<String, String>				deviceResourceMap;
 
+	public SDNNetworkModel() {
+		flows = new ArrayList<SDNNetworkOFFlow>();
+		deviceResourceMap = new HashMap<String, String>();
+	}
+
 	/**
 	 * @return the flows
 	 */

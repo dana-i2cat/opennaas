@@ -1,5 +1,9 @@
 package org.opennaas.extensions.ofertie.ncl.controller;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -8,6 +12,7 @@ import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.sdnnetwork.model.Route;
@@ -20,6 +25,12 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
  * 
  */
 public class NCLController implements INCLController {
+
+	private Map<String, Flow>	allocatedFlows;
+
+	public NCLController() {
+		allocatedFlows = new HashMap<String, Flow>();
+	}
 
 	@Override
 	public String allocateFlow(FlowRequest flowRequest, Route route,
@@ -42,6 +53,11 @@ public class NCLController implements INCLController {
 
 			String flowId = provisionCapab.allocateOFFlow(flowWithRoute);
 
+			Flow flow = new Flow();
+			flow.setFlowRequest(flowRequest);
+			flow.setId(flowId);
+			allocatedFlows.put(flowId, flow);
+
 			return flowId;
 
 		} catch (ActivatorException e) {
@@ -60,6 +76,7 @@ public class NCLController implements INCLController {
 					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
 			provisionCapab.deallocateOFFlow(flowId);
+			allocatedFlows.remove(flowId);
 			return flowId;
 
 		} catch (ActivatorException e) {
@@ -67,6 +84,11 @@ public class NCLController implements INCLController {
 		} catch (ResourceException e) {
 			throw new FlowAllocationException(e);
 		}
+	}
+
+	@Override
+	public Collection<Flow> getFlows() {
+		return allocatedFlows.values();
 	}
 
 	private IResource getResource(String networkId) throws ActivatorException, ResourceException {

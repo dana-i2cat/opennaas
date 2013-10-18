@@ -124,7 +124,8 @@ public class AllocateFlowAction extends Action {
 		Port source = connection.getSource();
 		Port destination = connection.getDestination();
 
-		FloodlightOFFlow flow = new FloodlightOFFlow(sdnNetworkOFFlow, connection.getId());
+		FloodlightOFFlow flow = new FloodlightOFFlow(sdnNetworkOFFlow, null);
+		flow.setName(connection.getId());
 		flow.getMatch().setIngressPort(source.getPortNumber());
 
 		FloodlightOFAction outputAction = new FloodlightOFAction();
