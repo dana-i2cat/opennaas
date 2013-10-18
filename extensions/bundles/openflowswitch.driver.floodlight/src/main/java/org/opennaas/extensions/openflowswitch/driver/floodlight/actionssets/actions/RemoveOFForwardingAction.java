@@ -51,10 +51,12 @@ public class RemoveOFForwardingAction extends FloodlightAction {
 	 * @param client
 	 * @return existing flow with given flowName in switch
 	 * @throws Exception
+	 * @throws ActionException
+	 *             if there is no flow with given flowName in switch
 	 * @throws ProtocolException
 	 */
 	private FloodlightOFFlow getFlowFromSwitchByName(String flowName, String switchId, IFloodlightStaticFlowPusherClient client)
-			throws ProtocolException, Exception {
+			throws ProtocolException, ActionException, Exception {
 		for (FloodlightOFFlow flow : client.getFlows(switchId)) {
 			if (flow.getName().equals(flowName))
 				return flow;
