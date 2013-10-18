@@ -76,7 +76,7 @@ public class ProtocolSessionTest {
 	// TODO Remove @Ignore to perform the test.
 	@Test
 	@Ignore
-	public void clientTest() throws InterruptedException {
+	public void clientTest() throws ProtocolException, Exception {
 		// add a flow
 		client.addFlow(flow);
 
@@ -89,12 +89,11 @@ public class ProtocolSessionTest {
 		Assert.assertEquals("getFlows() must contain the created flow action", flow.getActions().get(0).getValue(),
 				flows.get(0).getActions().get(0).getValue());
 
-		// FIXME delete not working now, because empty body
 		// delete flow
-		// client.deleteFlow(flow);
+		client.deleteFlow(flow);
 
 		// get flows from switch again
-		// flows = client.getFlows(SWITCH_ID);
-		// Assert.assertEquals("Flows size must be 0", 0, flows.size());
+		flows = client.getFlows(SWITCH_ID);
+		Assert.assertEquals("Flows size must be 0", 0, flows.size());
 	}
 }
