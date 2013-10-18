@@ -37,7 +37,7 @@ public class CreateOFForwardingAction extends FloodlightAction {
 			IFloodlightStaticFlowPusherClient client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
 			client.addFlow(flow);
 
-		} catch (ProtocolException e) {
+		} catch (Exception e) {
 			throw new ActionException(e);
 		}
 
