@@ -135,7 +135,7 @@
 		<bundle dependency="true">mvn:org.apache.neethi/neethi/3.0.0</bundle>		
 		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/1.1.3</bundle>	
 
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle>
 	
 	
 	</feature>
@@ -155,7 +155,7 @@
 		<feature version="${project.version}">opennaas-router</feature>
 		
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.7.4</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>
