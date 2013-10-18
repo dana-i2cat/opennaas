@@ -45,7 +45,7 @@
 		<commons.lang.version>2.4_4</commons.lang.version>
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
-		<cxf.version>2.7.4</cxf.version>
+		<cxf.version>2.7.7</cxf.version>
 		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
 		<dom4j.version>1.6.1_5</dom4j.version>
 		<easymock.version>3.1</easymock.version>
@@ -61,6 +61,8 @@
 		<hibernate-validator>4.3.0.Final</hibernate-validator>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
+			http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->	
 		<jackson.version>1.9.12</jackson.version>
 		<javamail.version>1.4.4</javamail.version>
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		

@@ -4,6 +4,7 @@
 	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
+	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
 
 	<feature name="opennaas-spring-jdbc" version="${project.version}">
 		<feature version="${spring.version}">spring</feature>
@@ -56,7 +57,7 @@
 
 	<feature name="org.opennaas.core" version="${project.version}">
 		<feature>xml-specs-api</feature>
-		<feature>cxf-specs</feature>
+		<feature version="${cxf.version}">cxf-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
 		<feature version="${project.version}">opennaas-spring-security</feature>
 		
@@ -131,7 +132,7 @@
 	</feature>
 	
 	<feature name="cxf-minimal" version="${project.version}">
-		<feature>cxf-specs</feature>
+		<feature version="${cxf.version}">cxf-specs</feature>
 		
 		<bundle dependency="true">mvn:javax.xml.soap/javax.xml.soap-api/1.3.7</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/2.2.0</bundle> 
@@ -146,7 +147,24 @@
 		<bundle dependency="true">mvn:org.apache.neethi/neethi/${neethi.version}</bundle>		
 		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/${geronimo.wsmetadata.version}</bundle>	
 
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-api/${cxf.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-core/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxrs/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-soap/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-databinding-aegis/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-databinding-jaxb/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-simple/${cxf.version}</bundle>		
+		
+		
+				
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxws/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-rs-extension-providers/${cxf.version}</bundle>		
+		
+			
+				
+		<!--  <bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle> -->
 	
 	
 	</feature>
@@ -166,7 +184,14 @@
 		<feature version="${project.version}">opennaas-router</feature>
 		
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle>
+	
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-api/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-core/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxrs/${cxf.version}</bundle>				
+		<!--  <bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle> -->
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>
