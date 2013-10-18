@@ -1,10 +1,12 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
@@ -13,11 +15,19 @@ import org.opennaas.extensions.sdnnetwork.model.Route;
 
 public class PathFinderMockup implements IPathFinder {
 
+	private final static String			PATHS_FILE_URL	= "etc/org.opennaas.extensions.ofertie.ncl.paths.xml";
+
 	private static final String			DEFAULT_ROUTE	= "0";
 	/**
 	 * Key: ToS in request, Value: Route to apply
 	 */
-	private static Map<String, Route>	routes			= initRoutes();
+	private static Map<String, Route>	routes;
+
+	public PathFinderMockup() throws IOException, SerializationException {
+
+		routes = PathLoader.loadPathsFromXML(PATHS_FILE_URL);
+
+	}
 
 	@Override
 	public Route findPathForRequest(FlowRequest flowRequest, String networkId)
