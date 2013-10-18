@@ -5,7 +5,6 @@ import java.util.List;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightAction;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
@@ -27,7 +26,7 @@ public class GetOFForwardingAction extends FloodlightAction {
 			IFloodlightStaticFlowPusherClient client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
 			flows = client.getFlows(switchId);
 
-		} catch (ProtocolException e) {
+		} catch (Exception e) {
 			throw new ActionException(e);
 		}
 

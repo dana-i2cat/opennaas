@@ -35,12 +35,11 @@ public class RemoveOFForwardingAction extends FloodlightAction {
 		try {
 			client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
 			switchId = getSwitchIdFromSession(protocolSessionManager);
-		} catch (ProtocolException e) {
+			FloodlightOFFlow flow = getFlowFromSwitchByName(flowId, switchId, client);
+			client.deleteFlow(flow);
+		} catch (Exception e) {
 			throw new ActionException(e);
 		}
-
-		FloodlightOFFlow flow = getFlowFromSwitchByName(flowId, switchId, client);
-		client.deleteFlow(flow);
 
 		return ActionResponse.okResponse(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE);
 	}
@@ -51,11 +50,13 @@ public class RemoveOFForwardingAction extends FloodlightAction {
 	 * @param switchId
 	 * @param client
 	 * @return existing flow with given flowName in switch
+	 * @throws Exception
 	 * @throws ActionException
 	 *             if there is no flow with given flowName in switch
+	 * @throws ProtocolException
 	 */
 	private FloodlightOFFlow getFlowFromSwitchByName(String flowName, String switchId, IFloodlightStaticFlowPusherClient client)
-			throws ActionException {
+			throws ProtocolException, ActionException, Exception {
 		for (FloodlightOFFlow flow : client.getFlows(switchId)) {
 			if (flow.getName().equals(flowName))
 				return flow;
