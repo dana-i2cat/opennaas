@@ -25,7 +25,8 @@ public class PathFinderMockup implements IPathFinder {
 
 	public PathFinderMockup() throws IOException, SerializationException {
 
-		routes = PathLoader.loadPathsFromXML(PATHS_FILE_URL);
+		String xmlRoutes = PathLoader.readXMLFile(PATHS_FILE_URL);
+		routes = PathLoader.getRoutesFromXml(xmlRoutes);
 
 	}
 

@@ -12,29 +12,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.sdnnetwork.model.Route;
 
 public abstract class PathLoader {
 
-	public static Map<String, Route> loadPathsFromXML(String fileURI) throws IOException, SerializationException {
+	private static Log	LOG	= LogFactory.getLog(PathLoader.class);
+
+	public static Map<String, Route> getRoutesFromXml(String xmlWithPaths) throws SerializationException {
+
+		LOG.debug("Parsing routes from xml.");
 
 		Map<String, Route> finalPaths = new HashMap<String, Route>();
-
-		String xmlWithPaths = loadPathsFromXMLFile(fileURI);
-
 		List<Route> routes = ObjectSerializer.fromXML(xmlWithPaths, Route.class);
 
 		for (Route route : routes) {
 			finalPaths.put(route.getId(), route);
+
 		}
 
-		return finalPaths;
+		LOG.debug(routes.size() + " routes parsed from xml.");
 
+		return finalPaths;
 	}
 
-	private static String loadPathsFromXMLFile(String filePath) throws IOException {
+	public static String readXMLFile(String filePath) throws IOException {
+
+		LOG.debug("Reading content of file " + filePath);
 
 		InputStreamReader reader = null;
 		BufferedReader bufferReader = null;
@@ -58,6 +65,10 @@ public abstract class PathLoader {
 
 		bufferReader.close();
 
-		return w.toString();
+		String fileContent = w.toString();
+
+		LOG.debug("Readed content of file " + filePath);
+
+		return fileContent;
 	}
 }
