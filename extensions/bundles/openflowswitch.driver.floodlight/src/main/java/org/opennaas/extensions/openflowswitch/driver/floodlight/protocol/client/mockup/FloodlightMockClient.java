@@ -90,7 +90,8 @@ public class FloodlightMockClient implements IFloodlightStaticFlowPusherClient {
 	@Override
 	public FloodlightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid) {
 		FloodlightOFFlowsWrapper flowsWrapper = new FloodlightOFFlowsWrapper();
-		flowsWrapper.addAll(flows.get(String.valueOf(dpid)));
+		if (flows.get(String.valueOf(dpid)) != null)
+			flowsWrapper.addAll(flows.get(String.valueOf(dpid)));
 
 		return flowsWrapper;
 	}
