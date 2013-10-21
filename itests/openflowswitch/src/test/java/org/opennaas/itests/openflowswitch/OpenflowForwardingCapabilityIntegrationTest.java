@@ -40,6 +40,7 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.InitializerTestHelper;
@@ -149,18 +150,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
-		forwardingRule.setName("flow1");
-		forwardingRule.setPriority("1");
-
-		FloodlightOFAction floodlightAction = new FloodlightOFAction();
-		floodlightAction.setType("output");
-		floodlightAction.setValue("dstPort=12");
-
-		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
-		actions.add(floodlightAction);
-
-		forwardingRule.setActions(actions);
+		FloodlightOFFlow forwardingRule = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
 
 		capability.createOpenflowForwardingRule(forwardingRule);
 
@@ -177,18 +167,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		Assert.assertEquals("Model forwarding rule should be the one created for the action.", forwardingRule,
 				ofNewTable.getOfForwardingRules().get(0));
 
-		FloodlightOFFlow newForwardingRule = new FloodlightOFFlow();
-		newForwardingRule.setName("flow1");
-		newForwardingRule.setPriority("1");
-
-		FloodlightOFAction newFloodlightAction = new FloodlightOFAction();
-		newFloodlightAction.setType("output");
-		newFloodlightAction.setValue("dstPort=12");
-
-		List<FloodlightOFAction> newActions = new ArrayList<FloodlightOFAction>();
-		newActions.add(newFloodlightAction);
-
-		newForwardingRule.setActions(newActions);
+		FloodlightOFFlow newForwardingRule = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
 
 		capability.createOpenflowForwardingRule(newForwardingRule);
 
@@ -236,6 +215,34 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 	}
 
+	@Test
+	public void createDeleteGetTest() throws Exception {
+
+		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
+
+		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
+
+		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
+				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+
+		Assert.assertTrue("No rules in a freshly created switch", capability.getOpenflowForwardingRules().isEmpty());
+
+		capability.createOpenflowForwardingRule(forwardingRule1);
+		Assert.assertEquals("There is one single rule after creating one", 1, capability.getOpenflowForwardingRules().size());
+
+		capability.createOpenflowForwardingRule(forwardingRule2);
+		Assert.assertEquals("There are two rules after creating two", 2, capability.getOpenflowForwardingRules().size());
+
+		capability.removeOpenflowForwardingRule(forwardingRule1.getName());
+		Assert.assertEquals("There is one single rule after deleting forwardingRule1", 1, capability.getOpenflowForwardingRules().size());
+		Assert.assertEquals("forwardingRule2 is still in the switch after deleting forwardingRule1", forwardingRule2, capability
+				.getOpenflowForwardingRules().get(0));
+
+		capability.removeOpenflowForwardingRule(forwardingRule2.getName());
+		Assert.assertTrue("There is no rule after 2 deletions", capability.getOpenflowForwardingRules().isEmpty());
+
+	}
+
 	private void startResource() throws ResourceException, ProtocolException {
 		/* initialize model */
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -278,6 +285,28 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IFloodlightStaticFlowPusherClient client = session.getClientFactory().createClient(session.getSessionContext());
 		session.setFloodlightClient(client);
 
+	}
+
+	private static FloodlightOFFlow generateSampleFloodlightOFFlow(String name, String inputPort, String outputPort) {
+
+		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
+		forwardingRule.setName(name);
+		forwardingRule.setPriority("1");
+
+		FloodlightOFMatch match = new FloodlightOFMatch();
+		match.setIngressPort(inputPort);
+		forwardingRule.setMatch(match);
+
+		FloodlightOFAction floodlightAction = new FloodlightOFAction();
+		floodlightAction.setType("output");
+		floodlightAction.setValue(outputPort);
+
+		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+		actions.add(floodlightAction);
+
+		forwardingRule.setActions(actions);
+
+		return forwardingRule;
 	}
 
 }
