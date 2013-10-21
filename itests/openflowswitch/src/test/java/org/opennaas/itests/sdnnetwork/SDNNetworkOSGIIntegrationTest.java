@@ -29,9 +29,12 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.SDNNetworkInternalActionsetImplementation;
+import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -62,7 +65,7 @@ public class SDNNetworkOSGIIntegrationTest {
 	private IResourceRepository	sdnNetworkRepository;
 
 	@Inject
-	@Filter("(type=ofprovisionnet)")
+	@Filter("(capability=ofprovisionnet)")
 	private ICapabilityFactory	capabilityFactory;
 
 	@Inject
@@ -114,6 +117,54 @@ public class SDNNetworkOSGIIntegrationTest {
 
 		resourceManager.removeResource(resource.getResourceIdentifier());
 		Assert.assertTrue(resourceManager.listResources().isEmpty());
+	}
+
+	@Test
+	public void ofProvisioningNetworkCapabilityTest() throws Exception {
+
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		resourceManager.startResource(resource.getResourceIdentifier());
+
+		IOFProvisioningNetworkCapability capab = (IOFProvisioningNetworkCapability) resource
+				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+
+		SDNNetworkOFFlow flow1 = generateSampleSDNNetworkOFFlow("flow1", "1", "2");
+		SDNNetworkOFFlow flow2 = generateSampleSDNNetworkOFFlow("flow2", "2", "1");
+
+		String flow1Id = capab.allocateOFFlow(flow1);
+		Assert.assertTrue("recently alocated flow1 is returned by getAllocatedFlows", capab.getAllocatedFlows().contains(flow1));
+
+		String flow2Id = capab.allocateOFFlow(flow2);
+		Assert.assertTrue("recently alocated flow2 is returned by getAllocatedFlows", capab.getAllocatedFlows().contains(flow2));
+
+		capab.deallocateOFFlow(flow1Id);
+		Assert.assertFalse("recently dealocated flow1 is NOT returned by getAllocatedFlows", capab.getAllocatedFlows().contains(flow1));
+		Assert.assertTrue("alocated flow2 is returned by getAllocatedFlows", capab.getAllocatedFlows().contains(flow2));
+
+		capab.deallocateOFFlow(flow2Id);
+		Assert.assertFalse("dealocated flow1 is NOT returned by getAllocatedFlows", capab.getAllocatedFlows().contains(flow1));
+		Assert.assertFalse("recently dealocated flow2 is NOT returned by getAllocatedFlows", capab.getAllocatedFlows().contains(flow2));
+	}
+
+	private SDNNetworkOFFlow generateSampleSDNNetworkOFFlow(String name, String inputPort, String outputPort) {
+
+		SDNNetworkOFFlow flow = new SDNNetworkOFFlow();
+		flow.setName(name);
+		flow.setPriority("1");
+
+		FloodlightOFMatch match = new FloodlightOFMatch();
+		match.setIngressPort(inputPort);
+		flow.setMatch(match);
+
+		FloodlightOFAction floodlightAction = new FloodlightOFAction();
+		floodlightAction.setType("output");
+		floodlightAction.setValue(outputPort);
+
+		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+		actions.add(floodlightAction);
+
+		flow.setActions(actions);
+		return flow;
 	}
 
 }
