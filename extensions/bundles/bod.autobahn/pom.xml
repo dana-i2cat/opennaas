@@ -91,7 +91,7 @@
       									cxf-codegen-plugin
       								</artifactId>
       								<versionRange>
-      									[2.4.3-fuse-01-02,)
+      									[${cxf.version},)
       								</versionRange>
       								<goals>
       									<goal>wsdl2java</goal>
