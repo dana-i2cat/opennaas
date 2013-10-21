@@ -73,6 +73,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	public void createOpenflowForwardingRule(FloodlightOFFlow forwardingRule) throws CapabilityException {
 
 		log.info("Start of createOpenflowForwardingRule call");
+		log.info("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
 
 		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
 
@@ -87,6 +88,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	public void removeOpenflowForwardingRule(String flowId) throws CapabilityException {
 
 		log.info("Start of removeOpenflowForwardingRule call");
+		log.info("Removing forwarding rule " + flowId + " in resource " + resource.getResourceIdentifier().getId());
 
 		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, flowId);
 

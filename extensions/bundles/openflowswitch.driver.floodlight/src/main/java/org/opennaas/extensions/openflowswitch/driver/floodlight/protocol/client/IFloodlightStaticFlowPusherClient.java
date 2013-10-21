@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.wrappers.FloodlightOFFlowsWrapper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
@@ -27,7 +28,7 @@ public interface IFloodlightStaticFlowPusherClient {
 	@Path("/json")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void addFlow(FloodlightOFFlow flow);
+	public void addFlow(FloodlightOFFlow flow) throws ProtocolException, Exception;
 
 	/**
 	 * Deletes a static flow
@@ -38,7 +39,7 @@ public interface IFloodlightStaticFlowPusherClient {
 	@Path("/json")
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void deleteFlow(FloodlightOFFlow flow);
+	public void deleteFlow(FloodlightOFFlow flow) throws ProtocolException, Exception;
 
 	/**
 	 * Deletes all static flows for a particular switch
@@ -47,20 +48,20 @@ public interface IFloodlightStaticFlowPusherClient {
 	 *            The DPID of the switch to delete flows for.
 	 */
 	@Path("clear/{switchId}/json")
-	public void deleteFlowsForSwitch(@PathParam("switchId") String dpid);
+	public void deleteFlowsForSwitch(@PathParam("switchId") String dpid) throws ProtocolException, Exception;
 
 	/**
 	 * Deletes all flows.
 	 */
 	@Path("clear/all/json")
-	public void deleteAllFlows();
+	public void deleteAllFlows() throws ProtocolException, Exception;
 
 	/**
 	 * Gets all list of all flows
 	 */
 	@Path("list/all/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Map<String, List<FloodlightOFFlow>> getFlows();
+	public Map<String, List<FloodlightOFFlow>> getFlows() throws ProtocolException, Exception;
 
 	/**
 	 * Gets a list of flows by switch
@@ -68,6 +69,6 @@ public interface IFloodlightStaticFlowPusherClient {
 	@Path("list/{switchId}/json")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public FloodlightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid);
+	public FloodlightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid) throws ProtocolException, Exception;
 
 }

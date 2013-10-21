@@ -133,8 +133,8 @@ public class NCLProvisioner implements INCLProvisioner {
 	@Override
 	public Collection<Flow> readAllocatedFlows()
 			throws ProvisionerException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented");
+
+		return getNclController().getFlows();
 	}
 
 }
