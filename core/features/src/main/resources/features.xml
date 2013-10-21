@@ -221,7 +221,8 @@
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/1.9.12</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/1.9.12</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/1.9.12</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/1.9.12</bundle>	
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/1.9.12</bundle>
+		<bundle dependency="true">mvn:commons-io/commons-io/${commons.io.version}</bundle>	
 			
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.floodlight/${project.version}</bundle>
 	</feature>
