@@ -20,6 +20,8 @@ public abstract class FlowRequestHelper {
 
 		FlowRequest req = new FlowRequest();
 
+		req.setRequestId("1001");
+
 		req.setSourceIPAddress("192.168.1.14");
 		req.setDestinationIPAddress("192.168.1.13");
 
