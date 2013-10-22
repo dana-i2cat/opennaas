@@ -32,6 +32,12 @@
 		<artifactId>paxexam-karaf-container</artifactId>
 		<scope>compile</scope>
 	</dependency>
+	<!-- Required for createRestClient -->
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-bundle-minimal</artifactId>
+		<version>2.7.4</version>
+	</dependency>
   </dependencies>
   
   	<build>
