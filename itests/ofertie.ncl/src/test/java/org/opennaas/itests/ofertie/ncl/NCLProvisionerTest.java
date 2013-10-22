@@ -217,6 +217,7 @@ public class NCLProvisionerTest {
 		FlowRequest myRequest = new FlowRequest();
 		QoSRequirements myQoSRequirements = new QoSRequirements();
 
+		myRequest.setRequestId(String.valueOf(TOS));
 		myRequest.setSourceIPAddress(SRC_IP_ADDRESS);
 		myRequest.setDestinationIPAddress(DST_IP_ADDRESS);
 		myRequest.setSourcePort(SRC_PORT);

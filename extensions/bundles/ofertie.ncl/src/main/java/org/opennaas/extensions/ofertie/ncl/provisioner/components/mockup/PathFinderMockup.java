@@ -19,7 +19,7 @@ public class PathFinderMockup implements IPathFinder {
 
 	private static final String			DEFAULT_ROUTE	= "0";
 	/**
-	 * Key: ToS in request, Value: Route to apply
+	 * Key: RouteId, Value: Route to apply
 	 */
 	private static Map<String, Route>	routes;
 
@@ -33,13 +33,19 @@ public class PathFinderMockup implements IPathFinder {
 	@Override
 	public Route findPathForRequest(FlowRequest flowRequest, String networkId)
 			throws Exception {
-		return selectRouteFromToS(flowRequest.getTos());
+		return selectRouteFromRequestId(flowRequest.getRequestId());
 	}
 
-	private Route selectRouteFromToS(int tos) {
+	/**
+	 * Selects a route having RouteId equals to given requestId
+	 * 
+	 * @param requestId
+	 * @return
+	 */
+	private Route selectRouteFromRequestId(String requestId) {
 		Route route;
 
-		route = routes.get(String.valueOf(tos));
+		route = routes.get(String.valueOf(requestId));
 		if (route == null)
 			route = routes.get(DEFAULT_ROUTE);
 
