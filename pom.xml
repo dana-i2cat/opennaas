@@ -65,6 +65,7 @@
 			http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->	
 		<jackson.version>1.9.12</jackson.version>
 		<javamail.version>1.4.4</javamail.version>
+		<javax.ws.rs.version>2.0.0.m10</javax.ws.rs.version>
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>

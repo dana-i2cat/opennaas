@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
 	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
-	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
