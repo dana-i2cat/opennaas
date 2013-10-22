@@ -164,6 +164,7 @@ public class ProvisionerLogicTest {
 		qoSRequirements.setMaxPacketLoss(10);
 
 		FlowRequest request = new FlowRequest();
+		request.setRequestId("1");
 		request.setSourceIPAddress("192.168.0.1");
 		request.setDestinationIPAddress("192.168.0.2");
 		request.setSourcePort(8080);
