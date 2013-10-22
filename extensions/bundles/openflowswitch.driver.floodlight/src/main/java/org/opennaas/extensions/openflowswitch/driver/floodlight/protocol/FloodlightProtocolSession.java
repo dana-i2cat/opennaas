@@ -30,8 +30,8 @@ public class FloodlightProtocolSession implements IProtocolSession {
 	private Map<String, IProtocolSessionListener>	protocolListeners			= null;
 	private Map<String, IProtocolMessageFilter>		protocolMessageFilters		= null;
 
-	FloodlightClientFactory							clientFactory;
-	IFloodlightStaticFlowPusherClient				floodlightStaticFlowPusherClient;
+	private FloodlightClientFactory					clientFactory;
+	private IFloodlightStaticFlowPusherClient		floodlightStaticFlowPusherClient;
 
 	public FloodlightProtocolSession(String sessionID,
 			ProtocolSessionContext protocolSessionContext) throws ProtocolException {

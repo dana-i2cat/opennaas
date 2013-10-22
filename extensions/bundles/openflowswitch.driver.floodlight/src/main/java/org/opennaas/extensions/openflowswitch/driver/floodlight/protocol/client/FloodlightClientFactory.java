@@ -19,6 +19,7 @@ public class FloodlightClientFactory {
 		String switchId = (String) sessionContext.getSessionParameters().get(FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME);
 		// TODO use switch id to instantiate the client
 
+		// create CXF client
 		ProxyClassLoader classLoader = new ProxyClassLoader();
 		classLoader.addLoader(IFloodlightStaticFlowPusherClient.class.getClassLoader());
 		classLoader.addLoader(JAXRSClientFactoryBean.class.getClassLoader());
@@ -28,8 +29,13 @@ public class FloodlightClientFactory {
 		bean.setProvider(new CustomJSONProvider());
 		bean.setResourceClass(IFloodlightStaticFlowPusherClient.class);
 		bean.setClassLoader(classLoader);
-		return (IFloodlightStaticFlowPusherClient) bean.create();
 
+		IFloodlightStaticFlowPusherClient cxfClient = (IFloodlightStaticFlowPusherClient) bean.create();
+
+		// create mixed client using CXF and custom Java clients
+		IFloodlightStaticFlowPusherClient client = new FloodlightStaticFlowPusherClient(cxfClient, sessionContext);
+
+		return client;
 	}
 
 	public IFloodlightStaticFlowPusherClient destroyClient() {

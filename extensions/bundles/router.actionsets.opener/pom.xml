@@ -97,7 +97,7 @@
 						<Import-Package>
 							javax.ws.rs,
 							javax.ws.rs.core,
-							org.apache.cxf.jaxrs.client;version="2.7.4",
+							org.apache.cxf.jaxrs.client;version="${cxf.version}",
 							*
 						</Import-Package>
 						<Export-Package>

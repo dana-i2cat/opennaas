@@ -1,10 +1,12 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
@@ -13,11 +15,20 @@ import org.opennaas.extensions.sdnnetwork.model.Route;
 
 public class PathFinderMockup implements IPathFinder {
 
+	private final static String			PATHS_FILE_URL	= "etc/org.opennaas.extensions.ofertie.ncl.paths.xml";
+
 	private static final String			DEFAULT_ROUTE	= "0";
 	/**
 	 * Key: ToS in request, Value: Route to apply
 	 */
-	private static Map<String, Route>	routes			= initRoutes();
+	private static Map<String, Route>	routes;
+
+	public PathFinderMockup() throws IOException, SerializationException {
+
+		String xmlRoutes = PathLoader.readXMLFile(PATHS_FILE_URL);
+		routes = PathLoader.getRoutesFromXml(xmlRoutes);
+
+	}
 
 	@Override
 	public Route findPathForRequest(FlowRequest flowRequest, String networkId)
@@ -137,8 +148,8 @@ public class PathFinderMockup implements IPathFinder {
 							xconnect = new NetworkConnection();
 							xconnect.setSource(srcPort);
 							xconnect.setDestination(dstPort);
-							xconnect.setId(xconnect.getSource().getId() + "->" + xconnect.getDestination().getId());
-							xconnects.put(xconnect.getId(), xconnect);
+							xconnect.setName(xconnect.getSource().getId() + "->" + xconnect.getDestination().getId());
+							xconnects.put(xconnect.getName(), xconnect);
 						}
 					}
 				}
@@ -157,58 +168,58 @@ public class PathFinderMockup implements IPathFinder {
 		link = new NetworkConnection();
 		link.setSource(ports.get("h2-2"));
 		link.setDestination(ports.get("s8-2"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		link = new NetworkConnection();
 		link.setSource(ports.get("s8-1"));
 		link.setDestination(ports.get("s7-2"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		link = new NetworkConnection();
 		link.setSource(ports.get("s6-2"));
 		link.setDestination(ports.get("s7-1"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		link = new NetworkConnection();
 		link.setSource(ports.get("h1-2"));
 		link.setDestination(ports.get("s6-1"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		// shortest route
 		link = new NetworkConnection();
 		link.setSource(ports.get("s5-2"));
 		link.setDestination(ports.get("h2-1"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		link = new NetworkConnection();
 		link.setSource(ports.get("h1-1"));
 		link.setDestination(ports.get("s5-1"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		// medium route
 		link = new NetworkConnection();
 		link.setSource(ports.get("s4-2"));
 		link.setDestination(ports.get("h2-0"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		link = new NetworkConnection();
 		link.setSource(ports.get("s3-2"));
 		link.setDestination(ports.get("s4-1"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		link = new NetworkConnection();
 		link.setSource(ports.get("h1-0"));
 		link.setDestination(ports.get("s3-1"));
-		link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-		links.put(link.getId(), link);
+		link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+		links.put(link.getName(), link);
 
 		// calculate inverse links
 		Map<String, NetworkConnection> inverseLinks = new HashMap<String, NetworkConnection>();
@@ -216,8 +227,8 @@ public class PathFinderMockup implements IPathFinder {
 			link = new NetworkConnection();
 			link.setSource(nc.getDestination());
 			link.setDestination(nc.getSource());
-			link.setId(link.getSource().getId() + "->" + link.getDestination().getId());
-			inverseLinks.put(link.getId(), link);
+			link.setName(link.getSource().getId() + "->" + link.getDestination().getId());
+			inverseLinks.put(link.getName(), link);
 		}
 		links.putAll(inverseLinks);
 

@@ -147,6 +147,7 @@
 		<bundle dependency="true">mvn:org.apache.neethi/neethi/${neethi.version}</bundle>		
 		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/${geronimo.wsmetadata.version}</bundle>	
 
+		<!-- Bundles replace the cxf-bundle-minimal, since it contains bugs in MANIFEST -->
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-api/${cxf.version}</bundle>	
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-core/${cxf.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
@@ -156,15 +157,11 @@
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-databinding-aegis/${cxf.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-databinding-jaxb/${cxf.version}</bundle>		
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-simple/${cxf.version}</bundle>		
-		
-		
-				
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxws/${cxf.version}</bundle>		
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-rs-extension-providers/${cxf.version}</bundle>		
-		
-			
 				
 		<!--  <bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle> -->
+
 	
 	
 	</feature>
@@ -192,6 +189,7 @@
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http/${cxf.version}</bundle>		
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxrs/${cxf.version}</bundle>				
 		<!--  <bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle> -->
+
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>
@@ -258,6 +256,7 @@
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>	
+		<bundle dependency="true">mvn:commons-io/commons-io/${commons.io.version}</bundle>	
 			
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.floodlight/${project.version}</bundle>
 	</feature>
@@ -396,7 +395,8 @@
 
 	<feature name="itests-helpers" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
-		
+		<feature version="${opennaas.version}">cxf-minimal</feature>
+			
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
 		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>
 	</feature>

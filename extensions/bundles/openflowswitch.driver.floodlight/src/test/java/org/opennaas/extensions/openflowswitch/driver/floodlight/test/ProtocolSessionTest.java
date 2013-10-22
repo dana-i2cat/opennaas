@@ -1,6 +1,9 @@
 package org.opennaas.extensions.openflowswitch.driver.floodlight.test;
 
 import java.util.Arrays;
+import java.util.List;
+
+import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
@@ -71,16 +74,26 @@ public class ProtocolSessionTest {
 
 	// This test is ignored because it requires having a floodlight controller available at FLOODLIGHT_URI.
 	// TODO Remove @Ignore to perform the test.
-	@Ignore
 	@Test
-	public void clientTest() {
+	@Ignore
+	public void clientTest() throws ProtocolException, Exception {
+		// add a flow
 		client.addFlow(flow);
-		client.deleteFlow(flow.getName());
 
-		// Cannot check with asserts because getFlows() method does not work yet
-		// Map<String,List<FloodlightOFFlow>> flows = client.getFlows(SWITCH_ID);
-		// Assert.assertTrue("getFlows() contains created flow", flows.get(SWITCH_ID).contains(flow));
+		// get flows from switch
+		List<FloodlightOFFlow> flows = client.getFlows(SWITCH_ID);
+		Assert.assertEquals("Flows size must be 1", 1, flows.size());
+		Assert.assertEquals("getFlows() must contain the created flow", flows.get(0).getName(), flow.getName());
+		// Assert.assertEquals("getFlows() must contain the created flow action", flow.getActions().get(0).getType(),
+		// flows.get(0).getActions().get(0).getType());
+		Assert.assertEquals("getFlows() must contain the created flow action", flow.getActions().get(0).getValue(),
+				flows.get(0).getActions().get(0).getValue());
 
+		// delete flow
+		client.deleteFlow(flow);
+
+		// get flows from switch again
+		flows = client.getFlows(SWITCH_ID);
+		Assert.assertEquals("Flows size must be 0", 0, flows.size());
 	}
-
 }

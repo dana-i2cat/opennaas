@@ -1,14 +1,10 @@
 package org.opennaas.extensions.openflowswitch.capability;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -22,12 +18,14 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
 
 /**
  * 
  * @author Adrian Rosello (i2CAT)
+ * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
 public class OpenflowForwardingCapability extends AbstractCapability implements IOpenflowForwardingCapability {
@@ -75,53 +73,42 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	public void createOpenflowForwardingRule(FloodlightOFFlow forwardingRule) throws CapabilityException {
 
 		log.info("Start of createOpenflowForwardingRule call");
+		log.info("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
 
 		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
 
-		try {
-			ActionResponse response = executeAction(action);
+		ActionResponse response = executeAction(action);
 
-			if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-				throw new ActionException(response.getResponses().get(0).toString());
-
-		} catch (ProtocolException pe) {
-			log.error("Error getting OFswitch protocol session - " + pe.getMessage());
-			throw new CapabilityException(pe);
-		} catch (ActivatorException ae) {
-			log.error("Protocol error - " + ae.getMessage());
-			throw new CapabilityException();
-		} catch (ActionException ae) {
-			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
-			throw (ae);
-		}
+		refreshModelFlows();
 
 		log.info("End of createOpenflowForwardingRule call");
-
 	}
 
 	@Override
-	public void removeOpenflowForwardingRule(String flowId) {
-		throw new UnsupportedOperationException();
+	public void removeOpenflowForwardingRule(String flowId) throws CapabilityException {
+
+		log.info("Start of removeOpenflowForwardingRule call");
+		log.info("Removing forwarding rule " + flowId + " in resource " + resource.getResourceIdentifier().getId());
+
+		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, flowId);
+
+		ActionResponse response = executeAction(action);
+
+		refreshModelFlows();
+
+		log.info("End of removeOpenflowForwardingRule call");
 	}
 
 	@Override
 	public List<FloodlightOFFlow> getOpenflowForwardingRules() throws CapabilityException {
 		log.info("Start of getOpenflowForwardingRules call");
 
-		List<FloodlightOFFlow> forwardingRules = new ArrayList<FloodlightOFFlow>();
-		try {
+		List<FloodlightOFFlow> forwardingRules;
 
-			OpenflowSwitchModel model = getResourceModel();
-			log.debug("Reading forwarding rules from model.");
-			forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
+		refreshModelFlows();
 
-		} catch (ActivatorException ae) {
-			log.error("Error getting resource model - " + ae.getMessage());
-			throw new CapabilityException(ae);
-		} catch (ResourceException re) {
-			log.error("Error getting resource model - " + re.getMessage());
-			throw new CapabilityException(re);
-		}
+		log.debug("Reading forwarding rules from model.");
+		forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(getResourceModel());
 
 		log.info("End of getOpenflowForwardingRules call");
 		return forwardingRules;
@@ -146,28 +133,63 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		}
 	}
 
-	private IResourceManager getResourceManager() throws ActivatorException {
-		return Activator.getResourceManagerService();
+	/**
+	 * This method retrieves flows in the switch by calling GETFLOWS action and sets them in the switch model.
+	 * 
+	 * @return retrieved flows
+	 * @throws CapabilityException
+	 */
+	private List<FloodlightOFFlow> refreshModelFlows() throws CapabilityException {
+		log.info("Start of refreshModelFlows call");
+
+		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.GETFLOWS, null);
+
+		ActionResponse response = executeAction(action);
+
+		// assuming the action returns what it is meant to
+		List<FloodlightOFFlow> currentFlows = (List<FloodlightOFFlow>) response.getResult();
+
+		// assuming only one table may exist in switch model
+		// thats true with OpenFlow version 1.0
+		if (getResourceModel().getOfTables().isEmpty())
+			getResourceModel().getOfTables().add(new OFFlowTable());
+
+		getResourceModel().getOfTables().get(0).setOfForwardingRules(currentFlows);
+
+		log.info("End of refreshModelFlows call");
+
+		return currentFlows;
 	}
 
-	private OpenflowSwitchModel getResourceModel() throws ActivatorException, ResourceException {
-
-		log.debug("Getting resource model.");
-
-		IResourceManager resourceManager = getResourceManager();
-
-		IResource switchResource = resourceManager.getResourceById(this.resourceId);
-
-		return (OpenflowSwitchModel) switchResource.getModel();
+	private OpenflowSwitchModel getResourceModel() {
+		return (OpenflowSwitchModel) resource.getModel();
 	}
 
-	private ActionResponse executeAction(IAction action) throws ProtocolException, ActionException, ActivatorException {
+	private ActionResponse executeAction(IAction action) throws CapabilityException {
+		ActionResponse response;
+		try {
+			IProtocolManager protocolManager = Activator.getProtocolManagerService();
+			IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
 
-		IProtocolManager protocolManager = Activator.getProtocolManagerService();
-		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
+			response = action.execute(protocolSessionManager);
 
-		ActionResponse response = action.execute(protocolSessionManager);
+		} catch (ProtocolException pe) {
+			log.error("Error with protocol session - " + pe.getMessage());
+			throw new CapabilityException(pe);
+		} catch (ActivatorException ae) {
+			String errorMsg = "Error getting protocol manager - " + ae.getMessage();
+			log.error(errorMsg);
+			throw new CapabilityException(errorMsg, ae);
+		} catch (ActionException ae) {
+			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
+			throw (ae);
+		}
 
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			String errMsg = "Error executing " + action.getActionID() + " action - " + response.getInformation();
+			log.error(errMsg);
+			throw new ActionException(errMsg);
+		}
 		return response;
 	}
 

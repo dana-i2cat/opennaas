@@ -36,7 +36,7 @@ public class AllocateFlowAction extends Action {
 		for (int i = 0; i < connections.size(); i++) {
 			NetworkConnection networkConnection = connections.get(i);
 			try {
-				provisionLink(networkConnection.getSource(), networkConnection.getDestination(), new SDNNetworkOFFlow(flow),
+				provisionLink(networkConnection, new SDNNetworkOFFlow(flow),
 						i == connections.size() - 1);
 			} catch (Exception e) {
 				throw new ActionException("Error provisioning link : ", e);
@@ -76,7 +76,7 @@ public class AllocateFlowAction extends Action {
 	 **/
 
 	/**
-	 * The commented code is the right way to do it, but since there's no way yo set the mapping between the switchID and the deviceID and we have a
+	 * The commented code is the right way to do it, but since there's no way to set the mapping between the switchID and the deviceID and we have a
 	 * demo tomorrow, we will take the switch resource from the ResourceManager. Every switch contains in its model its floodlight switchId, so we can
 	 * use it as a work around.
 	 * 
@@ -87,29 +87,45 @@ public class AllocateFlowAction extends Action {
 	 * @throws ResourceException
 	 * @throws ActivatorException
 	 */
-	private void provisionLink(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink) throws ResourceException,
+	private void provisionLink(NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute) throws ResourceException,
 			ActivatorException {
-		if (source.getDeviceId() != destination.getDeviceId()) {
+
+		if (connection.getSource().getDeviceId() != connection.getDestination().getDeviceId()) {
 			/* link between different devices, assume it exists or it is provisioned */
 		} else {
 			/* link inside same device, use device internal capability to provision it */
-			String resourceName = source.getDeviceId();
-			IResource resource = getResourceByName(resourceName);
 
+			// Last link should include all actions of the original flow and the forwarding one.
+			// The rest only the forwarding rule.
+			// This way we can re-use original match in all links of the same flow.
+			FloodlightOFFlow flow = generateOFFlow(connection, sdnNetworkOFFlow, isLastLinkInRoute);
+
+			String resourceName = connection.getSource().getDeviceId();
+			IResource resource = getResourceByName(resourceName);
 			IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource
 					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-			FloodlightOFFlow flow = generateOFFlow(sdnNetworkOFFlow, source, destination, lastLink);
-
 			forwardingCapability.createOpenflowForwardingRule(flow);
-
 		}
 	}
 
-	private FloodlightOFFlow generateOFFlow(SDNNetworkOFFlow sdnNetworkOFFlow, Port source, Port destination, boolean lastLink)
+	/**
+	 * 
+	 * @param connection
+	 * @param sdnNetworkOFFlow
+	 * @param keepActions
+	 *            whether returned flow must have actions in sdnNetworkOFFlow or not.
+	 * @return a FloodlightOFFlow representing given connection in sdnNetworkOFFlow.
+	 * @throws ActionException
+	 */
+	private FloodlightOFFlow generateOFFlow(NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean keepActions)
 			throws ActionException {
 
+		Port source = connection.getSource();
+		Port destination = connection.getDestination();
+
 		FloodlightOFFlow flow = new FloodlightOFFlow(sdnNetworkOFFlow, null);
+		flow.setName(connection.getId());
 		flow.getMatch().setIngressPort(source.getPortNumber());
 
 		FloodlightOFAction outputAction = new FloodlightOFAction();
@@ -117,10 +133,8 @@ public class AllocateFlowAction extends Action {
 		outputAction.setValue(destination.getPortNumber());
 
 		// All links should include a forwarding action (outputAction)
-		// Last link should include all actions of the original flow
-		// not only the forwarding one.
 		List<FloodlightOFAction> actions = flow.getActions();
-		if (!lastLink) {
+		if (!keepActions) {
 			actions.clear();
 		} else {
 			for (FloodlightOFAction floodlightOFAction : actions) {
