@@ -132,9 +132,8 @@
 	
 	<feature name="cxf-minimal" version="${project.version}">
 		<feature version="${cxf.version}">cxf-specs</feature>
+		<feature version="${project.version}">opennaas-jaxws</feature>	
 		
-		<bundle dependency="true">mvn:javax.xml.soap/javax.xml.soap-api/${xml.soap.api.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/2.2.0</bundle> 
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlresolver/${xml.resolver.version}</bundle>
 		<bundle dependency="true">mvn:joda-time/joda-time/1.6.2</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.opensaml/${opensaml.version}</bundle>
