@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.opennaas</groupId>
     <artifactId>org.opennaas.extensions.bundles</artifactId>
-    <version>0.24-SNAPSHOT</version>
+    <version>0.24</version>
   </parent>
   <artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
   	<!--  Maven configuration -->
