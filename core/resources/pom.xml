@@ -107,6 +107,7 @@
 							com.google.common.*;resolution:=optional,
 							org.slf4j,
 							org.osgi.framework,
+							javax.ws.rs;version=${javax.ws.rs.version},
 							*
 						</Import-Package>
 						<Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>

@@ -2,7 +2,6 @@ package org.opennaas.itests.ofertie.ncl;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -155,8 +154,7 @@ public class NCLProvisionerTest {
 		return options(
 				opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-openflow-switch", "opennaas-openflow-switch-driver-floodlight", "opennaas-sdn-network",
-						"opennaas-ofertie-ncl"),
-				includeTestHelper(),
+						"opennaas-ofertie-ncl", "itests-helpers"),
 				systemTimeout(1000 * 60 * 10),
 				noConsole(),
 				keepRuntimeFolder());

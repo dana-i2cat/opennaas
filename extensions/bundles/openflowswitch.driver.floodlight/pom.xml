@@ -10,12 +10,6 @@
   	<packaging>bundle</packaging>
 	<name>OpenNaaS :: OpenFlow Switch :: Floodlight driver v0.90 </name>
 	<description>OpenFlow Switch driver using Floodlight v0.90</description>
-	<properties>
-	<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
-			http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->
-		<jackson.version>1.9.12</jackson.version>
-		<jsonassert.version>1.2.0</jsonassert.version>
-	</properties>
 
  	<dependencies>
 		<dependency>
@@ -29,7 +23,8 @@
 		<!-- Required in FloodlightProtocolSession to implement a Floodlight client -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-bundle-minimal</artifactId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+			<version>${cxf.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
@@ -40,23 +35,19 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-xc</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<!-- JSON Assert (https://github.com/skyscreamer/JSONassert) -->
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
-			<version>${jsonassert.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

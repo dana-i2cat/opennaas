@@ -2,7 +2,6 @@ package org.opennaas.itests.sdnnetwork;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -77,8 +76,7 @@ public class SDNNetworkOSGIIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-sdn-network"),
-				includeTestHelper(),
+				includeFeatures("opennaas-sdn-network", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -92,6 +90,8 @@ public class SDNNetworkOSGIIntegrationTest {
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 		this.resourceDescriptor = resourceDescriptor;
 	}
+
+	// TODO create switch resource before.
 
 	@Before
 	@After
@@ -164,6 +164,9 @@ public class SDNNetworkOSGIIntegrationTest {
 		actions.add(floodlightAction);
 
 		flow.setActions(actions);
+
+		// TODO create route
+
 		return flow;
 	}
 

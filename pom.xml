@@ -30,10 +30,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<ant.version>1.7.0_4</ant.version>
-		<activemq.version>5.5.1-fuse-03-06</activemq.version>
+		<activemq.version>5.7.0</activemq.version>
 		<axiom.version>1.2.12</axiom.version>
 		<beanutils.version>1.8.0</beanutils.version>
-		<camel.version>2.8.0-fuse-03-06</camel.version>
+		<camel.version>2.10.6</camel.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.codec.version>1.4</commons.codec.version>
 		<commons.collections.version>3.2.1_1</commons.collections.version>
@@ -45,36 +45,46 @@
 		<commons.lang.version>2.4_4</commons.lang.version>
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
-		<cxf.version>2.7.4</cxf.version>
+		<cxf.version>2.7.7</cxf.version>
 		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
+		<dom4j.version>1.6.1_5</dom4j.version>
 		<easymock.version>3.1</easymock.version>
+		<felix.eventadmin.version>1.2.14</felix.eventadmin.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
 		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
-		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
+		<geronimo.wsmetadata.version>1.1.3</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
-		<guava.version>10.0.1</guava.version>
-		<jodatime.version>2.1</jodatime.version>
-		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
+		<guava.version>10.0.1</guava.version>	
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate-validator>4.3.0.Final</hibernate-validator>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
+			http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->	
+		<jackson.version>1.9.12</jackson.version>
 		<javamail.version>1.4.4</javamail.version>
+		<javax.ws.rs.version>2.0.0.m10</javax.ws.rs.version>
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>
+		<jodatime.version>2.1</jodatime.version>
+		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
+		<jdom.version>1.1_4</jdom.version>
+		<jsonassert.version>1.2.0</jsonassert.version>					
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<junit.version>4.10</junit.version>
-		<karaf.version>2.2.2-fuse-04-06</karaf.version>
+		<karaf.version>2.2.11</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
+		<neethi.version>3.0.0</neethi.version>
 		<netconf4j.version>0.0.4</netconf4j.version>
-		<nmr.version>1.5.1-fuse-03-06</nmr.version>
+		<nmr.version>1.6.1</nmr.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
+		<opensaml.version>2.4.1_1</opensaml.version>
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam2.version>2.3.0</pax.exam2.version>
@@ -82,18 +92,20 @@
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.4.1-fuse-03-06</servicemix.version>
-		<servicemix.specs.version>1.8.0</servicemix.specs.version>
+		<servicemix.version>4.5.2</servicemix.version>
+		<servicemix.specs.version>2.2.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
-		<servicemix.xerces.version>2.9.1_4</servicemix.xerces.version>
+		<servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
 		<servicemix.cglib.version>2.1_3_6</servicemix.cglib.version>
+		<servicemix.saaj.specs>1.8.0</servicemix.saaj.specs>
 		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
 		<servicemix.javax-inject.version>1_2</servicemix.javax-inject.version>
 		<!-- 
 			Both versions of ehcache are linked, thus they must be updated together. 
 			ehcache.version is used for package version, servicemix.ehcache.version is used for bundles
 		-->
-		<ehcache.version>1.6.2</ehcache.version>
+		<!--  <ehcache.version>1.6.2</ehcache.version> -->
+		<ehcache.version>1.6.2</ehcache.version> 
 		<servicemix.ehcache.version>1.6.2_2</servicemix.ehcache.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
@@ -101,13 +113,18 @@
 		<spring.version>3.0.7.RELEASE</spring.version>
 		<spring.security.version>3.0.8.RELEASE</spring.security.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
+		<stax2.api.version>3.1.1</stax2.api.version>
 		<tiles-api.version>2.2.2</tiles-api.version>
 		<tiles-core.version>2.2.2</tiles-core.version>
 		<tiles-jsp.version>2.2.2</tiles-jsp.version>
 		<validation-api>1.0.0.GA</validation-api>
 		<westhawk.snmp.version>4_13</westhawk.snmp.version>
+		<woodstox.asl.version>4.2.0</woodstox.asl.version>
+		<wsdl4j.version>1.6.2_5</wsdl4j.version>
 		<xbean.version>3.9</xbean.version>
 		<xmlschema.version>1.4.7</xmlschema.version>
+		<xml.resolver.version>1.2_1</xml.resolver.version>
+		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
 		<opennaas.gim.version>0.24-SNAPSHOT</opennaas.gim.version>
 	</properties>
@@ -999,10 +1016,12 @@
 				<scope>test</scope>
 			</dependency>
 			<!-- Features -->
+			<!--  -->
 			<dependency>
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
 				<version>${servicemix.version}</version>
+				<type>zip</type>
 			</dependency>
 			<!-- Misc -->
 			<dependency>
@@ -1051,6 +1070,32 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernate-validator}</version>
 			</dependency>
+			<!-- Jackson -->
+			<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
+				http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-xc</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<!-- JSON Assert (https://github.com/skyscreamer/JSONassert) -->
+			<dependency>
+				<groupId>org.skyscreamer</groupId>
+				<artifactId>jsonassert</artifactId>
+				<version>${jsonassert.version}</version>
+			</dependency>			
+			
+			
 		</dependencies>
 	</dependencyManagement>
 
@@ -1358,6 +1403,17 @@
 			<url>http://repository.springsource.com/maven/bundles/release</url>
 		</repository>
 		<repository>
+      		<id>apache</id>
+      		<name>Apache Releases</name>
+      		<url>https://repository.apache.org/</url>
+ 			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+			    <enabled>false</enabled>
+			</snapshots>     		
+   		</repository> 		
+		<repository>
 			<id>Maven-central</id>
 			<name>Maven central</name>
 			<url>http://repo1.maven.org/maven2</url>
@@ -1367,6 +1423,17 @@
 			<name>OSP4J releases</name>
 			<url>http://repository.ops4j.org/maven2</url>
 		</repository>
+		<repository>
+			<id>servicemix.m2-repo</id>
+			<name>ServiceMix Maven 2 repository</name>
+			<url>http://svn.apache.org/repos/asf/servicemix/m2-repo</url>
+			<releases>
+			    <enabled>true</enabled>
+			</releases>
+			<snapshots>
+			    <enabled>false</enabled>
+			</snapshots>
+	    </repository>
 		<repository>
 			<id>fusesource</id>
 			<name>Fuse Source releases</name>
