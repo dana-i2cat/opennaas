@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.24-SNAPSHOT</version>
+	<version>0.25-SNAPSHOT</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -126,7 +126,7 @@
 		<xml.resolver.version>1.2_1</xml.resolver.version>
 		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
-		<opennaas.gim.version>0.24-SNAPSHOT</opennaas.gim.version>
+		<opennaas.gim.version>0.25-SNAPSHOT</opennaas.gim.version>
 	</properties>
 
 	<dependencyManagement>

@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-    	<version>0.24-SNAPSHOT</version>
+    	<version>0.25-SNAPSHOT</version>
   	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>
