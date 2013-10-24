@@ -35,6 +35,7 @@ public class ProvisionerSerializationTest {
 	// <flow>
 	// <id>1</id>
 	// <flowRequest>
+	// <requestId>1</requestId>
 	// <sourceIPAddress>192.168.0.1</sourceIPAddress>
 	// <destinationIPAddress>192.168.0.2</destinationIPAddress>
 	// <sourcePort>8080</sourcePort>
@@ -67,6 +68,7 @@ public class ProvisionerSerializationTest {
 		qoSRequirements.setMaxPacketLoss(10);
 
 		FlowRequest request = new FlowRequest();
+		request.setRequestId("1");
 		request.setSourceIPAddress("192.168.0.1");
 		request.setDestinationIPAddress("192.168.0.2");
 		request.setSourcePort(8080);

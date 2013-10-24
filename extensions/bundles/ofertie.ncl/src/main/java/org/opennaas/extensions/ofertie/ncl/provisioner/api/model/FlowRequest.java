@@ -14,6 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FlowRequest {
 
+	// TODO to be removed.
+	// only required by PathFinderMockup.
+	// Not used in equals and hashCode.
+	private String			requestId;
+
 	private String			sourceIPAddress;
 	private String			destinationIPAddress;
 
@@ -35,6 +40,21 @@ public class FlowRequest {
 	private int				destinationVlanId;
 
 	private QoSRequirements	qoSRequirements;
+
+	/**
+	 * @return the requestId
+	 */
+	public String getRequestId() {
+		return requestId;
+	}
+
+	/**
+	 * @param requestId
+	 *            the requestId to set
+	 */
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
 
 	/**
 	 * @return the sourceIPAddress

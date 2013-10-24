@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.23</version>
+		<version>0.24</version>
 	</parent>
 	<!-- POM id -->
 	<artifactId>org.opennaas.extensions.quantum</artifactId>
@@ -13,10 +13,7 @@
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: Quantum</name>
 	<description>OpenStack Quantum Network Provider</description>
-	<properties>
-		<jackson.version>1.9.12</jackson.version>
-		<jsonassert.version>1.2.0</jsonassert.version>
-	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -48,23 +45,19 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-xc</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 		<!-- JSON Assert (https://github.com/skyscreamer/JSONassert) -->
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
-			<version>${jsonassert.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

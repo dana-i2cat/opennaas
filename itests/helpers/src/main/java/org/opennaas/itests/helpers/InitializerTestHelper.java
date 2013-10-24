@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
+import org.apache.cxf.jaxrs.client.ProxyClassLoader;
 import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -121,4 +123,41 @@ public class InitializerTestHelper {
 
 		return protocolSessionManager;
 	}
+
+	/**
+	 * Creates a JAXRSClient with given clientInterface.
+	 * 
+	 * @param uri
+	 *            the URI where the service is running
+	 * @param clientInterface
+	 *            interface class the client should has.
+	 * @param providers
+	 *            custom JAX-RS providers
+	 * @param username
+	 *            Basic authentication username
+	 * @param password
+	 *            Basic authentication password
+	 * @return JAX-RX Client configured with given parameters.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T createRestClient(String uri, Class<T> clientInterface, List<? extends Object> providers, String username, String password) {
+
+		ProxyClassLoader classLoader = new ProxyClassLoader();
+		classLoader.addLoader(clientInterface.getClassLoader());
+		classLoader.addLoader(JAXRSClientFactoryBean.class.getClassLoader());
+
+		JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
+		bean.setAddress(uri);
+		if (providers != null && !providers.isEmpty())
+			bean.setProviders(providers);
+		bean.setResourceClass(clientInterface);
+		bean.setClassLoader(classLoader);
+		if (username != null && password != null) {
+			bean.setUsername(username);
+			bean.setPassword(password);
+		}
+
+		return (T) bean.create();
+	}
+
 }

@@ -23,6 +23,7 @@ public class Route {
 	 * Default constructor
 	 */
 	public Route() {
+		networkConnections = new ArrayList<NetworkConnection>();
 	}
 
 	/**

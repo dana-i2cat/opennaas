@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.ws.rs.PathParam;
 
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.wrappers.FloodlightOFFlowsWrapper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 /**
@@ -43,15 +44,15 @@ public class FloodlightMockClient implements IFloodlightStaticFlowPusherClient {
 	}
 
 	@Override
-	public void deleteFlow(String name) {
+	public void deleteFlow(FloodlightOFFlow flow) {
 
 		for (String switchId : flows.keySet()) {
 
 			List<FloodlightOFFlow> switchFlows = flows.get(switchId);
 			List<FloodlightOFFlow> flowsToRemove = new ArrayList<FloodlightOFFlow>();
 
-			for (FloodlightOFFlow flow : switchFlows)
-				if (flow.getName().equals(name))
+			for (FloodlightOFFlow existingFlow : switchFlows)
+				if (existingFlow.getName().equals(flow.getName()))
 					flowsToRemove.add(flow);
 
 			switchFlows.removeAll(flowsToRemove);
@@ -87,9 +88,12 @@ public class FloodlightMockClient implements IFloodlightStaticFlowPusherClient {
 	}
 
 	@Override
-	public List<FloodlightOFFlow> getFlows(@PathParam("switchId") String dpid) {
+	public FloodlightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid) {
+		FloodlightOFFlowsWrapper flowsWrapper = new FloodlightOFFlowsWrapper();
+		if (flows.get(String.valueOf(dpid)) != null)
+			flowsWrapper.addAll(flows.get(String.valueOf(dpid)));
 
-		return flows.get(String.valueOf(dpid));
+		return flowsWrapper;
 	}
 
 }

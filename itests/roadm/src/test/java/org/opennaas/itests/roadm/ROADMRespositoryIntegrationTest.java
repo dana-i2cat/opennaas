@@ -2,7 +2,6 @@ package org.opennaas.itests.roadm;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -97,8 +96,7 @@ public class ROADMRespositoryIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
-				includeTestHelper(),
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

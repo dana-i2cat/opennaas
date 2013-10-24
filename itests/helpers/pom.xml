@@ -3,7 +3,7 @@
     <!-- Skip /itests/pom.xml and use root's as parent to avoid cyclic dependency on platform -->
     <artifactId>opennaas</artifactId>
     <groupId>org.opennaas</groupId>
-    <version>0.23</version>
+    <version>0.24</version>
     <relativePath>../..</relativePath>
   </parent>
 
@@ -31,6 +31,12 @@
 		<groupId>org.openengsb.labs.paxexam.karaf</groupId>
 		<artifactId>paxexam-karaf-container</artifactId>
 		<scope>compile</scope>
+	</dependency>
+	<!-- Required for createRestClient -->
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-bundle-minimal</artifactId>
+		<version>2.7.4</version>
 	</dependency>
   </dependencies>
   
