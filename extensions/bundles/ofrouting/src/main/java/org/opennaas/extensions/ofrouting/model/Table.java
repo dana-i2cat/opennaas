@@ -54,11 +54,17 @@ public class Table {
         log.info("Adding route with version "+version);
         if (!RouteExists(route, version)) {
             if (version == 4) {
-                route.setId(this.routeIPv4.size());
+                if(this.routeIPv4.isEmpty())
+                    route.setId(1);
+                else
+                    route.setId(this.routeIPv4.get(this.routeIPv4.size()-1).getId()+1);
                 this.routeIPv4.add(route);
                 return "Added";
             } else if (version == 6) {
-                route.setId(this.routeIPv6.size());
+                if(this.routeIPv6.isEmpty())
+                    route.setId(1);
+                else
+                    route.setId(this.routeIPv6.get(this.routeIPv6.size()-1).getId()+1);
                 this.routeIPv6.add(route);
                 return "Added";
             }
@@ -68,12 +74,39 @@ public class Table {
 
     public String addRouteSub(RouteSubnet route) {
         if (!RouteExistsSubnet(route)) {
-            route.setId(this.routeSubnet.size());
+            if(this.routeSubnet.isEmpty())
+                    route.setId(1);
+                else
+                route.setId(this.routeSubnet.get(this.routeSubnet.size()-1).getId()+1);
             this.routeSubnet.add(route);
             return "Added";
         }
         return "Already exist";
     }
+    
+    public String delRoute(Route route, int version) {
+        log.info("Deleting route with version "+version);
+        if (RouteExists(route, version)) {
+            if (version == 4) {
+                this.routeIPv4.remove(route);
+                return "Removed";
+            } else if (version == 6) {
+                this.routeIPv6.remove(route);
+                return "Added";
+            }
+        }
+        return "Already exist";
+    }
+    
+    public String delRouteSub(RouteSubnet route) {
+        if (RouteExistsSubnet(route)) {
+            this.routeSubnet.remove(route);
+            return "Added";
+        }
+        return "Already exist";
+    }
+    
+    
 
     public Boolean RouteExists(Route route, int version) {
         if (version == 4) {
@@ -215,6 +248,36 @@ public class Table {
                 }
             }
         }
+        return null;
+    }
+    
+    public Boolean removeRoute(int id, int version) {
+        if (version == 4) {
+            for (Route r : this.routeIPv4) {
+                if (r.getId() == id) {
+                    this.routeIPv4.remove(r);
+                    return true;
+                }
+            }
+        }else if (version == 6) {
+            for (Route r : this.routeIPv6) {
+                if (r.getId() == id) {
+                    this.routeIPv6.remove(r);
+                    return true;
+                }
+            }
+        }
+        log.error("This route no exists.");
+        //log.info("Adding route...");
+        return false;
+    }
+
+    public Route getRouteId(int id) {
+        for (Route r : this.routeIPv4) {
+                if (r.getId() == id) {
+                    return r;
+                }
+            }
         return null;
     }
 }

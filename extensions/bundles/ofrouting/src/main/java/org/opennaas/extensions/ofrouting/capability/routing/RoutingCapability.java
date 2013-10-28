@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -13,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -372,6 +375,91 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             log.info("Status: Offline");
             return "Offline";
         }
+    }
+
+    @Override
+    public void deleteRoute(String ipSource, String ipDest, String switchMac, int inputPort, int outputPort) throws CapabilityException {
+            OutputStreamWriter wr = null;
+            try {
+                OfRoutingModel model = (OfRoutingModel) resource.getModel();
+                Switch swInfo = new Switch(inputPort, switchMac);
+                Route route = null;
+                try {
+                    route = new Route(InetAddress.getByName(ipSource), InetAddress.getByName(ipDest), swInfo);
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                int version = 4;
+                model.getTable().delRoute(route, version);
+                String flow = "{\"name\":\"ip4in-mod-" + ipDest+"\"}";
+                String flow2 = "{\"name\":\"arp4in-mod-" + ipDest+"\"}";
+                String controllerInfo = model.getSwitchController().get(switchMac);
+                String uri = "http://"+controllerInfo;
+                URL url = new URL(uri + "/wm/staticflowentrypusher" + "/json");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
+                connection.setDoOutput(true);
+                connection.setDoOutput(true);
+                wr = new OutputStreamWriter(connection.getOutputStream());
+                wr.write(flow);
+                wr.flush();
+                wr.close();
+                connection.connect();
+                String response = connection.getResponseMessage();
+                log.info(response);
+            } catch (IOException ex) {
+                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    wr.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }        
+    }
+
+    @Override
+    public void removeAllRoutes() throws CapabilityException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deleteRoute(int id) throws CapabilityException {
+        OutputStreamWriter wr = null;
+        try {
+            OfRoutingModel model = (OfRoutingModel) resource.getModel();
+            Route route =  model.getTable().getRouteId(id);
+            String ipDest = route.getSourceAddress().getHostAddress();
+            Switch switchMac = route.getSwitchInfo();
+            model.getTable().removeRoute(id, 4);
+//                model.getTable().delRoute(route, version);
+                String flow = "{\"name\":\"ip4in-mod-" + ipDest+"\"}";
+                String flow2 = "{\"name\":\"arp4in-mod-" + ipDest+"\"}";
+                String controllerInfo = model.getSwitchController().get(switchMac);
+                String uri = "http://"+controllerInfo;
+                URL url = new URL(uri + "/wm/staticflowentrypusher" + "/json");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
+                connection.setDoOutput(true);
+                connection.setDoOutput(true);
+                wr = new OutputStreamWriter(connection.getOutputStream());
+                wr.write(flow);
+                wr.flush();
+                wr.close();
+                connection.connect();
+                String response = connection.getResponseMessage();
+                log.info(response);
+            } catch (IOException ex) {
+                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    wr.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
     }
 
     public class MyThread extends Thread {

@@ -151,4 +151,39 @@ public interface IRoutingCapability extends ICapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getControllerStatus(@PathParam("ip-port") String ip) throws CapabilityException;
+    
+    /**
+    * Deletes a static flow
+    * 
+    * @param name
+    *            The name of the static flow to delete.
+    */
+        @Path("/removeFlow")
+        @POST
+        public void deleteRoute(@FormParam("ipSource") String ipSource,
+            @FormParam("ipDest") String ipDest,
+            @FormParam("switchMac") String switchMac,
+            @FormParam("inputPort") int inputPort,
+            @FormParam("outputPort") int outputPort) throws CapabilityException;
+        
+        /**
+    * Deletes a static flow
+    * 
+    * @param name
+    *            The name of the static flow to delete.
+    */
+        @Path("/removeFlowById")
+        @POST
+        public void deleteRoute(@FormParam("id") int id) throws CapabilityException;
+
+/**
+    * Deletes a static flow
+    * 
+    * @param name
+    *            The name of the static flow to delete.
+    */
+        @Path("/removeFlows")
+        @POST
+        public void removeAllRoutes() throws CapabilityException;
+
 }

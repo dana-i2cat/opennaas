@@ -107,6 +107,21 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 <null/>
             </completers>
         </command>
+        <command name="routing/deleteRoute">
+            <action class="org.opennaas.extensions.ofrouting.capability.routing.shell.DeleteRouteCommand"/>
+            <completers>
+                <ref component-id="resourceNameCompleter"/>
+                <null/>
+            </completers>
+        </command>
+        <command name="routing/deleteAllRoutes">
+            <action class="org.opennaas.extensions.ofrouting.capability.routing.shell.DeleteAllRoutesCommand"/>
+            <completers>
+                <ref component-id="resourceNameCompleter"/>
+                <null/>
+            </completers>
+        </command>
+        
     </command-bundle>
     
     <!-- Forces this bundle to wait for dataSourceResources being published -->
