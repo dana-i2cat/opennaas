@@ -109,11 +109,9 @@
 
 	<feature name="opennaas-ws-rest" version="${project.version}">
 		<feature>jetty</feature>
-
-		
+		<feature>http</feature>
 		<feature version="${opennaas.version}">cxf-minimal</feature>
 		
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.woodstox/stax2-api/${stax2.api.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.woodstox/woodstox-core-asl/${woodstox.asl.version}</bundle>
@@ -122,9 +120,9 @@
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>
-		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/${spring.osgi.version}</bundle>
+	<!--  	<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/${spring.osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/${spring.osgi.version}</bundle>
-		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle> -->
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
 		
@@ -160,8 +158,7 @@
 				
 		<!--  <bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle> -->
 
-	
-	
+
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
