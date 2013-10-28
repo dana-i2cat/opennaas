@@ -137,4 +137,23 @@ public class NFVRoutingService extends GenericRestService {
         }
         return response;
     }
+
+    public String deleteRoute(int id){
+        String response = null;
+        try {
+            LOGGER.info("Remove route");
+            String request = "VM-Routing1";
+            String url = getURL("ofrouting/" + request + "/routing/removeFlowById");
+            Form fm = new Form();
+            fm.add("id", id);
+            Client client = Client.create();
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).post(String.class, fm);
+            LOGGER.info("Controller status: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
 }

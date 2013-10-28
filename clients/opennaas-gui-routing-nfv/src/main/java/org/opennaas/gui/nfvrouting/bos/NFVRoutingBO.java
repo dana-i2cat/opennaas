@@ -50,4 +50,8 @@ public class NFVRoutingBO {
     public String getControllerStatus(String ip) {
         return nfvRoutingService.getControllerStatus(ip);
     }
+
+    public String deleteRoute(int id){
+        return nfvRoutingService.deleteRoute(id);
+    }
 }

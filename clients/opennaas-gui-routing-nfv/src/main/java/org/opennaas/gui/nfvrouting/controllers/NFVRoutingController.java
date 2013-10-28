@@ -13,9 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Josep
@@ -140,6 +142,30 @@ public class NFVRoutingController {
 //                model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 
         return "insertCtrlInfo";
+    }
+    
+    /**
+     * Redirect to the physical view
+     * 
+     * @param templateType
+     * @param model
+     * @param locale
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteRoute/{id}")
+    public @ResponseBody String deleteRoute(@PathVariable("id") int id, ModelMap model) {
+        LOGGER.error("Remove Route------------------"+id);
+        String response = "";
+        try {
+            response = nfvRoutingBO.deleteRoute(id);
+            model.addAttribute("json", response);
+            model.addAttribute("infoMsg", "Route addded correctly.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
+//                model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
+
+        return response;
     }
     
 }

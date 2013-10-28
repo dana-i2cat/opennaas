@@ -64,10 +64,12 @@
                         if(type=='subnet'){
                             headers[4] = "Output Port";
                             headers[5] = "Live time";
+                            headers[6] = "Action";
                         }else{
                             headers[4] = "Input Port";
                             headers[5] = "Output Port";
                             headers[6] = "Live time";
+                            headers[7] = "Action";
                         }
 
                         for (i = 0; i < headers.length; i++)
@@ -112,8 +114,10 @@
                                             tbCon += tdRow.format(value.inputPort);
                                             tbCon += tdRow.format(value.outputPort);
                                         }
-        //                            		tbCon += tdRow.format(ConvertJsonToTable(eval(value.data), value.tableId, value.tableClassName, value.linkText));
+        //                            	tbCon += tdRow.format(ConvertJsonToTable(eval(value.data), value.tableId, value.tableClassName, value.linkText));
                                     } else {
+                                        if(j==0)
+                                            var rowId = value;
                                         tbCon += tdRow.format(value);
                                     }
                                 } else {    // If value == null we format it like PhpMyAdmin NULL values
@@ -121,6 +125,7 @@
                                 }
                             }
                         }
+                        tbCon += tdRow.format("<input onclick='del("+rowId+"); return false;' class='deleteButton' type='button' value='Delete'/>");
                         trCon += tr.format(tbCon);
                         tbCon = '';
                     }
@@ -156,7 +161,6 @@
     }
     return tmp_arr;
     }
-//    var objectArray = [{"sourceAddress":"192.168.1.3","destinationAddress":"192.168.1.30","switchInfo":{"numberPorts":0,"listPorts":["1"],"inputPort":"1","outputPort":"2","macAddress":"00:00:00:00:00:00:00:01"},"timeToLive":null},{"sourceAddress":"192.168.1.30","destinationAddress":"192.168.1.3","switchInfo":{"numberPorts":0,"listPorts":["1"],"inputPort":"1","outputPort":"2","macAddress":"00:00:00:00:00:00:00:01"},"timeToLive":null}];
     var test = ${json};
     var type = getURLParameter("type");
     var objectArray = test;
@@ -168,8 +172,35 @@
     }
 </script>
 
-<!--${json}-->
-
 <table id="jsonTable" class="tablesorter">
 
 </table>
+
+
+<script language="JavaScript" type="text/JavaScript">
+    
+function del(id){
+        var result = "";
+        $.ajax({
+            type: 'POST',
+            url : "deleteRoute/"+id,
+            async: false,
+            success : function (data) {
+                $("#dynamicContent").html(data);
+                result = data;                 
+            }
+        });
+        if(document.getElementById("removedOk") == null){
+            $("<div id='removedOk' class='success'>Removed correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
+            $('.success').next('br').remove();
+            setTimeout(function() {
+                //$('.success').remove();
+                $('.success').slideUp("slow", function() { $('.success').remove();});
+                //$('.success').fadeOut(300, function(){ $(this).remove();});
+            }, 3000);
+        }
+        
+        return result;
+    }
+    
+    </script>
