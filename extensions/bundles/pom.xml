@@ -59,9 +59,11 @@
 		<module>bod.actionsets.dummy</module>
 		<module>bod.autobahn</module>
 
+		<!-- Transports -->
 		<module>transports.sockets</module>
 		<module>transports.telnet</module>
 		<module>transports.virtual</module>
+		<module>transports.features</module>
 		
 		<!-- Protocols -->
 		<module>protocols.netconf</module>
