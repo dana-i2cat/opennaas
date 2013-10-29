@@ -106,7 +106,19 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	@Before
 	public void initBundle() throws ResourceException, ProtocolException {
 		InitializerTestHelper.removeResources(resourceManager);
+		// sleep to get time for dosgi to unregister the WS endpoints
+		try {
+			Thread.sleep(3 * 1000);
+		} catch (InterruptedException e) {
+			// ignored
+		}
 		startResource();
+		// sleep to get time for dosgi to register the WS endpoints
+		try {
+			Thread.sleep(3 * 1000);
+		} catch (InterruptedException e) {
+			// ignored
+		}
 		log.info("INFO: Initialized!");
 	}
 
@@ -114,6 +126,12 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	public void stopBundle() throws ResourceException {
 		InitializerTestHelper.removeResources(resourceManager);
 		ofSwitchResource = null;
+		// sleep to get time for dosgi to unregister the WS endpoints
+		try {
+			Thread.sleep(3 * 1000);
+		} catch (InterruptedException e) {
+			// ignored
+		}
 		log.info("INFO: Stopped!");
 	}
 
