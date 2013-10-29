@@ -80,7 +80,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-			throw new ActionException(response.getResponses().get(0).toString());
+			throw new ActionException(response.toString());
 
 		// assuming allocated flow has not been modified by underlying functionality.
 		// FIXME replace flowCopy with flow obtained from response.
@@ -108,7 +108,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-			throw new ActionException(response.getResponses().get(0).toString());
+			throw new ActionException(response.toString());
 
 		removeDeallocatedFlowFromModel(flow, (SDNNetworkModel) resource.getModel());
 
@@ -126,7 +126,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-			throw new ActionException(response.getResponses().get(0).toString());
+			throw new ActionException(response.toString());
 
 		Collection<SDNNetworkOFFlow> result;
 		if (response.getResult() != null && response.getResult() instanceof Collection<?>) {
