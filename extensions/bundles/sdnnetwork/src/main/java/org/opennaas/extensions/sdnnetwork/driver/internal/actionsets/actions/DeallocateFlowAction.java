@@ -67,11 +67,12 @@ public class DeallocateFlowAction extends Action {
 	}
 
 	private void deallocateNetworkConnection(NetworkConnection networkConnection) throws ActionException {
-		if (networkConnection.getSource().getDeviceId() != networkConnection.getDestination().getDeviceId()) {
-			/* link between different devices, assume it is statically allocated/deallocated */
-		} else {
+
+		if (networkConnection.getSource().getDeviceId().equals(networkConnection.getDestination().getDeviceId())) {
 			/* link inside same device, use device internal capability to deallocate it */
 			deallocateConnectionInsideDevice(networkConnection);
+		} else {
+			/* link between different devices, assume it is statically allocated/deallocated */
 		}
 	}
 

@@ -90,9 +90,7 @@ public class AllocateFlowAction extends Action {
 	private void provisionLink(NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute) throws ResourceException,
 			ActivatorException {
 
-		if (connection.getSource().getDeviceId() != connection.getDestination().getDeviceId()) {
-			/* link between different devices, assume it exists or it is provisioned */
-		} else {
+		if (connection.getSource().getDeviceId().equals(connection.getDestination().getDeviceId())) {
 			/* link inside same device, use device internal capability to provision it */
 
 			// Last link should include all actions of the original flow and the forwarding one.
@@ -106,6 +104,8 @@ public class AllocateFlowAction extends Action {
 					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
 			forwardingCapability.createOpenflowForwardingRule(flow);
+		} else {
+			/* link between different devices, assume it exists or it is provisioned */
 		}
 	}
 
