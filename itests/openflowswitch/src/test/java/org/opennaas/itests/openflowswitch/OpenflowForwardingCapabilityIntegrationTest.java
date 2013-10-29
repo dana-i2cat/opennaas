@@ -105,15 +105,15 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 	@Before
 	public void initBundle() throws ResourceException, ProtocolException {
-
 		InitializerTestHelper.removeResources(resourceManager);
-		log.info("INFO: Initialized!");
 		startResource();
+		log.info("INFO: Initialized!");
 	}
 
 	@After
 	public void stopBundle() throws ResourceException {
 		InitializerTestHelper.removeResources(resourceManager);
+		ofSwitchResource = null;
 		log.info("INFO: Stopped!");
 	}
 
@@ -238,16 +238,22 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	private void createDeleteGetPerformAndCheck(IOpenflowForwardingCapability capability) throws Exception {
 
 		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
+		forwardingRule1.setSwitchId(SWITCH_ID);
 
 		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
+		forwardingRule2.setSwitchId(SWITCH_ID);
 
 		Assert.assertTrue("No rules in a freshly created switch", capability.getOpenflowForwardingRules().isEmpty());
 
 		capability.createOpenflowForwardingRule(forwardingRule1);
 		Assert.assertEquals("There is one single rule after creating one", 1, capability.getOpenflowForwardingRules().size());
+		Assert.assertEquals("forwardingRule1 has been correctly created", forwardingRule1, capability
+				.getOpenflowForwardingRules().get(0));
 
 		capability.createOpenflowForwardingRule(forwardingRule2);
 		Assert.assertEquals("There are two rules after creating two", 2, capability.getOpenflowForwardingRules().size());
+		Assert.assertEquals("forwardingRule2 has been correctly created", forwardingRule2, capability
+				.getOpenflowForwardingRules().get(1));
 
 		capability.removeOpenflowForwardingRule(forwardingRule1.getName());
 		Assert.assertEquals("There is one single rule after deleting forwardingRule1", 1, capability.getOpenflowForwardingRules().size());
