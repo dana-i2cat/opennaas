@@ -24,6 +24,8 @@
 	<modules>
 		<module>router.actionsets.junos</module>
 		<module>router.actionsets.opener</module>
+
+		<!-- Router Resource -->
 		<module>router.repository</module>
 		<module>router.capability.chassis</module>
 		<module>router.capability.ip</module>
@@ -33,6 +35,8 @@
 		<module>router.capability.staticroute</module>
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>
+		<module>router.features</module>
+		
 		<module>router.model</module>
 
 		<module>fragment.velocity</module>
@@ -83,5 +87,6 @@
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
+		
 	</modules>
 </project>

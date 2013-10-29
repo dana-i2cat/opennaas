@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	
+	<feature name="opennaas-cim" version="${project.version}">
+		<feature version="${project.version}">opennaas-core</feature>
+		
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.model/${project.version}</bundle>
+		<!-- QueueManager should probably be part of org.opennaas.core,
+		     but we have to rename and move the project before we can
+		     make it part of the correct feature. -->
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.queuemanager/${project.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-router" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.chassis/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ip/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.gretunnel/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospfv3/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.staticroute/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.bgp/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.vrrp/${project.version}</bundle>
+	</feature>	
+	
+	
+
+</features>
