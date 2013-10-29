@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -17,9 +18,8 @@
 	</properties>
 
 	<dependencies>
-		<!-- We must list all the things we want to include in the
-		     distribution. Otherwise there is no guarantee that Maven
-		     has build those artifacts first. -->
+		<!-- We must list all the things we want to include in the distribution. 
+			Otherwise there is no guarantee that Maven has build those artifacts first. -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>karafbranding-opennaas</artifactId>
@@ -38,18 +38,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.bod.autobahn</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 		</dependency>
 		<dependency>
@@ -57,134 +45,16 @@
 			<artifactId>org.opennaas.core.features</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.transports.sockets</artifactId>
+			<groupId>org.apache.servicemix</groupId>
+			<artifactId>apache-servicemix</artifactId>
+			<type>zip</type>
 		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.protocols.cli</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.protocols.tl1</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.wonesys</groupId>
-			<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ospfv3</artifactId>
-		</dependency>		
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.vrrp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.sampleresource</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas.itests</groupId>
-			<artifactId>org.opennaas.itests.helpers</artifactId>
-		</dependency>
-			<dependency>
-				<groupId>org.apache.servicemix</groupId>
-				<artifactId>apache-servicemix</artifactId>
-				<type>zip</type>
-			</dependency>
-		
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<!-- Unpack servicemix. The assembly will use this
-				     when packaging opennaas. -->
+				<!-- Unpack servicemix. The assembly will use this when packaging opennaas. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
@@ -208,12 +78,8 @@
 			</plugin>
 
 			<plugin>
-				<!-- Build a system repository with the artifacts we
-				     need. The assembly will include this when
-				     packaging opennaas. 
-				     Build following this guide:
-					 http://fusesource.com/docs/esb/4.4/esb_deploy_osgi/Locate-CustomRepo.html
-				-->
+				<!-- Build a system repository with the artifacts we need. The assembly 
+					will include this when packaging opennaas. Build following this guide: http://fusesource.com/docs/esb/4.4/esb_deploy_osgi/Locate-CustomRepo.html -->
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
 				<executions>
@@ -226,8 +92,7 @@
 						<configuration>
 							<karafVersion>${karaf.version}</karafVersion>
 							<descriptors>
-								<!-- List taken from featuresRepositories in 
-								org/apache/servicemix/apache-servicemix/${servicemix.version}/etc/org.apache.karaf.features.cfg -->
+								<!-- List taken from featuresRepositories in org/apache/servicemix/apache-servicemix/${servicemix.version}/etc/org.apache.karaf.features.cfg -->
 								<!-- Some of they may be unused -->
 								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.karaf.assemblies.features/enterprise/${karaf.version}/xml/features</descriptor>
@@ -242,8 +107,8 @@
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
 								<feature version="${project.version}">opennaas</feature>
-								<feature version="${project.version}">itests-helpers</feature>
-								<feature version="${project.version}">nexus-testprofile</feature>
+								<!-- <feature version="${project.version}">itests-helpers</feature> 
+									<feature version="${project.version}">nexus-testprofile</feature> -->
 							</features>
 							<repository>target/system</repository>
 						</configuration>

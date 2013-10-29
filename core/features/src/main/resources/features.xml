@@ -5,37 +5,38 @@
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
 
-	<feature name="opennaas-spring-jdbc" version="${project.version}">
-		<feature version="${spring.version}">spring</feature>
-		<bundle>mvn:org.springframework/spring-tx/${spring.version}</bundle>
-		<bundle>mvn:org.springframework/spring-jdbc/${spring.version}</bundle>
+	<feature name="opennaas" version="${project.version}">
+		<feature version="${project.version}">opennaas-core</feature>
 	</feature>
 
-	<feature name="opennaas-spring-security" version="${project.version}">
+
+	<!-- OpenNaaS Core -->
+
+	<feature name="opennaas-core" version="${project.version}">
 		<feature version="${project.version}">opennaas-persistence</feature>
-		<feature version="${project.version}">opennaas-spring-jdbc</feature>
-
-		<feature version="${spring.version}">spring</feature>
-		<feature version="${spring.version}">spring-web</feature>
-		<feature version="${spring.osgi.version}">spring-dm</feature>
-		<feature version="${spring.osgi.version}">spring-dm-web</feature>
+		<feature version="${project.version}">opennaas-resources</feature>
+		<feature version="${project.version}">opennaas-ws-rest</feature>
+		<feature version="${project.version}">opennaas-spring-security</feature>	
 		
-		
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>		
-		
-		<bundle dependency="true">mvn:org.springframework/org.springframework.transaction/${spring.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/${servicemix.ehcache.version}</bundle>
-				
-		<bundle dependency="true">mvn:org.springframework.security/spring-security-core/${spring.security.version}</bundle>
-		<bundle dependency="true">mvn:org.springframework.security/spring-security-config/${spring.security.version}</bundle>
-		<bundle dependency="true">mvn:org.springframework.security/spring-security-acl/${spring.security.version}</bundle>
-		<bundle dependency="true">mvn:org.springframework.security/spring-security-web/${spring.security.version}</bundle>
-
-		<bundle>mvn:org.opennaas/org.opennaas.core.security/${project.version}</bundle>
 	</feature>
+	
+	<feature name="opennaas-resources" version="${project.version}">
+		<feature>xml-specs-api</feature>  
+		<feature version="${cxf.version}">cxf-specs</feature>
+		
+		<feature version="${project.version}">opennaas-persistence</feature>
+		
+		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/${felix.eventadmin.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/${servicemix.specs.version}</bundle> 
 
-
+		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
+	</feature>	
+	
+	
 	<feature name="opennaas-persistence" version="${project.version}">
+	
 		<feature version="${spring.version}">spring</feature>
 		<feature>jndi</feature>
 		<feature>jpa</feature>
@@ -54,63 +55,33 @@
 		<bundle>mvn:org.opennaas/org.opennaas.core.persistence/${project.version}</bundle>
 	</feature>
 
-	<feature name="org.opennaas.core" version="${project.version}">
-		<feature>xml-specs-api</feature>
-		<feature version="${cxf.version}">cxf-specs</feature>
+
+	<feature name="opennaas-spring-security" version="${project.version}">
 		<feature version="${project.version}">opennaas-persistence</feature>
-		<feature version="${project.version}">opennaas-spring-security</feature>
+		<feature version="${project.version}">opennaas-spring-jdbc</feature>
+		<feature version="${project.version}">opennaas-resources</feature>
 		
-		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/${felix.eventadmin.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/${servicemix.specs.version}</bundle> 
+		<feature version="${spring.version}">spring</feature>
+		<feature version="${spring.version}">spring-web</feature>
+		<feature version="${spring.osgi.version}">spring-dm</feature>
+		<feature version="${spring.osgi.version}">spring-dm-web</feature>
+		
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>		
+		<bundle dependency="true">mvn:org.springframework/org.springframework.transaction/${spring.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/${servicemix.ehcache.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-core/${spring.security.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-config/${spring.security.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-acl/${spring.security.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.security/spring-security-web/${spring.security.version}</bundle>
 
-		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.core.security/${project.version}</bundle>
 	</feature>
-
-	<feature name="opennaas-cim" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
-		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.model/${project.version}</bundle>
-
-		<!-- QueueManager should probably be part of org.opennaas.core,
-		     but we have to rename and move the project before we can
-		     make it part of the correct feature. -->
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.queuemanager/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-netconf" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
-
-		<bundle dependency="true">mvn:javax.mail/mail/${javamail.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.commons/com.springsource.org.apache.commons.beanutils/${beanutils.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-servlet_2.5_spec/${geronimo.servlet.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/${commons.jxpath.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ant/${ant.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oro/${oro.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.velocity/${servicemix.velocity.version}</bundle>
-		<bundle dependency="true">mvn:commons-configuration/commons-configuration/${commons.configuration.version}</bundle>
-		<bundle dependency="true">mvn:commons-codec/commons-codec/${commons.codec.version}</bundle>
-		<bundle dependency="true">mvn:commons-io/commons-io/${commons.io.version}</bundle>
-		<bundle dependency="true">mvn:commons-digester/commons-digester/${commons.digester.version}</bundle>
-
-		<bundle>mvn:net.i2cat.netconf/netconf4j/${netconf4j.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.netconf/${project.version}</bundle>
-		<!-- fragment, so no autostart -->
-		<bundle start="false">mvn:org.opennaas/org.opennaas.extensions.fragment.velocity/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-ws-soap" version="${project.version}">
-		<!-- old ws, tnc demo  -->
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
-	</feature>
-
+	
+	
 	<feature name="opennaas-ws-rest" version="${project.version}">
 		<feature>jetty</feature>
 		<feature>http</feature>
-		<feature version="${opennaas.version}">cxf-minimal</feature>
+		<feature version="${project.version}">cxf-minimal</feature>
 		
 		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.woodstox/stax2-api/${stax2.api.version}</bundle>
@@ -126,8 +97,16 @@
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
 		
-	</feature>
+	</feature>	
 	
+	<feature name="opennaas-spring-jdbc" version="${project.version}">
+
+		<feature version="${spring.version}">spring</feature>
+		
+		<bundle>mvn:org.springframework/spring-tx/${spring.version}</bundle>
+		<bundle>mvn:org.springframework/spring-jdbc/${spring.version}</bundle>
+	</feature>	
+
 	<feature name="cxf-minimal" version="${project.version}">
 		<feature version="${cxf.version}">cxf-specs</feature>
 		<feature version="${project.version}">opennaas-jaxws</feature>	
@@ -158,128 +137,6 @@
 				
 		<!--  <bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle> -->
 
-
-	</feature>
-
-	<feature name="opennaas-junos" version="${project.version}">
-		<feature version="${project.version}">opennaas-cim</feature>
-		<feature version="${project.version}">opennaas-netconf</feature>
-		<feature version="${project.version}">opennaas-router</feature>
-
-		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.junos/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-router-driver-opener" version="${project.version}">
-		<feature version="${project.version}">opennaas-cim</feature>
-		<feature version="${project.version}">opennaas-router</feature>
-		
-		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-	
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-api/${cxf.version}</bundle>		
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-core/${cxf.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http/${cxf.version}</bundle>		
-		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxrs/${cxf.version}</bundle>				
-		<!--  <bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/${cxf.version}</bundle> -->
-
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-router" version="${project.version}">
-		<feature version="${project.version}">opennaas-cim</feature>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.repository/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.chassis/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ip/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.gretunnel/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospfv3/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.staticroute/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.bgp/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.vrrp/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-network" version="${project.version}">
-		<feature version="${project.version}">opennaas-cim</feature>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.repository/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.basic/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.queue/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.ospf/${project.version}</bundle>
-		<bundle dependency="true">mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
-		
-	</feature>
-
-	<feature name="opennaas-vcpe" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
-		<feature version="${project.version}">opennaas-router</feature>
-		<feature version="${project.version}">opennaas-bod</feature>
-		<feature version="${project.version}">opennaas-spring-security</feature>
-		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.vcpe/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-bod" version="${project.version}">
-		<feature version="${project.version}">opennaas-cim</feature>
-
-		<bundle dependency="true">mvn:joda-time/joda-time/${jodatime.version}</bundle>
-		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
-		<bundle dependency="true">mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.repository/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-openflow-switch" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
-	
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch/${project.version}</bundle>
-		
-	</feature>
-	
-	<feature name="opennaas-openflow-switch-driver-floodlight" version="${project.version}">
-		<feature version="${opennaas.version}">opennaas-openflow-switch</feature>
-		<feature version="${opennaas.version}">opennaas-ws-rest</feature>
-		
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>	
-		<bundle dependency="true">mvn:commons-io/commons-io/${commons.io.version}</bundle>	
-			
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.floodlight/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-sdn-network" version="${project.version}">
-		<feature version="${opennaas.version}">opennaas-openflow-switch</feature>
-		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.sdnnetwork/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-vnmapper" version="${project.version}">
-		<feature version="${project.version}">opennaas-network</feature>
-		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.vnmapper/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-sampleresource" version="${project.version}">
-		<feature version="${project.version}">opennaas-cim</feature>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource/${project.version}</bundle>	
-	</feature>
-
-	<feature name="opennaas-autobahn" version="${project.version}">
-		<feature version="${project.version}">opennaas-jaxws</feature>	
-		<feature version="${project.version}">opennaas-bod</feature>	
-		<!-- <feature>cxf</feature>  -->
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.autobahn/${project.version}</bundle>
 	</feature>
 	
 	<feature name="opennaas-jaxws" version="${project.version}">
@@ -287,113 +144,14 @@
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/${servicemix.specs.version}</bundle>
 	</feature>
 	
-	<feature name="opennaas-luminis" version="${project.version}">
-		<feature version="${project.version}">opennaas-cim</feature>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.connections/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.monitoring/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.repository/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-roadm-proteus" version="${project.version}">
-		<feature version="${project.version}">opennaas-luminis</feature>
-
-		<bundle dependency="true">mvn:com.wonesys/org.opennaas.extensions.com.wonesys.emsModule/${project.version}</bundle>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.protocols.wonesys/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.actionsets.wonesys/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-cisco" version="${project.version}">
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.sockets/${project.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-net/${commons.net.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.telnet/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.virtual/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.cli/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.tl1/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.model/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.capability.vlanawarebridge/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.ios.resource/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-vnmapper" version="${project.version}">
-		<feature version="${project.version}">opennaas-network</feature>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.vnmapper/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-quantum" version="${project.version}">
-		<feature version="${project.version}">opennaas-autobahn</feature>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
-		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.quantum/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-powernet" version="${project.version}">
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.snmp4j/${snmp4j.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.gim/${opennaas.gim.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.powernet/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-pdu" version="${project.version}">
-		<feature version="${project.version}">opennaas-powernet</feature>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.pdu/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-power" version="${project.version}">
-		<feature version="${project.version}">opennaas-powernet</feature>
-		<feature version="${project.version}">opennaas-pdu</feature>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.power.capabilities/${project.version}</bundle>
-	</feature>
-	
-	<feature name="opennaas-ofertie-ncl" version="${project.version}">
-		<feature version="${project.version}">opennaas-sdn-network</feature>
-		
-		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${project.version}</bundle>
-		
-		
-	</feature>
-
-	<feature name="opennaas" version="${project.version}">
-		<feature version="${project.version}">opennaas-router</feature>
-		<feature version="${project.version}">opennaas-network</feature>
-		<feature version="${project.version}">opennaas-bod</feature>
-		<feature version="${project.version}">opennaas-vnmapper</feature>
-		<feature version="${project.version}">opennaas-luminis</feature>
-		<feature version="${project.version}">opennaas-autobahn</feature>
-		<feature version="${project.version}">opennaas-junos</feature>
-		<feature version="${project.version}">opennaas-router-driver-opener</feature>
-		<feature version="${project.version}">opennaas-roadm-proteus</feature>
-		<feature version="${project.version}">opennaas-sampleresource</feature>
-		<feature version="${project.version}">opennaas-vnmapper</feature>
-		<feature version="${project.version}">opennaas-cisco</feature>
-		<feature version="${project.version}">opennaas-vcpe</feature>
-		<feature version="${project.version}">opennaas-powernet</feature>
-		<feature version="${project.version}">opennaas-pdu</feature>
-		<feature version="${project.version}">opennaas-power</feature>
-		<feature version="${project.version}">opennaas-ws-rest</feature>
-		<feature version="${project.version}">opennaas-openflow-switch</feature>
-		<feature version="${project.version}">opennaas-openflow-switch-driver-floodlight</feature>
-		<feature version="${project.version}">opennaas-sdn-network</feature>
-		
-<!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
-		<feature version="${project.version}">opennaas-quantum</feature>
-		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
-	</feature>
-
 	<feature name="nexus-testprofile" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
+		<feature version="${project.version}">opennaas-core</feature>
+		
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>
 	</feature>
-
-	<feature name="itests-helpers" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
-		<feature version="${opennaas.version}">cxf-minimal</feature>
-			
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
-		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>
-	</feature>
+	
+	
+	<!-- OpenNaaS Extensions -->
+	
 	
 </features>

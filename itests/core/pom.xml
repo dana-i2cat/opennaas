@@ -28,6 +28,12 @@
 			<groupId>org.opennaas.itests</groupId>
 			<artifactId>org.opennaas.itests.helpers</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 </project>
