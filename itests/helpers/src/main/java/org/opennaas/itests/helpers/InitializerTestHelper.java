@@ -106,6 +106,17 @@ public class InitializerTestHelper {
 		return protocolSessionManager;
 	}
 
+	/**
+	 * 
+	 * @param protocolManager
+	 * @param resourceId
+	 * @param resourceURI
+	 * @param protocol
+	 * @param sessionParameters
+	 *            ProtocolSessionContext.AUTH_TYPE and other session parameters
+	 * @return
+	 * @throws ProtocolException
+	 */
 	public static IProtocolSessionManager addSessionContextWithSessionParams(IProtocolManager protocolManager, String resourceId, String resourceURI,
 			String protocol, Map<String, Object> sessionParameters) throws ProtocolException {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
@@ -115,7 +126,6 @@ public class InitializerTestHelper {
 				ProtocolSessionContext.PROTOCOL_URI, resourceURI);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				protocol);
-		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
 
 		protocolSessionContext.getSessionParameters().putAll(sessionParameters);
 
