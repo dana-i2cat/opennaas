@@ -71,6 +71,10 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	private static final String	PROTOCOL			= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
 	private static final String	SWITCH_ID_NAME		= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
 
+	private static final String	WS_URI				= "http://localhost:8888/opennaas/" + RESOURCE_TYPE + "/" + RESOURCE_INFO_NAME + "/" + OpenflowForwardingCapability.CAPABILITY_TYPE;
+	private static final String	WS_USERNAME			= "admin";
+	private static final String	WS_PASSWORD			= "123456";
+
 	private IResource			ofSwitchResource;
 
 	/**
@@ -101,15 +105,33 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 	@Before
 	public void initBundle() throws ResourceException, ProtocolException {
-
 		InitializerTestHelper.removeResources(resourceManager);
-		log.info("INFO: Initialized!");
+		// sleep to get time for dosgi to unregister the WS endpoints
+		try {
+			Thread.sleep(3 * 1000);
+		} catch (InterruptedException e) {
+			// ignored
+		}
 		startResource();
+		// sleep to get time for dosgi to register the WS endpoints
+		try {
+			Thread.sleep(3 * 1000);
+		} catch (InterruptedException e) {
+			// ignored
+		}
+		log.info("INFO: Initialized!");
 	}
 
 	@After
 	public void stopBundle() throws ResourceException {
 		InitializerTestHelper.removeResources(resourceManager);
+		ofSwitchResource = null;
+		// sleep to get time for dosgi to unregister the WS endpoints
+		try {
+			Thread.sleep(3 * 1000);
+		} catch (InterruptedException e) {
+			// ignored
+		}
 		log.info("INFO: Stopped!");
 	}
 
@@ -216,20 +238,40 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	@Test
 	public void createDeleteGetTest() throws Exception {
 
-		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
-
-		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
-
 		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+
+		createDeleteGetPerformAndCheck(capability);
+	}
+
+	@Test
+	public void createDeleteGetWSTest() throws Exception {
+
+		IOpenflowForwardingCapability capabilityWSClient = InitializerTestHelper.createRestClient(WS_URI, IOpenflowForwardingCapability.class, null,
+				WS_USERNAME, WS_PASSWORD);
+
+		createDeleteGetPerformAndCheck(capabilityWSClient);
+	}
+
+	private void createDeleteGetPerformAndCheck(IOpenflowForwardingCapability capability) throws Exception {
+
+		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
+		forwardingRule1.setSwitchId(SWITCH_ID);
+
+		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
+		forwardingRule2.setSwitchId(SWITCH_ID);
 
 		Assert.assertTrue("No rules in a freshly created switch", capability.getOpenflowForwardingRules().isEmpty());
 
 		capability.createOpenflowForwardingRule(forwardingRule1);
 		Assert.assertEquals("There is one single rule after creating one", 1, capability.getOpenflowForwardingRules().size());
+		Assert.assertEquals("forwardingRule1 has been correctly created", forwardingRule1, capability
+				.getOpenflowForwardingRules().get(0));
 
 		capability.createOpenflowForwardingRule(forwardingRule2);
 		Assert.assertEquals("There are two rules after creating two", 2, capability.getOpenflowForwardingRules().size());
+		Assert.assertEquals("forwardingRule2 has been correctly created", forwardingRule2, capability
+				.getOpenflowForwardingRules().get(1));
 
 		capability.removeOpenflowForwardingRule(forwardingRule1.getName());
 		Assert.assertEquals("There is one single rule after deleting forwardingRule1", 1, capability.getOpenflowForwardingRules().size());
@@ -238,7 +280,6 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 		capability.removeOpenflowForwardingRule(forwardingRule2.getName());
 		Assert.assertTrue("There is no rule after 2 deletions", capability.getOpenflowForwardingRules().isEmpty());
-
 	}
 
 	private void startResource() throws ResourceException, ProtocolException {

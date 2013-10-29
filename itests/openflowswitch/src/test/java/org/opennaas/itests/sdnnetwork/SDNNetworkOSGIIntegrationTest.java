@@ -34,6 +34,7 @@ import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioning
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.SDNNetworkInternalActionsetImplementation;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -46,7 +47,14 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class SDNNetworkOSGIIntegrationTest {
 
-	private final static Log	log	= LogFactory.getLog(SDNNetworkOSGIIntegrationTest.class);
+	private final static Log	log					= LogFactory.getLog(SDNNetworkOSGIIntegrationTest.class);
+
+	private static final String	NET_RESOURCE_TYPE	= "sdnnetwork";
+	private static final String	NET_RESOURCE_NAME	= "net1";
+
+	private static final String	WS_URI				= "http://localhost:8888/opennaas/" + NET_RESOURCE_TYPE + "/" + NET_RESOURCE_NAME + "/" + OFProvisioningNetworkCapability.CAPABILITY_TYPE;
+	private static final String	WS_USERNAME			= "admin";
+	private static final String	WS_PASSWORD			= "123456";
 
 	/**
 	 * Make sure blueprint for org.opennaas.extensions.sdnnetwork bundle has finished its initialization
@@ -83,7 +91,7 @@ public class SDNNetworkOSGIIntegrationTest {
 
 	@Before
 	public void initializeDescriptor() {
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("sdnnetwork");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(null, NET_RESOURCE_TYPE, NET_RESOURCE_NAME, null);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor(SDNNetworkInternalActionsetImplementation.ACTIONSET_ID, "1.0.0",
 				OFProvisioningNetworkCapability.CAPABILITY_TYPE, null));
@@ -127,6 +135,23 @@ public class SDNNetworkOSGIIntegrationTest {
 
 		IOFProvisioningNetworkCapability capab = (IOFProvisioningNetworkCapability) resource
 				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+
+		ofProvisioningNetworkCapabilityCheck(capab);
+	}
+
+	@Test
+	public void ofProvisioningNetworkCapabilityWSTest() throws Exception {
+
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		resourceManager.startResource(resource.getResourceIdentifier());
+
+		IOFProvisioningNetworkCapability capabClient = InitializerTestHelper.createRestClient(WS_URI, IOFProvisioningNetworkCapability.class, null,
+				WS_USERNAME, WS_PASSWORD);
+
+		ofProvisioningNetworkCapabilityCheck(capabClient);
+	}
+
+	public void ofProvisioningNetworkCapabilityCheck(IOFProvisioningNetworkCapability capab) throws Exception {
 
 		SDNNetworkOFFlow flow1 = generateSampleSDNNetworkOFFlow("flow1", "1", "2");
 		SDNNetworkOFFlow flow2 = generateSampleSDNNetworkOFFlow("flow2", "2", "1");
