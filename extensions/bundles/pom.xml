@@ -35,12 +35,10 @@
 		<module>router.capability.staticroute</module>
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>
-		<module>router.features</module>
-		
 		<module>router.model</module>
+		<module>router.features</module>
 
 		<module>fragment.velocity</module>
-		<module>protocols.netconf</module>
 		<module>queuemanager</module>
 		<module>com.wonesys.emsModule</module>
 
@@ -64,8 +62,13 @@
 		<module>transports.sockets</module>
 		<module>transports.telnet</module>
 		<module>transports.virtual</module>
+		
+		<!-- Protocols -->
+		<module>protocols.netconf</module>
 		<module>protocols.cli</module>
 		<module>protocols.tl1</module>
+		<module>protocols.features</module>		
+		
 		<module>macbridge.model</module>
 		<module>macbridge.capability.vlanawarebridge</module>
 		<module>macbridge.ios.resource</module>
@@ -87,6 +90,7 @@
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
-		
+
+
 	</modules>
 </project>
