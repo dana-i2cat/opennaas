@@ -114,12 +114,13 @@
 		
 		<module>sampleresource</module>
 		
-
-		
-		<module>ofertie.ncl</module>
+		<!-- Openflow Switch Resource -->
 		<module>openflowswitch</module>
+		<module>openflowswitch.features</module>		
+		
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
-
+		
+		<module>ofertie.ncl</module>
 	</modules>
 </project>
