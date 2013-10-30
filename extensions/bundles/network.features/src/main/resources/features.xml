@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-network" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+		<feature version="${project.version}">opennaas-router</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.basic/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.queue/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.ospf/${project.version}</bundle>
+		
+	</feature>
+
+</features>

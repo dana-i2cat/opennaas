@@ -55,11 +55,13 @@
 		<module>roadm.capability.connections</module>
 		<module>roadm.capability.monitoring</module>
 
+		<!-- Network resource -->
 		<module>network.model</module>
 		<module>network.repository</module>
 		<module>network.capability.basic</module>
 		<module>network.capability.queue</module>
 		<module>network.capability.ospf</module>
+		<module>network.features</module>
 
 		<module>bod.repository</module>
 		<module>bod.capability.l2bod</module>
@@ -99,8 +101,5 @@
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
-
-
-
 	</modules>
 </project>
