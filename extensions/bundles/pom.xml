@@ -55,9 +55,9 @@
 		<module>roadm.capability.monitoring</module>
 		<module>roadm.features</module>
 
-
+		<!-- ROADM Actionset -->
 		<module>roadm.actionsets.wonesys</module>
-
+		<module>roadm.actionsets.features</module>
 		
 		<module>roadm.protocols.wonesys</module>
 
@@ -116,5 +116,6 @@
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
+
 	</modules>
 </project>
