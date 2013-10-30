@@ -59,7 +59,6 @@
 		<module>roadm.actionsets.wonesys</module>
 		<module>roadm.actionsets.features</module>
 		
-		<module>roadm.protocols.wonesys</module>
 
 		<!-- Network resource -->
 		<module>network.model</module>
@@ -89,6 +88,7 @@
 		<module>protocols.netconf</module>
 		<module>protocols.cli</module>
 		<module>protocols.tl1</module>
+		<module>roadm.protocols.wonesys</module>	
 		<module>protocols.features</module>		
 		
 		<module>macbridge.model</module>
@@ -102,6 +102,10 @@
 		<!-- vCPE -->
 		<module>vcpe</module>
 		<!--  <module>vcpe.features</module> -->
+	
+		<!-- Quantum Resource -->
+		<module>quantum</module>
+		<module>quantum.features</module>	
 		
 		<module>gim</module>
 		<module>powernet</module>
@@ -110,7 +114,7 @@
 		
 		<module>sampleresource</module>
 		
-		<module>quantum</module>
+
 		
 		<module>ofertie.ncl</module>
 		<module>openflowswitch</module>
