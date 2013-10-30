@@ -3,7 +3,7 @@
 
 	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
 
-	<feature name="opennaas-openflow-switch" version="${project.version}">
+	<feature name="opennaas-openflowswitch" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-core</feature>
 	
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch/${project.version}</bundle>

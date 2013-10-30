@@ -117,10 +117,14 @@
 		<!-- Openflow Switch Resource -->
 		<module>openflowswitch</module>
 		<module>openflowswitch.features</module>		
-		
+	
+		<!-- Openflow Switch Drivers -->
 		<module>openflowswitch.driver.floodlight</module>
+		<module>openflowswitch.driver.features</module>	
+		
 		<module>sdnnetwork</module>
 		
 		<module>ofertie.ncl</module>
+
 	</modules>
 </project>
