@@ -101,7 +101,7 @@
 		
 		<!-- vCPE -->
 		<module>vcpe</module>
-		<!--  <module>vcpe.features</module> -->
+		<module>vcpe.features</module>
 	
 		<!-- Quantum Resource -->
 		<module>quantum</module>
