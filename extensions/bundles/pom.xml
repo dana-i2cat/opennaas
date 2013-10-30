@@ -122,7 +122,9 @@
 		<module>openflowswitch.driver.floodlight</module>
 		<module>openflowswitch.driver.features</module>	
 		
+		<!-- SDNNetwork -->
 		<module>sdnnetwork</module>
+		<module>sdnnetwork.features</module>
 		
 		<module>ofertie.ncl</module>
 
