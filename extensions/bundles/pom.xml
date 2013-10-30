@@ -89,7 +89,9 @@
 		<module>macbridge.capability.vlanawarebridge</module>
 		<module>macbridge.ios.resource</module>
 		
+		<!-- VNMapper Resource -->
 		<module>vnmapper</module>
+		<module>vnmapper.features</module>
 		
 		<!-- vCPE -->
 		<module>vcpe</module>

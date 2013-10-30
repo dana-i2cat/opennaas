@@ -6,10 +6,9 @@
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<version>0.25-SNAPSHOT</version>
 	</parent>
-	<artifactId>org.opennaas.extensions.router.actionsets.features</artifactId>
-	<name>OpenNaaS :: Router :: Driver ::Features</name>
+	<artifactId>org.opennaas.extensions.vnmapper.features</artifactId>
 	<packaging>bundle</packaging>
-
+	<name>OpenNaaS :: VNMapper :: Features </name>
 	<build>
 		<plugins>
 			<plugin>
