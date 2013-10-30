@@ -22,8 +22,7 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>router.actionsets.junos</module>
-		<module>router.actionsets.opener</module>
+
 
 		<!-- Router Resource -->
 		<module>router.repository</module>
@@ -38,7 +37,15 @@
 		<module>router.model</module>
 		<module>router.features</module>
 
+		<!-- Router Actionsets -->
+		<module>router.actionsets.junos</module>
+		<module>router.actionsets.opener</module>
+		<module>router.actionsets.features</module>
+
+		<!-- Velocity templates -->		
 		<module>fragment.velocity</module>
+		
+		
 		<module>queuemanager</module>
 		<module>com.wonesys.emsModule</module>
 
@@ -92,6 +99,7 @@
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
+
 
 
 	</modules>

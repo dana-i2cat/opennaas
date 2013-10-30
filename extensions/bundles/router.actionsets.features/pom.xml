@@ -6,9 +6,9 @@
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<version>0.25-SNAPSHOT</version>
 	</parent>
-	<artifactId>org.opennaas.extensions.router.features</artifactId>
+	<artifactId>org.opennaas.extensions.router.actionsets.features</artifactId>
+	<name>OpenNaaS :: Router :: Driver ::Features</name>
 	<packaging>bundle</packaging>
-	<name>OpenNaaS :: Router :: Features</name>
 
 	<build>
 		<plugins>
@@ -62,6 +62,7 @@
 			</plugin>
 		</plugins>
 	</build>
+</project>
 
 
 </project>
