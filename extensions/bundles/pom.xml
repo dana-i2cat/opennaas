@@ -49,11 +49,17 @@
 		<module>queuemanager</module>
 		<module>com.wonesys.emsModule</module>
 
+		<!-- ROADM resource -->
 		<module>roadm.repository</module>
-		<module>roadm.protocols.wonesys</module>
-		<module>roadm.actionsets.wonesys</module>
 		<module>roadm.capability.connections</module>
 		<module>roadm.capability.monitoring</module>
+		<module>roadm.features</module>
+
+
+		<module>roadm.actionsets.wonesys</module>
+
+		
+		<module>roadm.protocols.wonesys</module>
 
 		<!-- Network resource -->
 		<module>network.model</module>
