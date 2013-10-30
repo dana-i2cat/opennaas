@@ -68,8 +68,10 @@
 		<module>bod.capability.l2bod</module>
 		<module>bod.features</module>
 
+		<!-- BoD Actionsets -->
 		<module>bod.actionsets.dummy</module>
 		<module>bod.autobahn</module>
+		<module>bod.actionsets.features</module>
 
 		<!-- Transports -->
 		<module>transports.sockets</module>
