@@ -63,8 +63,11 @@
 		<module>network.capability.ospf</module>
 		<module>network.features</module>
 
+		<!-- BoD Resource -->
 		<module>bod.repository</module>
 		<module>bod.capability.l2bod</module>
+		<module>bod.features</module>
+
 		<module>bod.actionsets.dummy</module>
 		<module>bod.autobahn</module>
 
@@ -86,7 +89,9 @@
 		
 		<module>vnmapper</module>
 		
+		<!-- vCPE -->
 		<module>vcpe</module>
+		<!--  <module>vcpe.features</module> -->
 		
 		<module>gim</module>
 		<module>powernet</module>

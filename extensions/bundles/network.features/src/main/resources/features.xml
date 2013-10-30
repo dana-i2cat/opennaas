@@ -6,13 +6,19 @@
 	<feature name="opennaas-network" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 		<feature version="${project.version}">opennaas-router</feature>
+		<feature version="${project.version}">opennaas-network-model-indl</feature>
 		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.basic/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.queue/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.capability.ospf/${project.version}</bundle>
 		
+	</feature>
+
+	<feature name="opennaas-network-model-indl" version="${project.version}">
+		<feature version="${project.version}">opennaas-core</feature>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.network.model/${project.version}</bundle>
+	
 	</feature>
 
 </features>
