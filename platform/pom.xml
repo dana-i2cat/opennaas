@@ -103,12 +103,15 @@
 								<!-- Other featuresRepositories our ones depend on -->
 								<!-- Our featuresRepositories -->
 								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/org.opennaas.extensions.all.features/${project.version}/xml/features</descriptor>
+							
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
-								<feature version="${project.version}">opennaas</feature>
-								<!-- <feature version="${project.version}">itests-helpers</feature> 
-									<feature version="${project.version}">nexus-testprofile</feature> -->
+								<feature version="${project.version}">opennaas-core</feature>
+								<feature version="${project.version}">opennaas-extensions-all</feature> 
+								<feature version="${project.version}">itests-helpers</feature> 
+								<feature version="${project.version}">nexus-testprofile</feature> 
 							</features>
 							<repository>target/system</repository>
 						</configuration>

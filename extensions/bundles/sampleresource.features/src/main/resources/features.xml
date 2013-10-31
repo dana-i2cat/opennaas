@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository> -->
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.features/${opennaas.version}/xml/features</repository> -->
+	
+	<feature name="opennaas-sampleresource" version="${project.version}">
+		<feature version="${project.version}">opennaas-core</feature>
+		<feature version="${project.version}">opennaas-cim</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource/${project.version}</bundle>	
+	</feature>
+
+</features>

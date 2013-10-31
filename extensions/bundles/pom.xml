@@ -48,7 +48,6 @@
 		<!-- Velocity templates -->		
 		<module>fragment.velocity</module>
 		
-		
 		<module>queuemanager</module>
 		<module>com.wonesys.emsModule</module>
 
@@ -119,7 +118,9 @@
 		<module>power.capabilities</module>
 		<module>pdu.features</module>		
 		
+		<!-- Sample Resource -->
 		<module>sampleresource</module>
+		<module>sampleresource.features</module>
 		
 		<!-- Openflow Switch Resource -->
 		<module>openflowswitch</module>
