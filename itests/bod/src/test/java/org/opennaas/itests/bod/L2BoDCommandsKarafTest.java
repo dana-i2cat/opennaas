@@ -98,7 +98,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-bod", "opennaas-netconf", "itests-helpers"),
+				includeFeatures("opennaas-bod", "opennaas-bod-driver-dummy", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -172,7 +172,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		repository.stopResource(resource.getResourceDescriptor().getId());
-		createProtocolForResource(resource.getResourceIdentifier().getId());
+		// createProtocolForResource(resource.getResourceIdentifier().getId());
 		repository.startResource(resource.getResourceDescriptor().getId());
 
 		NetworkModel model = (NetworkModel) resource.getModel();
