@@ -84,7 +84,7 @@ public class NetOSPFIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-network, opennaas-router", "opennaas-junos", "itests-helpers"),
+				includeFeatures("opennaas-network, opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
