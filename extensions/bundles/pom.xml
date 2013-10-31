@@ -91,9 +91,11 @@
 		<module>roadm.protocols.wonesys</module>	
 		<module>protocols.features</module>		
 		
+		<!-- MacBridge Resource -->
 		<module>macbridge.model</module>
 		<module>macbridge.capability.vlanawarebridge</module>
 		<module>macbridge.ios.resource</module>
+    	<module>macbridge.features</module>
 		
 		<!-- VNMapper Resource -->
 		<module>vnmapper</module>
@@ -131,6 +133,5 @@
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
 		<module>ofertie.features</module>
-
-	</modules>
+  </modules>
 </project>
