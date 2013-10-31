@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.extensions.bod.features/${opennaas.version}/xml/features</repository>	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.features/${opennaas.version}/xml/features</repository>	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.macbridge.features/${opennaas.version}/xml/features</repository>	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.network.features/${opennaas.version}/xml/features</repository> 
+	<repository>mvn:org.opennaas/org.opennaas.extensions.ofertie.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.pdu.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.quantum.features/${opennaas.version}/xml/features</repository> 
+	<repository>mvn:org.opennaas/org.opennaas.extensions.roadm.features/${opennaas.version}/xml/features</repository> 
+	<repository>mvn:org.opennaas/org.opennaas.extensions.roadm.actionsets.features/${opennaas.version}/xml/features</repository> 
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.actionsets/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.protocols.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.sdnnetwork.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.transports.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.vcpe.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.vnmapper.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-extensions-all" version ="${project.version}">
+		<feature version="${project.version}">opennaas-router</feature>
+		<feature version="${project.version}">opennaas-network</feature>
+		<feature version="${project.version}">opennaas-bod</feature>
+		<feature version="${project.version}">opennaas-vnmapper</feature>
+		<feature version="${project.version}">opennaas-luminis</feature>
+		<feature version="${project.version}">opennaas-autobahn</feature>
+		<feature version="${project.version}">opennaas-junos</feature>
+		<feature version="${project.version}">opennaas-router-driver-opener</feature>
+		<feature version="${project.version}">opennaas-roadm-proteus</feature>
+		<feature version="${project.version}">opennaas-sampleresource</feature>
+		<feature version="${project.version}">opennaas-vnmapper</feature>
+		<feature version="${project.version}">opennaas-cisco</feature>
+		<feature version="${project.version}">opennaas-vcpe</feature>
+		<feature version="${project.version}">opennaas-powernet</feature>
+		<feature version="${project.version}">opennaas-pdu</feature>
+		<feature version="${project.version}">opennaas-power</feature>
+		<feature version="${project.version}">opennaas-ws-rest</feature>
+		<feature version="${project.version}">opennaas-openflow-switch</feature>
+		<feature version="${project.version}">opennaas-openflow-switch-driver-floodlight</feature>
+		<feature version="${project.version}">opennaas-sdn-network</feature>
+		
+		<feature version="${project.version}">opennaas-quantum</feature>
+		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
+	</feature>
+	
+</features>

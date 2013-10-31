@@ -24,6 +24,9 @@
 	<modules>
 
 
+		<!-- All extensions Features -->
+	    <module>all.features</module>
+
 		<!-- Router Resource -->
 		<module>router.repository</module>
 		<module>router.capability.chassis</module>
