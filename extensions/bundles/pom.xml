@@ -126,7 +126,9 @@
 		<module>sdnnetwork</module>
 		<module>sdnnetwork.features</module>
 		
+		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
+		<module>ofertie.features</module>
 
 	</modules>
 </project>

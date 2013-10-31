@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.sdnnetwork.features/${opennaas.version}/xml/features</repository>
+	
+	
+	<feature name="opennaas-ofertie-ncl" version="${project.version}">
+		<feature version="${project.version}">opennaas-sdnnetwork</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${project.version}</bundle>
+		
+	</feature>
+	
+	
+</features>
