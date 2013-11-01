@@ -20,6 +20,7 @@
 		<spring:message code="header.user"/>: <sec:authentication property="principal.username" />
 	</span>
 	<div><a href="<c:url value="/auth/logout" />"><button id="logoutButton" class="button"><spring:message code="header.logout"/></button></a></div>
+        <img src="<c:url value="/resources/images/logo-color-transparent.png" />" height="43px" width="" alt="i2CAT Logo" style="float: left;">
 </div>	
 <div id="header_menu" class="ui-widget-content ui-corner-all">
 	<div id="home">

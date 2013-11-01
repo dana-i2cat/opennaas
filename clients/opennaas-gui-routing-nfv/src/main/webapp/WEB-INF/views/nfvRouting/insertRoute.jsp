@@ -104,7 +104,38 @@
         $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
         $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
         $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
-     }
+        }
+        
+        function fillDemo(){
+        deleteAll("Routes");
+        count=0;
+        if(count==2)
+            return;
+        addRout();
+        $("#listRoutes0\\.sourceAddress").val("10.0.0.0");
+        $("#listRoutes0\\.destinationAddress").val("10.0.2.2");
+        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+        $("#listRoutes0\\.switchInfo\\.inputPort").val("1");
+        $("#listRoutes0\\.switchInfo\\.outputPort").val("2");
+        addRout();
+        $("#listRoutes1\\.sourceAddress").val("10.0.0.0");
+        $("#listRoutes1\\.destinationAddress").val("10.0.2.2");
+        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+        $("#listRoutes1\\.switchInfo\\.inputPort").val("2");
+        $("#listRoutes1\\.switchInfo\\.outputPort").val("1");
+        addRout();
+        $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
+        $("#listRoutes2\\.destinationAddress").val("10.0.0.1");
+        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+        $("#listRoutes2\\.switchInfo\\.inputPort").val("1");
+        $("#listRoutes2\\.switchInfo\\.outputPort").val("2");
+        addRout();        
+        $("#listRoutes3\\.sourceAddress").val("10.0.2.0");
+        $("#listRoutes3\\.destinationAddress").val("10.0.0.1");
+        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+        $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
+        $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
+        }
         
 </script>
 
@@ -134,5 +165,6 @@
     </div>
 </form:form>
 <br/><br/>
-<input style="margin-right: 11.5px" class="addRouteButton" onClick="fill2()" type="button" value="Default Values 2" name="addDefaultValues"/>
+<!--<input style="margin-right: 11.5px" class="addRouteButton" onClick="fill2()" type="button" value="Default Values 2" name="addDefaultValues"/>
  <input style="margin-right: 2.5px" class="addRouteButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>
+ --><input style="margin-right: 11.5px" class="addRouteButton" onClick="fillDemo()" type="button" value="Default Values" name="addDefaultValues"/>

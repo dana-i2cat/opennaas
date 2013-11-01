@@ -24,11 +24,11 @@
 </head>
 <body>
 
-	
+<img src="<c:url value="/resources/images/logo-color-transparent.png" />" height="63px" width="" alt="i2CAT Logo" style="float: left;">
 <div class="container">
 	<div id="login_logo">
 		<img src="<c:url value="/resources/images/opennaas-orange-400.png" />" height= "264px" width= "400px" alt="OpenNaaS Logo">
-	</div>	
+        </div>
 	<section id="content">	
 		<form action="../j_spring_security_check" method="post">
 			<h1><spring:message code="login.welcome"/></h1>
