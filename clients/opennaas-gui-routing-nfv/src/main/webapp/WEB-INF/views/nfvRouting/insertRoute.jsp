@@ -18,12 +18,19 @@
             return true;
         }
     }
+    
+    function deleteAll(table){
+        this.table = document.getElementById(table);
+        rows = this.table.getElementsByTagName("tr");
+        x=1;
+        while ( x<rows.length) {
+            document.getElementById(table).deleteRow(x);
+        }
+    }
 
     count = 1;
     function addRout(){
-        var appendTxt = "<tr>";
-
-                
+        var appendTxt = "<tr>";                
         appendTxt = appendTxt + "<td><input class=\"ipInput\" id=\"listRoutes" + count + ".sourceAddress\" name=\"listRoutes[" + count + "].sourceAddress\" type=\"text\" value=\"\"/></td>";
         appendTxt = appendTxt + "<td><input class=\"ipInput\" id=\"listRoutes" + count + ".destinationAddress\" name=\"listRoutes[" + count + "].destinationAddress\" type=\"text\" value=\"\"/></td>";
         appendTxt = appendTxt + "<td><input class=\"macInput\" id=\"listRoutes" + count + ".switchInfo.macAddress\" name=\"listRoutes[" + count + "].switchInfo.macAddress\" type=\"text\" value=\"\"/></td>";
@@ -36,25 +43,67 @@
     }
     
     function fill(){
-        if(count==3)
+        deleteAll('Routes');
+//        $('Routes  tr:last').append('<tbody><tr></tr></tbody>');
+        count=0;
+        if(count==2)
             return;
-        $("#listRoutes0\\.sourceAddress").val("192.168.1.2");
-        $("#listRoutes0\\.destinationAddress").val("192.168.2.3");
+        addRout();
+        $("#listRoutes0\\.sourceAddress").val("10.0.1.0");
+        $("#listRoutes0\\.destinationAddress").val("10.0.2.0");
         $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+        $("#listRoutes0\\.switchInfo\\.inputPort").val("5");
+        $("#listRoutes0\\.switchInfo\\.outputPort").val("1");
+        addRout();
+        $("#listRoutes1\\.sourceAddress").val("10.0.2.0");
+        $("#listRoutes1\\.destinationAddress").val("10.0.1.1");
+        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+        $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
+        $("#listRoutes1\\.switchInfo\\.outputPort").val("5");
+        addRout();
+        $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
+        $("#listRoutes2\\.destinationAddress").val("10.0.1.0");
+        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+        $("#listRoutes2\\.switchInfo\\.inputPort").val("5");
+        $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
+        addRout();
+        $("#listRoutes3\\.sourceAddress").val("10.0.1.0");
+        $("#listRoutes3\\.destinationAddress").val("10.0.2.51");
+        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+        $("#listRoutes3\\.switchInfo\\.inputPort").val("1");
+        $("#listRoutes3\\.switchInfo\\.outputPort").val("5");
+     }
+     
+     function fill2(){
+        deleteAll("Routes");
+        count=0;
+        if(count==2)
+            return;
+        addRout();
+        $("#listRoutes0\\.sourceAddress").val("10.1.10.0");
+        $("#listRoutes0\\.destinationAddress").val("10.1.11.51");
+        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0b");
         $("#listRoutes0\\.switchInfo\\.inputPort").val("1");
         $("#listRoutes0\\.switchInfo\\.outputPort").val("2");
         addRout();
-        $("#listRoutes1\\.sourceAddress").val("192.168.2.3");
-        $("#listRoutes1\\.destinationAddress").val("192.168.1.2");
-        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes1\\.switchInfo\\.inputPort").val("2");
-        $("#listRoutes1\\.switchInfo\\.outputPort").val("1");
+        $("#listRoutes1\\.sourceAddress").val("10.1.11.0");
+        $("#listRoutes1\\.destinationAddress").val("10.1.10.1");
+        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
+        $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
+        $("#listRoutes1\\.switchInfo\\.outputPort").val("2");
         addRout();
-        $("#listRoutes2\\.sourceAddress").val("192.168.1.2");
-        $("#listRoutes2\\.destinationAddress").val("192.168.2.3");
-        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+        $("#listRoutes2\\.sourceAddress").val("10.1.11.0");
+        $("#listRoutes2\\.destinationAddress").val("10.1.10.0");
+        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0b");
         $("#listRoutes2\\.switchInfo\\.inputPort").val("2");
         $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
+        addRout();
+        
+        $("#listRoutes3\\.sourceAddress").val("10.1.10.10");
+        $("#listRoutes3\\.destinationAddress").val("10.1.11.0");
+        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
+        $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
+        $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
      }
         
 </script>
@@ -85,4 +134,5 @@
     </div>
 </form:form>
 <br/><br/>
- <input style="margin-right: 11.5px" class="addRouteButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>
+<input style="margin-right: 11.5px" class="addRouteButton" onClick="fill2()" type="button" value="Default Values 2" name="addDefaultValues"/>
+ <input style="margin-right: 2.5px" class="addRouteButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>

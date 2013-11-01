@@ -363,7 +363,7 @@ $(function() {
 			collapsible : false,
 			icons : false,
 			autoHeight : true,
-			heightStyle : "content",
+			heightStyle : "content"
 
 		});
 

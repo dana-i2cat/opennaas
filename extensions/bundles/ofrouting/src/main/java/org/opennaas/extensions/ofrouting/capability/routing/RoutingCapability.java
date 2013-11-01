@@ -425,41 +425,59 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     }
 
     @Override
-    public void deleteRoute(int id) throws CapabilityException {
-        OutputStreamWriter wr = null;
-        try {
+    public void deleteRoute(int id) throws CapabilityException {      
             OfRoutingModel model = (OfRoutingModel) resource.getModel();
             Route route =  model.getTable().getRouteId(id);
-            String ipDest = route.getSourceAddress().getHostAddress();
-            Switch switchMac = route.getSwitchInfo();
+            
+            String ipDest = route.getDestinationAddress().getHostAddress();
+            String ipSrc = route.getSourceAddress().getHostAddress();
+            String subSrc = ipSrc.split("\\.")[0]+"."+ipSrc.split("\\.")[1]+"."+ipSrc.split("\\.")[2]+".0";
+            String subDst = ipDest.split("\\.")[0]+"."+ipDest.split("\\.")[1]+"."+ipDest.split("\\.")[2]+".0";
+            Switch switchInfo = route.getSwitchInfo();
             model.getTable().removeRoute(id, 4);
+            log.info("Remove flow "+id+" "+ipDest);
 //                model.getTable().delRoute(route, version);
                 String flow = "{\"name\":\"ip4in-mod-" + ipDest+"\"}";
-                String flow2 = "{\"name\":\"arp4in-mod-" + ipDest+"\"}";
-                String controllerInfo = model.getSwitchController().get(switchMac);
+                String flow2 = "{\"name\":\"arpin-mod-" + ipDest+"\"}";
+                String flow3 = "{\"name\":\"ip4to-mod-" + subSrc +"/24"+subDst+"/24\"}";
+                String flow4 = "{\"name\":\"arpto-mod-" + subSrc+"/24"+subDst+"/24\"}";
+                log.info("FLows: "+flow+"flow4: "+flow4);
+                String controllerInfo = model.getSwitchController().get(switchInfo.getMacAddress());
                 String uri = "http://"+controllerInfo;
-                URL url = new URL(uri + "/wm/staticflowentrypusher" + "/json");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
-                connection.setDoOutput(true);
-                connection.setDoOutput(true);
-                wr = new OutputStreamWriter(connection.getOutputStream());
-                wr.write(flow);
-                wr.flush();
-                wr.close();
-                connection.connect();
-                String response = connection.getResponseMessage();
+                log.info("url"+uri);
+                
+                String response = deleteHttpRequest(uri, flow);
                 log.info(response);
-            } catch (IOException ex) {
-                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
+                response = deleteHttpRequest(uri, flow2);
+                log.info(response);
+                response = deleteHttpRequest(uri, flow3);
+                log.info(response);
+                response = deleteHttpRequest(uri, flow4);
+                log.info(response);
+            
+    }
+    
+    private String deleteHttpRequest(String uri, String flow){
+        String response ="";
+        try {
+            OutputStreamWriter wr = null;
+            URL url = new URL(uri + "/wm/staticflowentrypusher/json");
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
+                    connection.setDoOutput(true);
+                    connection.setDoOutput(true);
+                    wr = new OutputStreamWriter(connection.getOutputStream());
+                    wr.write(flow);
+                    wr.flush();
                     wr.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+                    connection.connect();
+                    response = connection.getResponseMessage();
+                    return response;
+        } catch (IOException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return response;
     }
 
     public class MyThread extends Thread {

@@ -19,6 +19,7 @@
 	<!-- Javascript -->
 	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui-1.10.0.custom.js" />"></script>
+        <script src="<c:url value="/resources/js/jquery.tablesorter.js" />"></script> 
 	<script src="<c:url value="/resources/js/script.js" />"></script>
 </head>
 <body>

@@ -136,4 +136,33 @@ public class Subnet {
         result = 31 * result + mask;
         return result;
     }
+    
+    /*
+ * Get network mask for the IP address and network prefix specified...
+ * The network mask will be returned has an IP, thus you can
+ * print it out with .getHostAddress()...
+ */
+public static InetAddress getIPv4LocalNetMask(InetAddress ip, int netPrefix) {
+
+    try {
+        // Since this is for IPv4, it's 32 bits, so set the sign value of
+        // the int to "negative"...
+        int shiftby = (1<<31);
+        // For the number of bits of the prefix -1 (we already set the sign bit)
+        for (int i=netPrefix-1; i>0; i--) {
+            // Shift the sign right... Java makes the sign bit sticky on a shift...
+            // So no need to "set it back up"...
+            shiftby = (shiftby >> 1);
+        }
+        // Transform the resulting value in xxx.xxx.xxx.xxx format, like if
+        /// it was a standard address...
+        String maskString = Integer.toString((shiftby >> 24) & 255) + "." + Integer.toString((shiftby >> 16) & 255) + "." + Integer.toString((shiftby >> 8) & 255) + "." + Integer.toString(shiftby & 255);
+        // Return the address thus created...
+        return InetAddress.getByName(maskString);
+    }
+        catch(Exception e){e.printStackTrace();
+    }
+    // Something went wrong here...
+    return null;
+}
 }

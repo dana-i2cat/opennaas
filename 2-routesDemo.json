@@ -1,0 +1,11 @@
+{"routeIPv4":[
+{"srcAddr":"10.1.11.0","dstAddr":"10.1.10.1","swInfo":{"inPort":2,"outPort":1,"macAddr":"00:00:00:00:00:00:00:0b"}},
+{"srcAddr":"10.1.11.0","dstAddr":"10.1.10.1","swInfo":{"inPort":1,"outPort":2,"macAddr":"00:00:00:00:00:00:00:0a"}},
+{"srcAddr":"10.1.10.0","dstAddr":"10.1.11.51","swInfo":{"inPort":2,"outPort":1,"macAddr":"00:00:00:00:00:00:00:0a"}},
+{"srcAddr":"10.1.10.0","dstAddr":"10.1.11.51","swInfo":{"inPort":1,"outPort":2,"macAddr":"00:00:00:00:00:00:00:0b"}}
+],
+"routeIPv6":[],
+"routeSubnet":[
+{"srcSubnet":{"ip":"10.1.10.0","mask":24},"dstSubnet":{"ip":"10.1.11.0","mask":24},"swInfo":{"inPort":0,"outPort":1,"macAddr":"00:00:00:00:00:00:00:0a"}},
+{"srcSubnet":{"ip":"10.1.11.0","mask":24},"dstSubnet":{"ip":"10.1.10.0","mask":24},"swInfo":{"inPort":0,"outPort":1,"macAddr":"00:00:00:00:00:00:00:0b"}}
+]}
