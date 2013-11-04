@@ -32,11 +32,11 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
  */
 public class OFProvisioningNetworkCapability extends AbstractCapability implements IOFProvisioningNetworkCapability {
 
-	public static String	CAPABILITY_TYPE	= "ofprovisionnet";
+	public static final String	CAPABILITY_TYPE	= "ofprovisionnet";
 
-	Log						log				= LogFactory.getLog(OFProvisioningNetworkCapabilityFactory.class);
+	Log							log				= LogFactory.getLog(OFProvisioningNetworkCapabilityFactory.class);
 
-	private String			resourceId		= "";
+	private String				resourceId		= "";
 
 	public OFProvisioningNetworkCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -47,6 +47,19 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
+	}
+
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				IOFProvisioningNetworkCapability.class.getName());
+		super.activate();
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		unregisterService();
+		super.deactivate();
 	}
 
 	@Override
@@ -80,7 +93,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-			throw new ActionException(response.getResponses().get(0).toString());
+			throw new ActionException(response.toString());
 
 		// assuming allocated flow has not been modified by underlying functionality.
 		// FIXME replace flowCopy with flow obtained from response.
@@ -108,7 +121,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-			throw new ActionException(response.getResponses().get(0).toString());
+			throw new ActionException(response.toString());
 
 		removeDeallocatedFlowFromModel(flow, (SDNNetworkModel) resource.getModel());
 
@@ -126,7 +139,7 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-			throw new ActionException(response.getResponses().get(0).toString());
+			throw new ActionException(response.toString());
 
 		Collection<SDNNetworkOFFlow> result;
 		if (response.getResult() != null && response.getResult() instanceof Collection<?>) {

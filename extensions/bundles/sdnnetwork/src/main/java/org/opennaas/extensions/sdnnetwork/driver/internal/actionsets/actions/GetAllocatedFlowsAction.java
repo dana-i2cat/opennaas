@@ -5,6 +5,7 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkActionSet;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
 
 /**
@@ -18,7 +19,7 @@ public class GetAllocatedFlowsAction extends Action {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 			throws ActionException {
-		ActionResponse response = new ActionResponse();
+		ActionResponse response = ActionResponse.okResponse(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS);
 		response.setResult(((SDNNetworkModel) getModelToUpdate()).getFlows());
 		response.setStatus(STATUS.OK);
 		return response;

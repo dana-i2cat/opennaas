@@ -7,20 +7,6 @@
 
 	<!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
 	<cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
-
-	<!-- NCL Provisioner Mockup -->
-	<bean id="nclProvisionerMockup" class="org.opennaas.extensions.ofertie.ncl.provisioner.mockup.NCLProvisionerMockup"/>
-	<service ref="nclProvisionerMockup" interface="org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner">
-		<service-properties>
-			<!-- Rest -->
-			<entry key="service.exported.interfaces" value="*"/>
-			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
-			<entry key="service.exported.intents" value="HTTP"/>
-			<entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/ofertie/mockup/ncl"/>
-			<entry key="org.apache.cxf.rs.address" value="/"/>
-			<entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
-		</service-properties>
-	</service>
 	
 	<!-- Get a reference to OpenNaaS resource manager service -->
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>

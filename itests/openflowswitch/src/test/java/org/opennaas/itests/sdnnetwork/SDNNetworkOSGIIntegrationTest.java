@@ -29,7 +29,6 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -62,7 +61,17 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class SDNNetworkOSGIIntegrationTest {
 
-	private final static Log	log	= LogFactory.getLog(SDNNetworkOSGIIntegrationTest.class);
+	private final static Log	log						= LogFactory.getLog(SDNNetworkOSGIIntegrationTest.class);
+
+	private static final String	NET_RESOURCE_TYPE		= "sdnnetwork";
+	private static final String	NET_RESOURCE_NAME		= "net1";
+
+	private static final String	SWITCH_RESOURCE_TYPE	= "openflowswitch";
+	private static final String	SWITCH_RESOURCE_NAME	= "s1";
+
+	private static final String	WS_URI					= "http://localhost:8888/opennaas/" + NET_RESOURCE_TYPE + "/" + NET_RESOURCE_NAME + "/" + OFProvisioningNetworkCapability.CAPABILITY_TYPE;
+	private static final String	WS_USERNAME				= "admin";
+	private static final String	WS_PASSWORD				= "123456";
 
 	/**
 	 * Make sure blueprint for org.opennaas.extensions.sdnnetwork bundle has finished its initialization
@@ -103,7 +112,7 @@ public class SDNNetworkOSGIIntegrationTest {
 
 	@Before
 	public void initializeSDNDescriptor() {
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("sdnnetwork");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(null, NET_RESOURCE_TYPE, null, NET_RESOURCE_NAME);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor(SDNNetworkInternalActionsetImplementation.ACTIONSET_ID, "1.0.0",
 				OFProvisioningNetworkCapability.CAPABILITY_TYPE, null));
@@ -113,15 +122,11 @@ public class SDNNetworkOSGIIntegrationTest {
 
 	@Before
 	public void initializeSwitchDescriptor() {
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("openflowswitch");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(null, SWITCH_RESOURCE_TYPE, null, SWITCH_RESOURCE_NAME);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor("floodlight", "0.90",
 				OpenflowForwardingCapability.CAPABILITY_TYPE, null));
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-		Information information = new Information();
-		information.setName("s1");
-		information.setType("openflowswitch");
-		resourceDescriptor.setInformation(information);
 		this.ofswitchResourceDescriptor = resourceDescriptor;
 
 	}
@@ -130,6 +135,7 @@ public class SDNNetworkOSGIIntegrationTest {
 	@After
 	public void clearRM() throws ResourceException {
 		resourceManager.destroyAllResources();
+
 	}
 
 	@Test
@@ -170,6 +176,33 @@ public class SDNNetworkOSGIIntegrationTest {
 
 		IOFProvisioningNetworkCapability capab = (IOFProvisioningNetworkCapability) sdnResource
 				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+
+		ofProvisioningNetworkCapabilityCheck(capab);
+	}
+
+	@Test
+	public void ofProvisioningNetworkCapabilityWSTest() throws Exception {
+
+		IResource resource = resourceManager.createResource(sdnResourceDescriptor);
+		resourceManager.startResource(resource.getResourceIdentifier());
+
+		IResource switchResource = resourceManager.createResource(ofswitchResourceDescriptor);
+		Map<String, Object> sessionParameters = new HashMap<String, Object>();
+		sessionParameters.put(FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME, "00:00:00:00:00:00:00:01");
+
+		// If not exists the protocol session manager, it's created and add the session context
+		InitializerTestHelper.addSessionContextWithSessionParams(protocolManager, switchResource.getResourceIdentifier().getId(),
+				"mock://user:pass@host.net:2212/mocksubsystem", "floodlight", sessionParameters);
+		resourceManager.startResource(switchResource.getResourceIdentifier());
+		prepareClient(switchResource);
+
+		IOFProvisioningNetworkCapability capabClient = InitializerTestHelper.createRestClient(WS_URI, IOFProvisioningNetworkCapability.class, null,
+				WS_USERNAME, WS_PASSWORD);
+
+		ofProvisioningNetworkCapabilityCheck(capabClient);
+	}
+
+	public void ofProvisioningNetworkCapabilityCheck(IOFProvisioningNetworkCapability capab) throws Exception {
 
 		SDNNetworkOFFlow flow1 = generateSampleSDNNetworkOFFlow("flow1", "1", "2");
 		SDNNetworkOFFlow flow2 = generateSampleSDNNetworkOFFlow("flow2", "2", "1");
