@@ -1,5 +1,6 @@
 package org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.ActivatorException;
@@ -134,14 +135,16 @@ public class AllocateFlowAction extends Action {
 
 		// All links should include a forwarding action (outputAction)
 		List<FloodlightOFAction> actions = flow.getActions();
+		List<FloodlightOFAction> actionsToRemove = new ArrayList<FloodlightOFAction>();
 		if (!keepActions) {
 			actions.clear();
 		} else {
 			for (FloodlightOFAction floodlightOFAction : actions) {
 				if (floodlightOFAction.getType() == FloodlightOFAction.TYPE_OUTPUT) {
-					actions.remove(floodlightOFAction);
+					actionsToRemove.add(floodlightOFAction);
 				}
 			}
+			actions.removeAll(actionsToRemove);
 		}
 		actions.add(outputAction);
 		return flow;

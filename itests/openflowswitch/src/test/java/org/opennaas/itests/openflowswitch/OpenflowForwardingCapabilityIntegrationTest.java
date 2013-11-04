@@ -94,7 +94,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflow-switch", "opennaas-openflow-switch-driver-floodlight", "itests-helpers"),
+				includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

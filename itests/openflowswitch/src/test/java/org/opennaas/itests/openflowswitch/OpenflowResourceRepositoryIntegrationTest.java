@@ -49,7 +49,7 @@ public class OpenflowResourceRepositoryIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflow-switch", "itests-helpers"),
+				includeFeatures("opennaas-openflowswitch", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
