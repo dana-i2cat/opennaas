@@ -55,9 +55,8 @@ public class ACLManagerTest {
 	public static Option[] configuration() {
 		return CoreOptions.options(OpennaasExamOptions.opennaasDistributionConfiguration(),
 
-				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-junos", "opennaas-vcpe", "itests-helpers"),
+				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos", "opennaas-vcpe", "itests-helpers"),
 				OpennaasExamOptions.noConsole(),
-				// OpennaasExamOptions.openDebugSocket(),
 				KarafDistributionOption.keepRuntimeFolder());
 	}
 
