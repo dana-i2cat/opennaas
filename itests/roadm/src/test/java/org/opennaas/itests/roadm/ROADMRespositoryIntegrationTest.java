@@ -96,7 +96,7 @@ public class ROADMRespositoryIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus", "itests-helpers"),
+				includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

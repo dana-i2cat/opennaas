@@ -117,7 +117,7 @@ public class WonesysProtocolTest implements EventHandler, ITransportListener
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
+				includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
