@@ -100,7 +100,7 @@ public class ChassisLRIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-junos", "itests-helpers"),
+				includeFeatures("opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
