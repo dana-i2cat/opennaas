@@ -153,7 +153,8 @@ public class NCLProvisionerTest {
 	public static Option[] configuration() {
 		return options(
 				opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflowswitch-driver-floodlight", "opennaas-ofertie-ncl", "itests-helpers"),
+				includeFeatures("opennaas-openflowswitch", "opennaas-sdnnetwork", "opennaas-openflowswitch-driver-floodlight",
+						"opennaas-ofertie-ncl", "itests-helpers"),
 				systemTimeout(1000 * 60 * 10),
 				noConsole(),
 				keepRuntimeFolder());
