@@ -175,7 +175,7 @@
 			<dependency>
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
-				<type>zip</type>
+				<type>tar.gz</type>
 			</dependency>
 		
 	</dependencies>
@@ -199,7 +199,7 @@
 								<artifactItem>
 									<groupId>org.apache.servicemix</groupId>
 									<artifactId>apache-servicemix</artifactId>
-									<type>zip</type>
+									<type>tar.gz</type>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
