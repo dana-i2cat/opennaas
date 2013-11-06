@@ -113,8 +113,6 @@
 							<features>
 								<feature version="${project.version}">opennaas-core</feature>
 								<feature version="${project.version}">opennaas-extensions-all</feature> 
-								<feature version="${project.version}">itests-helpers</feature> 
-								<feature version="${project.version}">nexus-testprofile</feature> 
 							</features>
 							<repository>target/system</repository>
 						</configuration>
