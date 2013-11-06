@@ -1022,7 +1022,7 @@
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
 				<version>${servicemix.version}</version>
-				<type>zip</type>
+				<type>tar.gz</type>
 			</dependency>
 			<!-- Misc -->
 			<dependency>

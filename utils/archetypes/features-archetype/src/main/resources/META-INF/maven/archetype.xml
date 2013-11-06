@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype
+	xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype/1.0.0 http://maven.apache.org/xsd/archetype-1.0.0.xsd">
+	<id>org.opennaas.archetypes.features</id>
+	<resources>
+		<resource filtered="false">src/main/resources/features.xml</resource>
+	</resources>
+	
+</archetype>

@@ -44,11 +44,14 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.features</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.servicemix</groupId>
 			<artifactId>apache-servicemix</artifactId>
-			<type>zip</type>
+			<type>tar.gz</type>
 		</dependency>
+		
+
 	</dependencies>
 
 	<build>
@@ -69,7 +72,7 @@
 								<artifactItem>
 									<groupId>org.apache.servicemix</groupId>
 									<artifactId>apache-servicemix</artifactId>
-									<type>zip</type>
+									<type>tar.gz</type>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
