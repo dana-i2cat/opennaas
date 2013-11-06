@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<!-- TODO QueueManager is used to execute bod queue, and its loaded because the autobahn driver depends on it, 
+	but it should be moved to core -->
+	
+	<!-- TODO We should depend on bod, not in autobahn. -->
+	
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.bod.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.features/${opennaas.version}/xml/features</repository>
+	
+	<feature name="opennaas-quantum" version="${project.version}">
+		<feature version="${project.version}">opennaas-core</feature>	
+		<feature version="${project.version}">opennaas-bod-driver-autobahn</feature>
+		
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.quantum/${project.version}</bundle>
+	</feature>
+
+</features>

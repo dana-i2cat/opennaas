@@ -31,6 +31,7 @@
 
 		<ant.version>1.7.0_4</ant.version>
 		<activemq.version>5.7.0</activemq.version>
+		<apache.oro.version>2.0.8_6</apache.oro.version>
 		<axiom.version>1.2.12</axiom.version>
 		<beanutils.version>1.8.0</beanutils.version>
 		<camel.version>2.10.6</camel.version>

@@ -3,6 +3,7 @@ package org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.actions;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkActionSet;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
@@ -20,6 +21,7 @@ public class GetAllocatedFlowsAction extends Action {
 			throws ActionException {
 		ActionResponse response = ActionResponse.okResponse(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS);
 		response.setResult(((SDNNetworkModel) getModelToUpdate()).getFlows());
+		response.setStatus(STATUS.OK);
 		return response;
 	}
 

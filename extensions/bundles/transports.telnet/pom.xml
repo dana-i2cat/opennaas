@@ -11,7 +11,7 @@
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>OpenNaaS :: Telnet Transport</name>
+	<name>OpenNaaS :: Transport :: Telnet</name>
 	<description>Telnet Transport Implementation</description>
 	<dependencies>
 		<dependency>

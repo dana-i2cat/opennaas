@@ -25,19 +25,10 @@
 			<artifactId>org.opennaas.extensions.network.model</artifactId>
 		</dependency>
 		
-		<!--  FIXME check if necessary and delete otherwise -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
-		</dependency>		
+		</dependency>	
 		<dependency>
 			<groupId>org.opennaas.itests</groupId>
 			<artifactId>org.opennaas.itests.helpers</artifactId>

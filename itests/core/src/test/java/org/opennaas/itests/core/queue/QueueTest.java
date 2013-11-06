@@ -111,7 +111,7 @@ public class QueueTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-cim", "opennaas-netconf", "opennaas-router", "opennaas-junos", "itests-helpers"),
+				includeFeatures("opennaas-cim", "opennaas-protocol-netconf", "opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
 				includeSwissboxFramework(),
 				noConsole(),
 				keepRuntimeFolder());

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.bod.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-bod-driver-all" version="${project.version}">
+		<feature version="${project.version}">opennaas-bod-driver-dummy</feature>
+		<feature version="${project.version}">opennaas-bod-driver-autobahn</feature>
+	</feature>
+	
+	<feature name="opennaas-bod-driver-dummy" version="${project.version}">
+		<feature version="${project.version}">opennaas-bod</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-bod-driver-autobahn" version="${project.version}">
+		<feature version="${project.version}">opennaas-jaxws</feature>	
+		<feature version="${project.version}">opennaas-bod</feature>	
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.autobahn/${project.version}</bundle>
+	</feature>
+	
+</features>

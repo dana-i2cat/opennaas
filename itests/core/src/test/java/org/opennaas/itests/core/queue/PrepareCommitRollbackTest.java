@@ -91,7 +91,7 @@ public class PrepareCommitRollbackTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-junos"),
+				includeFeatures("opennaas-router", "opennaas-router-driver-junos"),
 				includeSwissboxFramework(),
 				noConsole(),
 				keepRuntimeFolder());

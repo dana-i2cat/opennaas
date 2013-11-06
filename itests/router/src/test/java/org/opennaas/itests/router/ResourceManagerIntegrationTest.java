@@ -76,7 +76,7 @@ public class ResourceManagerIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-junos"),
+				includeFeatures("opennaas-router", "opennaas-router-driver-junos"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

@@ -111,7 +111,7 @@ public class CoreTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("org.opennaas.core", "opennaas-router", "opennaas-junos", "nexus-testprofile"),
+				includeFeatures("opennaas-router", "opennaas-router-driver-junos", "nexus-testprofile"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

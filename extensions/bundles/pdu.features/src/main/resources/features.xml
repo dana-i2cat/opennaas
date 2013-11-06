@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+
+	
+	<feature name="opennaas-power" version="${project.version}">
+		<feature version="${project.version}">opennaas-powernet</feature>
+		<feature version="${project.version}">opennaas-pdu</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.power.capabilities/${project.version}</bundle>
+	</feature>	
+
+	<feature name="opennaas-powernet" version="${project.version}">
+		<feature version="${project.version}">opennaas-core</feature>
+
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.snmp4j/${snmp4j.version}</bundle>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.gim/${opennaas.gim.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.powernet/${project.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-pdu" version="${project.version}">
+		<feature version="${project.version}">opennaas-powernet</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.pdu/${project.version}</bundle>
+
+	</feature>
+
+</features>
