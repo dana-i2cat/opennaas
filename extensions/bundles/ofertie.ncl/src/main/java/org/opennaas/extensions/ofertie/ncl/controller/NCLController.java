@@ -26,6 +26,8 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
  */
 public class NCLController implements INCLController {
 
+	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
+
 	private Map<String, Flow>	allocatedFlows;
 
 	public NCLController() {
@@ -40,7 +42,7 @@ public class NCLController implements INCLController {
 
 			SDNNetworkOFFlow flowWithRoute = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
 			flowWithRoute.setActive(true);
-			flowWithRoute.setPriority("32768");
+			flowWithRoute.setPriority(DEFAULT_FLOW_PRIORITY);
 			// FIXME requesting a flow that won't filter by IP, by now
 			flowWithRoute.getMatch().setSrcIp(null);
 			flowWithRoute.getMatch().setDstIp(null);
