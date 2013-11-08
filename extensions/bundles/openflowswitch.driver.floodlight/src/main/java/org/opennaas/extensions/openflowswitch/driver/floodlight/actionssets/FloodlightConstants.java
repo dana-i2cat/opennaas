@@ -11,6 +11,8 @@ public class FloodlightConstants {
 
 	/* flow default values */
 	public static final String	DEFAULT_PRIORITY			= "32767";
+	public static final String	MIN_PRIORITY				= "0";
+	public static final String	MAX_PRIORITY				= "32767";
 
 	/* flow match default values */
 	public static final String	DEFAULT_MATCH_WILDCARDS		= "4194303";
