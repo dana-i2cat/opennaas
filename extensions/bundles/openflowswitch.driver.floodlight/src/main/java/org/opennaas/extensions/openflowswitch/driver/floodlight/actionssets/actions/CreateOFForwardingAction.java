@@ -87,6 +87,24 @@ public class CreateOFForwardingAction extends FloodlightAction {
 
 		}
 
+		// if flowRule has priority
+		if (flowRule.getPriority() != null && !flowRule.getPriority().isEmpty()) {
+			// check priority is a number
+			int priority;
+			try {
+				priority = Integer.parseInt(flowRule.getPriority());
+			} catch (NumberFormatException e) {
+				throw new ActionException("Invalid priority in action " + this.actionID, e);
+			}
+
+			// check priority is in valid range
+			int max = Integer.parseInt(FloodlightConstants.MAX_PRIORITY);
+			int min = Integer.parseInt(FloodlightConstants.MIN_PRIORITY);
+			if (priority > max || priority < min) {
+				throw new ActionException("Invalid priority in action " + this.actionID + ". Valid range is [" + min + "," + max + "]");
+			}
+		}
+
 		return true;
 
 	}
