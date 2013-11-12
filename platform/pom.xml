@@ -104,6 +104,7 @@
 								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
 								<!-- <descriptor>mvn:org.apache.activemq/activemq-karaf/5.5.1-fuse-03-06/xml/features</descriptor> -->
 								<!-- Other featuresRepositories our ones depend on -->
+								<descriptor>mvn:org.apache.cxf.dosgi/cxf-dosgi/${cxf.dosgi.version}/xml/features</descriptor>
 								<!-- Our featuresRepositories -->
 								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
 								<descriptor>mvn:org.opennaas/org.opennaas.extensions.all.features/${project.version}/xml/features</descriptor>

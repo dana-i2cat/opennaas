@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
+	<repository>mvn:org.apache.cxf.dosgi/cxf-dosgi/${cxf.dosgi.version}/xml/features</repository>
 
+
+	<!-- Required to install CXF in servicemix without NMR, activeMQ and camel -->
+	<feature name="opennaas-cxf-deps" version="${project.version}">
+		<feature version="${spring.version}">spring</feature>
+		<feature version="2013.01">servicemix-shared</feature>
+		<feature>saaj</feature>
+		<bundle dependency="true">mvn:javax.xml.soap/javax.xml.soap-api/${xml.soap.api.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/${geronimo.wsmetadata.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-cxf" version="${project.version}">
+		<feature version="${project.version}">opennaas-cxf-deps</feature>
+		<feature version="${cxf.version}">cxf</feature>
+		<feature version="${cxf.dosgi.version}">cxf-dosgi-discovery-local</feature>
+	</feature>
+	
+	<feature name="opennaas-base" version="${project.version}">
+		<feature version="${project.version}">opennaas-cxf</feature>
+	</feature>
 
 	<feature name="opennaas-core" version="${project.version}">
+		<feature version="${project.version}">opennaas-base</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
 		<feature version="${project.version}">opennaas-resources</feature>
 		<feature version="${project.version}">opennaas-ws-rest</feature>
-		<feature version="${project.version}">opennaas-spring-security</feature>	
+		<feature version="${project.version}">opennaas-spring-security</feature>
 		
 	</feature>
 	
