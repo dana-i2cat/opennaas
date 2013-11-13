@@ -108,11 +108,11 @@ public class Route {
         String thisDst = this.getDestinationAddress();
         String otherDst = other.getDestinationAddress();
 
-        if(!Utils.netMatch(thisDst, otherDst)){
+        if(!Utils.netMatch(otherDst, thisDst)){
                 return false;
         }
-        log.debug(this.switchInfo.getMacAddress());
-        log.debug(other.switchInfo.getMacAddress());
+        log.debug("Equal ip, This: "+thisDst+" =? "+otherDst);
+        log.debug(this.switchInfo.getMacAddress() +" > "+other.switchInfo.getMacAddress());
         if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
             return false;
         }
