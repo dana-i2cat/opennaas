@@ -111,6 +111,8 @@ public class Route {
         if(!Utils.netMatch(thisDst, otherDst)){
                 return false;
         }
+        log.debug(this.switchInfo.getMacAddress());
+        log.debug(other.switchInfo.getMacAddress());
         if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
             return false;
         }

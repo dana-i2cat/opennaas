@@ -122,8 +122,8 @@ public class RoutingTable {
     public List<Route> otherRoutesExists(Route route, Switch srcSw, Switch dstSw) {
         List<Route> subnetList = new ArrayList<Route>();
         Route route2 = new Route();
-        route2.setSourceAddress(route.getSourceAddress());
-        route2.setDestinationAddress(route.getDestinationAddress());
+        route2.setSourceAddress(route.getDestinationAddress());
+        route2.setDestinationAddress(route.getSourceAddress());
         for (Route r : this.getRouteTable()) {
             if (r.equalsOtherSubRoute(route) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
                 log.error("Match other RouteSubnet");
