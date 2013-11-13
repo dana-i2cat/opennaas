@@ -13,7 +13,7 @@ public class Switch {
     private List<String> listPorts = new ArrayList<String>();
     private int inputPort;
     private int outputPort;
-    private String macAddress;
+    private String dpid;
 
     public Switch(){
         
@@ -22,20 +22,20 @@ public class Switch {
         listPorts.add(port);
         this.inputPort = inputPort;
         this.outputPort = outputPort;
-        this.macAddress = macAddress;
+        this.dpid = macAddress;
     }
 
     public Switch(int inputPort, String macAddress) {
         this.inputPort = inputPort;
-        this.macAddress = macAddress;
+        this.dpid = macAddress;
     }
 
     public String getMacAddress() {
-        return macAddress;
+        return dpid;
     }
 
     public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+        this.dpid = macAddress;
     }
 
     public List<String> getListPorts() {
@@ -85,7 +85,7 @@ public class Switch {
         if (this.outputPort != other.outputPort) {
             return false;
         }
-        if ((this.macAddress == null) ? (other.macAddress != null) : !this.macAddress.equals(other.macAddress)) {
+        if ((this.dpid == null) ? (other.dpid != null) : !this.dpid.equals(other.dpid)) {
             return false;
         }
         return true;
@@ -95,7 +95,7 @@ public class Switch {
     public int hashCode() {
         int hash = 7;
         hash = 29 * hash + this.numberPorts;
-        hash = 29 * hash + (this.macAddress != null ? this.macAddress.hashCode() : 0);
+        hash = 29 * hash + (this.dpid != null ? this.dpid.hashCode() : 0);
         return hash;
     }
 }

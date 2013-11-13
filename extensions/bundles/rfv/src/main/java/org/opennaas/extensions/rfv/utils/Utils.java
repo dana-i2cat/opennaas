@@ -1,11 +1,18 @@
 package org.opennaas.extensions.rfv.utils;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -84,6 +91,11 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Is an IPv4 address received from the controller. In integer format
+     * @param ipAddress
+     * @return 
+     */
     public static boolean isIPv4Address(String ipAddress) {
         if (ipAddress.contains(":")) {
             return false;
@@ -146,7 +158,12 @@ public class Utils {
         
         return 0;
     }
-    //addr is subnet address and addr1 is ip address. Function will return true, if addr1 is within addr(subnet)
+    /**
+     * addr is subnet address and addr1 is ip address. Function will return true, if addr1 is within addr(subnet)
+     * @param addr
+     * @param addr1
+     * @return 
+     */
     public static boolean netMatch(String addr, String addr1){ 
         
         String[] parts = addr.split("/");
@@ -167,7 +184,6 @@ public class Utils {
             }
             return false;
         }
-
         
         Inet4Address a =null;
         Inet4Address a1 =null;
@@ -197,6 +213,11 @@ public class Utils {
             return false;
         }
     }
+    /**
+     * The string is a subnet address, contains the mask
+     * @param addr
+     * @return The mask of the given ip subnet
+     */
     public static int isSubnetAddress(String addr){
         String[] parts = addr.split("/");
         
@@ -205,5 +226,125 @@ public class Utils {
         } else {
             return Integer.parseInt(parts[1]);
         }
+    }
+    /**
+     * Prepare the json that should be send to the controller (Floodlight)
+     * @param name
+     * @param dpid
+     * @param destIp
+     * @param ethertype
+     * @param output
+     * @return The json formed
+     */
+    public static String createJson(String name, String dpid, String destIp, String ethertype, int output){
+        return "{\"name\":\"" + name + "\", "
+                + "\"switch\": \"" + dpid + "\", "
+                + "\"priority\":\"32767\", "
+                + "\"dst-ip\":\"" + destIp + ", "
+                + "\"ether-type\":\"" + ethertype + "\", "
+                + "\"active\":\"true\", "
+                + "\"actions\":\"output=" + output + "\"}";
+    }
+    /**
+     * Prepare the json that should be send to the controller (Floodlight). The ingress port is passed
+     * @param name
+     * @param dpid
+     * @param destIp
+     * @param ethertype
+     * @param ingress
+     * @param output
+     * @return The json formed
+     */
+    public static String createJson(String name, String dpid, String destIp, String ethertype, int ingress, int output){
+        return "{\"name\":\"" + name + "\", "
+                + "\"switch\": \"" + dpid + "\", "
+                + "\"priority\":\"32767\", "
+                + "\"ingress-port\":\"" + ingress + ", "
+                + "\"dst-ip\":\"" + destIp + ", "
+                + "\"ether-type\":\"" + ethertype + "\", "
+                + "\"active\":\"true\", "
+                + "\"actions\":\"output=" + output + "\"}";
+    }
+    /**
+     * HttpRequest to the controller in order to remove a specific flow
+     * @param uri
+     * @param flow
+     * @return 
+     */
+    public static String deleteHttpRequest(String uri, String flow) {
+        String response = "";
+        try {
+            OutputStreamWriter wr = null;
+            URL url = new URL(uri + "/wm/staticflowentrypusher/json");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            // override HTTP method allowing sending body
+            connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
+            connection.setDoOutput(true);
+
+            // prepare body
+            wr = new OutputStreamWriter(connection.getOutputStream());
+            wr.write(flow);
+            wr.flush();
+            wr.close();
+            // get HTTP Response
+            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
+            if (!response.equals("{\"status\" : \"Entry " + flow + " deleted\"}")) {
+                try {
+                    throw new Exception("Invalid response: " + response);
+                } catch (Exception ex) {
+                    Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (IOException e) {
+            
+        }
+        return response;
+    }
+    
+    /**
+     * HttpRequest in order to insert a new flow. The flow in json format.
+     * @param Url
+     * @param json 
+     */
+    public static void httpRequest(String Url, String json) {
+        try {
+            URL url = new URL(Url);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+            wr.write(json);
+            wr.flush();
+            wr.close();
+            conn.connect();
+            conn.getResponseCode();
+        } catch (UnknownHostException e) {
+            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Url is null. Maybe the controllers are not registred.", e);
+        } catch (Exception ex) {
+            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static String clearStaticFlows(String uri, String dpid) {
+        String response = "";
+        try {
+            OutputStreamWriter wr = null;
+            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/"+dpid+"/json");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+
+            // prepare body
+            wr = new OutputStreamWriter(connection.getOutputStream());
+            wr.flush();
+            wr.close();
+            // get HTTP Response
+            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
+
+        } catch (IOException e) {
+            
+        }
+        return response;
     }
 }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.InterfaceAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -107,15 +106,17 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     @Override
     public Response getRoute(String ipSource, String ipDest, String switchMac, int inputPort, boolean proactive) throws CapabilityException {
         int outPortSW1 = 0;
-        int version = 0;//IP version
-        if (Utils.isIPv4Address(ipSource)) {
+        int version;//IP version
+        if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
             ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
             ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
             version = 4;
-        } else {
+        } else if(Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
             ipSource = Utils.tryToCompressIPv6(ipSource);
             ipDest = Utils.tryToCompressIPv6(ipDest);
             version = 6;
+        } else{
+            return Response.serverError().entity("Ip not recognized").build();
         }
 
         RFVModel model = (RFVModel) resource.getModel();
@@ -128,14 +129,13 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
         Route route = new Route(ipSource, ipDest, switchInfo);
         int routeId = model.getTable(version).RouteExists(route);
-        String subIpSrc ="";
-        String subIpDest ="";
+        String subIpSrc;
+        String subIpDest;
         if (routeId != 0) {
             outPortSW1 = model.getTable(version).getOutputPort(routeId);
             subIpSrc = model.getTable(version).getRouteId(routeId).getSourceAddress();
             subIpDest = model.getTable(version).getRouteId(routeId).getDestinationAddress();
         } else {
-            outPortSW1 = 0;
             return Response.status(404).type("text/plain").entity("Route Not found.").build();
         }
 
@@ -164,8 +164,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         }
         if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && inputPort != 0 && outputPort != 0) {
             Switch switchInfo = new Switch(Integer.toString(inputPort), inputPort, outputPort, switchMac);
-            Route route = null;
-            route = new Route(ipSource, ipDest, switchInfo);
+            Route route = new Route(ipSource, ipDest, switchInfo);
 
             String response = model.getTable(version).addRoute(route);
             return Response.status(201).entity(response).build();
@@ -193,21 +192,20 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
         model.getTable(version).removeRoute(id);
         log.debug("Remove flow " + id + " " + strIp);
-//                model.getTable().delRoute(route, version);
         String flow = "{\"name\":\"" + strIp + "\"}";
         String flow2 = "{\"name\":\"" + strArp + "\"}";
 
         log.debug("Flows: " + flow + "flow2: " + flow2);
-        String uri ="";
+        String uri;
         try{
-        String controllerInfo = model.getSwitchController().get(route.getSwitchInfo().getMacAddress());
-        uri = "http://" + controllerInfo;
+            String controllerInfo = model.getSwitchController().get(route.getSwitchInfo().getMacAddress());
+            uri = "http://" + controllerInfo;
         }catch (NullPointerException e){
             return Response.serverError().entity("Url of the controller not found.").build();
         }
-        String response = deleteHttpRequest(uri, flow);
+        String response = Utils.deleteHttpRequest(uri, flow);
         log.debug(response);
-        response = deleteHttpRequest(uri, flow2);
+        response = Utils.deleteHttpRequest(uri, flow2);
         log.debug(response);
 //error in the response?
         return Response.ok("Removed").build();
@@ -224,12 +222,13 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         model.getIpv4().removeRoutes();
         model.getIpv6().removeRoutes();
 
-        String uri ="";
+        String uri;
         Map<String, String> listSwitches = model.getSwitchController();
         for (Entry<String, String> e: listSwitches.entrySet()) {
             log.debug("["+e.getKey() + "=" + e.getValue()+"]");
             uri = "http://" + e.getValue();
-            String response = clearStaticFlows(uri, e.getKey());
+            String response = Utils.clearStaticFlows(uri, e.getKey());
+            log.debug(response);
         }
         return Response.ok("Removed").build();
     }
@@ -297,8 +296,6 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                             // And now we have random access to everything in the object
                             Route newRoute = new Route();
                             Switch newSwitch = new Switch();
-                            log.debug(node.get("srcAddr").getValueAsText());
-                            log.debug(node.get("dstAddr").getValueAsText());
                             newRoute.setSourceAddress(node.get("srcAddr").getValueAsText());
                             newRoute.setDestinationAddress(node.get("dstAddr").getValueAsText());
                             newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
@@ -308,8 +305,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                             model.getTable(4).addRoute(newRoute);
                         }
                     } else {
-                        log.error("Error: records should be an array: skipping.");
                         response = "Error: records should be an array: skipping.";
+                        log.error(response);
                         jp.skipChildren();
                     }
                 } else if (fieldName.equals("routeIPv6")) {
@@ -328,13 +325,13 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                             model.getTable(6).addRoute(newRoute);
                         }
                     } else {
-                        log.error("Error: records should be an array: skipping.");
                         response = "Error: records should be an array: skipping.";
+                        log.error(response);
                         jp.skipChildren();
                     }
                 } else {
-                    log.error("Unprocessed property: " + fieldName);
                     response = "Unprocessed property: " + fieldName;
+                    log.error(response);                    
                     jp.skipChildren();
                 }
             }
@@ -343,13 +340,12 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         } catch (IOException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return Response.status(404).entity("Some error. Check it.").build();
+        return Response.status(404).entity("Some error. Check the file. Possible error: "+response).build();
     }
 
     @Override
     public Response getControllerStatus(String ip) throws CapabilityException {
-        ip = ip.replace("-", ".");
-        ip = ip.replace("%3A", ":");
+        ip = ip.replace("-", ".").replace("%3A", ":");
         log.info("Request Controller status witht he following IP: " + ip);
         String status = "Online";
         try {
@@ -357,23 +353,22 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             URLConnection connection = new URL(Url).openConnection();
             //connection.setRequestProperty("Accept-Charset", charset);
             connection.getInputStream();
-            log.info("Status: "+status);
+            log.info("Controller "+ip+ " Status: "+status);
             return Response.ok(status).build();
         } catch (IOException ex) {
             status = "Offline";
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            log.info("Status: "+status);
+            log.info("Controller "+ip+ " Status: "+status);
             return Response.ok(status).build();
         }
     }
 
     @Override
     public Response putSwitchController(String ipController, String portController, String switchMac) throws CapabilityException {
-        log.info("Put Switch-Controller info into table");
+        log.info("Put Switch-Controller info into HashMap");
         RFVModel model = (RFVModel) resource.getModel();
-
         try{
-        model.getSwitchController().put(switchMac, ipController + ":" + portController);
+            model.getSwitchController().put(switchMac, ipController + ":" + portController);
         }catch(Exception e){
             return Response.serverError().entity("Error, expection: "+e.getMessage()).build();
         }
@@ -393,59 +388,6 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         return Response.ok(response).build();
     }
 
-    private String deleteHttpRequest(String uri, String flow) {
-        String response = "";
-        try {
-            OutputStreamWriter wr = null;
-            URL url = new URL(uri + "/wm/staticflowentrypusher/json");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            // override HTTP method allowing sending body
-            connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
-            connection.setDoOutput(true);
-
-            // prepare body
-            wr = new OutputStreamWriter(connection.getOutputStream());
-            wr.write(flow);
-            wr.flush();
-            wr.close();
-            // get HTTP Response
-            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
-            if (!response.equals("{\"status\" : \"Entry " + flow + " deleted\"}")) {
-                try {
-                    throw new Exception("Invalid response: " + response);
-                } catch (Exception ex) {
-                    Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } catch (IOException e) {
-            
-        }
-        return response;
-    }
-    
-    private String clearStaticFlows(String uri, String dpid) {
-        String response = "";
-        try {
-            OutputStreamWriter wr = null;
-            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/"+dpid+"/json");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-
-            // prepare body
-            wr = new OutputStreamWriter(connection.getOutputStream());
-            wr.flush();
-            wr.close();
-            // get HTTP Response
-            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
-            log.error("Response: "+response);
-        } catch (IOException e) {
-            
-        }
-        return response;
-    }
-
     public class MyThread extends Thread {
         private int i;
         private String Url;
@@ -460,32 +402,12 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         public void run() {
             long initialTime = System.currentTimeMillis();
             log.debug("try to send " + i);
-            httpRequest(Url, json[i]);
+            Utils.httpRequest(Url, json[i]);
             long midTime = System.currentTimeMillis() - initialTime;
             log.debug("GetResponse" + i + "... " + midTime + "Initial: " + initialTime);
         }
     }
 
-    private void httpRequest(String Url, String json) {
-        try {
-            log.debug("Request to: " + Url);
-            URL url = new URL(Url);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-            wr.write(json);
-            wr.flush();
-            wr.close();
-            conn.connect();
-            conn.getResponseCode();
-        } catch (UnknownHostException e) {
-            log.error("Url is null. Maybe the controllers are not registred.");
-        } catch (Exception ex) {
-            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     private Response proactiveRouting(String ipSource, String subIpSrc, String ipDest, String subIpDest, Switch srcSwInfo, Route route, int version) throws CapabilityException {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         RFVModel model = (RFVModel) resource.getModel();
@@ -529,14 +451,19 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         log.info("Origin Switch: " + srcSwInfo.getMacAddress() + ", Dest Switch: " + destSwInfo.getMacAddress());
         //Insert flows to the destination switch
         if (!destSwInfo.getMacAddress().equals(srcSwInfo.getMacAddress())) {
-            json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpin-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
+            json[0] = Utils.createJson("arpin-mod-" + ipDest, destSwInfo.getMacAddress(), ipDest, ethertype, destSwInfo.getInputPort(), outputPortSW2);
+            json[1] = Utils.createJson("arpto-mod-" + ipSource, destSwInfo.getMacAddress(), ipSource, ethertype, outputPortSW2);
+            json[2] = Utils.createJson("ip4in-mod-" + ipDest, destSwInfo.getMacAddress(), ipDest, ethertype2, destSwInfo.getInputPort(), outputPortSW2);
+            json[3] = Utils.createJson("ip4to-mod-" + ipSource, destSwInfo.getMacAddress(), ipSource, ethertype2, outputPortSW2);
+/*            json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpin-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
             json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpto-mod-" + ipSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipSource + "\", \"ether-type\":\"" + ethertype + "\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
             json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4in-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype2 + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
             json[3] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4to-mod-" + ipSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipSource + "\", \"ether-type\":\"" + ethertype2 + "\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
+*/
             try {
                 log.debug("Inserting flows in the destination switch...");
                 for (int i = 0; i < json.length; i++) {
-                    httpRequest(Url, json[i]);
+                    Utils.httpRequest(Url, json[i]);
                 }
             } catch (Exception e) {
             }
@@ -544,21 +471,22 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
         //other switches
         log.info("Find routes in other Switches. Switches in the middle. Scenario 2 and 3");
-        List<Route> routeSubnetList = model.getTable(version).otherRoutesExists(route, srcSwInfo, destSwInfo);
+        List<Route> routeSubnetList = model.getTable(version).listOtherRoutes(route, srcSwInfo, destSwInfo);
         if (routeSubnetList.size() > 1) {
             for (Route r : routeSubnetList) {
+                log.error("Send a proactive message");
                 destSwInfo = r.getSwitchInfo();
                 controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
                 String Url2 = "http://" + controllerInfo + "/wm/staticflowentrypusher/json";
-                json[0] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"arpto-mod-" + r.getDestinationAddress() + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestinationAddress() + ", \"ether-type\":\"" + ethertype + "\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
-                json[1] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"ip4to-mod-" + r.getDestinationAddress() + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestinationAddress() + ", \"ether-type\":\"" + ethertype2 + "\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
+                json[0] = Utils.createJson("arpto-mod-" + r.getDestinationAddress(), r.getSwitchInfo().getMacAddress(), r.getDestinationAddress(), ethertype,  r.getSwitchInfo().getOutputPort()); 
+                json[1] = Utils.createJson("ip4to-mod-" + r.getDestinationAddress(), r.getSwitchInfo().getMacAddress(), r.getDestinationAddress(), ethertype,  r.getSwitchInfo().getOutputPort()); 
+                //json[1] = "{\"switch\": \"" + r.getSwitchInfo().getMacAddress() + "\", \"name\":\"ip4to-mod-" + r.getDestinationAddress() + "\", \"priority\":\"32767\", \"dst-ip\":\"" + r.getDestinationAddress() + ", \"ether-type\":\"" + ethertype2 + "\", \"active\":\"true\", \"actions\":\"output=" + r.getSwitchInfo().getOutputPort() + "\"}";
                 try {
                     for (int i = 0; i < json.length; i++) {
-                        httpRequest(Url2, json[i]);
+                        Utils.httpRequest(Url2, json[i]);
                     }
                 } catch (Exception e) {
                 }
-                outputPortSW2 = model.getTable(version).getOutputPort(route1);
             }
         }
         return Response.ok("Proactive messages sent.").build();

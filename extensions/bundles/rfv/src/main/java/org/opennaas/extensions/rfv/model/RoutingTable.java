@@ -50,6 +50,17 @@ public class RoutingTable {
         return "Already exist";
     }
 
+    public Boolean removeRoute(int id) {
+        for (Route r : this.routeTable) {
+            if (r.getId() == id) {
+                this.routeTable.remove(r);
+                return true;
+            }
+        }
+        log.error("This route no exists.");
+        return false;
+    }
+    
     public void removeRoute(Route route) {
         routeTable.remove(route);
     }
@@ -108,33 +119,22 @@ public class RoutingTable {
         return null;
     }
 
-    public Boolean removeRoute(int id) {
-        for (Route r : this.routeTable) {
-            if (r.getId() == id) {
-                this.routeTable.remove(r);
-                return true;
-            }
-        }
-        log.error("This route no exists.");
-        return false;
-    }
-
-    public List<Route> otherRoutesExists(Route route, Switch srcSw, Switch dstSw) {
+    public List<Route> listOtherRoutes(Route route, Switch srcSw, Switch dstSw) {
         List<Route> subnetList = new ArrayList<Route>();
         Route route2 = new Route();
         route2.setSourceAddress(route.getDestinationAddress());
         route2.setDestinationAddress(route.getSourceAddress());
-        route2.setSwitchInfo(dstSw);
+//        route2.setSwitchInfo(dstSw);
         for (Route r : this.getRouteTable()) {
             if (r.equalsOtherSubRoute(route) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
-                log.error("Match other RouteSubnet");
+                log.debug("Match other route");
                 subnetList.add(r);
             } else if (r.equalsOtherSubRoute(route2) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
-                log.error("Match other RouteSubnet");
+                log.debug("Match other response route");
                 subnetList.add(r);
             }
         }
-        log.error("Returning List of Subnets");
+        log.info("Returning List of Subnets:");
         return subnetList;
     }
 }

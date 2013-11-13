@@ -107,13 +107,7 @@ public class Route {
         
         String thisDst = this.getDestinationAddress();
         String otherDst = other.getDestinationAddress();
-
-        if(!Utils.netMatch(otherDst, thisDst)){
-                return false;
-        }
-        log.debug("Equal ip, This: "+thisDst+" =? "+otherDst);
-        log.debug(this.switchInfo.getMacAddress() +" > "+other.switchInfo.getMacAddress());
-        if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
+        if(!Utils.netMatch(thisDst, otherDst)){
             return false;
         }
          return true;
