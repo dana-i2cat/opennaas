@@ -124,6 +124,7 @@ public class RoutingTable {
         Route route2 = new Route();
         route2.setSourceAddress(route.getDestinationAddress());
         route2.setDestinationAddress(route.getSourceAddress());
+        route2.setSwitchInfo(dstSw);
         for (Route r : this.getRouteTable()) {
             if (r.equalsOtherSubRoute(route) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
                 log.error("Match other RouteSubnet");
