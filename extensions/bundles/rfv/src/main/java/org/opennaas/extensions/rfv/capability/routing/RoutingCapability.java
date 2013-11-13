@@ -486,13 +486,13 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         }
     }
     
-    private Response proactiveRouting(String ipSource, String subIpSrc, String ipDest, String subIpDest, Switch switchInfo, Route route, int version) throws CapabilityException {
+    private Response proactiveRouting(String ipSource, String subIpSrc, String ipDest, String subIpDest, Switch srcSwInfo, Route route, int version) throws CapabilityException {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         RFVModel model = (RFVModel) resource.getModel();
         String controllerInfo = null;
         Switch destSwInfo = null;
         try {
-            destSwInfo = model.getTable(version).getDestinationSwitch(ipSource, ipDest, switchInfo);
+            destSwInfo = model.getTable(version).getDestinationSwitch(ipSource, ipDest, srcSwInfo);
             controllerInfo = model.getSwitchController().get(destSwInfo.getMacAddress());
         } catch (NullPointerException e) {
             log.error("Null Switch Info: " + e.getMessage());
@@ -526,8 +526,9 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         } else if (version == 6) {
             ethertype = "0x86DD";
         }
-        log.info("Origin Switch: " + switchInfo.getMacAddress() + ", Dest Switch: " + destSwInfo.getMacAddress());
-        if (!destSwInfo.getMacAddress().equals(switchInfo.getMacAddress())) {
+        log.info("Origin Switch: " + srcSwInfo.getMacAddress() + ", Dest Switch: " + destSwInfo.getMacAddress());
+        //Insert flows to the destination switch
+        if (!destSwInfo.getMacAddress().equals(srcSwInfo.getMacAddress())) {
             json[0] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpin-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
             json[1] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"arpto-mod-" + ipSource + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipSource + "\", \"ether-type\":\"" + ethertype + "\", \"active\":\"true\", \"actions\":\"output=" + destSwInfo.getInputPort() + "\"}";
             json[2] = "{\"switch\": \"" + destSwInfo.getMacAddress() + "\", \"name\":\"ip4in-mod-" + ipDest + "\", \"priority\":\"32767\", \"dst-ip\":\"" + ipDest + "\", \"ether-type\":\"" + ethertype2 + "\", \"ingress-port\":\"" + destSwInfo.getInputPort() + "\",\"active\":\"true\", \"actions\":\"output=" + outputPortSW2 + "\"}";
@@ -543,7 +544,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
         //other switches
         log.info("Find routes in other Switches. Switches in the middle. Scenario 2 and 3");
-        List<Route> routeSubnetList = model.getTable(version).otherRoutesExists(route, switchInfo, destSwInfo);
+        List<Route> routeSubnetList = model.getTable(version).otherRoutesExists(route, srcSwInfo, destSwInfo);
         if (routeSubnetList.size() > 1) {
             for (Route r : routeSubnetList) {
                 destSwInfo = r.getSwitchInfo();

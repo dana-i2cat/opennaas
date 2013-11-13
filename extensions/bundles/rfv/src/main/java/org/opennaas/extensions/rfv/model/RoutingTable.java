@@ -119,24 +119,21 @@ public class RoutingTable {
         return false;
     }
 
-    public List<Route> otherRoutesExists(Route route, Switch srcInf, Switch dstInf) {
+    public List<Route> otherRoutesExists(Route route, Switch srcSw, Switch dstSw) {
         List<Route> subnetList = new ArrayList<Route>();
         Route route2 = new Route();
-        route2.setSourceAddress(route.getDestinationAddress());
-        route2.setDestinationAddress(route.getSourceAddress());
+        route2.setSourceAddress(route.getSourceAddress());
+        route2.setDestinationAddress(route.getDestinationAddress());
         for (Route r : this.getRouteTable()) {
-            if (r.equalsOtherSubRoute(route) && !r.getSwitchInfo().getMacAddress().equals(srcInf.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstInf.getMacAddress())) {
+            if (r.equalsOtherSubRoute(route) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
                 log.error("Match other RouteSubnet");
                 subnetList.add(r);
-//                    return true;
-            } else if (r.equalsOtherSubRoute(route2) && !r.getSwitchInfo().getMacAddress().equals(srcInf.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstInf.getMacAddress())) {
+            } else if (r.equalsOtherSubRoute(route2) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
                 log.error("Match other RouteSubnet");
                 subnetList.add(r);
             }
         }
-
         log.error("Returning List of Subnets");
-        //log.info("Adding route...");
         return subnetList;
     }
 }

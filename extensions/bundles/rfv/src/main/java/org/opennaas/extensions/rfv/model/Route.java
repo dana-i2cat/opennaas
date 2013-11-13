@@ -104,11 +104,14 @@ public class Route {
             return false;
         }
         final Route other = (Route) obj;
+        
+        String thisDst = this.getDestinationAddress();
+        String otherDst = other.getDestinationAddress();
 
-        if (this.sourceAddress != other.sourceAddress && (this.sourceAddress == null || !this.sourceAddress.equals(other.sourceAddress))) {
-            return false;
+        if(!Utils.netMatch(thisDst, otherDst)){
+                return false;
         }
-        if (this.destinationAddress != other.destinationAddress && (this.destinationAddress == null || !this.destinationAddress.equals(other.destinationAddress))) {
+        if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
             return false;
         }
          return true;
