@@ -224,7 +224,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.rfv</artifactId>
+			<artifactId>org.opennaas.extensions.vrf</artifactId>
 		</dependency>
 		<!-- Test -->
 		<dependency>

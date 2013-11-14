@@ -18,8 +18,8 @@ import org.opennaas.gui.nfvrouting.utils.Constants;
 public class NFVRoutingService extends GenericRestService {
 
     private static final Logger LOGGER = Logger.getLogger(NFVRoutingService.class);
-    private static String resourceType = Constants.RESOURCE_RFV_TYPE;
-    private static String capabilityName = Constants.CAPABILITY_RFV;
+    private static String resourceType = Constants.RESOURCE_VRF_TYPE;
+    private static String capabilityName = Constants.CAPABILITY_VRF;
 
     /**
      * Call a rest service to get the Route Table of the virtualized router

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.opennaas.gui.nfvrouting.utils.Constants;
 
 /**
  * @author Josep
@@ -28,7 +29,7 @@ public class HomeController {
     protected NFVRoutingBO nfvRoutingBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
-    protected String resourceName = "RFV-1";
+    protected String resourceName = Constants.RESOURCE_VRF_NAME;
 
     /**
      * Redirect to home

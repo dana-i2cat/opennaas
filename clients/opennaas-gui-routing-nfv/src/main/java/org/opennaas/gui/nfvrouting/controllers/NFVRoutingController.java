@@ -31,7 +31,7 @@ public class NFVRoutingController {
     protected NFVRoutingBO nfvRoutingBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
-    protected String resourceName = Constants.RESOURCE_RFV_NAME;
+    protected String resourceName = Constants.RESOURCE_VRF_NAME;
 
     /**
      * Redirect to table view
