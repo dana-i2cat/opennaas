@@ -1,0 +1,12 @@
+<resourceDescriptor>
+	<!-- Capability information -->
+	<capabilityDescriptors>
+		<information><type>routing</type></information>
+	</capabilityDescriptors>
+	<!-- Resource information. It specify type and name-->
+	<information>
+		<type>vrf</type>
+		<name>VRF-1</name>
+	</information>
+	<properties/>
+</resourceDescriptor>
