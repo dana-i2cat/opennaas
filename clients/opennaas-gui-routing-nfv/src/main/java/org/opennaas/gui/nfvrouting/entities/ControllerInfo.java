@@ -2,13 +2,13 @@ package org.opennaas.gui.nfvrouting.entities;
 
 /**
  *
- * @author josep
+ * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class ControllerInfo {
     
     private String controllerIp;
     private String controllerPort;
-    private String macAddress;
+    private String dpid;
 
     public String getControllerIp() {
         return controllerIp;
@@ -27,11 +27,11 @@ public class ControllerInfo {
     }
 
     public String getMacAddress() {
-        return macAddress;
+        return dpid;
     }
 
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+    public void setMacAddress(String dpid) {
+        this.dpid = dpid;
     }
     
 }

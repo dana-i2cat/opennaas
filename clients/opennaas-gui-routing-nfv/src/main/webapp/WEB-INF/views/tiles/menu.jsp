@@ -24,11 +24,6 @@
                     IPv6 Table
                 </a>
             </li>
-            <li>
-                <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=subnet" />">
-                    Subnets Table
-                </a>
-            </li>
         </ul>
     </li>
     <li>
@@ -41,42 +36,5 @@
             <spring:message code="menu.insertController" />
     	</a>
     </li>
-    	<c:forEach varStatus="vs" items="${sessionScope.vcpeNetworkList}">
-		<c:choose>
-			<c:when test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
-				<c:set var="url" value="/secure/noc/vcpeNetwork/singleProvider" />
-			</c:when>
-			<c:otherwise>
-				<c:set var="url" value="/secure/noc/vcpeNetwork/multipleProvider" />
-			</c:otherwise>
-		</c:choose>
-		<li><a href="#">${sessionScope.vcpeNetworkList[vs.index].name}</a>
-			<ul>
-				<sec:authorize access="hasRole('ROLE_NOC')">
-					<li>
-						<a href="<c:url value="${url}/edit?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="menu.edit" />
-						</a>
-					</li>
-					<li>
-						<a class="link_confirm" href="<c:url value="${url}/delete?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
-							<spring:message code="menu.delete" />
-						</a>
-					</li>
-				</sec:authorize>
-
-				
-				<sec:authorize access="hasRole('ROLE_CLIENT')">
-					<c:if test="${sessionScope.vcpeNetworkList[vs.index].templateType == 'sp_vcpe'}">				
-						<li>
-							<a href="<c:url value="${url}/updateIpsForm?vcpeNetworkId=${sessionScope.vcpeNetworkList[vs.index].id}" />">
-								<spring:message code="menu.update" />
-							</a>
-						</li>
-					</c:if>
-				</sec:authorize>
-			</ul>
-		</li>
-	</c:forEach>
 </ul>
 

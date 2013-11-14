@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.opennaas.gui.nfvrouting.services.rest;
 
 import java.util.Locale;

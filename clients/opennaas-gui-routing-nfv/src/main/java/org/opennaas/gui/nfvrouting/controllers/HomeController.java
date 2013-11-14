@@ -28,6 +28,7 @@ public class HomeController {
     protected NFVRoutingBO nfvRoutingBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
+    protected String resourceName = "RFV-1";
 
     /**
      * Redirect to home
@@ -40,7 +41,7 @@ public class HomeController {
     public String home(Model model, Locale locale, HttpSession session) {
         LOGGER.debug("home");
         try {
-            String response = nfvRoutingBO.getInfoControllers();
+            String response = nfvRoutingBO.getInfoControllers(resourceName);
             model.addAttribute("json", response);
         } catch (Exception e) {
             return "home";
@@ -48,12 +49,20 @@ public class HomeController {
         return "controllerInfo";
     }
 
+    /**
+     * Request the status of the controllers
+     * @param ip
+     * @param model
+     * @param locale
+     * @param session
+     * @return 
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/controllerStatus/{ip}")
     public @ResponseBody String ctrlStatus(@PathVariable("ip") String ip, Model model, Locale locale, HttpSession session) {
         LOGGER.debug("Controller Status "+ip);
         String response = "Offline";
         try {
-            response = nfvRoutingBO.getControllerStatus(ip);
+            response = nfvRoutingBO.getControllerStatus(resourceName, ip);
         } catch (Exception e) {
             return response;
         }

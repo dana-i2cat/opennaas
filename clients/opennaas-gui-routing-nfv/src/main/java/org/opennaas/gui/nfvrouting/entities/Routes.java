@@ -1,26 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.opennaas.gui.nfvrouting.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.extensions.ofrouting.model.RouteSubnet;
 
 /**
  *
- * @author Josep Batalle
+ * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class Routes {
     
-
+    private static final long serialVersionUID = -4002472167559948067L;
     private List<Route> routeIPv4 = new ArrayList<Route>();
     private List<Route> routeIPv6 = new ArrayList<Route>();
-    private List<RouteSubnet> routeSubnet = new ArrayList<RouteSubnet>();
-    private static final long serialVersionUID = -4002472167559948067L;
     Log log = LogFactory.getLog(Routes.class);
 
     public List<Route> getRoute(int version) {
@@ -46,15 +39,5 @@ public class Routes {
 
     public void setRouteIPv6(List<Route> routeIPv6) {
         this.routeIPv6 = routeIPv6;
-    }
-
-    public List<RouteSubnet> getRouteSubnet() {
-        return routeSubnet;
-    }
-
-    public void setRouteSubnet(List<RouteSubnet> routeSubnet) {
-        this.routeSubnet = routeSubnet;
-    }
-
-    
+    }    
 }

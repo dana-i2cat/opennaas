@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.opennaas.gui.nfvrouting.utils.Constants;
 
 /**
- * @author Josep
+ * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 @Controller
 public class NFVRoutingController {
@@ -30,9 +31,10 @@ public class NFVRoutingController {
     protected NFVRoutingBO nfvRoutingBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
+    protected String resourceName = Constants.RESOURCE_RFV_NAME;
 
     /**
-     * Redirect to the physical view
+     * Redirect to table view
      * 
      * @param templateType
      * @param model
@@ -41,37 +43,41 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRouteTable")
     public String getRouteTable(@RequestParam("type") String type, Model model, Locale locale) {
-
-        LOGGER.debug("------------------");
+        LOGGER.debug("Get Route Table ------------------> "+type);
+        int typ;
+        if (type.equals("IPv4")){
+                typ = 4;
+        }else if (type.equals("IPv6")){
+               typ = 6;
+        }else{
+            model.addAttribute("errorMsg", "This type of table does not exist.");
+            return "table";
+        }
         try {
-            String response = nfvRoutingBO.getRouteTable("VM-Routing1", type);
+            String response = nfvRoutingBO.getRouteTable(resourceName, typ);
             LOGGER.info("received json: "+response);
             model.addAttribute("json", response);
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
-//                model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
-
         return "table";
     }
 
     /**
-     * Redirect to the physical view
+     * **
+     * Redirect to insert view
      * 
-     * @param templateType
      * @param model
-     * @param locale
-     * @return
+     * @return 
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/insertRoute")
     public String insertRoute(Model model) {
         model.addAttribute(new insertRoutes());
-
         return "insert";
     }
 
     /**
-     * Redirect to the physical view
+     * Redirect to insert view and insert the values received by POST
      * 
      * @param templateType
      * @param model
@@ -80,20 +86,17 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/insertRoute")
     public String insertRoutePost(insertRoutes route, BindingResult result, ModelMap model) {
-        LOGGER.error("Insert route------------------"+route.getListRoutes());
-        
-//        LOGGER.error(route.getSourceAddress());
-
+        LOGGER.error("Insert route ------------------> "+route.getListRoutes());
+       
         try {
             for(Route r : route.getListRoutes()){
-                String response = nfvRoutingBO.insertRoute(r);
+                String response = nfvRoutingBO.insertRoute(resourceName, r);
                 model.addAttribute("json", response);
             }
             model.addAttribute("infoMsg", "Route addded correctly.");
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
-//                model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 
         return "insert";
     }
@@ -114,58 +117,65 @@ public class NFVRoutingController {
     }
 
     /**
-     * Redirect to the physical view
-     * 
-     * @param templateType
+     * Redirect to insert Controller Info view
+     * @param ctrlInfo
+     * @param result
      * @param model
-     * @param locale
-     * @return
+     * @return 
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/insertCtrlInfo")
     public String insertCtrlInfo(insertCtrlInfo ctrlInfo, BindingResult result, ModelMap model) {
-        LOGGER.error("Insert Controller information------------------"+ctrlInfo.getListCtrl());
+        LOGGER.debug("Insert Controller information ------------------> "+ctrlInfo.getListCtrl());
         try {
             for(ControllerInfo r : ctrlInfo.getListCtrl()){
-                if (r.getControllerIp().equals("192.168.0.6"))
+                if (r.getControllerIp().equals("192.168.0.6")){
                         r.setControllerIp("controllersVM");
-                else if (r.getControllerIp().equals("192.168.0.10"))
+                }else if (r.getControllerIp().equals("192.168.0.10")){
                         r.setControllerIp("controllersVM2");
-                else
+                }else{
                     model.addAttribute("errorMsg", "This IP does not correspond to any controller in this demo");
-                String response = nfvRoutingBO.insertCtrlInfo(r);
+                }
+                String response = nfvRoutingBO.insertCtrlInfo(resourceName, r);
                 model.addAttribute("json", response);
             }
             model.addAttribute("infoMsg", "Route addded correctly.");
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
-//                model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 
         return "insertCtrlInfo";
     }
     
     /**
-     * Redirect to the physical view
-     * 
-     * @param templateType
+     * Remove the Route without redirect
+     * @param id
      * @param model
-     * @param locale
-     * @return
+     * @return 
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteRoute/{id}")
     public @ResponseBody String deleteRoute(@PathVariable("id") int id, ModelMap model) {
-        LOGGER.error("Remove Route------------------"+id);
+        LOGGER.debug("Remove Route ------------------> "+id);
         String response = "";
         try {
-            response = nfvRoutingBO.deleteRoute(id);
+            response = nfvRoutingBO.deleteRoute(resourceName, id);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route addded correctly.");
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
-//                model.addAttribute("physicalInfrastructure", vcpeNetworkBO.getPhysicalInfrastructure(templateType));
 
         return response;
     }
-    
+    /**
+     * Used in the Demo in order to show the Log
+     * @param model
+     * @return the log of OpenNaaS
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getLog")
+    public @ResponseBody String getLog(ModelMap model) {
+        LOGGER.debug("Get log ------------------");
+        String response = nfvRoutingBO.getLog(resourceName);
+            
+        return response;
+    }
 }

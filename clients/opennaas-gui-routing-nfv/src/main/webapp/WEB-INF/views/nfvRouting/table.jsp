@@ -61,22 +61,16 @@
                         headers[1] = "Source IP";
                         headers[2] = "Destination IP";
                         headers[3] = "Switch";
-                        if(type=='subnet'){
-                            headers[4] = "Output Port";
-                            headers[5] = "Live time";
-                            headers[6] = "Action";
-                        }else{
-                            headers[4] = "Input Port";
-                            headers[5] = "Output Port";
-                            headers[6] = "Live time";
-                            headers[7] = "Action";
-                        }
+                        headers[4] = "Input Port";
+                        headers[5] = "Output Port";
+                        headers[6] = "Live time";
+                        headers[7] = "Action";
 
                         for (i = 0; i < headers.length; i++)
                             thCon += thRow.format(headers[i]);
 //                }
 //            }
-            headers = array_keys(parsedJson[0]);
+            headers = array_keys(parsedJson.routeTable[0]);
             th = th.format(tr.format(thCon));
 
             // Create table rows from Json data
@@ -91,9 +85,10 @@
                     var urlRegExp = new RegExp(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
                     var javascriptRegExp = new RegExp(/(^javascript:[\s\S]*;$)/ig);
 
-                    for (i = 0; i < parsedJson.length; i++){
+                    for (i = 0; i < parsedJson.routeTable.length; i++){
+                        console.log(parsedJson.routeTable[i]);
                         for (j = 0; j < headers.length; j++){
-                            var value = parsedJson[i][headers[j]];
+                            var value = parsedJson.routeTable[i][headers[j]];
                             var isUrl = urlRegExp.test(value) || javascriptRegExp.test(value);
 
                             if(isUrl)   // If value is URL we auto-create a link
@@ -102,18 +97,9 @@
                                 if(value){
                                     if(typeof(value) == 'object'){
                                         //for supporting nested tables
-                                        if(type=='subnet'){
-                                            if(j == 1 || j == 2) 
-                                                tbCon += tdRow.format(value.ipAddress);
-                                            if(j == 3){
-                                                tbCon += tdRow.format(value.macAddress);
-                                                tbCon += tdRow.format(value.outputPort);
-                                            } 
-                                        }else{
-                                            tbCon += tdRow.format(value.macAddress);
-                                            tbCon += tdRow.format(value.inputPort);
-                                            tbCon += tdRow.format(value.outputPort);
-                                        }
+                                        tbCon += tdRow.format(value.macAddress);
+                                        tbCon += tdRow.format(value.inputPort);
+                                        tbCon += tdRow.format(value.outputPort);
         //                            	tbCon += tdRow.format(ConvertJsonToTable(eval(value.data), value.tableId, value.tableClassName, value.linkText));
                                     } else {
                                         if(j==0)
@@ -170,16 +156,19 @@
     function getURLParameter(name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
     }
-</script>
-
-<table id="jsonTable" class="tablesorter">
-
-</table>
-
-
-<script language="JavaScript" type="text/JavaScript">
-    
-function del(id){
+    function removeAll(){
+        var table = document.getElementById("jsonTable");
+        for ( var i = 1; row = table.rows[i]; i++ ) {
+            row = table.rows[i];       
+            col = row.cells[0];
+            del(col.firstChild.nodeValue);
+            //alert(col.firstChild.nodeValue);
+        }
+        for(var i = table.rows.length - 1; i > 0; i--){
+            table.deleteRow(i);
+        }
+    }
+    function del(id){
         var result = "";
         $.ajax({
             type: 'POST',
@@ -202,5 +191,11 @@ function del(id){
         
         return result;
     }
-    
-    </script>
+</script>
+
+<table id="jsonTable" class="tablesorter">
+
+</table>
+    <c:if test="${!empty json}">
+        <input style="margin-right: 11.5px" class="addRouteButton" onClick="removeAll()" type="button" value="Remove all table" name="Remove all table"/>
+    </c:if>

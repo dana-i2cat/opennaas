@@ -17,41 +17,72 @@ public class NFVRoutingBO {
     private NFVRoutingService nfvRoutingService;
 
     /**
-     * Get the Route Table
-     * 
-     * @param logicalInfrastructure
-     * @return
-     * @throws RestServiceException
+     * Obtain a route table given the IP type
+     * @param resourceName
+     * @param type
+     * @return json that contains the specified route table
+     * @throws RestServiceException 
      */
-    public String getRouteTable(String routingName, String type) throws RestServiceException {
-        LOGGER.debug("Get the Route Table: " + routingName);
-        return nfvRoutingService.getRouteTable(routingName, type);
+    public String getRouteTable(String resourceName, int type) throws RestServiceException {
+        LOGGER.debug("Get the Route Table: " + resourceName);
+        return nfvRoutingService.getRouteTable(resourceName, type);
     }
 
     /**
-     * Insert route to a Route table
-     * 
-     * @param logicalInfrastructure
-     * @return
-     * @throws RestServiceException
+     * Insert new route in the OpenNaaS model
+     * @param resourceName
+     * @param route
+     * @return status
      */
-    public String insertRoute(Route route) {
-        return nfvRoutingService.insertRoute(route);
-    }
-
-    public String insertCtrlInfo(ControllerInfo ctrl) {
-         return nfvRoutingService.insertControllerInfo(ctrl);
-    }
-
-    public String getInfoControllers() {
-        return nfvRoutingService.getInfoControllers();
+    public String insertRoute(String resourceName, Route route) {
+        return nfvRoutingService.insertRoute(resourceName, route);
     }
     
-    public String getControllerStatus(String ip) {
-        return nfvRoutingService.getControllerStatus(ip);
+    /**
+     * Insert relation between controller and switch
+     * @param resourceName
+     * @param ctrl
+     * @return status
+     */
+    public String insertCtrlInfo(String resourceName, ControllerInfo ctrl) {
+         return nfvRoutingService.insertControllerInfo(resourceName, ctrl);
     }
 
-    public String deleteRoute(int id){
-        return nfvRoutingService.deleteRoute(id);
+    /**
+     * Obtain information about the relation between all the controllers <-> switches
+     * @param resourceName
+     * @return 
+     */
+    public String getInfoControllers(String resourceName) {
+        return nfvRoutingService.getInfoControllers(resourceName);
+    }
+    
+    /**
+     * Request the status of specific controller
+     * @param resourceName
+     * @param ip
+     * @return Offline or Online
+     */
+    public String getControllerStatus(String resourceName, String ip) {
+        return nfvRoutingService.getControllerStatus(resourceName, ip);
+    }
+
+    /**
+     * Remove route given the id
+     * @param resourceName
+     * @param id
+     * @return status
+     */
+    public String deleteRoute(String resourceName, int id){
+        return nfvRoutingService.deleteRoute(resourceName, id);
+    }
+
+    /**
+     * Obtain the log of the OpenNaaS console. Used only in Demos...
+     * @param resourceName
+     * @return 
+     */
+    public String getLog(String resourceName) {
+         return nfvRoutingService.getLog(resourceName);
     }
 }

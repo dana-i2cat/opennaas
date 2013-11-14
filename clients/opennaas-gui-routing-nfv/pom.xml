@@ -7,7 +7,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>org.opennaas.gui.vcpe</artifactId>
+	<artifactId>org.opennaas.gui.nfvrouting</artifactId>
 	<packaging>war</packaging>
 	<name>OpenNaas :: GUI :: Routing NFV</name>
 	<url>http://maven.apache.org</url>
@@ -224,11 +224,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.vcpe</artifactId>
-		</dependency>
-                <dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.ofrouting</artifactId>
+			<artifactId>org.opennaas.extensions.rfv</artifactId>
 		</dependency>
 		<!-- Test -->
 		<dependency>

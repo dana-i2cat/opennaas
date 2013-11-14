@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author josep
+ * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class Switch {
 

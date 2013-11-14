@@ -4,10 +4,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * @author Josep
+ * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class Route {
 
+    @NotEmpty
     protected int id;
     @NotBlank(message = "{message.error.field.mandatory}")
     @NotEmpty
