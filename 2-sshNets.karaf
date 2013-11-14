@@ -14,4 +14,4 @@ routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8091 00:00:00:0
 routing:insertcontrollerinfo ofrouting:VM-Routing1 controllersVM 8092 00:00:00:00:00:00:00:11
 
 #insert routes from json file
-routing:insertfileroute ofrouting:VM-Routing1 2-routesDemo.json
+routing:insertfileroute ofrouting:VM-Routing1 2-sshNets.json

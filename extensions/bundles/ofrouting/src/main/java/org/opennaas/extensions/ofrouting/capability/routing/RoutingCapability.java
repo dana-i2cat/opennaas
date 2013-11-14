@@ -219,6 +219,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             return "null";
         }
         log.info("Path: " + ipSource + " " + ipDest + " " + switchMac + " " + inputPort);
+        model.setRequestLog("Requested routed from: " + ipSource + ". Where is located " + ipDest + "? throught port "+inputPort+" of switch " + switchMac);
+        new RemoveVar().start();
         Switch switchInfo = new Switch(inputPort, switchMac);
 
         RouteSubnet route = null;
@@ -348,12 +350,30 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
                 }
             }
         }
+        if(outPortSW1 != 0){
+            model.setRequestLog("Packet Routed to out port: "+outPortSW1+" of the switch: "+switchMac);
+        }
 
         long totalTime = System.currentTimeMillis() - initialTime;
         log.info("Return response, end exec time: " + totalTime);
         return Integer.toString(outPortSW1) + ":" + returnedSrcSub + ":" + returnedDstSub;
     }
+public class RemoveVar extends Thread {
 
+        public RemoveVar() {
+        }
+
+        @Override
+        public void run() {
+        try {
+            RemoveVar.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              OfRoutingModel model = (OfRoutingModel) resource.getModel();
+              model.setRequestLog("");
+        }
+    }
     /*
      * Request to the controller page. If is offline, return the response.
      * Used only by the GUI.
@@ -478,6 +498,12 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
         return response;
+    }
+
+    @Override
+    public String getLog() throws CapabilityException {
+        OfRoutingModel model = (OfRoutingModel) resource.getModel();
+        return model.getRequestLog();
     }
 
     public class MyThread extends Thread {
@@ -785,4 +811,5 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
         return true;
     }
+    
 }

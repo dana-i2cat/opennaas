@@ -185,5 +185,14 @@ public interface IRoutingCapability extends ICapability {
         @Path("/removeFlows")
         @POST
         public void removeAllRoutes() throws CapabilityException;
+        
+        
+        /**
+         * Get log
+         */
+        @Path("/log")
+        @GET
+        @Produces(MediaType.TEXT_PLAIN)
+        public String getLog() throws CapabilityException;
 
 }

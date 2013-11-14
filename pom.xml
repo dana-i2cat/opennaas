@@ -309,6 +309,11 @@
                 <artifactId>org.opennaas.extensions.ofrouting</artifactId>
                 <version>${project.version}</version>
             </dependency>
+	    <dependency>
+                <groupId>org.opennaas</groupId>
+                <artifactId>org.opennaas.extensions.vrf</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.opennaas</groupId>
                 <artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>

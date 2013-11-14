@@ -16,6 +16,7 @@ public class OfRoutingModel implements IModel{
     
     private Table table;
     private Map<String, String> switchController = new HashMap<String, String>();
+    private String requestLog;
 
     @Override
     public List<String> getChildren() {
@@ -41,5 +42,15 @@ public class OfRoutingModel implements IModel{
 
     public void setSwitchController(Map<String, String> switchController) {
         this.switchController = switchController;
-    }       
+    }   
+
+    public String getRequestLog() {
+        return requestLog;
+    }
+
+    public void setRequestLog(String requestLog) {
+        this.requestLog = requestLog;
+    }
+    
+    
 }
