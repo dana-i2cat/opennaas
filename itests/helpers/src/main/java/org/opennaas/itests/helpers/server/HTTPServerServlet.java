@@ -1,6 +1,7 @@
 package org.opennaas.itests.helpers.server;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -22,12 +23,14 @@ public class HTTPServerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 
-		String uri = request.getRequestURI();
+		HTTPResponse desiredResponse = getDesiredResponse(request);
 
-		if (uri.equals(desiredBehaviour.get(0).getRequest().getRequestURL())) {
-			response.getWriter().println(desiredBehaviour.get(0).getResponse().getBodyMessage());
-			response.setContentType(desiredBehaviour.get(0).getResponse().getContentType());
-			response.setStatus(desiredBehaviour.get(0).getResponse().getStatus());
+		if (desiredResponse != null) {
+
+			response.getWriter().println(desiredResponse.getBodyMessage());
+			response.setContentType(desiredResponse.getContentType());
+			response.setStatus(desiredResponse.getStatus());
+
 		}
 		else
 		{
@@ -35,5 +38,19 @@ public class HTTPServerServlet extends HttpServlet {
 
 		}
 
+	}
+
+	private HTTPResponse getDesiredResponse(HttpServletRequest request) {
+
+		Iterator<HTTPServerBehaviour> iterator = desiredBehaviour.iterator();
+		while (iterator.hasNext()) {
+			HTTPServerBehaviour behaviour = iterator.next();
+			HTTPRequest possibleReq = behaviour.getRequest();
+
+			if (possibleReq.getMethod().equals(request.getMethod()) && possibleReq.getRequestURL().equals(request.getRequestURI()))
+				return behaviour.getResponse();
+		}
+
+		return null;
 	}
 }
