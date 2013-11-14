@@ -70,6 +70,7 @@
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>
+		<jetty.version>7.5.4.v20111024</jetty.version>
 		<jodatime.version>2.1</jodatime.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 		<jdom.version>1.1_4</jdom.version>
@@ -1095,6 +1096,19 @@
 				<artifactId>jsonassert</artifactId>
 				<version>${jsonassert.version}</version>
 			</dependency>			
+			
+			<!-- Jetty -->
+	       <dependency>
+	           <groupId>org.eclipse.jetty</groupId>
+	           <artifactId>jetty-server</artifactId>
+	           <version>${jetty.version}</version>
+	       </dependency>
+       
+		    <dependency>
+		       <groupId>org.eclipse.jetty</groupId>
+		       <artifactId>jetty-servlet</artifactId>
+	           <version>${jetty.version}</version>
+		   </dependency>     			
 			
 			
 		</dependencies>
