@@ -17,4 +17,8 @@ public class TestsConstants {
 	public static final String	VRRP_CAPABILITY_TYPE			= "vrrp";
 	public static final String	CAPABILIY_VERSION				= "10.10";
 
+	public static final String	OPENER_ACTIONSET_NAME			= "opener";
+	public static final String	OPENER_ACTIONSET_VERSION		= "0.01";
+	public static final String	OPENER_PROTOCOL					= "opener";
+
 }

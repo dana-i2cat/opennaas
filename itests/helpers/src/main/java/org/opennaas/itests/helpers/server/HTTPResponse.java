@@ -7,6 +7,7 @@ public class HTTPResponse {
 	private int		status;
 	private String	bodyMessage;
 	private String	contentType;
+	private String	httpErrorToSend;
 
 	public HTTPResponse() {
 		status = HttpStatus.OK_200;
@@ -37,4 +38,13 @@ public class HTTPResponse {
 	public int getStatus() {
 		return status;
 	}
+
+	public String getHttpErrorToSend() {
+		return httpErrorToSend;
+	}
+
+	public void setHttpErrorToSend(String httpErrorToSend) {
+		this.httpErrorToSend = httpErrorToSend;
+	}
+
 }

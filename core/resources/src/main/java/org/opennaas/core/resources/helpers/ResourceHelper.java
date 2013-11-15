@@ -216,6 +216,30 @@ public class ResourceHelper {
 		return capabilityDescriptor;
 	}
 
+	public static CapabilityDescriptor newQueueCapabilityDescriptor(String actionsetName, String actionsetVersion) {
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+
+		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		String uri = "mock://user:pass@host.net:2212/mocksubsystem";
+
+		CapabilityProperty property = new CapabilityProperty(
+				ResourceDescriptorConstants.PROTOCOL_URI, uri);
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_NAME, actionsetName);
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_VERSION, actionsetVersion);
+		capabilityDescriptor.getCapabilityProperties().add(property);
+		Information capabilityInformation = new Information();
+		capabilityInformation.setType("queue");
+		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
+
+		return capabilityDescriptor;
+	}
+
 	public static CapabilityDescriptor newCapabilityDescriptorNetwork(String type) {
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 

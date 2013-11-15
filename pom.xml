@@ -262,6 +262,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.actionsets.opener</artifactId>
+				<version>${project.version}</version>
+			</dependency>				
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -1110,7 +1115,12 @@
 	           <version>${jetty.version}</version>
 		   </dependency>     			
 			
-			
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-http</artifactId>
+	           <version>${jetty.version}</version>				
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

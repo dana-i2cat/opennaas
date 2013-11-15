@@ -43,7 +43,6 @@ public class HTTPServer {
 		server.start();
 		log.info("Server successfully started");
 
-		server.join();
 	}
 
 	public void stop() throws Exception {

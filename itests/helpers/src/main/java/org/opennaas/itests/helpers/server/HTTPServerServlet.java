@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.http.HttpStatus;
+
 public class HTTPServerServlet extends HttpServlet {
 
 	private static final long			serialVersionUID	= -7639723130739143382L;
@@ -25,17 +27,22 @@ public class HTTPServerServlet extends HttpServlet {
 
 		HTTPResponse desiredResponse = getDesiredResponse(request);
 
-		if (desiredResponse != null) {
+		if (desiredResponse == null)
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		else {
 
-			response.getWriter().println(desiredResponse.getBodyMessage());
-			response.setContentType(desiredResponse.getContentType());
-			response.setStatus(desiredResponse.getStatus());
+			int status = desiredResponse.getStatus();
 
-		}
-		else
-		{
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			if (HttpStatus.isServerError(status) || HttpStatus.isClientError(status))
+				response.sendError(status);
 
+			else {
+
+				response.getWriter().println(desiredResponse.getBodyMessage());
+				response.setContentType(desiredResponse.getContentType());
+				response.setStatus(desiredResponse.getStatus());
+
+			}
 		}
 
 	}
