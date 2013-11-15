@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.opennaas.core.endpoints.WSEndpointListener;
+import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -13,22 +15,29 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
+import org.osgi.framework.BundleContext;
 
 public class RouterResourceWithOpenerDriver {
 
 	@Inject
-	protected IResourceManager	resourceManager;
+	protected IResourceManager			resourceManager;
 
 	@Inject
-	protected IProtocolManager	protocolManager;
+	protected IProtocolManager			protocolManager;
 
-	protected IResource			routerResource;
+	@Inject
+	protected BundleContext				context;
 
-	private final static String	RESOURCE_INFO_NAME	= "Router with opener driver";
+	protected IResource					routerResource;
+	protected WSEndpointListenerHandler	listenerHandler;
+	protected WSEndpointListener		endpointListener;
 
-	public void startResource(String serverURL) throws ResourceException, ProtocolException {
+	private final static String			RESOURCE_INFO_NAME	= "Router with opener driver";
+
+	public void startResource(String serverURL) throws ResourceException, ProtocolException, InterruptedException {
 
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
@@ -56,11 +65,25 @@ public class RouterResourceWithOpenerDriver {
 
 		// Start resource
 		resourceManager.startResource(routerResource.getResourceIdentifier());
+		registerListener();
+
 	}
 
-	protected void stopResource() throws ResourceException {
+	private void registerListener() throws InterruptedException {
+
+		listenerHandler = new WSEndpointListenerHandler();
+		endpointListener = new WSEndpointListener(listenerHandler);
+
+		listenerHandler.registerWSEndpointListener(context, IChassisCapability.class);
+		listenerHandler.waitForEndpointToBePublished();
+
+	}
+
+	protected void stopResource() throws ResourceException, InterruptedException {
 		resourceManager.stopResource(routerResource.getResourceIdentifier());
 		resourceManager.removeResource(routerResource.getResourceIdentifier());
+
+		listenerHandler.waitForEndpointToBeUnpublished();
 
 	}
 
