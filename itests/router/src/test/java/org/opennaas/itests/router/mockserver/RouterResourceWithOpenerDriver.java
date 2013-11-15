@@ -57,4 +57,11 @@ public class RouterResourceWithOpenerDriver {
 		// Start resource
 		resourceManager.startResource(routerResource.getResourceIdentifier());
 	}
+
+	protected void stopResource() throws ResourceException {
+		resourceManager.stopResource(routerResource.getResourceIdentifier());
+		resourceManager.removeResource(routerResource.getResourceIdentifier());
+
+	}
+
 }

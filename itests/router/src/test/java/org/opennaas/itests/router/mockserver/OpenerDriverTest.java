@@ -22,6 +22,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.opener.client.model.Interface;
@@ -74,6 +75,12 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 		desiredBehaviours = null;
 	}
 
+	/**
+	 * Test simulates a router with two interfaces: eth0 and eth1. When resource is started, refresh action is called. The behaviour of the server is
+	 * to answer correctly to the getInterfaces call.
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	public void refreshActionTest() throws Exception {
 
@@ -101,6 +108,39 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 		Assert.assertEquals("eth0", logicalDevices.get(0).getName());
 		Assert.assertEquals("eth1", logicalDevices.get(1).getName());
 
+		stopResource();
+		stopServer();
+
+	}
+
+	@Test(expected = ActionException.class)
+	public void wrongRefreshActionAnswerTest() throws Exception {
+
+		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
+		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, HttpStatus.OK_200, MediaType.TEXT_XML,
+				sampleXML());
+		desiredBehaviours.add(behaviourIfaces);
+		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", HttpStatus.OK_200, MediaType.TEXT_XML,
+				sampleInterface("eth0"));
+		desiredBehaviours.add(behaviourEth0);
+
+		HTTPServerBehaviour behaviourEth1NotFound = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", HttpStatus.NOT_FOUND_404, null,
+				null);
+		desiredBehaviours.add(behaviourEth1NotFound);
+
+		startServer();
+		startResource(SERVER_URL + SERVLET_CONTEXT_URL);
+
+		ComputerSystem routerModel = (ComputerSystem) routerResource.getModel();
+		Assert.assertNotNull(routerModel);
+
+		List<LogicalDevice> logicalDevices = routerModel.getLogicalDevices();
+		Assert.assertNotNull(logicalDevices);
+		Assert.assertEquals(2, logicalDevices.size());
+		Assert.assertEquals("eth0", logicalDevices.get(0).getName());
+		Assert.assertEquals("eth1", logicalDevices.get(1).getName());
+
+		stopResource();
 		stopServer();
 
 	}
