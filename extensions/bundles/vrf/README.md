@@ -1,4 +1,8 @@
-SampleResource readme file.
+Virtualized Routing Function
+
+This resource offers the Routing Function from OpenNaaS. 
+Contains a REST interface that allows to acces to the model.
+
 
 SampleResource is a resource intended to illustrate how to support new resources in OpenNaaS.
 It offers a skeleton that can be used as a base to develop new resource types.

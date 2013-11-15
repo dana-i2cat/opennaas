@@ -153,11 +153,20 @@ public class NFVRoutingController {
      * @return 
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteRoute/{id}")
-    public @ResponseBody String deleteRoute(@PathVariable("id") int id, ModelMap model) {
+    public @ResponseBody String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
         LOGGER.debug("Remove Route ------------------> "+id);
         String response = "";
+        int version;
+        if (type.equals("IPv4")){
+                version = 4;
+        }else if (type.equals("IPv6")){
+               version = 6;
+        }else{
+            model.addAttribute("errorMsg", "This type of table does not exist.");
+            return "table";
+        }
         try {
-            response = nfvRoutingBO.deleteRoute(resourceName, id);
+            response = nfvRoutingBO.deleteRoute(resourceName, id, version);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route addded correctly.");
         } catch (Exception e) {

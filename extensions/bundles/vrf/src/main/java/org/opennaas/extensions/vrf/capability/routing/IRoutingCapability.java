@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -24,23 +25,23 @@ import org.opennaas.core.resources.capability.ICapability;
 public interface IRoutingCapability extends ICapability {
 
     /**
-     * Get Route given Destination IP, MAC address of the switch and the input
+     * Get Route given Destination IP, DPID of the switch and the input
      * port where the packet entry in the switch
      *
-     * @param ipSource
-     * @param ipDest
-     * @param switchip
-     * @param inputPort
-     * @param proactive
+     * @param ipSource Source IP Address
+     * @param ipDest Destination IP Address
+     * @param switchdpid DPID of the switch
+     * @param inputPort Input port
+     * @param proactive Type of request (reactive/proactive)
      * @return output Port where the switch forward the packet
      * @throws CapabilityException
      */
-    @Path("/route/{ipSource}/{ipDest}/{switchip}/{inputPort}/{action}")
+    @Path("/route/{ipSource}/{ipDest}/{switchDPID}/{inputPort}/{action}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getRoute(@PathParam("ipSource") String ipSource,
             @PathParam("ipDest") String ipDest,
-            @PathParam("switchip") String switchip,
+            @PathParam("switchDPID") String switchDPID,
             @PathParam("inputPort") int inputPort,
             @PathParam("action") boolean proactive) throws CapabilityException;
 
@@ -49,7 +50,7 @@ public interface IRoutingCapability extends ICapability {
      *
      * @param ipSource
      * @param ipDest
-     * @param switchMac
+     * @param switchDPID
      * @param inputPort
      * @param outputPort
      * @return status
@@ -60,30 +61,30 @@ public interface IRoutingCapability extends ICapability {
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRoute(@FormParam("ipSource") String ipSource,
             @FormParam("ipDest") String ipDest,
-            @FormParam("switchMac") String switchMac,
+            @FormParam("switchDPID") String switchDPID,
             @FormParam("inputPort") int inputPort,
             @FormParam("outputPort") int outputPort) throws CapabilityException;
 
     /**
      * Remove route given id of the route and the IP version
      *
-     * @param id
-     * @param version
-     * @return status
+     * @param id Identificator of the route in OpenNaaS
+     * @param version IP version of this route
+     * @return Status
      * @throws CapabilityException
      */
     @Path("/route")
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
-    public Response removeRoute(@FormParam("id") int id,
-            @FormParam("version") int version) throws CapabilityException;
+    public Response removeRoute(@QueryParam("id") int id,
+            @QueryParam("version") int version) throws CapabilityException;
 
     /**
      * Remove route given all parameters of the route
      *
      * @param ipSource
      * @param ipDest
-     * @param switchMac
+     * @param switchDPID
      * @param inputPort
      * @param outputPort
      * @return status
@@ -94,7 +95,7 @@ public interface IRoutingCapability extends ICapability {
     @Produces(MediaType.TEXT_PLAIN)
     public Response removeRoute(@FormParam("ipSource") String ipSource,
             @FormParam("ipDest") String ipDest,
-            @FormParam("switchMac") String switchMac,
+            @FormParam("switchDPID") String switchDPID,
             @FormParam("inputPort") int inputPort,
             @FormParam("outputPort") int outputPort) throws CapabilityException;
 
@@ -123,20 +124,20 @@ public interface IRoutingCapability extends ICapability {
     /**
      * Get the Route Table of specific IP version
      *
-     * @param type
+     * @param version Version of IP (4 or 6)
      * @return json with the list of the required table
      * @throws CapabilityException
      */
-    @Path("/routes/{type}")
+    @Path("/routes/{version}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRoutes(@PathParam("type") int type) throws CapabilityException;
+    public Response getRoutes(@PathParam("version") int version) throws CapabilityException;
 
     /**
      * Insert Routes from file
      *
-     * @param ipSource
-     * @return status
+     * @param fileName The name of the file
+     * @return Status of the request.
      * @throws CapabilityException
      */
     @Path("/insertRouteFromFile/{fileName}")
@@ -148,9 +149,9 @@ public interface IRoutingCapability extends ICapability {
     /**
      * Put Information about controllers. IP and port <--> switch
      *
-     * @param ipController
-     * @param portController
-     * @param switchMac
+     * @param ipController IP of the controller
+     * @param portController The port of the controller
+     * @param switchDPID DPID of the switch that is connected with the controller
      * @return ok or fail
      * @throws CapabilityException
      */
@@ -159,7 +160,7 @@ public interface IRoutingCapability extends ICapability {
     @Produces(MediaType.TEXT_PLAIN)
     public Response putSwitchController(@FormParam("ipController") String ipController,
             @FormParam("portController") String portController,
-            @FormParam("switchMac") String switchMac) throws CapabilityException;
+            @FormParam("switchDPID") String switchDPID) throws CapabilityException;
 
     /**
      * Request to the controller page. If is offline, return the response. Used
@@ -176,8 +177,8 @@ public interface IRoutingCapability extends ICapability {
     /**
      * Get Controller Status
      *
-     * @param ip
-     * @return
+     * @param IP IP address and port of the controller. (ip:port)
+     * @return The status of the controller (online/offline)
      * @throws CapabilityException
      */
     @Path("/getControllerStatus/{ip-port}")
@@ -186,7 +187,7 @@ public interface IRoutingCapability extends ICapability {
     public Response getControllerStatus(@PathParam("ip-port") String ip) throws CapabilityException;
 
     /**
-     *
+     * Used in demonstrations. Request a log from OpenNaaS in order to see the route requests events.
      * @return @throws CapabilityException
      */
     @Path("/log")

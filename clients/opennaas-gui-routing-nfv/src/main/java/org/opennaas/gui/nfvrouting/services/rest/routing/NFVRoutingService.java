@@ -60,7 +60,7 @@ public class NFVRoutingService extends GenericRestService {
             Form fm = new Form();
             fm.add("ipSource", route.getSourceAddress());
             fm.add("ipDest", route.getDestinationAddress());
-            fm.add("switchMac", route.getSwitchInfo().getMacAddress());
+            fm.add("switchDPID", route.getSwitchInfo().getMacAddress());
             fm.add("inputPort", route.getSwitchInfo().getInputPort());
             fm.add("outputPort", route.getSwitchInfo().getOutputPort());
             Client client = Client.create();
@@ -82,7 +82,7 @@ public class NFVRoutingService extends GenericRestService {
             Form fm = new Form();
             fm.add("ipController", ctrl.getControllerIp());
             fm.add("portController", ctrl.getControllerPort());
-            fm.add("switchMac", ctrl.getMacAddress());
+            fm.add("switchDPID", ctrl.getMacAddress());
             Client client = Client.create();
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).put(String.class, fm);
@@ -130,16 +130,19 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
-    public String deleteRoute(String resourceName, int id){
+    public String deleteRoute(String resourceName, int id, int version){
         String response = null;
         try {
             LOGGER.info("Remove route");
+            LOGGER.error("Remove route");
             String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/routes");
             Form fm = new Form();
             fm.add("id", id);
+	    fm.add("version", version);
             Client client = Client.create();
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).delete(String.class, fm);
+            webResource.queryParam("id", Integer.toString(id)).queryParam("version", Integer.toString(version));
+            response = webResource.delete(String.class);
             LOGGER.info("Removed route: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());

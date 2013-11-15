@@ -21,8 +21,8 @@ public class DeleteRouteCommand extends GenericKarafCommand {
     private String ipSource;
     @Argument(index = 2, name = "ipDest", description = "IP version of the route or the Destination IP", required = true, multiValued = false)
     private String ipDest;
-    @Argument(index = 3, name = "switchMac", description = "Mac of the Switch", required = false, multiValued = false)
-    private String switchMac;
+    @Argument(index = 3, name = "switchDPID", description = "DPID of the Switch", required = false, multiValued = false)
+    private String switchDPID;
     @Argument(index = 4, name = "inputPort", description = "Input Port of the Switch.", required = false, multiValued = false)
     private int inputPort;
     @Argument(index = 5, name = "outputPort", description = "Output Port of the Switch.", required = false, multiValued = false)
@@ -35,10 +35,11 @@ public class DeleteRouteCommand extends GenericKarafCommand {
             IResource resource = getResourceFromFriendlyName(resourceName);
             RoutingCapability capab = (RoutingCapability) resource.getCapabilityByType("routing");
             Response response;
-            if(ipDest.isEmpty()){
+            if(switchDPID == null){
+                printInitCommand("Delete Route "+ipSource+" from table IPv"+ipDest);
                 response = capab.removeRoute(Integer.parseInt(ipSource), Integer.parseInt(ipDest));
             }else{
-                response = capab.removeRoute(ipSource, ipDest, switchMac, inputPort, outputPort);
+                response = capab.removeRoute(ipSource, ipDest, switchDPID, inputPort, outputPort);
             }
             printInfo("Deletting... " + response.getStatus()+" - "+ response.getEntity());
         } catch (Exception e) {

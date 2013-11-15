@@ -73,8 +73,8 @@ public class NFVRoutingBO {
      * @param id
      * @return status
      */
-    public String deleteRoute(String resourceName, int id){
-        return nfvRoutingService.deleteRoute(resourceName, id);
+    public String deleteRoute(String resourceName, int id, int version){
+        return nfvRoutingService.deleteRoute(resourceName, id, version);
     }
 
     /**

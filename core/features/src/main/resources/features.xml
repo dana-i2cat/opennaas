@@ -175,6 +175,15 @@
 		
 	</feature>
 
+	<feature name="opennaas-vrf" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+		
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson-core-asl.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson-mapper-asl.version}</bundle>
+
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf/${project.version}</bundle>
+        </feature>
+
 	<feature name="opennaas-autobahn" version="${project.version}">
 		<feature>cxf</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
@@ -221,6 +230,7 @@
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
 		<feature version="${project.version}">opennaas-sampleresource</feature>
                 <feature version="${project.version}">opennaas-ofrouting</feature>
+		<feature version="${project.version}">opennaas-vrf</feature>
 		<feature version="${project.version}">opennaas-cisco</feature>
 		<feature version="${project.version}">opennaas-vcpe</feature>
 		<feature version="${project.version}">opennaas-ws-rest</feature>

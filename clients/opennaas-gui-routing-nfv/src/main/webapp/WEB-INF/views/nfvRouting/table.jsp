@@ -148,6 +148,7 @@
     return tmp_arr;
     }
     var test = ${json};
+//    var version = ${request.getParameter("type")};
     var type = getURLParameter("type");
     var objectArray = test;
     var jsonHtmlTable = ConvertJsonToTable(objectArray, 'jsonTable', null, 'Download');
@@ -168,11 +169,11 @@
             table.deleteRow(i);
         }
     }
-    function del(id){
+    function del(id, version){
         var result = "";
         $.ajax({
             type: 'POST',
-            url : "deleteRoute/"+id,
+            url : "deleteRoute/"+id+"?type="+getURLParameter("type"),
             async: false,
             success : function (data) {
                 $("#dynamicContent").html(data);

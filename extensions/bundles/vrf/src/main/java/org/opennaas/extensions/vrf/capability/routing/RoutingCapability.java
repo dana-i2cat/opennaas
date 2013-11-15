@@ -100,7 +100,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     }
 
     @Override
-    public Response getRoute(String ipSource, String ipDest, String switchMac, int inputPort, boolean proactive) throws CapabilityException {
+    public Response getRoute(String ipSource, String ipDest, String switchDPID, int inputPort, boolean proactive) throws CapabilityException {
         int outPortSrcSw;
         int version;//IP version
         if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
@@ -120,8 +120,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
             return Response.status(404).type("text/plain").entity("Table does not exist.").build();
         }
 
-        log.info("Requested route: " + ipSource + " > " + ipDest + " " + switchMac + ", inPort: " + inputPort);
-        Switch switchInfo = new Switch(inputPort, switchMac);
+        log.info("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort);
+        Switch switchInfo = new Switch(inputPort, switchDPID);
 
         Route route = new Route(ipSource, ipDest, switchInfo);
         int routeId = model.getTable(version).RouteExists(route);
@@ -142,7 +142,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     }
 
     @Override
-    public Response insertRoute(String ipSource, String ipDest, String switchMac, int inputPort, int outputPort) throws CapabilityException {
+    public Response insertRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort) throws CapabilityException {
         log.info("Insert route. Src: " + ipSource + " Dst: " + ipDest + " In: " + inputPort + " Out: " + outputPort);
         VRFModel model = (VRFModel) resource.getModel();
 
@@ -158,8 +158,8 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         if (model.getTable(version) == null) {
             return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
         }
-        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchMac.isEmpty() && inputPort != 0 && outputPort != 0) {
-            Switch switchInfo = new Switch(Integer.toString(inputPort), inputPort, outputPort, switchMac);
+        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
+            Switch switchInfo = new Switch(Integer.toString(inputPort), inputPort, outputPort, switchDPID);
             Route route = new Route(ipSource, ipDest, switchInfo);
 
             String response = model.getTable(version).addRoute(route);
@@ -170,6 +170,7 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
     @Override
     public Response removeRoute(int id, int version) throws CapabilityException {
+        log.info("Removing route "+id+" from table IPv"+version);
         VRFModel model = (VRFModel) resource.getModel();
         Route route = model.getTable(version).getRouteId(id);
 
@@ -199,16 +200,16 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         }catch (NullPointerException e){
             return Response.serverError().entity("Url of the controller not found.").build();
         }
-        String response = Utils.removeHttpRequest(uri, flow);
+        String response = Utils.removeHttpRequest(uri, flow, strIp.toString());
         log.debug(response);
-        response = Utils.removeHttpRequest(uri, flow2);
+        response = Utils.removeHttpRequest(uri, flow2, strArp.toString());
         log.debug(response);
 //error in the response?
         return Response.ok("Removed").build();
     }
 
     @Override
-    public Response removeRoute(String ipSource, String ipDest, String switchMac, int inputPort, int outputPort) throws CapabilityException {
+    public Response removeRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort) throws CapabilityException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -244,16 +245,16 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     }
 
     @Override
-    public Response getRoutes(int type) throws CapabilityException {
-        log.info("Get entire Route Table of version IPv" + type);
+    public Response getRoutes(int version) throws CapabilityException {
+        log.info("Get entire Route Table of version IPv" + version);
         VRFModel model = (VRFModel) resource.getModel();
-        if (model.getTable(type) == null) {
-            model.setTable(new RoutingTable(type), type);
+        if (model.getTable(version) == null) {
+            model.setTable(new RoutingTable(version), version);
         }
         String response = "No content";
         ObjectMapper mapper = new ObjectMapper();
         try {
-            response = mapper.writeValueAsString(model.getTable(type));
+            response = mapper.writeValueAsString(model.getTable(version));
         } catch (IOException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -359,11 +360,11 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
     }
 
     @Override
-    public Response putSwitchController(String ipController, String portController, String switchMac) throws CapabilityException {
+    public Response putSwitchController(String ipController, String portController, String switchDPID) throws CapabilityException {
         log.info("Put Switch-Controller info into HashMap");
         VRFModel model = (VRFModel) resource.getModel();
         try{
-            model.getSwitchController().put(switchMac, ipController + ":" + portController);
+            model.getSwitchController().put(switchDPID, ipController + ":" + portController);
         }catch(Exception e){
             return Response.serverError().entity("Error, expection: "+e.getMessage()).build();
         }

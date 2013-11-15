@@ -296,7 +296,7 @@ public class Utils {
      * @param flow
      * @return 
      */
-    public static String removeHttpRequest(String uri, String flow) {
+    public static String removeHttpRequest(String uri, String flow, String flowName) {
         String response = "";
         try {
             URL url = new URL(uri + "/wm/staticflowentrypusher/json");
@@ -313,7 +313,7 @@ public class Utils {
             wr.close();
             // get HTTP Response
             response = IOUtils.toString(connection.getInputStream(), "UTF-8");
-            if (!response.equals("{\"status\" : \"Entry " + flow + " deleted\"}")) {
+            if (!response.equals("{\"status\" : \"Entry " + flowName + " deleted\"}")) {
                 try {
                     throw new Exception("Invalid response: " + response);
                 } catch (Exception ex) {
