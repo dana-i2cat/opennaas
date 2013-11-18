@@ -136,9 +136,6 @@ public class NFVRoutingService extends GenericRestService {
             LOGGER.info("Remove route");
             LOGGER.error("Remove route");
             String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/routes");
-            Form fm = new Form();
-            fm.add("id", id);
-	    fm.add("version", version);
             Client client = Client.create();
             WebResource webResource = client.resource(url);
             webResource.queryParam("id", Integer.toString(id)).queryParam("version", Integer.toString(version));
