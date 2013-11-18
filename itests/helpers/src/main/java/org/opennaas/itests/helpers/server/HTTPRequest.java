@@ -3,7 +3,9 @@ package org.opennaas.itests.helpers.server;
 public class HTTPRequest {
 
 	private String	requestURL;
+
 	private String	method;
+	private String	bodyMessage;
 
 	public String getRequestURL() {
 		return requestURL;
@@ -21,4 +23,11 @@ public class HTTPRequest {
 		this.method = method;
 	}
 
+	public String getBodyMessage() {
+		return bodyMessage;
+	}
+
+	public void setBodyMessage(String bodyMessage) {
+		this.bodyMessage = bodyMessage;
+	}
 }

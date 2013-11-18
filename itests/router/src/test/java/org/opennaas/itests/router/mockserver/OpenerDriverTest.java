@@ -22,12 +22,17 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.opener.client.model.Interface;
 import org.opennaas.extensions.router.opener.client.rpc.GetInterfaceResponse;
 import org.opennaas.extensions.router.opener.client.rpc.GetInterfacesResponse;
+import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceIPRequest;
+import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceResponse;
+import org.opennaas.extensions.router.opener.client.rpc.Utils;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.opennaas.itests.helpers.server.HTTPRequest;
 import org.opennaas.itests.helpers.server.HTTPResponse;
 import org.opennaas.itests.helpers.server.HTTPServer;
@@ -49,6 +54,7 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 	private final static String			SERVLET_CONTEXT_URL	= "/wm/staticflowentrypusher";
 	private final static String			GET_INTERFACES_URL	= SERVLET_CONTEXT_URL + "/getInterfaces";
 	private static final String			GET_INTERFACE_URL	= SERVLET_CONTEXT_URL + "/getInterface";
+	private static final String			SET_IP_URL			= SERVLET_CONTEXT_URL + "/setInterface";
 
 	private HTTPServer					server;
 	private List<HTTPServerBehaviour>	desiredBehaviours;
@@ -58,6 +64,7 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-router", "opennaas-router-driver-opener", "itests-helpers"),
 				noConsole(),
+				OpennaasExamOptions.openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -85,14 +92,14 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 	public void refreshActionTest() throws Exception {
 
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
-		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, null, HttpStatus.OK_200, MediaType.TEXT_XML,
 				sampleXML());
 		desiredBehaviours.add(behaviourIfaces);
-		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", null, HttpStatus.OK_200, MediaType.TEXT_XML,
 				sampleInterface("eth0"));
 		desiredBehaviours.add(behaviourEth0);
 
-		HTTPServerBehaviour behaviourEth1 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourEth1 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", null, HttpStatus.OK_200, MediaType.TEXT_XML,
 				sampleInterface("eth1"));
 		desiredBehaviours.add(behaviourEth1);
 
@@ -113,36 +120,68 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 
 	}
 
-	@Test(expected = ActionException.class)
-	public void wrongRefreshActionAnswerTest() throws Exception {
-
+	@Test
+	public void setIPActionTest() throws Exception {
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
-		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, null, HttpStatus.OK_200, MediaType.TEXT_XML,
 				sampleXML());
 		desiredBehaviours.add(behaviourIfaces);
-		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", null, HttpStatus.OK_200, MediaType.TEXT_XML,
 				sampleInterface("eth0"));
 		desiredBehaviours.add(behaviourEth0);
 
-		HTTPServerBehaviour behaviourEth1NotFound = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", HttpStatus.NOT_FOUND_404, null,
-				null);
-		desiredBehaviours.add(behaviourEth1NotFound);
+		HTTPServerBehaviour behaviourEth1 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", null, HttpStatus.OK_200, MediaType.TEXT_XML,
+				sampleInterface("eth1"));
+		desiredBehaviours.add(behaviourEth1);
+
+		HTTPServerBehaviour behaviourSetIP = createBehaviour(HttpMethod.PUT, SET_IP_URL, sampleSetIp("eth1", "192.168.1.25/24"),
+				HttpStatus.CREATED_201, MediaType.TEXT_XML,
+				sampleInterfaceWithIP(String.valueOf(HttpStatus.CREATED_201)));
+		desiredBehaviours.add(behaviourSetIP);
 
 		startServer();
 		startResource(SERVER_URL + SERVLET_CONTEXT_URL);
 
-		ComputerSystem routerModel = (ComputerSystem) routerResource.getModel();
-		Assert.assertNotNull(routerModel);
+		IIPCapability ipCapab = (IIPCapability) getCapability(IIPCapability.class);
+		IQueueManagerCapability queue = (IQueueManagerCapability) getCapability(IQueueManagerCapability.class);
 
-		List<LogicalDevice> logicalDevices = routerModel.getLogicalDevices();
-		Assert.assertNotNull(logicalDevices);
-		Assert.assertEquals(2, logicalDevices.size());
-		Assert.assertEquals("eth0", logicalDevices.get(0).getName());
-		Assert.assertEquals("eth1", logicalDevices.get(1).getName());
+		ComputerSystem routerModel = (ComputerSystem) routerResource.getModel();
+
+		ipCapab.setIP(routerModel.getLogicalDevices().get(0), "192.168.1.25/24");
+		queue.execute();
 
 		stopResource();
 		stopServer();
+	}
 
+	private String sampleSetIp(String iface, String ip) throws JAXBException {
+
+		String ipAdderss = ip.split("/")[0];
+		String prefixLength = ip.split("/")[1];
+		SetInterfaceIPRequest req = Utils.createSetInterfaceIPRequest(iface, ipAdderss, prefixLength);
+
+		StringWriter writer = new StringWriter();
+		JAXBContext jaxbCon = JAXBContext.newInstance(SetInterfaceIPRequest.class);
+		Marshaller marshaller = jaxbCon.createMarshaller();
+
+		marshaller.marshal(req, writer);
+
+		return writer.toString();
+	}
+
+	private String sampleInterfaceWithIP(String responseMessage) throws JAXBException {
+
+		SetInterfaceResponse response = new SetInterfaceResponse();
+		response.setError(null);
+		response.setResponse(responseMessage);
+
+		StringWriter writer = new StringWriter();
+		JAXBContext jaxbCon = JAXBContext.newInstance(SetInterfaceResponse.class);
+		Marshaller marshaller = jaxbCon.createMarshaller();
+
+		marshaller.marshal(response, writer);
+
+		return writer.toString();
 	}
 
 	private String sampleInterface(String ifaceName) throws JAXBException {
@@ -181,7 +220,8 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 		return writer.toString();
 	}
 
-	private HTTPServerBehaviour createBehaviour(String reqMethod, String reqURL, int respStatus, String contentType, String bodyMessage) {
+	private HTTPServerBehaviour createBehaviour(String reqMethod, String reqURL, String reqBody, int respStatus, String contentType,
+			String bodyMessage) {
 
 		HTTPRequest req = new HTTPRequest();
 		req.setMethod(reqMethod);

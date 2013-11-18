@@ -5,16 +5,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.opennaas.core.endpoints.WSEndpointListener;
+import org.junit.Assert;
 import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
@@ -33,7 +35,6 @@ public class RouterResourceWithOpenerDriver {
 
 	protected IResource					routerResource;
 	protected WSEndpointListenerHandler	listenerHandler;
-	protected WSEndpointListener		endpointListener;
 
 	private final static String			RESOURCE_INFO_NAME	= "Router with opener driver";
 
@@ -46,6 +47,12 @@ public class RouterResourceWithOpenerDriver {
 				TestsConstants.CHASSIS_CAPABILITY_TYPE,
 				TestsConstants.CAPABILITY_URI);
 		lCapabilityDescriptors.add(chassisCapabilityDescriptor);
+
+		CapabilityDescriptor ipCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.OPENER_ACTIONSET_NAME,
+				TestsConstants.OPENER_ACTIONSET_VERSION,
+				TestsConstants.IP_CAPABILITY_TYPE,
+				TestsConstants.CAPABILITY_URI);
+		lCapabilityDescriptors.add(ipCapabilityDescriptor);
 
 		// Add Queue Capability Descriptor
 		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newQueueCapabilityDescriptor(TestsConstants.OPENER_ACTIONSET_NAME,
@@ -64,27 +71,32 @@ public class RouterResourceWithOpenerDriver {
 				TestsConstants.OPENER_PROTOCOL, "noauth");
 
 		// Start resource
-		resourceManager.startResource(routerResource.getResourceIdentifier());
-		registerListener();
-
-	}
-
-	private void registerListener() throws InterruptedException {
 
 		listenerHandler = new WSEndpointListenerHandler();
-		endpointListener = new WSEndpointListener(listenerHandler);
-
 		listenerHandler.registerWSEndpointListener(context, IChassisCapability.class);
+		resourceManager.startResource(routerResource.getResourceIdentifier());
 		listenerHandler.waitForEndpointToBePublished();
 
 	}
 
 	protected void stopResource() throws ResourceException, InterruptedException {
 		resourceManager.stopResource(routerResource.getResourceIdentifier());
-		resourceManager.removeResource(routerResource.getResourceIdentifier());
-
 		listenerHandler.waitForEndpointToBeUnpublished();
+		resourceManager.removeResource(routerResource.getResourceIdentifier());
 
 	}
 
+	protected IQueueManagerCapability getQueue() throws ResourceException {
+
+		IQueueManagerCapability queue = (IQueueManagerCapability) routerResource.getCapabilityByInterface(IQueueManagerCapability.class);
+		Assert.assertNotNull(queue);
+		return queue;
+
+	}
+
+	protected ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
+		ICapability capab = routerResource.getCapabilityByInterface(clazz);
+		Assert.assertNotNull(capab);
+		return capab;
+	}
 }
