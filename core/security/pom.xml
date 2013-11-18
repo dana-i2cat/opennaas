@@ -33,11 +33,6 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-acl</artifactId>
 		</dependency>
-		<!-- Required for the ACL cache -->
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.ehcache</artifactId>
-		</dependency>
 		<!-- Spring DM -->
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
@@ -71,20 +66,6 @@
 							javax.persistence,
 							javax.servlet,
 							javax.servlet.http,
-							net.sf.ehcache.exceptionhandler;version="${ehcache.version}",
-							net.sf.ehcache.loader;version="${ehcache.version}",
-							net.sf.ehcache.extension;version="${ehcache.version}",
-							net.sf.ehcache.util;version="${ehcache.version}",
-							net.sf.ehcache.hibernate;version="${ehcache.version}",
-							net.sf.ehcache.store;version="${ehcache.version}",
-							net.sf.ehcache.event;version="${ehcache.version}",
-							net.sf.ehcache.management;version="${ehcache.version}",
-							net.sf.ehcache.constructs.blocking;version="${ehcache.version}",
-							net.sf.ehcache.config;version="${ehcache.version}",
-							net.sf.ehcache.distribution;version="${ehcache.version}",
-							net.sf.ehcache.concurrent;version="${ehcache.version}",
-							net.sf.ehcache.bootstrap;version="${ehcache.version}",
-							net.sf.ehcache;version="${ehcache.version}",
 							org.springframework.beans.factory.config;version="${spring.version}",
 							org.springframework.beans.factory.support;version="${spring.version}",
 							org.springframework.cache.ehcache;version="${spring.version}",

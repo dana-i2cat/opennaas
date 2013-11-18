@@ -61,7 +61,6 @@
 		
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>		
 		<bundle dependency="true">mvn:org.springframework/org.springframework.transaction/${spring.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/${servicemix.ehcache.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.security/spring-security-core/${spring.security.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.security/spring-security-config/${spring.security.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.security/spring-security-acl/${spring.security.version}</bundle>
