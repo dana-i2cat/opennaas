@@ -51,7 +51,9 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 
 	private final static String			SERVER_URL			= "http://localhost:8080";
 
-	private final static String			SERVLET_CONTEXT_URL	= "/wm/staticflowentrypusher";
+	private final static String			XML_TYPE			= MediaType.TEXT_XML + ";charset=UTF-8";
+
+	private final static String			SERVLET_CONTEXT_URL	= "/axis2/services/quagga_openapi/linux";
 	private final static String			GET_INTERFACES_URL	= SERVLET_CONTEXT_URL + "/getInterfaces";
 	private static final String			GET_INTERFACE_URL	= SERVLET_CONTEXT_URL + "/getInterface";
 	private static final String			SET_IP_URL			= SERVLET_CONTEXT_URL + "/setInterface";
@@ -92,14 +94,17 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 	public void refreshActionTest() throws Exception {
 
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
-		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, null, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, "", XML_TYPE, HttpStatus.OK_200,
+				MediaType.TEXT_XML,
 				sampleXML());
 		desiredBehaviours.add(behaviourIfaces);
-		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", null, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", "", XML_TYPE, HttpStatus.OK_200,
+				MediaType.TEXT_XML,
 				sampleInterface("eth0"));
 		desiredBehaviours.add(behaviourEth0);
 
-		HTTPServerBehaviour behaviourEth1 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", null, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourEth1 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", "", XML_TYPE, HttpStatus.OK_200,
+				MediaType.TEXT_XML,
 				sampleInterface("eth1"));
 		desiredBehaviours.add(behaviourEth1);
 
@@ -123,20 +128,22 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 	@Test
 	public void setIPActionTest() throws Exception {
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
-		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, null, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourIfaces = createBehaviour(HttpMethod.GET, GET_INTERFACES_URL, "", XML_TYPE, HttpStatus.OK_200,
+				XML_TYPE,
 				sampleXML());
 		desiredBehaviours.add(behaviourIfaces);
-		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", null, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourEth0 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth0", "", XML_TYPE, HttpStatus.OK_200,
+				XML_TYPE,
 				sampleInterface("eth0"));
 		desiredBehaviours.add(behaviourEth0);
 
-		HTTPServerBehaviour behaviourEth1 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", null, HttpStatus.OK_200, MediaType.TEXT_XML,
+		HTTPServerBehaviour behaviourEth1 = createBehaviour(HttpMethod.GET, GET_INTERFACE_URL + "/eth1", "", XML_TYPE, HttpStatus.OK_200,
+				XML_TYPE,
 				sampleInterface("eth1"));
 		desiredBehaviours.add(behaviourEth1);
 
 		HTTPServerBehaviour behaviourSetIP = createBehaviour(HttpMethod.PUT, SET_IP_URL, sampleSetIp("eth1", "192.168.1.25/24"),
-				HttpStatus.CREATED_201, MediaType.TEXT_XML,
-				sampleInterfaceWithIP(String.valueOf(HttpStatus.CREATED_201)));
+				XML_TYPE, HttpStatus.CREATED_201, XML_TYPE, sampleInterfaceWithIP(String.valueOf(HttpStatus.CREATED_201)));
 		desiredBehaviours.add(behaviourSetIP);
 
 		startServer();
@@ -147,8 +154,9 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 
 		ComputerSystem routerModel = (ComputerSystem) routerResource.getModel();
 
-		ipCapab.setIP(routerModel.getLogicalDevices().get(0), "192.168.1.25/24");
+		ipCapab.setIP(routerModel.getLogicalDevices().get(1), "192.168.1.25/24");
 		queue.execute();
+		/** TODO asserts **/
 
 		stopResource();
 		stopServer();
@@ -220,12 +228,15 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 		return writer.toString();
 	}
 
-	private HTTPServerBehaviour createBehaviour(String reqMethod, String reqURL, String reqBody, int respStatus, String contentType,
+	private HTTPServerBehaviour createBehaviour(String reqMethod, String reqURL, String reqBody, String reqContentType, int respStatus,
+			String contentType,
 			String bodyMessage) {
 
 		HTTPRequest req = new HTTPRequest();
 		req.setMethod(reqMethod);
 		req.setRequestURL(reqURL);
+		req.setContentType(reqContentType);
+		req.setBodyMessage(reqBody);
 
 		HTTPResponse response = new HTTPResponse();
 		response.setContentType(contentType);

@@ -146,7 +146,14 @@
 	<feature name="itests-helpers" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-core</feature>
 		<feature version="${opennaas.version}">cxf-minimal</feature>
-			
+	
+	
+		<!-- HTTP server - json -->
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
+
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
 		
 		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>

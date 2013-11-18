@@ -6,6 +6,7 @@ public class HTTPRequest {
 
 	private String	method;
 	private String	bodyMessage;
+	private String	contentType;
 
 	public String getRequestURL() {
 		return requestURL;
@@ -29,5 +30,13 @@ public class HTTPRequest {
 
 	public void setBodyMessage(String bodyMessage) {
 		this.bodyMessage = bodyMessage;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 }
