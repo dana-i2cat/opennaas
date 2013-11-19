@@ -18,13 +18,16 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.CreateOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
-import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
+import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.server.HTTPRequest;
 import org.opennaas.itests.helpers.server.HTTPResponse;
 import org.opennaas.itests.helpers.server.HTTPServer;
@@ -44,7 +47,12 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 	private final static String			SERVER_URL						= "http://localhost:8080";
 	private final static String			SERVLET_CONTEXT_URL				= "/wm/staticflowentrypusher";
 
-	private static final String			SWITCH_ID						= "00:00:00:00:00:00:00:01";
+	private final static String			SWITCH_ID						= "00:00:00:00:00:00:00:01";
+	private final static String			FLOW_ID							= "flow-mod-1";
+	private final static String			FLOW_INGRESS_PORT				= "1";
+	private final static String			FLOW_OUTPUT_PORT				= "2";
+	private final static String			FLOW_PRIORITY					= "32767";
+	private final static String			OUTPUT_ACTION					= CreateOFForwardingAction.FORWARDING_ACTION;
 
 	private final static String			GET_FLOWS_URL					= SERVLET_CONTEXT_URL + "/list/" + SWITCH_ID + "/json";
 	private final static String			ADD_FLOW_URL					= SERVLET_CONTEXT_URL + "/json";
@@ -59,7 +67,6 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight", "itests-helpers"),
 				noConsole(),
-				OpennaasExamOptions.openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -77,6 +84,11 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 		desiredBehaviours = null;
 	}
 
+	/**
+	 * Test checks that, when creating a flow using the {@link IOpenflowForwardingCapability} with a successful result, it's set to model.
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	public void createRuleTest() throws Exception {
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
@@ -96,6 +108,32 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 		IOpenflowForwardingCapability forwardingCapab = (IOpenflowForwardingCapability) getCapability(IOpenflowForwardingCapability.class);
 		FloodlightOFFlow forwardingRule = generateSampleFloodlightOFFlow("flow-mod-1", "1", "2");
 		forwardingCapab.createOpenflowForwardingRule(forwardingRule);
+
+		OpenflowSwitchModel model = (OpenflowSwitchModel) ofSwitchResource.getModel();
+		Assert.assertNotNull(model);
+		Assert.assertEquals(1, model.getOfTables().size());
+
+		OFFlowTable table = model.getOfTables().get(0);
+		Assert.assertNotNull(table.getOfForwardingRules());
+		Assert.assertEquals(1, table.getOfForwardingRules().size());
+
+		FloodlightOFFlow flow = table.getOfForwardingRules().get(0);
+		Assert.assertNotNull(flow);
+		Assert.assertNotNull("Flow should contain a generated name.", flow.getName());
+		Assert.assertEquals("Flow priority should be " + FLOW_PRIORITY, FLOW_PRIORITY, flow.getPriority());
+		Assert.assertEquals("Switch id should be " + SWITCH_ID, SWITCH_ID, flow.getSwitchId());
+
+		Assert.assertNotNull("Flow should contain actions.", flow.getActions());
+		Assert.assertEquals("Flow should contain one action.", 1, flow.getActions().size());
+
+		FloodlightOFAction action = flow.getActions().get(0);
+		Assert.assertEquals("The name of the action should be " + OUTPUT_ACTION, OUTPUT_ACTION, action.getType());
+		Assert.assertEquals("Output port should be " + FLOW_OUTPUT_PORT, FLOW_OUTPUT_PORT, action.getValue());
+
+		Assert.assertNotNull("Flow should contain match.", flow.getMatch());
+
+		FloodlightOFMatch match = flow.getMatch();
+		Assert.assertEquals("Ingress port should be " + FLOW_INGRESS_PORT, FLOW_INGRESS_PORT, match.getIngressPort());
 
 		stopResource();
 		stopServer();
