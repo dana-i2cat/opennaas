@@ -68,6 +68,7 @@
 					<instructions>
 						<Bundle-Activator>org.opennaas.core.security.Activator</Bundle-Activator>
 						<Import-Package>
+							javax.persistence,
 							javax.servlet,
 							javax.servlet.http,
 							net.sf.ehcache.exceptionhandler;version="${ehcache.version}",
