@@ -1,18 +1,19 @@
 package org.opennaas.itests.helpers.server;
 
-
 public class HTTPServerBehaviour {
 
 	private HTTPRequest		request;
 	private HTTPResponse	response;
+	private boolean			consumible;
 
 	public HTTPServerBehaviour() {
 
 	}
 
-	public HTTPServerBehaviour(HTTPRequest request, HTTPResponse desiredResponse) {
+	public HTTPServerBehaviour(HTTPRequest request, HTTPResponse desiredResponse, boolean consumible) {
 		this.request = request;
 		this.response = desiredResponse;
+		this.consumible = consumible;
 	}
 
 	public HTTPRequest getRequest() {
@@ -29,6 +30,14 @@ public class HTTPServerBehaviour {
 
 	public void setResponse(HTTPResponse response) {
 		this.response = response;
+	}
+
+	public boolean isConsumible() {
+		return consumible;
+	}
+
+	public void setConsumible(boolean consumible) {
+		this.consumible = consumible;
 	}
 
 }

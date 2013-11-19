@@ -53,12 +53,17 @@ public class HTTPServerServlet extends HttpServlet {
 	}
 
 	private void createResponse(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		HTTPResponse desiredResponse = getDesiredResponse(request);
+		HTTPServerBehaviour behavior = getDesiredBehavior(request);
 
-		if (desiredResponse == null)
+		if (behavior == null)
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
 		else {
+
+			HTTPResponse desiredResponse = behavior.getResponse();
+
+			if (behavior.isConsumible())
+				desiredBehaviour.remove(behavior);
 
 			int status = desiredResponse.getStatus();
 
@@ -76,7 +81,7 @@ public class HTTPServerServlet extends HttpServlet {
 
 	}
 
-	private HTTPResponse getDesiredResponse(HttpServletRequest request) throws IOException, ServletException
+	private HTTPServerBehaviour getDesiredBehavior(HttpServletRequest request) throws IOException, ServletException
 	{
 		try {
 			Iterator<HTTPServerBehaviour> iterator = desiredBehaviour.iterator();
@@ -84,9 +89,11 @@ public class HTTPServerServlet extends HttpServlet {
 				HTTPServerBehaviour behaviour = iterator.next();
 				HTTPRequest possibleReq = behaviour.getRequest();
 
-				if (requestMatches(request, possibleReq))
-					return behaviour.getResponse();
+				if (requestMatches(request, possibleReq)) {
 
+					return behaviour;
+
+				}
 			}
 
 			return null;

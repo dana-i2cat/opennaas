@@ -1,5 +1,6 @@
 package org.opennaas.itests.helpers.server;
 
+
 public class HTTPRequest {
 
 	private String	requestURL;
@@ -7,6 +8,17 @@ public class HTTPRequest {
 	private String	method;
 	private String	bodyMessage;
 	private String	contentType;
+
+	public HTTPRequest() {
+
+	}
+
+	public HTTPRequest(String requestURL, String method, String contentType, String bodyMessage) {
+		this.requestURL = requestURL;
+		this.method = method;
+		this.contentType = contentType;
+		this.bodyMessage = bodyMessage;
+	}
 
 	public String getRequestURL() {
 		return requestURL;

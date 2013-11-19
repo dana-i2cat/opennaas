@@ -1,7 +1,5 @@
 package org.opennaas.itests.helpers.server;
 
-import org.eclipse.jetty.http.HttpStatus;
-
 public class HTTPResponse {
 
 	private int		status;
@@ -10,8 +8,14 @@ public class HTTPResponse {
 	private String	httpErrorToSend;
 
 	public HTTPResponse() {
-		status = HttpStatus.OK_200;
-		contentType = "text/html";
+
+	}
+
+	public HTTPResponse(int status, String contentType, String bodyMessage, String httpErrorToSend) {
+		this.status = status;
+		this.contentType = contentType;
+		this.bodyMessage = bodyMessage;
+		this.httpErrorToSend = httpErrorToSend;
 	}
 
 	public String getBodyMessage() {
