@@ -210,7 +210,23 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
 
     @Override
     public Response removeRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort) throws CapabilityException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        VRFModel model = (VRFModel) resource.getModel();
+        int version;
+        if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
+            ipSource = Utils.fromIPv4Address(Integer.parseInt(ipSource));
+            ipDest = Utils.fromIPv4Address(Integer.parseInt(ipDest));
+            version = 4;
+        } else if(Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
+            ipSource = Utils.tryToCompressIPv6(ipSource);
+            ipDest = Utils.tryToCompressIPv6(ipDest);
+            version = 6;
+        } else{
+            return Response.serverError().entity("Ip not recognized").build();
+        }
+        Switch switchInfo = new Switch("2", inputPort, outputPort, switchDPID);
+        Route route = new Route(ipSource, ipDest, switchInfo);
+        int routeId = model.getTable(version).RouteExists(route);
+        return removeRoute(routeId, version);
     }
 
     @Override
@@ -249,7 +265,11 @@ public class RoutingCapability extends AbstractCapability implements IRoutingCap
         log.info("Get entire Route Table of version IPv" + version);
         VRFModel model = (VRFModel) resource.getModel();
         if (model.getTable(version) == null) {
-            model.setTable(new RoutingTable(version), version);
+            if(version == 4  || version == 6){
+                model.setTable(new RoutingTable(version), version);
+            }else{
+                return Response.serverError().entity("This IP version does not exist.").build();
+            }
         }
         String response = "No content";
         ObjectMapper mapper = new ObjectMapper();

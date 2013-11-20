@@ -17,14 +17,22 @@ public class GetRouteTableCommand extends GenericKarafCommand {
 
     @Argument(index = 0, name = "resourceType:resourceName", description = "The resource id", required = true, multiValued = false)
     private String resourceName;
+    @Argument(index = 1, name = "type", description = "Type of traffic IPv4 or IPv6", required = false, multiValued = false)
+    private int type;
 
     @Override
     protected Object doExecute() throws Exception {
         printInitCommand("Get Entire Model");
         try {
             IResource resource = getResourceFromFriendlyName(resourceName);
-            RoutingCapability capab = (RoutingCapability) resource.getCapabilityByType("routing");
-            Response response = capab.getRoutes();
+            Response response;
+            if(type != 0){
+                RoutingCapability capab = (RoutingCapability) resource.getCapabilityByType("routing");
+                 response = capab.getRoutes(type);
+            }else{
+                RoutingCapability capab = (RoutingCapability) resource.getCapabilityByType("routing");
+                response = capab.getRoutes();
+            }
             printInfo(response.getStatus()+" - The outputport is: " + response.getEntity());
         } catch (Exception e) {
             printError("Error greeting from resource " + resourceName);

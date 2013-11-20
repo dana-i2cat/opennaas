@@ -112,16 +112,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 <ref component-id="resourceNameCompleter"/>
                 <null/>
             </completers>
-        </command>
-        <command name="routing/getSpecRouteTable">
-            <action class="org.opennaas.extensions.vrf.capability.routing.shell.GetSpecificRouteTableCommand"/>
-            <completers>
-                <ref component-id="resourceNameCompleter"/>
-                <null/>
-            </completers>
-        </command>
-        
-        
+        </command>       
     </command-bundle>
     
     <!-- Forces this bundle to wait for dataSourceResources being published -->
