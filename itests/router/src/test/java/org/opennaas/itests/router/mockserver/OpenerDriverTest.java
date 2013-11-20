@@ -6,15 +6,13 @@ import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,7 +22,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.endpoints.WSEndpointListenerHandler;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
@@ -32,22 +41,18 @@ import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-import org.opennaas.extensions.router.opener.client.model.IPData;
-import org.opennaas.extensions.router.opener.client.model.Interface;
-import org.opennaas.extensions.router.opener.client.rpc.GetInterfaceResponse;
-import org.opennaas.extensions.router.opener.client.rpc.GetInterfacesResponse;
-import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceIPRequest;
-import org.opennaas.extensions.router.opener.client.rpc.SetInterfaceResponse;
-import org.opennaas.extensions.router.opener.client.rpc.Utils;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.server.HTTPRequest;
 import org.opennaas.itests.helpers.server.HTTPResponse;
-import org.opennaas.itests.helpers.server.HTTPServer;
 import org.opennaas.itests.helpers.server.HTTPServerBehaviour;
+import org.opennaas.itests.helpers.server.MockHTTPServerTest;
+import org.opennaas.itests.router.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.osgi.framework.BundleContext;
 
 /**
  * 
@@ -60,7 +65,7 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
+public class OpenerDriverTest extends MockHTTPServerTest {
 
 	private final static Log			log					= LogFactory.getLog(OpenerDriverTest.class);
 
@@ -78,9 +83,19 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 
 	private final static String			IFACE_ETH0			= "eth0";
 	private final static String			IFACE_ETH1			= "eth1";
+	private final static String			RESOURCE_INFO_NAME	= "RouterWithOpenerDriver";
 
-	private HTTPServer					server;
-	private List<HTTPServerBehaviour>	desiredBehaviours;
+	@Inject
+	protected IResourceManager			resourceManager;
+
+	@Inject
+	protected IProtocolManager			protocolManager;
+
+	@Inject
+	protected BundleContext				context;
+
+	protected IResource					routerResource;
+	protected WSEndpointListenerHandler	listenerHandler;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -88,6 +103,21 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 				includeFeatures("opennaas-router", "opennaas-router-driver-opener", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
+	}
+
+	@Before
+	public void initTestScenario() throws Exception {
+
+		prepareBehaviours();
+
+		startServer(SERVLET_CONTEXT_URL);
+		startResource(SERVER_URL + SERVLET_CONTEXT_URL);
+	}
+
+	@After
+	public void shutDownTestScenario() throws Exception {
+		stopResource();
+		stopServer();
 	}
 
 	/**
@@ -149,64 +179,46 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 
 	}
 
-	public void startServer() throws Exception {
+	@Override
+	protected void prepareBehaviours() throws JAXBException {
 
-		server = new HTTPServer(8080);
-		server.setBaseURL(SERVLET_CONTEXT_URL);
-		server.setDesiredBehaviours(desiredBehaviours);
-		server.start();
-
-	}
-
-	public void stopServer() throws Exception {
-		server.stop();
-		desiredBehaviours = null;
-	}
-
-	@Before
-	public void initTestScenario() throws Exception {
-		prepareBehaviours();
-
-		startServer();
-		startResource(SERVER_URL + SERVLET_CONTEXT_URL);
-	}
-
-	@After
-	public void shutDownTestScenario() throws Exception {
-		stopResource();
-		stopServer();
-	}
-
-	private void prepareBehaviours() throws JAXBException {
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
 
+		List<String> ifaces = new ArrayList<String>();
+		ifaces.add(IFACE_ETH0);
+		ifaces.add(IFACE_ETH1);
+		String respGetIfacesBody = OpenerTestHelper.sampleGetInterfacesResponse(ifaces);
+
 		HTTPRequest reqGetIfaces = new HTTPRequest(GET_INTERFACES_URL, HttpMethod.GET, XML_TYPE, "");
-		HTTPResponse respGetIfaces = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, sampleXML(), "");
+		HTTPResponse respGetIfaces = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, respGetIfacesBody, "");
 		HTTPServerBehaviour behaviorGetIfaces = new HTTPServerBehaviour(reqGetIfaces, respGetIfaces, false);
 		desiredBehaviours.add(behaviorGetIfaces);
 
 		HTTPRequest reqGetEth0 = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH0, HttpMethod.GET, XML_TYPE, "");
-		HTTPResponse respGetEth0 = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, sampleInterface("eth0"), "");
+		HTTPResponse respGetEth0 = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, OpenerTestHelper.sampleGetInterfaceResponse(IFACE_ETH0,
+				null), "");
 		HTTPServerBehaviour behaviorGetEth0 = new HTTPServerBehaviour(reqGetEth0, respGetEth0, false);
 		desiredBehaviours.add(behaviorGetEth0);
 
 		// consumible behaviours for refresh action should be added "(#capabilies + 1) * #queuesExecutions" times.
 		HTTPRequest reqGetEth1 = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH1, HttpMethod.GET, XML_TYPE, "");
-		HTTPResponse respGetEth1 = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, sampleInterface("eth1"), "");
+		HTTPResponse respGetEth1 = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, OpenerTestHelper.sampleGetInterfaceResponse(IFACE_ETH1,
+				null), "");
 		HTTPServerBehaviour behaviorGetEth1 = new HTTPServerBehaviour(reqGetEth1, respGetEth1, true);
 		desiredBehaviours.add(behaviorGetEth1);
 		desiredBehaviours.add(behaviorGetEth1);
 		desiredBehaviours.add(behaviorGetEth1);
 
-		HTTPRequest reqSetIp = new HTTPRequest(SET_IP_URL, HttpMethod.PUT, XML_TYPE, sampleSetIp(IFACE_ETH1, SAMPLE_IP_WITH_MASK));
-		HTTPResponse respSetIp = new HTTPResponse(HttpStatus.CREATED_201, XML_TYPE, sampleInterfaceWithIP(String.valueOf(HttpStatus.CREATED_201)), "");
+		HTTPRequest reqSetIp = new HTTPRequest(SET_IP_URL, HttpMethod.PUT, XML_TYPE, OpenerTestHelper.sampleSetInterfaceRequest(IFACE_ETH1,
+				SAMPLE_IP_WITH_MASK));
+		HTTPResponse respSetIp = new HTTPResponse(HttpStatus.CREATED_201, XML_TYPE, OpenerTestHelper.sampleSetInterfaceResponse(String
+				.valueOf(HttpStatus.CREATED_201)), "");
 		HTTPServerBehaviour behaviorSetIp = new HTTPServerBehaviour(reqSetIp, respSetIp, false);
 		desiredBehaviours.add(behaviorSetIp);
 
+		String getIfaceEth1Body = OpenerTestHelper.sampleGetInterfaceResponse(IFACE_ETH1, SAMPLE_IP_WITH_MASK);
 		HTTPRequest reqGetEth1Ip = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH1, HttpMethod.GET, XML_TYPE, "");
-		HTTPResponse respGetEth1Ip = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, getInterfaceWithIpResponse(IFACE_ETH1,
-				SAMPLE_IP_WITH_MASK),
-				"");
+		HTTPResponse respGetEth1Ip = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, getIfaceEth1Body, "");
 		HTTPServerBehaviour behaviorGetEth1Ip = new HTTPServerBehaviour(reqGetEth1Ip, respGetEth1Ip, true);
 		desiredBehaviours.add(behaviorGetEth1Ip);
 		desiredBehaviours.add(behaviorGetEth1Ip);
@@ -214,94 +226,58 @@ public class OpenerDriverTest extends RouterResourceWithOpenerDriver {
 
 	}
 
-	private String getInterfaceWithIpResponse(String ifaceName, String ip) throws JAXBException {
+	private void startResource(String serverURL) throws ResourceException, ProtocolException, InterruptedException {
 
-		GetInterfaceResponse response = new GetInterfaceResponse();
+		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		IPData ipData = new IPData();
-		ipData.setAddress(ip.split("/")[0]);
-		ipData.setFamilyType(ProtocolIFType.IPV4.name());
-		ipData.setPrefixLength(ip.split("/")[1]);
+		CapabilityDescriptor chassisCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.OPENER_ACTIONSET_NAME,
+				TestsConstants.OPENER_ACTIONSET_VERSION,
+				TestsConstants.CHASSIS_CAPABILITY_TYPE,
+				TestsConstants.CAPABILITY_URI);
+		lCapabilityDescriptors.add(chassisCapabilityDescriptor);
 
-		Interface iface = new Interface();
-		iface.setName(ifaceName);
-		iface.setIp(ipData);
+		CapabilityDescriptor ipCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.OPENER_ACTIONSET_NAME,
+				TestsConstants.OPENER_ACTIONSET_VERSION,
+				TestsConstants.IP_CAPABILITY_TYPE,
+				TestsConstants.CAPABILITY_URI);
+		lCapabilityDescriptors.add(ipCapabilityDescriptor);
 
-		response.setInterface(iface);
+		// Add Queue Capability Descriptor
+		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newQueueCapabilityDescriptor(TestsConstants.OPENER_ACTIONSET_NAME,
+				TestsConstants.OPENER_ACTIONSET_VERSION);
+		lCapabilityDescriptors.add(queueCapabilityDescriptor);
 
-		StringWriter writer = new StringWriter();
-		JAXBContext jaxbCon = JAXBContext.newInstance(GetInterfaceResponse.class);
-		Marshaller marshaller = jaxbCon.createMarshaller();
+		// Router Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, TestsConstants.RESOURCE_TYPE,
+				TestsConstants.RESOURCE_URI,
+				RESOURCE_INFO_NAME);
 
-		marshaller.marshal(response, writer);
+		routerResource = resourceManager.createResource(resourceDescriptor);
 
-		return writer.toString();
+		// If not exists the protocol session manager, it's created and add the session context
+		InitializerTestHelper.addSessionContext(protocolManager, routerResource.getResourceIdentifier().getId(), serverURL,
+				TestsConstants.OPENER_PROTOCOL, "noauth");
+
+		// Start resource
+
+		listenerHandler = new WSEndpointListenerHandler();
+		listenerHandler.registerWSEndpointListener(context, IChassisCapability.class);
+		resourceManager.startResource(routerResource.getResourceIdentifier());
+		listenerHandler.waitForEndpointToBePublished();
+
 	}
 
-	private String sampleSetIp(String iface, String ip) throws JAXBException {
+	private void stopResource() throws ResourceException, InterruptedException {
+		resourceManager.stopResource(routerResource.getResourceIdentifier());
+		listenerHandler.waitForEndpointToBeUnpublished();
+		resourceManager.removeResource(routerResource.getResourceIdentifier());
 
-		String ipAdderss = ip.split("/")[0];
-		String prefixLength = ip.split("/")[1];
-		SetInterfaceIPRequest req = Utils.createSetInterfaceIPRequest(iface, ipAdderss, prefixLength);
-
-		StringWriter writer = new StringWriter();
-		JAXBContext jaxbCon = JAXBContext.newInstance(SetInterfaceIPRequest.class);
-		Marshaller marshaller = jaxbCon.createMarshaller();
-
-		marshaller.marshal(req, writer);
-
-		return writer.toString();
 	}
 
-	private String sampleInterfaceWithIP(String responseMessage) throws JAXBException {
-
-		SetInterfaceResponse response = new SetInterfaceResponse();
-		response.setError(null);
-		response.setResponse(responseMessage);
-
-		StringWriter writer = new StringWriter();
-		JAXBContext jaxbCon = JAXBContext.newInstance(SetInterfaceResponse.class);
-		Marshaller marshaller = jaxbCon.createMarshaller();
-
-		marshaller.marshal(response, writer);
-
-		return writer.toString();
-	}
-
-	private String sampleInterface(String ifaceName) throws JAXBException {
-
-		GetInterfaceResponse response = new GetInterfaceResponse();
-
-		Interface iface = new Interface();
-		iface.setName(ifaceName);
-
-		response.setInterface(iface);
-
-		StringWriter writer = new StringWriter();
-		JAXBContext jaxbCon = JAXBContext.newInstance(GetInterfaceResponse.class);
-		Marshaller marshaller = jaxbCon.createMarshaller();
-
-		marshaller.marshal(response, writer);
-
-		return writer.toString();
-	}
-
-	private String sampleXML() throws JAXBException {
-		GetInterfacesResponse response = new GetInterfacesResponse();
-
-		List<String> ifaces = new ArrayList<String>();
-		ifaces.add(IFACE_ETH0);
-		ifaces.add(IFACE_ETH1);
-
-		response.setInterfaces(ifaces);
-
-		StringWriter writer = new StringWriter();
-		JAXBContext jaxbCon = JAXBContext.newInstance(GetInterfacesResponse.class);
-		Marshaller marshaller = jaxbCon.createMarshaller();
-
-		marshaller.marshal(response, writer);
-
-		return writer.toString();
+	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
+		ICapability capab = routerResource.getCapabilityByInterface(clazz);
+		Assert.assertNotNull(capab);
+		return capab;
 	}
 
 }
