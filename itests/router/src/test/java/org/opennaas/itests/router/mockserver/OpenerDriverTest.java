@@ -108,16 +108,26 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 	@Before
 	public void initTestScenario() throws Exception {
 
+		log.info("Creating initial scenario.");
+
 		prepareBehaviours();
 
 		startServer(SERVLET_CONTEXT_URL);
 		startResource(SERVER_URL + SERVLET_CONTEXT_URL);
+
+		log.info("Test initialized.");
 	}
 
 	@After
 	public void shutDownTestScenario() throws Exception {
+
+		log.info("Shutting down test scenario.");
+
 		stopResource();
 		stopServer();
+
+		log.info("Test finished.");
+
 	}
 
 	/**
@@ -130,16 +140,22 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 	public void refreshActionTest() throws Exception {
 
 		ComputerSystem routerModel = (ComputerSystem) routerResource.getModel();
-		Assert.assertNotNull(routerModel);
+		Assert.assertNotNull("Router should contain a model.", routerModel);
 
 		List<LogicalDevice> logicalDevices = routerModel.getLogicalDevices();
-		Assert.assertNotNull(logicalDevices);
-		Assert.assertEquals(2, logicalDevices.size());
-		Assert.assertEquals(IFACE_ETH0, logicalDevices.get(0).getName());
-		Assert.assertEquals(IFACE_ETH1, logicalDevices.get(1).getName());
+		Assert.assertNotNull("Router model should contain logical devices.", logicalDevices);
+		Assert.assertEquals("Router model should contain two network ports.", 2, logicalDevices.size());
+		Assert.assertEquals("First network port should be eth0", IFACE_ETH0, logicalDevices.get(0).getName());
+		Assert.assertEquals("Second network port should be eth1", IFACE_ETH1, logicalDevices.get(1).getName());
 
 	}
 
+	/**
+	 * Test checks that, if we call the setIp method of the IP capability, and there's no error, the new ip is set in model as a IPProtocolEndpoint of
+	 * the networkport it belongs to. Be aware that the queue is executed twice (on startup and on manual execution)
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	public void setIPActionTest() throws Exception {
 
@@ -151,15 +167,15 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 		ipCapab.setIP(routerModel.getLogicalDevices().get(1), SAMPLE_IP_WITH_MASK);
 		queue.execute();
 
-		Assert.assertNotNull(routerModel);
+		Assert.assertNotNull("Router should contain a model.", routerModel);
 
 		List<LogicalDevice> logicalDevices = routerModel.getLogicalDevices();
-		Assert.assertNotNull(logicalDevices);
-		Assert.assertEquals(2, logicalDevices.size());
-		Assert.assertEquals(IFACE_ETH0, logicalDevices.get(0).getName());
-		Assert.assertEquals(IFACE_ETH1, logicalDevices.get(1).getName());
+		Assert.assertNotNull("Router should contain network ports.", logicalDevices);
+		Assert.assertEquals("Router model should contain two network ports.", 2, logicalDevices.size());
+		Assert.assertEquals("First network port should be eth0", IFACE_ETH0, logicalDevices.get(0).getName());
+		Assert.assertEquals("Second network port should be eth1", logicalDevices.get(1).getName());
 
-		Assert.assertTrue(logicalDevices.get(1) instanceof NetworkPort);
+		Assert.assertTrue("Eth1 should be parsed as a network port.", logicalDevices.get(1) instanceof NetworkPort);
 
 		NetworkPort eth1Iface = (NetworkPort) logicalDevices.get(1);
 		Assert.assertEquals("Networkport name should be eth1", "eth1", eth1Iface.getName());
@@ -228,6 +244,8 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 
 	private void startResource(String serverURL) throws ResourceException, ProtocolException, InterruptedException {
 
+		log.info("Creating router resource with Opener-0.01 driver.");
+
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
 		CapabilityDescriptor chassisCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.OPENER_ACTIONSET_NAME,
@@ -265,6 +283,8 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 		resourceManager.startResource(routerResource.getResourceIdentifier());
 		listenerHandler.waitForEndpointToBePublished();
 
+		log.info("Router resource with Opener-0.01 driver successfully created.");
+
 	}
 
 	private void stopResource() throws ResourceException, InterruptedException {
@@ -275,6 +295,9 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 	}
 
 	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
+
+		log.debug("Getting capability " + clazz.getName());
+
 		ICapability capab = routerResource.getCapabilityByInterface(clazz);
 		Assert.assertNotNull(capab);
 		return capab;
