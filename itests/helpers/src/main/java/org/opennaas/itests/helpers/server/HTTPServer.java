@@ -8,6 +8,18 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+/**
+ * Publishes and manages a http server.
+ * 
+ * Server is published in port 8080 and listen for all endpoints after the given url. For example, if the server is configured with the
+ * "/service/acl/" url, it will listen for all endpoints beginning with url "http://localhost:8080/services/acl/*"
+ * 
+ * Server needs a list of {@link HTTPServerBehaviour} in order to answer requests to the url endpoints.
+ * 
+ * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
 public class HTTPServer {
 
 	private final static Log			log	= LogFactory.getLog(HTTPServer.class);
@@ -20,10 +32,39 @@ public class HTTPServer {
 		server = new Server(port);
 	}
 
+	/**
+	 * Sets the server base url, under which all endpoints will be listened by the server.
+	 * 
+	 * @param url
+	 */
 	public void setBaseURL(String url) {
 		contextPath = url;
 	}
 
+	/**
+	 * Returns the set of requests and responses the server contains.
+	 * 
+	 * @return
+	 */
+	public List<HTTPServerBehaviour> getDesiredBehaviours() {
+		return desiredBehaviours;
+	}
+
+	/**
+	 * 
+	 * Sets the set of requests and responses the server will contain.
+	 * 
+	 * @param desiredBehaviours
+	 */
+	public void setDesiredBehaviours(List<HTTPServerBehaviour> desiredBehaviours) {
+		this.desiredBehaviours = desiredBehaviours;
+	}
+
+	/**
+	 * Starts the server instance under the configured base url.
+	 * 
+	 * @throws Exception
+	 */
 	public void start() throws Exception {
 
 		if (contextPath == null)
@@ -45,6 +86,11 @@ public class HTTPServer {
 
 	}
 
+	/**
+	 * Stops the server instance
+	 * 
+	 * @throws Exception
+	 */
 	public void stop() throws Exception {
 		if (server.isStopped())
 			throw new ServerConfigurationException("Server is already stopped");
@@ -53,11 +99,4 @@ public class HTTPServer {
 
 	}
 
-	public List<HTTPServerBehaviour> getDesiredBehaviours() {
-		return desiredBehaviours;
-	}
-
-	public void setDesiredBehaviours(List<HTTPServerBehaviour> desiredBehaviours) {
-		this.desiredBehaviours = desiredBehaviours;
-	}
 }

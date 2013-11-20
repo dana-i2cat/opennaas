@@ -21,6 +21,19 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.xml.sax.SAXException;
 
+/**
+ * Servlet for the HTTP Server.
+ * 
+ * The HTTP servlet is the one containing the list of {@link HTTPServerBehaviour}, which define the answers of the server to specific requests.
+ * Request sent by the user that are not defined in the list of behaviors are answered with a {@link HttpServletResponse}
+ * 
+ * In the other hand, if the user's request matches a desired behavior, the associated request is sent to the user, which could be either a sucessfull
+ * or error answer. If the behavior was consumable, it's removed from the list whenever a request matches it.
+ * 
+ * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
 public class HTTPServerServlet extends HttpServlet {
 
 	private static final long			serialVersionUID	= -7639723130739143382L;
@@ -62,7 +75,7 @@ public class HTTPServerServlet extends HttpServlet {
 
 			HTTPResponse desiredResponse = behavior.getResponse();
 
-			if (behavior.isConsumible())
+			if (behavior.isConsumable())
 				desiredBehaviour.remove(behavior);
 
 			int status = desiredResponse.getStatus();
