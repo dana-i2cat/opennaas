@@ -2,8 +2,6 @@ package org.opennaas.itests.helpers.server;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,5 +36,5 @@ public abstract class MockHTTPServerTest {
 		log.info("HTTP server stopped.");
 	}
 
-	protected abstract void prepareBehaviours() throws JAXBException;
+	protected abstract void prepareBehaviours() throws Exception;
 }

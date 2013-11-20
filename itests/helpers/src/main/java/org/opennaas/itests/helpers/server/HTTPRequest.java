@@ -1,6 +1,5 @@
 package org.opennaas.itests.helpers.server;
 
-
 public class HTTPRequest {
 
 	private String	requestURL;

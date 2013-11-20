@@ -10,37 +10,66 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.inject.Inject;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jetty.http.HttpStatus;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.endpoints.WSEndpointListenerHandler;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
+import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.CreateOFForwardingAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.server.HTTPRequest;
 import org.opennaas.itests.helpers.server.HTTPResponse;
-import org.opennaas.itests.helpers.server.HTTPServer;
 import org.opennaas.itests.helpers.server.HTTPServerBehaviour;
+import org.opennaas.itests.helpers.server.MockHTTPServerTest;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.osgi.framework.BundleContext;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
+public class FloodlightDriverTest extends MockHTTPServerTest {
+
+	@Inject
+	protected IResourceManager			resourceManager;
+
+	@Inject
+	protected IProtocolManager			protocolManager;
+
+	@Inject
+	protected BundleContext				context;
 
 	private final static Log			log								= LogFactory.getLog(FloodlightDriverTest.class);
 
@@ -48,7 +77,7 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 	private final static String			SERVLET_CONTEXT_URL				= "/wm/staticflowentrypusher";
 
 	private final static String			SWITCH_ID						= "00:00:00:00:00:00:00:01";
-	private final static String			FLOW_ID							= "flow-mod-1";
+
 	private final static String			FLOW_INGRESS_PORT				= "1";
 	private final static String			FLOW_OUTPUT_PORT				= "2";
 	private final static String			FLOW_PRIORITY					= "32767";
@@ -59,8 +88,18 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 
 	private final static String			FLOODLIGHT_ADD_FLOW_RESPONSE	= "Entry pushed";
 
-	private HTTPServer					server;
-	private List<HTTPServerBehaviour>	desiredBehaviours;
+	private final static String			RESOURCE_INFO_NAME				= "OpenflowSwitch";
+
+	private static final String			ACTIONSET_NAME					= "floodlight";
+	private static final String			ACTIONSET_VERSION				= "0.90";
+	private static final String			MOCK_URI						= "mock://user:pass@host.net:2212/mocksubsystem";
+	private static final String			RESOURCE_TYPE					= "openflowswitch";
+
+	private static final String			PROTOCOL						= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
+	private static final String			SWITCH_ID_NAME					= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
+
+	private IResource					ofSwitchResource;
+	private WSEndpointListenerHandler	listenerHandler;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -70,18 +109,29 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 				keepRuntimeFolder());
 	}
 
-	public void startServer() throws Exception {
+	@Before
+	public void initTestScenario() throws Exception {
 
-		server = new HTTPServer(8080);
-		server.setBaseURL(SERVLET_CONTEXT_URL);
-		server.setDesiredBehaviours(desiredBehaviours);
-		server.start();
+		log.info("Creating initial scenario.");
 
+		prepareBehaviours();
+
+		startServer(SERVLET_CONTEXT_URL);
+		startResource(SERVER_URL, SWITCH_ID);
+
+		log.info("Test initialized.");
 	}
 
-	public void stopServer() throws Exception {
-		server.stop();
-		desiredBehaviours = null;
+	@After
+	public void shutDownTestScenario() throws Exception {
+
+		log.info("Shutting down test scenario.");
+
+		stopResource();
+		stopServer();
+
+		log.info("Test finished.");
+
 	}
 
 	/**
@@ -91,22 +141,9 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 	 */
 	@Test
 	public void createRuleTest() throws Exception {
-		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
-		HTTPServerBehaviour behaviourCreateFlow = createBehaviour(HttpMethod.POST, ADD_FLOW_URL, MediaType.APPLICATION_JSON,
-				readSampleFile("/addFlow.json"),
-				HttpStatus.CREATED_201,
-				MediaType.APPLICATION_JSON, FLOODLIGHT_ADD_FLOW_RESPONSE);
-		HTTPServerBehaviour behaviourgetFlows = createBehaviour(HttpMethod.GET, GET_FLOWS_URL, MediaType.APPLICATION_JSON, "", HttpStatus.OK_200,
-				MediaType.APPLICATION_JSON, readSampleFile("/getSwitchFlows.json"));
-
-		desiredBehaviours.add(behaviourCreateFlow);
-		desiredBehaviours.add(behaviourgetFlows);
-
-		startServer();
-		startResource(SERVER_URL, SWITCH_ID);
 
 		IOpenflowForwardingCapability forwardingCapab = (IOpenflowForwardingCapability) getCapability(IOpenflowForwardingCapability.class);
-		FloodlightOFFlow forwardingRule = generateSampleFloodlightOFFlow("flow-mod-1", "1", "2");
+		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "1", "1", "2");
 		forwardingCapab.createOpenflowForwardingRule(forwardingRule);
 
 		OpenflowSwitchModel model = (OpenflowSwitchModel) ofSwitchResource.getModel();
@@ -135,8 +172,21 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 		FloodlightOFMatch match = flow.getMatch();
 		Assert.assertEquals("Ingress port should be " + FLOW_INGRESS_PORT, FLOW_INGRESS_PORT, match.getIngressPort());
 
-		stopResource();
-		stopServer();
+	}
+
+	@Override
+	protected void prepareBehaviours() throws JAXBException, IOException {
+		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
+
+		HTTPRequest reqCreateFlow = new HTTPRequest(ADD_FLOW_URL, HttpMethod.POST, MediaType.APPLICATION_JSON, readSampleFile("/addFlow.json"));
+		HTTPResponse resqCreateFlow = new HTTPResponse(HttpStatus.CREATED_201, MediaType.APPLICATION_JSON, FLOODLIGHT_ADD_FLOW_RESPONSE, "");
+		HTTPServerBehaviour behaviourCreateFlow = new HTTPServerBehaviour(reqCreateFlow, resqCreateFlow, false);
+		desiredBehaviours.add(behaviourCreateFlow);
+
+		HTTPRequest reqGetFlows = new HTTPRequest(GET_FLOWS_URL, HttpMethod.GET, MediaType.APPLICATION_JSON, "");
+		HTTPResponse respGetFlows = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON, readSampleFile("/getSwitchFlows.json"), "");
+		HTTPServerBehaviour behaviourgetFlows = new HTTPServerBehaviour(reqGetFlows, respGetFlows, false);
+		desiredBehaviours.add(behaviourgetFlows);
 
 	}
 
@@ -152,44 +202,46 @@ public class FloodlightDriverTest extends OFSwitchResourceWithFloodlight {
 		return fileString;
 	}
 
-	private HTTPServerBehaviour createBehaviour(String reqMethod, String reqURL, String reqContentType, String reqBody, int respStatus,
-			String contentType,
-			String bodyMessage) {
+	private void startResource(String serverURL, String switchId) throws ResourceException, ProtocolException, InterruptedException {
+		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		HTTPRequest req = new HTTPRequest();
-		req.setMethod(reqMethod);
-		req.setRequestURL(reqURL);
-		req.setBodyMessage(reqBody);
-		req.setContentType(reqContentType);
+		CapabilityDescriptor ofForwardingDescriptor = ResourceHelper.newCapabilityDescriptor(ACTIONSET_NAME,
+				ACTIONSET_VERSION,
+				OpenflowForwardingCapability.CAPABILITY_TYPE,
+				MOCK_URI);
+		lCapabilityDescriptors.add(ofForwardingDescriptor);
 
-		HTTPResponse response = new HTTPResponse();
-		response.setContentType(contentType);
-		response.setBodyMessage(bodyMessage);
-		response.setStatus(respStatus);
+		// OFSwitch Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE,
+				MOCK_URI, RESOURCE_INFO_NAME);
 
-		return new HTTPServerBehaviour(req, response);
+		ofSwitchResource = resourceManager.createResource(resourceDescriptor);
+
+		Map<String, Object> sessionParameters = new HashMap<String, Object>();
+		sessionParameters.put(SWITCH_ID_NAME, switchId);
+
+		// If not exists the protocol session manager, it's created and add the session context
+		InitializerTestHelper.addSessionContextWithSessionParams(protocolManager, ofSwitchResource.getResourceIdentifier().getId(), serverURL,
+				PROTOCOL, sessionParameters);
+
+		// Start resource
+		listenerHandler = new WSEndpointListenerHandler();
+		listenerHandler.registerWSEndpointListener(context, IOpenflowForwardingCapability.class);
+		resourceManager.startResource(ofSwitchResource.getResourceIdentifier());
+		listenerHandler.waitForEndpointToBePublished();
+
 	}
 
-	private static FloodlightOFFlow generateSampleFloodlightOFFlow(String name, String inputPort, String outputPort) {
+	private void stopResource() throws ResourceException, InterruptedException {
+		resourceManager.stopResource(ofSwitchResource.getResourceIdentifier());
+		listenerHandler.waitForEndpointToBeUnpublished();
+		resourceManager.removeResource(ofSwitchResource.getResourceIdentifier());
+	}
 
-		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
-		forwardingRule.setName(name);
-		forwardingRule.setPriority("1");
-
-		FloodlightOFMatch match = new FloodlightOFMatch();
-		match.setIngressPort(inputPort);
-		forwardingRule.setMatch(match);
-
-		FloodlightOFAction floodlightAction = new FloodlightOFAction();
-		floodlightAction.setType("output");
-		floodlightAction.setValue(outputPort);
-
-		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
-		actions.add(floodlightAction);
-
-		forwardingRule.setActions(actions);
-
-		return forwardingRule;
+	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
+		ICapability capab = ofSwitchResource.getCapabilityByInterface(clazz);
+		Assert.assertNotNull(capab);
+		return capab;
 	}
 
 }
