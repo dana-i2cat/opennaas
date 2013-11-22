@@ -173,7 +173,7 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 		Assert.assertNotNull("Router should contain network ports.", logicalDevices);
 		Assert.assertEquals("Router model should contain two network ports.", 2, logicalDevices.size());
 		Assert.assertEquals("First network port should be eth0", IFACE_ETH0, logicalDevices.get(0).getName());
-		Assert.assertEquals("Second network port should be eth1", logicalDevices.get(1).getName());
+		Assert.assertEquals("Second network port should be eth1", IFACE_ETH1, logicalDevices.get(1).getName());
 
 		Assert.assertTrue("Eth1 should be parsed as a network port.", logicalDevices.get(1) instanceof NetworkPort);
 

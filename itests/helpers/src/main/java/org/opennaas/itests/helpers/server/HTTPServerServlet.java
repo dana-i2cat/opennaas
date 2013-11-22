@@ -65,6 +65,12 @@ public class HTTPServerServlet extends HttpServlet {
 		createResponse(request, response);
 	}
 
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		createResponse(request, response);
+	}
+
 	private void createResponse(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HTTPServerBehaviour behavior = getDesiredBehavior(request);
 

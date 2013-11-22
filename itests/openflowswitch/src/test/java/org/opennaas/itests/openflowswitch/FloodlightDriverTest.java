@@ -25,6 +25,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.endpoints.WSEndpointListenerHandler;
@@ -85,6 +86,7 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 
 	private final static String			GET_FLOWS_URL					= SERVLET_CONTEXT_URL + "/list/" + SWITCH_ID + "/json";
 	private final static String			ADD_FLOW_URL					= SERVLET_CONTEXT_URL + "/json";
+	private final static String			REMOVE_FLOW_URL					= SERVLET_CONTEXT_URL + "/json";
 
 	private final static String			FLOODLIGHT_ADD_FLOW_RESPONSE	= "Entry pushed";
 
@@ -156,7 +158,7 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 
 		FloodlightOFFlow flow = table.getOfForwardingRules().get(0);
 		Assert.assertNotNull(flow);
-		Assert.assertNotNull("Flow should contain a generated name.", flow.getName());
+		Assert.assertNotNull("Flow should contain as id \"flow-mod-1\".", flow.getName());
 		Assert.assertEquals("Flow priority should be " + FLOW_PRIORITY, FLOW_PRIORITY, flow.getPriority());
 		Assert.assertEquals("Switch id should be " + SWITCH_ID, SWITCH_ID, flow.getSwitchId());
 
@@ -174,6 +176,32 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 
 	}
 
+	/**
+	 * Floodlight driver needs to send a body message in the DELETE method because of the Floodlight API. Our Jetty server answers a HTTP 400 Bad
+	 * Request error if we include body in this method, so we can not test this functionality.
+	 * 
+	 * @throws ResourceException
+	 */
+	@Ignore
+	@Test
+	public void createAndDeleteRuleTest() throws ResourceException {
+
+		IOpenflowForwardingCapability forwardingCapab = (IOpenflowForwardingCapability) getCapability(IOpenflowForwardingCapability.class);
+		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "1", "1", "2");
+		forwardingCapab.createOpenflowForwardingRule(forwardingRule);
+
+		OpenflowSwitchModel model = (OpenflowSwitchModel) ofSwitchResource.getModel();
+		OFFlowTable table = model.getOfTables().get(0);
+
+		Assert.assertEquals(1, table.getOfForwardingRules().size());
+		FloodlightOFFlow flow = table.getOfForwardingRules().get(0);
+		Assert.assertNotNull(flow);
+
+		forwardingCapab.removeOpenflowForwardingRule(flow.getName());
+		Assert.assertEquals(0, table.getOfForwardingRules().size());
+
+	}
+
 	@Override
 	protected void prepareBehaviours() throws JAXBException, IOException {
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
@@ -184,9 +212,17 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 		desiredBehaviours.add(behaviourCreateFlow);
 
 		HTTPRequest reqGetFlows = new HTTPRequest(GET_FLOWS_URL, HttpMethod.GET, MediaType.APPLICATION_JSON, "");
-		HTTPResponse respGetFlows = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON, readSampleFile("/getSwitchFlows.json"), "");
-		HTTPServerBehaviour behaviourgetFlows = new HTTPServerBehaviour(reqGetFlows, respGetFlows, false);
+		HTTPResponse respGetFlows = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON,
+				readSampleFile("/getSwitchFlowsWithOneFlow.json"), "");
+		HTTPServerBehaviour behaviourgetFlows = new HTTPServerBehaviour(reqGetFlows, respGetFlows, true);
 		desiredBehaviours.add(behaviourgetFlows);
+		desiredBehaviours.add(behaviourgetFlows);
+
+		HTTPRequest reqDelFlow = new HTTPRequest(REMOVE_FLOW_URL, HttpMethod.DELETE, MediaType.APPLICATION_JSON, "");
+		HTTPResponse respDelFlow = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON,
+				"", "");
+		HTTPServerBehaviour behaviourDelFlows = new HTTPServerBehaviour(reqDelFlow, respDelFlow, true);
+		desiredBehaviours.add(behaviourDelFlows);
 
 	}
 

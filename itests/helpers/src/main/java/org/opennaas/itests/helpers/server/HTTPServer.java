@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -24,12 +26,20 @@ public class HTTPServer {
 
 	private final static Log			log	= LogFactory.getLog(HTTPServer.class);
 
-	Server								server;
+	private Server						server;
 	private String						contextPath;
 	private List<HTTPServerBehaviour>	desiredBehaviours;
 
 	public HTTPServer(int port) {
-		server = new Server(port);
+
+		server = new Server();
+
+		// we use this connector since SelectChannelConnector contains a bug, producing the server to hang
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=357318
+		SocketConnector connector = new SocketConnector();
+		connector.setPort(port);
+
+		server.setConnectors(new Connector[] { connector });
 	}
 
 	/**
@@ -82,6 +92,9 @@ public class HTTPServer {
 		context.addServlet(new ServletHolder(new HTTPServerServlet(desiredBehaviours)), "/*");
 
 		server.start();
+
+		Thread.sleep(5000);
+
 		log.info("Server successfully started");
 
 	}
@@ -97,6 +110,7 @@ public class HTTPServer {
 
 		server.stop();
 
-	}
+		Thread.sleep(5000);
 
+	}
 }
