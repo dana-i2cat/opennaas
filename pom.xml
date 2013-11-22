@@ -42,7 +42,7 @@
 		<commons.dbcp.version>1.2.2_7</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
 		<commons.io.version>1.4</commons.io.version>
-		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
+		<commons.jxpath.version>1.2_5</commons.jxpath.version>
 		<commons.lang.version>2.4_4</commons.lang.version>
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
