@@ -48,6 +48,9 @@ public class NCLController implements INCLController {
 			flowWithRoute.getMatch().setDstIp(null);
 			// FIXME requesting a flow that won't filter by ToS, by now
 			flowWithRoute.getMatch().setTosBits(null);
+			// FIXME requesting a flow that won't filter by transport ports, by now
+			flowWithRoute.getMatch().setSrcPort(null);
+			flowWithRoute.getMatch().setDstPort(null);
 
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
