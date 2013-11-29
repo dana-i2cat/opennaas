@@ -1,6 +1,8 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
@@ -13,7 +15,9 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
 import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
  * 
@@ -22,10 +26,20 @@ import org.opennaas.extensions.sdnnetwork.model.Route;
  */
 public class NCLProvisioner implements INCLProvisioner {
 
-	private IQoSPDP				qoSPDP;
-	private INetworkSelector	networkSelector;
-	private IPathFinder			pathFinder;
-	private INCLController		nclController;
+	private IQoSPDP					qoSPDP;
+	private INetworkSelector		networkSelector;
+	private IPathFinder				pathFinder;
+	private INCLController			nclController;
+	private IRequestToFlowsLogic	requestToFlowsLogic;
+
+	/**
+	 * Key: FlowId, Value: Flow
+	 */
+	private Map<String, Flow>		allocatedFlows;
+
+	public NCLProvisioner() {
+		allocatedFlows = new HashMap<String, Flow>();
+	}
 
 	/**
 	 * @return the qoSPDP
@@ -80,6 +94,14 @@ public class NCLProvisioner implements INCLProvisioner {
 		this.nclController = nclController;
 	}
 
+	public IRequestToFlowsLogic getRequestToFlowsLogic() {
+		return requestToFlowsLogic;
+	}
+
+	public void setRequestToFlowsLogic(IRequestToFlowsLogic requestToFlowsLogic) {
+		this.requestToFlowsLogic = requestToFlowsLogic;
+	}
+
 	// ///////////////////////////
 	// INCLProvisioner Methods //
 	// ///////////////////////////
@@ -97,7 +119,13 @@ public class NCLProvisioner implements INCLProvisioner {
 
 			String netId = getNetworkSelector().findNetworkForRequest(flowRequest);
 			Route route = getPathFinder().findPathForRequest(flowRequest, netId);
-			String flowId = getNclController().allocateFlow(flowRequest, route, netId);
+			SDNNetworkOFFlow sdnFlow = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest, route);
+			String flowId = getNclController().allocateFlow(sdnFlow, netId);
+
+			Flow flow = new Flow();
+			flow.setFlowRequest(flowRequest);
+			flow.setId(flowId);
+			allocatedFlows.put(flowId, flow);
 
 			return flowId;
 
@@ -125,6 +153,8 @@ public class NCLProvisioner implements INCLProvisioner {
 			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
 			getNclController().deallocateFlow(flowId, netId);
 
+			allocatedFlows.remove(flowId);
+
 		} catch (Exception e) {
 			throw new ProvisionerException(e);
 		}
@@ -134,7 +164,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	public Collection<Flow> readAllocatedFlows()
 			throws ProvisionerException {
 
-		return getNclController().getFlows();
+		return allocatedFlows.values();
 	}
 
 }

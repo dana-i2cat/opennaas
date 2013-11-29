@@ -3,9 +3,8 @@ package org.opennaas.extensions.ofertie.ncl.controller.api;
 import java.util.Collection;
 
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
-import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowRetrievalException;
+import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
  * 
@@ -16,13 +15,12 @@ public interface INCLController {
 
 	/**
 	 * 
-	 * @param flowRequest
-	 * @param route
+	 * @param flowWithRoute
 	 * @param networkId
 	 * @return flowId of allocated flow
 	 * @throws FlowAllocationException
 	 */
-	public String allocateFlow(FlowRequest flowRequest, Route route, String networkId) throws FlowAllocationException;
+	public String allocateFlow(SDNNetworkOFFlow flowWithRoute, String networkId) throws FlowAllocationException;
 
 	/**
 	 * 
@@ -37,6 +35,5 @@ public interface INCLController {
 	 * 
 	 * @return
 	 */
-	public Collection<Flow> getFlows();
-
+	public Collection<SDNNetworkOFFlow> getFlows(String networkId) throws FlowRetrievalException;
 }
