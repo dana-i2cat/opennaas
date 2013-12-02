@@ -3,6 +3,20 @@ package org.opennaas.extensions.roadm.wonesys.commandsets.test;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.roadm.wonesys.actionsets.actions.RefreshModelConnectionsAction;
 import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
 import org.opennaas.extensions.roadm.wonesys.commandsets.test.mock.MockProtocolSessionManager;
@@ -21,21 +35,6 @@ import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOp
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.ActionResponse.STATUS;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class RefreshModelConnectionsActionTest {
 	Log												log			= LogFactory.getLog(RefreshModelConnectionsActionTest.class);

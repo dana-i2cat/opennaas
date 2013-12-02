@@ -18,7 +18,7 @@ public class ShowVLANConfigCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to show the VLAN configurations", required = true, multiValued = false)
 	private String	resourceId;
-	
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Show VLAN Configurations");
@@ -28,10 +28,10 @@ public class ShowVLANConfigCommand extends GenericKarafCommand {
 			Iterator<VLANConfiguration> iterator = macBridge.getVLANDatabase().values().iterator();
 			VLANConfiguration currentEntry = null;
 			this.printSymbolWithoutDoubleLine("VLAN Configuration database contents:\n");
-			while (iterator.hasNext()){
+			while (iterator.hasNext()) {
 				currentEntry = iterator.next();
-				this.printSymbolWithoutDoubleLine("VLAN id: "+currentEntry.getVlanID() 
-						+". Name: "+currentEntry.getName()+"\n");
+				this.printSymbolWithoutDoubleLine("VLAN id: " + currentEntry.getVlanID()
+						+ ". Name: " + currentEntry.getName() + "\n");
 			}
 		} catch (ResourceException e) {
 			printError(e);

@@ -10,5 +10,4 @@ target/
 core/*/META-INF
 core/*/OSGI-INF
 core/*/build.properties
-*.*~
-platform/src/main/filtered-resources/etc/org.opennaas.cfg
+

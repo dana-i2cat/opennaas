@@ -14,8 +14,8 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 /**
  * List the Resources that are in the IaaS Container
- *
- *
+ * 
+ * 
  */
 @Command(scope = "resource", name = "list", description = "List all resources in the platform")
 public class ListResourcesCommand extends GenericKarafCommand {
@@ -66,8 +66,8 @@ public class ListResourcesCommand extends GenericKarafCommand {
 			// printSymbol(underLine);
 			for (IResource resource : resources) {
 				printInfo(doubleTab + "TYPE: " + resource.getResourceDescriptor().getInformation().getType() +
-							doubleTab + "ID: " + resource.getResourceDescriptor().getInformation().getName() +
-							doubleTab + "STATE: " + resource.getState());
+						doubleTab + "ID: " + resource.getResourceDescriptor().getInformation().getName() +
+						doubleTab + "STATE: " + resource.getState());
 
 				if (flagAll)
 					printAll(resource.getResourceDescriptor());

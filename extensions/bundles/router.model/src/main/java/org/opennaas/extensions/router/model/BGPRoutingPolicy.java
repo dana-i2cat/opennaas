@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class BGPRoutingPolicy as well as methods comparable to the

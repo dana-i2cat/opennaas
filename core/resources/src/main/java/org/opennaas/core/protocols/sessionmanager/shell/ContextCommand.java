@@ -3,6 +3,7 @@ package org.opennaas.core.protocols.sessionmanager.shell;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Set;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -35,10 +36,10 @@ public class ContextCommand extends GenericKarafCommand {
 	@Argument(name = "uri", index = 3, required = false, description = "The URI passed to the protocol implementation of the context")
 	String						uri;						// user and password are inside PROTOCOL_URI
 
-	@Argument(name = "privateKeyPath", index = 4, required = false, description = "The path where the private key is stored.")
+	@Option(name = "--privateKeyPath", aliases = { "-PKpath" }, required = false, description = "The path where the private key is stored.")
 	String						keyPath;
 
-	@Argument(name = "keyPassphrase", index = 5, required = false, description = "Passphrase to unlock the private key.")
+	@Option(name = "--keyPassphrase", aliases = { "-PKpwd" }, required = false, description = "Passphrase to unlock the private key.")
 	String						keyPassphrase;
 
 	@Option(name = "--remove", aliases = { "-r" }, required = false, description = "Instead of adding a context, remove it for the named protocol. ")
@@ -46,6 +47,9 @@ public class ContextCommand extends GenericKarafCommand {
 
 	@Option(name = "--interactive", aliases = { "-i" }, required = false, description = "Tells command to ask for passwords interactively")
 	boolean						interactive;
+
+	@Option(name = "--params", aliases = { "-p" }, required = false, description = "Allows the user to specify a coma separated list of extra parameters (name=value).")
+	String						parametersList;
 
 	private static final String	PASSWORD	= "password";
 	private static final String	PUBLICKEY	= "publickey";
@@ -113,11 +117,42 @@ public class ContextCommand extends GenericKarafCommand {
 			return null;
 		}
 
+		context = fillExtraParams(context, parametersList);
+
 		sessionManager.registerContext(context);
 		printInfo("Context registered for resource " + resourceId);
 		printEndCommand();
 		return null;
 
+	}
+
+	private ProtocolSessionContext fillExtraParams(
+			ProtocolSessionContext context, String parametersList) {
+
+		if (parametersList == null || parametersList.isEmpty())
+			return context;
+
+		Set<String> reservedParameters = context.getSessionParameters().keySet();
+
+		String[] parametersArray = parametersList.split(",");
+		for (int i = 0; i < parametersArray.length; i++) {
+			String[] keyValuePair = parametersArray[i].split("=");
+			if (keyValuePair.length > 0) {
+				if (keyValuePair.length > 1) {
+					String parameterName = keyValuePair[0];
+					String parameterValue = keyValuePair[1];
+
+					if (reservedParameters.contains(parameterName)) {
+						printInfo("Ignoring parameter " + parameterName + ". It is reserved.");
+					} else {
+						context.addParameter(parameterName, parameterValue);
+					}
+				} else {
+					printInfo("Ignoring parameter " + keyValuePair[0] + " with no value");
+				}
+			}
+		}
+		return context;
 	}
 
 	/**

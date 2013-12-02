@@ -9,11 +9,11 @@ public class BoDActionSet extends ActionSet
 		setActionSetId("bodActionSet");
 
 		putAction(RequestConnectionAction.ACTIONID,
-				  RequestConnectionAction.class);
+				RequestConnectionAction.class);
 		putAction(ShutdownConnectionAction.ACTIONID,
-				  ShutdownConnectionAction.class);
+				ShutdownConnectionAction.class);
 		putAction(GetTopologyAction.ACTIONID,
-				  GetTopologyAction.class);
+				GetTopologyAction.class);
 
 		refreshActions.add(GetTopologyAction.ACTIONID);
 	}

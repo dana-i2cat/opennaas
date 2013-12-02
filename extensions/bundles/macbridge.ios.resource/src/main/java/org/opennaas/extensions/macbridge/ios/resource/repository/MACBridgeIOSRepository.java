@@ -1,5 +1,7 @@
 package org.opennaas.extensions.macbridge.ios.resource.repository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
@@ -7,9 +9,6 @@ import org.opennaas.core.resources.ResourceRepository;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class MACBridgeIOSRepository extends ResourceRepository {
 
@@ -29,7 +28,7 @@ public class MACBridgeIOSRepository extends ResourceRepository {
 			if (sessionManager.getRegisteredContexts().isEmpty()) {
 				String name = resource.getResourceDescriptor().getInformation().getName();
 				String type = resource.getResourceDescriptor().getInformation().getType();
-				String resourceId = type+":"+name;
+				String resourceId = type + ":" + name;
 				throw new ResourceException(
 						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
 			}
@@ -60,6 +59,5 @@ public class MACBridgeIOSRepository extends ResourceRepository {
 		IProtocolManager protocolManager = Activator.getProtocolManagerService();
 		return protocolManager.getProtocolSessionManager(resourceId);
 	}
-
 
 }

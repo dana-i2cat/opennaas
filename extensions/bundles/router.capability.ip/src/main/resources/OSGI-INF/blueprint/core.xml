@@ -64,5 +64,19 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="ip/addIP">
+			<action class="org.opennaas.extensions.router.capability.ip.shell.AddIPCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>		
+		<command name="ip/removeIP">
+			<action class="org.opennaas.extensions.router.capability.ip.shell.RemoveIPCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>			
 	</command-bundle>
 </blueprint>

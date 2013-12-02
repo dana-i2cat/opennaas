@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Triangle toplogy with user assigned node mapping -->
+<!--
+It shows that user can specificity which physical node he wants to host the virtual nodes by fill the <pnodeID> tag, then the algorithm will find the shortest path among these assigned nodes.
+-->
+<VNRequest>
+  <VNode>
+    <id>0</id>
+    <pnodeID>router:junos40</pnodeID>
+  </VNode>
+  <VNode>
+    <id>1</id>
+    <pnodeID>router:junos50</pnodeID>
+  </VNode>
+  <VNode>
+    <id>2</id>
+    <pnodeID>router:junos60</pnodeID>
+  </VNode>
+  <VLink>
+    <node1>0</node1>
+    <node2>1</node2>
+  </VLink>
+  <VLink>
+    <node1>1</node1>
+    <node2>2</node2>
+  </VLink>
+  <VLink>
+    <node1>0</node1>
+    <node2>2</node2>
+  </VLink>
+</VNRequest>

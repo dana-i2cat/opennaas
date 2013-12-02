@@ -1,18 +1,10 @@
 package org.opennaas.extensions.roadm.wonesys.protocols;
 
-import java.util.Date;
+import static org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator.getEventManagerService;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import org.opennaas.extensions.roadm.wonesys.protocols.listeners.CommandResponseListener;
-import org.opennaas.extensions.roadm.wonesys.protocols.listeners.RawSocketAlarmListener;
-import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
-import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
-import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransport;
-import org.opennaas.extensions.roadm.wonesys.transports.mock.MockTransport;
-import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
-import static org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator.getEventManagerService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,6 +16,13 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.protocols.listeners.CommandResponseListener;
+import org.opennaas.extensions.roadm.wonesys.protocols.listeners.RawSocketAlarmListener;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
+import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransport;
+import org.opennaas.extensions.roadm.wonesys.transports.mock.MockTransport;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -69,10 +68,12 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 
 		log.debug("Initializing transport");
 		/* is mock or not */
-		if (WonesysProtocolSessionContextUtils.isMock(protocolSessionContext))
+		if (WonesysProtocolSessionContextUtils.isMock(protocolSessionContext)) {
+			log.info("Using MockTransport connected to a Proteus ROADM simulator");
 			wonesysTransport = new MockTransport();
-		else
+		} else {
 			wonesysTransport = new WonesysTransport(protocolSessionContext);
+		}
 
 		String timeoutParam = (String) protocolSessionContext.getSessionParameters().get("protocol.responsetimeout");
 		if (timeoutParam != null)
@@ -101,15 +102,15 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	 */
 	@Override
 	synchronized public Object sendReceive(Object requestMessage)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		try {
 			String message = (String) requestMessage;
 			CommandResponseListener responseListener =
-				new CommandResponseListener(message);
+					new CommandResponseListener(message);
 			int serviceId =
-				registerToTransport(responseListener,
-									RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
+					registerToTransport(responseListener,
+							RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
 			try {
 				wonesysTransport.sendMsg(message);
 				log.info("Message sent");
@@ -125,7 +126,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	}
 
 	private int registerToTransport(EventHandler listener, String topic)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		try {
 			Properties properties = new Properties();
@@ -140,7 +141,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	}
 
 	private String waitResponse(CommandResponseListener responseListener)
-		throws ProtocolException
+			throws ProtocolException
 	{
 		try {
 			long start = System.currentTimeMillis();

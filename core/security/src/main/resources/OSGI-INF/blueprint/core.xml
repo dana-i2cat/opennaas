@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+						http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+ 						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+	<cm:property-placeholder persistent-id="org.opennaas"
+		update-strategy="reload" />
+
+	<!-- Register OpenNaaS OSGi Services & Beans -->
+
+	<bean id="dataSourceSecurity" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url"
+			value="jdbc:hsqldb:file:databases/security/security_db;hsqldb.default_table_type=cached;shutdown=true" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean>
+
+	<service ref="dataSourceSecurity" interface="javax.sql.DataSource">
+		<service-properties>
+			<entry key="osgi.jndi.service.name" value="jdbc/opennaas-security" />
+		</service-properties>
+	</service>
+
+	<bean id="securityRepository"
+		class="org.opennaas.core.security.persistence.SecurityRepository"
+		init-method="init" destroy-method="close">
+		<property name="persistenceUnit" value="opennaas-security" />
+	</bean>
+
+</blueprint>

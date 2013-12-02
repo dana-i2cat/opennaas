@@ -8,9 +8,9 @@ import org.opennaas.extensions.network.model.physical.Location;
 
 /**
  * A network element is an abstract class which describe an elements in a computer network.
- *
+ * 
  * @author isart
- *
+ * 
  */
 public abstract class NetworkElement {
 	String						name;

@@ -3,16 +3,16 @@ package org.opennaas.extensions.router.model.tests;
 import java.util.List;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.NetworkPort;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.NetworkPort;
 
 public class SystemModelTest {
 	Log				log	= LogFactory.getLog(ManagedElementTest.class);

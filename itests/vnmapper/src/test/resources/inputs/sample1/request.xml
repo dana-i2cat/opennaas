@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VNRequest>
+  <VNode>
+    <id>0</id>
+    <pnodeID>-</pnodeID>
+  </VNode>
+  <VNode>
+    <id>1</id>
+    <pnodeID>-</pnodeID>
+  </VNode>
+  <VNode>
+    <id>2</id>
+    <pnodeID>-</pnodeID>
+  </VNode>
+  <VLink>
+    <node1>0</node1>
+    <node2>1</node2>
+  </VLink>
+  <VLink>
+    <node1>1</node1>
+    <node2>2</node2>
+  </VLink>
+</VNRequest>

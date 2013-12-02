@@ -29,6 +29,7 @@ public class VCPENetworkModel implements IModel {
 	private static final long			serialVersionUID	= -1793468268517626224L;
 	private String						id;
 	private String						name;
+	private String						owner;
 	private String						templateType;
 	private String						clientIpRange;
 	private String						nocIpRange;
@@ -45,7 +46,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -59,10 +61,26 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the owner
+	 */
+	public String getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 	/**
@@ -73,7 +91,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param clientIpRange the clientIpRange to set
+	 * @param clientIpRange
+	 *            the clientIpRange to set
 	 */
 	public void setClientIpRange(String clientIpRange) {
 		this.clientIpRange = clientIpRange;
@@ -87,7 +106,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param nocIpRange the nocIpRange to set
+	 * @param nocIpRange
+	 *            the nocIpRange to set
 	 */
 	public void setNocIpRange(String nocIpRange) {
 		this.nocIpRange = nocIpRange;
@@ -115,7 +135,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param bgp the bgp to set
+	 * @param bgp
+	 *            the bgp to set
 	 */
 	public void setBgp(BGP bgp) {
 		this.bgp = bgp;
@@ -163,7 +184,8 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param vrrp the vrrp to set
+	 * @param vrrp
+	 *            the vrrp to set
 	 */
 	public void setVrrp(VRRP vrrp) {
 		this.vrrp = vrrp;
@@ -177,10 +199,22 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @param templateType the templateType to set
+	 * @param templateType
+	 *            the templateType to set
 	 */
 	public void setTemplateType(String templateType) {
 		this.templateType = templateType;
+	}
+
+	/**
+	 * @return a copy of the model
+	 * @throws SerializationException
+	 */
+	public VCPENetworkModel deepCopy() throws SerializationException {
+		String xmlModel = this.toXml();
+		VCPENetworkModel modelCopy = (VCPENetworkModel) ObjectSerializer.fromXml(xmlModel, this.getClass());
+		return modelCopy;
+
 	}
 
 	/*
@@ -198,6 +232,8 @@ public class VCPENetworkModel implements IModel {
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((nocIpRange == null) ? 0 : nocIpRange.hashCode());
+		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		result = prime * result + ((templateType == null) ? 0 : templateType.hashCode());
 		result = prime * result + ((vrrp == null) ? 0 : vrrp.hashCode());
 		return result;
@@ -243,6 +279,16 @@ public class VCPENetworkModel implements IModel {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (nocIpRange == null) {
+			if (other.nocIpRange != null)
+				return false;
+		} else if (!nocIpRange.equals(other.nocIpRange))
+			return false;
+		if (owner == null) {
+			if (other.owner != null)
+				return false;
+		} else if (!owner.equals(other.owner))
 			return false;
 		if (templateType == null) {
 			if (other.templateType != null)

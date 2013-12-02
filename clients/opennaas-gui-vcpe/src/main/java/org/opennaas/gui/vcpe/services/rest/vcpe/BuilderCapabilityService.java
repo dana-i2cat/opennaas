@@ -35,6 +35,7 @@ public class BuilderCapabilityService extends GenericRestService {
 			LOGGER.info("Calling update ips VCPENetworkBuilderCapability service");
 			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_ip/updateIps");
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
@@ -59,6 +60,7 @@ public class BuilderCapabilityService extends GenericRestService {
 			LOGGER.info("Calling update vrrp ip VCPENetworkBuilderCapability service");
 			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_vrrp/updateVRRPIp");
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
@@ -83,6 +85,7 @@ public class BuilderCapabilityService extends GenericRestService {
 			LOGGER.info("Calling change priority vrrp VCPENetworkBuilderCapability service");
 			String url = getURL("vcpenet/" + request.getName() + "/vcpenet_vrrp/changeVRRPPriority");
 			Client client = Client.create();
+			addHTTPBasicAuthentication(client);
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);

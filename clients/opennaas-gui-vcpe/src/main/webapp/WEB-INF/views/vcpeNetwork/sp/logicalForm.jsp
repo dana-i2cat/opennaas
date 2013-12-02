@@ -621,6 +621,13 @@
 						<form:input path="name" />
 						<br>
 						<form:errors path="name" />
+					</div>
+					<div class="field">
+						<form:label for="owner" path="owner" cssErrorClass="error">
+							<spring:message code="vcpenetwork.owner" />
+						</form:label>
+						<form:select path="owner" items="${usersClient}" />
+						<form:errors path="owner" size="18" />
 					</div>					
 				</div>
 				<!--  IP range -->

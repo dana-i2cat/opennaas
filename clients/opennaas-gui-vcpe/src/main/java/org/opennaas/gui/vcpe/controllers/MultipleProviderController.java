@@ -34,7 +34,7 @@ public class MultipleProviderController extends VCPENetworkController {
 	 * @return
 	 */
 	@Override
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/multipleProvider/physical")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/admin/vcpeNetwork/multipleProvider/physical")
 	public String getPhysicalForm(@RequestParam("templateType") String templateType, Model model, Locale locale) {
 		return super.getPhysicalForm(templateType, model, locale);
 	}
@@ -47,7 +47,7 @@ public class MultipleProviderController extends VCPENetworkController {
 	 * @param locale
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/logical")
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/multipleProvider/logical")
 	public String getLogicalForm(@ModelAttribute("physicalInfrastructure") MultipleProviderPhysical physical, Model model, Locale locale) {
 		return super.getLogicalForm(physical, model, locale);
 	}
@@ -61,39 +61,10 @@ public class MultipleProviderController extends VCPENetworkController {
 	 * @return
 	 * @throws RestServiceException
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/create")
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/multipleProvider/create")
 	public String create(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical, BindingResult result, Model model,
 			Locale locale, HttpSession session) {
 		return super.create(logical, result, model, locale, session);
-	}
-
-	/**
-	 * Edit a multiple provider VCPE Network
-	 * 
-	 * @param vcpeNetworkId
-	 * @param result
-	 * @return
-	 */
-	@Override
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/multipleProvider/edit")
-	public String edit(String vcpeNetworkId, Model model, Locale locale) {
-		return super.edit(vcpeNetworkId, model, locale);
-	}
-
-	/**
-	 * Update a multiple provider VCPE Network
-	 * 
-	 * @param singleProviderLogical
-	 * @param result
-	 * @param model
-	 * @param locale
-	 * @return
-	 * @throws RestServiceException
-	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/multipleProvider/update")
-	public String update(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
-			BindingResult result, Model model, Locale locale) {
-		return super.update(logical, result, model, locale);
 	}
 
 	/**
@@ -106,9 +77,54 @@ public class MultipleProviderController extends VCPENetworkController {
 	 * @throws RestServiceException
 	 */
 	@Override
-	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/multipleProvider/delete")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/admin/vcpeNetwork/multipleProvider/delete")
 	public String delete(String vcpeNetworkId, Model model, Locale locale, HttpSession session) {
 		return super.delete(vcpeNetworkId, model, locale, session);
+	}
+
+	/**
+	 * Edit a multiple provider VCPE Network
+	 * 
+	 * @param vcpeNetworkId
+	 * @param result
+	 * @return
+	 */
+	@Override
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/multipleProvider/edit")
+	public String edit(String vcpeNetworkId, Model model, Locale locale) {
+		return super.edit(vcpeNetworkId, model, locale);
+	}
+
+	/**
+	 * Update a multiple provider VCPE Network (admin user)
+	 * 
+	 * @param singleProviderLogical
+	 * @param result
+	 * @param model
+	 * @param locale
+	 * @return
+	 * @throws RestServiceException
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/admin/vcpeNetwork/multipleProvider/update")
+	public String updateAdmin(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
+			BindingResult result, Model model, Locale locale, HttpSession session) {
+		return update(logical, result, model, locale, session);
+	}
+
+	/**
+	 * Update a multiple provider VCPE Network
+	 * 
+	 * @param singleProviderLogical
+	 * @param result
+	 * @param model
+	 * @param locale
+	 * @return
+	 * @throws RestServiceException
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/multipleProvider/update")
+	public String update(@Valid @ModelAttribute("logicalInfrastructure") MultipleProviderLogical logical,
+			BindingResult result, Model model, Locale locale, HttpSession session) {
+		return super.update(logical, result, model, locale, session);
 	}
 
 }

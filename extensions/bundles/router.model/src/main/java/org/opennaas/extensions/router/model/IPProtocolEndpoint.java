@@ -426,4 +426,25 @@ public class IPProtocolEndpoint extends ProtocolEndpoint implements
 		this.iPv6SubnetPrefixLength = iPv6SubnetPrefixLength;
 	} // setIPv6SubnetPrefixLength
 
+	/**
+	 * Returns a copy of this IPProtocolEndpoint (only copies IPProtocolEndpoint.class declared attributes). Returned copy holds no references
+	 * (Associations) to other elements in the model.
+	 * 
+	 * @param source
+	 * @return
+	 */
+	public IPProtocolEndpoint partialCopy() {
+
+		IPProtocolEndpoint copy = new IPProtocolEndpoint();
+		copy.setProtocolIFType(getProtocolIFType());
+		copy.setIPv4Address(getIPv4Address());
+		copy.setIPv6Address(getIPv6Address());
+		copy.setSubnetMask(getSubnetMask());
+		copy.setPrefixLength(getPrefixLength());
+		copy.setIPv6AddressType(getIPv6AddressType());
+		copy.setIPv6SubnetPrefixLength(getIPv6SubnetPrefixLength());
+		copy.setAddressOrigin(getAddressOrigin());
+		return copy;
+	}
+
 } // Class IPProtocolEndpoint

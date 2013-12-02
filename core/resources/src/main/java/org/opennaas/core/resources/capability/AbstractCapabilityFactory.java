@@ -1,6 +1,5 @@
 package org.opennaas.core.resources.capability;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
@@ -9,9 +8,9 @@ import org.opennaas.core.resources.validation.ValidationException;
 
 /**
  * The AbstractCapabilityFactory is responsible for instantiating and initializing new capabilities for a resource
- *
+ * 
  * @author Mathieu Lemay
- *
+ * 
  */
 public abstract class AbstractCapabilityFactory implements ICapabilityFactory {
 	/**
@@ -55,7 +54,7 @@ public abstract class AbstractCapabilityFactory implements ICapabilityFactory {
 
 	/**
 	 * Creates a capability based on a capability descriptor and returns it.
-	 *
+	 * 
 	 * @param capabilityDescriptor
 	 * @throws capabilityException
 	 */

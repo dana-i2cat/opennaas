@@ -2,13 +2,12 @@ package org.opennaas.extensions.roadm.wonesys.transports;
 
 import java.io.IOException;
 
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionContextUtils;
-import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionContextUtils;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 
 public class WonesysTransport extends RawSocketTransport implements ITransport {
 

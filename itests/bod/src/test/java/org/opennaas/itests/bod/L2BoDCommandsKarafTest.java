@@ -2,7 +2,6 @@ package org.opennaas.itests.bod;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -80,12 +79,14 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 
 	private ProtocolSessionManager	protocolSessionManager;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)", timeout = 20000)
 	private BlueprintContainer		bodCapabilityService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)", timeout = 20000)
 	private BlueprintContainer		bodRepositoryService;
 
 	private IResource				resource;
@@ -97,8 +98,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-bod", "opennaas-netconf"),
-				includeTestHelper(),
+				includeFeatures("opennaas-bod", "opennaas-netconf", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

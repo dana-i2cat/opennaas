@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -14,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * 
  * @author Isart Canyameres Gimenez (i2cat)
  */
 public class ProfileManager implements IProfileManager {
@@ -121,7 +120,7 @@ public class ProfileManager implements IProfileManager {
 
 	/**
 	 * Called by blueprint every time a resource repository is registered
-	 *
+	 * 
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -141,7 +140,7 @@ public class ProfileManager implements IProfileManager {
 
 	/**
 	 * Called by blueprint every time a resource repository is unregistered
-	 *
+	 * 
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */

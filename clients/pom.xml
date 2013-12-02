@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.19</version>
+        <version>0.24.2</version>
 	</parent>
 	
-	<name>OF : Routing : Client</name>
+	<name>OpenNaaS :: Clients</name>
 	<artifactId>org.opennaas.clients</artifactId>
 
 	<modules>
-        <module>opennaas-gui-routing-nfv</module>
+        <module>opennaas-gui-vcpe</module>
  	</modules>
 </project>

@@ -518,8 +518,12 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 			if (props != null) {
 				props.put("service.exported.interfaces", "*");
 				props.put("service.exported.configs", "org.apache.cxf.rs");
-				props.put("org.apache.cxf.ws.address", url + "/" + resourceType + "/" + resourceName + "/protocolSessionManager" + "/");
+				props.put("service.exported.intents", "HTTP");
+				props.put("org.apache.cxf.rs.httpservice.context", url + "/" + resourceType + "/" + resourceName + "/protocolSessionManager");
+				props.put("org.apache.cxf.rs.address", "/");
+				props.put("org.apache.cxf.httpservice.requirefilter", "true");
 			}
+			log.info("Registering ws in url: " + props.get("org.apache.cxf.rs.address"));
 		} catch (ResourceException e) {
 			throw new ProtocolException(e);
 		} catch (IOException e) {

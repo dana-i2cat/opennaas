@@ -5,9 +5,8 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.util.*;
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalModule as well as methods comparable to the

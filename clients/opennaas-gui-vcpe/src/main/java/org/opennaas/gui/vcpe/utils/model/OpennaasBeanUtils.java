@@ -55,16 +55,14 @@ public class OpennaasBeanUtils {
 	 */
 	public static VCPENetworkModel getVCPENetworkFromSP(SingleProviderLogical modelIn) {
 		VCPENetworkModel modelOut = new VCPENetworkModel();
-		// Id
+
 		modelOut.setId(modelIn.getId());
-		// Name
 		modelOut.setName(modelIn.getName());
-		// Template
+		modelOut.setOwner(modelIn.getOwner());
 		modelOut.setTemplateType(modelIn.getTemplateType());
-		// Client IP Range
 		modelOut.setClientIpRange(modelIn.getClientIpRange());
-		// NOC IP Range
 		modelOut.setNocIpRange(modelIn.getNocIpRange());
+
 		// BGP
 		if (modelIn.getBgp() != null) {
 			modelOut.setBgp(getBGP(modelIn.getBgp()));
@@ -121,28 +119,36 @@ public class OpennaasBeanUtils {
 		org.opennaas.extensions.vcpe.model.IPNetworkDomain providerNetwork2 = getNetworkOpennaas(modelIn.getProviderNetwork2());
 		org.opennaas.extensions.vcpe.model.IPNetworkDomain clientNetwork = getNetworkOpennaas(modelIn.getClientNetwork());
 
-		elements.add(providerNetwork1);
-		elements.add(providerNetwork2);
-		elements.add(clientNetwork);
+		if (providerNetwork1 != null) {
+			elements.add(providerNetwork1);
+			elements.addAll(providerNetwork1.getInterfaces());
+		}
+		if (providerNetwork2 != null) {
+			elements.add(providerNetwork2);
+			elements.addAll(providerNetwork2.getInterfaces());
+		}
+		if (clientNetwork != null) {
+			elements.add(clientNetwork);
+			elements.addAll(clientNetwork.getInterfaces());
+		}
 
 		// LogicalRouters
 		org.opennaas.extensions.vcpe.model.Router providerLR1 = getRouterOpennaas(modelIn.getProviderLR1());
 		org.opennaas.extensions.vcpe.model.Router providerLR2 = getRouterOpennaas(modelIn.getProviderLR2());
 		org.opennaas.extensions.vcpe.model.Router clientRouter = getRouterOpennaas(modelIn.getClientLR());
 
-		elements.add(providerLR1);
-		elements.add(providerLR2);
-		elements.add(clientRouter);
-
-		// Add interfaces to elements
-		elements.addAll(providerNetwork1.getInterfaces());
-		elements.addAll(providerNetwork2.getInterfaces());
-		elements.addAll(clientNetwork.getInterfaces());
-
-		elements.addAll(providerLR1.getInterfaces());
-		elements.addAll(providerLR2.getInterfaces());
-		elements.addAll(clientRouter.getInterfaces());
-
+		if (providerLR1 != null) {
+			elements.add(providerLR1);
+			elements.addAll(providerLR1.getInterfaces());
+		}
+		if (providerLR2 != null) {
+			elements.add(providerLR2);
+			elements.addAll(providerLR2.getInterfaces());
+		}
+		if (clientRouter != null) {
+			elements.add(clientRouter);
+			elements.addAll(clientRouter.getInterfaces());
+		}
 		return modelOut;
 	}
 
@@ -220,19 +226,22 @@ public class OpennaasBeanUtils {
 	 * @return
 	 */
 	private static IPNetworkDomain getNetworkOpennaas(Network inNetwork) {
-		IPNetworkDomain outNetwork = new IPNetworkDomain();
+		IPNetworkDomain outNetwork = null;
+		if (inNetwork != null) {
+			outNetwork = new IPNetworkDomain();
+			outNetwork.setName(inNetwork.getName());
+			outNetwork.setTemplateName(inNetwork.getTemplateName());
+			outNetwork.setASNumber(inNetwork.getASNumber());
+			outNetwork.setOwner(inNetwork.getOwner());
 
-		outNetwork.setName(inNetwork.getName());
-		outNetwork.setTemplateName(inNetwork.getTemplateName());
-		outNetwork.setASNumber(inNetwork.getASNumber());
+			List<String> ipAddressRanges = new ArrayList<String>();
+			ipAddressRanges.add(inNetwork.getiPAddressRange());
+			outNetwork.setIPAddressRanges(ipAddressRanges);
 
-		List<String> ipAddressRanges = new ArrayList<String>();
-		ipAddressRanges.add(inNetwork.getiPAddressRange());
-		outNetwork.setIPAddressRanges(ipAddressRanges);
-
-		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
-		interfaces.add(getInterfaceOpennaas(inNetwork.getNetworkInterface()));
-		outNetwork.setInterfaces(interfaces);
+			List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
+			interfaces.add(getInterfaceOpennaas(inNetwork.getNetworkInterface()));
+			outNetwork.setInterfaces(interfaces);
+		}
 
 		return outNetwork;
 	}
@@ -242,8 +251,9 @@ public class OpennaasBeanUtils {
 	 * @return
 	 */
 	private static org.opennaas.extensions.vcpe.model.Router getRouterOpennaas(Router phyRouterIn) {
-		org.opennaas.extensions.vcpe.model.Router phyRouterOut = new org.opennaas.extensions.vcpe.model.Router();
+		org.opennaas.extensions.vcpe.model.Router phyRouterOut = null;
 		if (phyRouterIn != null) {
+			phyRouterOut = new org.opennaas.extensions.vcpe.model.Router();
 			phyRouterOut.setName(phyRouterIn.getName());
 			phyRouterOut.setTemplateName(phyRouterIn.getTemplateName());
 			// Interfaces

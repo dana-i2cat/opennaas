@@ -6,34 +6,33 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-//import org.hsqldb.Server;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hsqldb.ServerConfiguration;
 import org.hsqldb.ServerConstants;
 import org.hsqldb.persist.HsqlProperties;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 public class HSQLDBServer implements InitializingBean, DisposableBean {
 
-	private static Log logger = LogFactory.getLog(HSQLDBServer.class);
-	//private Server databaseServer;
+	private static Log			logger	= LogFactory.getLog(HSQLDBServer.class);
+	// private Server databaseServer;
 
 	/**
 	 * Properties used to customize instance.
 	 */
-	private Properties serverProperties;
+	private Properties			serverProperties;
 
 	/**
 	 * The actual server instance.
 	 */
-	private org.hsqldb.Server server;
+	private org.hsqldb.Server	server;
 
 	/**
 	 * DataSource used for shutdown.
 	 */
-	private DataSource dataSource;
+	private DataSource			dataSource;
 
 	public Properties getServerProperties() {
 		return serverProperties;
@@ -54,12 +53,11 @@ public class HSQLDBServer implements InitializingBean, DisposableBean {
 	public void afterPropertiesSet() throws Exception {
 
 		HsqlProperties configProps = new HsqlProperties(serverProperties);
-		/*if (configProps == null) {
-			logger.warn("we failed at getting an HSQL Server with serverProperties, trying to get one without");
-			configProps = new HsqlProperties();
-			if (configProps == null)
-				logger.error("we failed at getting an HSQL Server, period. Crash and burn from here on.");
-		}*/
+		/*
+		 * if (configProps == null) { logger.warn("we failed at getting an HSQL Server with serverProperties, trying to get one without"); configProps
+		 * = new HsqlProperties(); if (configProps == null) logger.error("we failed at getting an HSQL Server, period. Crash and burn from here on.");
+		 * }
+		 */
 
 		ServerConfiguration.translateDefaultDatabaseProperty(configProps);
 

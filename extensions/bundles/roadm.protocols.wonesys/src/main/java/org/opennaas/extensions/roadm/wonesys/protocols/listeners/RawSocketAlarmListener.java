@@ -2,18 +2,16 @@ package org.opennaas.extensions.roadm.wonesys.protocols.listeners;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.alarms.SessionAlarm;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmFactory;
 import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
-import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.alarms.SessionAlarm;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -23,7 +21,7 @@ public class RawSocketAlarmListener implements EventHandler {
 
 	private String		sessionId;
 
-	private long creationTime;
+	private long		creationTime;
 
 	public RawSocketAlarmListener(String sessionID) {
 		this.sessionId = sessionID;
@@ -47,13 +45,14 @@ public class RawSocketAlarmListener implements EventHandler {
 						isOld = true;
 				}
 
-				//Only publish if event arrived after listener creation
-				if (!isOld){
+				// Only publish if event arrived after listener creation
+				if (!isOld) {
 					try {
 						log.info("Session received an alarm: " + message + " created in " + arrivalTime);
 						createAndPublishAlarm(message);
 					} catch (ProtocolException e) {
-						log.error("Error publishing received alarm: " + message + ". Received alarm will be unavailable for the rest of the system", e);
+						log.error("Error publishing received alarm: " + message + ". Received alarm will be unavailable for the rest of the system",
+								e);
 					}
 				} else {
 					log.debug("Skipping old alarm: " + message);

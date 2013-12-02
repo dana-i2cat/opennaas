@@ -1,8 +1,9 @@
 package org.opennaas.extensions.router.junos.commandsets.commands;
 
-import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants.TargetConfiguration;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
+
+import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants.TargetConfiguration;
 
 public class GetNetconfCommand extends JunosCommand {
 

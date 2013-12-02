@@ -5,24 +5,24 @@ import org.opennaas.extensions.capability.macbridge.model.MACBridge;
 import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 
 public class InterfaceCommand extends IOSCommand {
-	
-	private final String GIGABITETHERNET = "gigabitEthernet";
-	private final String FASTETHERNET = "fastEthernet";
-	
+
+	private final String	GIGABITETHERNET	= "gigabitEthernet";
+	private final String	FASTETHERNET	= "fastEthernet";
+
 	/** Constant value to specify Gigabit Ethernet Card */
-	private final String GI = "Gi";
+	private final String	GI				= "Gi";
 
 	/** Constant value to specify Fast Ethernet Card */
-	private final String FA = "Fa";
-	
-	private String port = null;
-	private String type = GIGABITETHERNET;
-	
+	private final String	FA				= "Fa";
+
+	private String			port			= null;
+	private String			type			= GIGABITETHERNET;
+
 	public InterfaceCommand(String interfaceName) {
-		if (interfaceName.startsWith(GI)){
+		if (interfaceName.startsWith(GI)) {
 			this.type = GIGABITETHERNET;
 			this.port = interfaceName.split(GI)[1];
-		}else if(interfaceName.startsWith(FA)){
+		} else if (interfaceName.startsWith(FA)) {
 			this.type = FASTETHERNET;
 			this.port = interfaceName.split(FA)[1];
 		}
@@ -37,7 +37,7 @@ public class InterfaceCommand extends IOSCommand {
 	public String getCommand() {
 		return "interface " + type + " " + port;
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

@@ -11,9 +11,9 @@ import org.opennaas.core.resources.ResourceManager;
 
 /**
  * Export the descriptor of a resource to a file
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 @Command(scope = "resource", name = "export", description = "Export the descriptor of a resource to a file")
 public class ExportResourceDescriptorCommand extends GenericKarafCommand {

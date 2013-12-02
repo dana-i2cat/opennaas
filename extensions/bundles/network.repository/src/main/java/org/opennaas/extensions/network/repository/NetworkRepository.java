@@ -1,10 +1,9 @@
 package org.opennaas.extensions.network.repository;
 
-import org.opennaas.core.resources.ResourceRepository;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ResourceRepository;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
 
 public class NetworkRepository extends ResourceRepository {
 	Log	log	= LogFactory.getLog(NetworkRepository.class);

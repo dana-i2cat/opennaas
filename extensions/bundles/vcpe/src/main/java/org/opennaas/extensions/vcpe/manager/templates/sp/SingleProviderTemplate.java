@@ -69,6 +69,7 @@ public class SingleProviderTemplate implements ITemplate {
 		VCPENetworkModel model = new VCPENetworkModel();
 		model.setId(initialModel.getId());
 		model.setName(initialModel.getName());
+		model.setOwner(initialModel.getOwner());
 		model.setClientIpRange(initialModel.getClientIpRange());
 		model.setNocIpRange(initialModel.getNocIpRange());
 		model.setTemplateType(initialModel.getTemplateType());

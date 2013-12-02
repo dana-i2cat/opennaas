@@ -4,10 +4,12 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.vrrp.IVRRPCapability;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
@@ -26,7 +28,7 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 			false)
 	private String	interfaceName;
 
-	@Argument(index = 2, name = "interfaceIPAddress", description = "IP address of the interface in the router", required = true, multiValued =
+	@Argument(index = 2, name = "interfaceIPAddress", description = "IP address of the interface inside the VirtualIPAddress range.", required = true, multiValued =
 			false)
 	private String	interfaceIPAddress;
 
@@ -42,6 +44,18 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 			false)
 	private String	virtualIPAddress;
 
+	@Argument(index = 6, name = "interfaceLinkAddress", description = "IP address of the interface inside the VirtualLinkAddress range.", required = false, multiValued =
+			false)
+	private String	interfaceLinkAddress;
+
+	@Argument(index = 7, name = "virtualLinkAddress", description = "The virtual link address range.", required = false, multiValued =
+			false)
+	private String	virtualLinkAddress;
+
+	@Argument(index = 8, name = "advertisementPrefix", description = "IPv6 prefix to configure in router advertisement.", required = false, multiValued =
+			false)
+	private String	advertisementPrefix;
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Configure VRRP");
@@ -54,28 +68,37 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 			VRRPProtocolEndpoint vrrpProtocolEndpoint = new VRRPProtocolEndpoint();
 
 			// get interface name and port
-			String[] argsInterface = splitInterfaces(interfaceName);
-			String interfaceName = argsInterface[0];
-			int port = Integer.parseInt(argsInterface[1]);
 
-			NetworkPort routerInterface = new NetworkPort();
-			routerInterface.setName(interfaceName);
-			routerInterface.setPortNumber(port);
+			NetworkPort routerInterface = buildNetworkPort();
 
-			// TODO setIPv4 or IPv6? now IPv4
-			IPProtocolEndpoint interfaceIPProtocolEndpoint = new IPProtocolEndpoint();
-			String[] ipParts = IPUtilsHelper.composedIPAddressToIPAddressAndMask(interfaceIPAddress);
-			interfaceIPProtocolEndpoint.setIPv4Address(ipParts[0]);
-			interfaceIPProtocolEndpoint.setSubnetMask(ipParts[1]);
+			IPProtocolEndpoint interfaceIPProtocolEndpoint1 = buildIPProtocolEndpoint(interfaceIPAddress);
 
 			vrrpProtocolEndpoint.setPriority(priority);
 
 			vrrpGroup.setVrrpName(vrrpGroupId);
 			vrrpGroup.setVirtualIPAddress(virtualIPAddress);
 
-			interfaceIPProtocolEndpoint.addLogiaclPort(routerInterface);
-			vrrpProtocolEndpoint.bindServiceAccessPoint(interfaceIPProtocolEndpoint);
+			interfaceIPProtocolEndpoint1.addLogiaclPort(routerInterface);
+
+			vrrpProtocolEndpoint.bindServiceAccessPoint(interfaceIPProtocolEndpoint1);
+			vrrpProtocolEndpoint.setProtocolIFType(interfaceIPProtocolEndpoint1.getProtocolIFType());
 			vrrpProtocolEndpoint.setService(vrrpGroup);
+
+			if (interfaceIPProtocolEndpoint1.getProtocolIFType().equals(ProtocolIFType.IPV6)) {
+
+				if (interfaceLinkAddress == null || virtualLinkAddress == null || advertisementPrefix == null)
+					throw new CommandException("InterfaceLinkAddress, VirtualLinkAddress and advertisementPrefix have to be set in IPv6 VRRP.");
+				IPProtocolEndpoint interfaceIPProtocolEndpoint2 = buildIPProtocolEndpoint(interfaceLinkAddress);
+				interfaceIPProtocolEndpoint2.addLogiaclPort(routerInterface);
+				vrrpProtocolEndpoint.bindServiceAccessPoint(interfaceIPProtocolEndpoint2);
+
+				vrrpGroup.setVirtualLinkAddress(virtualLinkAddress);
+
+				IPProtocolEndpoint interfaceIPProtocolEndpoint3 = buildIPProtocolEndpoint(advertisementPrefix);
+				interfaceIPProtocolEndpoint3.addLogiaclPort(routerInterface);
+				vrrpProtocolEndpoint.bindServiceAccessPoint(interfaceIPProtocolEndpoint3);
+
+			}
 
 			vrrpCapability.configureVRRP(vrrpProtocolEndpoint);
 		} catch (ResourceException e) {
@@ -90,5 +113,46 @@ public class ConfigureVRRPCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
+	}
+
+	private NetworkPort buildNetworkPort() throws Exception {
+
+		NetworkPort netPort = new NetworkPort();
+		String[] argsInterface = splitInterfaces(interfaceName);
+		String interfaceName = argsInterface[0];
+		int port = Integer.parseInt(argsInterface[1]);
+
+		netPort.setName(interfaceName);
+		netPort.setPortNumber(port);
+
+		return netPort;
+	}
+
+	private IPProtocolEndpoint buildIPProtocolEndpoint(String ipAddress) throws CommandException {
+
+		IPProtocolEndpoint pE = new IPProtocolEndpoint();
+
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+
+			String address = IPUtilsHelper.getAddressFromIP(ipAddress);
+			String mask = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+			pE.setIPv4Address(address);
+			pE.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(mask));
+			pE.setProtocolIFType(ProtocolIFType.IPV4);
+
+		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress)) {
+
+			String address = IPUtilsHelper.getAddressFromIP(ipAddress);
+			String prefix = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+			pE.setIPv6Address(address);
+			pE.setPrefixLength(Short.valueOf(prefix));
+			pE.setProtocolIFType(ProtocolIFType.IPV6);
+
+		} else
+			throw new CommandException("Invalid IP format.");
+
+		return pE;
 	}
 }

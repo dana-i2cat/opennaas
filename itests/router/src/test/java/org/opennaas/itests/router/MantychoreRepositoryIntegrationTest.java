@@ -3,7 +3,6 @@ package org.opennaas.itests.router;
 import static org.junit.Assert.assertEquals;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -59,6 +58,18 @@ public class MantychoreRepositoryIntegrationTest
 {
 	private final static Log	log	= LogFactory.getLog(MantychoreRepositoryIntegrationTest.class);
 
+	/**
+	 * Make sure blueprint for specified bundle has finished its initialization
+	 */
+	@SuppressWarnings("unused")
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
+	private BlueprintContainer	repositoryBlueprintContainer;
+	@SuppressWarnings("unused")
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)", timeout = 20000)
+	private BlueprintContainer	chassisCapabilityBlueprintContainer;
+
 	@Inject
 	private IResourceManager	resourceManager;
 
@@ -72,15 +83,10 @@ public class MantychoreRepositoryIntegrationTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
-	private BlueprintContainer	chassisService;
-
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-junos"),
-				includeTestHelper(),
+				includeFeatures("opennaas-router", "opennaas-junos", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

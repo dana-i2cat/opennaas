@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.opennaas.core.resources.action.IActionSet;
 
-
 public interface IProfile {
 
 	public String getProfileName();

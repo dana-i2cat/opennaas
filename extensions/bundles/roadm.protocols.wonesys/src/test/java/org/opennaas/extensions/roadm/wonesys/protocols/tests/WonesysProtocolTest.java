@@ -5,13 +5,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.IWonesysAlarmConfigurator;
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmConfigurator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.IWonesysAlarmConfigurator;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmConfigurator;
 
 public class WonesysProtocolTest {
 

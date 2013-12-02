@@ -7,12 +7,12 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class AutobahnProtocolSessionFactory implements IProtocolSessionFactory
 {
-    @Override
-    public IProtocolSession
-        createProtocolSession(String sessionID,
-                              ProtocolSessionContext protocolSessionContext)
-        throws ProtocolException
-    {
-        return new AutobahnProtocolSession(protocolSessionContext, sessionID);
-    }
+	@Override
+	public IProtocolSession
+			createProtocolSession(String sessionID,
+					ProtocolSessionContext protocolSessionContext)
+					throws ProtocolException
+	{
+		return new AutobahnProtocolSession(protocolSessionContext, sessionID);
+	}
 }

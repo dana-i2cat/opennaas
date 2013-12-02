@@ -4,9 +4,9 @@ import org.opennaas.core.resources.descriptor.Information;
 
 /**
  * Base Resource Exception
- *
+ * 
  * @author Scott Campbell
- *
+ * 
  */
 public class ResourceException extends Exception {
 	private static final long	serialVersionUID	= -5669367817669690129L;

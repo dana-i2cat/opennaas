@@ -12,7 +12,7 @@ public class QueueManagerFactory extends AbstractCapabilityFactory {
 	public ICapability create(IResource resource) throws CapabilityException {
 		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(QueueManager.QUEUE), resource
 				.getResourceDescriptor()
-					.getId());
+				.getId());
 		capability.setResource(resource);
 		return capability;
 	}

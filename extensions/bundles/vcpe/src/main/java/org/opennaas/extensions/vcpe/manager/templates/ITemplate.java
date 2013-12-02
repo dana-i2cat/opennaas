@@ -20,7 +20,8 @@ public interface ITemplate {
 	 * @param initialModel
 	 * @param managerModel
 	 * @return VCPENetworkModel
-	 * @throws VCPENetworkManagerException if parameters are not available
+	 * @throws VCPENetworkManagerException
+	 *             if parameters are not available
 	 */
 	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) throws VCPENetworkManagerException;
 

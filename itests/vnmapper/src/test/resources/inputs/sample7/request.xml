@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Virtual network topology with 3 nodes and 3 links forming a triangle 
+	with node and link capacities -->
+<VNRequest>
+	<VNode>
+		<id>0</id>
+		<pnodeID>-</pnodeID>
+		<capacity>10</capacity>
+	</VNode>
+	<VNode>
+		<id>1</id>
+		<pnodeID>-</pnodeID>
+		<capacity>12</capacity>
+	</VNode>
+	<VNode>
+		<id>2</id>
+		<pnodeID>-</pnodeID>
+		<capacity>13</capacity>
+	</VNode>
+
+	<VLink>
+		<node1>0</node1>
+		<node2>1</node2>
+		<capacity>400</capacity>
+	</VLink>
+	<VLink>
+		<node1>0</node1>
+		<node2>2</node2>
+		<capacity>400</capacity>
+	</VLink>
+	<VLink>
+		<node1>1</node1>
+		<node2>2</node2>
+		<capacity>400</capacity>
+	</VLink>
+</VNRequest>

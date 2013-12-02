@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author mbeltran
  */
 public class Optr10g extends Driver {
@@ -26,38 +26,38 @@ public class Optr10g extends Driver {
 
 	/*
 	 * public void setParams(Alarm alarma, String params) {
-	 *
+	 * 
 	 * String[] strList = params.split("#");
-	 *
+	 * 
 	 * String tipusAlarmaS = strList[3];
-	 *
+	 * 
 	 * try {
-	 *
+	 * 
 	 * if (strList[3].startsWith("0x01") || strList[3].startsWith("0x02") || strList[3].startsWith("0x03") || strList[3].startsWith("0x04")){
-	 *
+	 * 
 	 * Xfp xfp = new Xfp(); // xfp.setParams(alarma, params); return;
-	 *
+	 * 
 	 * } else if(tipusAlarmaS.startsWith("0x09")) { //Board Power setTipo(alarma,"G10_POWER");
-	 *
+	 * 
 	 * } else if(tipusAlarmaS.startsWith("0x0A")) { //Board Temperature setTipo(alarma,"G10_TEMP");
-	 *
-	 *
+	 * 
+	 * 
 	 * } else if(tipusAlarmaS.startsWith("0x0B")) { //EXC Status setTipo(alarma,"G10_CONFIG");
-	 *
-	 *
+	 * 
+	 * 
 	 * } else if(tipusAlarmaS.startsWith("0x0C")) { //EXC Status setTipo(alarma,"G10_EXC_COM");
-	 *
-	 *
+	 * 
+	 * 
 	 * } else if(tipusAlarmaS.startsWith("0x10")) { //Reset setTipo(alarma,"CROSS_RESET");
-	 *
+	 * 
 	 * }
-	 *
+	 * 
 	 * } catch (Exception e) { //error de decoding, id = unknown
-	 *
+	 * 
 	 * e.printStackTrace();
-	 *
+	 * 
 	 * }
-	 *
+	 * 
 	 * }
 	 */
 
@@ -69,9 +69,9 @@ public class Optr10g extends Driver {
 
 		try {
 			if (strList[3].startsWith("0x01") ||
-								strList[3].startsWith("0x02") ||
-								strList[3].startsWith("0x03") ||
-								strList[3].startsWith("0x04")) {
+					strList[3].startsWith("0x02") ||
+					strList[3].startsWith("0x03") ||
+					strList[3].startsWith("0x04")) {
 
 				Xfp xfp = new Xfp();
 				// xfp.setParams(alarma, params);

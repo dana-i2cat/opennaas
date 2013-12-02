@@ -3,8 +3,7 @@ package org.opennaas.extensions.protocols.tl1.message;
 import java.io.Serializable;
 
 /**
- * This class is the basic class for any TL1 output message. It provides basic
- * information for getting/setting the right information while parsing.
+ * This class is the basic class for any TL1 output message. It provides basic information for getting/setting the right information while parsing.
  * 
  * @author Mathieu Lemay
  * @author Research Technologist Communications Research Centre
@@ -12,43 +11,42 @@ import java.io.Serializable;
  */
 public class TL1OutputMsg implements Serializable
 {
-	private static final long serialVersionUID = 7305422008112750261L;
+	private static final long	serialVersionUID	= 7305422008112750261L;
 
 	/** Constant to identify that the type of OutputMsg is a Response Message */
-	public static final int RESP_TYPE = 0;
+	public static final int		RESP_TYPE			= 0;
 
 	/** Constant to identify that the type of OutputMsg is an Autonomous Message */
-	public static final int AUTO_TYPE = 1;
+	public static final int		AUTO_TYPE			= 1;
 
 	/**
-	 * Constant to identify that the type of OutputMsg is an Acknowledgement
-	 * Message
+	 * Constant to identify that the type of OutputMsg is an Acknowledgement Message
 	 */
-	public static final int ACK_TYPE = 2;
+	public static final int		ACK_TYPE			= 2;
 
 	/** Constant to identify the prompt * */
-	public static final int PROMPT_TYPE = 3;
+	public static final int		PROMPT_TYPE			= 3;
 
 	/** Raw OutPut Message */
-	private String rawMessage;
+	private String				rawMessage;
 
 	/** System ID */
-	private String sid;
+	private String				sid;
 
 	/** Termination Code */
-	private char termCode;
+	private char				termCode;
 
 	/** Time Information */
-	private TL1Time timeInfo;
+	private TL1Time				timeInfo;
 
 	/** Date Information */
-	private TL1Date dateInfo;
+	private TL1Date				dateInfo;
 
 	/** Message Payload */
-	protected TL1Line[] payload;
+	protected TL1Line[]			payload;
 
 	/** Type of the OutputMessage */
-	private int type;
+	private int					type;
 
 	/** Creates a new instance of TL1OutputMsg */
 	public TL1OutputMsg() {
@@ -103,8 +101,8 @@ public class TL1OutputMsg implements Serializable
 	public int getType() {
 		return type;
 	}
-	
-	public void setType(int type){
+
+	public void setType(int type) {
 		this.type = type;
 	}
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author mbeltran
  */
 public class Xfp extends Driver {
@@ -32,7 +32,7 @@ public class Xfp extends Driver {
 
 			/*
 			 * Nota: Ya que en un mismo trap pueden haber varias alarmas, hay que mirar cada uno de los bits (aprox 64, 8 bytes)
-			 *
+			 * 
 			 * Al determinar el tipo de alarma esta se añade al vector, de forma que retornamos un vector con una, ninguna o varias alarmas.
 			 */
 
@@ -54,7 +54,7 @@ public class Xfp extends Driver {
 
 				/*
 				 * if ((b & 0x20) > 0) { list.add("SFP_VOLT_HIGH_A); vector.add(tipoAlarma); }
-				 *
+				 * 
 				 * if ((b & 0x10) > 0) { list.add("SFP_VOLT_LOW_A); vector.add(tipoAlarma); }
 				 */
 
@@ -86,27 +86,27 @@ public class Xfp extends Driver {
 
 				/*
 				 * b = Integer.decode("0x" + params[4]); //Address 82
-				 *
+				 * 
 				 * if ((byte)(b & 0x80) > 0) { list.add("XFP_TEMP_HIGH_W"); }
-				 *
+				 * 
 				 * if ((byte)(b & 0x40) > 0) { list.add("XFP_TEMP_LOW_W"); }
-				 *
+				 * 
 				 * if ((b & 0x20) > 0) { list.add("SFP_VOLT_HIGH_A); vector.add(tipoAlarma); }
-				 *
+				 * 
 				 * if ((b & 0x10) > 0) { list.add("SFP_VOLT_LOW_A); vector.add(tipoAlarma); }
-				 *
+				 * 
 				 * if ((byte)(b & 0x08) > 0) { list.add("XFP_BIAS_HIGH_W"); }
-				 *
+				 * 
 				 * if ((byte)(b & 0x04) > 0) { list.add("XFP_BIAS_LOW_W"); }
-				 *
+				 * 
 				 * if ((byte)(b & 0x02) > 0) { list.add("XFP_TX_HIGH_W"); }
-				 *
+				 * 
 				 * if ((byte)(b & 0x01) > 0) { list.add("XFP_TX_LOW_W"); }
-				 *
+				 * 
 				 * b = Integer.decode("0x" + params[4]); //Address 83
-				 *
+				 * 
 				 * if ((byte)(b & 0x80) > 0) { list.add("XFP_RX_HIGH_W"); }
-				 *
+				 * 
 				 * if ((byte)(b & 0x40) > 0) { list.add("XFP_RX_LOW_W"); }
 				 */
 				b = Integer.decode("0x" + params[4]); // Address 84
@@ -169,9 +169,9 @@ public class Xfp extends Driver {
 
 				/*
 				 * b = Byte.decode("0x" + params[9]); //Address 87
-				 *
+				 * 
 				 * if ((byte)(b & 0xAA) > 0) { list.add("XFP_VOLT_HIGH_W"); }
-				 *
+				 * 
 				 * if ((byte)(b & 0x55) > 0) { list.add("XFP_VOLT_LOW_W"); }
 				 */
 

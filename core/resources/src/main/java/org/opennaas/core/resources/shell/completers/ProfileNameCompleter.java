@@ -2,7 +2,6 @@ package org.opennaas.core.resources.shell.completers;
 
 import java.util.List;
 
-
 import org.apache.karaf.shell.console.Completer;
 import org.apache.karaf.shell.console.completer.StringsCompleter;
 import org.opennaas.core.resources.Activator;

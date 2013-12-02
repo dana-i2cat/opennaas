@@ -12,9 +12,9 @@ import org.opennaas.core.resources.ResourceManager;
 
 /**
  * Stop one or more resources
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 @Command(scope = "resource", name = "stop", description = "Stop one or more resources")
 public class StopResourceCommand extends GenericKarafCommand {

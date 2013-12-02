@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!--  	Protocol Session Factory  -->
+	<bean id="floodlightProtocolSessionFactory" class="org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSessionFactory"/>
+	<service ref="floodlightProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="floodlight"/>
+			<entry key="protocol.version" value="0.90"/>
+		</service-properties>
+	</service>
+	
+	
+	<!--  	ofForwardingActionSet  -->
+	<bean id="ofForwardingActionset" class="org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.OFForwardingActionsetImplementation"/>
+	<service ref="ofForwardingActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="floodlight"/>
+			<entry key="actionset.capability" value="offorwarding"/>
+			<entry key="actionset.version" value="0.90"/>
+		</service-properties>
+	</service>	
+	
+	
+</blueprint>

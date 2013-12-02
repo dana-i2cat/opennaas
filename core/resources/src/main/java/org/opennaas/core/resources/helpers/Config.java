@@ -35,9 +35,8 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * This class is used to externalize configuration informations in the property
- * files. You can modify all relevant constants within this project by editing
- * the corresponding files.
+ * This class is used to externalize configuration informations in the property files. You can modify all relevant constants within this project by
+ * editing the corresponding files.
  * 
  * @author Alexander Willner (mail@alexanderwillner.de)
  * @version $Id: Config.java 128 2006-10-16 20:14:45Z awillner $
@@ -45,17 +44,17 @@ import java.util.ResourceBundle;
 public final class Config {
 
 	/** Properties directory. */
-	private static final String PROPERTIES_DIR = "";
+	private static final String						PROPERTIES_DIR	= "";
 
 	/** Local suffix. */
-	private static final String LOCAL_SUFFIX = "_local";
+	private static final String						LOCAL_SUFFIX	= "_local";
 
 	/** Classloader. */
-	private static final ClassLoader CLASSLOADER = Config.class
-			.getClassLoader();
+	private static final ClassLoader				CLASSLOADER		= Config.class
+																			.getClassLoader();
 
 	/** Cache to speedup the lookup */
-	private static final HashMap<String, String> cache = new HashMap<String, String>();
+	private static final HashMap<String, String>	cache			= new HashMap<String, String>();
 
 	/**
 	 * Gets the int value for a given key.
@@ -136,10 +135,8 @@ public final class Config {
 	}
 
 	/**
-	 * get the string for a given key, the property-file will be searched in
-	 * both: the ressource-path of the main project and the ressource-path of
-	 * the lib that called the methode. (Notice: property-file in main project
-	 * has to be named: abc_local.properties)
+	 * get the string for a given key, the property-file will be searched in both: the ressource-path of the main project and the ressource-path of
+	 * the lib that called the methode. (Notice: property-file in main project has to be named: abc_local.properties)
 	 * 
 	 * @param instance
 	 *            class of the caller
@@ -187,9 +184,8 @@ public final class Config {
 	}
 
 	/**
-	 * Returns a generic URL to a given key which is specified in the according
-	 * property file. If you want to open a file with a relative path you should
-	 * use this function to avoid problems with different user directories.
+	 * Returns a generic URL to a given key which is specified in the according property file. If you want to open a file with a relative path you
+	 * should use this function to avoid problems with different user directories.
 	 * 
 	 * @param propertyFile
 	 *            name of the property file

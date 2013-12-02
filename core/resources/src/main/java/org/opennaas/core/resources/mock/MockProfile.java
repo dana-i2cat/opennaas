@@ -7,7 +7,6 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 
-
 public class MockProfile implements IProfile {
 
 	private String					profileName	= null;

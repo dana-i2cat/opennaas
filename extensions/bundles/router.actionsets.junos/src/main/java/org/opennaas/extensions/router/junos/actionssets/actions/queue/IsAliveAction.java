@@ -1,14 +1,13 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.queue;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.KeepAliveNetconfCommand;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.KeepAliveNetconfCommand;
 
 public class IsAliveAction extends JunosAction {
 

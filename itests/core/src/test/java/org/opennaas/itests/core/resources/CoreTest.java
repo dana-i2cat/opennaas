@@ -85,20 +85,24 @@ public class CoreTest
 	@Inject
 	private IEventManager			eventManager;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer		routerRepositoryService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)", timeout = 20000)
 	private BlueprintContainer		chasisService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)", timeout = 20000)
 	private BlueprintContainer		ipService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.tests-mockprofile)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.core.tests-mockprofile)", timeout = 20000)
 	private BlueprintContainer		mockProfileService;
 
 	private ResourceDescriptor		resourceDescriptor;

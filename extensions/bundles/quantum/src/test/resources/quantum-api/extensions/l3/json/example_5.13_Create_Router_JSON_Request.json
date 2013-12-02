@@ -1,0 +1,7 @@
+{
+    "router":
+    {
+        "name": "another_router",
+        "admin_state_up": true
+    }
+}

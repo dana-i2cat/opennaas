@@ -5,8 +5,7 @@ import net.i2cat.netconf.rpc.QueryFactory;
 
 public class UnlockNetconfCommand extends JunosCommand {
 
-
-	private  String	target				= "candidate";
+	private String	target	= "candidate";
 
 	public UnlockNetconfCommand(String target) {
 		super(CommandNetconfConstants.UNLOCK, "");

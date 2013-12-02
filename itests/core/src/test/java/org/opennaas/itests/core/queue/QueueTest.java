@@ -3,7 +3,6 @@ package org.opennaas.itests.core.queue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeSwissboxFramework;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -54,6 +53,7 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * Tests new queue operations. In the sprint for the week 26, it is planned to add new features in the queue.
@@ -85,6 +85,16 @@ public class QueueTest
 	private IQueueManagerCapability	queueCapability;
 	private IQueueManagerCapability	queueManagerService;
 
+	@SuppressWarnings("unused")
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
+	private BlueprintContainer		routerService;
+
+	@SuppressWarnings("unused")
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)", timeout = 20000)
+	private BlueprintContainer		queueService;
+
 	@Inject
 	private IProtocolManager		protocolManager;
 
@@ -101,8 +111,7 @@ public class QueueTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-cim", "opennaas-netconf", "opennaas-router", "opennaas-junos"),
-				includeTestHelper(),
+				includeFeatures("opennaas-cim", "opennaas-netconf", "opennaas-router", "opennaas-junos", "itests-helpers"),
 				includeSwissboxFramework(),
 				noConsole(),
 				keepRuntimeFolder());

@@ -2,16 +2,15 @@ package org.opennaas.extensions.roadm.wonesys.commandsets.commands;
 
 import java.io.IOException;
 
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import org.opennaas.extensions.router.model.utils.OpticalSwitchCardFactory;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class GetInventoryCommand extends WonesysCommand {
 

@@ -1,11 +1,11 @@
 /**
-*  This code is part of the Harmony System implemented in Work Package 1 
-*  of the Phosphorus project. This work is supported by the European 
-*  Comission under the Sixth Framework Programme with contract number 
-*  IST-034115.
-*
-*  Copyright (C) 2006-2009 Phosphorus WP1 partners. Phosphorus Consortium.
-*  http://ist-phosphorus.eu/
+ *  This code is part of the Harmony System implemented in Work Package 1 
+ *  of the Phosphorus project. This work is supported by the European 
+ *  Comission under the Sixth Framework Programme with contract number 
+ *  IST-034115.
+ *
+ *  Copyright (C) 2006-2009 Phosphorus WP1 partners. Phosphorus Consortium.
+ *  http://ist-phosphorus.eu/
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -22,7 +22,6 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-
 
 /**
  *
@@ -41,58 +40,58 @@ package org.opennaas.core.resources.helpers;
  * @todo Use/extend a java collection.
  */
 public class Tuple<Type1, Type2> {
-    /** * */
-    private final Type1 firstElement;
+	/** * */
+	private final Type1	firstElement;
 
-    /** * */
-    private final Type2 secondElement;
+	/** * */
+	private final Type2	secondElement;
 
-    /**
-     * Create a 2-tuple with the given element types.
-     * 
-     * @param element1
-     *            First element
-     * @param element2
-     *            Second element
-     */
-    public Tuple(final Type1 element1, final Type2 element2) {
-        this.firstElement = element1;
-        this.secondElement = element2;
-    }
+	/**
+	 * Create a 2-tuple with the given element types.
+	 * 
+	 * @param element1
+	 *            First element
+	 * @param element2
+	 *            Second element
+	 */
+	public Tuple(final Type1 element1, final Type2 element2) {
+		this.firstElement = element1;
+		this.secondElement = element2;
+	}
 
-    /**
-     * Not sure whether we need this ...
-     * 
-     * @param other
-     * @return
-     */
-    public boolean equals(final Tuple<Type1, Type2> other) {
-        final boolean eq1 = ((this.getFirstElement() == null) && (other
-                .getFirstElement() == null))
-                || this.getFirstElement().equals(other.getFirstElement());
-        if (eq1) {
-            return ((this.getSecondElement() == null) && (other
-                    .getSecondElement() == null))
-                    || this.getSecondElement().equals(other.getSecondElement());
-        }
-        return false;
-    }
+	/**
+	 * Not sure whether we need this ...
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public boolean equals(final Tuple<Type1, Type2> other) {
+		final boolean eq1 = ((this.getFirstElement() == null) && (other
+				.getFirstElement() == null))
+				|| this.getFirstElement().equals(other.getFirstElement());
+		if (eq1) {
+			return ((this.getSecondElement() == null) && (other
+					.getSecondElement() == null))
+					|| this.getSecondElement().equals(other.getSecondElement());
+		}
+		return false;
+	}
 
-    /**
-     * Get first element.
-     * 
-     * @return The first element.
-     */
-    public final Type1 getFirstElement() {
-        return this.firstElement;
-    }
+	/**
+	 * Get first element.
+	 * 
+	 * @return The first element.
+	 */
+	public final Type1 getFirstElement() {
+		return this.firstElement;
+	}
 
-    /**
-     * Get second element.
-     * 
-     * @return The second element.
-     */
-    public final Type2 getSecondElement() {
-        return this.secondElement;
-    }
+	/**
+	 * Get second element.
+	 * 
+	 * @return The second element.
+	 */
+	public final Type2 getSecondElement() {
+		return this.secondElement;
+	}
 }

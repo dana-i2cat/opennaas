@@ -16,7 +16,8 @@ public class PhysicalInfrastructure {
 	}
 
 	/**
-	 * @param templateType the templateType to set
+	 * @param templateType
+	 *            the templateType to set
 	 */
 	public void setTemplateType(String templateType) {
 		this.templateType = templateType;

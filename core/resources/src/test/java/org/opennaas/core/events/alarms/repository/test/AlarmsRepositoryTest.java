@@ -1,17 +1,16 @@
 package org.opennaas.core.events.alarms.repository.test;
 
-import java.util.List;
-import java.util.Properties;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
-import org.opennaas.core.resources.ResourceNotFoundException;
-import org.opennaas.core.resources.alarms.AlarmsRepository;
-import org.opennaas.core.resources.alarms.ResourceAlarm;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opennaas.core.resources.ResourceNotFoundException;
+import org.opennaas.core.resources.alarms.AlarmsRepository;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 
 public class AlarmsRepositoryTest {
 	ResourceAlarm	resourceAlarm	= null;

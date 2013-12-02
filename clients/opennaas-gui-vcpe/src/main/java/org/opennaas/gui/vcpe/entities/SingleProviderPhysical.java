@@ -23,7 +23,8 @@ public class SingleProviderPhysical extends PhysicalInfrastructure {
 	}
 
 	/**
-	 * @param physicalRouterMaster the physicalRouterMaster to set
+	 * @param physicalRouterMaster
+	 *            the physicalRouterMaster to set
 	 */
 	public void setPhysicalRouterMaster(PhysicalRouter physicalRouterMaster) {
 		this.physicalRouterMaster = physicalRouterMaster;
@@ -37,7 +38,8 @@ public class SingleProviderPhysical extends PhysicalInfrastructure {
 	}
 
 	/**
-	 * @param physicalRouterBackup the physicalRouterBackup to set
+	 * @param physicalRouterBackup
+	 *            the physicalRouterBackup to set
 	 */
 	public void setPhysicalRouterBackup(PhysicalRouter physicalRouterBackup) {
 		this.physicalRouterBackup = physicalRouterBackup;
@@ -51,7 +53,8 @@ public class SingleProviderPhysical extends PhysicalInfrastructure {
 	}
 
 	/**
-	 * @param physicalRouterCore the physicalRouterCore to set
+	 * @param physicalRouterCore
+	 *            the physicalRouterCore to set
 	 */
 	public void setPhysicalRouterCore(PhysicalRouter physicalRouterCore) {
 		this.physicalRouterCore = physicalRouterCore;

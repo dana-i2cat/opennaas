@@ -5,9 +5,9 @@ import javax.persistence.Embeddable;
 
 /**
  * Describes the top level properties about a component in the framework.
- *
+ * 
  * @author Mathieu Lemay (ITI)
- *
+ * 
  */
 
 @Embeddable
@@ -78,7 +78,7 @@ public class Information {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -93,7 +93,7 @@ public class Information {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

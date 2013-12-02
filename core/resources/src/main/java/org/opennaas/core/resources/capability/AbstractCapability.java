@@ -86,7 +86,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	}
 
 	/**
-	 * @return the resource name through the resource descriptor
+	 * @return the resource type through the resource descriptor
 	 */
 	public String getResourceType() {
 		String resourceType = "";
@@ -307,7 +307,8 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		action.setParams(actionParameters);
 		action.setModelToUpdate(resource.getModel());
 		// FIXME define checkParams signature. Should it return exception if fails or return false???
-		// now both Exception and return false have same meaning
+		// now both Exception and return false have same meaning.
+		// returning exception is preferred, because reason can be specified in exception msg and displayed to the usr.
 		boolean isOk = action.checkParams(action.getParams());
 		if (!isOk) {
 			throw new CapabilityException("Invalid parameters for action " + actionId);
@@ -347,9 +348,14 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 				// Rest
 				props.put("service.exported.interfaces", "*");
 				props.put("service.exported.configs", "org.apache.cxf.rs");
-				props.put("org.apache.cxf.ws.address", url + "/" + resourceType + "/" + resourceName + "/" + capabilityName);
+				props.put("service.exported.intents", "HTTP");
+				props.put("org.apache.cxf.rs.httpservice.context", url + "/" + resourceType + "/" + resourceName + "/" + capabilityName);
+				props.put("org.apache.cxf.rs.address", "/");
+				props.put("org.apache.cxf.httpservice.requirefilter", "true");
 			}
-			log.info("Registering ws in url: " + props.get("org.apache.cxf.ws.address"));
+			log.info("Registering ws: \n " +
+					"in url: " + props.get("org.apache.cxf.rs.address") + "\n" +
+					"in context: " + props.get("org.apache.cxf.rs.httpservice.context"));
 			registration = bundleContext.registerService(ifaceName, this, props);
 		} catch (IOException e) {
 			throw new CapabilityException(e);

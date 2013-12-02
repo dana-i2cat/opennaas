@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class IPV4TemplatesTest extends VelocityTemplatesTest {
 	// This class if for testing the velocity templates

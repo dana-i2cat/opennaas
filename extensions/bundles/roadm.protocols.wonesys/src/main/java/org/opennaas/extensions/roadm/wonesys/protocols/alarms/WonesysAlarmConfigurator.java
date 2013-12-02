@@ -10,10 +10,10 @@ import org.apache.commons.logging.LogFactory;
 import com.wonesys.emsModule.alarms.AlarmsControler;
 
 /**
- *
- *
+ * 
+ * 
  * @author isart
- *
+ * 
  */
 public class WonesysAlarmConfigurator implements IWonesysAlarmConfigurator {
 

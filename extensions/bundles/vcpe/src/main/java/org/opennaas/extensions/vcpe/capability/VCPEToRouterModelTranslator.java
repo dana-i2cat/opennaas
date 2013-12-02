@@ -8,6 +8,7 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.manager.templates.sp.SPTemplateConstants;
@@ -100,6 +101,7 @@ public class VCPEToRouterModelTranslator {
 		String[] addressAndMask = IPUtilsHelper.composedIPAddressToIPAddressAndMask(ipAddress);
 
 		IPProtocolEndpoint ipEP = new IPProtocolEndpoint();
+		ipEP.setProtocolIFType(ProtocolIFType.IPV4);
 		ipEP.setIPv4Address(addressAndMask[0]);
 		if (addressAndMask.length > 1)
 			ipEP.setSubnetMask(addressAndMask[1]);

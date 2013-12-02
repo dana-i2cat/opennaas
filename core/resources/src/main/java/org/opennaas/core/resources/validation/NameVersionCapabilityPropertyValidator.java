@@ -3,13 +3,11 @@ package org.opennaas.core.resources.validation;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.springframework.validation.Errors;
 
-
 /**
- * Ensure that the CapabilityDescriptor has a name and a version CapabilityProperty in
- * the properties list
- *
+ * Ensure that the CapabilityDescriptor has a name and a version CapabilityProperty in the properties list
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 public class NameVersionCapabilityPropertyValidator extends CapabilityDescriptorValidator
 {

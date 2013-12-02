@@ -669,9 +669,9 @@ $(function() {
 	$("#selectTemplateButton").click(function(event) {	
 		if ($('#selectable .ui-selected').attr('id') != undefined) {
 			if ($('#selectable .ui-selected').attr('id') == 'sp_vcpe') {
-				url = "/opennaas-vcpe/secure/noc/vcpeNetwork/singleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');
+				url = "/opennaas-vcpe/secure/admin/vcpeNetwork/singleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');
 			} else {
-				url = "/opennaas-vcpe/secure/noc/vcpeNetwork/multipleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');				
+				url = "/opennaas-vcpe/secure/admin/vcpeNetwork/multipleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');				
 			}
 			open: window.open(url, "_self");
 		}

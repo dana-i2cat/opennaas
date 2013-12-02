@@ -15,6 +15,7 @@ public class ActionResponse {
 	private String			actionID;
 	private String			information;
 	private List<Response>	responses	= new ArrayList<Response>();
+	private Object			result;
 
 	public String getActionID() {
 		return actionID;
@@ -50,6 +51,18 @@ public class ActionResponse {
 
 	public void setStatus(STATUS status) {
 		this.status = status;
+	}
+
+	/**
+	 * 
+	 * @return the result of the action. It should be null when getStatus() is not OK. It may be null even when getStatus() is OK.
+	 */
+	public Object getResult() {
+		return result;
+	}
+
+	public void setResult(Object result) {
+		this.result = result;
 	}
 
 	public static ActionResponse newPendingAction(String actionID) {

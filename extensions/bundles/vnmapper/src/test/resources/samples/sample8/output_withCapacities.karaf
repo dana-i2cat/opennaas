@@ -1,0 +1,34 @@
+Physical Nodes:
+node 0--router0 : 10
+node 1--router1 : 11
+node 2--router2 : 12
+node 3--router3 : 13
+node 4--router4 : 14
+Physical links:
+link : 0--1 : 600 , 1
+link : 0--4 : 600 , 1
+link : 1--2 : 600 , 1
+link : 2--3 : 600 , 1
+link : 2--4 : 600 , 1
+link : 3--4 : 600 , 1
+
+Required Virtual Nodes:
+node 0 : 10
+node 1 : 12
+node 2 : 13
+Required Virtual links
+link : 0--1 : 400
+link : 0--2 : 400
+link : 1--2 : 400
+
+Successful Matching
+Successful Mapping
+Mapping Result:
+vnodes:
+0-0
+1-4
+2-3
+vlinks:
+0-1:0-4
+0-2:0-1-2-3
+1-2:4-3

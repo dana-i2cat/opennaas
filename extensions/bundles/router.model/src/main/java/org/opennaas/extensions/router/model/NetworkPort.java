@@ -82,11 +82,6 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	};
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property speed.
-	 */
-	private long	speed;
-
-	/**
 	 * This method returns the NetworkPort.speed property value. This property is described as follows:
 	 * 
 	 * The current bandwidth of the Port in Bits per Second. For ports that vary in bandwidth or for those where no accurate estimation can be made,
@@ -98,7 +93,7 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	@Override
 	public long getSpeed() {
 
-		return this.speed;
+		return super.getSpeed();
 	} // getSpeed
 
 	/**
@@ -113,7 +108,7 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	@Override
 	public void setSpeed(long speed) {
 
-		this.speed = speed;
+		super.setSpeed(speed);
 	} // setSpeed
 
 	/**
@@ -316,9 +311,9 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	 *            [] new networkAddresses property value
 	 * @exception Exception
 	 */
-	public void setNetworkAddresses(String networkAddresses) {
+	public void setNetworkAddresses(String[] networkAddresses) {
 
-		this.networkAddresses[this.networkAddresses.length] = networkAddresses;
+		this.networkAddresses = networkAddresses;
 	} // setNetworkAddresses
 
 	/**

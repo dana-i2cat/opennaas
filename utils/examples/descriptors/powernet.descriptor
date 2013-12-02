@@ -1,0 +1,12 @@
+<resourceDescriptor>
+	<!-- Capability information -->
+	<capabilityDescriptors>
+		<information><type>powernet_mgt</type></information>
+	</capabilityDescriptors>
+	<!-- Resource information. It specify type and name-->
+	<information>
+		<type>powernet</type>
+		<name>dc1</name>
+	</information>
+	<properties/>
+</resourceDescriptor>

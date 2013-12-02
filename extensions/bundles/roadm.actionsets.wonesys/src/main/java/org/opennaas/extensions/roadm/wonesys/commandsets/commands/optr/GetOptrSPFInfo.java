@@ -1,7 +1,7 @@
 package org.opennaas.extensions.roadm.wonesys.commandsets.commands.optr;
 
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
 import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
 
 public class GetOptrSPFInfo extends WonesysCommand {
 

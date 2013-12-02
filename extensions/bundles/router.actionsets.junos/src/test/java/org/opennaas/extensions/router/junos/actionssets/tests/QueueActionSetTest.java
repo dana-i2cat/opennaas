@@ -2,15 +2,14 @@ package org.opennaas.extensions.router.junos.actionssets.tests;
 
 import java.util.List;
 
-import org.opennaas.extensions.router.junos.actionssets.QueueActionSet;
-import org.opennaas.core.resources.action.Action;
-import org.opennaas.core.resources.action.ActionException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.resources.action.Action;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.extensions.router.junos.actionssets.QueueActionSet;
 
 public class QueueActionSetTest {
 	private static QueueActionSet	queueActions;

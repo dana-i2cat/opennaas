@@ -7,7 +7,6 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
 /**

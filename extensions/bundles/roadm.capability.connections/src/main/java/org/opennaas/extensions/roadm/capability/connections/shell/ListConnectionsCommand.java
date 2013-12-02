@@ -1,12 +1,11 @@
 package org.opennaas.extensions.roadm.capability.connections.shell;
 
-import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 
 @Command(scope = "connections", name = "listConnections", description = "Shows given resource connections.")
 public class ListConnectionsCommand extends GenericKarafCommand {

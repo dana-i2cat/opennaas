@@ -1,9 +1,5 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.queue;
 
-import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.DiscardNetconfCommand;
-import org.opennaas.extensions.router.junos.commandsets.commands.LockNetconfCommand;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
@@ -11,6 +7,9 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.DiscardNetconfCommand;
+import org.opennaas.extensions.router.junos.commandsets.commands.LockNetconfCommand;
 
 public class PrepareAction extends JunosAction {
 	Log	log	= LogFactory.getLog(PrepareAction.class);
@@ -31,8 +30,6 @@ public class PrepareAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
 			/* lock commnad */
-
-
 
 			/* discard changes */
 			DiscardNetconfCommand discardCommand = new DiscardNetconfCommand();

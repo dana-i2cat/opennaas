@@ -2,7 +2,6 @@ package org.opennaas.core.resources.shell.profile;
 
 import java.util.List;
 
-
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.profile.ProfileDescriptor;

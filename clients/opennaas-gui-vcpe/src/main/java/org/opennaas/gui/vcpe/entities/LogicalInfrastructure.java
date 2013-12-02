@@ -24,7 +24,8 @@ public class LogicalInfrastructure {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -38,7 +39,8 @@ public class LogicalInfrastructure {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -52,7 +54,8 @@ public class LogicalInfrastructure {
 	}
 
 	/**
-	 * @param templateType the templateType to set
+	 * @param templateType
+	 *            the templateType to set
 	 */
 	public void setTemplateType(String templateType) {
 		this.templateType = templateType;

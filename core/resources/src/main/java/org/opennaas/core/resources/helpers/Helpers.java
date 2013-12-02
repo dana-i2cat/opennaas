@@ -45,9 +45,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 public final class Helpers {
 
-	private static TimeZone defaultTimeZone = null;
+	private static TimeZone	defaultTimeZone	= null;
 
-	protected static Random random = null;
+	protected static Random	random			= null;
 
 	/**
 	 * Function to create a simple xml timestamp.

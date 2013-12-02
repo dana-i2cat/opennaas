@@ -11,8 +11,12 @@ import org.apache.log4j.Logger;
 import org.opennaas.gui.vcpe.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 /**
  * @author Jordi
@@ -55,5 +59,15 @@ public abstract class GenericRestService {
 			throw new RestServiceException(response.toString());
 		}
 		return true;
+	}
+
+	/**
+	 * Add HTTP Basic Authentication header to REST call using current Authentication object stored in Spring Security SecurityContextHolder
+	 * 
+	 * @param client
+	 */
+	protected void addHTTPBasicAuthentication(Client client) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		client.addFilter(new HTTPBasicAuthFilter(authentication.getName(), (String) authentication.getCredentials()));
 	}
 }

@@ -3,13 +3,12 @@ package org.opennaas.extensions.roadm.wonesys.transports.mock;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator;
-import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
-import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolBundleActivator;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 import org.osgi.service.event.Event;
 
 public class MockTransport implements ITransport {

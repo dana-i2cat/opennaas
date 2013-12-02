@@ -17,7 +17,8 @@ public class DestroyVCPEScenarioCommand extends GenericKarafCommand {
 
 		IResource resource = getResourceFromFriendlyName(resourceId);
 
-		IVCPENetworkBuilderCapability capability = (IVCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
+		IVCPENetworkBuilderCapability capability = (IVCPENetworkBuilderCapability) resource
+				.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		capability.destroyVCPENetwork();
 
 		return null;

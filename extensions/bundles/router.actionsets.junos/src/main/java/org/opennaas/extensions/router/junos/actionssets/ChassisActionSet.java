@@ -3,6 +3,7 @@ package org.opennaas.extensions.router.junos.actionssets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.chassis.ConfigureStatusAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.chassis.ConfigureSubInterfaceAction;
@@ -14,8 +15,6 @@ import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.A
 import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.CreateLogicalRouterAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.DeleteLogicalRouterAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.RemoveInterfaceFromLogicalRouterAction;
-
-import org.opennaas.core.resources.action.ActionSet;
 
 @SuppressWarnings("serial")
 public class ChassisActionSet extends ActionSet {

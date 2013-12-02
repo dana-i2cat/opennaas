@@ -3,6 +3,13 @@ package org.opennaas.extensions.router.junos.actionssets.actions.ospf;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import net.i2cat.netconf.rpc.Reply;
+
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
@@ -20,13 +27,6 @@ import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.System;
-import net.i2cat.netconf.rpc.Reply;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.CommandException;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.xml.sax.SAXException;
 
 /**

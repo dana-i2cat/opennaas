@@ -1,5 +1,7 @@
 package org.opennaas.extensions.router.junos.commandsets.digester;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSetBase;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPHeadersFilter;
 import org.opennaas.extensions.router.model.IPHeadersFilter.HdrIPVersion;
@@ -8,9 +10,6 @@ import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStat
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-
-import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.RuleSetBase;
 
 public class PhysicalInterfaceParser extends DigesterEngine {
 

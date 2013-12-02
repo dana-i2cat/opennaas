@@ -6,6 +6,7 @@ import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.security.acl.IACLManager;
 import org.opennaas.extensions.vcpe.manager.IVCPENetworkManager;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -44,6 +45,11 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	public static IVCPENetworkManager getVCPEManagerService() throws ActivatorException {
 		log.trace("Calling VCPEManagerService");
 		return (IVCPENetworkManager) getServiceFromRegistry(context, IVCPENetworkManager.class.getName());
+	}
+
+	public static IACLManager getACLManagerService() throws ActivatorException {
+		log.trace("Calling ACLManagerService");
+		return (IACLManager) getServiceFromRegistry(context, IACLManager.class.getName());
 	}
 
 }

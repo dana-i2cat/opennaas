@@ -1,29 +1,28 @@
 package org.opennaas.extensions.roadm.wonesys.protocols.listeners;
 
-import java.util.concurrent.CountDownLatch;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
-import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 import org.osgi.service.event.Event;
 
 /**
- *
+ * 
  * @author isart
- *
+ * 
  */
 public class CommandResponseListener implements ITransportListener
 {
-	private final static Log 		log =
-		LogFactory.getLog(CommandResponseListener.class);
+	private final static Log		log		=
+													LogFactory.getLog(CommandResponseListener.class);
 
-	private final	CountDownLatch	latch = new CountDownLatch(1);
-	private final	String			commandId;
-	private 		String			response;
-
+	private final CountDownLatch	latch	= new CountDownLatch(1);
+	private final String			commandId;
+	private String					response;
 
 	public CommandResponseListener(String sentMessage) {
 		commandId = getCommandId(sentMessage);
@@ -35,7 +34,7 @@ public class CommandResponseListener implements ITransportListener
 
 	/**
 	 * Command layout: Header (2B) | DeviceID (2B) | Reserved (2B) | CommandID (2B) | Reserved (4B) | DataLength (2B) | Data | XOR (1B) | EOS (1B)
-	 *
+	 * 
 	 * @param response
 	 * @return
 	 */
@@ -47,7 +46,7 @@ public class CommandResponseListener implements ITransportListener
 
 	/**
 	 * Errors are commands with CommandID's first byte = 0x0C
-	 *
+	 * 
 	 * @param response
 	 * @return
 	 */
@@ -76,7 +75,7 @@ public class CommandResponseListener implements ITransportListener
 	}
 
 	public String getResponse(long timeout)
-		throws InterruptedException
+			throws InterruptedException
 	{
 		latch.await(timeout, MILLISECONDS);
 

@@ -1,0 +1,17 @@
+<configuration>
+	<interfaces>
+		<interface>
+			<name>fe-0/3/2</name>
+			<unit>
+				<name>0</name>
+				<family>
+					<inet6>
+						<address operation="delete">
+							<name>fedc:4123:fa::12/64</name>	
+						</address>
+					</inet6>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>

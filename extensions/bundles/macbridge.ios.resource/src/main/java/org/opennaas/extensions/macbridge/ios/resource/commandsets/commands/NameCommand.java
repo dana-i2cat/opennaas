@@ -6,8 +6,8 @@ import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 
 public class NameCommand extends IOSCommand {
 
-	private String name = null;
-	
+	private String	name	= null;
+
 	public NameCommand(String name) {
 		this.name = name;
 	}
@@ -21,7 +21,7 @@ public class NameCommand extends IOSCommand {
 	public String getCommand() {
 		return "name OpenNaaS@" + name;
 	}
-	
+
 	@Override
 	public void updateModel(CLIResponseMessage responseMessage, MACBridge model) {
 	}

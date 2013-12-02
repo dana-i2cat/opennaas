@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 
 /**
@@ -58,4 +59,9 @@ public interface IVRRPCapability extends ICapability {
 	 * @Consumes(MediaType.APPLICATION_XML)
 	 */
 	public void updateVRRPPriority(VRRPProtocolEndpoint vrrpProtocolEndpoint) throws CapabilityException;
+
+	@Path("/updateVRRPVirtualLinkAddress")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	public void updateVRRPVirtualLinkAddress(VRRPGroup vrrpGroup) throws CapabilityException;
 }

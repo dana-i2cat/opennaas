@@ -19,17 +19,17 @@ public class CreateVLANConfigCommand extends GenericKarafCommand {
 
 	@Argument(index = 1, name = "name", description = "Name that describes the VLAN", required = true, multiValued = false)
 	private String	name;
-	
+
 	@Argument(index = 2, name = "vlanID", description = "ID of the VLAN", required = true, multiValued = false)
-	private int	vlanID;
-	
+	private int		vlanID;
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Create VLAN Configuration ");
 		try {
 			IResource macBridge = getResourceFromFriendlyName(resourceId);
-			IVLANAwareBridgeCapability vlanAwareBridgeCapability = 
-				(IVLANAwareBridgeCapability) macBridge.getCapabilityByInterface(IVLANAwareBridgeCapability.class);
+			IVLANAwareBridgeCapability vlanAwareBridgeCapability =
+					(IVLANAwareBridgeCapability) macBridge.getCapabilityByInterface(IVLANAwareBridgeCapability.class);
 			vlanAwareBridgeCapability.createVLANConfiguration(new VLANConfiguration(name, vlanID));
 		} catch (ResourceException e) {
 			printError(e);

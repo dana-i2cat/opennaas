@@ -18,7 +18,7 @@ public class ShowStaticVLANConfigCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the MAC bridge to show the VLAN configurations", required = true, multiValued = false)
 	private String	resourceId;
-	
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Show static VLAN configuration entries in filtering database");
@@ -29,18 +29,18 @@ public class ShowStaticVLANConfigCommand extends GenericKarafCommand {
 			StaticVLANRegistrationEntry currentEntry = null;
 			this.printSymbolWithoutDoubleLine("Static VLAN configuration entries in filtering database: \n");
 			String result = null;
-			while (iterator.hasNext()){
+			while (iterator.hasNext()) {
 				currentEntry = iterator.next();
-				result = "VLAN id: "+currentEntry.getVlanID()+ "; Ports: ";
-				for(int i=0; i<currentEntry.getPortConfigurations().size(); i++){
-					result = result + currentEntry.getPortConfigurations().get(i).getPortInterfaceId()+"=";
-					if(currentEntry.getPortConfigurations().get(i).isTagged()){
+				result = "VLAN id: " + currentEntry.getVlanID() + "; Ports: ";
+				for (int i = 0; i < currentEntry.getPortConfigurations().size(); i++) {
+					result = result + currentEntry.getPortConfigurations().get(i).getPortInterfaceId() + "=";
+					if (currentEntry.getPortConfigurations().get(i).isTagged()) {
 						result = result + "tagged";
-					}else{
+					} else {
 						result = result + "untagged";
 					}
-					if (i+1<currentEntry.getPortConfigurations().size()){
-						result = result+" ";
+					if (i + 1 < currentEntry.getPortConfigurations().size()) {
+						result = result + " ";
 					}
 				}
 				this.printSymbolWithoutDoubleLine(result + "\n");

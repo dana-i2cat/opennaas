@@ -2,7 +2,6 @@ package org.opennaas.itests.roadm.shell;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -28,12 +27,12 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.itests.roadm.helpers.RepositoryHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -70,12 +69,14 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.connections)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.connections)", timeout = 20000)
 	private BlueprintContainer	connectionService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)", timeout = 20000)
 	private BlueprintContainer	wonesysProtocolService;
 
 	String						resourceName	= "pedrosa";
@@ -89,8 +90,7 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
-				includeTestHelper(),
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

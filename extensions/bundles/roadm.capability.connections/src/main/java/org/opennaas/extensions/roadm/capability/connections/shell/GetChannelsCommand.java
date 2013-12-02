@@ -2,6 +2,10 @@ package org.opennaas.extensions.roadm.capability.connections.shell;
 
 import java.util.List;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -10,11 +14,6 @@ import org.opennaas.extensions.router.model.opticalSwitch.FiberChannel;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.WDMFCPort;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "connections", name = "getChannels", description = "Shows channels of given port.")
 public class GetChannelsCommand extends GenericKarafCommand {

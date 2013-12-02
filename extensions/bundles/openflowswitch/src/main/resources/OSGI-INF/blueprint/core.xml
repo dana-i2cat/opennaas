@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="openflowSwitchBootstrapperFactory" class="org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchBootstrapperFactory"/>
+    <bean id="resourceDescriptorRepository"
+          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+          init-method="initializeEntityManager" destroy-method="close">
+         <property name="persistenceUnit" value="ResourceCore"/>
+    </bean>	
+ 
+ 	<bean id="openflowSwitchRepository" class="org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository"
+          init-method="init">
+		<argument value="openflowswitch"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
+		<property name="resourceBootstrapperFactory" ref="openflowSwitchBootstrapperFactory"/>
+	</bean>   
+	
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="openflowSwitchRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>	
+	
+	<service ref="openflowSwitchRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="openflowswitch"/>
+			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>	
+	
+	<bean id="openflowForwardingCapabilityFactory" class="org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapabilityFactory">
+		<property name="type" value="offorwarding"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="openflowForwardingCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="offorwarding"/>
+			<entry key="capability.model" value="openflowswitch"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>	
+	
+	<!-- Forces this bundle to wait for dataSourceResources being published -->
+	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>	
+	
+</blueprint>

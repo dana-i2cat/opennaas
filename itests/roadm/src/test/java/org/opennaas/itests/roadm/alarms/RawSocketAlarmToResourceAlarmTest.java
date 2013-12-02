@@ -2,7 +2,6 @@ package org.opennaas.itests.roadm.alarms;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -71,19 +70,20 @@ public class RawSocketAlarmToResourceAlarmTest implements EventHandler
 	@Filter("(capability=monitoring)")
 	private ICapabilityFactory	monitoringFactory;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)", timeout = 20000)
 	private BlueprintContainer	roadmRepositoryService;
 
+	@SuppressWarnings("unused")
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)", timeout = 20000)
 	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
-				includeTestHelper(),
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

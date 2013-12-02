@@ -40,14 +40,14 @@ import uk.co.westhawk.snmp.stack.varbind;
  * <p>
  * Company:
  * </p>
- *
+ * 
  * @author unascribed
  * @version 1.0
  */
 
 public class SnmpTrapListener implements TrapListener {
 
-	Log					log							= LogFactory.getLog(SnmpTrapListener.class);
+	Log						log							= LogFactory.getLog(SnmpTrapListener.class);
 
 	// Oid's
 	// General OIDs
@@ -106,7 +106,7 @@ public class SnmpTrapListener implements TrapListener {
 
 		/*
 		 * S'ha tret el context fora i s'han afegit destroy() fora, per evitar el IOException que no mola.
-		 *
+		 * 
 		 * Idea: Obrir el context nomes un cop al iniciar i fer servir el mateix sempre.
 		 */
 

@@ -1,6 +1,5 @@
 package org.opennaas.gui.vcpe.entities;
 
-
 /**
  * @author Jordi
  */
@@ -17,7 +16,8 @@ public class MultipleProviderPhysical extends PhysicalInfrastructure {
 	}
 
 	/**
-	 * @param physicalRouter the physicalRouter to set
+	 * @param physicalRouter
+	 *            the physicalRouter to set
 	 */
 	public void setPhysicalRouter(PhysicalRouter physicalRouter) {
 		this.physicalRouter = physicalRouter;

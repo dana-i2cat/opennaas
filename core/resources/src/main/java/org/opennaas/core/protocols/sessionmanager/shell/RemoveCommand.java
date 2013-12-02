@@ -1,20 +1,19 @@
 package org.opennaas.core.protocols.sessionmanager.shell;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
-
 /**
  * Remove a protocol session.
- *
+ * 
  * @author Pau Minoves
- *
+ * 
  */
 @Command(scope = "protocols", name = "remove", description = "Removes a live connection from the pool, closing it.")
 public class RemoveCommand extends GenericKarafCommand {

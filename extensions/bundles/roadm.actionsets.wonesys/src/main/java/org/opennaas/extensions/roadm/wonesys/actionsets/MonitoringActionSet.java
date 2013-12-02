@@ -3,9 +3,9 @@ package org.opennaas.extensions.roadm.wonesys.actionsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.roadm.wonesys.actionsets.actions.alarms.ProcessAlarmAction;
-import org.opennaas.extensions.roadm.wonesys.actionsets.actions.RefreshModelConnectionsAction;
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.RefreshModelConnectionsAction;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.alarms.ProcessAlarmAction;
 
 public class MonitoringActionSet extends ActionSet {
 

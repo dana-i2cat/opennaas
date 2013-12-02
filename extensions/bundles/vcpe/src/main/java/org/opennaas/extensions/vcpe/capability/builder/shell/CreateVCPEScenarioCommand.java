@@ -30,7 +30,8 @@ public class CreateVCPEScenarioCommand extends GenericKarafCommand {
 		String xml = fileToString(modelPath);
 		VCPENetworkModel desiredScenario = (VCPENetworkModel) ObjectSerializer.fromXml(xml, VCPENetworkModel.class);
 
-		IVCPENetworkBuilderCapability capability = (IVCPENetworkBuilderCapability) resource.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
+		IVCPENetworkBuilderCapability capability = (IVCPENetworkBuilderCapability) resource
+				.getCapabilityByInterface(IVCPENetworkBuilderCapability.class);
 		capability.buildVCPENetwork(desiredScenario);
 
 		return null;

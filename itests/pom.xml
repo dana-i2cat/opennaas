@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.19</version>
+        <version>0.24.2</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -12,15 +12,19 @@
 	<packaging>pom</packaging>
 
 	<modules>
-<!--		<module>helpers</module>
--->
+		<module>helpers</module>
+
 		<module>core</module>
-<!--		<module>router</module>
+		<module>router</module>
 		<module>network</module>
 		<module>roadm</module>
 		<module>bod</module>
 		<module>vcpe</module>
--->	</modules>
+		<module>vnmapper</module>
+		<module>security</module>
+		<module>openflowswitch</module>
+		<module>ofertie.ncl</module>
+	</modules>
 
 	<dependencies>
 		<dependency>

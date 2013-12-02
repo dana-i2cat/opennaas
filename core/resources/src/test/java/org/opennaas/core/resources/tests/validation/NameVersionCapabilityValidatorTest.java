@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
@@ -20,9 +19,9 @@ import org.springframework.validation.FieldError;
 
 /**
  * Test that the NameVersionCapabilityValidator works properly
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 public class NameVersionCapabilityValidatorTest {
 	Log										logger					= LogFactory.getLog(NameVersionCapabilityValidatorTest.class);

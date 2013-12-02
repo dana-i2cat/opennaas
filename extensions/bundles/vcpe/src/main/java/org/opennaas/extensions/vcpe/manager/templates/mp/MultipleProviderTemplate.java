@@ -114,6 +114,7 @@ public class MultipleProviderTemplate implements ITemplate {
 				if (srcElement instanceof Interface && dstElement instanceof Interface) {
 					VCPENetworkModelHelper.copyInterface((Interface) dstElement, (Interface) srcElement);
 				} else if (srcElement instanceof IPNetworkDomain && dstElement instanceof IPNetworkDomain) {
+					((IPNetworkDomain) dstElement).setOwner(((IPNetworkDomain) srcElement).getOwner());
 					((IPNetworkDomain) dstElement).setASNumber(((IPNetworkDomain) srcElement).getASNumber());
 					((IPNetworkDomain) dstElement).setIPAddressRanges(((IPNetworkDomain) srcElement).getIPAddressRanges());
 				}

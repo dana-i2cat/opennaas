@@ -7,31 +7,29 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.Root;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.apache.openjpa.persistence.criteria.OpenJPACriteriaBuilder;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
- * JPA implementation of the GenericRepository. Note that this
- * implementation also expects OpenJPA as JPA implementation. That's
- * because we use the Criteria API.
- *
+ * JPA implementation of the GenericRepository. Note that this implementation also expects OpenJPA as JPA implementation. That's because we use the
+ * Criteria API.
+ * 
  * @author Jurgen Lust
- *
+ * 
  * @param <T>
  *            The persistent type
  * @param <ID>
  *            The primary key type
  */
 public class GenericJpaRepository<T, ID extends Serializable>
-	implements GenericRepository<T, ID>
+		implements GenericRepository<T, ID>
 {
-	private final Class<T> entityClass;
-	private EntityManager entityManager;
+	private final Class<T>	entityClass;
+	private EntityManager	entityManager;
 
 	public GenericJpaRepository(final Class<T> entityClass) {
 		this.entityClass = entityClass;
@@ -108,11 +106,11 @@ public class GenericJpaRepository<T, ID extends Serializable>
 
 	@Override
 	public List<T> findByNamedQueryAndNamedParams(final String name,
-												  final Map<String,? extends Object> params)
+			final Map<String, ? extends Object> params)
 	{
 		TypedQuery<T> query = entityManager.createNamedQuery(name, entityClass);
 
-		for (Map.Entry<String,? extends Object> param: params.entrySet()) {
+		for (Map.Entry<String, ? extends Object> param : params.entrySet()) {
 			query.setParameter(param.getKey(), param.getValue());
 		}
 

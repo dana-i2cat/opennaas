@@ -5,9 +5,9 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 
 /**
  * Basic interface all Action must implements
- *
+ * 
  * @author Evelyn Torras
- *
+ * 
  */
 public interface IAction {
 
@@ -50,7 +50,7 @@ public interface IAction {
 
 	/**
 	 * What it is the utility for this method
-	 *
+	 * 
 	 * @param params
 	 * @return
 	 * @throws ActionException

@@ -1,0 +1,100 @@
+<resourceDescriptor>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version"/>
+        <information>
+		<description>Manages the configuration of IP addresses on interfaces.</description>
+		<name>IP capability</name>
+		<type>ip</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version"/>
+        <information>
+		<description>Manages interfaces and logical routers in a physical router.</description>
+		<name>Chassis capability</name>
+		<type>chassis</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information>
+		<description>Configures OSPF in a router.</description>
+		<name>OSPF capability</name>
+		<type>ospf</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information>
+		<description>Provides the configuration of an IP over IP tunnel between two devices.</description>
+		<name>GRE capability</name>
+		<type>gretunnel</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information>
+		<description>Allows to set up a static route to a remote network through an interface of the router.</description>
+		<name>Static Route capability</name>
+		<type>staticroute</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information>
+		<description>Enqueues the actions to be executed and provides rollback if one of them fails.</description>
+		<type>queue</type>
+	</information>
+    </capabilityDescriptors>
+    
+	<capabilityDescriptors>
+		<capabilityProperty name="powernet.id" value="dc1"/>
+		<capabilityProperty name="powernet.consumer.id" value="router:lola"/>
+		<capabilityProperty value="pdu" name="actionset.name"/>
+		<capabilityProperty value="10.10" name="actionset.version" />
+	<information>
+		<description>Power management capability</description>
+		<type>consumer_pw_mgt</type>
+	</information>
+	</capabilityDescriptors>
+	<capabilityDescriptors>
+		<capabilityProperty name="powernet.id" value="dc1"/>
+		<capabilityProperty name="powernet.consumer.id" value="router:lola"/>
+		<capabilityProperty value="pdu" name="actionset.name"/>
+		<capabilityProperty value="10.10" name="actionset.version" />
+	<information>
+		<description>Power monitoring capability</description>
+		<type>consumer_pw_mon</type>
+	</information>
+	</capabilityDescriptors>
+	<capabilityDescriptors>
+	<capabilityProperty name="powernet.id" value="dc1"/>
+		<capabilityProperty name="powernet.consumer.id" value="router:lola"/>
+		<capabilityProperty value="pdu" name="actionset.name"/>
+		<capabilityProperty value="10.10" name="actionset.version" />
+	<information>
+		<description>Power supply capability</description>
+		<type>consumer_pw_sup</type>
+	</information>
+	</capabilityDescriptors>
+
+    <information>
+        <type>router</type>
+        <name>router1</name>
+	<description>Junos v10 Router</description>
+    </information>
+    <properties/>
+
+</resourceDescriptor>

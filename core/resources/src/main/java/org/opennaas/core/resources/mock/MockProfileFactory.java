@@ -6,7 +6,6 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 
-
 public class MockProfileFactory {
 
 	public static IProfile newMockProfilefactory(ProfileDescriptor profileDescriptor, Map<String, IActionSet> actionSets) {

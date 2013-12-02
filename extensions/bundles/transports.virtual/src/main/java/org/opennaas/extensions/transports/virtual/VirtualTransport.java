@@ -13,21 +13,21 @@ import org.opennaas.core.resources.transport.TransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VirtualTransport implements IStreamTransport, IMessageTransport{
-	
-	public static final String VIRTUAL = "Virtual";
-	
-	private Logger logger = LoggerFactory.getLogger(VirtualTransport.class);
-	private IVirtualTransportProvider virtualTransportProvider = null;
-	private PipedInputStream inputStream = null;
-	private PipedOutputStream outputStream = null;
-	
-	public VirtualTransport(IVirtualTransportProvider virtualTransportProvider) throws TransportException{
+public class VirtualTransport implements IStreamTransport, IMessageTransport {
+
+	public static final String			VIRTUAL						= "Virtual";
+
+	private Logger						logger						= LoggerFactory.getLogger(VirtualTransport.class);
+	private IVirtualTransportProvider	virtualTransportProvider	= null;
+	private PipedInputStream			inputStream					= null;
+	private PipedOutputStream			outputStream				= null;
+
+	public VirtualTransport(IVirtualTransportProvider virtualTransportProvider) throws TransportException {
 		this.virtualTransportProvider = virtualTransportProvider;
-		if (this.virtualTransportProvider == null){
+		if (this.virtualTransportProvider == null) {
 			throw new TransportException("Could not find a VirtualTransportProvider for this virtual transport");
 		}
-		
+
 		outputStream = new PipedOutputStream();
 		try {
 			inputStream = new PipedInputStream(outputStream);
@@ -36,7 +36,7 @@ public class VirtualTransport implements IStreamTransport, IMessageTransport{
 			throw new TransportException(ex);
 		}
 	}
-	
+
 	public void connect() throws TransportException {
 		logger.info("Virtual transport connected");
 	}
@@ -44,7 +44,7 @@ public class VirtualTransport implements IStreamTransport, IMessageTransport{
 	public void disconnect() throws TransportException {
 		logger.info("Virtual transport disconnected");
 	}
-	
+
 	public InputStream getInputStream() throws TransportException {
 		return inputStream;
 	}
@@ -66,10 +66,10 @@ public class VirtualTransport implements IStreamTransport, IMessageTransport{
 
 	public void send(char[] message) throws TransportException {
 		byte[] request = new byte[message.length];
-		for(int i=0; i<message.length; i++){
+		for (int i = 0; i < message.length; i++) {
 			request[i] = (byte) message[i];
 		}
-		logger.debug("Sending message "+request);
+		logger.debug("Sending message " + request);
 		byte[] response = virtualTransportProvider.getStreamTransportReponse(request);
 		try {
 			outputStream.write(response);
@@ -80,7 +80,7 @@ public class VirtualTransport implements IStreamTransport, IMessageTransport{
 	}
 
 	public Object sendMessage(Object message) {
-		logger.debug("Virtual transport sending message "+message.toString());
+		logger.debug("Virtual transport sending message " + message.toString());
 		return virtualTransportProvider.getMessageTransportResponse(message);
 	}
 

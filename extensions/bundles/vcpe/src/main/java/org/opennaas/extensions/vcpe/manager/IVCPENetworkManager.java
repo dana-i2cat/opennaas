@@ -30,6 +30,18 @@ public interface IVCPENetworkManager {
 	public String create(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException;
 
 	/**
+	 * Update a VCPE infrastructure of VCPEResource from model
+	 * 
+	 * @return the id if the VCPE has been created
+	 * @throws VCPENetworkManagerException
+	 */
+	@Path("/update")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public String update(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException;
+
+	/**
 	 * Remove a VCPE infrastructure of the resource with id = vcpeNetworkId
 	 * 
 	 * @param vcpeNetworkId
@@ -57,6 +69,8 @@ public interface IVCPENetworkManager {
 	/**
 	 * Get all VCPENetworks
 	 * 
+	 * @Consumes(MediaType.APPLICATION_XML)
+	 * @Produces(MediaType.APPLICATION_XML)
 	 * @return all the VCPENetworks
 	 * @throws VCPENetworkManagerException
 	 */
@@ -153,5 +167,44 @@ public interface IVCPENetworkManager {
 	@Produces(MediaType.APPLICATION_XML)
 	public Boolean isInterfaceFree(@QueryParam("vcpeId") String vcpeId, @QueryParam("router") String router, @QueryParam("iface") String iface)
 			throws VCPENetworkManagerException;
+
+	/**
+	 * 
+	 * @param resourceId
+	 * @return true if the build has finished (either by having completed the task or having failed), false otherwise.
+	 * @throws VCPENetworkManagerException
+	 *             if there is no building execution for given resource id.
+	 */
+	@Path("/hasFinishedBuild/{id}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	boolean hasFinishedBuild(@PathParam("id") String resourceId) throws VCPENetworkManagerException;
+
+	/**
+	 * This implementation consumes the task, so following invocations to this method with same resourceId throw an exception
+	 * 
+	 * @param resourceId
+	 * @return true if the build has been successful
+	 * @throws VCPENetworkManagerException
+	 *             if building has failed, or there is no building execution for given resource id.
+	 */
+	@Path("/getBuildResult/{id}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	boolean getBuildResult(@PathParam("id") String resourceId) throws VCPENetworkManagerException;
+
+	@Path("/getUserFilteredVCPEModel/{id}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	VCPENetworkModel getUserFilteredVCPEModel(@PathParam("id") String vcpeNetworkId);
+
+	@Path("/editFilteredVCPE/{id}")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	VCPENetworkModel editFilteredVCPE(@PathParam("id") String vcpeNetworkId, VCPENetworkModel filteredModel);
 
 }

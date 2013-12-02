@@ -1,0 +1,31 @@
+##
+# This script initializes a power network composed of:
+# - A PowerSupply called windgenerator01
+# - A PowerDelivery called pdu:pdu01
+# - A PowerConsumer called router:lola
+#
+
+resource:create $descriptors.path/powernet.descriptor
+resource:start powernet:dc1
+
+gim:show powernet:dc1
+
+gim:createsupply powernet:dc1 windgenerator01
+gim:createsupplysource powernet:dc1 windgenerator01 s1
+gim:setsupplyenergy -A powernet:dc1 windgenerator01 green wind 0.11 100
+gim:setsupplyprice -A powernet:dc1 windgenerator01 0.12
+
+gim:createdelivery powernet:dc1 pdu:pdu01
+gim:createdeliveryreceptor powernet:dc1 pdu:pdu01 r1
+gim:createdeliverysource powernet:dc1 pdu:pdu01 s1
+gim:setdeliveryenergy -A powernet:dc1 pdu:pdu01 green wind 0.11 100
+gim:setdeliveryprice -A powernet:dc1 pdu:pdu01 0.12
+
+gim:createconsumer powernet:dc1 router:lola
+gim:createconsumerreceptor powernet:dc1 router:lola r1
+gim:createconsumerreceptor powernet:dc1 router:lola r2
+
+gim:connectsupplydelivery powernet:dc1 windgenerator01 s1 pdu:pdu01 r1
+gim:connectdeliveryconsumer powernet:dc1 pdu:pdu01 s1 router:lola r1
+
+gim:show powernet:dc1

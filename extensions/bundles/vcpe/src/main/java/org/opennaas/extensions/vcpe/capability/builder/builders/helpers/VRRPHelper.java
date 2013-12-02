@@ -12,6 +12,7 @@ import org.opennaas.extensions.router.capability.vrrp.VRRPCapability;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
@@ -76,6 +77,7 @@ public class VRRPHelper extends GenericHelper {
 			throws ResourceException {
 		// create VRRPProtocolEndpoint
 		VRRPProtocolEndpoint vrrpProtocolEndpoint = new VRRPProtocolEndpoint();
+		vrrpProtocolEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
 
 		// set VRRPProtocolEndpoint' parameters
 		vrrpProtocolEndpoint.setPriority(vrrpPriority);

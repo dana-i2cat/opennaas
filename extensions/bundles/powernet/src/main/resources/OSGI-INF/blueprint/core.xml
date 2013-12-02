@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to You under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="powernetBootstrapperFactory" class="org.opennaas.extensions.powernet.repository.PowerNetResourceBootstrapperFactory"/>
+    <bean id="resourceDescriptorRepository"
+          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+          init-method="initializeEntityManager" destroy-method="close">
+         <property name="persistenceUnit" value="ResourceCore"/>
+    </bean>
+	<bean id="powernetRepository" class="org.opennaas.extensions.powernet.repository.PowerNetResourceRepository" init-method="init">
+		<argument value="powernet"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
+		<property name="resourceBootstrapperFactory" ref="powernetBootstrapperFactory"/>
+	</bean>
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="powernetRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+	<service ref="powernetRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="powernet"/>
+			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- Forces this bundle to wait for dataSourceResources being published -->
+	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>	
+
+	<!-- Factory that creates protocol capabilities -->
+	<bean id="exampleCapabilityFactory" class="org.opennaas.extensions.powernet.capability.mgt.PowerNetManagementCapabilityFactory">
+		<property name="type" value="powernet_mgt"/>
+	</bean>
+		<!-- Register the Service as an OSGi Service -->
+	<service ref="exampleCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="powernet_mgt"/>
+			<entry key="capability.model" value="dummy"/>
+			<entry key="capability.version" value="1.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- Command completers -->
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="example/sayHello">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ExampleCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/show">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<!-- Create/remove/show consumer, delivery, supply -->
+		<command name="gim/createConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createSupply">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateSupplyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteSupply">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteSupplyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/showConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/showDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/showSupply">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ShowSupplyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<!-- Create/remove source, receptor -->
+		<command name="gim/createConsumerReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateConsumerReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createDeliveryReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateDeliveryReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createDeliverySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateDeliverySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/createSupplySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.CreateSupplySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteConsumerReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteConsumerReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteDeliveryReceptor">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteDeliveryReceptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteDeliverySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteDeliverySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/deleteSupplySource">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.DeleteSupplySourceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<!-- Setters -->
+		<command name="gim/setConsumerLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setDeliverySourceLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliverySourceLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+			<command name="gim/setDeliveryReceptorLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryReceptorLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setSupplyLoad">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetConsumerLoadCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setSupplyEnergy">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyEnergyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setSupplyPrice">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetSupplyPriceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setDeliveryEnergy">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryEnergyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/setDeliveryPrice">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.SetDeliveryPriceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/connectSupplyDelivery">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ConnectSupplyDeliveryCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="gim/connectDeliveryConsumer">
+			<action class="org.opennaas.extensions.powernet.capability.mgt.shell.ConnectDeliveryConsumerCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+	</command-bundle>
+</blueprint>

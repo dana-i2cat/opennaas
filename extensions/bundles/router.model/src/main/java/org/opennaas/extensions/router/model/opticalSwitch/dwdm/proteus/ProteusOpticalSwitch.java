@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 
 public class ProteusOpticalSwitch extends org.opennaas.extensions.router.model.System {
 
 	/**
 	 * 
 	 */
-	private static final long	serialVersionUID	= 6737244447225380204L;
+	private static final long		serialVersionUID	= 6737244447225380204L;
 	private List<FiberConnection>	fiberConnections	= new ArrayList<FiberConnection>();
 
 	public List<FiberConnection> getFiberConnections() {

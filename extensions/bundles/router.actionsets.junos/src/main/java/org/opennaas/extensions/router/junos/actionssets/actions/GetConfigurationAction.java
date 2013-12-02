@@ -25,6 +25,7 @@ import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.VRRPGroup;
 import org.xml.sax.SAXException;
 
 public class GetConfigurationAction extends JunosAction {
@@ -150,6 +151,7 @@ public class GetConfigurationAction extends JunosAction {
 		routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
 		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
 		routerModel.removeAllHostedServicesByType(GREService.class);
+		routerModel.removeAllHostedServicesByType(VRRPGroup.class);
 
 		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
 		ipInterfaceParser.init();

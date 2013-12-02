@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to You under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="pduBootstrapperFactory" class="org.opennaas.extensions.pdu.repository.PDUResourceBootstrapperFactory"/>
+    <bean id="resourceDescriptorRepository"
+          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+          init-method="initializeEntityManager" destroy-method="close">
+         <property name="persistenceUnit" value="ResourceCore"/>
+    </bean>
+	<bean id="pduRepository" class="org.opennaas.extensions.pdu.repository.PDUResourceRepository" init-method="init">
+		<argument value="pdu"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
+		<property name="resourceBootstrapperFactory" ref="pduBootstrapperFactory"/>
+	</bean>
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="pduRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+	<service ref="pduRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="pdu"/>
+			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- Factories for capabilities -->
+	<bean id="supplyCapabFactory" class="org.opennaas.extensions.pdu.capability.factory.PDUPowerSupplyCapabilityFactory">
+		<property name="type" value="pdu_pw_sup"/>
+	</bean>
+	<bean id="monitorCapabFactory" class="org.opennaas.extensions.pdu.capability.factory.PDUPowerMonitoringCapabilityFactory">
+		<property name="type" value="pdu_pw_mon"/>
+	</bean>
+	<bean id="managementCapabFactory" class="org.opennaas.extensions.pdu.capability.factory.PDUPowerManagementCapabilityFactory">
+		<property name="type" value="pdu_pw_mgt"/>
+	</bean>
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="supplyCapabFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="pdu_pw_sup"/>
+			<entry key="capability.model" value="apc"/>
+			<entry key="capability.version" value="1.0"/>
+		</service-properties>
+	</service>
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="monitorCapabFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="pdu_pw_mon"/>
+			<entry key="capability.model" value="apc"/>
+			<entry key="capability.version" value="1.0"/>
+		</service-properties>
+	</service>
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="managementCapabFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="pdu_pw_mgt"/>
+			<entry key="capability.model" value="apc"/>
+			<entry key="capability.version" value="1.0"/>
+		</service-properties>
+	</service>
+	
+	
+	<!-- Forces this bundle to wait for dataSourceResources being published -->
+	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>	
+
+	<!-- Command completers -->
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="pdu/listPorts">
+			<action class="org.opennaas.extensions.pdu.capability.shell.ListPortsCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="pdu/getPowerMetrics">
+			<action class="org.opennaas.extensions.pdu.capability.shell.GetCurrentPowerMetricsCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="pdu/getEnergy">
+			<action class="org.opennaas.extensions.pdu.capability.shell.GetEnergyCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="pdu/getPowerMetricsLog">
+			<action class="org.opennaas.extensions.pdu.capability.shell.GetPowerMetricsLogCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="pdu/getPowerStatus">
+			<action class="org.opennaas.extensions.pdu.capability.shell.GetPowerStatusCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="pdu/powerOff">
+			<action class="org.opennaas.extensions.pdu.capability.shell.PowerOffCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="pdu/powerOn">
+			<action class="org.opennaas.extensions.pdu.capability.shell.PowerOnCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+	</command-bundle>
+</blueprint>

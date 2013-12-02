@@ -2,15 +2,18 @@ package org.opennaas.core.resources;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.transform.stream.StreamSource;
 
 /**
  * A utility class that marshall IEngineMessages to and from XML using JAXB
  * 
  * @author Scott Campbell (CRC)
+ * @author Adrian Rosello Rey (i2CAT)
  * 
  */
 public class ObjectSerializer {
@@ -67,4 +70,27 @@ public class ObjectSerializer {
 			throw new SerializationException(e);
 		}
 	}
+
+	/**
+	 * Unserialize the XML String into a list of IEngineMessage
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> fromXML(String xml, Class<T> clazz) throws SerializationException {
+
+		StringReader in = new StringReader(xml);
+		JAXBContext context;
+		try {
+			context = JAXBContext.newInstance(GenericListWrapper.class, clazz);
+			GenericListWrapper<T> wrapper = (GenericListWrapper<T>) context.createUnmarshaller().unmarshal(new StreamSource(in),
+					GenericListWrapper.class).getValue();
+
+			return wrapper.getItems();
+
+		} catch (JAXBException e) {
+			throw new SerializationException(e);
+
+		}
+
+	}
+
 }

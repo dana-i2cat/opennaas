@@ -3,6 +3,10 @@ package org.opennaas.extensions.router.junos.actionssets.actions.ospf;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants;
@@ -10,11 +14,6 @@ import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfComm
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 
 /**
  * @author Jordi Puig

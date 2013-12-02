@@ -3,6 +3,16 @@ package org.opennaas.extensions.roadm.wonesys.actionsets.actions;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
 import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
 import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
@@ -23,17 +33,6 @@ import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.Pro
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
 import org.opennaas.extensions.router.model.utils.OpticalSwitchCardFactory;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.ActionResponse.STATUS;
-import org.opennaas.core.resources.command.CommandException;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class RefreshModelConnectionsAction extends WonesysAction {
 
@@ -158,10 +157,10 @@ public class RefreshModelConnectionsAction extends WonesysAction {
 				throw new CommandException("Command Failed");
 		}
 
-		//remove old model
+		// remove old model
 		List<LogicalDevice> oldLogicalDevices = ((ProteusOpticalSwitch) model).getLogicalDevices();
-		for (int i= oldLogicalDevices.size() -1; i>=0; i--){
-			if (oldLogicalDevices.get(i) instanceof ProteusOpticalSwitchCard){
+		for (int i = oldLogicalDevices.size() - 1; i >= 0; i--) {
+			if (oldLogicalDevices.get(i) instanceof ProteusOpticalSwitchCard) {
 				((ProteusOpticalSwitch) model).removeLogicalDevice(oldLogicalDevices.get(i));
 			}
 		}

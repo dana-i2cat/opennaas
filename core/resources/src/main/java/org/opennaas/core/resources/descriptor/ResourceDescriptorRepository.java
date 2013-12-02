@@ -6,11 +6,10 @@ import java.util.Map;
 
 import javax.persistence.RollbackException;
 
-import org.opennaas.core.persistence.GenericOSGiJpaRepository;
-import org.opennaas.core.persistence.PersistenceException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.persistence.GenericOSGiJpaRepository;
+import org.opennaas.core.persistence.PersistenceException;
 
 public class ResourceDescriptorRepository extends GenericOSGiJpaRepository<ResourceDescriptor, String> {
 
