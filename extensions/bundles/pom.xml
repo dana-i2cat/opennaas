@@ -83,5 +83,7 @@
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
-	</modules>
+
+		<module>vrf</module>
+  </modules>
 </project>
