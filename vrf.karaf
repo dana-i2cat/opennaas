@@ -2,33 +2,28 @@ shell:echo Script to insert the information of each controller and the default r
 
 #create resource from descriptor
 
-#start resource
-resource:start vrf:VRF-1
-resource:list
-
-#insert controller information
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8191 00:00:00:00:00:00:00:01
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8192 00:00:00:00:00:00:00:02
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8193 00:00:00:00:00:00:00:03
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8194 00:00:00:00:00:00:00:04
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8195 00:00:00:00:00:00:00:05
-
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8191 00:00:00:00:00:00:00:0a
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8192 00:00:00:00:00:00:00:0c
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8193 00:00:00:00:00:00:00:0d
-
-#routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8191 00:00:00:00:00:00:00:70
-#routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8192 00:00:00:00:00:00:00:71
-#routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8193 00:00:00:00:00:00:00:72
-
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8191 00:00:00:00:00:00:00:46
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8192 00:00:00:00:00:00:00:47
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8193 00:00:00:00:00:00:00:48
-
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8191 00:00:00:00:00:00:00:14
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM 8192 00:00:00:00:00:00:00:15
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8193 00:00:00:00:00:00:00:16
-routing:insertcontrollerinfo vrf:VRF-1 controllersVM2 8194 00:00:00:00:00:00:00:17
-
 #insert routes from json file
-routing:insertfileroute vrf:VRF-1 vrf.json
+#routing:insertfileroute vrf:VRF-1 vrf.json
+
+#Reactive routing
+resource:create /mnt/Data/Workspace/opennaas/utils/examples/descriptors/s1.descriptor
+resource:create /mnt/Data/Workspace/opennaas/utils/examples/descriptors/s2.descriptor
+resource:create /mnt/Data/Workspace/opennaas/utils/examples/descriptors/s3.descriptor
+resource:create /mnt/Data/Workspace/opennaas/utils/examples/descriptors/s4.descriptor
+resource:create /mnt/Data/Workspace/opennaas/utils/examples/descriptors/s5.descriptor
+
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:01 openflowswitch:s1 floodlight noauth http://controllersVM:8191
+resource:start openflowswitch:s1
+
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:02 openflowswitch:s2 floodlight noauth http://controllersVM:8192
+resource:start openflowswitch:s2
+
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:03 openflowswitch:s3 floodlight noauth http://controllersVM2:8193
+resource:start openflowswitch:s3
+
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:04 openflowswitch:s4 floodlight noauth http://controllersVM2:8194
+resource:start openflowswitch:s4
+
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:05 openflowswitch:s5 floodlight noauth http://controllersVM2:8195
+resource:start openflowswitch:s5
+

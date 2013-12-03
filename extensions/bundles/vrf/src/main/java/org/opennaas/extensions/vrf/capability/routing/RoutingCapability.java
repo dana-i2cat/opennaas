@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Response;
@@ -34,6 +35,7 @@ import org.opennaas.extensions.vrf.model.Switch;
 import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
 
 /**
  *
@@ -270,7 +272,7 @@ public class RoutingCapability implements IRoutingCapability {
     private Response proactiveRouting(Switch srcSwInfo, VRFRoute route, int version) {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         VRFModel model = getVRFModel();
-        
+        boolean flowMode = true;
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, srcSwInfo, srcSwInfo);
         
         List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
@@ -281,18 +283,7 @@ public class RoutingCapability implements IRoutingCapability {
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r));
             }
         }
-/*        
-        List<NetworkConnection> listNetCon = new ArrayList<NetworkConnection>();
-        NetworkConnection netCon = new NetworkConnection();
-        if (routeSubnetList.size() > 0) {
-            for (VRFRoute r : routeSubnetList) {
-                netCon = Utils.VRFRouteToNetCon(r);
-                listNetCon.add(netCon);
-            }
-        }
-        Route ONRoute = new Route();
-        ONRoute.setNetworkConnections(listNetCon);
-*/
+        
         /*call provisioner OpenNaaS */
     
         // provision each link and mark the last one
@@ -306,15 +297,32 @@ public class RoutingCapability implements IRoutingCapability {
 //                throw new ActionException("Error provisioning link : ", e);
             }
         }
-/*        
-//        SDNNetworkModel sdn = new SDNNetworkModel();
-        Map<String, IResource>	switches;
-//        sdn.getDeviceResourceMap();
-        IResource switchResource = getSwitchResourceFromName(connection.getSource().getDeviceId());
-        Switch sw = getSwitchResource(flow.getSwitchId());
-        sw.getFlowCap().allocatelow(flow);
-*/        
+        if(!flowMode){
+//            List<NetworkConnection> listNetCon = new ArrayList<NetworkConnection>();
+//            NetworkConnection netCon = new NetworkConnection();
+//            if (routeSubnetList.size() > 0) {
+//                for (VRFRoute r : routeSubnetList) {
+//                    netCon = Utils.VRFRouteToNetCon(r);
+//                    listNetCon.add(netCon);
+//                }
+//            }
+//            Route ONRoute = new Route();
+//            ONRoute.setNetworkConnections(listNetCon);
+//            provisionCircuit();
+//            FlowRequest flowReq = new FlowRequest();
+//            SDNNetworkModel sdn = new SDNNetworkModel();
+//            Map<String, IResource> switches;
+////          sdn.getDeviceResourceMap();
+//            IResource switchResource = getSwitchResourceFromName(connection.getSource().getDeviceId());
+//            Switch sw = getSwitchResource(flow.getSwitchId());
+//        sw.getFlowCap().allocatelow(flow);
+        }
+          
         return Response.ok("Proactive messages sent.").build();
+    }
+    
+    private void provisionCircuit(){
+        
     }
 
     private void provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException,ActivatorException {
@@ -328,34 +336,9 @@ public class RoutingCapability implements IRoutingCapability {
 
     private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
         log.info("Get Resource By Name "+resourceName);
-        log.info("................................................");
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
         IProtocolManager protocol = org.opennaas.extensions.sdnnetwork.Activator.getProtocolManagerService();
-        for(String test : protocol.getAllResourceIds()){
-            log.info(test);
-            try {
-                ProtocolSessionManager psm = (ProtocolSessionManager) protocol.getProtocolSessionManager(test);
-               log.info("True? "+psm.getRegisteredContexts().get(0).getSessionParameters().containsValue(resourceName));
-               List<ProtocolSessionContext> lis = psm.getRegisteredContexts();
-               for(ProtocolSessionContext p : lis){
-                   log.info(p.getSessionParameters().containsValue(resourceName));
-                   IProtocolSession ps = psm.obtainSession(p, true);
-                   String sessionId = ps.getSessionId();
-//                   resourceManager.
-               }
-               
-               log.info(psm.getResourceID());
-            } catch (ProtocolException ex) {
-                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        log.info("ResourceManager "+resourceManager.getNameFromResourceID(resourceName));
-        log.info("ResourceManager "+resourceManager.listResources().get(0).getResourceIdentifier().getId());
-        log.info("ResourceManager "+resourceManager.listResourcesByType("openflowswitch").get(0).getResourceDescriptor().getInformation().getName());
-        log.info("ResourceManager "+resourceManager.listResourcesByType("openflowswitch").get(1).getResourceDescriptor().getInformation().getName());
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
-        log.info("Resource id :"+resourceId);
-        resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", "s1");
         log.info("Resource id :"+resourceId);
         if(resourceId == null){
             log.info("Resource id is null");    

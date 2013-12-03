@@ -358,6 +358,15 @@
 		
 		
 	</feature>
+	<feature name="opennaas-vrf" version="${project.version}">
+                <feature version="${project.version}">opennaas-sdn-network</feature>
+                <feature version="${project.version}">opennaas-cim</feature>
+
+                <bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+                <bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf/${project.version}</bundle>
+        </feature>
 
 	<feature name="opennaas" version="${project.version}">
 		<feature version="${project.version}">opennaas-router</feature>
@@ -384,6 +393,7 @@
 <!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 		<feature version="${project.version}">opennaas-quantum</feature>
 		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
+		<feature version="${project.version}">opennaas-vrf</feature>
 	</feature>
 
 	<feature name="nexus-testprofile" version="${project.version}">
