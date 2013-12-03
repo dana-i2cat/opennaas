@@ -222,4 +222,9 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 		model.getFlows().remove(flow);
 	}
 
+        
+        @Override
+	public String getMapDeviceResource(String deviceId) throws CapabilityException {
+		return ((SDNNetworkModel) resource.getModel()).getDeviceResourceMap().get(deviceId);
+	}
 }
