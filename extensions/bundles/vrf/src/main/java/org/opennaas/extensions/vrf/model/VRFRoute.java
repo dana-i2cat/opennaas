@@ -7,29 +7,30 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
-public class Route {
- Log log = LogFactory.getLog(Route.class);
+public class VRFRoute {
+    Log log = LogFactory.getLog(VRFRoute.class);
     private int id;
     private String sourceAddress;
     private String destinationAddress;
     private Switch switchInfo;
     private Long timeToLive;
 
-    public Route() {
+    public VRFRoute(){
+        
     }
-
-    public Route(String sourceIp, String destIp, Switch SwitchInfo) {
+    
+    public VRFRoute(String sourceIp, String destIp, Switch SwitchInfo) {
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
         this.switchInfo = SwitchInfo;
     }
     
-    public String getDestinationAddress(){
-        return destinationAddress;
+    public int getId() {
+        return id;
     }
 
-    public void setDestinationAddress(String destinationAddress) {
-        this.destinationAddress = destinationAddress;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSourceAddress() {
@@ -38,6 +39,14 @@ public class Route {
 
     public void setSourceAddress(String sourceAddress) {
         this.sourceAddress = sourceAddress;
+    }
+    
+    public String getDestinationAddress(){
+        return destinationAddress;
+    }
+
+    public void setDestinationAddress(String destinationAddress) {
+        this.destinationAddress = destinationAddress;
     }
 
     public Switch getSwitchInfo() {
@@ -64,7 +73,7 @@ public class Route {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Route other = (Route) obj;
+        final VRFRoute other = (VRFRoute) obj;
 
         String thisDst = this.getDestinationAddress();
         String otherDst = other.getDestinationAddress();
@@ -88,22 +97,14 @@ public class Route {
         return hash;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    public boolean equalsOtherSubRoute(Object obj) {
+    public boolean equalsOtherRoutes(Object obj) {
         if (obj == null) {
             return false;
         }
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Route other = (Route) obj;
+        final VRFRoute other = (VRFRoute) obj;
         
         String thisDst = this.getDestinationAddress();
         String otherDst = other.getDestinationAddress();

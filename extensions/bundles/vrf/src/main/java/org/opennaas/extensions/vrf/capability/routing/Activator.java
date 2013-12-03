@@ -1,7 +1,6 @@
 package org.opennaas.extensions.vrf.capability.routing;
 
 import java.util.Properties;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
@@ -14,41 +13,36 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
 
-/**
- * 
- * @author Josep Batallé (josep.batalle@i2cat.net)
- * 
- */
 public class Activator extends AbstractActivator implements BundleActivator {
 
-	private static BundleContext	context;
+    private static BundleContext context;
+    static Log log = LogFactory.getLog(Activator.class);
 
-	static Log  log	= LogFactory.getLog(Activator.class);
+    /**
+     * Get the Bundle Context
+     * 
+     * @return BundleContext
+     */
+    public static BundleContext getContext() {
+        return context;
+    }
 
-	/**
-	 * Get the Bundle Context
-	 * 
-	 * @return BundleContext
-	 */
-	public static BundleContext getContext() {
-		return context;
-	}
+    /**
+     * Initialise the context
+     */
+    @Override
+    public void start(BundleContext context) throws Exception {
+        Activator.context = context;
+    }
 
-	/**
-	 * Initialise the context
-	 */
-	public void start(BundleContext context) throws Exception {
-		Activator.context = context;
-	}
+    /**
+     *
+     */
+    @Override
+    public void stop(BundleContext context) throws Exception {
+    }
 
-	/**
-	 *
-	 */
-	public void stop(BundleContext context) throws Exception {
-
-	}
-
-	/**
+    /**
 	 * Get the Queue Manager Service
 	 * 
 	 * @param resourceId
@@ -114,5 +108,4 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
 	}
-
 }

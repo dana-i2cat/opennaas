@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class Switch {
 
-    private int numberPorts;
-    private List<String> listPorts = new ArrayList<String>();
+    private int numberPorts;//not used
+    private List<String> listPorts = new ArrayList<String>();//not used
     private int inputPort;
     private int outputPort;
     private String dpid;
