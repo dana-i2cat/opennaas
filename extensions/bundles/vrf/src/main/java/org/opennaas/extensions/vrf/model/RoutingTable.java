@@ -13,19 +13,19 @@ public class RoutingTable {
 
     private static final long serialVersionUID = -4002472167559948067L;
     Log log = LogFactory.getLog(RoutingTable.class);
-    private List<Route> routeTable = new ArrayList<Route>();
+    private List<VRFRoute> routeTable = new ArrayList<VRFRoute>();
     private int version;
 
     public RoutingTable(int version) {
         this.version = version;
-        routeTable = new ArrayList<Route>();
+        routeTable = new ArrayList<VRFRoute>();
     }
 
-    public List<Route> getRouteTable() {
+    public List<VRFRoute> getRouteTable() {
         return routeTable;
     }
 
-    public void setRouteTable(List<Route> routeTable) {
+    public void setRouteTable(List<VRFRoute> routeTable) {
         this.routeTable = routeTable;
     }
 
@@ -36,8 +36,17 @@ public class RoutingTable {
     public void setVersion(int version) {
         this.version = version;
     }
-
-    public String addRoute(Route route) {
+    
+    public VRFRoute getRouteId(int id) {
+        for (VRFRoute r : this.routeTable) {
+            if (r.getId() == id) {
+                return r;
+            }
+        }
+        return null;
+    }
+        
+    public String addRoute(VRFRoute route) {
         if (RouteExists(route) == 0) {
             if (this.routeTable.isEmpty()) {
                 route.setId(1);
@@ -51,7 +60,7 @@ public class RoutingTable {
     }
 
     public Boolean removeRoute(int id) {
-        for (Route r : this.routeTable) {
+        for (VRFRoute r : this.routeTable) {
             if (r.getId() == id) {
                 this.routeTable.remove(r);
                 return true;
@@ -61,7 +70,7 @@ public class RoutingTable {
         return false;
     }
     
-    public void removeRoute(Route route) {
+    public void removeRoute(VRFRoute route) {
         routeTable.remove(route);
     }
     
@@ -69,8 +78,8 @@ public class RoutingTable {
         routeTable.clear();
     }
     
-    public int RouteExists(Route route) {
-        for (Route r : this.routeTable) {
+    public int RouteExists(VRFRoute route) {
+        for (VRFRoute r : this.routeTable) {
             if (r.equals(route)) {
                 log.info("The route exist!");
                 return r.getId();
@@ -81,7 +90,7 @@ public class RoutingTable {
     }
 
     public int getOutputPort(int id) {
-        for (Route r : this.routeTable) {
+        for (VRFRoute r : this.routeTable) {
             if (r.getId() == id) {
                 log.info("OutputPort = " + r.getSwitchInfo().getOutputPort());
                 return r.getSwitchInfo().getOutputPort();
@@ -90,8 +99,8 @@ public class RoutingTable {
         return 0;
     }
 
-    public int getOutputPort(Route route) {
-        for (Route r : this.routeTable) {
+    public int getOutputPort(VRFRoute route) {
+        for (VRFRoute r : this.routeTable) {
             if (r.equals(route)) {
                 log.info("OutputPort = " + r.getSwitchInfo().getOutputPort());
                 return r.getSwitchInfo().getOutputPort();
@@ -100,41 +109,17 @@ public class RoutingTable {
         return 0;
     }
 
-    public Switch getDestinationSwitch(String srcIp, String destIp, Switch Switch) {
-        for (Route r : this.routeTable) {
-            if (r.getDestinationAddress().equals(destIp)) {
-                log.info("GetDestSwitch with src " + srcIp + ", dst " + destIp + ", dins " + r.getSwitchInfo().getMacAddress());
-                return r.getSwitchInfo();
-            }
+    public List<VRFRoute> getListRoutes(VRFRoute route, L2Forward srcSwInfo, L2Forward destSwInfo) {
+        List<VRFRoute> subnetList = new ArrayList<VRFRoute>();
+        for (VRFRoute r : this.getRouteTable()) {
+            if(!r.getSwitchInfo().getMacAddress().equals(srcSwInfo.getMacAddress())){
+                if (r.equalsOtherRoutes(route)) {
+                    log.info("Match other route. Id match route: "+r.getId());
+                    subnetList.add(r);
+                }
+           }
         }
-        return null;
-    }
-
-    public Route getRouteId(int id) {
-        for (Route r : this.routeTable) {
-            if (r.getId() == id) {
-                return r;
-            }
-        }
-        return null;
-    }
-
-    public List<Route> listOtherRoutes(Route route, Switch srcSw, Switch dstSw) {
-        List<Route> subnetList = new ArrayList<Route>();
-        Route route2 = new Route();
-        route2.setSourceAddress(route.getDestinationAddress());
-        route2.setDestinationAddress(route.getSourceAddress());
-//        route2.setSwitchInfo(dstSw);
-        for (Route r : this.getRouteTable()) {
-            if (r.equalsOtherSubRoute(route) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
-                log.debug("Match other route");
-                subnetList.add(r);
-            } else if (r.equalsOtherSubRoute(route2) && !r.getSwitchInfo().getMacAddress().equals(srcSw.getMacAddress()) && !r.getSwitchInfo().getMacAddress().equals(dstSw.getMacAddress())) {
-                log.debug("Match other response route");
-                subnetList.add(r);
-            }
-        }
-        log.info("Returning List of Subnets:");
+        log.info("Returning all Routes.");
         return subnetList;
     }
 }

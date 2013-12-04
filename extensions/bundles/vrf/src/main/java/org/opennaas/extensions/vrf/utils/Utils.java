@@ -7,12 +7,21 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.apache.commons.io.IOUtils;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
+import org.opennaas.extensions.sdnnetwork.model.Port;
+import org.opennaas.extensions.vrf.model.VRFRoute;
 
 /**
  *
@@ -27,7 +36,7 @@ public class Utils {
      * @param ipAddress
      * @return
      */
-    public static String fromIPv4Address(int ipAddress) {
+    public static String intIPv4toString(int ipAddress) {
         StringBuilder sb = new StringBuilder();
         int result;
         for (int i = 0; i < 4; ++i) {
@@ -47,7 +56,7 @@ public class Utils {
      * @param ipAddress The IP address in the form xx.xxx.xxx.xxx.
      * @return The IP address separated into bytes
      */
-    public static byte[] toIPv4AddressBytes(String ipAddress) {
+    public static byte[] StringIPv4toBytes(String ipAddress) {
         String[] octets = ipAddress.split("\\.");
         if (octets.length != 4) {
             throw new IllegalArgumentException("Specified IPv4 address must"
@@ -68,7 +77,7 @@ public class Utils {
      * @param ipAddress
      * @return
      */
-    public static int toIPv4Address(String ipAddress) {
+    public static int StringIPv4toInt(String ipAddress) {
         if (ipAddress == null) {
             throw new IllegalArgumentException("Specified IPv4 address must"
                     + "contain 4 sets of numerical digits separated by periods");
@@ -93,8 +102,9 @@ public class Utils {
 
     /**
      * Is an IPv4 address received from the controller. In integer format
+     *
      * @param ipAddress
-     * @return 
+     * @return
      */
     public static boolean isIPv4Address(String ipAddress) {
         if (ipAddress.contains(":")) {
@@ -111,6 +121,12 @@ public class Utils {
         }
     }
 
+    /**
+     * Check the IP version of the address
+     *
+     * @param ipAddress
+     * @return IP version of the address
+     */
     public static int isIpAddress(String ipAddress) {
         Pattern VALID_IPV4_PATTERN = null;
         Pattern VALID_IPV6_PATTERN = null;
@@ -131,104 +147,121 @@ public class Utils {
             return 4;
         }
         Matcher m2 = VALID_IPV6_PATTERN.matcher(ipAddress);
-        if(m2.matches()){//Compressed
+        if (m2.matches()) {//Compressed
             return 6;
         }
         //NO match. Try to find with other patterns
         VALID_IPV6_PATTERN = Pattern.compile(IPV6_REGEX, Pattern.CASE_INSENSITIVE);
         m2 = VALID_IPV6_PATTERN.matcher(ipAddress);
-        if(m2.matches()){
+        if (m2.matches()) {
             return 6;
         }
         VALID_IPV6_PATTERN = Pattern.compile(ipv6Pattern, Pattern.CASE_INSENSITIVE);
         m2 = VALID_IPV6_PATTERN.matcher(ipAddress);
-        if(m2.matches()){
+        if (m2.matches()) {
             return 6;
         }
         VALID_IPV6_PATTERN = Pattern.compile(IPV6_HEX4DECCOMPRESSED_REGEX, Pattern.CASE_INSENSITIVE);
         m2 = VALID_IPV6_PATTERN.matcher(ipAddress);
-        if(m2.matches()){
+        if (m2.matches()) {
             return 6;
         }
         VALID_IPV6_PATTERN = Pattern.compile(IPV6_6HEX4DEC_REGEX, Pattern.CASE_INSENSITIVE);
         m2 = VALID_IPV6_PATTERN.matcher(ipAddress);
-        if(m2.matches()){
+        if (m2.matches()) {
             return 6;
-        }        
-        
+        }
+
         return 0;
     }
+
     /**
-     * addr is subnet address and addr1 is ip address. Function will return true, if addr1 is within addr(subnet)
-     * @param addr
-     * @param addr1
-     * @return 
+     * Usually addr1 is subnet address and addr2 is ip address. Function will
+     * return true, if addr2 is within addr1(subnet), or if addr1 and addr2 are
+     * equals
+     *
+     * @param addr1 Subnet address
+     * @param addr2 Subnet address or destination address
+     * @return
      */
-    public static boolean netMatch(String addr, String addr1){ 
-        
-        String[] parts = addr.split("/");
-        String ip = parts[0];
-        int prefix;
+    public static boolean netMatch(String addr1, String addr2) {
+        TreeMap<String, Integer> subnet1 = extractIPandMask(addr1);
+        TreeMap<String, Integer> subnet2 = extractIPandMask(addr2);
 
-        if (parts.length < 2) {
-            prefix = 0;
-        } else {
-            prefix = Integer.parseInt(parts[1]);
-        }
-
-        String[] parts1 = addr1.split("/");
-
-        if (parts1.length > 1) {
-            if(addr.equals(addr1)){
+        if (subnet1.containsValue(0) && subnet2.containsValue(0)) {
+            if (subnet1.containsKey(subnet2.lastKey())) {
                 return true;
             }
-            return false;
         }
-        
-        Inet4Address a =null;
-        Inet4Address a1 =null;
+
+        Inet4Address a1 = null;
+        Inet4Address a2 = null;
         try {
-            a = (Inet4Address) InetAddress.getByName(ip);
-            a1 = (Inet4Address) InetAddress.getByName(addr1);
-        } catch (UnknownHostException e){}
+            a1 = (Inet4Address) InetAddress.getByName(subnet1.lastKey());
+            a2 = (Inet4Address) InetAddress.getByName(subnet2.lastKey());
+        } catch (UnknownHostException e) {
+        }
 
-        byte[] b = a.getAddress();
-        int ipInt = ((b[0] & 0xFF) << 24) |
-                         ((b[1] & 0xFF) << 16) |
-                         ((b[2] & 0xFF) << 8)  |
-                         ((b[3] & 0xFF) << 0);
+        byte[] b = a1.getAddress();
+        int ipInt = ((b[0] & 0xFF) << 24)
+                | ((b[1] & 0xFF) << 16)
+                | ((b[2] & 0xFF) << 8)
+                | ((b[3] & 0xFF) << 0);
 
-        byte[] b1 = a1.getAddress();
-        int ipInt1 = ((b1[0] & 0xFF) << 24) |
-                         ((b1[1] & 0xFF) << 16) |
-                         ((b1[2] & 0xFF) << 8)  |
-                         ((b1[3] & 0xFF) << 0);
+        byte[] b1 = a2.getAddress();
+        int ipInt1 = ((b1[0] & 0xFF) << 24)
+                | ((b1[1] & 0xFF) << 16)
+                | ((b1[2] & 0xFF) << 8)
+                | ((b1[3] & 0xFF) << 0);
 
-        int mask = ~((1 << (32 - prefix)) - 1);
+        int mask = ~((1 << (32 - subnet1.get(subnet1.lastKey()))) - 1);
 
         if ((ipInt & mask) == (ipInt1 & mask)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
+
+    /**
+     * Extract the IP and the mask given an IP address
+     *
+     * @param addr in String format (e.g. 192.168.1.0/24 or 192.168.1.50)
+     * @return
+     */
+    public static TreeMap<String, Integer> extractIPandMask(String addr) {
+        TreeMap<String, Integer> subnet = new TreeMap<String, Integer>();
+        String[] parts = addr.split("/");
+        String ip = parts[0];
+        int mask;
+        if (parts.length < 2) {
+            mask = 0;
+        } else {
+            mask = Integer.parseInt(parts[1]);
+        }
+        subnet.put(ip, mask);
+        return subnet;
+    }
+
     /**
      * The string is a subnet address, contains the mask
+     *
      * @param addr
      * @return The mask of the given ip subnet
      */
-    public static int isSubnetAddress(String addr){
+    public static int isSubnetAddress(String addr) {
         String[] parts = addr.split("/");
-        
+
         if (parts.length < 2) {
             return 0;
         } else {
             return Integer.parseInt(parts[1]);
         }
     }
+
     /**
      * Prepare the json that should be send to the controller (Floodlight)
+     *
      * @param name
      * @param dpid
      * @param destIp
@@ -236,7 +269,7 @@ public class Utils {
      * @param output
      * @return The json formed
      */
-    public static String createJson(String name, String dpid, String destIp, String ethertype, int output){
+    public static String createJson(String name, String dpid, String destIp, String ethertype, int output) {
         return "{\"name\":\"" + name + "\", "
                 + "\"switch\": \"" + dpid + "\", "
                 + "\"priority\":\"32767\", "
@@ -245,8 +278,11 @@ public class Utils {
                 + "\"active\":\"true\", "
                 + "\"actions\":\"output=" + output + "\"}";
     }
+
     /**
-     * Prepare the json that should be send to the controller (Floodlight). With the ingress port
+     * Prepare the json that should be send to the controller (Floodlight). With
+     * the ingress port
+     *
      * @param name
      * @param dpid
      * @param destIp
@@ -255,7 +291,7 @@ public class Utils {
      * @param output
      * @return The json formed
      */
-    public static String createJson(String name, String dpid, String destIp, String ethertype, int ingress, int output){
+    public static String createJson(String name, String dpid, String destIp, String ethertype, int ingress, int output) {
         return "{\"name\":\"" + name + "\", "
                 + "\"switch\": \"" + dpid + "\", "
                 + "\"priority\":\"32767\", "
@@ -265,11 +301,12 @@ public class Utils {
                 + "\"active\":\"true\", "
                 + "\"actions\":\"output=" + output + "\"}";
     }
-    
+
     /**
      * HttpRequest in order to insert a new flow. The flow in json format.
+     *
      * @param Url
-     * @param json 
+     * @param json
      */
     public static void putFlowHttpRequest(String Url, String json) {
         try {
@@ -289,12 +326,13 @@ public class Utils {
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * HttpRequest to the controller in order to remove a specific flow
+     *
      * @param uri
      * @param flow
-     * @return 
+     * @return
      */
     public static String removeHttpRequest(String uri, String flow, String flowName) {
         String response = "";
@@ -321,13 +359,14 @@ public class Utils {
                 }
             }
         } catch (IOException e) {
-            
+
         }
         return response;
     }
-    
+
     /**
      * Remove all flow entries of the specified switch (dpid)
+     *
      * @param uri
      * @param dpid
      * @return status
@@ -335,7 +374,7 @@ public class Utils {
     public static String removeAllHttpRequest(String uri, String dpid) {
         String response = "";
         try {
-            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/"+dpid+"/json");
+            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/" + dpid + "/json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
@@ -346,8 +385,59 @@ public class Utils {
             response = IOUtils.toString(connection.getInputStream(), "UTF-8");
 
         } catch (IOException e) {
-            
+
         }
         return response;
+    }
+
+    /**
+     * Mapping VRFRoute to Route used by SDN-OF module of OpenNaaS Layer3 to
+     * layer2
+     *
+     * @param route
+     * @return
+     */
+    public static NetworkConnection VRFRouteToNetCon(VRFRoute route) {
+        NetworkConnection netCon = new NetworkConnection();
+//        netCon.setId();//internal-id, nom del flow que guarda el floodlight
+        netCon.setName(String.valueOf(route.getId()));//user friendly name
+        Port port = new Port();
+        port.setDeviceId(route.getSwitchInfo().getMacAddress());
+        port.setPortNumber(String.valueOf(route.getSwitchInfo().getInputPort()));
+        netCon.setSource(port);
+        port.setDeviceId(route.getSwitchInfo().getMacAddress());
+        port.setPortNumber(String.valueOf(route.getSwitchInfo().getOutputPort()));
+        netCon.setDestination(port);
+        return netCon;
+    }
+
+    /**
+     * Mapping VRFRoute to Floodlight Flow used by SDN-OF module of OpenNaaS
+     * Layer3 to layer2
+     *
+     * @param route
+     * @return
+     */
+    public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route) {
+        FloodlightOFFlow flow = new FloodlightOFFlow();
+
+        FloodlightOFMatch match = new FloodlightOFMatch();
+        List<FloodlightOFAction> listActions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFAction action = new FloodlightOFAction();
+        match.setSrcIp(route.getSourceAddress());
+        match.setDstIp(route.getDestinationAddress());
+        match.setEtherType(null);
+//        match.setIngressPort(String.valueOf(route.getSwitchInfo().getInputPort()));
+
+        action.setType(FloodlightOFAction.TYPE_OUTPUT);
+        action.setValue(String.valueOf(route.getSwitchInfo().getOutputPort()));
+        listActions.add(action);
+        flow.setActions(listActions);
+        flow.setActive(true);
+        flow.setMatch(match);
+        flow.setName(String.valueOf(route.getId()));
+        flow.setSwitchId(route.getSwitchInfo().getMacAddress());
+
+        return flow;
     }
 }

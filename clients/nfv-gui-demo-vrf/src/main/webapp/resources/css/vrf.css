@@ -1,0 +1,41 @@
+/* -----------------------------------------------------------------------
+VRF - OpenNaaS Custom CSS
+----------------------------------------------------------------------- */
+
+.topology{/*class*/
+    float:left;
+}
+.routeTable{
+    float:left;    
+}
+#home_info{
+    float: left;
+    width: 30%;
+}
+#home_topology{
+    width:70%;
+}
+#config_topology {
+    width:50%;
+}
+#config_routeTable{
+    width:50%;
+}
+#insert_topology {
+    width:70%;
+}
+#insert_routeTable{
+    width:100%;
+}
+#insert_info{
+    float:left;
+    width:30%;
+}
+#animaton_topology{
+    width:80%;
+}
+#animation_log{
+    float:left;
+    width:20%;
+}
+
