@@ -109,7 +109,7 @@ public class RoutingTable {
         return 0;
     }
 
-    public List<VRFRoute> getListRoutes(VRFRoute route, Switch srcSwInfo, Switch destSwInfo) {
+    public List<VRFRoute> getListRoutes(VRFRoute route, L2Forward srcSwInfo, L2Forward destSwInfo) {
         List<VRFRoute> subnetList = new ArrayList<VRFRoute>();
         for (VRFRoute r : this.getRouteTable()) {
             if(!r.getSwitchInfo().getMacAddress().equals(srcSwInfo.getMacAddress())){

@@ -93,8 +93,6 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 	 * 
 	 * @param deviceId
 	 *            of the Floodlight device
-	 * @param resourceID
-	 *            of the OpenNaaS resource
 	 */
 	@Path("/mapDeviceResource/{deviceId}")
 	@GET

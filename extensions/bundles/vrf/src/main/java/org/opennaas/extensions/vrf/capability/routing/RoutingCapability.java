@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Response;
@@ -16,26 +15,23 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.MappingJsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.model.VRFModel;
 import org.opennaas.extensions.vrf.model.VRFRoute;
 import org.opennaas.extensions.vrf.model.RoutingTable;
-import org.opennaas.extensions.vrf.model.Switch;
+import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
+import org.opennaas.extensions.sdnnetwork.model.Port;
 import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkModel;
+import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
  *
@@ -85,7 +81,7 @@ public class RoutingCapability implements IRoutingCapability {
         }
 
         log.info("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort);
-        Switch switchInfo = new Switch(inputPort, switchDPID);
+        L2Forward switchInfo = new L2Forward(inputPort, switchDPID);
 
         VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
                 
@@ -120,7 +116,7 @@ public class RoutingCapability implements IRoutingCapability {
             return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
         }
         if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
-            Switch switchInfo = new Switch(Integer.toString(inputPort), inputPort, outputPort, switchDPID);
+            L2Forward switchInfo = new L2Forward(Integer.toString(inputPort), inputPort, outputPort, switchDPID);
             VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
 
             String response = model.getTable(version).addRoute(route);
@@ -136,6 +132,17 @@ public class RoutingCapability implements IRoutingCapability {
         VRFRoute route = model.getTable(version).getRouteId(id);
 
         //call OpenNaaS provisioner
+        
+        FloodlightOFFlow flow = Utils.VRFRouteToFloodlightFlow(route);
+        
+        //Conversion List of VRFRoute to List of FloodlightFlow
+        try {
+            removeLink(flow);
+        } catch (ResourceException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ActivatorException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return Response.ok("Removed").build();
     }
@@ -151,7 +158,7 @@ public class RoutingCapability implements IRoutingCapability {
         } else{
             return Response.serverError().entity("Ip not recognized").build();
         }
-        Switch switchInfo = new Switch("2", inputPort, outputPort, switchDPID);
+        L2Forward switchInfo = new L2Forward("2", inputPort, outputPort, switchDPID);
         VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
         int routeId = model.getTable(version).RouteExists(route);
         return removeRoute(routeId, version);
@@ -177,6 +184,9 @@ public class RoutingCapability implements IRoutingCapability {
         ObjectMapper mapper = new ObjectMapper();
         try {
             response = mapper.writeValueAsString(model);
+            if( response == null){
+                response = "Empty model. Please, insert routes.";
+            }
         } catch (IOException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -234,7 +244,7 @@ public class RoutingCapability implements IRoutingCapability {
                             String field = jp.getCurrentName();
                             // And now we have random access to everything in the object
                             VRFRoute newRoute = new VRFRoute();
-                            Switch newSwitch = new Switch();
+                            L2Forward newSwitch = new L2Forward();
                             newRoute.setSourceAddress(node.get("srcAddr").getValueAsText());
                             newRoute.setDestinationAddress(node.get("dstAddr").getValueAsText());
                             newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
@@ -269,9 +279,10 @@ public class RoutingCapability implements IRoutingCapability {
         return Response.status(404).entity("Some error. Check the file. Possible error: "+response).build();
     }
 
-    private Response proactiveRouting(Switch srcSwInfo, VRFRoute route, int version) {
+    private Response proactiveRouting(L2Forward srcSwInfo, VRFRoute route, int version) {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         VRFModel model = getVRFModel();
+        Response response;
         boolean flowMode = true;
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, srcSwInfo, srcSwInfo);
         
@@ -284,64 +295,93 @@ public class RoutingCapability implements IRoutingCapability {
             }
         }
         
-        /*call provisioner OpenNaaS */
-    
         // provision each link and mark the last one
 	for (int i = 0; i < listFlow.size(); i++) {
-//            NetworkConnection networkConnection = listNetCon.get(i);
             try{
-                provisionLink(listFlow.get(i));
-/*                provisionLink(networkConnection, new SDNNetworkOFFlow(flow),
-						i == listNetCon.size() - 1);
-*/            }catch (Exception e){
+                response = provisionLink(listFlow.get(i));
+            }catch (Exception e){
 //                throw new ActionException("Error provisioning link : ", e);
             }
         }
+        
+        //provision circuit?
         if(!flowMode){
-//            List<NetworkConnection> listNetCon = new ArrayList<NetworkConnection>();
-//            NetworkConnection netCon = new NetworkConnection();
-//            if (routeSubnetList.size() > 0) {
-//                for (VRFRoute r : routeSubnetList) {
-//                    netCon = Utils.VRFRouteToNetCon(r);
-//                    listNetCon.add(netCon);
-//                }
-//            }
-//            Route ONRoute = new Route();
-//            ONRoute.setNetworkConnections(listNetCon);
-//            provisionCircuit();
-//            FlowRequest flowReq = new FlowRequest();
-//            SDNNetworkModel sdn = new SDNNetworkModel();
-//            Map<String, IResource> switches;
-////          sdn.getDeviceResourceMap();
-//            IResource switchResource = getSwitchResourceFromName(connection.getSource().getDeviceId());
-//            Switch sw = getSwitchResource(flow.getSwitchId());
-//        sw.getFlowCap().allocatelow(flow);
+            List<NetworkConnection> listNetCon = new ArrayList<NetworkConnection>();
+            NetworkConnection netCon = new NetworkConnection();
+            if (routeSubnetList.size() > 0) {
+                for (VRFRoute r : routeSubnetList) {
+                    netCon = Utils.VRFRouteToNetCon(r);
+                   listNetCon.add(netCon);
+                }
+            }
+            
+            Route ONRoute = new Route();
+            ONRoute.setNetworkConnections(listNetCon);
+//            FlowRequest flowRequest = new FlowRequest();
+//            NCLController ncl = new NCLController();
+//            ncl.allocateFlow(flowRequest, ONRoute, "");
+            String networkId;
         }
           
         return Response.ok("Proactive messages sent.").build();
     }
     
-    private void provisionCircuit(){
+    private void provisionCircuit(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink){
         
     }
 
-    private void provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException,ActivatorException {
+    private Response provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException,ActivatorException {
         log.info("Provision Flow Link Floodlight");
-        String resourceName = flow.getSwitchId();
-        log.info("RsourceName: "+resourceName);
-        IResource resource = getResourceByName(resourceName);
+        String switchId = flow.getSwitchId();
+        IResource resource = getResourceByName(switchId);
+        if( resource == null ){
+           return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build(); 
+        }
         IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
         forwardingCapability.createOpenflowForwardingRule(flow);
+        return Response.ok().build();
+    }
+    
+    private Response removeLink(FloodlightOFFlow flow) throws ResourceException,ActivatorException {
+        log.info("Provision Flow Link Floodlight");
+        String switchId = flow.getSwitchId();
+        IResource resource = getResourceByName(switchId);
+        if( resource == null ){
+           return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build(); 
+        }
+        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+        forwardingCapability.removeOpenflowForwardingRule(flow.getName());
+        return Response.ok().build();
     }
 
     private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
-        log.info("Get Resource By Name "+resourceName);
+        log.info("Get Resource By switch ID: "+resourceName);
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
-        IProtocolManager protocol = org.opennaas.extensions.sdnnetwork.Activator.getProtocolManagerService();
+        log.info("ResourceManager "+resourceManager.getIdentifierFromResourceName("sdnnetwork", "sdn1").getId());
+        IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
+        IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+
+        List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
+        String resourceSdnNetworkId = sdnCapab.getMapDeviceResource(resourceName);
+        if(resourceSdnNetworkId == null){
+            log.error("This Switch ID is not mapped to any ofswitch resource.");
+            return null;
+        }
+        for ( IResource r : listResources){
+            if( r.getResourceDescriptor().getId().equals(resourceSdnNetworkId)){
+                resourceName = r.getResourceDescriptor().getInformation().getName();
+                log.debug("Switch name is: "+resourceName);
+            }
+        }
+
+/*hardcode*/
+        resourceName = "s"+resourceName.substring(resourceName.length() -1 );//00:00:00:00:02 --> s2
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
-        log.info("Resource id :"+resourceId);
+        
+        log.info("IResource id:"+resourceId);
         if(resourceId == null){
-            log.info("Resource id is null");    
+            log.error("IResource id is null.");
+            return null;
         }
         return resourceManager.getResource(resourceId);
     }

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Represents the fordwarding in a switch.
+ * Forward packets in a Switch (layer2). Packet from input port to output port.
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
-public class Switch {
+public class L2Forward {
 
     private int numberPorts;//not used
     private List<String> listPorts = new ArrayList<String>();//not used
@@ -15,17 +16,17 @@ public class Switch {
     private int outputPort;
     private String dpid;
 
-    public Switch(){
+    public L2Forward(){
         
     }
-    public Switch(String port, int inputPort, int outputPort, String macAddress) {
+    public L2Forward(String port, int inputPort, int outputPort, String macAddress) {
         listPorts.add(port);
         this.inputPort = inputPort;
         this.outputPort = outputPort;
         this.dpid = macAddress;
     }
 
-    public Switch(int inputPort, String macAddress) {
+    public L2Forward(int inputPort, String macAddress) {
         this.inputPort = inputPort;
         this.dpid = macAddress;
     }
@@ -78,7 +79,7 @@ public class Switch {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Switch other = (Switch) obj;
+        final L2Forward other = (L2Forward) obj;
         if (this.inputPort != other.inputPort) {
             return false;
         }

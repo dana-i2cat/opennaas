@@ -1,9 +1,7 @@
 package org.opennaas.extensions.vrf.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
@@ -16,7 +14,6 @@ public class VRFModel implements IModel{
     
     private RoutingTable ipv4;
     private RoutingTable ipv6;
-    private Map<String, String> switchController = new HashMap<String, String>();
 
     @Override
     public List<String> getChildren() {
@@ -41,14 +38,6 @@ public class VRFModel implements IModel{
             this.ipv4 = table;
         else if (version == 6)
             this.ipv6 = table;
-    }
-
-   public Map<String, String> getSwitchController() {
-        return switchController;
-    }
-
-    public void setSwitchController(Map<String, String> switchController) {
-        this.switchController = switchController;
     }
 
     public RoutingTable getIpv4() {

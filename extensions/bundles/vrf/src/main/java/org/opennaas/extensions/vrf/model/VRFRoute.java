@@ -12,14 +12,14 @@ public class VRFRoute {
     private int id;
     private String sourceAddress;
     private String destinationAddress;
-    private Switch switchInfo;
+    private L2Forward switchInfo;
     private Long timeToLive;
 
     public VRFRoute(){
         
     }
     
-    public VRFRoute(String sourceIp, String destIp, Switch SwitchInfo) {
+    public VRFRoute(String sourceIp, String destIp, L2Forward SwitchInfo) {
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
         this.switchInfo = SwitchInfo;
@@ -49,11 +49,11 @@ public class VRFRoute {
         this.destinationAddress = destinationAddress;
     }
 
-    public Switch getSwitchInfo() {
+    public L2Forward getSwitchInfo() {
         return switchInfo;
     }
 
-    public void setSwitchInfo(Switch switchInfo) {
+    public void setSwitchInfo(L2Forward switchInfo) {
         this.switchInfo = switchInfo;
     }
 
