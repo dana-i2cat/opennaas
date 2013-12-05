@@ -16,9 +16,7 @@ public class RequestToFlowsLogic implements IRequestToFlowsLogic {
 		SDNNetworkOFFlow flowWithRoute = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
 		flowWithRoute.setActive(true);
 		flowWithRoute.setPriority(DEFAULT_FLOW_PRIORITY);
-		// FIXME requesting a flow that won't filter by IP, by now
-		flowWithRoute.getMatch().setSrcIp(null);
-		flowWithRoute.getMatch().setDstIp(null);
+
 		// FIXME requesting a flow that won't filter by ToS, by now
 		flowWithRoute.getMatch().setTosBits(null);
 
