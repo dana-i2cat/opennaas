@@ -51,7 +51,12 @@ public abstract class FlowRequestParser {
 
 		match.setSrcPort(String.valueOf(flowRequest.getSourcePort()));
 		match.setDstPort(String.valueOf(flowRequest.getDestinationPort()));
-		match.setTosBits(String.valueOf(flowRequest.getTos()));
+
+		// The last two bits of the ToS are discarded, therefore we devide the hexadecimal value per 4
+		// More information at http://www.tucny.com/Home/dscp-tos
+		String tosBits = Integer.toHexString(flowRequest.getTos() / 4);
+		match.setTosBits(tosBits);
+
 		if (flowRequest.getSourceIPAddress() == null || flowRequest.getSourceIPAddress().isEmpty()) {
 			// remove empty strings, use null instead
 			match.setSrcIp(null);
@@ -70,5 +75,4 @@ public abstract class FlowRequestParser {
 
 		return match;
 	}
-
 }
