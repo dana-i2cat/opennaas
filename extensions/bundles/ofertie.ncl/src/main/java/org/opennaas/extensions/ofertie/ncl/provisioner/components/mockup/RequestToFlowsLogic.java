@@ -17,9 +17,6 @@ public class RequestToFlowsLogic implements IRequestToFlowsLogic {
 		flowWithRoute.setActive(true);
 		flowWithRoute.setPriority(DEFAULT_FLOW_PRIORITY);
 
-		// FIXME requesting a flow that won't filter by ToS, by now
-		flowWithRoute.getMatch().setTosBits(null);
-
 		return flowWithRoute;
 	}
 
