@@ -6,7 +6,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlow
 import org.opennaas.extensions.sdnnetwork.model.Route;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
-public class RequestToFlowLogic implements IRequestToFlowsLogic {
+public class RequestToFlowsLogic implements IRequestToFlowsLogic {
 
 	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
 
