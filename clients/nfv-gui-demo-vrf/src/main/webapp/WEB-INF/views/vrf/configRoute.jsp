@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div id="config_routeTable" class="routeTable">
-    <h1>Configured routes:</h1>
+    <h3>Configured routes:</h3>
     <table id="jsonTable" class="tablesorter"></table>    
 </div>
-<div id="config_topology" class="topology"></div>
+<div id="config_topology" class="topology">Topology</div>

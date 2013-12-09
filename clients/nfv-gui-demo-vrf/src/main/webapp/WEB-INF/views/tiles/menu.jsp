@@ -7,12 +7,11 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-
-<ul id="_menu">
+<ul id="navbar">
     <li>
-	<a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
+        <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
             <spring:message code="menu.RouteTable" />
-    	</a>
+        </a>
         <ul>
             <li>
                 <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
@@ -27,14 +26,13 @@
         </ul>
     </li>
     <li>
-	<a href="<c:url value="${url}/secure/noc/nfvRouting/insertRoute" />">
+        <a href="<c:url value="${url}/secure/noc/nfvRouting/insertRoute" />">
             <spring:message code="menu.insertRoute" />
-    	</a>
+        </a>
     </li>
     <li>
-	<a href="<c:url value="${url}/secure/noc/nfvRouting/insertCtrlInfo" />">
+        <a href="<c:url value="${url}/secure/noc/nfvRouting/insertCtrlInfo" />">
             <spring:message code="menu.insertController" />
-    	</a>
+        </a>
     </li>
 </ul>
-

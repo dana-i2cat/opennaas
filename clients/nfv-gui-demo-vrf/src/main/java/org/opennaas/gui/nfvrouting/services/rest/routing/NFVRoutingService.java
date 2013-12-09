@@ -6,11 +6,9 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.representation.Form;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
-import org.opennaas.gui.nfvrouting.entities.ControllerInfo;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.opennaas.gui.nfvrouting.services.rest.GenericRestService;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
-import org.opennaas.gui.nfvrouting.utils.Constants;
 
 /**
  * @author Josep Batallé (josep.batalle@i2cat.net)
@@ -18,22 +16,20 @@ import org.opennaas.gui.nfvrouting.utils.Constants;
 public class NFVRoutingService extends GenericRestService {
 
     private static final Logger LOGGER = Logger.getLogger(NFVRoutingService.class);
-    private static String resourceType = Constants.RESOURCE_VRF_TYPE;
-    private static String capabilityName = Constants.CAPABILITY_VRF;
 
     /**
      * Call a rest service to get the Route Table of the virtualized router
      * 
-     * @param request
+     * @param type of IP version
      * @return true if the environment has been created
      * @throws RestServiceException
      */
-    public String getRouteTable(String resourceName, int type) throws RestServiceException {
+    public String getRouteTable(int type) throws RestServiceException {
         String response = null;
         
         try {
             LOGGER.info("Calling get Route Table service");
-            String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/routes/"+type);
+            String url = getURL("vrf/routing/routes/"+type);
             Client client = Client.create();
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
@@ -48,15 +44,14 @@ public class NFVRoutingService extends GenericRestService {
     /**
      * Call a rest service to insert a Route
      * 
-     * @param request
+     * @param route
      * @return true if the environment has been created
-     * @throws RestServiceException
      */
-    public String insertRoute(String resourceName, Route route) {
+    public String insertRoute(Route route) {
         String response = null;
         try {
             LOGGER.info("Calling insert Route Table service");
-            String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/route");
+            String url = getURL("vrf/routing/route");
             Form fm = new Form();
             fm.add("ipSource", route.getSourceAddress());
             fm.add("ipDest", route.getDestinationAddress());
@@ -74,68 +69,18 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
-    public String insertControllerInfo(String resourceName, ControllerInfo ctrl) {
-        String response = null;
-        try {
-            LOGGER.info("Calling insert controller service");
-            String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/putSwitchController");
-            Form fm = new Form();
-            fm.add("ipController", ctrl.getControllerIp());
-            fm.add("portController", ctrl.getControllerPort());
-            fm.add("switchDPID", ctrl.getMacAddress());
-            Client client = Client.create();
-            WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).put(String.class, fm);
-            LOGGER.info("Route table: " + response);
-        } catch (ClientHandlerException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
-        }
-        return response;
-    }
-
     /**
-     * Receive a json that contains a table with the controller-switch information.
-     * @param resourceName
+     * Remove Route given the id
+     * @param id
+     * @param version
      * @return 
      */
-    public String getInfoControllers(String resourceName) {
-        String response = null;
-        try {
-            LOGGER.info("Calling get Controller Information");
-            String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/getSwitchControllers");
-            Client client = Client.create();
-            WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
-            LOGGER.info("Controller info: " + response);
-        } catch (ClientHandlerException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
-        }
-        return response;
-    }
-    public String getControllerStatus(String resourceName, String ip) {
-        String response = null;
-        try {
-            LOGGER.info("Calling get Controller Status");
-            String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/getControllerStatus/"+ip);
-            Client client = Client.create();
-            WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
-            LOGGER.info("Controller status: " + response);
-        } catch (ClientHandlerException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
-        }
-        return response;
-    }
-
-    public String deleteRoute(String resourceName, int id, int version){
+        public String deleteRoute(int id, int version){
         String response = null;
         try {
             LOGGER.info("Remove route");
             LOGGER.error("Remove route");
-            String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/routes");
+            String url = getURL("vrf/routing/route");
             Client client = Client.create();
             WebResource webResource = client.resource(url);
             webResource.queryParam("id", Integer.toString(id)).queryParam("version", Integer.toString(version));
@@ -147,12 +92,46 @@ public class NFVRoutingService extends GenericRestService {
         }
         return response;
     }
+        
+    public String getControllerStatus(String ip) {
+        String response = null;
+        try {
+            LOGGER.info("Calling get Controller Status");
+            String url = getURL("vrf/routing/getControllerStatus/"+ip);
+            Client client = Client.create();
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Controller status: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
 
-    public String getLog(String resourceName) {
+    public String getSwInfo(String dpid) {
+        String response = null;
+        try {
+            LOGGER.info("Serivice: Get Information about the controller "+dpid);
+            String url = getURL("vrf/routing/getSwInfo/"+dpid);
+            Client client = Client.create();
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Log....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
+    
+    //---------------------DEMO
+    
+    public String getLog() {
         String response = null;
         try {
             LOGGER.info("Get log of OpenNaaS");
-            String url = getURL(resourceType+"/" + resourceName + "/"+capabilityName+"/log");
+            String url = getURL("vrf/routing/log");
             Client client = Client.create();
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);

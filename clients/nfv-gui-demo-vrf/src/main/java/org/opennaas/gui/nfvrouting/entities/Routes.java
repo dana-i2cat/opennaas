@@ -6,7 +6,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- *
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class Routes {

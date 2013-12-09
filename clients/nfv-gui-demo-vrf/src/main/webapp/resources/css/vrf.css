@@ -10,10 +10,14 @@ VRF - OpenNaaS Custom CSS
 }
 #home_info{
     float: left;
-    width: 30%;
+    width: 28%;
+    padding: 10px;
 }
 #home_topology{
-    width:70%;
+    min-height: 300px;
+    width:68%;
+    margin-left: 5px;//remove when we show the topology
+    
 }
 #config_topology {
     width:50%;
@@ -22,14 +26,16 @@ VRF - OpenNaaS Custom CSS
     width:50%;
 }
 #insert_topology {
-    width:70%;
+    width:69%;
+    min-height: 300px;
 }
 #insert_routeTable{
     width:100%;
 }
 #insert_info{
     float:left;
-    width:30%;
+    width:28%;
+    padding: 10px;
 }
 #animaton_topology{
     width:80%;

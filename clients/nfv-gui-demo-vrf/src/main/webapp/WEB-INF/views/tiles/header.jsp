@@ -9,49 +9,81 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div id="header_logo">
-	<img src="<c:url value="/resources/images/opennaas-orange-150.png" />" height= "99px" width= "150px" alt="OpenNaaS Logo">
+    <img src="<c:url value="/resources/images/opennaas-orange-150.png" />" height= "99px" width= "150px" alt="OpenNaaS Logo">
 </div>
 <div id="header_title">
-	<h1><spring:message code="header.title"/></h1>
+    <h1><spring:message code="header.title"/></h1>
 </div>	
 <div id="header_user" class="ui-state-default">
-	<span id="user_icon" class="ui-icon ui-icon-person"></span>
-	<span id="username">
-		<spring:message code="header.user"/>: <sec:authentication property="principal.username" />
-	</span>
-	<div><a href="<c:url value="/auth/logout" />"><button id="logoutButton" class="button"><spring:message code="header.logout"/></button></a></div>
-        <img src="<c:url value="/resources/images/logo-color-transparent.png" />" height="43px" width="" alt="i2CAT Logo" style="float: left;">
+    <span id="user_icon" class="ui-icon ui-icon-person"></span>
+    <span id="username">
+        <spring:message code="header.user"/>: <sec:authentication property="principal.username" />
+    </span>
+    <div><a href="<c:url value="/auth/logout" />"><button id="logoutButton" class="button"><spring:message code="header.logout"/></button></a></div>
+    <img src="<c:url value="/resources/images/logo-color-transparent.png" />" height="43px" width="" alt="i2CAT Logo" style="float: left;">
 </div>	
 <div id="header_menu" class="ui-widget-content ui-corner-all">
-	<div id="home">
-		<a href="/opennaas-routing-nfv/secure/nfvRouting/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
-	</div>
-	
+    <div id="home">
+        <a href="/opennaas-routing-nfv/secure/nfvRouting/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
+    </div>
+
+    <ul id="nav">
+        <li>
+            <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
+                <spring:message code="menu.RouteTable" />
+            </a>
+            <ul>
+                <li>
+                    <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
+                        IPv4 Table
+                    </a>
+                </li>
+                <li>
+                    <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv6" />">
+                        IPv6 Table
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="<c:url value="${url}/secure/noc/nfvRouting/insertRoute" />">
+                <spring:message code="menu.insertRoute" />
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="${url}/secure/noc/nfvRouting/insertCtrlInfo" />">
+                <spring:message code="menu.insertController" />
+            </a>
+        </li>
+    </ul>
 </div>
 
 <br>
 
 <c:if test="${not empty infoMsg}" >
-	<div class="success">
-		<span>
-			<spring:message text="${infoMsg}" />
-		</span>
-	</div>
+    <div class="success">
+        <span>
+            <spring:message text="${infoMsg}" />
+        </span>
+    </div>
 </c:if>
 
 <c:if test="${not empty errorMsg}" >
-	<div class="error">
-		<span>
-			<spring:message text="${errorMsg}" />
-		</span>
-	</div>
+    <div class="error">
+        <span>
+            <spring:message text="${errorMsg}" />
+        </span>
+    </div>
 </c:if>
 
 <c:if test="${not empty noticeMsg}" >
-	<div class="notice">
-		<span>
-			<spring:message text="${noticeMsg}" />
-		</span>
-	</div>
+    <div class="notice">
+        <span>
+            <spring:message text="${noticeMsg}" />
+        </span>
+    </div>
 </c:if>
 
+<script type="text/javascript">
+    $('#nav').menu({position: {at: "left bottom"}});//left, center
+</script>

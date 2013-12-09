@@ -6,21 +6,17 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<ol id="selectable">
-	No routing resource started!
-</ol>
-<br>
-<div id="home_info">
-    Switch Information:
+<div id="home_info" class="ui-widget-content ui-corner-all">
+    <h3>Switch Information:</h3>
     <ul>
         <li>DPID: </li>
         <li>Controller IP: </li>
         <li>Controller Port: </li>
     </ul>
-    Flow table:
+    <h3>Flow table:</h3>
     <table id="jsonFlowTable" class="tablesorter"></table>
 </div>
-<div id="home_topology" class="topology"></div>
+<div id="home_topology" class="topology">Topo image</div>
 
 <%@include file="noTemplate.jsp"%>
 

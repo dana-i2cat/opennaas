@@ -18,6 +18,8 @@
 		<![endif]-->
 	<link rel="stylesheet" href="<c:url value="/resources/css/ui-lightness/jquery-ui-1.10.0.custom.css" />">
 	<link rel="stylesheet" href="<c:url value="/resources/css/opennaas.css" />" type="text/css"><link rel="stylesheet" href="<c:url value="/resources/css/routing.css" />" type="text/css">
+        <!-- VRF CSS -->
+        <link rel="stylesheet" href="<c:url value="/resources/css/vrf.css" />" type="text/css">
 	<!-- Javascript -->
 	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui-1.10.0.custom.js" />"></script>
@@ -32,10 +34,10 @@
 		<div id="header">
 			<tiles:insertAttribute name="header" />
 		</div>
-		<div id="menu">
+<%--		<div id="menu">
 			<tiles:insertAttribute name="menu" />
 		</div>
-		<div id="body">
+--%>		<div id="body">
 			<tiles:insertAttribute name="body" />
 		</div>
 		<div id="footer">

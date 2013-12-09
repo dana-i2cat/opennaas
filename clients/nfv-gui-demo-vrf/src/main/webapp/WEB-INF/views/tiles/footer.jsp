@@ -1,4 +1,4 @@
-<div id="log" align="center" style="font-size:20px;background:black;color:white;height:70px;width:640px;"></div>
+<div id="log" align="center" style="font-size:20px;background:black;color:white;height:70px;width:640px;margin:0 auto;"></div>
 
 <script>
     setInterval(function()
