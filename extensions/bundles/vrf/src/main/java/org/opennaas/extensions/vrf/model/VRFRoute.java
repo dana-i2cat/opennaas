@@ -13,7 +13,7 @@ public class VRFRoute {
     private String sourceAddress;
     private String destinationAddress;
     private L2Forward switchInfo;
-    private Long timeToLive;
+    private long lifeTime;
 
     public VRFRoute(){
         
@@ -23,6 +23,13 @@ public class VRFRoute {
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
         this.switchInfo = SwitchInfo;
+    }
+    
+    public VRFRoute(String sourceIp, String destIp, L2Forward SwitchInfo, long lifeTime) {
+        this.sourceAddress = sourceIp;
+        this.destinationAddress = destIp;
+        this.switchInfo = SwitchInfo;
+        this.lifeTime = lifeTime;
     }
     
     public int getId() {
@@ -58,11 +65,11 @@ public class VRFRoute {
     }
 
     public Long getTimeToLive() {
-        return timeToLive;
+        return lifeTime;
     }
 
     public void setTimeToLive(Long timeToLive) {
-        this.timeToLive = timeToLive;
+        this.lifeTime = timeToLive;
     }
 
     @Override
@@ -97,6 +104,11 @@ public class VRFRoute {
         return hash;
     }
 
+    /**
+     * Try to match Subnet addr with destination addr.
+     * @param obj
+     * @return 
+     */
     public boolean equalsOtherRoutes(Object obj) {
         if (obj == null) {
             return false;

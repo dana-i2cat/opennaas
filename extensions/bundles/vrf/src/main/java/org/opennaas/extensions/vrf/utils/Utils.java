@@ -1,21 +1,14 @@
 package org.opennaas.extensions.vrf.utils;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.apache.commons.io.IOUtils;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
@@ -47,27 +40,6 @@ public class Utils {
             }
         }
         return sb.toString();
-    }
-
-    /**
-     * Accepts an IPv4 address of the form xxx.xxx.xxx.xxx, ie 192.168.0.1 and
-     * returns the corresponding byte array.
-     *
-     * @param ipAddress The IP address in the form xx.xxx.xxx.xxx.
-     * @return The IP address separated into bytes
-     */
-    public static byte[] StringIPv4toBytes(String ipAddress) {
-        String[] octets = ipAddress.split("\\.");
-        if (octets.length != 4) {
-            throw new IllegalArgumentException("Specified IPv4 address must"
-                    + "contain 4 sets of numerical digits separated by periods");
-        }
-
-        byte[] result = new byte[4];
-        for (int i = 0; i < 4; ++i) {
-            result[i] = Integer.valueOf(octets[i]).byteValue();
-        }
-        return result;
     }
 
     /**
@@ -107,10 +79,7 @@ public class Utils {
      * @return
      */
     public static boolean isIPv4Address(String ipAddress) {
-        if (ipAddress.contains(":")) {
-            return false;
-        }
-        return true;
+        return !ipAddress.contains(":");
     }
 
     public static String tryToCompressIPv6(String ipv6) {
@@ -257,137 +226,6 @@ public class Utils {
         } else {
             return Integer.parseInt(parts[1]);
         }
-    }
-
-    /**
-     * Prepare the json that should be send to the controller (Floodlight)
-     *
-     * @param name
-     * @param dpid
-     * @param destIp
-     * @param ethertype
-     * @param output
-     * @return The json formed
-     */
-    public static String createJson(String name, String dpid, String destIp, String ethertype, int output) {
-        return "{\"name\":\"" + name + "\", "
-                + "\"switch\": \"" + dpid + "\", "
-                + "\"priority\":\"32767\", "
-                + "\"dst-ip\":\"" + destIp + ", "
-                + "\"ether-type\":\"" + ethertype + "\", "
-                + "\"active\":\"true\", "
-                + "\"actions\":\"output=" + output + "\"}";
-    }
-
-    /**
-     * Prepare the json that should be send to the controller (Floodlight). With
-     * the ingress port
-     *
-     * @param name
-     * @param dpid
-     * @param destIp
-     * @param ethertype
-     * @param ingress
-     * @param output
-     * @return The json formed
-     */
-    public static String createJson(String name, String dpid, String destIp, String ethertype, int ingress, int output) {
-        return "{\"name\":\"" + name + "\", "
-                + "\"switch\": \"" + dpid + "\", "
-                + "\"priority\":\"32767\", "
-                + "\"ingress-port\":\"" + ingress + ", "
-                + "\"dst-ip\":\"" + destIp + ", "
-                + "\"ether-type\":\"" + ethertype + "\", "
-                + "\"active\":\"true\", "
-                + "\"actions\":\"output=" + output + "\"}";
-    }
-
-    /**
-     * HttpRequest in order to insert a new flow. The flow in json format.
-     *
-     * @param Url
-     * @param json
-     */
-    public static void putFlowHttpRequest(String Url, String json) {
-        try {
-            URL url = new URL(Url);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-            wr.write(json);
-            wr.flush();
-            wr.close();
-            conn.connect();
-            conn.getResponseCode();
-        } catch (UnknownHostException e) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Url is null. Maybe the controllers are not registred.", e);
-        } catch (Exception ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * HttpRequest to the controller in order to remove a specific flow
-     *
-     * @param uri
-     * @param flow
-     * @return
-     */
-    public static String removeHttpRequest(String uri, String flow, String flowName) {
-        String response = "";
-        try {
-            URL url = new URL(uri + "/wm/staticflowentrypusher/json");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            // override HTTP method allowing sending body
-            connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
-            connection.setDoOutput(true);
-
-            // prepare body
-            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-            wr.write(flow);
-            wr.flush();
-            wr.close();
-            // get HTTP Response
-            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
-            if (!response.equals("{\"status\" : \"Entry " + flowName + " deleted\"}")) {
-                try {
-                    throw new Exception("Invalid response: " + response);
-                } catch (Exception ex) {
-                    Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } catch (IOException e) {
-
-        }
-        return response;
-    }
-
-    /**
-     * Remove all flow entries of the specified switch (dpid)
-     *
-     * @param uri
-     * @param dpid
-     * @return status
-     */
-    public static String removeAllHttpRequest(String uri, String dpid) {
-        String response = "";
-        try {
-            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/" + dpid + "/json");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-
-            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-            wr.flush();
-            wr.close();
-            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
-
-        } catch (IOException e) {
-
-        }
-        return response;
     }
 
     /**

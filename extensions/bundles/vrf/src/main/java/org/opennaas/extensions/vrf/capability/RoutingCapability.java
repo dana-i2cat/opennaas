@@ -1,8 +1,11 @@
-package org.opennaas.extensions.vrf.capability.routing;
+package org.opennaas.extensions.vrf.capability;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +45,7 @@ public class RoutingCapability implements IRoutingCapability {
 
     Log log = LogFactory.getLog(RoutingCapability.class);
     private VRFModel vrfModel;
+    private String logMessage;
 
     public VRFModel getVRFModel() {
         return vrfModel;
@@ -50,28 +54,32 @@ public class RoutingCapability implements IRoutingCapability {
     public void setVRFModel(VRFModel VRFModel) {
         this.vrfModel = VRFModel;
     }
-    
-/*    public RoutingCapability(){
-        vrfModel = new VRFModel();
-    }
-*/    
+
+    /*    public RoutingCapability(){
+     vrfModel = new VRFModel();
+     }
+     */
     /// /////////////////////////////
     // IRoutingCapability Methods //
     /// /////////////////////////////
-
     @Override
     public Response getRoute(String ipSource, String ipDest, String switchDPID, int inputPort, boolean proactive) {
+        //---------------------DEMO
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        logMessage = dateFormat.format(date) + " -> Requested routed from: " + ipSource + ". Where is located " + ipDest + "? throught port " + inputPort + " of switch " + switchDPID;
+        //---------------------END DEMO
         int outPortSrcSw;
         int version;//IP version
         if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
             ipSource = Utils.intIPv4toString(Integer.parseInt(ipSource));
             ipDest = Utils.intIPv4toString(Integer.parseInt(ipDest));
             version = 4;
-        } else if(Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
+        } else if (Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
             ipSource = Utils.tryToCompressIPv6(ipSource);
             ipDest = Utils.tryToCompressIPv6(ipDest);
             version = 6;
-        } else{
+        } else {
             return Response.serverError().entity("Ip not recognized").build();
         }
 
@@ -84,7 +92,7 @@ public class RoutingCapability implements IRoutingCapability {
         L2Forward switchInfo = new L2Forward(inputPort, switchDPID);
 
         VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
-                
+
         int routeId = model.getTable(version).RouteExists(route);
         if (routeId != 0) {
             outPortSrcSw = model.getTable(version).getOutputPort(routeId);
@@ -92,14 +100,19 @@ public class RoutingCapability implements IRoutingCapability {
             return Response.status(404).type("text/plain").entity("Route Not found.").build();
         }
 
-        if (proactive) {            
+        if (proactive) {
             proactiveRouting(switchInfo, route, version);
         }
+        //---------------------DEMO
+        date = new Date();
+        logMessage = logMessage + "\n" + dateFormat.format(date) + " -> Packet Routed to out port: " + outPortSrcSw + " of the switch: " + switchDPID;
+        new updateLog().start();
+        //---------------------END DEMO
         return Response.ok(Integer.toString(outPortSrcSw) + ":" + ipDest).build();
     }
 
     @Override
-    public Response insertRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort) {
+    public Response insertRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort, int lifeTime) {
         log.info("Insert route. Src: " + ipSource + " Dst: " + ipDest + " In: " + inputPort + " Out: " + outputPort);
         VRFModel model = getVRFModel();
 
@@ -117,7 +130,7 @@ public class RoutingCapability implements IRoutingCapability {
         }
         if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
             L2Forward switchInfo = new L2Forward(Integer.toString(inputPort), inputPort, outputPort, switchDPID);
-            VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
+            VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo, lifeTime);
 
             String response = model.getTable(version).addRoute(route);
             return Response.status(201).entity(response).build();
@@ -127,14 +140,13 @@ public class RoutingCapability implements IRoutingCapability {
 
     @Override
     public Response removeRoute(int id, int version) {
-        log.info("Removing route "+id+" from table IPv"+version);
+        log.info("Removing route " + id + " from table IPv" + version);
         VRFModel model = getVRFModel();
         VRFRoute route = model.getTable(version).getRouteId(id);
 
         //call OpenNaaS provisioner
-        
         FloodlightOFFlow flow = Utils.VRFRouteToFloodlightFlow(route);
-        
+
         //Conversion List of VRFRoute to List of FloodlightFlow
         try {
             removeLink(flow);
@@ -151,11 +163,11 @@ public class RoutingCapability implements IRoutingCapability {
     public Response removeRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort) {
         VRFModel model = getVRFModel();
         int version;
-        if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {            
+        if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
             version = 4;
-        } else if(Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
+        } else if (Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
             version = 6;
-        } else{
+        } else {
             return Response.serverError().entity("Ip not recognized").build();
         }
         L2Forward switchInfo = new L2Forward("2", inputPort, outputPort, switchDPID);
@@ -165,18 +177,17 @@ public class RoutingCapability implements IRoutingCapability {
     }
 
     @Override
-    public Response removeRoutes(){
+    public Response removeRoutes() {
         VRFModel model = getVRFModel();
         model.getIpv4().removeRoutes();
         model.getIpv6().removeRoutes();
 
         //call OpenNaaS
-        
         return Response.ok("Removed").build();
     }
 
     @Override
-    public Response getRoutes(){
+    public Response getRoutes() {
         log.info("Get entire Model");
         VRFModel model = getVRFModel();
 
@@ -184,7 +195,7 @@ public class RoutingCapability implements IRoutingCapability {
         ObjectMapper mapper = new ObjectMapper();
         try {
             response = mapper.writeValueAsString(model);
-            if( response == null){
+            if (response == null) {
                 response = "Empty model. Please, insert routes.";
             }
         } catch (IOException ex) {
@@ -194,13 +205,13 @@ public class RoutingCapability implements IRoutingCapability {
     }
 
     @Override
-    public Response getRoutes(int version){
+    public Response getRoutes(int version) {
         log.info("Get entire Route Table of version IPv" + version);
         VRFModel model = getVRFModel();
         if (model.getTable(version) == null) {
-            if(version == 4  || version == 6){
+            if (version == 4 || version == 6) {
                 model.setTable(new RoutingTable(version), version);
-            }else{
+            } else {
                 return Response.serverError().entity("This IP version does not exist.").build();
             }
         }
@@ -217,7 +228,7 @@ public class RoutingCapability implements IRoutingCapability {
     @Override
     public Response insertRouteFile(String filename/*, InputStream file*/) {
         log.info("Insert Routes from File");
-        
+
         VRFModel model = new VRFModel();
         String response = "Inserted";
         try {
@@ -253,8 +264,7 @@ public class RoutingCapability implements IRoutingCapability {
                             newRoute.setSwitchInfo(newSwitch);
                             if (fieldName.equals("routeIPv4")) {
                                 model.getTable(4).addRoute(newRoute);
-                            }
-                            else if (fieldName.equals("routeIPv6")) {
+                            } else if (fieldName.equals("routeIPv6")) {
                                 model.getTable(6).addRoute(newRoute);
                             }
                         }
@@ -265,7 +275,7 @@ public class RoutingCapability implements IRoutingCapability {
                     }
                 } else {
                     response = "Unprocessed property: " + fieldName;
-                    log.error(response);                    
+                    log.error(response);
                     jp.skipChildren();
                 }
             }
@@ -275,8 +285,8 @@ public class RoutingCapability implements IRoutingCapability {
         } catch (IOException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return Response.status(404).entity("Some error. Check the file. Possible error: "+response).build();
+
+        return Response.status(404).entity("Some error. Check the file. Possible error: " + response).build();
     }
 
     private Response proactiveRouting(L2Forward srcSwInfo, VRFRoute route, int version) {
@@ -285,36 +295,38 @@ public class RoutingCapability implements IRoutingCapability {
         Response response;
         boolean flowMode = true;
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, srcSwInfo, srcSwInfo);
-        
+
         List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
-        
+
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r));
             }
         }
-        
+
         // provision each link and mark the last one
-	for (int i = 0; i < listFlow.size(); i++) {
-            try{
+        for (int i = 0; i < listFlow.size(); i++) {
+            try {
                 response = provisionLink(listFlow.get(i));
-            }catch (Exception e){
+            } catch (ResourceException e) {
+//                throw new ActionException("Error provisioning link : ", e);
+            } catch (ActivatorException e) {
 //                throw new ActionException("Error provisioning link : ", e);
             }
         }
-        
+
         //provision circuit?
-        if(!flowMode){
+        if (!flowMode) {
             List<NetworkConnection> listNetCon = new ArrayList<NetworkConnection>();
             NetworkConnection netCon = new NetworkConnection();
             if (routeSubnetList.size() > 0) {
                 for (VRFRoute r : routeSubnetList) {
                     netCon = Utils.VRFRouteToNetCon(r);
-                   listNetCon.add(netCon);
+                    listNetCon.add(netCon);
                 }
             }
-            
+
             Route ONRoute = new Route();
             ONRoute.setNetworkConnections(listNetCon);
 //            FlowRequest flowRequest = new FlowRequest();
@@ -322,32 +334,32 @@ public class RoutingCapability implements IRoutingCapability {
 //            ncl.allocateFlow(flowRequest, ONRoute, "");
             String networkId;
         }
-          
+
         return Response.ok("Proactive messages sent.").build();
     }
-    
-    private void provisionCircuit(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink){
-        
+
+    private void provisionCircuit(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink) {
+
     }
 
-    private Response provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException,ActivatorException {
+    private Response provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException, ActivatorException {
         log.info("Provision Flow Link Floodlight");
         String switchId = flow.getSwitchId();
         IResource resource = getResourceByName(switchId);
-        if( resource == null ){
-           return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build(); 
+        if (resource == null) {
+            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
         }
         IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
         forwardingCapability.createOpenflowForwardingRule(flow);
         return Response.ok().build();
     }
-    
-    private Response removeLink(FloodlightOFFlow flow) throws ResourceException,ActivatorException {
+
+    private Response removeLink(FloodlightOFFlow flow) throws ResourceException, ActivatorException {
         log.info("Provision Flow Link Floodlight");
         String switchId = flow.getSwitchId();
         IResource resource = getResourceByName(switchId);
-        if( resource == null ){
-           return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build(); 
+        if (resource == null) {
+            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
         }
         IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
         forwardingCapability.removeOpenflowForwardingRule(flow.getName());
@@ -355,40 +367,61 @@ public class RoutingCapability implements IRoutingCapability {
     }
 
     private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
-        log.info("Get Resource By switch ID: "+resourceName);
+        log.info("Get Resource By switch ID: " + resourceName);
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
-        log.info("ResourceManager "+resourceManager.getIdentifierFromResourceName("sdnnetwork", "sdn1").getId());
+        log.info("ResourceManager " + resourceManager.getIdentifierFromResourceName("sdnnetwork", "sdn1").getId());
         IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
         IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
         List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
         String resourceSdnNetworkId = sdnCapab.getMapDeviceResource(resourceName);
-        if(resourceSdnNetworkId == null){
+        if (resourceSdnNetworkId == null) {
             log.error("This Switch ID is not mapped to any ofswitch resource.");
             return null;
         }
-        for ( IResource r : listResources){
-            if( r.getResourceDescriptor().getId().equals(resourceSdnNetworkId)){
+        for (IResource r : listResources) {
+            if (r.getResourceDescriptor().getId().equals(resourceSdnNetworkId)) {
                 resourceName = r.getResourceDescriptor().getInformation().getName();
-                log.debug("Switch name is: "+resourceName);
+                log.debug("Switch name is: " + resourceName);
             }
         }
 
-/*hardcode*/
-        resourceName = "s"+resourceName.substring(resourceName.length() -1 );//00:00:00:00:02 --> s2
+        /*hardcode*/
+        resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:02 --> s2
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
-        
-        log.info("IResource id:"+resourceId);
-        if(resourceId == null){
+
+        log.info("IResource id:" + resourceId);
+        if (resourceId == null) {
             log.error("IResource id is null.");
             return null;
         }
         return resourceManager.getResource(resourceId);
     }
-    
+
+    //---------------------DEMO
     @Override
     public String getLog() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return logMessage;
+    }
+    
+    public void removeLog(){
+        logMessage = "";
     }
 
+    public class updateLog extends Thread {
+
+        public updateLog() {
+        }
+
+        @Override
+        public void run() {
+            try {
+                updateLog.sleep(5000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            removeLog();
+        }
+    }
+    //---------------------END DEMO
 }

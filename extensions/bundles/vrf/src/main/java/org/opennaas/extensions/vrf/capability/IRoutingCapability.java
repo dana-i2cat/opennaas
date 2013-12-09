@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vrf.capability.routing;
+package org.opennaas.extensions.vrf.capability;
 
 import java.io.InputStream;
 import javax.ws.rs.Consumes;
@@ -50,6 +50,7 @@ public interface IRoutingCapability {
      * @param switchDPID
      * @param inputPort
      * @param outputPort
+     * @param lifeTime
      * @return status
      */
     @Path("/route")
@@ -59,7 +60,8 @@ public interface IRoutingCapability {
             @FormParam("ipDest") String ipDest,
             @FormParam("switchDPID") String switchDPID,
             @FormParam("inputPort") int inputPort,
-            @FormParam("outputPort") int outputPort);
+            @FormParam("outputPort") int outputPort,
+            @FormParam("lifeTime") int lifeTime);
 
     /**
      * Remove route given id of the route and the IP version

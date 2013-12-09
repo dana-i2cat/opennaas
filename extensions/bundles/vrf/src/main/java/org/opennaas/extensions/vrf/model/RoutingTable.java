@@ -114,7 +114,7 @@ public class RoutingTable {
         for (VRFRoute r : this.getRouteTable()) {
             if(!r.getSwitchInfo().getMacAddress().equals(srcSwInfo.getMacAddress())){
                 if (r.equalsOtherRoutes(route)) {
-                    log.info("Match other route. Id match route: "+r.getId());
+                    log.debug("Match other route. Id match route: "+r.getId());
                     subnetList.add(r);
                 }
            }
