@@ -3,7 +3,7 @@
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
-
+	<repository>mvn:net.i2cat/netconf-server/0.0.2-SNAPSHOT/xml/features</repository>
 
 	<feature name="opennaas-core" version="${project.version}">
 		<feature version="${project.version}">opennaas-persistence</feature>
@@ -142,13 +142,17 @@
 		
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>
 	</feature>
-	
+
 	<feature name="itests-helpers" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-core</feature>
 		<feature version="${opennaas.version}">cxf-minimal</feature>
-			
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
 		
+		<feature version="0.0.2-SNAPSHOT">netconf-server</feature>
+
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
+		<bundle dependency="true">mvn:net.i2cat/netconf-server/0.0.2-SNAPSHOT</bundle>
+		<bundle dependency="true">wrap:mvn:xmlunit/xmlunit/1.5</bundle>
+
 		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>
 	</feature>
 	
