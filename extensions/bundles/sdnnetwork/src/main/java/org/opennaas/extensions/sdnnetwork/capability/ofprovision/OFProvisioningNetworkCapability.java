@@ -2,6 +2,7 @@ package org.opennaas.extensions.sdnnetwork.capability.ofprovision;
 
 import java.util.Collection;
 import java.util.UUID;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -227,4 +228,9 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 	public String getMapDeviceResource(String deviceId) throws CapabilityException {
 		return ((SDNNetworkModel) resource.getModel()).getDeviceResourceMap().get(deviceId);
 	}
+
+        @Override
+        public Response getMapDevices(String deviceId) throws CapabilityException {
+            return Response.ok(((SDNNetworkModel) resource.getModel()).getDeviceResourceMap()).build();
+        }
 }

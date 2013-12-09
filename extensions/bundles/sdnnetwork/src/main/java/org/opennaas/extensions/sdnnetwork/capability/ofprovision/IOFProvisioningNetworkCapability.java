@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -82,6 +83,7 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 	 *            of the Floodlight device
 	 * @param resourceID
 	 *            of the OpenNaaS resource
+         * @throws org.opennaas.core.resources.capability.CapabilityException
 	 */
 	@Path("/mapDeviceResource/{deviceId}/{resourceID}")
 	@GET
@@ -93,12 +95,24 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 	 * 
 	 * @param deviceId
 	 *            of the Floodlight device
+         * @return 
+         * @throws org.opennaas.core.resources.capability.CapabilityException
 	 */
 	@Path("/mapDeviceResource/{deviceId}")
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
 	public String getMapDeviceResource(@PathParam("deviceId") String deviceId) throws CapabilityException;
 
+        /**
+         * Get the entire list of devices
+         * @param deviceId
+         * @return
+         * @throws CapabilityException 
+         */
+        @Path("/mapDeviceResource")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response getMapDevices(@PathParam("deviceId") String deviceId) throws CapabilityException;
         
 	/**
 	 * Clears the map of Floodlight devices - OpenNaaS resources
