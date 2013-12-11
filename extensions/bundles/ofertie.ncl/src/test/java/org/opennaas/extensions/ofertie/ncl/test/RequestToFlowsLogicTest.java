@@ -75,14 +75,15 @@ public class RequestToFlowsLogicTest {
 
 	@Test
 	public void requestWithToSTest() {
-		int tos = 1;
+		int tos = 4;
+		int flowTos = tos / 4; // last 2 bits discarded
 
 		flowRequest.setTos(tos);
 
 		SDNNetworkOFFlow flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
 		Assert.assertNotNull(flow);
 		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(tos, flow.getMatch().getTosBits());
+		Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
 		Assert.assertEquals("2048", flow.getMatch().getEtherType());
 	}
 
@@ -90,7 +91,8 @@ public class RequestToFlowsLogicTest {
 	public void requestWithIPsAndToSTest() {
 		String srcIp = "192.168.0.2";
 		String dstIp = "192.168.0.3";
-		int tos = 1;
+		int tos = 4;
+		int flowTos = tos / 4; // last 2 bits discarded
 
 		flowRequest.setSourceIPAddress(srcIp);
 		flowRequest.setDestinationIPAddress(dstIp);
@@ -101,7 +103,7 @@ public class RequestToFlowsLogicTest {
 		Assert.assertNotNull(flow.getMatch());
 		Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
 		Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
-		Assert.assertEquals(tos, flow.getMatch().getTosBits());
+		Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
 		Assert.assertEquals("2048", flow.getMatch().getEtherType());
 	}
 
