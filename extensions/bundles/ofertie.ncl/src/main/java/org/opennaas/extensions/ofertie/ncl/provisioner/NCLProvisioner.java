@@ -1,8 +1,11 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
@@ -26,19 +29,22 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
  */
 public class NCLProvisioner implements INCLProvisioner {
 
-	private IQoSPDP					qoSPDP;
-	private INetworkSelector		networkSelector;
-	private IPathFinder				pathFinder;
-	private INCLController			nclController;
-	private IRequestToFlowsLogic	requestToFlowsLogic;
+	private IQoSPDP								qoSPDP;
+	private INetworkSelector					networkSelector;
+	private IPathFinder							pathFinder;
+	private INCLController						nclController;
+	private IRequestToFlowsLogic				requestToFlowsLogic;
 
 	/**
 	 * Key: FlowId, Value: Flow
 	 */
-	private Map<String, Circuit>	allocatedCircuits;
+	private Map<String, Circuit>				allocatedCircuits;
+
+	private Map<String, List<SDNNetworkOFFlow>>	allocatedFlows;
 
 	public NCLProvisioner() {
 		allocatedCircuits = new HashMap<String, Circuit>();
+		allocatedFlows = new HashMap<String, List<SDNNetworkOFFlow>>();
 	}
 
 	/**
@@ -122,12 +128,17 @@ public class NCLProvisioner implements INCLProvisioner {
 			SDNNetworkOFFlow sdnFlow = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest, route);
 			String flowId = getNclController().allocateFlow(sdnFlow, netId);
 
-			String circuitId = flowId;
+			String circuitId = generateRandomFlowId();
 
 			Circuit circuit = new Circuit();
 			circuit.setFlowRequest(flowRequest);
 			circuit.setId(circuitId);
 			allocatedCircuits.put(circuitId, circuit);
+
+			List<SDNNetworkOFFlow> flows = new ArrayList<SDNNetworkOFFlow>();
+			flows.add(sdnFlow);
+
+			allocatedFlows.put(circuitId, flows);
 
 			return circuitId;
 
@@ -167,6 +178,10 @@ public class NCLProvisioner implements INCLProvisioner {
 			throws ProvisionerException {
 
 		return allocatedCircuits.values();
+	}
+
+	private String generateRandomFlowId() {
+		return UUID.randomUUID().toString();
 	}
 
 }
