@@ -105,14 +105,25 @@ public interface IOFProvisioningNetworkCapability extends ICapability {
 
         /**
          * Get the entire list of devices
-         * @param deviceId
          * @return
          * @throws CapabilityException 
          */
         @Path("/mapDeviceResource")
 	@GET
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response getMapDevices(@PathParam("deviceId") String deviceId) throws CapabilityException;
+	public Response getMapDevices() throws CapabilityException;
+        
+         /**
+         * Get the resource name given the DPID
+         * @param deviceId
+         * @return
+         * @throws CapabilityException 
+         */
+        @Path("/getDeviceResourceName/{deviceId}")
+	@GET
+	@Consumes(MediaType.APPLICATION_XML)
+	public String getNameDevice(@PathParam("deviceId") String deviceId) throws CapabilityException;
+        
         
 	/**
 	 * Clears the map of Floodlight devices - OpenNaaS resources

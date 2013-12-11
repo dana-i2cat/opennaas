@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.ModelElementNotFoundException;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -230,7 +231,20 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 	}
 
         @Override
-        public Response getMapDevices(String deviceId) throws CapabilityException {
+        public Response getMapDevices() throws CapabilityException {
             return Response.ok(((SDNNetworkModel) resource.getModel()).getDeviceResourceMap()).build();
+        }
+                
+        @Override
+        public String getNameDevice(String deviceId) throws CapabilityException {
+            String resourceName = null;
+            String resId = getMapDeviceResource(deviceId);
+            try {
+                resourceName = Activator.getResourceManagerService().getNameFromResourceID(resId);
+            } catch (ActivatorException ex) {
+            } catch (ResourceException ex) {
+            }
+  
+            return resourceName;
         }
 }

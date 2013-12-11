@@ -31,10 +31,6 @@ import org.opennaas.extensions.vrf.model.VRFRoute;
 import org.opennaas.extensions.vrf.model.RoutingTable;
 import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.utils.Utils;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Port;
-import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
  *
@@ -293,7 +289,6 @@ public class RoutingCapability implements IRoutingCapability {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         VRFModel model = getVRFModel();
         Response response;
-        boolean flowMode = true;
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, srcSwInfo, srcSwInfo);
 
         List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
@@ -315,31 +310,7 @@ public class RoutingCapability implements IRoutingCapability {
 //                throw new ActionException("Error provisioning link : ", e);
             }
         }
-
-        //provision circuit?
-        if (!flowMode) {
-            List<NetworkConnection> listNetCon = new ArrayList<NetworkConnection>();
-            NetworkConnection netCon = new NetworkConnection();
-            if (routeSubnetList.size() > 0) {
-                for (VRFRoute r : routeSubnetList) {
-                    netCon = Utils.VRFRouteToNetCon(r);
-                    listNetCon.add(netCon);
-                }
-            }
-
-            Route ONRoute = new Route();
-            ONRoute.setNetworkConnections(listNetCon);
-//            FlowRequest flowRequest = new FlowRequest();
-//            NCLController ncl = new NCLController();
-//            ncl.allocateFlow(flowRequest, ONRoute, "");
-            String networkId;
-        }
-
         return Response.ok("Proactive messages sent.").build();
-    }
-
-    private void provisionCircuit(Port source, Port destination, SDNNetworkOFFlow sdnNetworkOFFlow, boolean lastLink) {
-
     }
 
     private Response provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException, ActivatorException {
@@ -409,7 +380,6 @@ public class RoutingCapability implements IRoutingCapability {
     }
 
     public class updateLog extends Thread {
-
         public updateLog() {
         }
 
