@@ -12,6 +12,8 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.FloodlightClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.countersclient.FloodlightCountersClientFactory;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.countersclient.IFloodlightCountersClient;
 
 /**
  * 
@@ -33,6 +35,9 @@ public class FloodlightProtocolSession implements IProtocolSession {
 	private FloodlightClientFactory					clientFactory;
 	private IFloodlightStaticFlowPusherClient		floodlightStaticFlowPusherClient;
 
+	private FloodlightCountersClientFactory			countersClientFactory;
+	private IFloodlightCountersClient				floodlightCountersClient;
+
 	public FloodlightProtocolSession(String sessionID,
 			ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 		super();
@@ -43,6 +48,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		this.protocolMessageFilters = new HashMap<String, IProtocolMessageFilter>();
 
 		this.clientFactory = new FloodlightClientFactory();
+		this.countersClientFactory = new FloodlightCountersClientFactory();
 
 		this.status = Status.DISCONNECTED_BY_USER;
 
@@ -81,6 +87,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 					"Cannot connect because the session is already connected");
 		}
 		this.floodlightStaticFlowPusherClient = this.clientFactory.createClient((getSessionContext()));
+		this.floodlightCountersClient = this.countersClientFactory.createClient((getSessionContext()));
 		setStatus(Status.CONNECTED);
 	}
 
@@ -93,6 +100,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		}
 
 		this.floodlightStaticFlowPusherClient = clientFactory.destroyClient();
+		this.floodlightCountersClient = countersClientFactory.destroyClient();
 		setStatus(Status.DISCONNECTED_BY_USER);
 	}
 
@@ -157,6 +165,43 @@ public class FloodlightProtocolSession implements IProtocolSession {
 					"Cannot use client. Session is not connected. Current session status is " + status);
 		}
 		return getFloodlightClient();
+	}
+
+	/**
+	 * This method should NOT be used in Actions to retrieve the client. In Actions use {@link #getFloodlightCountersClientForUse()} instead.
+	 * 
+	 * @return floodlightCountersClient
+	 * @see getFloodlightClientForUse()
+	 */
+	public IFloodlightCountersClient getFloodlightCountersClient() {
+		return floodlightCountersClient;
+	}
+
+	public void setFloodlightClient(IFloodlightCountersClient floodlightCountersClient) {
+		this.floodlightCountersClient = floodlightCountersClient;
+	}
+
+	public FloodlightCountersClientFactory getCountersClientFactory() {
+		return countersClientFactory;
+	}
+
+	public void setContersClientFactory(FloodlightCountersClientFactory countersClientFactory) {
+		this.countersClientFactory = countersClientFactory;
+	}
+
+	/**
+	 * Retrieve Client and checks session is connected. This method may be used in Actions to retrieve the client and call its methods afterwards.
+	 * 
+	 * @return initialized client.
+	 * @throws ProtocolException
+	 *             if this ProtocolSession is not connected.
+	 */
+	public IFloodlightCountersClient getFloodlightCountersClientForUse() throws ProtocolException {
+		if (!status.equals(Status.CONNECTED)) {
+			throw new ProtocolException(
+					"Cannot use counters client. Session is not connected. Current session status is " + status);
+		}
+		return getFloodlightCountersClient();
 	}
 
 	protected void setStatus(Status status) {
