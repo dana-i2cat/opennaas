@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFoundException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 
 /**
@@ -77,6 +77,6 @@ public interface INCLProvisioner {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public Collection<Flow> readAllocatedFlows() throws ProvisionerException;
+	public Collection<Circuit> readAllocatedFlows() throws ProvisionerException;
 
 }

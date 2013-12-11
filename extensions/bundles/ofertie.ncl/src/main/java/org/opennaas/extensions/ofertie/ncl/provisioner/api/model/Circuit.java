@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Flow {
+public class Circuit {
 
 	private String		id;
 
@@ -74,7 +74,7 @@ public class Flow {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Flow other = (Flow) obj;
+		Circuit other = (Circuit) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

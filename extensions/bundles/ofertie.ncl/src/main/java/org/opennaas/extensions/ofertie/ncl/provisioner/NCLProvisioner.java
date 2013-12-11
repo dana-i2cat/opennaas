@@ -10,7 +10,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAlloca
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFoundException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
@@ -35,10 +35,10 @@ public class NCLProvisioner implements INCLProvisioner {
 	/**
 	 * Key: FlowId, Value: Flow
 	 */
-	private Map<String, Flow>		allocatedFlows;
+	private Map<String, Circuit>	allocatedCircuits;
 
 	public NCLProvisioner() {
-		allocatedFlows = new HashMap<String, Flow>();
+		allocatedCircuits = new HashMap<String, Circuit>();
 	}
 
 	/**
@@ -122,12 +122,14 @@ public class NCLProvisioner implements INCLProvisioner {
 			SDNNetworkOFFlow sdnFlow = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest, route);
 			String flowId = getNclController().allocateFlow(sdnFlow, netId);
 
-			Flow flow = new Flow();
-			flow.setFlowRequest(flowRequest);
-			flow.setId(flowId);
-			allocatedFlows.put(flowId, flow);
+			String circuitId = flowId;
 
-			return flowId;
+			Circuit circuit = new Circuit();
+			circuit.setFlowRequest(flowRequest);
+			circuit.setId(circuitId);
+			allocatedCircuits.put(circuitId, circuit);
+
+			return circuitId;
 
 		} catch (FlowAllocationException fae) {
 			throw fae;
@@ -153,7 +155,7 @@ public class NCLProvisioner implements INCLProvisioner {
 			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
 			getNclController().deallocateFlow(flowId, netId);
 
-			allocatedFlows.remove(flowId);
+			allocatedCircuits.remove(flowId);
 
 		} catch (Exception e) {
 			throw new ProvisionerException(e);
@@ -161,10 +163,10 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	@Override
-	public Collection<Flow> readAllocatedFlows()
+	public Collection<Circuit> readAllocatedFlows()
 			throws ProvisionerException {
 
-		return allocatedFlows.values();
+		return allocatedCircuits.values();
 	}
 
 }

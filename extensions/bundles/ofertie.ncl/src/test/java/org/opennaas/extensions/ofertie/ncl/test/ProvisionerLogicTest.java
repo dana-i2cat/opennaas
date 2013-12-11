@@ -13,7 +13,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
@@ -171,7 +171,7 @@ public class ProvisionerLogicTest {
 		verify(nclController);
 	}
 
-	private Flow generateSampleFlow() {
+	private Circuit generateSampleFlow() {
 
 		QoSRequirements qoSRequirements = new QoSRequirements();
 		qoSRequirements.setMinBandwidth(100 * 1000 * 1000);
@@ -194,7 +194,7 @@ public class ProvisionerLogicTest {
 		request.setTos(1);
 		request.setQoSRequirements(qoSRequirements);
 
-		Flow flow = new Flow();
+		Circuit flow = new Circuit();
 		flow.setId("1");
 		flow.setFlowRequest(request);
 

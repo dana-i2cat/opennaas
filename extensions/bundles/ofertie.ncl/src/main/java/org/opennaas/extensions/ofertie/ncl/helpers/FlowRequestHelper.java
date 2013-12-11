@@ -31,7 +31,7 @@ public abstract class FlowRequestHelper {
 		req.setSourceVlanId(21);
 		req.setDestinationVlanId(22);
 
-		req.setTos(1001);
+		req.setTos(16);
 
 		QoSRequirements qosRequirements = new QoSRequirements();
 		qosRequirements.setMaxBandwidth(100);

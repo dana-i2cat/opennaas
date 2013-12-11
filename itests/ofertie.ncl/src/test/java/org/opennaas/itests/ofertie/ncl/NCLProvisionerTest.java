@@ -32,7 +32,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
@@ -196,9 +196,9 @@ public class NCLProvisionerTest {
 
 		String flowId = provisioner.allocateFlow(flowRequest);
 
-		Collection<Flow> flows = provisioner.readAllocatedFlows();
-		Flow allocatedFlow = null;
-		for (Flow flow : flows) {
+		Collection<Circuit> flows = provisioner.readAllocatedFlows();
+		Circuit allocatedFlow = null;
+		for (Circuit flow : flows) {
 			if (flow.getId().equals(flowId)) {
 				allocatedFlow = flow;
 				break;
@@ -240,8 +240,8 @@ public class NCLProvisionerTest {
 
 		provisioner.deallocateFlow(flowId);
 		flows = provisioner.readAllocatedFlows();
-		Flow deallocatedFlow = null;
-		for (Flow flow : flows) {
+		Circuit deallocatedFlow = null;
+		for (Circuit flow : flows) {
 			if (flow.getId().equals(flowId)) {
 				deallocatedFlow = flow;
 				break;
