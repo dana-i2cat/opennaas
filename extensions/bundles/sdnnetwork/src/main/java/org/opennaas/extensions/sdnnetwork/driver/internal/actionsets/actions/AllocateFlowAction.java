@@ -34,7 +34,7 @@ public class AllocateFlowAction extends Action {
 		SDNNetworkOFFlow flow = (SDNNetworkOFFlow) params;
 		// provision each link and mark the last one
 		List<NetworkConnection> connections = flow.getRoute().getNetworkConnections();
-		for (int i = 0; i < connections.size(); i++) {
+		for (int i = connections.size() - 1; i >= 0; i--) {
 			NetworkConnection networkConnection = connections.get(i);
 			try {
 				provisionLink(networkConnection, new SDNNetworkOFFlow(flow),
