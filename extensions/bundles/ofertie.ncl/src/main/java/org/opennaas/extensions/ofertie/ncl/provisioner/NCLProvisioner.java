@@ -127,6 +127,7 @@ public class NCLProvisioner implements INCLProvisioner {
 			Route route = getPathFinder().findPathForRequest(flowRequest, netId);
 			SDNNetworkOFFlow sdnFlow = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest, route);
 			String flowId = getNclController().allocateFlow(sdnFlow, netId);
+			sdnFlow.setName(flowId);
 
 			String circuitId = generateRandomFlowId();
 
@@ -164,9 +165,17 @@ public class NCLProvisioner implements INCLProvisioner {
 		try {
 
 			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
-			getNclController().deallocateFlow(flowId, netId);
+
+			List<SDNNetworkOFFlow> circuitFlows = allocatedFlows.get(flowId);
+
+			for (SDNNetworkOFFlow flow : circuitFlows) {
+
+				String sdnFlowId = flow.getName();
+				getNclController().deallocateFlow(sdnFlowId, netId);
+			}
 
 			allocatedCircuits.remove(flowId);
+			allocatedFlows.remove(flowId);
 
 		} catch (Exception e) {
 			throw new ProvisionerException(e);
