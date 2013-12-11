@@ -6,7 +6,7 @@ import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingActionSet;
+import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;

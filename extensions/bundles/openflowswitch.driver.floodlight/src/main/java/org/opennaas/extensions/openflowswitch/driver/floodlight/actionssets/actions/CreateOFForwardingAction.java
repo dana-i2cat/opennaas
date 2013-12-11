@@ -4,7 +4,7 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingActionSet;
+import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightAction;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightConstants;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
