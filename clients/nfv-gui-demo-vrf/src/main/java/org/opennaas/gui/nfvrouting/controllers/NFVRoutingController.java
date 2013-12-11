@@ -30,7 +30,7 @@ public class NFVRoutingController {
     protected ReloadableResourceBundleMessageSource messageSource;
 
     /**
-     * Redirect to Configure view
+     * Redirect to Configure view. Get the Route table of the given IP type.
      *
      * @param type
      * @param model
@@ -82,8 +82,7 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/insertRoute")
     public String insertRoutePost(insertRoutes route, BindingResult result, ModelMap model) {
-        LOGGER.error("Insert route ------------------> " + route.getListRoutes());
-
+        LOGGER.info("Insert route ------------------> " + route.getListRoutes());
         try {
             for (Route r : route.getListRoutes()) {
                 String response = nfvRoutingBO.insertRoute(r);
@@ -97,6 +96,21 @@ public class NFVRoutingController {
         return "insertRoute";
     }
 
+    /**
+     * Redirect to insert view and insert the values received by POST
+     *
+     * @param route
+     * @param result
+     * @param model
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/animation")
+    public String animation(insertRoutes route, BindingResult result, ModelMap model) {
+        LOGGER.info("Animation ------------------> " + route.getListRoutes());
+        
+        return "animation";
+    }
+    
    /**
      * Remove the Route without redirect
      *
@@ -106,8 +120,7 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteRoute/{id}")
-    public @ResponseBody
-    String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
+    public @ResponseBody String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
         LOGGER.debug("Remove Route ------------------> " + id);
         String response = "";
         int version;
@@ -136,8 +149,7 @@ public class NFVRoutingController {
      * @return the log of OpenNaaS
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getLog")
-    public @ResponseBody
-    String getLog(ModelMap model) {
+    public @ResponseBody String getLog(ModelMap model) {
         LOGGER.debug("Get log ------------------");
         String response = nfvRoutingBO.getLog();
 
@@ -152,9 +164,8 @@ public class NFVRoutingController {
      * @param model
      * @return the information of the switch (IP:port)
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vrf/getInfoSw/{dpid}")
-    public @ResponseBody
-    String getInfoSw(@PathVariable("dpid") String dpid, ModelMap model) {
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/getInfoSw/{dpid}")
+    public @ResponseBody String getInfoSw(@PathVariable("dpid") String dpid, ModelMap model) {
         LOGGER.debug("Get Information about switch ------------------");
         String response = nfvRoutingBO.getSwInfo(dpid);
         return response;

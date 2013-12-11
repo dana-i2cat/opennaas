@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.opennaas.gui.nfvrouting.services.rest.GenericRestService;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
+import org.opennaas.gui.nfvrouting.utils.Constants;
 
 /**
  * @author Josep Batallé (josep.batalle@i2cat.net)
@@ -16,20 +17,21 @@ import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 public class NFVRoutingService extends GenericRestService {
 
     private static final Logger LOGGER = Logger.getLogger(NFVRoutingService.class);
+    private static final String sdn = Constants.SDN_RESOURCE;
 
     /**
      * Call a rest service to get the Route Table of the virtualized router
-     * 
+     *
      * @param type of IP version
      * @return true if the environment has been created
      * @throws RestServiceException
      */
     public String getRouteTable(int type) throws RestServiceException {
         String response = null;
-        
+
         try {
             LOGGER.info("Calling get Route Table service");
-            String url = getURL("vrf/routing/routes/"+type);
+            String url = getURL("vrf/routing/routes/" + type);
             Client client = Client.create();
             WebResource webResource = client.resource(url);
             response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
@@ -43,7 +45,7 @@ public class NFVRoutingService extends GenericRestService {
 
     /**
      * Call a rest service to insert a Route
-     * 
+     *
      * @param route
      * @return true if the environment has been created
      */
@@ -71,15 +73,15 @@ public class NFVRoutingService extends GenericRestService {
 
     /**
      * Remove Route given the id
+     *
      * @param id
      * @param version
-     * @return 
+     * @return
      */
-        public String deleteRoute(int id, int version){
+    public String deleteRoute(int id, int version) {
         String response = null;
         try {
             LOGGER.info("Remove route");
-            LOGGER.error("Remove route");
             String url = getURL("vrf/routing/route");
             Client client = Client.create();
             WebResource webResource = client.resource(url);
@@ -92,15 +94,48 @@ public class NFVRoutingService extends GenericRestService {
         }
         return response;
     }
-        
-    public String getControllerStatus(String ip) {
+    
+    /**
+     * Information about the switch.
+     *
+     * @param dpid
+     * @return Flow table of the switch.
+     */
+    public String getSwInfo(String dpid) {
+        String response = null;
+        String resourceName = getSwitchResourceName(dpid);//request the resourceName
+        try {
+            LOGGER.info("Calling get Controller Status");
+            LOGGER.error("Calling sw INFO");
+            String url = getURL("openflowswitch/" + resourceName + "/offorwarding/getOFForwardingRules");
+            Client client = Client.create();
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
+            LOGGER.info("Controller status: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
+    
+    /**
+     * Given the DPID of switch, return the Resource name stored in OpenNaaS
+     *
+     * @param dpid
+     * @return
+     */
+    public String getSwitchResourceName(String dpid) {
         String response = null;
         try {
             LOGGER.info("Calling get Controller Status");
-            String url = getURL("vrf/routing/getControllerStatus/"+ip);
+            String url = getURL("sdnnetwork/" + sdn + "/ofprovisionnet/getDeviceResourceName/" + dpid);
+            LOGGER.error(url);
+            url = "http://localhost:8888/opennaas/sdnnetwork/" + sdn + "/ofprovisionnet/getDeviceResourceName/" + dpid;
+            LOGGER.error(url);
             Client client = Client.create();
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            response = webResource.get(String.class);
             LOGGER.info("Controller status: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
@@ -109,26 +144,27 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
-    public String getSwInfo(String dpid) {
+    public String getControllerStatus(String ip) {
         String response = null;
+        String resourceName = "";
         try {
-            LOGGER.info("Serivice: Get Information about the controller "+dpid);
-            String url = getURL("vrf/routing/getSwInfo/"+dpid);
+            LOGGER.info("Calling get Controller Status");
+            String url = getURL("openflowswitch/" + resourceName + "/offorwarding/getOFForwardingRules");
             Client client = Client.create();
             WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
-            LOGGER.info("Log....: " + response);
+            response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
+            LOGGER.info("Controller status: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
         }
         return response;
+
     }
     
     //---------------------DEMO
-    
     public String getLog() {
-        String response = null;
+        String response;
         try {
             LOGGER.info("Get log of OpenNaaS");
             String url = getURL("vrf/routing/log");
@@ -138,7 +174,7 @@ public class NFVRoutingService extends GenericRestService {
             LOGGER.info("Log....: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
-            throw e;
+            return "OpenNaaS not started";
         }
         return response;
     }

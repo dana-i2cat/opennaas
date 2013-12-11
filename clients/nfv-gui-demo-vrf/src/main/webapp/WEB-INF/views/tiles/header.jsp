@@ -51,8 +51,8 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="${url}/secure/noc/nfvRouting/insertCtrlInfo" />">
-                <spring:message code="menu.insertController" />
+            <a href="<c:url value="${url}/secure/noc/nfvRouting/animation" />">
+                <spring:message code="menu.animation" />
             </a>
         </li>
     </ul>

@@ -8,8 +8,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<div id="config_routeTable" class="routeTable">
-    <h3>Configured routes:</h3>
-    <table id="jsonTable" class="tablesorter"></table>    
+<div id="config_routeTable" class="ui-widget-content ui-corner-all routTable padding">
+    <h3>Configured routes</h3>
+    <table id="jsonTable" class="tablesorter"></table>
 </div>
 <div id="config_topology" class="topology">Topology</div>

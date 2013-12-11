@@ -68,4 +68,24 @@ public class HomeController {
         }
         return response;
     }
+    
+    /**
+     * Request the Flow Table of switch.
+     * @param dpid
+     * @param model
+     * @param locale
+     * @param session
+     * @return Flow table in xml representation
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/switchInfo/{dpid}")
+    public @ResponseBody String getSwInfo(@PathVariable("dpid") String dpid, Model model, Locale locale, HttpSession session) {
+        LOGGER.debug("Request switch information of switch with the following DPID: " + dpid);
+        String response = "";
+        try {
+            response = nfvRoutingBO.getSwInfo(dpid);
+        } catch (Exception e) {
+            return response;
+        }
+        return response;
+    }
 }
