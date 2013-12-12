@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets;
 
 /**
  * Floodlight constants
