@@ -32,7 +32,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
@@ -166,6 +166,7 @@ public class NCLProvisionerTest {
 						"opennaas-ofertie-ncl", "itests-helpers"),
 				systemTimeout(1000 * 60 * 10),
 				noConsole(),
+				// OpennaasExamOptions.openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -194,12 +195,12 @@ public class NCLProvisionerTest {
 
 	public void testAllocateDeallocate(INCLProvisioner provisioner) throws Exception {
 
-		String flowId = provisioner.allocateFlow(flowRequest);
+		String circuitId = provisioner.allocateFlow(flowRequest);
 
-		Collection<Flow> flows = provisioner.readAllocatedFlows();
-		Flow allocatedFlow = null;
-		for (Flow flow : flows) {
-			if (flow.getId().equals(flowId)) {
+		Collection<Circuit> flows = provisioner.readAllocatedFlows();
+		Circuit allocatedFlow = null;
+		for (Circuit flow : flows) {
+			if (flow.getId().equals(circuitId)) {
 				allocatedFlow = flow;
 				break;
 			}
@@ -210,15 +211,12 @@ public class NCLProvisionerTest {
 		IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource
 				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 		Collection<SDNNetworkOFFlow> netFlows = sdnCapab.getAllocatedFlows();
+
+		Assert.assertEquals("There should be only one allocated sdnFlow", 1, netFlows.size());
 		// Get allocated flow in SDN network
-		SDNNetworkOFFlow netFlow = null;
-		for (SDNNetworkOFFlow flow : netFlows) {
-			if (flow.getName().equals(flowId)) {
-				netFlow = flow;
-				break;
-			}
-		}
-		Assert.assertNotNull("sdn network has flow with correct flowId", netFlow);
+		SDNNetworkOFFlow netFlow = netFlows.iterator().next();
+
+		Assert.assertNotNull("sdn network has flow", netFlow);
 
 		// Get flows in switches
 		for (NetworkConnection connection : netFlow.getRoute().getNetworkConnections()) {
@@ -238,46 +236,13 @@ public class NCLProvisionerTest {
 			}
 		}
 
-		provisioner.deallocateFlow(flowId);
+		provisioner.deallocateFlow(circuitId);
 		flows = provisioner.readAllocatedFlows();
-		Flow deallocatedFlow = null;
-		for (Flow flow : flows) {
-			if (flow.getId().equals(flowId)) {
-				deallocatedFlow = flow;
-				break;
-			}
-		}
-		Assert.assertNull("readAllocatedFlows() must not contain deallocated flow", deallocatedFlow);
-
+		Assert.assertTrue("There should no be allocated circuits.", flows.isEmpty());
 		// Get flows in SDN network
 		netFlows = sdnCapab.getAllocatedFlows();
 		// Get allocated flow in SDN network
-		SDNNetworkOFFlow deallocatedNetFlow = null;
-		for (SDNNetworkOFFlow flow : netFlows) {
-			if (flow.getName().equals(flowId)) {
-				deallocatedNetFlow = flow;
-				break;
-			}
-		}
-		Assert.assertNull("sdn network has no flow with deallocated flowId", deallocatedNetFlow);
-
-		// Get flows in switches
-		for (NetworkConnection connection : netFlow.getRoute().getNetworkConnections()) {
-			if (connection.getSource().getDeviceId().equals(connection.getDestination().getDeviceId())) {
-				IResource switchResource = getSwitchResourceFromName(connection.getSource().getDeviceId());
-				IOpenflowForwardingCapability s3capab = (IOpenflowForwardingCapability) switchResource
-						.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-				List<FloodlightOFFlow> switchFlows = s3capab.getOpenflowForwardingRules();
-				FloodlightOFFlow switchFlow = null;
-				for (FloodlightOFFlow flow : switchFlows) {
-					if (flow.getName().equals(connection.getId())) {
-						switchFlow = flow;
-						break;
-					}
-				}
-				Assert.assertNull("switch has no flow with deallocated flow connections Ids", switchFlow);
-			}
-		}
+		Assert.assertEquals("There should be no allocated sdnFlow", 0, netFlows.size());
 
 	}
 

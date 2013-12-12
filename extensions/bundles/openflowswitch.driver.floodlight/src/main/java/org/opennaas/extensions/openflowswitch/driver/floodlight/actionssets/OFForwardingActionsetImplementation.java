@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
-import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingActionSet;
+import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.CreateOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.GetOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.RemoveOFForwardingAction;

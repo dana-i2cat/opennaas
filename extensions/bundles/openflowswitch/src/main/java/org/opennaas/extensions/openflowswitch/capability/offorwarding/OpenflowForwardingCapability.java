@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.capability;
+package org.opennaas.extensions.openflowswitch.capability.offorwarding;
 
 import java.util.List;
 

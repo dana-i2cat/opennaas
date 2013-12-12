@@ -1,8 +1,6 @@
 package org.opennaas.extensions.ofertie.ncl.controller;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -10,12 +8,9 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
-import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowRetrievalException;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.model.Route;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
@@ -26,44 +21,14 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
  */
 public class NCLController implements INCLController {
 
-	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
-
-	private Map<String, Flow>	allocatedFlows;
-
-	public NCLController() {
-		allocatedFlows = new HashMap<String, Flow>();
-	}
-
 	@Override
-	public String allocateFlow(FlowRequest flowRequest, Route route,
-			String networkId) throws FlowAllocationException {
-
+	public String allocateFlow(SDNNetworkOFFlow flowWithRoute, String networkId) throws FlowAllocationException {
 		try {
-
-			SDNNetworkOFFlow flowWithRoute = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
-			flowWithRoute.setActive(true);
-			flowWithRoute.setPriority(DEFAULT_FLOW_PRIORITY);
-			// FIXME requesting a flow that won't filter by IP, by now
-			flowWithRoute.getMatch().setSrcIp(null);
-			flowWithRoute.getMatch().setDstIp(null);
-			// FIXME requesting a flow that won't filter by ToS, by now
-			flowWithRoute.getMatch().setTosBits(null);
-			// FIXME requesting a flow that won't filter by transport ports, by now
-			flowWithRoute.getMatch().setSrcPort(null);
-			flowWithRoute.getMatch().setDstPort(null);
-
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
 					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
-			String flowId = provisionCapab.allocateOFFlow(flowWithRoute);
-
-			Flow flow = new Flow();
-			flow.setFlowRequest(flowRequest);
-			flow.setId(flowId);
-			allocatedFlows.put(flowId, flow);
-
-			return flowId;
+			return provisionCapab.allocateOFFlow(flowWithRoute);
 
 		} catch (ActivatorException e) {
 			throw new FlowAllocationException(e);
@@ -81,7 +46,6 @@ public class NCLController implements INCLController {
 					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
 			provisionCapab.deallocateOFFlow(flowId);
-			allocatedFlows.remove(flowId);
 			return flowId;
 
 		} catch (ActivatorException e) {
@@ -92,8 +56,20 @@ public class NCLController implements INCLController {
 	}
 
 	@Override
-	public Collection<Flow> getFlows() {
-		return allocatedFlows.values();
+	public Collection<SDNNetworkOFFlow> getFlows(String networkId) throws FlowRetrievalException {
+
+		try {
+			IResource networkResource = getResource(networkId);
+			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
+					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+
+			return provisionCapab.getAllocatedFlows();
+
+		} catch (ActivatorException e) {
+			throw new FlowRetrievalException(e);
+		} catch (ResourceException e) {
+			throw new FlowRetrievalException(e);
+		}
 	}
 
 	private IResource getResource(String networkId) throws ActivatorException, ResourceException {

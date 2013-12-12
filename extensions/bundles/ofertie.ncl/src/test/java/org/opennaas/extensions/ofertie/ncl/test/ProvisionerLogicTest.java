@@ -13,32 +13,37 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
 import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 public class ProvisionerLogicTest {
 
-	final String		userId	= "alice";
-	final String		netId	= "NET:1234";
-	final Route			route	= new Route();
-	final String		flowId	= "FLOW:1";
+	final String			userId	= "alice";
+	final String			netId	= "NET:1234";
+	final Route				route	= new Route();
+	final String			flowId	= "FLOW:1";
 
-	NCLProvisioner		provisioner;
-	IQoSPDP				qosPDP;
-	INetworkSelector	networkSelector;
-	IPathFinder			pathFinder;
-	INCLController		nclController;
+	NCLProvisioner			provisioner;
+	IQoSPDP					qosPDP;
+	INetworkSelector		networkSelector;
+	IPathFinder				pathFinder;
+	INCLController			nclController;
+	IRequestToFlowsLogic	requestToFlowsLogic;
 
-	FlowRequest			flowRequest;
+	FlowRequest				flowRequest;
+	SDNNetworkOFFlow		sdnFlow;
 
 	@Before
 	public void initFlowRequest() {
 		flowRequest = generateSampleFlow().getFlowRequest();
+		sdnFlow = new SDNNetworkOFFlow();
 	}
 
 	@Before
@@ -48,12 +53,15 @@ public class ProvisionerLogicTest {
 		networkSelector = createMock(INetworkSelector.class);
 		pathFinder = createMock(IPathFinder.class);
 		nclController = createMock(INCLController.class);
+		requestToFlowsLogic = createMock(IRequestToFlowsLogic.class);
 
 		provisioner = new NCLProvisioner();
 		provisioner.setQoSPDP(qosPDP);
 		provisioner.setNetworkSelector(networkSelector);
 		provisioner.setPathFinder(pathFinder);
 		provisioner.setNclController(nclController);
+		provisioner.setRequestToFlowsLogic(requestToFlowsLogic);
+
 	}
 
 	@Test
@@ -61,19 +69,22 @@ public class ProvisionerLogicTest {
 		expect(qosPDP.shouldAcceptRequest(userId, flowRequest)).andReturn(true);
 		expect(networkSelector.findNetworkForRequest(flowRequest)).andReturn(netId);
 		expect(pathFinder.findPathForRequest(flowRequest, netId)).andReturn(route);
-		expect(nclController.allocateFlow(flowRequest, route, netId)).andReturn(flowId);
+		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route)).andReturn(sdnFlow);
+		expect(nclController.allocateFlow(sdnFlow, netId)).andReturn(flowId);
 
 		replay(qosPDP);
 		replay(networkSelector);
 		replay(pathFinder);
+		replay(requestToFlowsLogic);
 		replay(nclController);
 
 		String result = provisioner.allocateFlow(flowRequest);
-		Assert.assertEquals(flowId, result);
+		Assert.assertNotNull(result);
 
 		verify(qosPDP);
 		verify(networkSelector);
 		verify(pathFinder);
+		verify(requestToFlowsLogic);
 		verify(nclController);
 	}
 
@@ -84,6 +95,7 @@ public class ProvisionerLogicTest {
 		replay(qosPDP);
 		replay(networkSelector);
 		replay(pathFinder);
+		replay(requestToFlowsLogic);
 		replay(nclController);
 
 		provisioner.allocateFlow(flowRequest);
@@ -91,6 +103,7 @@ public class ProvisionerLogicTest {
 		verify(qosPDP);
 		verify(networkSelector);
 		verify(pathFinder);
+		verify(requestToFlowsLogic);
 		verify(nclController);
 	}
 
@@ -102,6 +115,7 @@ public class ProvisionerLogicTest {
 		replay(qosPDP);
 		replay(networkSelector);
 		replay(pathFinder);
+		replay(requestToFlowsLogic);
 		replay(nclController);
 
 		provisioner.allocateFlow(flowRequest);
@@ -109,6 +123,7 @@ public class ProvisionerLogicTest {
 		verify(qosPDP);
 		verify(networkSelector);
 		verify(pathFinder);
+		verify(requestToFlowsLogic);
 		verify(nclController);
 	}
 
@@ -121,6 +136,7 @@ public class ProvisionerLogicTest {
 		replay(qosPDP);
 		replay(networkSelector);
 		replay(pathFinder);
+		replay(requestToFlowsLogic);
 		replay(nclController);
 
 		provisioner.allocateFlow(flowRequest);
@@ -128,6 +144,7 @@ public class ProvisionerLogicTest {
 		verify(qosPDP);
 		verify(networkSelector);
 		verify(pathFinder);
+		verify(requestToFlowsLogic);
 		verify(nclController);
 	}
 
@@ -136,11 +153,13 @@ public class ProvisionerLogicTest {
 		expect(qosPDP.shouldAcceptRequest(userId, flowRequest)).andReturn(true);
 		expect(networkSelector.findNetworkForRequest(flowRequest)).andReturn(netId);
 		expect(pathFinder.findPathForRequest(flowRequest, netId)).andReturn(route);
-		expect(nclController.allocateFlow(flowRequest, route, netId)).andThrow(new FlowAllocationException());
+		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route)).andReturn(sdnFlow);
+		expect(nclController.allocateFlow(sdnFlow, netId)).andThrow(new FlowAllocationException());
 
 		replay(qosPDP);
 		replay(networkSelector);
 		replay(pathFinder);
+		replay(requestToFlowsLogic);
 		replay(nclController);
 
 		provisioner.allocateFlow(flowRequest);
@@ -148,10 +167,11 @@ public class ProvisionerLogicTest {
 		verify(qosPDP);
 		verify(networkSelector);
 		verify(pathFinder);
+		verify(requestToFlowsLogic);
 		verify(nclController);
 	}
 
-	private Flow generateSampleFlow() {
+	private Circuit generateSampleFlow() {
 
 		QoSRequirements qoSRequirements = new QoSRequirements();
 		qoSRequirements.setMinBandwidth(100 * 1000 * 1000);
@@ -174,7 +194,7 @@ public class ProvisionerLogicTest {
 		request.setTos(1);
 		request.setQoSRequirements(qoSRequirements);
 
-		Flow flow = new Flow();
+		Circuit flow = new Circuit();
 		flow.setId("1");
 		flow.setFlowRequest(request);
 

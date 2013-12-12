@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
 
@@ -13,9 +13,9 @@ public class ProvisionerSerializationTest {
 
 	@Test
 	public void flowSerializationTest() throws SerializationException {
-		Flow original = generateSampleFlow();
+		Circuit original = generateSampleFlow();
 		String xml = ObjectSerializer.toXml(original);
-		Flow generated = (Flow) ObjectSerializer.fromXml(xml, Flow.class);
+		Circuit generated = (Circuit) ObjectSerializer.fromXml(xml, Circuit.class);
 		String xml2 = ObjectSerializer.toXml(generated);
 		Assert.assertEquals(original, generated);
 		Assert.assertEquals(xml, xml2);
@@ -55,7 +55,7 @@ public class ProvisionerSerializationTest {
 	// </qoSRequirements>
 	// </flowRequest>
 	// </flow>
-	private Flow generateSampleFlow() {
+	private Circuit generateSampleFlow() {
 
 		QoSRequirements qoSRequirements = new QoSRequirements();
 		qoSRequirements.setMinBandwidth(100 * 1000 * 1000);
@@ -78,7 +78,7 @@ public class ProvisionerSerializationTest {
 		request.setTos(1);
 		request.setQoSRequirements(qoSRequirements);
 
-		Flow flow = new Flow();
+		Circuit flow = new Circuit();
 		flow.setId("1");
 		flow.setFlowRequest(request);
 
