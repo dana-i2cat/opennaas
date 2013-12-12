@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!--  	publish action set services  -->
 	<bean id="VLANAwareBridgeActionSet" class="org.opennaas.extensions.macbridge.ios.resource.actionssets.VLANAwareBridgeActionSet"/>
@@ -27,11 +28,16 @@
 	<bean id="macBridgeIOSBootstrapperFactory" class="org.opennaas.extensions.macbridge.ios.resource.repository.MACBridgeIOSBootstrapperFactory"/>
 	<reference id="queueCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
 	<reference id="vlanAwareBridgeCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=VLANAwareBridge))"/>
-    <bean id="resourceDescriptorRepository"
-          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
-          init-method="initializeEntityManager" destroy-method="close">
-         <property name="persistenceUnit" value="ResourceCore"/>
-    </bean>
+	<!-- Workaround for  https://issues.apache.org/jira/browse/ARIES-796:
+	Resolve and inject entityManagerFactory and get the entityManager using code in ResourceDescriptorRepository. 
+	Obtained entityManager is not container managed, then. 
+	Given unit MUST already be registered as an OSGi service for this to work. -->
+	<reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=ResourceCore)"/>
+	<bean id="resourceDescriptorRepository"
+	class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+	init-method="initializeEntityManager" destroy-method="close">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
 	<bean id="MACBridgeIOSRepository" class="org.opennaas.extensions.macbridge.ios.resource.repository.MACBridgeIOSRepository" init-method="init">
 		<argument value="MACBridgeIOS"/>
 		<!-- resourceType -->
@@ -50,7 +56,4 @@
 			<entry key="version" value="1.0"/>
 		</service-properties>
 	</service>
-	<!-- Forces this bundle to wait for dataSourceResources being published -->
-	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>
-	
 </blueprint>
