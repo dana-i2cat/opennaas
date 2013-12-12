@@ -32,7 +32,7 @@
 		</service-properties>
 	</service>	
 	
-	<bean id="openflowForwardingCapabilityFactory" class="org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapabilityFactory">
+	<bean id="openflowForwardingCapabilityFactory" class="org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapabilityFactory">
 		<property name="type" value="offorwarding"/>
 	</bean>	
 	<!-- Register the Service as an OSGi Service -->
