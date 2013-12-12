@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portstatisticsclient.wrappers;
+package org.opennaas.extensions.openflowswitch.capability.monitoring;
 
 /**
  * Switch Port statistics
