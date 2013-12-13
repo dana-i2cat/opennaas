@@ -154,8 +154,22 @@ public class NCLProvisioner implements INCLProvisioner {
 	public String updateFlow(String flowId, FlowRequest updatedFlowRequest)
 			throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented");
+
+		deallocateFlow(flowId);
+		String newFlowId = allocateFlow(updatedFlowRequest);
+
+		// keep previous id for new circuit.
+		Circuit circuit = allocatedCircuits.get(newFlowId);
+		List<SDNNetworkOFFlow> circuitFlows = allocatedFlows.get(newFlowId);
+
+		allocatedCircuits.remove(newFlowId);
+		allocatedFlows.remove(newFlowId);
+
+		circuit.setId(flowId);
+		allocatedCircuits.put(flowId, circuit);
+		allocatedFlows.put(flowId, circuitFlows);
+
+		return circuit.getId();
 	}
 
 	@Override
