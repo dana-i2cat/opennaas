@@ -25,6 +25,7 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 public class NCLProvisioner implements INCLProvisioner {
@@ -205,6 +206,26 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	private String generateRandomFlowId() {
 		return UUID.randomUUID().toString();
+	}
+
+	@Override
+	public Circuit getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
+		throw new UnsupportedOperationException("Not yet implemented!");
+	}
+
+	@Override
+	public int getQoSParameter(String flowId, String parameter) throws FlowNotFoundException, ProvisionerException {
+		throw new UnsupportedOperationException("Not yet implemented!");
+	}
+
+	@Override
+	public void updateQoSParameter(String flowId, String parameter, int value) throws FlowNotFoundException, ProvisionerException {
+		throw new UnsupportedOperationException("Not yet implemented!");
+	}
+
+	@Override
+	public void deleteQoSParameter(String flowId, String parameter) throws FlowNotFoundException, ProvisionerException {
+		throw new UnsupportedOperationException("Not yet implemented!");
 	}
 
 }
