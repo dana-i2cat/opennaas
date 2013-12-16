@@ -1,6 +1,5 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +15,9 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.Provisione
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
-import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
-import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
  * 
@@ -29,22 +26,21 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
  */
 public class NCLProvisioner implements INCLProvisioner {
 
-	private IQoSPDP								qoSPDP;
-	private INetworkSelector					networkSelector;
-	private IPathFinder							pathFinder;
-	private INCLController						nclController;
-	private IRequestToFlowsLogic				requestToFlowsLogic;
+	private IQoSPDP							qoSPDP;
+	private INetworkSelector				networkSelector;
+	private INCLController					nclController;
+	private IRequestToFlowsLogic			requestToFlowsLogic;
 
 	/**
 	 * Key: FlowId, Value: Flow
 	 */
-	private Map<String, Circuit>				allocatedCircuits;
+	private Map<String, Circuit>			allocatedCircuits;
 
-	private Map<String, List<SDNNetworkOFFlow>>	allocatedFlows;
+	private Map<String, List<NetOFFlow>>	allocatedFlows;
 
 	public NCLProvisioner() {
 		allocatedCircuits = new HashMap<String, Circuit>();
-		allocatedFlows = new HashMap<String, List<SDNNetworkOFFlow>>();
+		allocatedFlows = new HashMap<String, List<NetOFFlow>>();
 	}
 
 	/**
@@ -75,21 +71,6 @@ public class NCLProvisioner implements INCLProvisioner {
 	 */
 	public void setNetworkSelector(INetworkSelector networkSelector) {
 		this.networkSelector = networkSelector;
-	}
-
-	/**
-	 * @return the pathFinder
-	 */
-	public IPathFinder getPathFinder() {
-		return pathFinder;
-	}
-
-	/**
-	 * @param pathFinder
-	 *            the pathFinder to set
-	 */
-	public void setPathFinder(IPathFinder pathFinder) {
-		this.pathFinder = pathFinder;
 	}
 
 	public INCLController getNclController() {
@@ -123,11 +104,10 @@ public class NCLProvisioner implements INCLProvisioner {
 				throw new FlowAllocationRejectedException("Rejected by policy");
 			}
 
+			List<NetOFFlow> sdnFlows = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest);
+
 			String netId = getNetworkSelector().findNetworkForRequest(flowRequest);
-			Route route = getPathFinder().findPathForRequest(flowRequest, netId);
-			SDNNetworkOFFlow sdnFlow = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest, route);
-			String flowId = getNclController().allocateFlow(sdnFlow, netId);
-			sdnFlow.setName(flowId);
+			getNclController().allocateFlows(sdnFlows, netId);
 
 			String circuitId = generateRandomFlowId();
 
@@ -135,11 +115,7 @@ public class NCLProvisioner implements INCLProvisioner {
 			circuit.setFlowRequest(flowRequest);
 			circuit.setId(circuitId);
 			allocatedCircuits.put(circuitId, circuit);
-
-			List<SDNNetworkOFFlow> flows = new ArrayList<SDNNetworkOFFlow>();
-			flows.add(sdnFlow);
-
-			allocatedFlows.put(circuitId, flows);
+			allocatedFlows.put(circuitId, sdnFlows);
 
 			return circuitId;
 
@@ -160,7 +136,7 @@ public class NCLProvisioner implements INCLProvisioner {
 
 		// keep previous id for new circuit.
 		Circuit circuit = allocatedCircuits.get(newFlowId);
-		List<SDNNetworkOFFlow> circuitFlows = allocatedFlows.get(newFlowId);
+		List<NetOFFlow> circuitFlows = allocatedFlows.get(newFlowId);
 
 		allocatedCircuits.remove(newFlowId);
 		allocatedFlows.remove(newFlowId);
@@ -180,13 +156,8 @@ public class NCLProvisioner implements INCLProvisioner {
 
 			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
 
-			List<SDNNetworkOFFlow> circuitFlows = allocatedFlows.get(flowId);
-
-			for (SDNNetworkOFFlow flow : circuitFlows) {
-
-				String sdnFlowId = flow.getName();
-				getNclController().deallocateFlow(sdnFlowId, netId);
-			}
+			List<NetOFFlow> circuitFlows = allocatedFlows.get(flowId);
+			getNclController().deallocateFlows(circuitFlows, netId);
 
 			allocatedCircuits.remove(flowId);
 			allocatedFlows.remove(flowId);

@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -35,16 +36,16 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
+import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
+import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -210,7 +211,7 @@ public class NCLProvisionerTest {
 		// Get flows in SDN network
 		IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource
 				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-		Collection<SDNNetworkOFFlow> netFlows = sdnCapab.getAllocatedFlows();
+		Set<NetOFFlow> netFlows = sdnCapab.getAllocatedFlows();
 
 		Assert.assertEquals("There should be only one allocated sdnFlow", 1, netFlows.size());
 		// Get allocated flow in SDN network
