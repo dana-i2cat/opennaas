@@ -14,7 +14,7 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightConstants;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.FloodlightConstants;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.wrappers.FloodlightOFFlowsWrapper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
