@@ -131,6 +131,7 @@
 		<module>openflowswitch.driver.features</module>	
 		
 		<!-- SDNNetwork -->
+		<module>ofnetwork</module>
 		<module>sdnnetwork</module>
 		<module>sdnnetwork.features</module>
 		
