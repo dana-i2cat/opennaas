@@ -18,12 +18,17 @@
 	<!-- Build the bootstrapper -->
 	<bean id="quantumresourceBootstrapperFactory" class="org.opennaas.extensions.quantum.repository.QuantumResourceBootstrapperFactory"/>
 	
-    <bean id="resourceDescriptorRepository"
-          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
-          init-method="initializeEntityManager" destroy-method="close">
-         <property name="persistenceUnit" value="ResourceCore"/>
-    </bean>
-    
+	<!-- Workaround for  https://issues.apache.org/jira/browse/ARIES-796:
+	Resolve and inject entityManagerFactory and get the entityManager using code in ResourceDescriptorRepository. 
+	Obtained entityManager is not container managed, then. 
+	Given unit MUST already be registered as an OSGi service for this to work. -->
+	<reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=ResourceCore)"/>
+	<bean id="resourceDescriptorRepository"
+	class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+	init-method="initializeEntityManager" destroy-method="close">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
 	<bean id="quantumresourceRepository" class="org.opennaas.extensions.quantum.repository.QuantumResourceRepository" init-method="init">
 		<argument value="quantumresource"/>
 		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
@@ -42,9 +47,6 @@
 		</service-properties>
 	</service>
 	
-	<!-- Forces this bundle to wait for dataSourceResources being published -->
-	<reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>	
-
 	<!-- Factory that creates protocol capabilities -->
 	<bean id="quantumAPIV2CapabilityFactory" class="org.opennaas.extensions.quantum.capability.apiv2.QuantumAPIV2CapabilityFactory">
 		<property name="type" value="quantum-apiv2"/>

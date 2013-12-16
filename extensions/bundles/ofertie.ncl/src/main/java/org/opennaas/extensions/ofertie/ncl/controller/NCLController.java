@@ -24,7 +24,6 @@ public class NCLController implements INCLController {
 	@Override
 	public String allocateFlow(SDNNetworkOFFlow flowWithRoute, String networkId) throws FlowAllocationException {
 		try {
-
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
 					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);

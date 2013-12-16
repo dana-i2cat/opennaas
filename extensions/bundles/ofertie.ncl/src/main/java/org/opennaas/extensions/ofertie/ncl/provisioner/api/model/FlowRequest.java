@@ -32,7 +32,8 @@ public class FlowRequest {
 	private int				destinationPort;
 
 	/**
-	 * Type of Service (ToS) value
+	 * Type of Service (ToS) value. Value of the ToS byte expressed in decimal format. Because of 7th and 8th bits being reserved, tos decimal values
+	 * SHOULD be multiple of 4 (reserved bits set to 0).
 	 */
 	private int				tos;
 
@@ -117,6 +118,8 @@ public class FlowRequest {
 	}
 
 	/**
+	 * Returns the Type of Service (ToS) value. Value of the ToS byte expressed in decimal format.
+	 * 
 	 * @return the tos
 	 */
 	public int getTos() {
@@ -124,6 +127,9 @@ public class FlowRequest {
 	}
 
 	/**
+	 * Sets the Type of Service (ToS) value. Value of the ToS byte MUST be expressed in decimal format. Because of 7th and 8th bits being reserved,
+	 * tos decimal values SHOULD be multiple of 4 (reserved bits set to 0).
+	 * 
 	 * @param tos
 	 *            the tos to set
 	 */

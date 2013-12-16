@@ -46,6 +46,7 @@
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.pdu.Activator</Bundle-Activator>
 						<Import-Package>
+							javax.persistence,
 							org.slf4j,
 							org.opennaas.extensions.gim.controller.capabilities;version="${opennaas.gim.version}",
 							org.opennaas.extensions.gim.controller.snmp;version="${opennaas.gim.version}",

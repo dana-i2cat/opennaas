@@ -39,6 +39,7 @@
 						<Bundle-Activator>org.opennaas.extensions.sdnnetwork.Activator</Bundle-Activator>
 						<Import-Package>
 							!org.opennaas.extensions.sdnnetwork.*,
+							javax.persistence,
 							*
 						</Import-Package>
 					</instructions>

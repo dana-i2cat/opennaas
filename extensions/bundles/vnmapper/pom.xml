@@ -47,7 +47,7 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.vnmapper.capability.vnmapping.Activator</Bundle-Activator>
-						<Import-Package>org.slf4j,*</Import-Package>
+						<Import-Package>javax.persistence,org.slf4j,*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.vnmapper.capability.vnmapping;version="${project.version}",
 							org.opennaas.extensions.vnmapper;version="${project.version}"

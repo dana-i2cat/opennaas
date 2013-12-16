@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets;
 
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;

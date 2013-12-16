@@ -70,9 +70,27 @@ public abstract class FlowRequestParser {
 			match.setDstIp(flowRequest.getDestinationIPAddress());
 		}
 
+		match.setEtherType(calculateRequiredEtherType(match));
+
 		String ingressPort = route.getNetworkConnections().get(0).getSource().getId();
 		match.setIngressPort(ingressPort);
 
 		return match;
+	}
+
+	private static String calculateRequiredEtherType(FloodlightOFMatch match) {
+
+		String etherType = null;
+
+		if (match == null)
+			return null;
+
+		if (match.getSrcIp() != null || match.getDstIp() != null)
+			etherType = "2048";
+
+		if (match.getTosBits() != null)
+			etherType = "2048";
+
+		return etherType;
 	}
 }
