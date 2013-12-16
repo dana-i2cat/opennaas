@@ -28,6 +28,6 @@ public interface IMonitoringCapability extends ICapability {
 	@GET
 	@Path("/readPortStatistics")
 	@Produces(MediaType.APPLICATION_XML)
-	public Map<Integer, PortStatistics> getPortStatistics() throws CapabilityException;
+	public SwitchPortStatistics getPortStatistics() throws CapabilityException;
 
 }

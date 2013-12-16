@@ -56,9 +56,22 @@ public class MonitoringCapability extends AbstractCapability implements IMonitor
 	}
 
 	@Override
-	public Map<Integer, PortStatistics> getPortStatistics() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+	public SwitchPortStatistics getPortStatistics() throws CapabilityException {
+		IAction action = createActionAndCheckParams(MonitoringActionSet.GET_PORT_STATISTICS, null);
+		ActionResponse response = executeAction(action);
+
+		Object responseObject = response.getResult();
+		if (!(responseObject instanceof Map<?, ?>)) {
+			throw new CapabilityException("Unexpected action response object:" + responseObject.getClass());
+		}
+
+		// assuming the action returns what it is meant to
+		Map<Integer, PortStatistics> portStatistics = (Map<Integer, PortStatistics>) responseObject;
+
+		SwitchPortStatistics statistics = new SwitchPortStatistics();
+		statistics.setStatistics(portStatistics);
+
+		return statistics;
 	}
 
 	@Override
