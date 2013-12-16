@@ -1,11 +1,11 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.actions;
 
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.FloodlightAction;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 

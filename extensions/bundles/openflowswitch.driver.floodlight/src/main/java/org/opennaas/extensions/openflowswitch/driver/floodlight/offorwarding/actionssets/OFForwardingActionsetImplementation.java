@@ -1,13 +1,13 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.CreateOFForwardingAction;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.GetOFForwardingAction;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions.RemoveOFForwardingAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.actions.CreateOFForwardingAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.actions.GetOFForwardingAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.actions.RemoveOFForwardingAction;
 
 /**
  * 

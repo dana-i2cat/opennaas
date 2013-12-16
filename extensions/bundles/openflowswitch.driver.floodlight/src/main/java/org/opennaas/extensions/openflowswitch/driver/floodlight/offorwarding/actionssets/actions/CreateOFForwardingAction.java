@@ -1,12 +1,12 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.actions;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.actions;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightAction;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.actionssets.FloodlightConstants;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.FloodlightAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.FloodlightConstants;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;

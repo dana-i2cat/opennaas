@@ -1,4 +1,8 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portstatisticsclient.wrappers;
+package org.opennaas.extensions.openflowswitch.capability.monitoring;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Switch Port statistics
@@ -6,6 +10,8 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portst
  * @author Julio Carlos Barrera
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PortStatistics {
 
 	private int		port;

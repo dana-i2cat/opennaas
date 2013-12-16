@@ -1,7 +1,7 @@
 package org.opennaas.extensions.openflowswitch.driver.floodlight.test;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
@@ -11,12 +11,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSessionFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.countersclient.FloodlightCountersClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.countersclient.IFloodlightCountersClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portstatisticsclient.IFloodlightPortsStatisticsClient;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portstatisticsclient.wrappers.PortStatistics;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portstatisticsclient.wrappers.SwitchStatisticsMap;
 
 /**
@@ -63,11 +63,11 @@ public class FloodlightPortsStatisticsClientTest {
 		SwitchStatisticsMap switchStatisticsMap = client.getPortsStatisticsForAllSwitches();
 
 		log.info("All switches statistics:");
-		Iterator<Entry<String, HashMap<Integer, PortStatistics>>> it = switchStatisticsMap.getSwitchStatisticsMap().entrySet().iterator();
+		Iterator<Entry<String, Map<Integer, PortStatistics>>> it = switchStatisticsMap.getSwitchStatisticsMap().entrySet().iterator();
 		while (it.hasNext()) {
-			Entry<String, HashMap<Integer, PortStatistics>> entry = it.next();
+			Entry<String, Map<Integer, PortStatistics>> entry = it.next();
 			log.info("Swtich: " + entry.getKey());
-			HashMap<Integer, PortStatistics> portsStatisticsMap = entry.getValue();
+			Map<Integer, PortStatistics> portsStatisticsMap = entry.getValue();
 			printSwitchStatisticsMap(portsStatisticsMap);
 		}
 
@@ -77,14 +77,14 @@ public class FloodlightPortsStatisticsClientTest {
 		log.info("Switch statistics:");
 		it = switchStatisticsMap.getSwitchStatisticsMap().entrySet().iterator();
 		while (it.hasNext()) {
-			Entry<String, HashMap<Integer, PortStatistics>> entry = it.next();
+			Entry<String, Map<Integer, PortStatistics>> entry = it.next();
 			log.info("Swtich: " + entry.getKey());
-			HashMap<Integer, PortStatistics> portsStatisticsMap = entry.getValue();
+			Map<Integer, PortStatistics> portsStatisticsMap = entry.getValue();
 			printSwitchStatisticsMap(portsStatisticsMap);
 		}
 	}
 
-	private void printSwitchStatisticsMap(HashMap<Integer, PortStatistics> portsStatisticsMap) {
+	private void printSwitchStatisticsMap(Map<Integer, PortStatistics> portsStatisticsMap) {
 		Iterator<Entry<Integer, PortStatistics>> it = portsStatisticsMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<Integer, PortStatistics> e = it.next();
