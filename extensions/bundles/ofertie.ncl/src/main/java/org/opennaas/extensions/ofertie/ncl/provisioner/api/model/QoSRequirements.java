@@ -9,22 +9,35 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * TODO define units for each attribute, try to make them stay in an int if possible (avoid floating point when possible).
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QoSRequirements {
 
-	private int	minDelay;
-	private int	maxDelay;
+	public static final String	MIN_DELAY		= "min_delay";
+	public static final String	MAX_DELAY		= "max_delay";
 
-	private int	minJitter;
-	private int	maxJitter;
+	public static final String	MIN_JITTER		= "min_jitter";
+	public static final String	MAX_JITTER		= "max_jitter";
 
-	private int	minBandwidth;
-	private int	maxBandwidth;
+	public static final String	MIN_BANDWIDTH	= "min_bandwitdth";
+	public static final String	MAX_BANDWIDTH	= "max_bandwitdth";
 
-	private int	minPacketLoss;
-	private int	maxPacketLoss;
+	public static final String	MIN_PACKET_LOSS	= "min_packet_loss";
+	public static final String	MAX_PACKET_LOSS	= "max_packet_loss";
+
+	private int					minDelay;
+	private int					maxDelay;
+
+	private int					minJitter;
+	private int					maxJitter;
+
+	private int					minBandwidth;
+	private int					maxBandwidth;
+
+	private int					minPacketLoss;
+	private int					maxPacketLoss;
 
 	public int getMinDelay() {
 		return minDelay;
@@ -88,6 +101,28 @@ public class QoSRequirements {
 
 	public void setMaxPacketLoss(int maxPacketLoss) {
 		this.maxPacketLoss = maxPacketLoss;
+	}
+
+	public int getParameter(String parameterName) throws IllegalArgumentException {
+		if (parameterName.equalsIgnoreCase(MIN_DELAY)) {
+			return minDelay;
+		} else if (parameterName.equalsIgnoreCase(MAX_DELAY)) {
+			return maxDelay;
+		} else if (parameterName.equalsIgnoreCase(MIN_JITTER)) {
+			return minJitter;
+		} else if (parameterName.equalsIgnoreCase(MAX_JITTER)) {
+			return maxJitter;
+		} else if (parameterName.equalsIgnoreCase(MIN_BANDWIDTH)) {
+			return minBandwidth;
+		} else if (parameterName.equalsIgnoreCase(MAX_BANDWIDTH)) {
+			return maxBandwidth;
+		} else if (parameterName.equalsIgnoreCase(MIN_PACKET_LOSS)) {
+			return minPacketLoss;
+		} else if (parameterName.equalsIgnoreCase(MAX_PACKET_LOSS)) {
+			return maxPacketLoss;
+		} else {
+			throw new IllegalArgumentException("Parameter not found: " + parameterName);
+		}
 	}
 
 	/*
