@@ -242,6 +242,24 @@ public class NCLProvisionerTest {
 		// Get allocated flow in SDN network
 		Assert.assertEquals("There should be no allocated sdnFlow", 0, allocatedNetFlows.size());
 
+		for (NetOFFlow past : netFlows) {
+			Assert.assertFalse("past flow is no longer present in the network", allocatedNetFlows.contains(past));
+
+			// Get flow in switches
+			IResource switchResource = getSwitchResourceFromName(past.getResourceId());
+			IOpenflowForwardingCapability s3capab = (IOpenflowForwardingCapability) switchResource
+					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+			List<FloodlightOFFlow> switchFlows = s3capab.getOpenflowForwardingRules();
+			FloodlightOFFlow switchFlow = null;
+			for (FloodlightOFFlow flow : switchFlows) {
+				if (flow.getName().equals(past.getName())) {
+					switchFlow = flow;
+					break;
+				}
+			}
+			Assert.assertNull("past flow is no longer present in the switch it was", switchFlow);
+		}
+
 	}
 
 	private IResource getSwitchResourceFromName(String deviceName) {
