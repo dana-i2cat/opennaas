@@ -26,6 +26,10 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	}
 
+	public static BundleContext getBundleContext() {
+		return context;
+	}
+
 	public static IResourceManager getResourceManagerService() throws ActivatorException {
 
 		log.debug("Calling ResourceManager service");
