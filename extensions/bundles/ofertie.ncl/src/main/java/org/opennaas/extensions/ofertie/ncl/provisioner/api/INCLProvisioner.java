@@ -23,6 +23,7 @@ import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 @Path("/flows")
@@ -93,5 +94,65 @@ public interface INCLProvisioner {
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public List<NetOFFlow> getFlowImplementation(@PathParam("id") String flowId) throws ProvisionerException;
+
+	/**
+	 * Returns QoS network requirements for one flow
+	 * 
+	 * @param flowId
+	 * @return allocated Circuit
+	 * @throws FlowNotFoundException
+	 * @throws ProvisionerException
+	 */
+	@GET
+	@Path("/{flowId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public Circuit getFlow(@PathParam("flowId") String flowId) throws FlowNotFoundException, ProvisionerException;
+
+	/**
+	 * Returns QoS network requirements parameter for one flow
+	 * 
+	 * @param flowId
+	 * @param parameter
+	 * @return QoS parameter value
+	 * @throws FlowNotFoundException
+	 * @throws ProvisionerException
+	 */
+	@GET
+	@Path("/{flowId}/{parameter}")
+	@Produces(MediaType.APPLICATION_XML)
+	public int getQoSParameter(@PathParam("flowId") String flowId, @PathParam("parameter") String parameter) throws FlowNotFoundException,
+			ProvisionerException;
+
+	/**
+	 * Updates QoS network requirements parameter for one flow
+	 * 
+	 * @param flowId
+	 * @param parameter
+	 * @param value
+	 * @throws FlowNotFoundException
+	 * @throws ProvisionerException
+	 * @throws FlowAllocationException
+	 */
+	@PUT
+	@Path("/flows/{flowId}/{parameter}")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public void updateQoSParameter(@PathParam("flowId") String flowId, @PathParam("parameter") String parameter, int value)
+			throws FlowNotFoundException, ProvisionerException, FlowAllocationException;
+
+	/**
+	 * Deletes QoS network requirements parameter for one flow
+	 * 
+	 * @param flowId
+	 * @param parameter
+	 * @throws FlowNotFoundException
+	 * @throws ProvisionerException
+	 * @throws FlowAllocationException
+	 */
+	@DELETE
+	@Path("/flows/{flowId}/{parameter}")
+	@Produces(MediaType.APPLICATION_XML)
+	public void deleteQoSParameter(@PathParam("flowId") String flowId, @PathParam("parameter") String parameter) throws FlowNotFoundException,
+			ProvisionerException, FlowAllocationException;
 
 }

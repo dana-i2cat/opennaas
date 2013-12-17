@@ -38,6 +38,7 @@
 			<entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/ofertie/ncl"/>
 			<entry key="org.apache.cxf.rs.address" value="/"/>
 			<entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
+			<entry key="org.apache.cxf.rs.out.interceptors" value="org.opennaas.extensions.ofertie.ncl.interceptor.ProviderOutInterceptor" />
 		</service-properties>
 	</service>
 </blueprint>

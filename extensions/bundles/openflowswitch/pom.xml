@@ -10,7 +10,7 @@
 	<!--  Maven configuration -->
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: OpenFlow Switch </name>
-	<description>OpenFLow Switch Resource Implementation</description>
+	<description>OpenFlow Switch Resource Implementation</description>
 
 	<dependencies>
 		<dependency>

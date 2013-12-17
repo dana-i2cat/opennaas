@@ -19,11 +19,15 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<scope>test</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.opennaas</groupId>
-  			<artifactId>org.opennaas.extensions.ofnetwork</artifactId>
+			<artifactId>org.opennaas.extensions.ofnetwork</artifactId>
 		</dependency>		
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-bundle-jaxrs</artifactId>
+		</dependency>
  	</dependencies>
 	<build>
 		<plugins>

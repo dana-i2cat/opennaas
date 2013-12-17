@@ -1,4 +1,4 @@
-package org.opennaas.itests.sdnnetwork;
+package org.opennaas.itests.ofnetwork;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
@@ -59,7 +59,7 @@ public class OFNetworkOSGIIntegrationTest {
 
 	private final static Log	log						= LogFactory.getLog(OFNetworkOSGIIntegrationTest.class);
 
-	private static final String	NET_RESOURCE_TYPE		= "sdnnetwork";
+	private static final String	NET_RESOURCE_TYPE		= "ofnetwork";
 	private static final String	NET_RESOURCE_NAME		= "net1";
 
 	private static final String	SWITCH_RESOURCE_TYPE	= "openflowswitch";
@@ -70,11 +70,11 @@ public class OFNetworkOSGIIntegrationTest {
 	private static final String	WS_PASSWORD				= "123456";
 
 	/**
-	 * Make sure blueprint for org.opennaas.extensions.sdnnetwork bundle has finished its initialization
+	 * Make sure blueprint for org.opennaas.extensions.ofnetwork bundle has finished its initialization
 	 */
 	@SuppressWarnings("unused")
 	@Inject
-	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sdnnetwork)", timeout = 20000)
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofnetwork)", timeout = 20000)
 	private BlueprintContainer	sdnNetworkBlueprintContainer;
 
 	@Inject
@@ -84,7 +84,7 @@ public class OFNetworkOSGIIntegrationTest {
 	private IResourceManager	resourceManager;
 
 	@Inject
-	@Filter("(type=sdnnetwork)")
+	@Filter("(type=ofnetwork)")
 	private IResourceRepository	sdnNetworkRepository;
 
 	@Inject
