@@ -218,7 +218,12 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	@Override
 	public int getQoSParameter(String flowId, String parameter) throws FlowNotFoundException, ProvisionerException {
-		throw new UnsupportedOperationException("Not yet implemented!");
+		Circuit circuit = getFlow(flowId);
+		try {
+			return circuit.getFlowRequest().getQoSRequirements().getParameter(parameter);
+		} catch (IllegalArgumentException e) {
+			throw new ProvisionerException(e);
+		}
 	}
 
 	@Override
