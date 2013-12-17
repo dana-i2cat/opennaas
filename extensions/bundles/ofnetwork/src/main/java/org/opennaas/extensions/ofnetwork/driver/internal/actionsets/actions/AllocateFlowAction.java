@@ -1,6 +1,7 @@
 package org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -43,7 +44,9 @@ public class AllocateFlowAction extends Action {
 			if (((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().containsKey(resourceName)) {
 				((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().get(resourceName).add(netFlow);
 			} else {
-				((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().put(resourceName, Arrays.asList(netFlow));
+				List<NetOFFlow> netFlows = new ArrayList<NetOFFlow>();
+				netFlows.add(netFlow);
+				((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().put(resourceName, netFlows);
 			}
 
 		} catch (Exception e) {
