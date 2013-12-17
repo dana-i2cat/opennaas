@@ -39,6 +39,17 @@ public class QoSRequirements {
 	private int					minPacketLoss;
 	private int					maxPacketLoss;
 
+	public QoSRequirements() {
+		this.minDelay = -1;
+		this.maxDelay = -1;
+		this.minJitter = -1;
+		this.maxJitter = -1;
+		this.minBandwidth = -1;
+		this.maxBandwidth = -1;
+		this.minPacketLoss = -1;
+		this.maxPacketLoss = -1;
+	}
+
 	public int getMinDelay() {
 		return minDelay;
 	}
