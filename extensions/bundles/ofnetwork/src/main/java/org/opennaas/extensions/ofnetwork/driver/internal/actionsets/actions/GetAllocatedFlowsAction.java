@@ -1,11 +1,17 @@
 package org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkActionSet;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.opennaas.extensions.ofnetwork.model.OFNetworkModel;
 
 /**
@@ -26,8 +32,15 @@ public class GetAllocatedFlowsAction extends Action {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 			throws ActionException {
+
+		Set<NetOFFlow> flows = new HashSet<NetOFFlow>();
+		Iterator<List<NetOFFlow>> it = ((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().values().iterator();
+		while (it.hasNext()) {
+			flows.addAll(it.next());
+		}
+
 		ActionResponse response = ActionResponse.okResponse(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS);
-		response.setResult(((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource());
+		response.setResult(flows);
 		response.setStatus(STATUS.OK);
 		return response;
 	}
