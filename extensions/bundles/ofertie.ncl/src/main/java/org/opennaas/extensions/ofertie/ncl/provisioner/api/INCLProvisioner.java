@@ -116,14 +116,14 @@ public interface INCLProvisioner {
 	 * @param value
 	 * @throws FlowNotFoundException
 	 * @throws ProvisionerException
+	 * @throws FlowAllocationException
 	 */
 	@PUT
 	@Path("/flows/{flowId}/{parameter}")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public void updateQoSParameter(@PathParam("flowId") String flowId, @PathParam("parameter") String parameter, int value)
-			throws FlowNotFoundException,
-			ProvisionerException;
+			throws FlowNotFoundException, ProvisionerException, FlowAllocationException;
 
 	/**
 	 * Deletes QoS network requirements parameter for one flow
@@ -132,11 +132,12 @@ public interface INCLProvisioner {
 	 * @param parameter
 	 * @throws FlowNotFoundException
 	 * @throws ProvisionerException
+	 * @throws FlowAllocationException
 	 */
 	@DELETE
 	@Path("/flows/{flowId}/{parameter}")
 	@Produces(MediaType.APPLICATION_XML)
 	public void deleteQoSParameter(@PathParam("flowId") String flowId, @PathParam("parameter") String parameter) throws FlowNotFoundException,
-			ProvisionerException;
+			ProvisionerException, FlowAllocationException;
 
 }
