@@ -17,7 +17,6 @@
 	<repository>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.protocols.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.sampleresource.features/${opennaas.version}/xml/features</repository>	
-	<repository>mvn:org.opennaas/org.opennaas.extensions.sdnnetwork.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.transports.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.vcpe.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.vnmapper.features/${opennaas.version}/xml/features</repository>
@@ -39,7 +38,6 @@
 		<feature version="${project.version}">opennaas-power</feature>
 		<feature version="${project.version}">opennaas-openflowswitch</feature>
 		<feature version="${project.version}">opennaas-openflowswitch-driver-floodlight</feature>
-		<feature version="${project.version}">opennaas-sdnnetwork</feature>
 		<feature version="${project.version}">opennaas-quantum</feature>
 		<feature version="${project.version}">opennaas-ofnetwork</feature>
 		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
