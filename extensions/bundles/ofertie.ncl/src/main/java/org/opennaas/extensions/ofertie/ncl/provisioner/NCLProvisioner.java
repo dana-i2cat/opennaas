@@ -5,8 +5,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
@@ -19,16 +23,22 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelect
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
+import org.opennaas.extensions.sdnnetwork.events.LinkCongestionEvent;
 import org.opennaas.extensions.sdnnetwork.model.Route;
 import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public class NCLProvisioner implements INCLProvisioner {
+public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	private IQoSPDP								qoSPDP;
 	private INetworkSelector					networkSelector;
@@ -42,10 +52,14 @@ public class NCLProvisioner implements INCLProvisioner {
 	private Map<String, Circuit>				allocatedCircuits;
 
 	private Map<String, List<SDNNetworkOFFlow>>	allocatedFlows;
+	private ServiceRegistration					eventListenerRegistration;
+
+	private Log									log	= LogFactory.getLog(NCLProvisioner.class);
 
 	public NCLProvisioner() {
 		allocatedCircuits = new HashMap<String, Circuit>();
 		allocatedFlows = new HashMap<String, List<SDNNetworkOFFlow>>();
+		registerAsCongestionEventListener();
 	}
 
 	/**
@@ -249,4 +263,55 @@ public class NCLProvisioner implements INCLProvisioner {
 		updateFlow(flowId, flowRequest);
 	}
 
+	// ////////////////////////
+	// EvebtListener Methods //
+	// ////////////////////////
+
+	@Override
+	public void handleEvent(Event event) {
+		if (event instanceof LinkCongestionEvent) {
+
+			LinkCongestionEvent congestionEvent = (LinkCongestionEvent) event;
+			String switchName = (String) congestionEvent.getProperty(LinkCongestionEvent.SWITCH_ID_KEY);
+			String portId = (String) congestionEvent.getProperty(LinkCongestionEvent.PORT_ID_KEY);
+
+			log.info("LinkCongestion alarm received for switch " + switchName + " and port " + portId);
+
+			String circuitId = selectCircuitToReallocate(switchName, portId);
+
+			rerouteCircuit(circuitId);
+		}
+		else
+			log.debug("Ignoring non-LinkCongestion alarm.");
+
+	}
+
+	private void rerouteCircuit(String circuitId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private String selectCircuitToReallocate(String switchName, String portId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void unregisterListener() {
+		log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
+		eventListenerRegistration.unregister();
+		log.debug("NCLProvisioner successfully unregistered.");
+	}
+
+	private void registerAsCongestionEventListener() {
+
+		log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
+
+		Properties properties = new Properties();
+		properties.put(EventConstants.EVENT_TOPIC, LinkCongestionEvent.TOPIC);
+
+		eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
+
+		log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
+
+	}
 }
