@@ -109,7 +109,7 @@ public class NCLProvisioner implements INCLProvisioner {
 			String netId = getNetworkSelector().findNetworkForRequest(flowRequest);
 			getNclController().allocateFlows(sdnFlows, netId);
 
-			String circuitId = generateRandomFlowId();
+			String circuitId = generateRandomCircuitId();
 
 			Circuit circuit = new Circuit();
 			circuit.setFlowRequest(flowRequest);
@@ -174,8 +174,14 @@ public class NCLProvisioner implements INCLProvisioner {
 		return allocatedCircuits.values();
 	}
 
-	private String generateRandomFlowId() {
+	private String generateRandomCircuitId() {
 		return UUID.randomUUID().toString();
+	}
+
+	@Override
+	public List<NetOFFlow> getFlowImplementation(String flowId) throws ProvisionerException {
+		String circuitId = flowId;
+		return allocatedFlows.get(circuitId);
 	}
 
 }
