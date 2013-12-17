@@ -125,6 +125,28 @@ public class QoSRequirements {
 		}
 	}
 
+	public void setParameter(String parameterName, int value) throws IllegalArgumentException {
+		if (parameterName.equalsIgnoreCase(MIN_DELAY)) {
+			setMinDelay(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_DELAY)) {
+			setMaxDelay(value);
+		} else if (parameterName.equalsIgnoreCase(MIN_JITTER)) {
+			setMinJitter(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_JITTER)) {
+			setMaxJitter(value);
+		} else if (parameterName.equalsIgnoreCase(MIN_BANDWIDTH)) {
+			setMinBandwidth(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_BANDWIDTH)) {
+			setMaxBandwidth(value);
+		} else if (parameterName.equalsIgnoreCase(MIN_PACKET_LOSS)) {
+			setMinPacketLoss(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_PACKET_LOSS)) {
+			setMaxPacketLoss(value);
+		} else {
+			throw new IllegalArgumentException("Parameter not found: " + parameterName);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
