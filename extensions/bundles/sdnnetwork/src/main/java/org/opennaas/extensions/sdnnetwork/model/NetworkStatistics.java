@@ -28,8 +28,8 @@ public class NetworkStatistics {
 		return switchStatistics.get(switchId);
 	}
 
-	public void addPortSwitchStatistic(String switchId, SwitchPortStatistics switchPortStatistics) {
-		switchStatistics.put(switchId, switchPortStatistics);
+	public void addPortSwitchStatistic(String switchName, SwitchPortStatistics switchPortStatistics) {
+		switchStatistics.put(switchName, switchPortStatistics);
 	}
 
 	public void removePortSwitchStatistic(String switchId) {
