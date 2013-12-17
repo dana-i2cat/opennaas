@@ -6,6 +6,7 @@
 	<repository>mvn:org.opennaas/org.opennaas.extensions.macbridge.features/${opennaas.version}/xml/features</repository>	
 	<repository>mvn:org.opennaas/org.opennaas.extensions.network.features/${opennaas.version}/xml/features</repository> 
 	<repository>mvn:org.opennaas/org.opennaas.extensions.ofertie.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.ofnetwork.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.pdu.features/${opennaas.version}/xml/features</repository>
@@ -40,6 +41,7 @@
 		<feature version="${project.version}">opennaas-openflowswitch-driver-floodlight</feature>
 		<feature version="${project.version}">opennaas-sdnnetwork</feature>
 		<feature version="${project.version}">opennaas-quantum</feature>
+		<feature version="${project.version}">opennaas-ofnetwork</feature>
 		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
 	</feature>
 	

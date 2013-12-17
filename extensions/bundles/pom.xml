@@ -138,5 +138,6 @@
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
 		<module>ofertie.features</module>
+    <module>ofnetwork.features</module>
   </modules>
 </project>
