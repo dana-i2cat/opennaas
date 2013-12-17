@@ -237,8 +237,16 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	@Override
-	public void deleteQoSParameter(String flowId, String parameter) throws FlowNotFoundException, ProvisionerException {
-		throw new UnsupportedOperationException("Not yet implemented!");
+	public void deleteQoSParameter(String flowId, String parameter) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		FlowRequest flowRequest = getFlow(flowId).getFlowRequest();
+
+		try {
+			flowRequest.getQoSRequirements().setParameter(parameter, -1);
+		} catch (IllegalArgumentException e) {
+			throw new ProvisionerException(e);
+		}
+
+		updateFlow(flowId, flowRequest);
 	}
 
 }

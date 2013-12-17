@@ -132,11 +132,12 @@ public interface INCLProvisioner {
 	 * @param parameter
 	 * @throws FlowNotFoundException
 	 * @throws ProvisionerException
+	 * @throws FlowAllocationException
 	 */
 	@DELETE
 	@Path("/flows/{flowId}/{parameter}")
 	@Produces(MediaType.APPLICATION_XML)
 	public void deleteQoSParameter(@PathParam("flowId") String flowId, @PathParam("parameter") String parameter) throws FlowNotFoundException,
-			ProvisionerException;
+			ProvisionerException, FlowAllocationException;
 
 }
