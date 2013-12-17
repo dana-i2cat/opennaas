@@ -210,7 +210,10 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	@Override
 	public Circuit getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
-		throw new UnsupportedOperationException("Not yet implemented!");
+		if (allocatedCircuits.containsKey(flowId)) {
+			return allocatedCircuits.get(flowId);
+		}
+		throw new FlowNotFoundException();
 	}
 
 	@Override
