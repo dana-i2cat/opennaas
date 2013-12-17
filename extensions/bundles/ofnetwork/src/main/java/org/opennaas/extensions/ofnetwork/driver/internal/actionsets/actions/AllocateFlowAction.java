@@ -1,5 +1,7 @@
 package org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions;
 
+import java.util.Arrays;
+
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -38,7 +40,11 @@ public class AllocateFlowAction extends Action {
 			forwardingCapability.createOpenflowForwardingRule(flow);
 
 			// update model
-			((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().get(resourceName).add(netFlow);
+			if (((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().containsKey(resourceName)) {
+				((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().get(resourceName).add(netFlow);
+			} else {
+				((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().put(resourceName, Arrays.asList(netFlow));
+			}
 
 		} catch (Exception e) {
 			throw new ActionException("Error allocating flow : ", e);
