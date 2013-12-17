@@ -240,7 +240,7 @@ public class NCLProvisionerTest {
 		// Get flows in SDN network
 		allocatedNetFlows = sdnCapab.getAllocatedFlows();
 		// Get allocated flow in SDN network
-		Assert.assertEquals("There should be no allocated sdnFlow", 0, netFlows.size());
+		Assert.assertEquals("There should be no allocated sdnFlow", 0, allocatedNetFlows.size());
 
 	}
 
