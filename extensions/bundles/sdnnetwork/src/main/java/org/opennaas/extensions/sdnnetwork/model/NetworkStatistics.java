@@ -1,5 +1,6 @@
 package org.opennaas.extensions.sdnnetwork.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,6 +19,22 @@ import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortSt
 public class NetworkStatistics {
 
 	private Map<String, SwitchPortStatistics>	switchStatistics;
+
+	public NetworkStatistics() {
+		switchStatistics = new HashMap<String, SwitchPortStatistics>();
+	}
+
+	public SwitchPortStatistics getSwitchPortStatistic(String switchId) {
+		return switchStatistics.get(switchId);
+	}
+
+	public void addPortSwitchStatistic(String switchId, SwitchPortStatistics switchPortStatistics) {
+		switchStatistics.put(switchId, switchPortStatistics);
+	}
+
+	public void removePortSwitchStatistic(String switchId) {
+		switchStatistics.remove(switchId);
+	}
 
 	public Map<String, SwitchPortStatistics> getSwitchStatistics() {
 		return switchStatistics;

@@ -1,5 +1,6 @@
 package org.opennaas.extensions.sdnnetwork.capability.monitoring;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -16,6 +17,7 @@ import org.opennaas.extensions.sdnnetwork.model.NetworkStatistics;
 @Path("/")
 public interface IMonitoringNetworkCapability extends ICapability {
 
+	@GET
 	@Path("readNetworkStatistics")
 	@Produces(MediaType.APPLICATION_XML)
 	public NetworkStatistics getNetworkStatistics() throws CapabilityException;
