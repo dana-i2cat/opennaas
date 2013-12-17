@@ -8,9 +8,9 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -34,20 +34,16 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
+import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
+import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.OFNetworkInternalActionsetImplementation;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.driver.internal.actionsets.SDNNetworkInternalActionsetImplementation;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Port;
-import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
-import org.opennaas.extensions.sdnnetwork.model.helper.SDNNetworkModelHelper;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -59,9 +55,9 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class SDNNetworkOSGIIntegrationTest {
+public class OFNetworkOSGIIntegrationTest {
 
-	private final static Log	log						= LogFactory.getLog(SDNNetworkOSGIIntegrationTest.class);
+	private final static Log	log						= LogFactory.getLog(OFNetworkOSGIIntegrationTest.class);
 
 	private static final String	NET_RESOURCE_TYPE		= "sdnnetwork";
 	private static final String	NET_RESOURCE_NAME		= "net1";
@@ -105,16 +101,16 @@ public class SDNNetworkOSGIIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-sdnnetwork", "itests-helpers", "opennaas-openflowswitch-driver-floodlight"),
+				includeFeatures("opennaas-ofnetwork", "itests-helpers", "opennaas-openflowswitch-driver-floodlight"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
 
 	@Before
-	public void initializeSDNDescriptor() {
+	public void initializeOFNetDescriptor() {
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(null, NET_RESOURCE_TYPE, null, NET_RESOURCE_NAME);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor(SDNNetworkInternalActionsetImplementation.ACTIONSET_ID, "1.0.0",
+		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor(OFNetworkInternalActionsetImplementation.ACTIONSET_ID, "1.0.0",
 				OFProvisioningNetworkCapability.CAPABILITY_TYPE, null));
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 		this.sdnResourceDescriptor = resourceDescriptor;
@@ -204,44 +200,41 @@ public class SDNNetworkOSGIIntegrationTest {
 
 	public void ofProvisioningNetworkCapabilityCheck(IOFProvisioningNetworkCapability capab) throws Exception {
 
-		SDNNetworkOFFlow flow1 = generateSampleSDNNetworkOFFlow("flow1", "1", "2");
-		SDNNetworkOFFlow flow2 = generateSampleSDNNetworkOFFlow("flow2", "2", "1");
+		List<NetOFFlow> flow1 = generateSampleFlows("1", "2");
+		List<NetOFFlow> flow2 = generateSampleFlows("2", "1");
 
-		Assert.assertEquals("SDN network shouldn't contain any flow.", 0, capab.getAllocatedFlows().size());
-		String flow1Id = capab.allocateOFFlow(flow1);
-		Assert.assertEquals("SDN network should contain one flow.", 1, capab.getAllocatedFlows().size());
-		String flow2Id = capab.allocateOFFlow(flow2);
-		Assert.assertEquals("SDN network should contain two flows.", 2, capab.getAllocatedFlows().size());
+		Assert.assertTrue("OF network shouldn't contain any flow.", capab.getAllocatedFlows().isEmpty());
+		capab.allocateFlows(flow1);
+		Assert.assertTrue("OF network should contain flows in first list", capab.getAllocatedFlows().containsAll(flow1));
+		capab.allocateFlows(flow2);
+		Assert.assertEquals("OF network should contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
+		Assert.assertEquals("OF network should contain flows in first list, too.", capab.getAllocatedFlows().containsAll(flow1));
 
-		Iterator<SDNNetworkOFFlow> iterator = capab.getAllocatedFlows().iterator();
-		while (iterator.hasNext()) {
-			SDNNetworkOFFlow flow = iterator.next();
-			if (flow.getName().equals(flow1Id))
-				Assert.assertTrue("recently alocated flow1 is returned by getAllocatedFlows",
-						SDNNetworkModelHelper.compareFlowsWithoutIds(flow1, flow));
-			else
-				Assert.assertTrue("recently alocated flow2 is returned by getAllocatedFlows",
-						SDNNetworkModelHelper.compareFlowsWithoutIds(flow2, flow));
+		capab.deallocateFlows(flow1);
+		Assert.assertTrue("OF network should already contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
+		Set<NetOFFlow> currentFlows = capab.getAllocatedFlows();
+		for (NetOFFlow past : flow1) {
+			Assert.assertFalse("OF network should not contain flows in first list.", currentFlows.contains(past));
 		}
 
-		capab.deallocateOFFlow(flow1Id);
-		Assert.assertEquals("SDN network should contain one flow.", 1, capab.getAllocatedFlows().size());
-		SDNNetworkOFFlow flow = capab.getAllocatedFlows().iterator().next();
-		Assert.assertFalse("recently dealocated flow1 is NOT returned by getAllocatedFlows",
-				SDNNetworkModelHelper.compareFlowsWithoutIds(flow1, flow));
-		Assert.assertTrue("alocated flow2 is returned by getAllocatedFlows",
-				SDNNetworkModelHelper.compareFlowsWithoutIds(flow2, flow));
-
-		capab.deallocateOFFlow(flow2Id);
-		Assert.assertEquals("SDN network shouldn't contain any flow.", 0, capab.getAllocatedFlows().size());
+		capab.deallocateFlows(flow2);
+		currentFlows = capab.getAllocatedFlows();
+		for (NetOFFlow past : flow1) {
+			Assert.assertFalse("OF network should not contain flows in second list.", currentFlows.contains(past));
+		}
+		Assert.assertTrue("OF network shouldn't contain any flow.", capab.getAllocatedFlows().isEmpty());
 
 	}
 
-	private SDNNetworkOFFlow generateSampleSDNNetworkOFFlow(String name, String inputPort, String outputPort) {
+	private List<NetOFFlow> generateSampleFlows(String inputPort, String outputPort) {
 
-		SDNNetworkOFFlow flow = new SDNNetworkOFFlow();
-		flow.setName(name);
+		List<NetOFFlow> flows = new ArrayList<NetOFFlow>();
+
+		NetOFFlow flow = new NetOFFlow();
 		flow.setPriority("1");
+		flow.setActive(true);
+		flow.setResourceId("s1");
+		flow.setName(flow.getResourceId() + ":" + inputPort + "-" + outputPort);
 
 		FloodlightOFMatch match = new FloodlightOFMatch();
 		match.setIngressPort(inputPort);
@@ -253,40 +246,10 @@ public class SDNNetworkOSGIIntegrationTest {
 
 		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
 		actions.add(floodlightAction);
-
 		flow.setActions(actions);
 
-		Route route = generateSampleRoute();
-		flow.setRoute(route);
-
-		return flow;
-	}
-
-	private Route generateSampleRoute() {
-
-		List<NetworkConnection> routeConnections = new ArrayList<NetworkConnection>();
-
-		Port firstPort = new Port();
-		firstPort.setDeviceId("s1");
-		firstPort.setPortNumber("0");
-
-		Port secondPort = new Port();
-		secondPort.setDeviceId("s1");
-		secondPort.setPortNumber("1");
-
-		NetworkConnection connection01 = new NetworkConnection();
-		connection01.setId("0:1");
-		connection01.setName("connetion01");
-		connection01.setSource(firstPort);
-		connection01.setDestination(secondPort);
-
-		routeConnections.add(connection01);
-
-		Route route = new Route();
-		route.setId("0");
-		route.setNetworkConnections(routeConnections);
-
-		return route;
+		flows.add(flow);
+		return flows;
 	}
 
 	private void prepareClient(IResource switchResource) throws ProtocolException {
