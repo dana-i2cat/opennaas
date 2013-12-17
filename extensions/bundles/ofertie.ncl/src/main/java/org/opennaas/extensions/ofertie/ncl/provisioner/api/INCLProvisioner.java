@@ -116,14 +116,14 @@ public interface INCLProvisioner {
 	 * @param value
 	 * @throws FlowNotFoundException
 	 * @throws ProvisionerException
+	 * @throws FlowAllocationException
 	 */
 	@PUT
 	@Path("/flows/{flowId}/{parameter}")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public void updateQoSParameter(@PathParam("flowId") String flowId, @PathParam("parameter") String parameter, int value)
-			throws FlowNotFoundException,
-			ProvisionerException;
+			throws FlowNotFoundException, ProvisionerException, FlowAllocationException;
 
 	/**
 	 * Deletes QoS network requirements parameter for one flow

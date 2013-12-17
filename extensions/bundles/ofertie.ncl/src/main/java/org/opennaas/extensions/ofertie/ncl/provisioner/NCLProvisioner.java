@@ -114,8 +114,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	// ///////////////////////////
 
 	@Override
-	public String allocateFlow(FlowRequest flowRequest)
-			throws FlowAllocationException, ProvisionerException {
+	public String allocateFlow(FlowRequest flowRequest) throws FlowAllocationException, ProvisionerException {
 
 		try {
 
@@ -152,8 +151,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	@Override
-	public String updateFlow(String flowId, FlowRequest updatedFlowRequest)
-			throws FlowAllocationException, FlowNotFoundException,
+	public String updateFlow(String flowId, FlowRequest updatedFlowRequest) throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
 
 		deallocateFlow(flowId);
@@ -174,8 +172,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	@Override
-	public void deallocateFlow(String flowId) throws FlowNotFoundException,
-			ProvisionerException {
+	public void deallocateFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
 
 		try {
 
@@ -198,8 +195,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	@Override
-	public Collection<Circuit> readAllocatedFlows()
-			throws ProvisionerException {
+	public Collection<Circuit> readAllocatedFlows() throws ProvisionerException {
 
 		return allocatedCircuits.values();
 	}
@@ -227,8 +223,17 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	@Override
-	public void updateQoSParameter(String flowId, String parameter, int value) throws FlowNotFoundException, ProvisionerException {
-		throw new UnsupportedOperationException("Not yet implemented!");
+	public void updateQoSParameter(String flowId, String parameter, int value) throws FlowNotFoundException, ProvisionerException,
+			FlowAllocationException {
+		FlowRequest flowRequest = getFlow(flowId).getFlowRequest();
+
+		try {
+			flowRequest.getQoSRequirements().setParameter(parameter, value);
+		} catch (IllegalArgumentException e) {
+			throw new ProvisionerException(e);
+		}
+
+		updateFlow(flowId, flowRequest);
 	}
 
 	@Override
