@@ -24,6 +24,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 public class ProvisionerLogicTest {
@@ -38,6 +39,8 @@ public class ProvisionerLogicTest {
 	INCLController			nclController;
 	IRequestToFlowsLogic	requestToFlowsLogic;
 
+	NCLModel				model;
+
 	FlowRequest				flowRequest;
 	List<NetOFFlow>			sdnFlow;
 
@@ -50,12 +53,15 @@ public class ProvisionerLogicTest {
 	@Before
 	public void initProvisioner() {
 
+		model = new NCLModel();
+
 		qosPDP = createMock(IQoSPDP.class);
 		networkSelector = createMock(INetworkSelector.class);
 		nclController = createMock(INCLController.class);
 		requestToFlowsLogic = createMock(IRequestToFlowsLogic.class);
 
 		provisioner = new NCLProvisioner();
+		provisioner.setModel(model);
 		provisioner.setQoSPDP(qosPDP);
 		provisioner.setNetworkSelector(networkSelector);
 		provisioner.setNclController(nclController);
