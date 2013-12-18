@@ -1,5 +1,6 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
+import org.opennaas.extensions.ofertie.ncl.helpers.NCLModelHelper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
@@ -263,16 +265,6 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	}
 
-	private void rerouteCircuit(String circuitId) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private String selectCircuitToReallocate(String switchName, String portId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void unregisterListener() {
 		log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
 		eventListenerRegistration.unregister();
@@ -291,4 +283,40 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
 
 	}
+
+	private void rerouteCircuit(String circuitId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private String selectCircuitToReallocate(String switchName, String portId) {
+
+		List<Circuit> circuitsInPort = getAllCircuitsInPort(switchName, portId);
+
+		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
+		return circuitsInPort.get(0).getId();
+	}
+
+	/**
+	 * Retrieves all circuits allocated in a specific switch port.
+	 * 
+	 * @param switchName
+	 * @param portId
+	 * @return
+	 */
+	private List<Circuit> getAllCircuitsInPort(String switchName, String portId) {
+
+		List<Circuit> circuitsInPort = new ArrayList<Circuit>();
+
+		for (String circuiId : allocatedFlows.keySet()) {
+
+			List<NetOFFlow> circuitFlows = allocatedFlows.get(circuiId);
+			if (NCLModelHelper.circuitFlowsContainPort(switchName, portId, circuitFlows)) {
+				circuitsInPort.add(allocatedCircuits.get(circuiId));
+			}
+		}
+
+		return circuitsInPort;
+	}
+
 }
