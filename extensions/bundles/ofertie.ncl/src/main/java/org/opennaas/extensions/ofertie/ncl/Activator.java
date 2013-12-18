@@ -2,6 +2,7 @@ package org.opennaas.extensions.ofertie.ncl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResourceManager;
@@ -35,6 +36,12 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		log.debug("Calling ResourceManager service");
 
 		return (IResourceManager) getServiceFromRegistry(context, IResourceManager.class.getName());
+	}
+
+	public static IEventManager getEventManagerService() throws ActivatorException {
+		log.debug("Calling EventManager");
+		log.debug("Params: context=" + context + " class=" + IEventManager.class.getName());
+		return (IEventManager) getServiceFromRegistry(context, IEventManager.class.getName());
 	}
 
 }
