@@ -1,7 +1,7 @@
 package org.opennaas.extensions.vrf.capability;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +44,11 @@ public class RoutingCapability implements IRoutingCapability {
     private String logMessage;
 
     public VRFModel getVRFModel() {
+        if (this.vrfModel == null) {
+            this.vrfModel = new VRFModel();
+            this.vrfModel.setTable(new RoutingTable(4), 4);
+            this.vrfModel.setTable(new RoutingTable(6), 6);
+        }
         return vrfModel;
     }
 
@@ -129,6 +134,7 @@ public class RoutingCapability implements IRoutingCapability {
             VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo, lifeTime);
 
             String response = model.getTable(version).addRoute(route);
+            System.out.println(response);
             return Response.status(201).entity(response).build();
         }
         return Response.status(403).type("text/plain").entity("Some value is empty").build();
@@ -204,12 +210,8 @@ public class RoutingCapability implements IRoutingCapability {
     public Response getRoutes(int version) {
         log.info("Get entire Route Table of version IPv" + version);
         VRFModel model = getVRFModel();
-        if (model.getTable(version) == null) {
-            if (version == 4 || version == 6) {
-                model.setTable(new RoutingTable(version), version);
-            } else {
-                return Response.serverError().entity("This IP version does not exist.").build();
-            }
+        if (version != 4 && version != 6) {
+            return Response.serverError().entity("This IP version does not exist.").build();
         }
         String response = "No content";
         ObjectMapper mapper = new ObjectMapper();
@@ -222,14 +224,41 @@ public class RoutingCapability implements IRoutingCapability {
     }
 
     @Override
-    public Response insertRouteFile(String filename/*, InputStream file*/) {
+    public Response insertRouteFile(String filename, InputStream file) {
         log.info("Insert Routes from File");
-
-        VRFModel model = new VRFModel();
+        String content = "";
+        try {
+            content = Utils.convertStreamToString(file);
+        } catch (IOException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+/*     //store the inputstream in a file        
+        File geysersVIDir = new File("data/vrf/");
+        if (!geysersVIDir.exists()) {
+            geysersVIDir.mkdir();
+            log.info("Folder geysersVI created");
+        }
+        
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(new File("data/vrf/" + filename + ".json"));
+            try {
+                Utils.copyStream(file, fos);
+                fos.close();
+            } catch (IOException ex) {
+                log.error("Copy file error: " + ex.getMessage());
+                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            log.error("Error -> file not found " + ex.getMessage());
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+*/        
+        VRFModel model = getVRFModel();
         String response = "Inserted";
         try {
             JsonFactory f = new MappingJsonFactory();
-            JsonParser jp = f.createJsonParser(new File(filename));
+            JsonParser jp = f.createJsonParser(content);
             JsonToken current = jp.nextToken();
             if (current != JsonToken.START_OBJECT) {
                 log.error("Error: root should be object: quiting.");
@@ -369,17 +398,18 @@ public class RoutingCapability implements IRoutingCapability {
         return resourceManager.getResource(resourceId);
     }
 
-    //---------------------DEMO
+    //---------------------START DEMO FUNCTIONS
     @Override
     public String getLog() {
         return logMessage;
     }
-    
-    public void removeLog(){
+
+    public void removeLog() {
         logMessage = "";
     }
 
     public class updateLog extends Thread {
+
         public updateLog() {
         }
 
@@ -393,5 +423,7 @@ public class RoutingCapability implements IRoutingCapability {
             removeLog();
         }
     }
-    //---------------------END DEMO
+    //---------------------END DEMO FUNCTIONS
+    
+    
 }

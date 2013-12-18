@@ -1,5 +1,13 @@
 package org.opennaas.extensions.vrf.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -277,5 +285,56 @@ public class Utils {
         flow.setSwitchId(route.getSwitchInfo().getMacAddress());
 
         return flow;
+    }
+
+    /**
+     * Copy InputStream to OutputStream (file).
+     * @param is
+     * @param os
+     * @throws IOException 
+     */
+    public static void copyStream(InputStream is, OutputStream os) throws IOException {
+        int BUFFER_SIZE = 16384;
+        byte[] buf = new byte[BUFFER_SIZE];
+        while (true) {
+            int len = is.read(buf);
+            if (len == -1) {
+                return;
+            }
+            os.write(buf, 0, len);
+        }
+    }
+
+    /**
+     * To convert the InputStream to String we use the Reader.read(char[]
+     * buffer) method. We iterate until the Reader return -1 which means there's
+     * no more data to read. We use the StringWriter class to produce the
+     * string.
+     * @param is
+     * @return The string that contains the value of the inputstream
+     * @throws IOException
+     */
+    public static String convertStreamToString(InputStream is)
+            throws IOException {
+
+        if (is != null) {
+            //SVCManagementDeployed.logger.info("CONVERTING. NOT NULL");///
+            Writer writer = new StringWriter();
+
+            char[] buffer = new char[1024];
+            try {
+                Reader reader = new BufferedReader(new InputStreamReader(is,
+                        "UTF-8"));
+                int n;
+                while ((n = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, n);
+                }
+            } finally {
+                is.close();
+            }
+            return writer.toString();
+        } else {
+            return "";
+        }
     }
 }

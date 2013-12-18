@@ -134,11 +134,9 @@ public interface IRoutingCapability {
      */
     @Path("/insertRouteFromFile/{fileName}")
     @POST
-    @Consumes("application/octet-stream")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response insertRouteFile(
-            @PathParam("fileName") String fileName/*, 
-            InputStream viDescription*/);
+    public Response insertRouteFile(@PathParam("fileName") String fileName, InputStream viDescription);
 
     /**
      * Used in demonstrations. Request a log from OpenNaaS in order to see the route requests events.
