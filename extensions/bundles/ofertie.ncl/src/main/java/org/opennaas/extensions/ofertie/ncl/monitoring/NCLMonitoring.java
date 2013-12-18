@@ -11,7 +11,8 @@ import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
-import org.opennaas.extensions.sdnnetwork.events.LinkCongestionEvent;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
+import org.opennaas.extensions.ofnetwork.events.LinkCongestionEvent;
 
 /**
  * NCL monitoring component
@@ -29,6 +30,8 @@ public class NCLMonitoring {
 	private IEventManager		eventManager;
 
 	private INCLController		nclController;
+
+	private NCLModel			nclModel;
 
 	private String				bandwidthThreshold;
 
@@ -70,6 +73,14 @@ public class NCLMonitoring {
 
 	public void setNclController(INCLController nclController) {
 		this.nclController = nclController;
+	}
+
+	public NCLModel getNclModel() {
+		return nclModel;
+	}
+
+	public void setNclModel(NCLModel nclModel) {
+		this.nclModel = nclModel;
 	}
 
 }

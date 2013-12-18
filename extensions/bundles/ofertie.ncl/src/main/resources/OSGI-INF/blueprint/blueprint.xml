@@ -49,5 +49,6 @@
 	
 	<bean id="nclMonitoring" class="org.opennaas.extensions.ofertie.ncl.monitoring.NCLMonitoring">
 		<property name="nclController" ref="nclController" />
+		<property name="nclModel" ref="nclModel" />
 	</bean>
 </blueprint>
