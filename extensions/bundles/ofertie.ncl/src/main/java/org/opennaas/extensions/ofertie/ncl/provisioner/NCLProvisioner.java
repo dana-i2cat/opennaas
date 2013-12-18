@@ -58,11 +58,6 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	private Log					log	= LogFactory.getLog(NCLProvisioner.class);
 
-	public NCLProvisioner() {
-
-		registerAsCongestionEventListener();
-	}
-
 	public Map<String, Circuit> getAllocatedCircuits() {
 		return model.getAllocatedCircuits();
 	}
@@ -284,7 +279,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		log.debug("NCLProvisioner successfully unregistered.");
 	}
 
-	private void registerAsCongestionEventListener() {
+	public void registerAsCongestionEventListener() {
 
 		log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
 
