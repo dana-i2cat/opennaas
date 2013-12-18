@@ -1,52 +1,62 @@
 package org.opennaas.extensions.ofertie.ncl.helpers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
-import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 
 /**
  * 
  * @author Adrian Rosello (i2CAT)
+ * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
 public abstract class FlowRequestParser {
 
-	public static SDNNetworkOFFlow parseFlowRequestIntoSDNFlow(FlowRequest flowRequest, Route route) {
+	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
 
-		SDNNetworkOFFlow sdnNetworkOFFlow = new SDNNetworkOFFlow();
-		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+	public static List<NetOFFlow> parseFlowRequestIntoSDNFlow(FlowRequest flowRequest, Route route) {
 
-		FloodlightOFMatch match = buildOFMatchFromRequest(flowRequest, route);
+		List<NetOFFlow> flows = new ArrayList<NetOFFlow>();
 
-		FloodlightOFAction forwardingAction = buildForwardingActionFromRequest(flowRequest, route);
-		actions.add(forwardingAction);
+		FloodlightOFMatch commonMatch = buildOFMatchFromRequest(flowRequest);
 
-		sdnNetworkOFFlow.setMatch(match);
-		sdnNetworkOFFlow.setRoute(route);
-		sdnNetworkOFFlow.setActions(actions);
+		for (NetworkConnection connection : route.getNetworkConnections()) {
+			if (connection.getSource().getDeviceId().equals(connection.getDestination().getDeviceId())) {
 
-		return sdnNetworkOFFlow;
+				NetOFFlow flow = new NetOFFlow();
+				flow.setName(generateRandomFlowId());
+				flow.setResourceId(connection.getSource().getDeviceId());
+				flow.setActive(true);
+				flow.setPriority(DEFAULT_FLOW_PRIORITY);
+				flow.setMatch(new FloodlightOFMatch(commonMatch));
+
+				String ingressPort = connection.getSource().getPortNumber();
+				flow.getMatch().setIngressPort(ingressPort);
+
+				String dstPort = connection.getDestination().getPortNumber();
+				FloodlightOFAction action = new FloodlightOFAction();
+				action.setType("output");
+				action.setValue(dstPort);
+				flow.setActions(Arrays.asList(action));
+
+				flows.add(flow);
+			} else {
+				// ASSUMING LINKS BETWEEN DIFERENT DEVICES ARE ALREADY PROVISIONED
+			}
+		}
+
+		return flows;
 	}
 
-	public static FloodlightOFAction buildForwardingActionFromRequest(FlowRequest flowRequest, Route route) {
-		FloodlightOFAction action = new FloodlightOFAction();
-
-		int lastConnectionIndex = route.getNetworkConnections().size() - 1;
-
-		String dstPort = String.valueOf(route.getNetworkConnections().get(lastConnectionIndex).getDestination().getId());
-
-		action.setType("output");
-		action.setValue(dstPort);
-
-		return action;
-	}
-
-	public static FloodlightOFMatch buildOFMatchFromRequest(FlowRequest flowRequest, Route route) {
+	public static FloodlightOFMatch buildOFMatchFromRequest(FlowRequest flowRequest) {
 		FloodlightOFMatch match = new FloodlightOFMatch();
 
 		match.setSrcPort(String.valueOf(flowRequest.getSourcePort()));
@@ -72,9 +82,6 @@ public abstract class FlowRequestParser {
 
 		match.setEtherType(calculateRequiredEtherType(match));
 
-		String ingressPort = route.getNetworkConnections().get(0).getSource().getId();
-		match.setIngressPort(ingressPort);
-
 		return match;
 	}
 
@@ -92,5 +99,9 @@ public abstract class FlowRequestParser {
 			etherType = "2048";
 
 		return etherType;
+	}
+
+	private static String generateRandomFlowId() {
+		return UUID.randomUUID().toString();
 	}
 }

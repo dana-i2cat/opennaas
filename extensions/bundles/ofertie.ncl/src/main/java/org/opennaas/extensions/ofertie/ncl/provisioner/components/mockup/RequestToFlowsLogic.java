@@ -1,23 +1,42 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
 
+import java.util.List;
+
 import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
-import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 public class RequestToFlowsLogic implements IRequestToFlowsLogic {
 
 	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
 
+	private IPathFinder			pathFinder;
+
+	/**
+	 * @return the pathFinder
+	 */
+	public IPathFinder getPathFinder() {
+		return pathFinder;
+	}
+
+	/**
+	 * @param pathFinder
+	 *            the pathFinder to set
+	 */
+	public void setPathFinder(IPathFinder pathFinder) {
+		this.pathFinder = pathFinder;
+	}
+
 	@Override
-	public SDNNetworkOFFlow getRequiredFlowsToSatisfyRequest(FlowRequest flowRequest, Route route) {
+	public List<NetOFFlow> getRequiredFlowsToSatisfyRequest(FlowRequest flowRequest) throws Exception {
 
-		SDNNetworkOFFlow flowWithRoute = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
-		flowWithRoute.setActive(true);
-		flowWithRoute.setPriority(DEFAULT_FLOW_PRIORITY);
+		Route route = getPathFinder().findPathForRequest(flowRequest);
+		List<NetOFFlow> flows = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
 
-		return flowWithRoute;
+		return flows;
 	}
 
 }

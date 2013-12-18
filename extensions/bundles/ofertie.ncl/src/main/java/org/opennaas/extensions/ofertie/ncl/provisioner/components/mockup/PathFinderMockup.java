@@ -9,9 +9,9 @@ import java.util.Map;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Port;
-import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
 public class PathFinderMockup implements IPathFinder {
 
@@ -31,7 +31,7 @@ public class PathFinderMockup implements IPathFinder {
 	}
 
 	@Override
-	public Route findPathForRequest(FlowRequest flowRequest, String networkId)
+	public Route findPathForRequest(FlowRequest flowRequest)
 			throws Exception {
 		return selectRouteFromRequestId(flowRequest.getRequestId());
 	}
