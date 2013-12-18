@@ -40,4 +40,8 @@
 			<entry key="org.apache.cxf.rs.out.interceptors" value="org.opennaas.extensions.ofertie.ncl.interceptor.ProviderOutInterceptor" />
 		</service-properties>
 	</service>
+	
+	<bean id="nclMonitoring" class="org.opennaas.extensions.ofertie.ncl.monitoring.NCLMonitoring">
+		<property name="nclController" ref="nclController" />
+	</bean>
 </blueprint>
