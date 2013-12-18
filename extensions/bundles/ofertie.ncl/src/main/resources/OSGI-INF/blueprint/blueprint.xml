@@ -14,7 +14,7 @@
 	<!-- Instantiate NCLProvisioner components -->
 	<bean id="nclModel" class="org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel"/>
 	<bean id="qosPDP" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.QoSPDPMockup"/>
-	<bean id="pathFinder" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.PathFinderMockup">
+	<bean id="pathFinder" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.PathFinderMockup">
 		<property name="nclModel" ref="nclModel" />
 	</bean>
 	<bean id="networkSelector" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup">

@@ -10,7 +10,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.PathLoader;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.PathLoader;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 

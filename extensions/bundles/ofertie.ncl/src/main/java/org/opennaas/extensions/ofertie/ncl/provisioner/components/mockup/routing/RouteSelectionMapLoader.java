@@ -1,4 +1,4 @@
-package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
+package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing;
 
 import java.io.BufferedReader;
 import java.io.CharArrayWriter;
@@ -8,35 +8,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
-public abstract class PathLoader {
+public abstract class RouteSelectionMapLoader {
 
-	private static Log	LOG	= LogFactory.getLog(PathLoader.class);
+	private static Log	LOG	= LogFactory.getLog(RouteSelectionMapLoader.class);
 
-	public static Map<String, Route> getRoutesFromXml(String xmlWithPaths) throws SerializationException {
+	public static RouteSelectionMap getRouteSelectionMapFromXml(String xmlWithMap) throws SerializationException {
 
-		LOG.debug("Parsing routes from xml.");
+		LOG.debug("Parsing RouteSelectionMap from xml.");
 
-		Map<String, Route> finalPaths = new HashMap<String, Route>();
-		List<Route> routes = ObjectSerializer.fromXML(xmlWithPaths, Route.class);
+		RouteSelectionMap map = (RouteSelectionMap) ObjectSerializer.fromXml(xmlWithMap, RouteSelectionMap.class);
 
-		for (Route route : routes) {
-			finalPaths.put(route.getId(), route);
+		LOG.debug("RouteSelectionMap parsed from xml.");
 
-		}
-
-		LOG.debug(routes.size() + " routes parsed from xml.");
-
-		return finalPaths;
+		return map;
 	}
 
 	public static String readXMLFile(String filePath) throws IOException {
