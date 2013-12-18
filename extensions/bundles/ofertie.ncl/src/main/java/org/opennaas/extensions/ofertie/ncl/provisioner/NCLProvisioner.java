@@ -2,7 +2,6 @@ package org.opennaas.extensions.ofertie.ncl.provisioner;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -23,6 +22,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofnetwork.events.LinkCongestionEvent;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.osgi.framework.ServiceRegistration;
@@ -39,26 +39,39 @@ import org.osgi.service.event.EventHandler;
  */
 public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
-	private IQoSPDP							qoSPDP;
-	private INetworkSelector				networkSelector;
-	private INCLController					nclController;
-	private IRequestToFlowsLogic			requestToFlowsLogic;
+	private IQoSPDP					qoSPDP;
+	private INetworkSelector		networkSelector;
+	private INCLController			nclController;
+	private IRequestToFlowsLogic	requestToFlowsLogic;
 
-	/**
-	 * Key: FlowId, Value: Flow
-	 */
-	private Map<String, Circuit>			allocatedCircuits;
+	private NCLModel				model;
 
-	private ServiceRegistration				eventListenerRegistration;
+	public NCLModel getModel() {
+		return model;
+	}
 
-	private Log								log	= LogFactory.getLog(NCLProvisioner.class);
+	public void setModel(NCLModel model) {
+		this.model = model;
+	}
 
-	private Map<String, List<NetOFFlow>>	allocatedFlows;
+	private ServiceRegistration	eventListenerRegistration;
+
+	private Log					log	= LogFactory.getLog(NCLProvisioner.class);
 
 	public NCLProvisioner() {
-		allocatedCircuits = new HashMap<String, Circuit>();
-		allocatedFlows = new HashMap<String, List<NetOFFlow>>();
+
 		registerAsCongestionEventListener();
+	}
+
+	public Map<String, Circuit> getAllocatedCircuits() {
+		return model.getAllocatedCircuits();
+	}
+
+	/**
+	 * @return the allocatedFlows
+	 */
+	public Map<String, List<NetOFFlow>> getAllocatedFlows() {
+		return model.getAllocatedFlows();
 	}
 
 	/**
@@ -131,8 +144,8 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 			Circuit circuit = new Circuit();
 			circuit.setFlowRequest(flowRequest);
 			circuit.setId(circuitId);
-			allocatedCircuits.put(circuitId, circuit);
-			allocatedFlows.put(circuitId, sdnFlows);
+			getAllocatedCircuits().put(circuitId, circuit);
+			getAllocatedFlows().put(circuitId, sdnFlows);
 
 			return circuitId;
 
@@ -151,15 +164,15 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		String newFlowId = allocateFlow(updatedFlowRequest);
 
 		// keep previous id for new circuit.
-		Circuit circuit = allocatedCircuits.get(newFlowId);
-		List<NetOFFlow> circuitFlows = allocatedFlows.get(newFlowId);
+		Circuit circuit = getAllocatedCircuits().get(newFlowId);
+		List<NetOFFlow> circuitFlows = getAllocatedFlows().get(newFlowId);
 
-		allocatedCircuits.remove(newFlowId);
-		allocatedFlows.remove(newFlowId);
+		getAllocatedCircuits().remove(newFlowId);
+		getAllocatedFlows().remove(newFlowId);
 
 		circuit.setId(flowId);
-		allocatedCircuits.put(flowId, circuit);
-		allocatedFlows.put(flowId, circuitFlows);
+		getAllocatedCircuits().put(flowId, circuit);
+		getAllocatedFlows().put(flowId, circuitFlows);
 
 		return circuit.getId();
 	}
@@ -171,11 +184,11 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
 
-			List<NetOFFlow> circuitFlows = allocatedFlows.get(flowId);
+			List<NetOFFlow> circuitFlows = getAllocatedFlows().get(flowId);
 			getNclController().deallocateFlows(circuitFlows, netId);
 
-			allocatedCircuits.remove(flowId);
-			allocatedFlows.remove(flowId);
+			getAllocatedCircuits().remove(flowId);
+			getAllocatedFlows().remove(flowId);
 
 		} catch (Exception e) {
 			throw new ProvisionerException(e);
@@ -185,7 +198,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	@Override
 	public Collection<Circuit> readAllocatedFlows() throws ProvisionerException {
 
-		return allocatedCircuits.values();
+		return getAllocatedCircuits().values();
 	}
 
 	private String generateRandomCircuitId() {
@@ -195,12 +208,12 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	@Override
 	public List<NetOFFlow> getFlowImplementation(String flowId) throws ProvisionerException {
 		String circuitId = flowId;
-		return allocatedFlows.get(circuitId);
+		return getAllocatedFlows().get(circuitId);
 	}
 
 	public Circuit getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
-		if (allocatedCircuits.containsKey(flowId)) {
-			return allocatedCircuits.get(flowId);
+		if (getAllocatedCircuits().containsKey(flowId)) {
+			return getAllocatedCircuits().get(flowId);
 		}
 		throw new FlowNotFoundException();
 	}
@@ -308,11 +321,11 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 		List<Circuit> circuitsInPort = new ArrayList<Circuit>();
 
-		for (String circuiId : allocatedFlows.keySet()) {
+		for (String circuiId : getAllocatedCircuits().keySet()) {
 
-			List<NetOFFlow> circuitFlows = allocatedFlows.get(circuiId);
+			List<NetOFFlow> circuitFlows = getAllocatedFlows().get(circuiId);
 			if (NCLModelHelper.circuitFlowsContainPort(switchName, portId, circuitFlows)) {
-				circuitsInPort.add(allocatedCircuits.get(circuiId));
+				circuitsInPort.add(getAllocatedCircuits().get(circuiId));
 			}
 		}
 
