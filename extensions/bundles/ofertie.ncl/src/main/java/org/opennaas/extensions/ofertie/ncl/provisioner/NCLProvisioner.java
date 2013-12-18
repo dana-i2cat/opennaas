@@ -1,7 +1,6 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,6 +16,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
@@ -27,21 +27,33 @@ import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
  */
 public class NCLProvisioner implements INCLProvisioner {
 
-	private IQoSPDP							qoSPDP;
-	private INetworkSelector				networkSelector;
-	private INCLController					nclController;
-	private IRequestToFlowsLogic			requestToFlowsLogic;
+	private IQoSPDP					qoSPDP;
+	private INetworkSelector		networkSelector;
+	private INCLController			nclController;
+	private IRequestToFlowsLogic	requestToFlowsLogic;
+
+	private NCLModel				model;
+
+	public NCLModel getModel() {
+		return model;
+	}
+
+	public void setModel(NCLModel model) {
+		this.model = model;
+	}
 
 	/**
-	 * Key: FlowId, Value: Flow
+	 * @return the allocatedCircuits
 	 */
-	private Map<String, Circuit>			allocatedCircuits;
+	public Map<String, Circuit> getAllocatedCircuits() {
+		return model.getAllocatedCircuits();
+	}
 
-	private Map<String, List<NetOFFlow>>	allocatedFlows;
-
-	public NCLProvisioner() {
-		allocatedCircuits = new HashMap<String, Circuit>();
-		allocatedFlows = new HashMap<String, List<NetOFFlow>>();
+	/**
+	 * @return the allocatedFlows
+	 */
+	public Map<String, List<NetOFFlow>> getAllocatedFlows() {
+		return model.getAllocatedFlows();
 	}
 
 	/**
@@ -114,8 +126,8 @@ public class NCLProvisioner implements INCLProvisioner {
 			Circuit circuit = new Circuit();
 			circuit.setFlowRequest(flowRequest);
 			circuit.setId(circuitId);
-			allocatedCircuits.put(circuitId, circuit);
-			allocatedFlows.put(circuitId, sdnFlows);
+			getAllocatedCircuits().put(circuitId, circuit);
+			getAllocatedFlows().put(circuitId, sdnFlows);
 
 			return circuitId;
 
@@ -134,15 +146,15 @@ public class NCLProvisioner implements INCLProvisioner {
 		String newFlowId = allocateFlow(updatedFlowRequest);
 
 		// keep previous id for new circuit.
-		Circuit circuit = allocatedCircuits.get(newFlowId);
-		List<NetOFFlow> circuitFlows = allocatedFlows.get(newFlowId);
+		Circuit circuit = getAllocatedCircuits().get(newFlowId);
+		List<NetOFFlow> circuitFlows = getAllocatedFlows().get(newFlowId);
 
-		allocatedCircuits.remove(newFlowId);
-		allocatedFlows.remove(newFlowId);
+		getAllocatedCircuits().remove(newFlowId);
+		getAllocatedFlows().remove(newFlowId);
 
 		circuit.setId(flowId);
-		allocatedCircuits.put(flowId, circuit);
-		allocatedFlows.put(flowId, circuitFlows);
+		getAllocatedCircuits().put(flowId, circuit);
+		getAllocatedFlows().put(flowId, circuitFlows);
 
 		return circuit.getId();
 	}
@@ -154,11 +166,11 @@ public class NCLProvisioner implements INCLProvisioner {
 
 			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
 
-			List<NetOFFlow> circuitFlows = allocatedFlows.get(flowId);
+			List<NetOFFlow> circuitFlows = getAllocatedFlows().get(flowId);
 			getNclController().deallocateFlows(circuitFlows, netId);
 
-			allocatedCircuits.remove(flowId);
-			allocatedFlows.remove(flowId);
+			getAllocatedCircuits().remove(flowId);
+			getAllocatedFlows().remove(flowId);
 
 		} catch (Exception e) {
 			throw new ProvisionerException(e);
@@ -168,7 +180,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	@Override
 	public Collection<Circuit> readAllocatedFlows() throws ProvisionerException {
 
-		return allocatedCircuits.values();
+		return getAllocatedCircuits().values();
 	}
 
 	private String generateRandomCircuitId() {
@@ -178,12 +190,12 @@ public class NCLProvisioner implements INCLProvisioner {
 	@Override
 	public List<NetOFFlow> getFlowImplementation(String flowId) throws ProvisionerException {
 		String circuitId = flowId;
-		return allocatedFlows.get(circuitId);
+		return getAllocatedFlows().get(circuitId);
 	}
-	
+
 	public Circuit getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
-		if (allocatedCircuits.containsKey(flowId)) {
-			return allocatedCircuits.get(flowId);
+		if (getAllocatedCircuits().containsKey(flowId)) {
+			return getAllocatedCircuits().get(flowId);
 		}
 		throw new FlowNotFoundException();
 	}

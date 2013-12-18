@@ -12,6 +12,7 @@
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
 	
 	<!-- Instantiate NCLProvisioner components -->
+	<bean id="nclModel" class="org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel"/>
 	<bean id="qosPDP" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.QoSPDPMockup"/>
 	<bean id="pathFinder" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.PathFinderMockup"/>
 	<bean id="networkSelector" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup">
@@ -28,6 +29,7 @@
 		<property name="networkSelector" ref="networkSelector" />
 		<property name="nclController" ref="nclController" />
 		<property name="requestToFlowsLogic" ref="requestToFlowsLogic" />
+		<property name="model" ref="nclModel" />
 	</bean>
 	<service ref="nclProvisioner" interface="org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner">
 		<service-properties>
