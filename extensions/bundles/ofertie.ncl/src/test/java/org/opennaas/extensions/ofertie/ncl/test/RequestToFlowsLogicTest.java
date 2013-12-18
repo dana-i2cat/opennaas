@@ -1,94 +1,120 @@
 package org.opennaas.extensions.ofertie.ncl.test;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
-import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.RequestToFlowsLogic;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Port;
-import org.opennaas.extensions.sdnnetwork.model.Route;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 public class RequestToFlowsLogicTest {
 
-	FlowRequest				flowRequest;
-	Route					route;
+	FlowRequest			flowRequest;
+	Route				route;
 
-	IRequestToFlowsLogic	requestToFlowsLogic;
+	RequestToFlowsLogic	requestToFlowsLogic;
+	IPathFinder			pathFinder;
 
 	@Before
-	public void initFlowRequest() {
+	public void initFlowRequest() throws Exception {
 		flowRequest = generateEmptyFlowRequest();
 		route = generateSampleRoute();
+
+		initLogic();
 	}
 
-	@Before
-	public void initLogic() {
+	public void initLogic() throws Exception {
+		pathFinder = createMock(IPathFinder.class);
 		requestToFlowsLogic = new RequestToFlowsLogic();
+		requestToFlowsLogic.setPathFinder(pathFinder);
+
+		expect(pathFinder.findPathForRequest(flowRequest)).andReturn(route).anyTimes();
+		replay(pathFinder);
+
 	}
 
 	@Test
-	public void requestWithSrcIPTest() {
+	public void requestWithSrcIPTest() throws Exception {
 		String srcIp = "192.168.0.2";
 
 		flowRequest.setSourceIPAddress(srcIp);
 
-		SDNNetworkOFFlow flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
-		Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
+			Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		}
+		verify(pathFinder);
 	}
 
 	@Test
-	public void requestWithDstIPTest() {
+	public void requestWithDstIPTest() throws Exception {
 		String dstIp = "192.168.0.3";
 
 		flowRequest.setDestinationIPAddress(dstIp);
 
-		SDNNetworkOFFlow flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
-		Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
+			Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		}
+		verify(pathFinder);
 	}
 
 	@Test
-	public void requestWithIPsTest() {
+	public void requestWithIPsTest() throws Exception {
 		String srcIp = "192.168.0.2";
 		String dstIp = "192.168.0.3";
 
 		flowRequest.setSourceIPAddress(srcIp);
 		flowRequest.setDestinationIPAddress(dstIp);
 
-		SDNNetworkOFFlow flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
-		Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
-		Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
+			Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
+			Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		}
+		verify(pathFinder);
 	}
 
 	@Test
-	public void requestWithToSTest() {
+	public void requestWithToSTest() throws Exception {
 		int tos = 4;
 		int flowTos = tos / 4; // last 2 bits discarded
 
 		flowRequest.setTos(tos);
 
-		SDNNetworkOFFlow flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
-		Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
+			Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		}
+		verify(pathFinder);
 	}
 
 	@Test
-	public void requestWithIPsAndToSTest() {
+	public void requestWithIPsAndToSTest() throws Exception {
 		String srcIp = "192.168.0.2";
 		String dstIp = "192.168.0.3";
 		int tos = 4;
@@ -98,43 +124,53 @@ public class RequestToFlowsLogicTest {
 		flowRequest.setDestinationIPAddress(dstIp);
 		flowRequest.setTos(tos);
 
-		SDNNetworkOFFlow flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
-		Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
-		Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
-		Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
+			Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
+			Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
+			Assert.assertEquals("2048", flow.getMatch().getEtherType());
+		}
+		verify(pathFinder);
 	}
 
 	@Test
-	public void requestWithPortTest() {
+	public void requestWithPortTest() throws Exception {
 		int srcPort = 8080;
 		int dstPort = 80;
 
 		flowRequest.setSourcePort(srcPort);
 
-		SDNNetworkOFFlow flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(String.valueOf(srcPort), flow.getMatch().getSrcPort());
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(String.valueOf(srcPort), flow.getMatch().getSrcPort());
+		}
 
 		flowRequest.setSourcePort(0);
 		flowRequest.setDestinationPort(dstPort);
 
-		flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(String.valueOf(dstPort), flow.getMatch().getDstPort());
+		flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(String.valueOf(dstPort), flow.getMatch().getDstPort());
+		}
 
 		flowRequest.setSourcePort(srcPort);
 		flowRequest.setDestinationPort(dstPort);
 
-		flow = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest, route);
-		Assert.assertNotNull(flow);
-		Assert.assertNotNull(flow.getMatch());
-		Assert.assertEquals(String.valueOf(srcPort), flow.getMatch().getSrcPort());
-		Assert.assertEquals(String.valueOf(dstPort), flow.getMatch().getDstPort());
+		flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		for (NetOFFlow flow : flows) {
+			Assert.assertNotNull(flow);
+			Assert.assertNotNull(flow.getMatch());
+			Assert.assertEquals(String.valueOf(srcPort), flow.getMatch().getSrcPort());
+			Assert.assertEquals(String.valueOf(dstPort), flow.getMatch().getDstPort());
+		}
+		verify(pathFinder);
 	}
 
 	private FlowRequest generateEmptyFlowRequest() {

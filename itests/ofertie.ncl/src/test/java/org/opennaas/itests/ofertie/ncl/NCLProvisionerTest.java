@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -35,16 +36,15 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
+import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
+import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -106,7 +106,7 @@ public class NCLProvisionerTest {
 	private static final String		SDN_ACTIONSET_VERSION			= "1.0.0";
 
 	private static final String		SDN_RESOURCE_NAME				= "sdnNetwork";
-	private static final String		SDNNETWORK_RESOURCE_TYPE		= "sdnnetwork";
+	private static final String		OFNETWORK_RESOURCE_TYPE			= "ofnetwork";
 
 	/* FLOW REQUEST PARAMS */
 	private static final String		SRC_IP_ADDRESS					= "192.168.2.10";
@@ -142,8 +142,8 @@ public class NCLProvisionerTest {
 	private BlueprintContainer		floodlightDriverBundleContainer;
 	@SuppressWarnings("unused")
 	@Inject
-	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sdnnetwork)", timeout = 50000)
-	private BlueprintContainer		sdnNetworkBlueprintContainer;
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofnetwork)", timeout = 50000)
+	private BlueprintContainer		ofNetworkBlueprintContainer;
 	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofertie.ncl)", timeout = 50000)
@@ -162,7 +162,7 @@ public class NCLProvisionerTest {
 	public static Option[] configuration() {
 		return options(
 				opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflowswitch", "opennaas-sdnnetwork", "opennaas-openflowswitch-driver-floodlight",
+				includeFeatures("opennaas-openflowswitch", "opennaas-ofnetwork", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-ofertie-ncl", "itests-helpers"),
 				systemTimeout(1000 * 60 * 10),
 				noConsole(),
@@ -207,42 +207,58 @@ public class NCLProvisionerTest {
 		}
 		Assert.assertNotNull("readAllocatedFlows() must contain allocated flow", allocatedFlow);
 
+		List<NetOFFlow> netFlows = provisioner.getFlowImplementation(circuitId);
+		Assert.assertNotNull("implementation must not be null", netFlows);
+		Assert.assertFalse("implementation must not be empty", netFlows.isEmpty());
+
 		// Get flows in SDN network
 		IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource
 				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-		Collection<SDNNetworkOFFlow> netFlows = sdnCapab.getAllocatedFlows();
+		Set<NetOFFlow> allocatedNetFlows = sdnCapab.getAllocatedFlows();
 
-		Assert.assertEquals("There should be only one allocated sdnFlow", 1, netFlows.size());
-		// Get allocated flow in SDN network
-		SDNNetworkOFFlow netFlow = netFlows.iterator().next();
+		for (NetOFFlow expected : netFlows) {
+			Assert.assertTrue("expected flows are present in the network", allocatedNetFlows.contains(expected));
 
-		Assert.assertNotNull("sdn network has flow", netFlow);
-
-		// Get flows in switches
-		for (NetworkConnection connection : netFlow.getRoute().getNetworkConnections()) {
-			if (connection.getSource().getDeviceId().equals(connection.getDestination().getDeviceId())) {
-				IResource switchResource = getSwitchResourceFromName(connection.getSource().getDeviceId());
-				IOpenflowForwardingCapability s3capab = (IOpenflowForwardingCapability) switchResource
-						.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-				List<FloodlightOFFlow> switchFlows = s3capab.getOpenflowForwardingRules();
-				FloodlightOFFlow switchFlow = null;
-				for (FloodlightOFFlow flow : switchFlows) {
-					if (flow.getName().equals(connection.getId())) {
-						switchFlow = flow;
-						break;
-					}
+			// Get flow in switches
+			IResource switchResource = getSwitchResourceFromName(expected.getResourceId());
+			IOpenflowForwardingCapability s3capab = (IOpenflowForwardingCapability) switchResource
+					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+			List<FloodlightOFFlow> switchFlows = s3capab.getOpenflowForwardingRules();
+			FloodlightOFFlow switchFlow = null;
+			for (FloodlightOFFlow flow : switchFlows) {
+				if (flow.getName().equals(expected.getName())) {
+					switchFlow = flow;
+					break;
 				}
-				Assert.assertNotNull("switch has flow with flowId equals to connectionId", switchFlow);
 			}
+			Assert.assertNotNull("switch has flow with flowId equals to expected one", switchFlow);
 		}
 
 		provisioner.deallocateFlow(circuitId);
 		flows = provisioner.readAllocatedFlows();
 		Assert.assertTrue("There should no be allocated circuits.", flows.isEmpty());
 		// Get flows in SDN network
-		netFlows = sdnCapab.getAllocatedFlows();
+		allocatedNetFlows = sdnCapab.getAllocatedFlows();
 		// Get allocated flow in SDN network
-		Assert.assertEquals("There should be no allocated sdnFlow", 0, netFlows.size());
+		Assert.assertEquals("There should be no allocated sdnFlow", 0, allocatedNetFlows.size());
+
+		for (NetOFFlow past : netFlows) {
+			Assert.assertFalse("past flow is no longer present in the network", allocatedNetFlows.contains(past));
+
+			// Get flow in switches
+			IResource switchResource = getSwitchResourceFromName(past.getResourceId());
+			IOpenflowForwardingCapability s3capab = (IOpenflowForwardingCapability) switchResource
+					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+			List<FloodlightOFFlow> switchFlows = s3capab.getOpenflowForwardingRules();
+			FloodlightOFFlow switchFlow = null;
+			for (FloodlightOFFlow flow : switchFlows) {
+				if (flow.getName().equals(past.getName())) {
+					switchFlow = flow;
+					break;
+				}
+			}
+			Assert.assertNull("past flow is no longer present in the switch it was", switchFlow);
+		}
 
 	}
 
@@ -296,7 +312,7 @@ public class NCLProvisionerTest {
 
 		lCapabilityDescriptors.add(provisionCapab);
 
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, SDNNETWORK_RESOURCE_TYPE,
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, OFNETWORK_RESOURCE_TYPE,
 				RESOURCE_URI, SDN_RESOURCE_NAME);
 
 		sdnNetResource = resourceManager.createResource(resourceDescriptor);

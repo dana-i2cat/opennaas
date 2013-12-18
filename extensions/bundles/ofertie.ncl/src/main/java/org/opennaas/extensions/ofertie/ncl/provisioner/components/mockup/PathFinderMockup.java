@@ -9,19 +9,23 @@ import java.util.Map;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Port;
-import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
 public class PathFinderMockup implements IPathFinder {
 
 	private final static String			PATHS_FILE_URL	= "etc/org.opennaas.extensions.ofertie.ncl.paths.xml";
 
 	private static final String			DEFAULT_ROUTE	= "0";
+
 	/**
 	 * Key: RouteId, Value: Route to apply
 	 */
 	private static Map<String, Route>	routes;
+
+	private NCLModel					nclModel;
 
 	public PathFinderMockup() throws IOException, SerializationException {
 
@@ -30,8 +34,16 @@ public class PathFinderMockup implements IPathFinder {
 
 	}
 
+	public NCLModel getNclModel() {
+		return nclModel;
+	}
+
+	public void setNclModel(NCLModel nclModel) {
+		this.nclModel = nclModel;
+	}
+
 	@Override
-	public Route findPathForRequest(FlowRequest flowRequest, String networkId)
+	public Route findPathForRequest(FlowRequest flowRequest)
 			throws Exception {
 		return selectRouteFromRequestId(flowRequest.getRequestId());
 	}
