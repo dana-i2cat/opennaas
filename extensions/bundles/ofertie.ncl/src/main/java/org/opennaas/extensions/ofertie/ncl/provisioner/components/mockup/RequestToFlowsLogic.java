@@ -6,6 +6,7 @@ import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
@@ -13,7 +14,17 @@ public class RequestToFlowsLogic implements IRequestToFlowsLogic {
 
 	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
 
+	private NCLModel			nclModel;
+
 	private IPathFinder			pathFinder;
+
+	public NCLModel getNclModel() {
+		return nclModel;
+	}
+
+	public void setNclModel(NCLModel nclModel) {
+		this.nclModel = nclModel;
+	}
 
 	/**
 	 * @return the pathFinder

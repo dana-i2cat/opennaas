@@ -9,6 +9,7 @@ import java.util.Map;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
@@ -18,16 +19,27 @@ public class PathFinderMockup implements IPathFinder {
 	private final static String			PATHS_FILE_URL	= "etc/org.opennaas.extensions.ofertie.ncl.paths.xml";
 
 	private static final String			DEFAULT_ROUTE	= "0";
+
 	/**
 	 * Key: RouteId, Value: Route to apply
 	 */
 	private static Map<String, Route>	routes;
+
+	private NCLModel					nclModel;
 
 	public PathFinderMockup() throws IOException, SerializationException {
 
 		String xmlRoutes = PathLoader.readXMLFile(PATHS_FILE_URL);
 		routes = PathLoader.getRoutesFromXml(xmlRoutes);
 
+	}
+
+	public NCLModel getNclModel() {
+		return nclModel;
+	}
+
+	public void setNclModel(NCLModel nclModel) {
+		this.nclModel = nclModel;
 	}
 
 	@Override
