@@ -16,7 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
 public abstract class PathLoader {
 

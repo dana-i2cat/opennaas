@@ -1,6 +1,7 @@
 package org.opennaas.extensions.ofertie.ncl.controller;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -10,8 +11,8 @@ import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowRetrievalException;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
-import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
+import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
  * 
@@ -22,13 +23,13 @@ import org.opennaas.extensions.sdnnetwork.model.SDNNetworkOFFlow;
 public class NCLController implements INCLController {
 
 	@Override
-	public String allocateFlow(SDNNetworkOFFlow flowWithRoute, String networkId) throws FlowAllocationException {
+	public void allocateFlows(List<NetOFFlow> flows, String networkId) throws FlowAllocationException {
 		try {
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
 					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
-			return provisionCapab.allocateOFFlow(flowWithRoute);
+			provisionCapab.allocateFlows(flows);
 
 		} catch (ActivatorException e) {
 			throw new FlowAllocationException(e);
@@ -38,15 +39,13 @@ public class NCLController implements INCLController {
 	}
 
 	@Override
-	public String deallocateFlow(String flowId, String networkId) throws FlowAllocationException {
-
+	public void deallocateFlows(List<NetOFFlow> flows, String networkId) throws FlowAllocationException {
 		try {
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
 					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
-			provisionCapab.deallocateOFFlow(flowId);
-			return flowId;
+			provisionCapab.deallocateFlows(flows);
 
 		} catch (ActivatorException e) {
 			throw new FlowAllocationException(e);
@@ -56,8 +55,7 @@ public class NCLController implements INCLController {
 	}
 
 	@Override
-	public Collection<SDNNetworkOFFlow> getFlows(String networkId) throws FlowRetrievalException {
-
+	public Set<NetOFFlow> getAllocatedFlows(String networkId) throws FlowRetrievalException {
 		try {
 			IResource networkResource = getResource(networkId);
 			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
@@ -72,6 +70,22 @@ public class NCLController implements INCLController {
 		}
 	}
 
+	@Override
+	public void replaceFlows(List<NetOFFlow> current, List<NetOFFlow> desired, String networkId) throws FlowAllocationException {
+		try {
+			IResource networkResource = getResource(networkId);
+			IOFProvisioningNetworkCapability provisionCapab = (IOFProvisioningNetworkCapability) networkResource
+					.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+
+			provisionCapab.replaceFlows(current, desired);
+
+		} catch (ActivatorException e) {
+			throw new FlowAllocationException(e);
+		} catch (ResourceException e) {
+			throw new FlowAllocationException(e);
+		}
+	}
+
 	private IResource getResource(String networkId) throws ActivatorException, ResourceException {
 
 		IResourceManager resourceManager = Activator.getResourceManagerService();
@@ -79,4 +93,5 @@ public class NCLController implements INCLController {
 
 		return resource;
 	}
+
 }

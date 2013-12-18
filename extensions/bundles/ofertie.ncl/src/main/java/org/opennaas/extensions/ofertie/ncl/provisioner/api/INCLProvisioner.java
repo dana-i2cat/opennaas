@@ -1,6 +1,7 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.api;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,6 +18,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFou
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
  * 
@@ -79,6 +81,19 @@ public interface INCLProvisioner {
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public Collection<Circuit> readAllocatedFlows() throws ProvisionerException;
+
+	/**
+	 * Returns implementation of given flow
+	 * 
+	 * @param flowId
+	 *            id of flow to query for
+	 * @return Currently allocated NetOFFlow(s) that are the implementation of flow with given flowii
+	 * @throws ProvisionerException
+	 */
+	@Path("/{id}/implementation")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public List<NetOFFlow> getFlowImplementation(@PathParam("id") String flowId) throws ProvisionerException;
 
 	/**
 	 * Returns QoS network requirements for one flow
