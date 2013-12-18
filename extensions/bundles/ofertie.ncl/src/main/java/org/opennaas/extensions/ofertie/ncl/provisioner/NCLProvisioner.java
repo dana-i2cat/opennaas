@@ -44,6 +44,8 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	private INCLController			nclController;
 	private IRequestToFlowsLogic	requestToFlowsLogic;
 
+	private boolean					autoReroute	= true;
+
 	private NCLModel				model;
 
 	public NCLModel getModel() {
@@ -274,21 +276,28 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	}
 
 	public void unregisterListener() {
-		log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
-		eventListenerRegistration.unregister();
-		log.debug("NCLProvisioner successfully unregistered.");
+		if (autoReroute) {
+			log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
+			eventListenerRegistration.unregister();
+			log.debug("NCLProvisioner successfully unregistered.");
+		}
 	}
 
 	public void registerAsCongestionEventListener() {
 
-		log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
+		if (autoReroute) {
 
-		Properties properties = new Properties();
-		properties.put(EventConstants.EVENT_TOPIC, LinkCongestionEvent.TOPIC);
+			log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
 
-		eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
+			Properties properties = new Properties();
+			properties.put(EventConstants.EVENT_TOPIC, LinkCongestionEvent.TOPIC);
 
-		log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
+			eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
+
+			log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
+		}
+		else
+			log.info("Auto-reroute option deactivated, NCL not registered as LinkCongestion events listener.");
 
 	}
 
