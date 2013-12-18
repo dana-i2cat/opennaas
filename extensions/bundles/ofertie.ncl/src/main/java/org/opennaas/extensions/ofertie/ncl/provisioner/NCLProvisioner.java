@@ -1,5 +1,6 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.helpers.NCLModelHelper;
@@ -39,12 +41,15 @@ import org.osgi.service.event.EventHandler;
  */
 public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
+	private final static String		NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl.cfg";
+	private final static String		AUTOREROUTE_KEY	= "ncl.autoreroute";
+
 	private IQoSPDP					qoSPDP;
 	private INetworkSelector		networkSelector;
 	private INCLController			nclController;
 	private IRequestToFlowsLogic	requestToFlowsLogic;
 
-	private boolean					autoReroute	= true;
+	private boolean					autoReroute;
 
 	private NCLModel				model;
 
@@ -283,7 +288,9 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		}
 	}
 
-	public void registerAsCongestionEventListener() {
+	public void registerAsCongestionEventListener() throws IOException {
+
+		autoReroute = readAutorerouteOption();
 
 		if (autoReroute) {
 
@@ -336,4 +343,12 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		return circuitsInPort;
 	}
 
+	private boolean readAutorerouteOption() throws IOException {
+
+		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
+		if (properties == null)
+			throw new IOException("Failed to initialize NCL as listener." + "Unable to obtain configuration " + NCL_CONFIG_FILE);
+
+		return (Boolean) properties.get(AUTOREROUTE_KEY);
+	}
 }
