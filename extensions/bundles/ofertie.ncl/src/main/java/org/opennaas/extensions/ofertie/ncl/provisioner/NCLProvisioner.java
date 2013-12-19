@@ -1,11 +1,19 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
+import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
+import org.opennaas.extensions.ofertie.ncl.helpers.NCLModelHelper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
@@ -17,20 +25,31 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelect
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
+import org.opennaas.extensions.ofnetwork.events.LinkCongestionEvent;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public class NCLProvisioner implements INCLProvisioner {
+public class NCLProvisioner implements INCLProvisioner, EventHandler {
+
+	private final static String		NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl.cfg";
+	private final static String		AUTOREROUTE_KEY	= "ncl.autoreroute";
 
 	private IQoSPDP					qoSPDP;
 	private INetworkSelector		networkSelector;
 	private INCLController			nclController;
 	private IRequestToFlowsLogic	requestToFlowsLogic;
+
+	private boolean					autoReroute;
 
 	private NCLModel				model;
 
@@ -42,9 +61,10 @@ public class NCLProvisioner implements INCLProvisioner {
 		this.model = model;
 	}
 
-	/**
-	 * @return the allocatedCircuits
-	 */
+	private ServiceRegistration	eventListenerRegistration;
+
+	private Log					log	= LogFactory.getLog(NCLProvisioner.class);
+
 	public Map<String, Circuit> getAllocatedCircuits() {
 		return model.getAllocatedCircuits();
 	}
@@ -237,4 +257,133 @@ public class NCLProvisioner implements INCLProvisioner {
 		updateFlow(flowId, flowRequest);
 	}
 
+	// ////////////////////////
+	// EventListener Methods //
+	// ////////////////////////
+
+	@Override
+	public void handleEvent(Event event) {
+		if (event instanceof LinkCongestionEvent) {
+
+			LinkCongestionEvent congestionEvent = (LinkCongestionEvent) event;
+			String switchName = (String) congestionEvent.getProperty(LinkCongestionEvent.SWITCH_ID_KEY);
+			String portId = (String) congestionEvent.getProperty(LinkCongestionEvent.PORT_ID_KEY);
+
+			log.info("LinkCongestion alarm received for switch " + switchName + " and port " + portId);
+
+			boolean autoReroute = readAutorerouteOption();
+			if (autoReroute) {
+				log.debug("Auto-reroute is activated. Launching auto-reroute");
+				String circuitId = selectCircuitToReallocate(switchName, portId);
+
+				try {
+					rerouteCircuit(circuitId);
+				} catch (Exception e) {
+					log.error("Could not reallocate circuit " + circuitId, e);
+					// TODO can not throw exception, since EventHandler interface does not allow it.
+				}
+
+			} else {
+				log.debug("Auto-reroute is deactivated. Ignoring received LinkCongestion alarm. ");
+			}
+		}
+		else
+			log.debug("Ignoring non-LinkCongestion alarm.");
+
+	}
+
+	public void unregisterListener() {
+
+		log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
+		eventListenerRegistration.unregister();
+		log.debug("NCLProvisioner successfully unregistered.");
+
+	}
+
+	public void registerAsCongestionEventListener() throws IOException {
+
+		log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
+
+		Properties properties = new Properties();
+		properties.put(EventConstants.EVENT_TOPIC, LinkCongestionEvent.TOPIC);
+
+		eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
+
+		log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
+
+	}
+
+	private void rerouteCircuit(String circuitId) throws Exception {
+
+		log.debug("Start of rerouteCircuit call.");
+
+		Circuit circuit = getAllocatedCircuits().get(circuitId);
+
+		if (circuit == null)
+			throw new ProvisionerException("Circuit is not allocated.");
+
+		List<NetOFFlow> sdnFlows = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(circuit.getFlowRequest());
+		List<NetOFFlow> oldFlows = getAllocatedFlows().get(circuitId);
+
+		String netId = getNetworkSelector().findNetworkForRequest(circuit.getFlowRequest());
+
+		getNclController().replaceFlows(oldFlows, sdnFlows, netId);
+
+		getAllocatedFlows().put(circuitId, sdnFlows);
+
+		log.debug("End of rerouteCircuit call.");
+
+	}
+
+	private String selectCircuitToReallocate(String switchName, String portId) {
+
+		List<Circuit> circuitsInPort = getAllCircuitsInPort(switchName, portId);
+
+		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
+		return circuitsInPort.get(0).getId();
+	}
+
+	/**
+	 * Retrieves all circuits allocated in a specific switch port.
+	 * 
+	 * @param switchName
+	 * @param portId
+	 * @return
+	 */
+	private List<Circuit> getAllCircuitsInPort(String switchName, String portId) {
+
+		List<Circuit> circuitsInPort = new ArrayList<Circuit>();
+
+		for (String circuiId : getAllocatedCircuits().keySet()) {
+
+			List<NetOFFlow> circuitFlows = getAllocatedFlows().get(circuiId);
+			if (NCLModelHelper.circuitFlowsContainPort(switchName, portId, circuitFlows)) {
+				circuitsInPort.add(getAllocatedCircuits().get(circuiId));
+			}
+		}
+
+		return circuitsInPort;
+	}
+
+	private boolean readAutorerouteOption() {
+		boolean autoReroute = false;
+		try {
+			autoReroute = doReadAutorerouteOption();
+		} catch (IOException ioe) {
+			log.error("Failed to read auto-reroute option. ", ioe);
+			log.warn("Deactivating auto-reroute");
+			autoReroute = false;
+		}
+
+		return autoReroute;
+	}
+
+	private boolean doReadAutorerouteOption() throws IOException {
+
+		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
+		if (properties == null)
+			throw new IOException("Failed to determine auto-reroute option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
+
+		return (Boolean) properties.get(AUTOREROUTE_KEY);
+	}
 }

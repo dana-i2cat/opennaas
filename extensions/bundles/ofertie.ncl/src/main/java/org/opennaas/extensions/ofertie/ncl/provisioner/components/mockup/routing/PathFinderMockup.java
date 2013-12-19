@@ -1,4 +1,4 @@
-package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
+package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +27,8 @@ public class PathFinderMockup implements IPathFinder {
 
 	private NCLModel					nclModel;
 
+	private RouteSelectionLogic			routeSelectionLogic;
+
 	public PathFinderMockup() throws IOException, SerializationException {
 
 		String xmlRoutes = PathLoader.readXMLFile(PATHS_FILE_URL);
@@ -42,26 +44,62 @@ public class PathFinderMockup implements IPathFinder {
 		this.nclModel = nclModel;
 	}
 
-	@Override
-	public Route findPathForRequest(FlowRequest flowRequest)
-			throws Exception {
-		return selectRouteFromRequestId(flowRequest.getRequestId());
+	/**
+	 * @return the routeSelectionLogic
+	 */
+	public RouteSelectionLogic getRouteSelectionLogic() {
+		return routeSelectionLogic;
 	}
 
 	/**
-	 * Selects a route having RouteId equals to given requestId
-	 * 
-	 * @param requestId
-	 * @return
+	 * @param routeSelectionLogic
+	 *            the routeSelectionLogic to set
 	 */
-	private Route selectRouteFromRequestId(String requestId) {
-		Route route;
+	public void setRouteSelectionLogic(RouteSelectionLogic routeSelectionLogic) {
+		this.routeSelectionLogic = routeSelectionLogic;
+	}
 
-		route = routes.get(String.valueOf(requestId));
-		if (route == null)
-			route = routes.get(DEFAULT_ROUTE);
+	@Override
+	public Route findPathForRequest(FlowRequest flowRequest)
+			throws Exception {
 
-		return route;
+		RouteSelectionInput input = createRouteSelectionInputFromRequest(flowRequest);
+		List<String> possibleRouteIds = routeSelectionLogic.getPotentialRoutes(input);
+
+		possibleRouteIds = filterNotCongestedRoutes(possibleRouteIds);
+
+		if (possibleRouteIds.isEmpty())
+			throw new Exception("Unable to find uncongested route for given request");
+
+		return routes.get(possibleRouteIds.get(0));
+	}
+
+	private RouteSelectionInput createRouteSelectionInputFromRequest(FlowRequest flowRequest) {
+		return new RouteSelectionInput(
+				flowRequest.getSourceIPAddress(),
+				flowRequest.getDestinationIPAddress(),
+				String.valueOf(flowRequest.getTos()));
+	}
+
+	private List<String> filterNotCongestedRoutes(List<String> routes) {
+		List<String> notCongested = new ArrayList<String>();
+		for (String routeId : routes) {
+			if (!isCongestedRoute(routeId)) {
+				notCongested.add(routeId);
+			}
+		}
+		return notCongested;
+	}
+
+	private boolean isCongestedRoute(String routeId) {
+		Route route = routes.get(routeId);
+		for (NetworkConnection connection : route.getNetworkConnections()) {
+			if (nclModel.getCongestedPorts().contains(connection.getSource()) ||
+					nclModel.getCongestedPorts().contains(connection.getDestination())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
