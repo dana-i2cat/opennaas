@@ -14,6 +14,7 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.FloodlightConstants;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.wrappers.FloodlightOFFlowsWrapper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
@@ -95,6 +96,9 @@ public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<F
 				flow.setActions(actions);
 				// set active true, it is never sent by Floodlight, if the flow is returned it is active
 				flow.setActive(true);
+
+				convertFloodlightDefaultsToNull(flow);
+
 				// add flow
 				wrapper.add(flow);
 			}
@@ -195,5 +199,52 @@ public class FloodlightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<F
 		}
 
 		return match;
+	}
+
+	private static void convertFloodlightDefaultsToNull(FloodlightOFFlow flow) {
+
+		if (flow.getMatch() != null) {
+			if (flow.getMatch().getWildcards() != null && flow.getMatch().getWildcards().equals(FloodlightConstants.DEFAULT_MATCH_WILDCARDS)) {
+				flow.getMatch().setWildcards(null);
+			}
+			if (flow.getMatch().getIngressPort() != null && flow.getMatch().getIngressPort().equals(FloodlightConstants.DEFAULT_MATCH_INGRESS_PORT)) {
+				flow.getMatch().setIngressPort(null);
+			}
+			if (flow.getMatch().getSrcMac() != null && flow.getMatch().getSrcMac().equals(FloodlightConstants.DEFAULT_MATCH_SRC_MAC)) {
+				flow.getMatch().setSrcMac(null);
+			}
+			if (flow.getMatch().getDstMac() != null && flow.getMatch().getDstMac().equals(FloodlightConstants.DEFAULT_MATCH_DST_MAC)) {
+				flow.getMatch().setDstMac(null);
+			}
+			if (flow.getMatch().getVlanId() != null && flow.getMatch().getVlanId().equals(FloodlightConstants.DEFAULT_MATCH_VLAN_ID)) {
+				flow.getMatch().setVlanId(null);
+			}
+			if (flow.getMatch().getVlanPriority() != null && flow.getMatch().getVlanPriority()
+					.equals(FloodlightConstants.DEFAULT_MATCH_VLAN_PRIORITY)) {
+				flow.getMatch().setVlanPriority(null);
+			}
+			if (flow.getMatch().getEtherType() != null && flow.getMatch().getEtherType().equals(FloodlightConstants.DEFAULT_MATCH_ETHER_TYPE)) {
+				flow.getMatch().setEtherType(null);
+			}
+			if (flow.getMatch().getTosBits() != null && flow.getMatch().getTosBits().equals(FloodlightConstants.DEFAULT_MATCH_TOS_BITS)) {
+				flow.getMatch().setTosBits(null);
+			}
+			if (flow.getMatch().getProtocol() != null && flow.getMatch().getProtocol().equals(FloodlightConstants.DEFAULT_MATCH_PROTOCOL)) {
+				flow.getMatch().setProtocol(null);
+			}
+			if (flow.getMatch().getSrcIp() != null && flow.getMatch().getSrcIp().equals(FloodlightConstants.DEFAULT_MATCH_SRC_IP)) {
+				flow.getMatch().setSrcIp(null);
+			}
+			if (flow.getMatch().getDstIp() != null && flow.getMatch().getDstIp().equals(FloodlightConstants.DEFAULT_MATCH_DST_IP)) {
+				flow.getMatch().setDstIp(null);
+			}
+			if (flow.getMatch().getSrcPort() != null && flow.getMatch().getSrcPort().equals(FloodlightConstants.DEFAULT_MATCH_SRC_PORT)) {
+				flow.getMatch().setSrcPort(null);
+			}
+			if (flow.getMatch().getDstPort() != null && flow.getMatch().getDstPort().equals(FloodlightConstants.DEFAULT_MATCH_DST_PORT)) {
+				flow.getMatch().setDstPort(null);
+			}
+		}
+
 	}
 }

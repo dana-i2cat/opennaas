@@ -1,21 +1,29 @@
 package org.opennaas.extensions.ofertie.ncl.test;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.RouteIds;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.RouteSelectionInput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.RouteSelectionMap;
 
 public class ProvisionerSerializationTest {
 
 	@Test
 	public void flowSerializationTest() throws SerializationException {
-		Flow original = generateSampleFlow();
+		Circuit original = generateSampleFlow();
 		String xml = ObjectSerializer.toXml(original);
-		Flow generated = (Flow) ObjectSerializer.fromXml(xml, Flow.class);
+		Circuit generated = (Circuit) ObjectSerializer.fromXml(xml, Circuit.class);
 		String xml2 = ObjectSerializer.toXml(generated);
 		Assert.assertEquals(original, generated);
 		Assert.assertEquals(xml, xml2);
@@ -29,6 +37,75 @@ public class ProvisionerSerializationTest {
 		String xml2 = ObjectSerializer.toXml(generated);
 		Assert.assertEquals(original, generated);
 		Assert.assertEquals(xml, xml2);
+	}
+
+	@Test
+	public void routeSelectionMapSerializationTest() throws SerializationException {
+		RouteSelectionMap original = generateSampleRouteSelectionMap();
+		String xml = ObjectSerializer.toXml(original);
+		RouteSelectionMap generated = (RouteSelectionMap) ObjectSerializer.fromXml(xml, RouteSelectionMap.class);
+		String xml2 = ObjectSerializer.toXml(generated);
+		Assert.assertEquals(original, generated);
+		Assert.assertEquals(xml, xml2);
+		System.out.println(xml);
+	}
+
+	// <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	// <routeSelectionMap>
+	// <routeMapping>
+	// <entry>
+	// <key>
+	// <srcIP>192.168.1.1</srcIP>
+	// <dstIP>192.168.1.2</dstIP>
+	// <tos>4</tos>
+	// </key>
+	// <value>
+	// <routeIds>1</routeIds>
+	// <routeIds>2</routeIds>
+	// <routeIds>3</routeIds>
+	// </value>
+	// </entry>
+	// <entry>
+	// <key>
+	// <srcIP>192.168.1.2</srcIP>
+	// <dstIP>192.168.1.1</dstIP>
+	// <tos>4</tos>
+	// </key>
+	// <value>
+	// <routeIds>3</routeIds>
+	// <routeIds>4</routeIds>
+	// <routeIds>5</routeIds>
+	// <routeIds>1</routeIds>
+	// </value>
+	// </entry>
+	// </routeMapping>
+	// </routeSelectionMap>
+	private RouteSelectionMap generateSampleRouteSelectionMap() {
+
+		String srcIP = "192.168.1.1";
+		String dstIP = "192.168.1.2";
+		String tos = "4";
+
+		RouteSelectionInput input1 = new RouteSelectionInput(srcIP, dstIP, tos);
+		RouteSelectionInput input2 = new RouteSelectionInput(dstIP, srcIP, tos);
+
+		List<String> routes1 = Arrays.asList("1", "2", "3");
+		List<String> routes2 = Arrays.asList("3", "4", "5", "1");
+
+		RouteIds ids1 = new RouteIds();
+		ids1.setRouteIds(routes1);
+
+		RouteIds ids2 = new RouteIds();
+		ids2.setRouteIds(routes2);
+
+		Map<RouteSelectionInput, RouteIds> routeMapping = new HashMap<RouteSelectionInput, RouteIds>();
+		routeMapping.put(input1, ids1);
+		routeMapping.put(input2, ids2);
+
+		RouteSelectionMap routeMap = new RouteSelectionMap();
+		routeMap.setRouteMapping(routeMapping);
+
+		return routeMap;
 	}
 
 	// <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -55,7 +132,7 @@ public class ProvisionerSerializationTest {
 	// </qoSRequirements>
 	// </flowRequest>
 	// </flow>
-	private Flow generateSampleFlow() {
+	private Circuit generateSampleFlow() {
 
 		QoSRequirements qoSRequirements = new QoSRequirements();
 		qoSRequirements.setMinBandwidth(100 * 1000 * 1000);
@@ -78,7 +155,7 @@ public class ProvisionerSerializationTest {
 		request.setTos(1);
 		request.setQoSRequirements(qoSRequirements);
 
-		Flow flow = new Flow();
+		Circuit flow = new Circuit();
 		flow.setId("1");
 		flow.setFlowRequest(request);
 

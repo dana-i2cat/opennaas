@@ -62,6 +62,10 @@
 				<configuration>
 					<instructions>
 						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
+						<Import-Package>
+							javax.persistence,
+							*
+						</Import-Package>
 						<Export-Package>
 							   org.opennaas.extensions.macbridge.ios.resource.commandsets.*;version="${project.version}",
              				   org.opennaas.extensions.macbridge.ios.resource.actionssets.*;version="${project.version}",
