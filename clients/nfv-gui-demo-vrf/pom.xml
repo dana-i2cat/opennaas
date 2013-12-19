@@ -216,10 +216,21 @@
 		</dependency>
 	</dependencies>
 	
-	<build>
-		<finalName>nfv-gui-demo-vrf</finalName>
-	</build>
-    <properties>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
-    </properties>
+<build>
+                <finalName>nfv-gui-demo-vrf</finalName>
+                <plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <!--
+            Exclude all spring 2.5 jars
+          -->
+          <packagingExcludes>
+            WEB-INF/lib/org.springframework.*-2.5*.jar
+          </packagingExcludes>
+        </configuration>
+      </plugin>
+    </plugins>
+        </build>
 </project>

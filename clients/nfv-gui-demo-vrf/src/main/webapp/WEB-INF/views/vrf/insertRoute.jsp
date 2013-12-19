@@ -8,7 +8,10 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<div id="insert_topology" class="topology">Topology Insert</div>
+<div id="insert_topology" class="topology">
+    <p onmousedown="cleanDrag()" id="chart" ></p>
+</div>
+<script src="<c:url value="/resources/js/topology/insertRouteTopology.js" />"></script>
 <div id="insert_info" class="ui-widget-content ui-corner-all padding">
     <h3>Route information:</h3>
 

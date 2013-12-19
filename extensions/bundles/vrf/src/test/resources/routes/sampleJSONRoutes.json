@@ -1,6 +1,6 @@
 {"routeIPv4":[
 {"srcAddr":"192.168.2.0/24","dstAddr":"192.168.1.0/24","swInfo":{"inPort":5,"outPort":1,"dpid":"00:00:00:00:00:00:00:02"}},
-{"srcAddr":"192.168.2.0/24","dstAddr":"192.168.1.0/24","swInfo":{"inPort":1,"outPort":5,"dpid":"00:00:00:00:00:00:00:01"}},
+{"srcAddr":"192.168.2.0/24","dstAddr":"192.168.1.1","swInfo":{"inPort":1,"outPort":5,"dpid":"00:00:00:00:00:00:00:01"}},
 {"srcAddr":"192.168.1.0/24","dstAddr":"192.168.2.0/24","swInfo":{"inPort":5,"outPort":1,"dpid":"00:00:00:00:00:00:00:01"}},
 {"srcAddr":"192.168.1.0/24","dstAddr":"192.168.2.51","swInfo":{"inPort":1,"outPort":5,"dpid":"00:00:00:00:00:00:00:02"}}
 ],

@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.insertRoutes;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
 import org.opennaas.gui.nfvrouting.entities.Route;
+import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -47,16 +48,17 @@ public class NFVRoutingController {
             typ = 6;
         } else {
             model.addAttribute("errorMsg", "This type of table does not exist.");
-            return "table";
+            return "configRoute";
         }
-/*        try {
+        try {
             String response = nfvRoutingBO.getRouteTable(typ);
             LOGGER.info("received json: " + response);
             model.addAttribute("json", response);
         } catch (RestServiceException e) {
             model.addAttribute("errorMsg", e.getMessage());
+            return "home";
         }
- */       return "configRoute";
+        return "configRoute";
     }
 
     /**
@@ -107,11 +109,11 @@ public class NFVRoutingController {
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/animation")
     public String animation(insertRoutes route, BindingResult result, ModelMap model) {
         LOGGER.info("Animation ------------------> " + route.getListRoutes());
-        
+
         return "animation";
     }
-    
-   /**
+
+    /**
      * Remove the Route without redirect
      *
      * @param type
@@ -120,7 +122,8 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteRoute/{id}")
-    public @ResponseBody String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
+    public @ResponseBody
+    String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
         LOGGER.debug("Remove Route ------------------> " + id);
         String response = "";
         int version;
@@ -149,7 +152,8 @@ public class NFVRoutingController {
      * @return the log of OpenNaaS
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getLog")
-    public @ResponseBody String getLog(ModelMap model) {
+    public @ResponseBody
+    String getLog(ModelMap model) {
         LOGGER.debug("Get log ------------------");
         String response = nfvRoutingBO.getLog();
 
@@ -165,7 +169,8 @@ public class NFVRoutingController {
      * @return the information of the switch (IP:port)
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/getInfoSw/{dpid}")
-    public @ResponseBody String getInfoSw(@PathVariable("dpid") String dpid, ModelMap model) {
+    public @ResponseBody
+    String getInfoSw(@PathVariable("dpid") String dpid, ModelMap model) {
         LOGGER.debug("Get Information about switch ------------------");
         String response = nfvRoutingBO.getSwInfo(dpid);
         return response;

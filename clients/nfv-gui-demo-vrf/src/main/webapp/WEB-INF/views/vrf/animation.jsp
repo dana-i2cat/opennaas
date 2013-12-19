@@ -10,12 +10,11 @@
 
 <div id="animation_log" class="ui-widget-content ui-corner-all padding">
     <h3>Log OpenNaaS</h3>
-    <div id="log" align="center" style="font-size:20px;background:black;color:white;min-height:200px;width:100%;margin:0 auto;"></div>
+    <div id="log" class="ui-corner-all" align="center" style="font-size:20px;background:black;color:white;min-height:200px;width:100%;margin:0 auto;"></div>
 
 <script>
-    setInterval(function()
-{ 
-    $.ajax({
+    setInterval(function(){ 
+        $.ajax({
             type: 'GET',
             url : "getLog/",
             async: false,
@@ -29,11 +28,12 @@
                 result = data;                 
             }
         });
-}, 500000);//5000
-    
-        
+    }, 500000);//5000
+
 </script>
 </div>
-<div id="animaton_topology" class="topology">Animation Topology</div>
+<div id="animaton_topology" class="topology">
+    <p id="chart" ></p>
+</div>
 <table id="jsonTable" class="tablesorter">
 </table> 

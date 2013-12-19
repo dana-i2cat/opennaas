@@ -6,7 +6,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
 <script language="JavaScript" type="text/JavaScript">
 //    objectArray = ${json};
 //    var jsonHtmlTable = ConvertJsonToFlowTable(objectArray, 'jsonTable', null, 'Go to');
@@ -24,27 +23,31 @@
     <h3>Flow table:</h3>
     <table id="jsonFlowTable" class="tablesorter"></table>
 </div>
-<div id="home_topology" class="topology">Topo image</div>
+<div id="home_topology" class="topology">
+    <p id="chart" ></p>
+</div>
+<script src="<c:url value="/resources/js/topology/baseTopology.js" />"></script>
+<script src="<c:url value="/resources/js/topology/homeTopology.js" />"></script>
 
-<%@include file="noTemplate.jsp"%>
 <script language="JavaScript" type="text/JavaScript">
-    function updateSwInfoTxt(){
-    console.log("click");
-    var dpid = "00:00:00:00:00:00:00:01";
+    function updateSwInfoTxt(dpid, controller){
+        document.getElementById("IP").innerHTML ='<b>Controller IP: </b>';
+        document.getElementById("Port").innerHTML ='<b>Controller Port: </b>';
+        document.getElementById("Status").innerHTML ='<b>Status: </b>';
         $.ajax({
 		type: "GET",
 		url: "getInfoSw/"+dpid,
 		success: function(data) {
 			$('#ajaxUpdate').html(data);    
-                        console.log(data);
+                        var json = convertXml2JSon(data);
+                        var jsonHtmlTable = ConvertJsonToFlowTable(json, 'jsonFlowTable', null, 'Go to');
+
+                        document.getElementById("jsonFlowTable").innerHTML = jsonHtmlTable;
 		}
 	});
-        
         document.getElementById("DPID").innerHTML ='<b>DPID: </b>'+dpid;
-        document.getElementById("IP").innerHTML ='<b>Controller IP: </b>dasdsa';
-        document.getElementById("Port").innerHTML ='<b>Controller Port: </b>'+dpid;
-        document.getElementById("Status").innerHTML ='<b>Status: </b>'+dpid;
+        document.getElementById("IP").innerHTML ='<b>Controller IP: </b>'+controller.split(":")[0];
+        document.getElementById("Port").innerHTML ='<b>Controller Port: </b>'+controller.split(":")[1];
+        document.getElementById("Status").innerHTML ='<b>Status: </b>Online';
     }
 </script>
-<a href="#" onClick="javascript:updateSwInfoTxt()">change</a>
-

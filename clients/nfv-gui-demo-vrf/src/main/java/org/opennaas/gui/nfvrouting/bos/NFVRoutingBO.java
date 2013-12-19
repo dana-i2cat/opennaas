@@ -44,13 +44,13 @@ public class NFVRoutingBO {
 
     /**
      * Request the status of specific controller
-     * @param ip
+     * @param dpid
      * @return Offline or Online
      */
-    public String getControllerStatus(String ip) {
+/*    public String getControllerStatus(String ip) {
         return nfvRoutingService.getControllerStatus(ip);
     }
-
+*/
     public String getSwInfo(String dpid) {
         return nfvRoutingService.getSwInfo(dpid);
     }

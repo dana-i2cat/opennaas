@@ -14,6 +14,6 @@
 
 	<modules>
         <module>opennaas-gui-vcpe</module>
-		<module>nfv-gui-demo-vrf</module>
+	<module>nfv-gui-demo-vrf</module>
  	</modules>
 </project>

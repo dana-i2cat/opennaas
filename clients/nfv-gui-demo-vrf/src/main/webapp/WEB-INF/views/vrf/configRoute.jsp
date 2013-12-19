@@ -12,4 +12,14 @@
     <h3>Configured routes</h3>
     <table id="jsonTable" class="tablesorter"></table>
 </div>
-<div id="config_topology" class="topology">Topology</div>
+<div id="config_topology" class="topology">
+    <p onmousedown="cleanDrag()" id="chart" ></p>
+</div>
+<script src="<c:url value="/resources/js/topology/configTopology.js" />"></script>
+
+<script language="JavaScript" type="text/JavaScript">
+    var jsonRoutes = ${json};
+    var type = getURLParameter("type");
+    var jsonHtmlTable = ConvertJsonToRouteTable(jsonRoutes, 'jsonTable', null, 'Download');
+    document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
+</script>

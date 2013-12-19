@@ -66,7 +66,7 @@ public class RoutingTable {
                 return true;
             }
         }
-        log.error("This route no exists.");
+        log.info("This route no exists.");
         return false;
     }
     
@@ -85,7 +85,7 @@ public class RoutingTable {
                 return r.getId();
             }
         }
-        log.error("This route no exists.");
+        log.info("This route no exists.");
         return 0;
     }
 
