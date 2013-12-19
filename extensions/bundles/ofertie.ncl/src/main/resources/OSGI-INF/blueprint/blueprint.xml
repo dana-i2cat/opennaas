@@ -25,6 +25,10 @@
 		<property name="pathFinder" ref="pathFinder" />
 	</bean>
 	<bean id="nclController" class="org.opennaas.extensions.ofertie.ncl.controller.NCLController"/>
+	<bean id="nclMonitoring" class="org.opennaas.extensions.ofertie.ncl.monitoring.NCLMonitoring" init-method="init">
+		<property name="nclController" ref="nclController" />
+		<property name="nclModel" ref="nclModel" />
+	</bean>
 	
 	<!-- Instantiate NCLProvisioner and publish it -->
 	<bean id="nclProvisioner" class="org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner">
@@ -47,8 +51,4 @@
 		</service-properties>
 	</service>
 	
-	<bean id="nclMonitoring" class="org.opennaas.extensions.ofertie.ncl.monitoring.NCLMonitoring">
-		<property name="nclController" ref="nclController" />
-		<property name="nclModel" ref="nclModel" />
-	</bean>
 </blueprint>
