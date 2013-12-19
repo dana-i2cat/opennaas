@@ -258,7 +258,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	}
 
 	// ////////////////////////
-	// EvebtListener Methods //
+	// EventListener Methods //
 	// ////////////////////////
 
 	@Override
@@ -271,13 +271,20 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 			log.info("LinkCongestion alarm received for switch " + switchName + " and port " + portId);
 
-			String circuitId = selectCircuitToReallocate(switchName, portId);
+			boolean autoReroute = readAutorerouteOption();
+			if (autoReroute) {
+				log.debug("Auto-reroute is activated. Launching auto-reroute");
+				String circuitId = selectCircuitToReallocate(switchName, portId);
 
-			try {
-				rerouteCircuit(circuitId);
-			} catch (Exception e) {
-				log.error("Could not reallocate circuit " + circuitId, e);
-				// TODO can not throw exception, since EventHandler interface does not allow it.
+				try {
+					rerouteCircuit(circuitId);
+				} catch (Exception e) {
+					log.error("Could not reallocate circuit " + circuitId, e);
+					// TODO can not throw exception, since EventHandler interface does not allow it.
+				}
+
+			} else {
+				log.debug("Auto-reroute is deactivated. Ignoring received LinkCongestion alarm. ");
 			}
 		}
 		else
@@ -286,30 +293,23 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	}
 
 	public void unregisterListener() {
-		if (autoReroute) {
-			log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
-			eventListenerRegistration.unregister();
-			log.debug("NCLProvisioner successfully unregistered.");
-		}
+
+		log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
+		eventListenerRegistration.unregister();
+		log.debug("NCLProvisioner successfully unregistered.");
+
 	}
 
 	public void registerAsCongestionEventListener() throws IOException {
 
-		autoReroute = readAutorerouteOption();
+		log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
 
-		if (autoReroute) {
+		Properties properties = new Properties();
+		properties.put(EventConstants.EVENT_TOPIC, LinkCongestionEvent.TOPIC);
 
-			log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
+		eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
 
-			Properties properties = new Properties();
-			properties.put(EventConstants.EVENT_TOPIC, LinkCongestionEvent.TOPIC);
-
-			eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
-
-			log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
-		}
-		else
-			log.info("Auto-reroute option deactivated, NCL not registered as LinkCongestion events listener.");
+		log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
 
 	}
 
@@ -365,11 +365,24 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		return circuitsInPort;
 	}
 
-	private boolean readAutorerouteOption() throws IOException {
+	private boolean readAutorerouteOption() {
+		boolean autoReroute = false;
+		try {
+			autoReroute = doReadAutorerouteOption();
+		} catch (IOException ioe) {
+			log.error("Failed to read auto-reroute option. ", ioe);
+			log.warn("Deactivating auto-reroute");
+			autoReroute = false;
+		}
+
+		return autoReroute;
+	}
+
+	private boolean doReadAutorerouteOption() throws IOException {
 
 		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
 		if (properties == null)
-			throw new IOException("Failed to initialize NCL as listener." + "Unable to obtain configuration " + NCL_CONFIG_FILE);
+			throw new IOException("Failed to determine auto-reroute option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
 
 		return (Boolean) properties.get(AUTOREROUTE_KEY);
 	}
