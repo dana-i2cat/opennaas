@@ -34,7 +34,7 @@ public class RoutingCapabilityTest {
         String ipDest = String.valueOf(Utils.StringIPv4toInt("192.168.2.51"));
         String switchDPID = "00:00:00:00:00:00:00:01";
         int inputPort = 1;
-        boolean proactive = false;
+        boolean proactive = true;
         RoutingCapability instance = new RoutingCapability();
         Response result = instance.getRoute(ipSource, ipDest, switchDPID, inputPort, proactive);
         assertEquals(404, result.getStatus());
@@ -47,6 +47,7 @@ public class RoutingCapabilityTest {
         InputStream is = new ByteArrayInputStream(filename.getBytes("UTF-8"));
         instance.insertRouteFile(FILE_NAME, is);
         result = instance.getRoute(ipSource, ipDest, switchDPID, inputPort, proactive);
+        System.out.println("Result getRoute: "+result.getEntity());
         assertEquals(200, result.getStatus());
     }
 

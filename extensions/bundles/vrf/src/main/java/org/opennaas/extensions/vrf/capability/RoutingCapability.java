@@ -71,6 +71,7 @@ public class RoutingCapability implements IRoutingCapability {
         logMessage = dateFormat.format(date) + " -> Requested routed from: " + ipSource + ". Where is located " + ipDest + "? throught port " + inputPort + " of switch " + switchDPID;
         //---------------------END DEMO
         int outPortSrcSw;
+        Response response;
         int version;//IP version
         if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
             ipSource = Utils.intIPv4toString(Integer.parseInt(ipSource));
@@ -100,16 +101,27 @@ public class RoutingCapability implements IRoutingCapability {
         } else {
             return Response.status(404).type("text/plain").entity("Route Not found.").build();
         }
-
+        StringBuilder listFlows = new StringBuilder();
+        List<FloodlightOFFlow> listOF;
         if (proactive) {
-            proactiveRouting(switchInfo, route, version);
+            response = proactiveRouting(switchInfo, route, version);
+            listOF = ((List<FloodlightOFFlow>) response.getEntity());
+            listFlows.append("[");
+            listFlows.append("{dpid:'").append(switchDPID).append("'},");//first switch id
+        
+            for (int i = 0; i< listOF.size(); i++) {
+                listFlows.append("{dpid:'");
+                listFlows.append(listOF.get(i).getSwitchId());
+                listFlows.append("'},");//others switch ids
+            }
+            listFlows.append("{ip:'").append(ipDest).append("'}]");//final destination
         }
         //---------------------DEMO
         date = new Date();
         logMessage = logMessage + "\n" + dateFormat.format(date) + " -> Packet Routed to out port: " + outPortSrcSw + " of the switch: " + switchDPID;
         new updateLog().start();
         //---------------------END DEMO
-        return Response.ok(Integer.toString(outPortSrcSw) + ":" + ipDest).build();
+        return Response.ok(Integer.toString(outPortSrcSw) + ":" + listFlows).build();
     }
 
     @Override
@@ -285,7 +297,7 @@ public class RoutingCapability implements IRoutingCapability {
                             newRoute.setDestinationAddress(node.get("dstAddr").getValueAsText());
                             newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
                             newSwitch.setOutputPort(Integer.parseInt(node.get("swInfo").getPath("outPort").getValueAsText()));
-                            newSwitch.setMacAddress(node.get("swInfo").getPath("macAddr").getValueAsText());
+                            newSwitch.setDPID(node.get("swInfo").getPath("dpid").getValueAsText());
                             newRoute.setSwitchInfo(newSwitch);
                             if (fieldName.equals("routeIPv4")) {
                                 model.getTable(4).addRoute(newRoute);
@@ -339,7 +351,7 @@ public class RoutingCapability implements IRoutingCapability {
 //                throw new ActionException("Error provisioning link : ", e);
             }
         }
-        return Response.ok("Proactive messages sent.").build();
+        return Response.ok(listFlow).build();
     }
 
     private Response provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException, ActivatorException {

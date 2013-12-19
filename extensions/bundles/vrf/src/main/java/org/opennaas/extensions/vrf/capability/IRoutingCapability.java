@@ -127,7 +127,7 @@ public interface IRoutingCapability {
     public Response getRoutes(@PathParam("version") int version);
 
     /**
-     * Insert Routes from file
+     * Insert Routes from json file
      *
      * @param fileName The name of the file
      * @return Status of the request.
@@ -138,6 +138,7 @@ public interface IRoutingCapability {
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRouteFile(@PathParam("fileName") String fileName, InputStream viDescription);
 
+    /* ------------- DEMO ------------- */
     /**
      * Used in demonstrations. Request a log from OpenNaaS in order to see the route requests events.
      * @return 
@@ -146,4 +147,7 @@ public interface IRoutingCapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getLog();
+    
+   
+    /* ------------- DEMO ------------- */
 }

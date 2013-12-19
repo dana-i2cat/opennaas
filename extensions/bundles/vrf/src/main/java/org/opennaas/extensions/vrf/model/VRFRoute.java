@@ -89,7 +89,7 @@ public class VRFRoute {
         if(!Utils.netMatch(thisDst, otherDst)){
                 return false;
         }
-        if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
+        if (this.switchInfo.getDPID() != other.switchInfo.getDPID() && (this.switchInfo.getDPID() == null || !this.switchInfo.getDPID().equals(other.switchInfo.getDPID()))) {
             return false;
         }
         return true;

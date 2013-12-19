@@ -248,10 +248,10 @@ public class Utils {
 //        netCon.setId();//internal-id, nom del flow que guarda el floodlight
         netCon.setName(String.valueOf(route.getId()));//user friendly name
         Port port = new Port();
-        port.setDeviceId(route.getSwitchInfo().getMacAddress());
+        port.setDeviceId(route.getSwitchInfo().getDPID());
         port.setPortNumber(String.valueOf(route.getSwitchInfo().getInputPort()));
         netCon.setSource(port);
-        port.setDeviceId(route.getSwitchInfo().getMacAddress());
+        port.setDeviceId(route.getSwitchInfo().getDPID());
         port.setPortNumber(String.valueOf(route.getSwitchInfo().getOutputPort()));
         netCon.setDestination(port);
         return netCon;
@@ -282,7 +282,7 @@ public class Utils {
         flow.setActive(true);
         flow.setMatch(match);
         flow.setName(String.valueOf(route.getId()));
-        flow.setSwitchId(route.getSwitchInfo().getMacAddress());
+        flow.setSwitchId(route.getSwitchInfo().getDPID());
 
         return flow;
     }

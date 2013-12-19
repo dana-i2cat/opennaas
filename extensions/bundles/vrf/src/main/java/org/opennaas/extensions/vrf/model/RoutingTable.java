@@ -112,7 +112,7 @@ public class RoutingTable {
     public List<VRFRoute> getListRoutes(VRFRoute route, L2Forward srcSwInfo, L2Forward destSwInfo) {
         List<VRFRoute> subnetList = new ArrayList<VRFRoute>();
         for (VRFRoute r : this.getRouteTable()) {
-            if(!r.getSwitchInfo().getMacAddress().equals(srcSwInfo.getMacAddress())){
+            if(!r.getSwitchInfo().getDPID().equals(srcSwInfo.getDPID())){
                 if (r.equalsOtherRoutes(route)) {
                     log.debug("Match other route. Id match route: "+r.getId());
                     subnetList.add(r);
