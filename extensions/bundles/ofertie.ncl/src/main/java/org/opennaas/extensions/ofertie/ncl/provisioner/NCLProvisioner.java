@@ -168,7 +168,6 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	@Override
 	public String updateFlow(String flowId, FlowRequest updatedFlowRequest) throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
-
 		synchronized (mutex) {
 			deallocateFlow(flowId);
 			String newFlowId = allocateFlow(updatedFlowRequest);
@@ -190,7 +189,6 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	@Override
 	public void deallocateFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
-
 		synchronized (mutex) {
 			try {
 
@@ -296,15 +294,12 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 			boolean autoReroute = readAutorerouteOption();
 			if (autoReroute) {
 				log.debug("Auto-reroute is activated. Launching auto-reroute");
-				String circuitId = selectCircuitToReallocate(switchName, portId);
-
 				try {
-					rerouteCircuit(circuitId);
+					launchRerouteMechanism(switchName, portId);
 				} catch (Exception e) {
-					log.error("Could not reallocate circuit " + circuitId, e);
+					log.error(e);
 					// TODO can not throw exception, since EventHandler interface does not allow it.
 				}
-
 			} else {
 				log.debug("Auto-reroute is deactivated. Ignoring received LinkCongestion alarm. ");
 			}
@@ -312,6 +307,18 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		else
 			log.debug("Ignoring non-LinkCongestion alarm.");
 
+	}
+
+	private void launchRerouteMechanism(String switchName, String portId) throws Exception {
+		synchronized (mutex) {
+			String circuitId = selectCircuitToReallocate(switchName, portId);
+
+			try {
+				rerouteCircuit(circuitId);
+			} catch (Exception e) {
+				throw new Exception("Could not reallocate circuit " + circuitId, e);
+			}
+		}
 	}
 
 	public void unregisterListener() {
