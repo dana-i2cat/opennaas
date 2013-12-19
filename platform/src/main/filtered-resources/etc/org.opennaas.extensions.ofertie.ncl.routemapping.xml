@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<routeSelectionMap>
+    <routeMapping>
+        <entry>
+            <key>
+                <srcIP>192.168.1.1</srcIP>
+                <dstIP>192.168.1.2</dstIP>
+                <tos>4</tos>
+            </key>
+            <value>
+                <routeIds>1</routeIds>
+                <routeIds>2</routeIds>
+                <routeIds>3</routeIds>
+            </value>
+        </entry>
+        <entry>
+            <key>
+                <srcIP>192.168.1.2</srcIP>
+                <dstIP>192.168.1.1</dstIP>
+                <tos>4</tos>
+            </key>
+            <value>
+                <routeIds>3</routeIds>
+                <routeIds>4</routeIds>
+                <routeIds>5</routeIds>
+                <routeIds>1</routeIds>
+            </value>
+        </entry>
+    </routeMapping>
+</routeSelectionMap>
