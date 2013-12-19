@@ -47,7 +47,6 @@ public class RoutingCapabilityTest {
         InputStream is = new ByteArrayInputStream(filename.getBytes("UTF-8"));
         instance.insertRouteFile(FILE_NAME, is);
         result = instance.getRoute(ipSource, ipDest, switchDPID, inputPort, proactive);
-        System.out.println("Result getRoute: "+result.getEntity());
         assertEquals(200, result.getStatus());
     }
 
