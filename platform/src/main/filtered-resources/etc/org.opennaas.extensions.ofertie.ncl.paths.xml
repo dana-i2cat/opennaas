@@ -1,81 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <routes>
 	<route>
-	    <id>0</id>
-	    <networkConnections>
-	        <name>h1-0-&gt;s3-1</name>
-	        <source>
-	            <deviceId>h1</deviceId>
-	            <portNumber>0</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s3</deviceId>
-	            <portNumber>1</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s3-1-&gt;s3-2</name>
-	        <source>
-	            <deviceId>s3</deviceId>
-	            <portNumber>1</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s3</deviceId>
-	            <portNumber>2</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s3-2-&gt;s4-1</name>
-	        <source>
-	            <deviceId>s3</deviceId>
-	            <portNumber>2</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s4</deviceId>
-	            <portNumber>1</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s4-1-&gt;s4-2</name>
-	        <source>
-	            <deviceId>s4</deviceId>
-	            <portNumber>1</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s4</deviceId>
-	            <portNumber>2</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s4-2-&gt;h2-0</name>
-	        <source>
-	            <deviceId>s4</deviceId>
-	            <portNumber>2</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>h2</deviceId>
-	            <portNumber>0</portNumber>
-	        </destination>
-	    </networkConnections>
-	</route>
-	<route>
 	    <id>1</id>
-	    <networkConnections>
-	        <name>h1-1-&gt;s5-1</name>
+		<networkConnections>
+	        <name>h6-2-&gt;s5-3</name>
 	        <source>
-	            <deviceId>h1</deviceId>
-	            <portNumber>1</portNumber>
+	            <deviceId>h6</deviceId>
+	            <portNumber>2</portNumber>
 	        </source>
 	        <destination>
 	            <deviceId>s5</deviceId>
-	            <portNumber>1</portNumber>
+	            <portNumber>3</portNumber>
 	        </destination>
 	    </networkConnections>
-	    <networkConnections>
-	        <name>s5-1-&gt;s5-2</name>
+		<networkConnections>
+	        <name>s5-3-&gt;s5-2</name>
 	        <source>
 	            <deviceId>s5</deviceId>
-	            <portNumber>1</portNumber>
+	            <portNumber>3</portNumber>
 	        </source>
 	        <destination>
 	            <deviceId>s5</deviceId>
@@ -83,126 +25,225 @@
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s5-2-&gt;h2-1</name>
+	        <name>s5-2-&gt;s4-3</name>
 	        <source>
 	            <deviceId>s5</deviceId>
 	            <portNumber>2</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>h2</deviceId>
+	            <deviceId>s4</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s4-3-&gt;s4-1</name>
+	        <source>
+	            <deviceId>s4</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s4</deviceId>
 	            <portNumber>1</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s4-1-&gt;s1-3</name>
+	        <source>
+	            <deviceId>s4</deviceId>
+	            <portNumber>1</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s1</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s1-3-&gt;s1-1</name>
+	        <source>
+	            <deviceId>s1</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s1</deviceId>
+	            <portNumber>1</portNumber>
+	        </destination>
+	    </networkConnections>
+		<networkConnections>
+	        <name>s1-1-&gt;s2-1</name>
+	        <source>
+	            <deviceId>s1</deviceId>
+	            <portNumber>1</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s2</deviceId>
+	            <portNumber>1</portNumber>
+	        </destination>
+	    </networkConnections>
+		<networkConnections>
+	        <name>s2-1-&gt;s2-3</name>
+	        <source>
+	            <deviceId>s2</deviceId>
+	            <portNumber>1</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s2-3-&gt;h8-2</name>
+	        <source>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>h8</deviceId>
+	            <portNumber>2</portNumber>
 	        </destination>
 	    </networkConnections>
 	</route>
 	<route>
 	    <id>2</id>
-	    <networkConnections>
-	        <name>h1-2-&gt;s6-1</name>
+		<networkConnections>
+	        <name>h8-2-&gt;s2-3</name>
 	        <source>
-	            <deviceId>h1</deviceId>
+	            <deviceId>h8</deviceId>
 	            <portNumber>2</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s6</deviceId>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+		<networkConnections>
+	        <name>s2-3-&gt;s2-1</name>
+	        <source>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s2</deviceId>
 	            <portNumber>1</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s6-1-&gt;s6-2</name>
+	        <name>s2-1-&gt;s1-1</name>
 	        <source>
-	            <deviceId>s6</deviceId>
+	            <deviceId>s2</deviceId>
 	            <portNumber>1</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s6</deviceId>
-	            <portNumber>2</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s6-2-&gt;s7-1</name>
-	        <source>
-	            <deviceId>s6</deviceId>
-	            <portNumber>2</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s7</deviceId>
+	            <deviceId>s1</deviceId>
 	            <portNumber>1</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s7-1-&gt;s7-2</name>
+	        <name>s1-1-&gt;s1-3</name>
 	        <source>
-	            <deviceId>s7</deviceId>
+	            <deviceId>s1</deviceId>
 	            <portNumber>1</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s7</deviceId>
-	            <portNumber>2</portNumber>
+	            <deviceId>s1</deviceId>
+	            <portNumber>3</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s7-2-&gt;s8-1</name>
+	        <name>s1-3-&gt;s4-1</name>
 	        <source>
-	            <deviceId>s7</deviceId>
-	            <portNumber>2</portNumber>
+	            <deviceId>s1</deviceId>
+	            <portNumber>3</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s8</deviceId>
+	            <deviceId>s4</deviceId>
 	            <portNumber>1</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s8-1-&gt;s8-2</name>
+	        <name>s4-1-&gt;s4-3</name>
 	        <source>
-	            <deviceId>s8</deviceId>
+	            <deviceId>s4</deviceId>
 	            <portNumber>1</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s8</deviceId>
+	            <deviceId>s4</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+		<networkConnections>
+	        <name>s4-3-&gt;s5-2</name>
+	        <source>
+	            <deviceId>s4</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s5</deviceId>
 	            <portNumber>2</portNumber>
 	        </destination>
 	    </networkConnections>
-	    <networkConnections>
-	        <name>s8-2-&gt;h2-2</name>
+		<networkConnections>
+	        <name>s5-2-&gt;s5-3</name>
 	        <source>
-	            <deviceId>s8</deviceId>
+	            <deviceId>s5</deviceId>
 	            <portNumber>2</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>h2</deviceId>
+	            <deviceId>s5</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s5-3-&gt;h6-2</name>
+	        <source>
+	            <deviceId>s5</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>h6</deviceId>
 	            <portNumber>2</portNumber>
 	        </destination>
 	    </networkConnections>
 	</route>
 	<route>
-	    <id>10</id>
+	    <id>3</id>
 	    <networkConnections>
-	        <name>h2-0-&gt;s4-2</name>
+	        <name>h6-2-&gt;s5-3</name>
 	        <source>
-	            <deviceId>h2</deviceId>
-	            <portNumber>0</portNumber>
+	            <deviceId>h6</deviceId>
+	            <portNumber>2</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s4</deviceId>
-	            <portNumber>2</portNumber>
+	            <deviceId>s5</deviceId>
+	            <portNumber>3</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s4-2-&gt;s4-1</name>
+	        <name>s5-3-&gt;s5-1</name>
 	        <source>
-	            <deviceId>s4</deviceId>
-	            <portNumber>2</portNumber>
+	            <deviceId>s5</deviceId>
+	            <portNumber>3</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s4</deviceId>
+	            <deviceId>s5</deviceId>
 	            <portNumber>1</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s4-1-&gt;s3-2</name>
+	        <name>s5-1-&gt;s3-4</name>
 	        <source>
-	            <deviceId>s4</deviceId>
+	            <deviceId>s5</deviceId>
 	            <portNumber>1</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s3</deviceId>
+	            <portNumber>4</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s3-4-&gt;s3-2</name>
+	        <source>
+	            <deviceId>s3</deviceId>
+	            <portNumber>4</portNumber>
 	        </source>
 	        <destination>
 	            <deviceId>s3</deviceId>
@@ -210,140 +251,115 @@
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s3-2-&gt;s3-1</name>
+	        <name>s3-2-&gt;s2-2</name>
 	        <source>
 	            <deviceId>s3</deviceId>
 	            <portNumber>2</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s3</deviceId>
-	            <portNumber>1</portNumber>
+	            <deviceId>s2</deviceId>
+	            <portNumber>2</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s3-1-&gt;h1-0</name>
+	        <name>s2-2-&gt;s2-3</name>
 	        <source>
-	            <deviceId>s3</deviceId>
-	            <portNumber>1</portNumber>
+	            <deviceId>s2</deviceId>
+	            <portNumber>2</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>h1</deviceId>
-	            <portNumber>0</portNumber>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s2-3-&gt;h8-2</name>
+	        <source>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>h8</deviceId>
+	            <portNumber>2</portNumber>
 	        </destination>
 	    </networkConnections>
 	</route>
 	<route>
-	    <id>11</id>
+	    <id>4</id>
 	    <networkConnections>
-	        <name>h2-1-&gt;s5-2</name>
+	        <name>h8-2-&gt;s2-3</name>
 	        <source>
-	            <deviceId>h2</deviceId>
+	            <deviceId>h8</deviceId>
+	            <portNumber>2</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s2-3-&gt;s2-2</name>
+	        <source>
+	            <deviceId>s2</deviceId>
+	            <portNumber>3</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s2</deviceId>
+	            <portNumber>2</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s2-2-&gt;s3-2</name>
+	        <source>
+	            <deviceId>s2</deviceId>
+	            <portNumber>2</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s3</deviceId>
+	            <portNumber>2</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s3-2-&gt;s3-4</name>
+	        <source>
+	            <deviceId>s3</deviceId>
+	            <portNumber>2</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s3</deviceId>
+	            <portNumber>4</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s3-4-&gt;s5-1</name>
+	        <source>
+	            <deviceId>s3</deviceId>
+	            <portNumber>4</portNumber>
+	        </source>
+	        <destination>
+	            <deviceId>s5</deviceId>
+	            <portNumber>1</portNumber>
+	        </destination>
+	    </networkConnections>
+	    <networkConnections>
+	        <name>s5-1-&gt;s5-3</name>
+	        <source>
+	            <deviceId>s5</deviceId>
 	            <portNumber>1</portNumber>
 	        </source>
 	        <destination>
 	            <deviceId>s5</deviceId>
-	            <portNumber>2</portNumber>
+	            <portNumber>3</portNumber>
 	        </destination>
 	    </networkConnections>
 	    <networkConnections>
-	        <name>s5-2-&gt;s5-1</name>
+	        <name>s5-3-&gt;h6-2</name>
 	        <source>
 	            <deviceId>s5</deviceId>
-	            <portNumber>2</portNumber>
+	            <portNumber>3</portNumber>
 	        </source>
 	        <destination>
-	            <deviceId>s5</deviceId>
-	            <portNumber>1</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s5-1-&gt;h1-1</name>
-	        <source>
-	            <deviceId>s5</deviceId>
-	            <portNumber>1</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>h1</deviceId>
-	            <portNumber>1</portNumber>
-	        </destination>
-	    </networkConnections>
-	</route>
-	<route>
-	    <id>12</id>
-	    <networkConnections>
-	        <name>h2-2-&gt;s8-2</name>
-	        <source>
-	            <deviceId>h2</deviceId>
-	            <portNumber>2</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s8</deviceId>
-	            <portNumber>2</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s8-2-&gt;s8-1</name>
-	        <source>
-	            <deviceId>s8</deviceId>
-	            <portNumber>2</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s8</deviceId>
-	            <portNumber>1</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s8-1-&gt;s7-2</name>
-	        <source>
-	            <deviceId>s8</deviceId>
-	            <portNumber>1</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s7</deviceId>
-	            <portNumber>2</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s7-2-&gt;s7-1</name>
-	        <source>
-	            <deviceId>s7</deviceId>
-	            <portNumber>2</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s7</deviceId>
-	            <portNumber>1</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s7-1-&gt;s6-2</name>
-	        <source>
-	            <deviceId>s7</deviceId>
-	            <portNumber>1</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s6</deviceId>
-	            <portNumber>2</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s6-2-&gt;s6-1</name>
-	        <source>
-	            <deviceId>s6</deviceId>
-	            <portNumber>2</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>s6</deviceId>
-	            <portNumber>1</portNumber>
-	        </destination>
-	    </networkConnections>
-	    <networkConnections>
-	        <name>s6-1-&gt;h1-2</name>
-	        <source>
-	            <deviceId>s6</deviceId>
-	            <portNumber>1</portNumber>
-	        </source>
-	        <destination>
-	            <deviceId>h1</deviceId>
+	            <deviceId>h6</deviceId>
 	            <portNumber>2</portNumber>
 	        </destination>
 	    </networkConnections>
