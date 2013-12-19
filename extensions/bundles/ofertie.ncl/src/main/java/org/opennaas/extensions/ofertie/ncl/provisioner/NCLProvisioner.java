@@ -273,7 +273,12 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 			String circuitId = selectCircuitToReallocate(switchName, portId);
 
-			rerouteCircuit(circuitId);
+			try {
+				rerouteCircuit(circuitId);
+			} catch (Exception e) {
+				log.error("Could not reallocate circuit " + circuitId, e);
+				// TODO can not throw exception, since EventHandler interface does not allow it.
+			}
 		}
 		else
 			log.debug("Ignoring non-LinkCongestion alarm.");
@@ -308,8 +313,25 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	}
 
-	private void rerouteCircuit(String circuitId) {
-		// TODO Auto-generated method stub
+	private void rerouteCircuit(String circuitId) throws Exception {
+
+		log.debug("Start of rerouteCircuit call.");
+
+		Circuit circuit = getAllocatedCircuits().get(circuitId);
+
+		if (circuit == null)
+			throw new ProvisionerException("Circuit is not allocated.");
+
+		List<NetOFFlow> sdnFlows = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(circuit.getFlowRequest());
+		List<NetOFFlow> oldFlows = getAllocatedFlows().get(circuitId);
+
+		String netId = getNetworkSelector().findNetworkForRequest(circuit.getFlowRequest());
+
+		getNclController().replaceFlows(oldFlows, sdnFlows, netId);
+
+		getAllocatedFlows().put(circuitId, sdnFlows);
+
+		log.debug("End of rerouteCircuit call.");
 
 	}
 
