@@ -41,7 +41,7 @@ import org.osgi.service.event.EventHandler;
  */
 public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
-	private final static String		NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl.cfg";
+	private final static String		NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl";
 	private final static String		AUTOREROUTE_KEY	= "ncl.autoreroute";
 
 	private IQoSPDP					qoSPDP;
