@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -38,6 +39,7 @@ import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningN
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.OFNetworkInternalActionsetImplementation;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
+import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
@@ -45,12 +47,14 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
@@ -92,6 +96,9 @@ public class OFNetworkOSGIIntegrationTest {
 	private ICapabilityFactory	capabilityFactory;
 
 	@Inject
+	protected BundleContext		context;
+
+	@Inject
 	@Filter("(&(actionset.name=internal)(actionset.capability=ofprovisionnet))")
 	private IActionSet			actionset;
 
@@ -103,6 +110,7 @@ public class OFNetworkOSGIIntegrationTest {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-ofnetwork", "itests-helpers", "opennaas-openflowswitch-driver-floodlight"),
 				noConsole(),
+				OpennaasExamOptions.openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -137,12 +145,17 @@ public class OFNetworkOSGIIntegrationTest {
 	@Test
 	public void resourceWorkflowTest() throws Exception {
 
+		WSEndpointListenerHandler netListenerHandler = new WSEndpointListenerHandler();
+		netListenerHandler.registerWSEndpointListener(context, IOFProvisioningNetworkCapability.class);
+
 		IResource resource = resourceManager.createResource(sdnResourceDescriptor);
 		Assert.assertEquals(State.INITIALIZED, resource.getState());
 		Assert.assertFalse(resourceManager.listResources().isEmpty());
 
 		resourceManager.startResource(resource.getResourceIdentifier());
 		Assert.assertEquals(State.ACTIVE, resource.getState());
+
+		netListenerHandler.waitForEndpointToBePublished();
 
 		// retrieve capability, will throw exception if unable
 		resource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
@@ -152,15 +165,25 @@ public class OFNetworkOSGIIntegrationTest {
 
 		resourceManager.removeResource(resource.getResourceIdentifier());
 		Assert.assertTrue(resourceManager.listResources().isEmpty());
+
+		netListenerHandler.waitForEndpointToBeUnpublished();
 	}
 
 	@Test
 	public void ofProvisioningNetworkCapabilityTest() throws Exception {
 
+		WSEndpointListenerHandler netListenerHandler = new WSEndpointListenerHandler();
+		WSEndpointListenerHandler switchListenerHandler = new WSEndpointListenerHandler();
+
+		netListenerHandler.registerWSEndpointListener(context, IOFProvisioningNetworkCapability.class);
+		switchListenerHandler.registerWSEndpointListener(context, IOpenflowForwardingCapability.class);
+
 		IResource sdnResource = resourceManager.createResource(sdnResourceDescriptor);
 		resourceManager.startResource(sdnResource.getResourceIdentifier());
+		netListenerHandler.waitForEndpointToBePublished();
 
 		IResource switchResource = resourceManager.createResource(ofswitchResourceDescriptor);
+
 		Map<String, Object> sessionParameters = new HashMap<String, Object>();
 		sessionParameters.put(FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME, "00:00:00:00:00:00:00:01");
 
@@ -169,18 +192,34 @@ public class OFNetworkOSGIIntegrationTest {
 				"mock://user:pass@host.net:2212/mocksubsystem", "floodlight", sessionParameters);
 		resourceManager.startResource(switchResource.getResourceIdentifier());
 		prepareClient(switchResource);
+		switchListenerHandler.waitForEndpointToBePublished();
 
 		IOFProvisioningNetworkCapability capab = (IOFProvisioningNetworkCapability) sdnResource
 				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
 		ofProvisioningNetworkCapabilityCheck(capab);
+
+		resourceManager.stopResource(sdnResource.getResourceIdentifier());
+		resourceManager.removeResource(sdnResource.getResourceIdentifier());
+		netListenerHandler.waitForEndpointToBeUnpublished();
+
+		resourceManager.stopResource(switchResource.getResourceIdentifier());
+		resourceManager.removeResource(switchResource.getResourceIdentifier());
+		switchListenerHandler.waitForEndpointToBeUnpublished();
 	}
 
 	@Test
 	public void ofProvisioningNetworkCapabilityWSTest() throws Exception {
 
+		WSEndpointListenerHandler netListenerHandler = new WSEndpointListenerHandler();
+		netListenerHandler.registerWSEndpointListener(context, IOFProvisioningNetworkCapability.class);
+
+		WSEndpointListenerHandler switchListenerHandler = new WSEndpointListenerHandler();
+		switchListenerHandler.registerWSEndpointListener(context, IOpenflowForwardingCapability.class);
+
 		IResource resource = resourceManager.createResource(sdnResourceDescriptor);
 		resourceManager.startResource(resource.getResourceIdentifier());
+		netListenerHandler.waitForEndpointToBePublished();
 
 		IResource switchResource = resourceManager.createResource(ofswitchResourceDescriptor);
 		Map<String, Object> sessionParameters = new HashMap<String, Object>();
@@ -191,11 +230,20 @@ public class OFNetworkOSGIIntegrationTest {
 				"mock://user:pass@host.net:2212/mocksubsystem", "floodlight", sessionParameters);
 		resourceManager.startResource(switchResource.getResourceIdentifier());
 		prepareClient(switchResource);
+		switchListenerHandler.waitForEndpointToBePublished();
 
 		IOFProvisioningNetworkCapability capabClient = InitializerTestHelper.createRestClient(WS_URI, IOFProvisioningNetworkCapability.class, null,
 				WS_USERNAME, WS_PASSWORD);
 
 		ofProvisioningNetworkCapabilityCheck(capabClient);
+
+		resourceManager.stopResource(resource.getResourceIdentifier());
+		resourceManager.removeResource(resource.getResourceIdentifier());
+		netListenerHandler.waitForEndpointToBeUnpublished();
+
+		resourceManager.stopResource(switchResource.getResourceIdentifier());
+		resourceManager.removeResource(switchResource.getResourceIdentifier());
+		switchListenerHandler.waitForEndpointToBeUnpublished();
 	}
 
 	public void ofProvisioningNetworkCapabilityCheck(IOFProvisioningNetworkCapability capab) throws Exception {
@@ -207,8 +255,8 @@ public class OFNetworkOSGIIntegrationTest {
 		capab.allocateFlows(flow1);
 		Assert.assertTrue("OF network should contain flows in first list", capab.getAllocatedFlows().containsAll(flow1));
 		capab.allocateFlows(flow2);
-		Assert.assertEquals("OF network should contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
-		Assert.assertEquals("OF network should contain flows in first list, too.", capab.getAllocatedFlows().containsAll(flow1));
+		Assert.assertTrue("OF network should contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
+		Assert.assertTrue("OF network should contain flows in first list, too.", capab.getAllocatedFlows().containsAll(flow1));
 
 		capab.deallocateFlows(flow1);
 		Assert.assertTrue("OF network should already contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
