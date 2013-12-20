@@ -279,7 +279,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 				try {
 					rerouteCircuit(circuitId);
 				} catch (Exception e) {
-					log.error("Could not reallocate circuit " + circuitId, e);
+					log.error("Could not reallocate circuit " + circuitId + ": " + e.getMessage());
 					// TODO can not throw exception, since EventHandler interface does not allow it.
 				}
 
@@ -384,6 +384,10 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		if (properties == null)
 			throw new IOException("Failed to determine auto-reroute option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
 
-		return (Boolean) properties.get(AUTOREROUTE_KEY);
+		String value = properties.getProperty(AUTOREROUTE_KEY);
+		if (value == null) {
+			return false;
+		}
+		return Boolean.parseBoolean(value);
 	}
 }
