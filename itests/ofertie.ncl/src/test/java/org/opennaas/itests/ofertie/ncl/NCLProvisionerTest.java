@@ -20,6 +20,7 @@ import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.IResource;
@@ -65,12 +66,11 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class NCLProvisionerTest {
 
+	private IResource					switch1;
+	private IResource					switch2;
 	private IResource					switch3;
 	private IResource					switch4;
 	private IResource					switch5;
-	private IResource					switch6;
-	private IResource					switch7;
-	private IResource					switch8;
 
 	private IResource					sdnNetResource;
 
@@ -78,19 +78,17 @@ public class NCLProvisionerTest {
 
 	private Map<String, IResource>		switches;
 
+	private static final String			SWITCH_1_NAME					= "s1";
+	private static final String			SWITCH_2_NAME					= "s2";
 	private static final String			SWITCH_3_NAME					= "s3";
 	private static final String			SWITCH_4_NAME					= "s4";
 	private static final String			SWITCH_5_NAME					= "s5";
-	private static final String			SWITCH_6_NAME					= "s6";
-	private static final String			SWITCH_7_NAME					= "s7";
-	private static final String			SWITCH_8_NAME					= "s8";
 
+	private static final String			SWITCH_1_ID						= "00:00:00:00:00:00:00:01";
+	private static final String			SWITCH_2_ID						= "00:00:00:00:00:00:00:02";
 	private static final String			SWITCH_3_ID						= "00:00:00:00:00:00:00:03";
 	private static final String			SWITCH_4_ID						= "00:00:00:00:00:00:00:04";
 	private static final String			SWITCH_5_ID						= "00:00:00:00:00:00:00:05";
-	private static final String			SWITCH_6_ID						= "00:00:00:00:00:00:00:06";
-	private static final String			SWITCH_7_ID						= "00:00:00:00:00:00:00:07";
-	private static final String			SWITCH_8_ID						= "00:00:00:00:00:00:00:08";
 
 	private static final String			FLOODLIGHT_ACTIONSET_NAME		= "floodlight";
 	private static final String			FLOODLIGHT_ACTIONSET_VERSION	= "0.90";
@@ -110,10 +108,10 @@ public class NCLProvisionerTest {
 	private static final String			OFNETWORK_RESOURCE_TYPE			= "ofnetwork";
 
 	/* FLOW REQUEST PARAMS */
-	private static final String			SRC_IP_ADDRESS					= "192.168.2.10";
-	private static final String			DST_IP_ADDRESS					= "192.168.2.11";
-	private static final int			SRC_PORT						= 0;
-	private static final int			DST_PORT						= 1;
+	private static final String			SRC_IP_ADDRESS					= "192.168.10.10";
+	private static final String			DST_IP_ADDRESS					= "192.168.10.11";
+	private static final int			SRC_PORT						= 56;
+	private static final int			DST_PORT						= 58;
 	private static final int			TOS								= 0;
 	private static final int			SRC_VLAN_ID						= 22;
 	private static final int			DST_VLAN_ID						= 22;
@@ -191,12 +189,12 @@ public class NCLProvisionerTest {
 		netListenerHandler.waitForEndpointToBeUnpublished();
 	}
 
-	// @Test
+	@Test
 	public void test() throws Exception {
 		testAllocateDeallocate(provisioner);
 	}
 
-	// @Test
+	@Test
 	public void wsTest() throws Exception {
 		INCLProvisioner provisionerClient = InitializerTestHelper.createRestClient(WS_URI, INCLProvisioner.class, null, WS_USERNAME, WS_PASSWORD);
 		testAllocateDeallocate(provisionerClient);
@@ -309,12 +307,11 @@ public class NCLProvisionerTest {
 		switchListenerHandler.registerWSEndpointListener(context, IOpenflowForwardingCapability.class);
 
 		switches = new HashMap<String, IResource>();
+		switches.put(SWITCH_1_NAME, createSwitch(switch1, SWITCH_1_ID, SWITCH_1_NAME));
+		switches.put(SWITCH_2_NAME, createSwitch(switch2, SWITCH_2_ID, SWITCH_2_NAME));
 		switches.put(SWITCH_3_NAME, createSwitch(switch3, SWITCH_3_ID, SWITCH_3_NAME));
 		switches.put(SWITCH_4_NAME, createSwitch(switch4, SWITCH_4_ID, SWITCH_4_NAME));
 		switches.put(SWITCH_5_NAME, createSwitch(switch5, SWITCH_5_ID, SWITCH_5_NAME));
-		switches.put(SWITCH_6_NAME, createSwitch(switch6, SWITCH_6_ID, SWITCH_6_NAME));
-		switches.put(SWITCH_7_NAME, createSwitch(switch7, SWITCH_7_ID, SWITCH_7_NAME));
-		switches.put(SWITCH_8_NAME, createSwitch(switch8, SWITCH_8_ID, SWITCH_8_NAME));
 
 		switchListenerHandler.waitForEndpointToBePublished();
 	}
