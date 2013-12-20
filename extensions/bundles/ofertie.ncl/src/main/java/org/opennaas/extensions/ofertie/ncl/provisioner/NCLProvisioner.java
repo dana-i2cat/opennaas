@@ -313,6 +313,11 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		synchronized (mutex) {
 			String circuitId = selectCircuitToReallocate(switchName, portId);
 
+			if (circuitId == null) {
+				log.info("No circuits allocated for this port. Ignoring alarm.");
+				return;
+			}
+
 			try {
 				rerouteCircuit(circuitId);
 			} catch (Exception e) {
@@ -368,6 +373,9 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 		List<Circuit> circuitsInPort = getAllCircuitsInPort(switchName, portId);
 
+		if (circuitsInPort.isEmpty()) {
+			return null;
+		}
 		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
 		return circuitsInPort.get(0).getId();
 	}
