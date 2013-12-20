@@ -297,7 +297,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 				try {
 					launchRerouteMechanism(switchName, portId);
 				} catch (Exception e) {
-					log.error(e);
+					log.error(e.getMessage());
 					// TODO can not throw exception, since EventHandler interface does not allow it.
 				}
 			} else {
@@ -316,7 +316,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 			try {
 				rerouteCircuit(circuitId);
 			} catch (Exception e) {
-				throw new Exception("Could not reallocate circuit " + circuitId + ": " + e.getMessage());
+				throw new Exception("Could not reallocate circuit " + circuitId + ": " + e.getMessage(), e);
 			}
 		}
 	}
