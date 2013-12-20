@@ -2,7 +2,11 @@ package org.opennaas.extensions.ofertie.ncl.monitoring;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,11 +14,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
+import org.opennaas.extensions.ofnetwork.capability.monitoring.IMonitoringNetworkCapability;
 import org.opennaas.extensions.ofnetwork.events.LinkCongestionEvent;
+import org.opennaas.extensions.ofnetwork.model.NetworkStatistics;
+import org.opennaas.extensions.ofnetwork.repository.OFNetworkRepository;
+import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
 
 /**
  * NCL monitoring component
@@ -30,14 +42,20 @@ public class NCLMonitoring {
 	private static final String	THROUGHPUT_THRESHOLD		= "throughput_threshold";
 	private static final String	STATISCS_POLLER_FREQUENCY	= "statistics_poller_freq";
 
+	// FIXME hardcoded link capacity to 1Gbits/s
+	private static final double	linkCapacity				= 1.0;
+
 	private IEventManager		eventManager;
 
 	private INCLController		nclController;
 
 	private NCLModel			nclModel;
 
-	private String				bandwidthThreshold;
+	private int					bandwidthThreshold;
 	private int					statisticsPollerFreq;
+
+	private long				previousTimestamp			= -1;
+	private NetworkStatistics	previousNetworkStatistics	= null;
 
 	public void init() {
 		log.info("Initializing Ofertie NCL monitoring...");
@@ -45,12 +63,12 @@ public class NCLMonitoring {
 		// get configuration file properties
 		ConfigurationAdminUtil configurationAdmin = new ConfigurationAdminUtil(Activator.getBundleContext());
 		try {
-			bandwidthThreshold = configurationAdmin.getProperty(NCL_MONITORING_FILE_ID, THROUGHPUT_THRESHOLD);
+			bandwidthThreshold = Integer.parseInt(configurationAdmin.getProperty(NCL_MONITORING_FILE_ID, THROUGHPUT_THRESHOLD));
 			statisticsPollerFreq = Integer.parseInt(configurationAdmin.getProperty(NCL_MONITORING_FILE_ID, STATISCS_POLLER_FREQUENCY));
 		} catch (IOException e) {
 			log.error("Error getting configuration!", e);
 		} catch (NumberFormatException e) {
-			log.error("Number format error getting statistics_poller_freq configuration property!", e);
+			log.error("Number format error getting configuration property!", e);
 		}
 
 		// get event manager service
@@ -68,9 +86,9 @@ public class NCLMonitoring {
 		log.info("Ofertie NCL monitoring initialized");
 	}
 
-	private void notifyCongestion(String switchId, int portId) {
+	private void notifyCongestion(String switchName, String portId) {
 		Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put(LinkCongestionEvent.SWITCH_ID_KEY, switchId);
+		properties.put(LinkCongestionEvent.SWITCH_ID_KEY, switchName);
 		properties.put(LinkCongestionEvent.PORT_ID_KEY, portId);
 
 		LinkCongestionEvent event = new LinkCongestionEvent(properties);
@@ -100,9 +118,148 @@ public class NCLMonitoring {
 
 		@Override
 		public void run() {
-			log.info("\n\nERASE ME!!! Plloignstatistics!!\n\n");
+			try {
+				// get all networks
+				IResource network = getFirstOFNetwork();
+
+				if (network == null) {
+					// no network found
+					log.debug("No networks present. Skipping monitoring tasks");
+				} else {
+					IMonitoringNetworkCapability monitoringNetworkCapability = null;
+					try {
+						// get port switch statistics for each network
+						monitoringNetworkCapability = (IMonitoringNetworkCapability) network
+								.getCapabilityByInterface(IMonitoringNetworkCapability.class);
+					} catch (ResourceException e) {
+						// there is not IMonitoringNetworkCapability in this switch
+						log.debug("Openflow network resource without IMonitoringNetworkCapability.");
+					}
+
+					if (monitoringNetworkCapability != null) {
+						// congested ports temp var
+						Set<Port> newCongestedPorts = new HashSet<Port>();
+
+						log.debug("Getting network statistics...");
+						NetworkStatistics currentNetworkStatistics = monitoringNetworkCapability.getNetworkStatistics();
+						long currentTimestamp = System.currentTimeMillis();
+
+						Map<String, SwitchPortStatistics> networkSwitchStatisticsMap = currentNetworkStatistics.getSwitchStatistics();
+
+						// iterate over each switch
+						for (Entry<String, SwitchPortStatistics> switchStatistics : networkSwitchStatisticsMap.entrySet()) {
+							// get statistics for each switch
+							String switchName = switchStatistics.getKey();
+							log.debug("Analizing switch statistics for switch " + switchName);
+							SwitchPortStatistics switchPortStatistics = switchStatistics.getValue();
+							Map<Integer, PortStatistics> portStatisticsMap = switchPortStatistics.getStatistics();
+
+							// iterate over each port statistics
+							for (Entry<Integer, PortStatistics> entry : portStatisticsMap.entrySet()) {
+								int portId = entry.getKey();
+								log.debug("\tPort " + portId);
+								PortStatistics portStatistics = entry.getValue();
+
+								// check existence of previous switch port statistics
+								if (previousNetworkStatistics != null && previousTimestamp > 0) {
+									if (previousNetworkStatistics.getSwitchStatistics().containsKey(switchName)) {
+										SwitchPortStatistics previousSwitchStatistics = previousNetworkStatistics.getSwitchStatistics().get(
+												switchStatistics.getKey());
+										Map<Integer, PortStatistics> previousSwitchStatisticsMap = previousSwitchStatistics.getStatistics();
+
+										// check existence of previous port statistics
+										if (previousSwitchStatisticsMap.containsKey(portId)) {
+											PortStatistics previousPortStatistics = previousSwitchStatisticsMap.get(portId);
+
+											// calculate throughput
+											double throughput = calculateThroughput(previousPortStatistics.getReceiveBytes(),
+													portStatistics.getReceiveBytes(),
+													previousTimestamp, currentTimestamp);
+
+											log.debug("\t\tCalculated throughput = " + throughput + " Gbits/s");
+
+											// check if throughput exceeds
+											if (isThresholdExceeded(throughput, linkCapacity, bandwidthThreshold)) {
+												log.debug("\t\tCongestion detected. Throughput > " + ((linkCapacity * bandwidthThreshold) / 100) + " Gbits/s");
+												// add congested port
+												Port congestedPort = new Port();
+												congestedPort.setDeviceId(switchName);
+												congestedPort.setPortNumber(String.valueOf(portId));
+												newCongestedPorts.add(congestedPort);
+											}
+										}
+									}
+								}
+							}
+						}
+
+						// reset congested ports
+						nclModel.setCongestedPorts(newCongestedPorts);
+
+						// raise alarm event for each congested port
+						for (Port congestedPort : newCongestedPorts) {
+							log.info("Throughput threshold exceeded, cogestion detected. Raising alarm event!");
+							notifyCongestion(congestedPort.getDeviceId(), congestedPort.getPortNumber());
+						}
+
+						// store current statistics and timestamp
+						previousNetworkStatistics = currentNetworkStatistics;
+						previousTimestamp = currentTimestamp;
+					}
+				}
+			} catch (ResourceException e) {
+
+			} catch (Exception e) {
+				log.error("Error processing network statistics", e);
+			}
 		}
 
+		/**
+		 * Returns if throughput is exceeding threshold
+		 * 
+		 * @param currentThroughput
+		 *            current throughput of the port (in Gbits/s)
+		 * @param linkCapacity
+		 *            link capacity (in Gbits/s)
+		 * @param threshold
+		 *            threshold (in percentage)
+		 * @return true if threshold is exceeded, false otherwise
+		 */
+		private boolean isThresholdExceeded(double currentThroughput, double linkCapacity, int threshold) {
+			return currentThroughput > ((linkCapacity * threshold) / 100);
+		}
+
+		/**
+		 * Calculate throughput (Gbits/s)
+		 * 
+		 * @param previousBytes
+		 * @param currentBytes
+		 * @param previousTimestamp
+		 * @param currentTimestamp
+		 * @return throughput in GBits/s
+		 */
+		private double calculateThroughput(long previousBytes, long currentBytes, long previousTimestamp, long currentTimestamp) {
+			// bytes / millisecond = MBytes/s
+			double megaBytesPerSecond = ((double) (currentBytes - previousBytes)) / ((double) (currentTimestamp - previousTimestamp));
+			// convert MBytes/s to Gbits/s
+			return (megaBytesPerSecond / 8) / 1000;
+		}
+
+		/**
+		 * Get the unique OpenFlow Network expected (the first one)
+		 * 
+		 * @return
+		 * @throws ActivatorException
+		 * @throws ResourceException
+		 */
+		private IResource getFirstOFNetwork() throws ActivatorException, ResourceException {
+			List<IResource> oFNetworks = Activator.getResourceManagerService().listResourcesByType(OFNetworkRepository.OF_NETWORK_RESOURCE_TYPE);
+			if (oFNetworks.size() > 0) {
+				return oFNetworks.get(0);
+			} else {
+				return null;
+			}
+		}
 	}
 
 }
