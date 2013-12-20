@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,6 +15,7 @@ import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
@@ -126,68 +126,43 @@ public class NCLMonitoring {
 					// no network found
 					log.debug("No networks present. Skipping monitoring tasks");
 				} else {
-					IMonitoringNetworkCapability monitoringNetworkCapability = null;
-					try {
-						// get port switch statistics for each network
-						monitoringNetworkCapability = (IMonitoringNetworkCapability) network
-								.getCapabilityByInterface(IMonitoringNetworkCapability.class);
-					} catch (ResourceException e) {
-						// there is not IMonitoringNetworkCapability in this switch
-						log.debug("Openflow network resource without IMonitoringNetworkCapability.");
-					}
+					// congested ports temp var
+					Set<Port> newCongestedPorts = new HashSet<Port>();
 
-					if (monitoringNetworkCapability != null) {
-						// congested ports temp var
-						Set<Port> newCongestedPorts = new HashSet<Port>();
+					log.debug("Getting network statistics...");
+					NetworkStatistics currentNetworkStatistics = readCurrentNetworkStatistics(network);
+					long currentTimestamp = System.currentTimeMillis();
 
-						log.debug("Getting network statistics...");
-						NetworkStatistics currentNetworkStatistics = monitoringNetworkCapability.getNetworkStatistics();
-						long currentTimestamp = System.currentTimeMillis();
+					if (currentNetworkStatistics != null) {
+						if (previousNetworkStatistics != null && previousTimestamp > 0) {
 
-						Map<String, SwitchPortStatistics> networkSwitchStatisticsMap = currentNetworkStatistics.getSwitchStatistics();
+							// calculate throughput and check threshold for each port
+							for (String switchName : currentNetworkStatistics.getSwitchStatistics().keySet()) {
+								log.debug("Analizing switch statistics for switch " + switchName);
+								for (Integer portId : currentNetworkStatistics.getSwitchStatistics().get(switchName).getStatistics().keySet()) {
+									log.debug("\tPort " + portId);
 
-						// iterate over each switch
-						for (Entry<String, SwitchPortStatistics> switchStatistics : networkSwitchStatisticsMap.entrySet()) {
-							// get statistics for each switch
-							String switchName = switchStatistics.getKey();
-							log.debug("Analizing switch statistics for switch " + switchName);
-							SwitchPortStatistics switchPortStatistics = switchStatistics.getValue();
-							Map<Integer, PortStatistics> portStatisticsMap = switchPortStatistics.getStatistics();
+									try {
+										long currentBytes = getPortReceivedBytes(currentNetworkStatistics, switchName, portId);
+										long previousBytes = getPortReceivedBytes(previousNetworkStatistics, switchName, portId);
 
-							// iterate over each port statistics
-							for (Entry<Integer, PortStatistics> entry : portStatisticsMap.entrySet()) {
-								int portId = entry.getKey();
-								log.debug("\tPort " + portId);
-								PortStatistics portStatistics = entry.getValue();
+										// calculate throughput
+										double throughput = calculateThroughput(previousBytes, currentBytes,
+												previousTimestamp, currentTimestamp);
 
-								// check existence of previous switch port statistics
-								if (previousNetworkStatistics != null && previousTimestamp > 0) {
-									if (previousNetworkStatistics.getSwitchStatistics().containsKey(switchName)) {
-										SwitchPortStatistics previousSwitchStatistics = previousNetworkStatistics.getSwitchStatistics().get(
-												switchStatistics.getKey());
-										Map<Integer, PortStatistics> previousSwitchStatisticsMap = previousSwitchStatistics.getStatistics();
+										log.debug("\t\tCalculated throughput = " + throughput + " Gbits/s");
 
-										// check existence of previous port statistics
-										if (previousSwitchStatisticsMap.containsKey(portId)) {
-											PortStatistics previousPortStatistics = previousSwitchStatisticsMap.get(portId);
-
-											// calculate throughput
-											double throughput = calculateThroughput(previousPortStatistics.getReceiveBytes(),
-													portStatistics.getReceiveBytes(),
-													previousTimestamp, currentTimestamp);
-
-											log.debug("\t\tCalculated throughput = " + throughput + " Gbits/s");
-
-											// check if throughput exceeds
-											if (isThresholdExceeded(throughput, linkCapacity, bandwidthThreshold)) {
-												log.debug("\t\tCongestion detected. Throughput > " + ((linkCapacity * bandwidthThreshold) / 100) + " Gbits/s");
-												// add congested port
-												Port congestedPort = new Port();
-												congestedPort.setDeviceId(switchName);
-												congestedPort.setPortNumber(String.valueOf(portId));
-												newCongestedPorts.add(congestedPort);
-											}
+										// check if throughput exceeds
+										if (isThresholdExceeded(throughput, linkCapacity, bandwidthThreshold)) {
+											log.debug("\t\tCongestion detected. Throughput > " + ((linkCapacity * bandwidthThreshold) / 100) + " Gbits/s");
+											// add congested port
+											Port congestedPort = new Port();
+											congestedPort.setDeviceId(switchName);
+											congestedPort.setPortNumber(String.valueOf(portId));
+											newCongestedPorts.add(congestedPort);
 										}
+									} catch (Exception e) {
+										log.debug("Failed to calculate throughput for port " + portId + " in switch " + switchName);
 									}
 								}
 							}
@@ -207,11 +182,59 @@ public class NCLMonitoring {
 						previousTimestamp = currentTimestamp;
 					}
 				}
+
 			} catch (ResourceException e) {
 
 			} catch (Exception e) {
 				log.error("Error processing network statistics", e);
 			}
+		}
+
+		private NetworkStatistics readCurrentNetworkStatistics(IResource network) throws CapabilityException {
+
+			NetworkStatistics currentNetworkStatistics = null;
+
+			IMonitoringNetworkCapability monitoringNetworkCapability = null;
+			try {
+				// get port switch statistics for each network
+				monitoringNetworkCapability = (IMonitoringNetworkCapability) network
+						.getCapabilityByInterface(IMonitoringNetworkCapability.class);
+			} catch (ResourceException e) {
+				// there is not IMonitoringNetworkCapability in this network
+				log.debug("Openflow network resource without IMonitoringNetworkCapability.");
+			}
+
+			if (monitoringNetworkCapability != null) {
+
+				log.debug("Getting network statistics...");
+				currentNetworkStatistics = monitoringNetworkCapability.getNetworkStatistics();
+			}
+			return currentNetworkStatistics;
+		}
+
+		/**
+		 * 
+		 * @param statistics
+		 *            to take information from
+		 * @param switchName
+		 *            indicates the switch holding the port
+		 * @param portId
+		 *            indicates the port
+		 * @return value of receivedBytes for given port that is in statistics
+		 * @throws Exception
+		 *             in case statistics contains no value matching given arguments
+		 */
+		private long getPortReceivedBytes(NetworkStatistics statistics, String switchName, Integer portId) throws Exception {
+			if (statistics != null) {
+				SwitchPortStatistics switchPortStatistics = statistics.getSwitchPortStatistic(switchName);
+				if (switchPortStatistics != null) {
+					PortStatistics portStatistics = switchPortStatistics.getStatistics().get(portId);
+					if (portStatistics != null) {
+						return portStatistics.getReceiveBytes();
+					}
+				}
+			}
+			throw new Exception("No statistics for switch " + switchName + " and port " + portId);
 		}
 
 		/**
@@ -236,13 +259,13 @@ public class NCLMonitoring {
 		 * @param currentBytes
 		 * @param previousTimestamp
 		 * @param currentTimestamp
-		 * @return throughput in GBits/s
+		 * @return throughput in Gbits/s
 		 */
 		private double calculateThroughput(long previousBytes, long currentBytes, long previousTimestamp, long currentTimestamp) {
-			// bytes / millisecond = MBytes/s
-			double megaBytesPerSecond = ((double) (currentBytes - previousBytes)) / ((double) (currentTimestamp - previousTimestamp));
-			// convert MBytes/s to Gbits/s
-			return (megaBytesPerSecond / 8) / 1000;
+			// bytes / millisecond ~ kBytes/s
+			double kBytesPerSecond = ((double) (currentBytes - previousBytes)) / ((double) (currentTimestamp - previousTimestamp));
+			// convert kBytes/s to Gbits/s
+			return (kBytesPerSecond * 8) / (1000 * 1000);
 		}
 
 		/**

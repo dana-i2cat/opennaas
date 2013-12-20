@@ -53,6 +53,12 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	private NCLModel				model;
 
+	private final Object			mutex;
+
+	public NCLProvisioner() {
+		mutex = new Object();
+	}
+
 	public NCLModel getModel() {
 		return model;
 	}
@@ -128,79 +134,83 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	@Override
 	public String allocateFlow(FlowRequest flowRequest) throws FlowAllocationException, ProvisionerException {
+		synchronized (mutex) {
+			try {
 
-		try {
+				String userId = "alice";
+				if (!getQoSPDP().shouldAcceptRequest(userId, flowRequest)) {
+					throw new FlowAllocationRejectedException("Rejected by policy");
+				}
 
-			String userId = "alice";
-			if (!getQoSPDP().shouldAcceptRequest(userId, flowRequest)) {
-				throw new FlowAllocationRejectedException("Rejected by policy");
+				List<NetOFFlow> sdnFlows = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest);
+
+				String netId = getNetworkSelector().findNetworkForRequest(flowRequest);
+				getNclController().allocateFlows(sdnFlows, netId);
+
+				String circuitId = generateRandomCircuitId();
+
+				Circuit circuit = new Circuit();
+				circuit.setFlowRequest(flowRequest);
+				circuit.setId(circuitId);
+				getAllocatedCircuits().put(circuitId, circuit);
+				getAllocatedFlows().put(circuitId, sdnFlows);
+
+				return circuitId;
+
+			} catch (FlowAllocationException fae) {
+				throw fae;
+			} catch (Exception e) {
+				throw new ProvisionerException(e);
 			}
-
-			List<NetOFFlow> sdnFlows = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(flowRequest);
-
-			String netId = getNetworkSelector().findNetworkForRequest(flowRequest);
-			getNclController().allocateFlows(sdnFlows, netId);
-
-			String circuitId = generateRandomCircuitId();
-
-			Circuit circuit = new Circuit();
-			circuit.setFlowRequest(flowRequest);
-			circuit.setId(circuitId);
-			getAllocatedCircuits().put(circuitId, circuit);
-			getAllocatedFlows().put(circuitId, sdnFlows);
-
-			return circuitId;
-
-		} catch (FlowAllocationException fae) {
-			throw fae;
-		} catch (Exception e) {
-			throw new ProvisionerException(e);
 		}
 	}
 
 	@Override
 	public String updateFlow(String flowId, FlowRequest updatedFlowRequest) throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
+		synchronized (mutex) {
+			deallocateFlow(flowId);
+			String newFlowId = allocateFlow(updatedFlowRequest);
 
-		deallocateFlow(flowId);
-		String newFlowId = allocateFlow(updatedFlowRequest);
+			// keep previous id for new circuit.
+			Circuit circuit = getAllocatedCircuits().get(newFlowId);
+			List<NetOFFlow> circuitFlows = getAllocatedFlows().get(newFlowId);
 
-		// keep previous id for new circuit.
-		Circuit circuit = getAllocatedCircuits().get(newFlowId);
-		List<NetOFFlow> circuitFlows = getAllocatedFlows().get(newFlowId);
+			getAllocatedCircuits().remove(newFlowId);
+			getAllocatedFlows().remove(newFlowId);
 
-		getAllocatedCircuits().remove(newFlowId);
-		getAllocatedFlows().remove(newFlowId);
+			circuit.setId(flowId);
+			getAllocatedCircuits().put(flowId, circuit);
+			getAllocatedFlows().put(flowId, circuitFlows);
 
-		circuit.setId(flowId);
-		getAllocatedCircuits().put(flowId, circuit);
-		getAllocatedFlows().put(flowId, circuitFlows);
-
-		return circuit.getId();
+			return circuit.getId();
+		}
 	}
 
 	@Override
 	public void deallocateFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
+		synchronized (mutex) {
+			try {
 
-		try {
+				String netId = getNetworkSelector().findNetworkForFlowId(flowId);
 
-			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
+				List<NetOFFlow> circuitFlows = getAllocatedFlows().get(flowId);
+				getNclController().deallocateFlows(circuitFlows, netId);
 
-			List<NetOFFlow> circuitFlows = getAllocatedFlows().get(flowId);
-			getNclController().deallocateFlows(circuitFlows, netId);
+				getAllocatedCircuits().remove(flowId);
+				getAllocatedFlows().remove(flowId);
 
-			getAllocatedCircuits().remove(flowId);
-			getAllocatedFlows().remove(flowId);
-
-		} catch (Exception e) {
-			throw new ProvisionerException(e);
+			} catch (Exception e) {
+				throw new ProvisionerException(e);
+			}
 		}
 	}
 
 	@Override
 	public Collection<Circuit> readAllocatedFlows() throws ProvisionerException {
-
-		return getAllocatedCircuits().values();
+		synchronized (mutex) {
+			return getAllocatedCircuits().values();
+		}
 	}
 
 	private String generateRandomCircuitId() {
@@ -209,52 +219,62 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 	@Override
 	public List<NetOFFlow> getFlowImplementation(String flowId) throws ProvisionerException {
-		String circuitId = flowId;
-		return getAllocatedFlows().get(circuitId);
+		synchronized (mutex) {
+			String circuitId = flowId;
+			return getAllocatedFlows().get(circuitId);
+		}
 	}
 
 	public Circuit getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
-		if (getAllocatedCircuits().containsKey(flowId)) {
-			return getAllocatedCircuits().get(flowId);
+		synchronized (mutex) {
+			if (getAllocatedCircuits().containsKey(flowId)) {
+				return getAllocatedCircuits().get(flowId);
+			}
+			throw new FlowNotFoundException();
 		}
-		throw new FlowNotFoundException();
 	}
 
 	@Override
 	public int getQoSParameter(String flowId, String parameter) throws FlowNotFoundException, ProvisionerException {
-		Circuit circuit = getFlow(flowId);
-		try {
-			return circuit.getFlowRequest().getQoSRequirements().getParameter(parameter);
-		} catch (IllegalArgumentException e) {
-			throw new ProvisionerException(e);
+		synchronized (mutex) {
+			Circuit circuit = getFlow(flowId);
+			try {
+				return circuit.getFlowRequest().getQoSRequirements().getParameter(parameter);
+			} catch (IllegalArgumentException e) {
+				throw new ProvisionerException(e);
+			}
 		}
 	}
 
 	@Override
 	public void updateQoSParameter(String flowId, String parameter, int value) throws FlowNotFoundException, ProvisionerException,
 			FlowAllocationException {
-		FlowRequest flowRequest = getFlow(flowId).getFlowRequest();
+		synchronized (mutex) {
+			FlowRequest flowRequest = getFlow(flowId).getFlowRequest();
 
-		try {
-			flowRequest.getQoSRequirements().setParameter(parameter, value);
-		} catch (IllegalArgumentException e) {
-			throw new ProvisionerException(e);
+			try {
+				flowRequest.getQoSRequirements().setParameter(parameter, value);
+			} catch (IllegalArgumentException e) {
+				throw new ProvisionerException(e);
+			}
+
+			updateFlow(flowId, flowRequest);
 		}
-
-		updateFlow(flowId, flowRequest);
 	}
 
 	@Override
 	public void deleteQoSParameter(String flowId, String parameter) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
-		FlowRequest flowRequest = getFlow(flowId).getFlowRequest();
+		synchronized (mutex) {
+			FlowRequest flowRequest = getFlow(flowId).getFlowRequest();
 
-		try {
-			flowRequest.getQoSRequirements().setParameter(parameter, -1);
-		} catch (IllegalArgumentException e) {
-			throw new ProvisionerException(e);
+			try {
+				flowRequest.getQoSRequirements().setParameter(parameter, -1);
+			} catch (IllegalArgumentException e) {
+				throw new ProvisionerException(e);
+			}
+
+			updateFlow(flowId, flowRequest);
 		}
-
-		updateFlow(flowId, flowRequest);
 	}
 
 	// ////////////////////////
@@ -274,15 +294,12 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 			boolean autoReroute = readAutorerouteOption();
 			if (autoReroute) {
 				log.debug("Auto-reroute is activated. Launching auto-reroute");
-				String circuitId = selectCircuitToReallocate(switchName, portId);
-
 				try {
-					rerouteCircuit(circuitId);
+					launchRerouteMechanism(switchName, portId);
 				} catch (Exception e) {
-					log.error("Could not reallocate circuit " + circuitId + ": " + e.getMessage());
+					log.error(e.getMessage());
 					// TODO can not throw exception, since EventHandler interface does not allow it.
 				}
-
 			} else {
 				log.debug("Auto-reroute is deactivated. Ignoring received LinkCongestion alarm. ");
 			}
@@ -290,6 +307,18 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		else
 			log.debug("Ignoring non-LinkCongestion alarm.");
 
+	}
+
+	private void launchRerouteMechanism(String switchName, String portId) throws Exception {
+		synchronized (mutex) {
+			String circuitId = selectCircuitToReallocate(switchName, portId);
+
+			try {
+				rerouteCircuit(circuitId);
+			} catch (Exception e) {
+				throw new Exception("Could not reallocate circuit " + circuitId + ": " + e.getMessage(), e);
+			}
+		}
 	}
 
 	public void unregisterListener() {
