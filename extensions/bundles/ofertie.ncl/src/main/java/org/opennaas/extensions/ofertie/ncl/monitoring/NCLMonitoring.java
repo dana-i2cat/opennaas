@@ -259,13 +259,13 @@ public class NCLMonitoring {
 		 * @param currentBytes
 		 * @param previousTimestamp
 		 * @param currentTimestamp
-		 * @return throughput in GBits/s
+		 * @return throughput in Gbits/s
 		 */
 		private double calculateThroughput(long previousBytes, long currentBytes, long previousTimestamp, long currentTimestamp) {
-			// bytes / millisecond = MBytes/s
-			double megaBytesPerSecond = ((double) (currentBytes - previousBytes)) / ((double) (currentTimestamp - previousTimestamp));
-			// convert MBytes/s to Gbits/s
-			return (megaBytesPerSecond / 8) / 1000;
+			// bytes / millisecond ~ kBytes/s
+			double kBytesPerSecond = ((double) (currentBytes - previousBytes)) / ((double) (currentTimestamp - previousTimestamp));
+			// convert kBytes/s to Gbits/s
+			return (kBytesPerSecond * 8) / (1000 * 1000);
 		}
 
 		/**
