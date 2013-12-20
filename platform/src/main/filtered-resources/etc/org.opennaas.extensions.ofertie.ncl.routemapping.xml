@@ -9,6 +9,7 @@
             </key>
             <value>
                 <routeIds>1</routeIds>
+                <routeIds>3</routeIds>
             </value>
         </entry>
 		<entry>
@@ -19,6 +20,7 @@
             </key>
             <value>
                 <routeIds>2</routeIds>
+                <routeIds>4</routeIds>
             </value>
         </entry>
         <entry>
