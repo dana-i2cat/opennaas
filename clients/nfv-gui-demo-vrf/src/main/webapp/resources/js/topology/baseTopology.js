@@ -87,9 +87,10 @@ function keydown() {
         circle.call(force.drag);
         svg.classed('ctrl', true);
     }
-console.log("KeyDown: "+selected_link.type);
-    if (!selected_node && !selected_link) return;
-    if (selected_link.type != "new_link") return;
+//console.log("KeyDown: "+selected_link.type);
+console.log("keyDown");
+//    if (!selected_node && !selected_link) return;
+//    if (selected_link.type != "new_link") return;
 }
 
 function keyup() {
@@ -102,6 +103,7 @@ function keyup() {
             .on('touchstart.drag', null);
         svg.classed('ctrl', false);
     }
+    console.log("keyUp");
 }
 
 function mousedown() {

@@ -314,17 +314,14 @@ public class Utils {
      * @return The string that contains the value of the inputstream
      * @throws IOException
      */
-    public static String convertStreamToString(InputStream is)
-            throws IOException {
-
+    public static String convertStreamToString(InputStream is) throws IOException {
+        int BUFFER_SIZE = 1024;
         if (is != null) {
-            //SVCManagementDeployed.logger.info("CONVERTING. NOT NULL");///
             Writer writer = new StringWriter();
 
-            char[] buffer = new char[1024];
+            char[] buffer = new char[BUFFER_SIZE];
             try {
-                Reader reader = new BufferedReader(new InputStreamReader(is,
-                        "UTF-8"));
+                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                 int n;
                 while ((n = reader.read(buffer)) != -1) {
                     writer.write(buffer, 0, n);

@@ -15,6 +15,7 @@
 <div id="config_topology" class="topology">
     <p onmousedown="cleanDrag()" id="chart" ></p>
 </div>
+<script src="<c:url value="/resources/js/topology/baseTopology.js" />"></script>
 <script src="<c:url value="/resources/js/topology/configTopology.js" />"></script>
 
 <script language="JavaScript" type="text/JavaScript">

@@ -101,6 +101,7 @@ public class RoutingCapability implements IRoutingCapability {
         } else {
             return Response.status(404).type("text/plain").entity("Route Not found.").build();
         }
+        /* Proactive routing */
         StringBuilder listFlows = new StringBuilder();
         List<FloodlightOFFlow> listOF;
         if (proactive) {
@@ -146,7 +147,6 @@ public class RoutingCapability implements IRoutingCapability {
             VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo, lifeTime);
 
             String response = model.getTable(version).addRoute(route);
-            System.out.println(response);
             return Response.status(201).entity(response).build();
         }
         return Response.status(403).type("text/plain").entity("Some value is empty").build();
@@ -410,7 +410,7 @@ public class RoutingCapability implements IRoutingCapability {
         return resourceManager.getResource(resourceId);
     }
 
-    //---------------------START DEMO FUNCTIONS
+    //---------------------START DEMO FUNCTIONS & CLASSES
     @Override
     public String getLog() {
         return logMessage;
@@ -436,6 +436,4 @@ public class RoutingCapability implements IRoutingCapability {
         }
     }
     //---------------------END DEMO FUNCTIONS
-    
-    
 }

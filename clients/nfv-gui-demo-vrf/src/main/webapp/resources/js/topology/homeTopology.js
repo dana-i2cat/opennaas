@@ -24,7 +24,7 @@ function restart() {
     // add new links
     path.enter().append('svg:path')
         .attr('class', function (d) {
-            if (d.type == "static") {
+            if (d.type === "static") {
                 return 'link';
             } else {
                 return 'link2';
@@ -68,7 +68,7 @@ console.log("Adding new link. Click on Link " + d.type);
         .attr('width', "75")
         .attr('height', "75")
         .attr('xlink:href', function (d) {
-            if (d.type == "switch")
+            if (d.type === "switch")
                 return switchImage;
             else
                 return hostImage;
@@ -83,7 +83,7 @@ console.log("Id num " + d.id_num + "node: " + d.id);
         })
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
-            if(d.type == "switch")
+            if(d.type === "switch")
                 getFlowTable(d.dpid);
             // select node
             mousedown_node = d;
@@ -101,12 +101,12 @@ console.log("Id num " + d.id_num + "node: " + d.id);
             d3.selectAll(".id_txt_sw").attr("x", "-20").attr("y", "9");
             d3.selectAll(".id_txt_host").attr("x", "-20").attr("y", "30");
             d3.select(this).attr("width", 100); //image big
-            if (d.type == "switch")
+            if (d.type === "switch")
                 d3.select("#" + d.id).attr("x", "-9").attr("y", "12"); //move text
-            else if (d.type == "host")
+            else if (d.type === "host")
                 d3.select("#" + d.id).attr("x", "-9").attr("y", "35"); //move text
             if (!mousedown_node) return;
-            if (d.type == "switch") {
+            if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
                 //show a warning message in order to inform that the connection to a destination switch is not allowed.
                 //http request to OpenNaaS
@@ -122,14 +122,14 @@ console.log("Id num " + d.id_num + "node: " + d.id);
     g.append('svg:text')
         .attr('x', "-20")
         .attr('y', function (d) {
-            if (d.type == "switch") {
+            if (d.type === "switch") {
                 return "9";
             } else {
                 return "30";
             }
         })
         .attr('class', function (d) {
-            if (d.type == "switch") {
+            if (d.type === "switch") {
                 return 'id_txt_sw';
             } else {
                 return "id_txt_host";
@@ -177,7 +177,7 @@ restart();
  * Call OpenNaaS get Flow Table
  *
  */
-function getFlowTable(vartdpid) {
+function getFlowTable(dpid) {
     $.ajax({
         type: "GET",
         url: "getInfoSw/" + dpid,

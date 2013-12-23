@@ -40,7 +40,7 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRouteTable")
     public String getRouteTable(@RequestParam("type") String type, Model model, Locale locale) {
-        LOGGER.debug("Get Route Table ------------------> IPv" + type);
+        LOGGER.error("Get Route Table ------------------> IPv" + type);
         int typ;
         if (type.equals("IPv4")) {
             typ = 4;
@@ -52,6 +52,9 @@ public class NFVRoutingController {
         }
         try {
             String response = nfvRoutingBO.getRouteTable(typ);
+            if (response.equals("OpenNaaS is not started")){
+                model.addAttribute("errorMsg", response);
+            }
             LOGGER.info("received json: " + response);
             model.addAttribute("json", response);
         } catch (RestServiceException e) {
@@ -173,6 +176,55 @@ public class NFVRoutingController {
     String getInfoSw(@PathVariable("dpid") String dpid, ModelMap model) {
         LOGGER.debug("Get Information about switch ------------------");
         String response = nfvRoutingBO.getSwInfo(dpid);
+        return response;
+    }
+    
+    /**
+     * Obtain information of a switch. In which controller is connected and the
+     * Flow table.
+     *
+     * @param ipSrc
+     * @param ipDst
+     * @param dpid
+     * @param inPort
+     * @param model
+     * @return the information of the switch (IP:port)
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRoute/{ipSrc}/{ipDst}/{dpid}/{inPort}")
+    public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, 
+            @PathVariable("dpid") String dpid, @PathVariable("inPort") String inPort, ModelMap model) {
+        LOGGER.debug("Get Route ------------------");
+        LOGGER.debug("Requested route: "+ipSrc+" "+ipDst+" "+dpid+" "+inPort+"------------------");
+        String response = nfvRoutingBO.getRoute(ipSrc, ipDst, dpid, inPort);
+        LOGGER.debug("Response: "+response);
+        
+        return response.split(":", 2)[1];
+    }
+    
+    /**
+     * Redirect to insert view and insert the values received by POST
+     *
+     * @param ipSrc
+     * @param ipDst
+     * @param dpid
+     * @param inPort
+     * @param dstPort
+     * @param model
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/insertRoute/{ipSrc}/{ipDst}/{dpid}/{inPort}/{outPort}")
+    public @ResponseBody String insertRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, 
+            @PathVariable("dpid") String dpid, @PathVariable("inPort") String inPort, @PathVariable("outPort") String dstPort, ModelMap model) {
+        LOGGER.info("Insert route ------------------> ");
+        String response = "";
+        try {
+            response = nfvRoutingBO.insertRoute(ipSrc, ipDst, dpid, inPort, dstPort);
+            model.addAttribute("json", response);
+            model.addAttribute("infoMsg", "Route addded correctly.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
+
         return response;
     }
 }

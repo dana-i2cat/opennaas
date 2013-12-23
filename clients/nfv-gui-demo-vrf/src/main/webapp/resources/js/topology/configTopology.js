@@ -24,7 +24,7 @@ function restart() {
     // add new links
     path.enter().append('svg:path')
         .attr('class', function (d) {
-            if (d.type == "static") {
+            if (d.type === "static") {
                 return 'link';
             } else {
                 return 'link2';
@@ -68,7 +68,7 @@ console.log("Adding new link. Click on Link " + d.type);
         .attr('width', "75")
         .attr('height', "75")
         .attr('xlink:href', function (d) {
-            if (d.type == "switch")
+            if (d.type === "switch")
                 return switchImage;
             else
                 return hostImage;
@@ -102,12 +102,12 @@ console.log("Mousedown");
             d3.selectAll(".id_txt_sw").attr("x", "-20").attr("y", "9");
             d3.selectAll(".id_txt_host").attr("x", "-20").attr("y", "30");
             d3.select(this).attr("width", 100); //image big
-            if (d.type == "switch")
+            if (d.type === "switch")
                 d3.select("#" + d.id).attr("x", "-9").attr("y", "12"); //move text
-            else if (d.type == "host")
+            else if (d.type === "host")
                 d3.select("#" + d.id).attr("x", "-9").attr("y", "35"); //move text
             if (!mousedown_node) return;
-            if (d.type == "switch") {
+            if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
                 //show a warning message in order to inform that the connection to a destination switch is not allowed.
                 //http request to OpenNaaS
@@ -141,28 +141,38 @@ console.log("MouseUp Click");
             }
 console.log("Source h " + source.id+" Dest h " + target.id);
             var link;
-            link = links.filter(function (l) {
-                return (l.source === source && l.target === target);
-            })[0];
+            link = links.filter(function (l) {return (l.source === source && l.target === target); })[0];
 
             if (link) {
                 link[direction] = true;
             }
-            returnedRoutes = [{dpid:'00:00:00:00:00:00:00:01'},{dpid:'00:00:00:00:00:00:00:03'},{ip:'192.168.2.51'}];
+//request to OpenNaaS
+            swNode = nodes.filter(function (n) {return n.id === source.SW; });
+            var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
+//            returnedRoutes = [{dpid:'00:00:00:00:00:00:00:01'},{dpid:'00:00:00:00:00:00:00:03'},{ip:'192.168.2.51'}];
+console.log(returnedRoutes);
             for(var i=0;i<returnedRoutes.length;i++){
                 var obj = returnedRoutes[i];
-                for(var key in obj){
+                 for(var key in obj){
 console.log("Json key: "+key+" Json value: "+obj[key]);
-                    if(key == "dpid"){
+                    dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                    if(key === "dpid"){
                         dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
-                    }else if (key == "ip"){
+                    }else if (key === "ip"){
                         dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
                     }
+                    //if (dest1 == null){
                     link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
                     link[direction] = true;
                     console.log(link);
                     links.push(link);
+                    highlight(source.ip);
+                    console.log(source.ip);
                     source = dest1;
+                    console.log(dest1.ip);
+                    
+                    highlight(dest1.ip);
+//                    highlight(obj[key], source.ip, target.ip);
                 }
             }
             d3.selectAll('.link2').attr('d', 'M0,0L0,0'); //Remove the requested path
@@ -179,14 +189,14 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
     g.append('svg:text')
         .attr('x', "-20")
         .attr('y', function (d) {
-            if (d.type == "switch") {
+            if (d.type === "switch") {
                 return "9";
             } else {
                 return "30";
             }
         })
         .attr('class', function (d) {
-            if (d.type == "switch") {
+            if (d.type === "switch") {
                 return 'id_txt_sw';
             } else {
                 return "id_txt_host";
@@ -242,4 +252,35 @@ function getRouteTable(dpid) {
             $('#ajaxUpdate').html(data);
         }
     });
+}
+
+function getRoute(ipSrc, ipDst, dpid, inPort) {
+    var response;
+    $.ajax({
+        type: "GET",
+        async:false,
+        url: "getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort,
+        success: function (data) {
+            response = data;
+//            $('#ajaxUpdate').html(data);
+        }
+    });
+    return response;
+}
+
+function highlight(word){
+    var table = document.getElementById('jsonTable');
+    var tbody = table.getElementsByTagName('tbody')[0];
+    var items = tbody.getElementsByTagName('tr');
+    var tds = null;
+
+    for (var j = 0; j < items.length; j++) {
+        var tds = items[j].getElementsByTagName('td');
+        for (var i = 0; i < tds.length; i++) {
+            if(tds[i].innerHTML === word){
+                table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+                console.log("PRINT "+word);
+            }
+        }
+    }
 }

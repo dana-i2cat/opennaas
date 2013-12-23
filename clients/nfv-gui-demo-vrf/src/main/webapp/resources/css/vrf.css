@@ -46,4 +46,6 @@ VRF - OpenNaaS Custom CSS
 #animation_log{
     width:27%;
 }
-
+input#ipDest {
+    width: 115px;
+}

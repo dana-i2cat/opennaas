@@ -42,6 +42,7 @@
         <script src="<c:url value="/resources/js/d3.v3.min.js"/>"></script>
         
         <script src="<c:url value="/resources/js/topology/topology.js" />"></script>
+        <script src="<c:url value="/resources/js/topology/dijkstra.js" />"></script>
 </head>
 <body>
 	<div class="container">

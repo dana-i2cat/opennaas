@@ -63,4 +63,12 @@ public class NFVRoutingBO {
          return nfvRoutingService.getLog();
     }
 
+    public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
+        return nfvRoutingService.getRoute(ipSrc, ipDst, dpid, inPort);
+    }
+
+    public String insertRoute(String ipSrc, String ipDst, String dpid, String srcPort, String dstPort) {
+        return nfvRoutingService.insertRoute(ipSrc, ipDst, dpid, srcPort, dstPort);
+    }
+
 }

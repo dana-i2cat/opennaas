@@ -11,12 +11,16 @@
 <div id="insert_topology" class="topology">
     <p onmousedown="cleanDrag()" id="chart" ></p>
 </div>
+<script src="<c:url value="/resources/js/topology/baseTopology.js" />"></script>
 <script src="<c:url value="/resources/js/topology/insertRouteTopology.js" />"></script>
+<input id="changeMode" type="submit" class="button" value="Automatic" onClick="javascript:change(this);"/>
 <div id="insert_info" class="ui-widget-content ui-corner-all padding">
     <h3>Route information:</h3>
 
 </div>
-<div id="insert_routeTable" class="routeTable">Route table Insert</div>
+<div id="insert_routeTable" class="routeTable">
+    <h3>Route table Insert</h3>
+</div>
 
 <table id="jsonTable" class="tablesorter">
 
@@ -53,120 +57,186 @@
 
 <script language="JavaScript" type="text/JavaScript">
     function deleteAll(table){
-        this.table = document.getElementById(table);
-        rows = this.table.getElementsByTagName("tr");
-        x=1;
-        while ( x<rows.length) {
-            document.getElementById(table).deleteRow(x);
-        }
+    this.table = document.getElementById(table);
+    rows = this.table.getElementsByTagName("tr");
+    x=1;
+    while ( x<rows.length) {
+    document.getElementById(table).deleteRow(x);
+    }
     }
 
     count = 1;
     function addRout(){
-        var appendTxt = "<tr>";                
-        appendTxt = appendTxt + "<td><input class=\"ipInput\" id=\"listRoutes" + count + ".sourceAddress\" name=\"listRoutes[" + count + "].sourceAddress\" type=\"text\" value=\"\"/></td>";
-        appendTxt = appendTxt + "<td><input class=\"ipInput\" id=\"listRoutes" + count + ".destinationAddress\" name=\"listRoutes[" + count + "].destinationAddress\" type=\"text\" value=\"\"/></td>";
-        appendTxt = appendTxt + "<td><input class=\"macInput\" id=\"listRoutes" + count + ".switchInfo.macAddress\" name=\"listRoutes[" + count + "].switchInfo.macAddress\" type=\"text\" value=\"\"/></td>";
-        appendTxt = appendTxt + "<td><input class=\"portInput\" id=\"listRoutes" + count + ".switchInfo.inputPort\" name=\"listRoutes[" + count + "].switchInfo.inputPort\" type=\"text\" value=\"\"/></td>";
-        appendTxt = appendTxt + "<td><input class=\"portInput\" id=\"listRoutes" + count + ".switchInfo.outputPort\" name=\"listRoutes[" + count + "].switchInfo.outputPort\" type=\"text\" value=\"\"/></td>";
-        appendTxt = appendTxt + "<td class=\"td-last\"><input style=\"float:right\" class=\"deleteButton\" type=\"button\" value=\"Delete\"/></td>";
-        $("#Routes tr:last").after(appendTxt);
-        count = count + 1;
-        $(".deleteButton").button();
+    var appendTxt = "<tr>";                
+    appendTxt = appendTxt + "<td><input class=\"ipInput\" id=\"listRoutes" + count + ".sourceAddress\" name=\"listRoutes[" + count + "].sourceAddress\" type=\"text\" value=\"\"/></td>";
+    appendTxt = appendTxt + "<td><input class=\"ipInput\" id=\"listRoutes" + count + ".destinationAddress\" name=\"listRoutes[" + count + "].destinationAddress\" type=\"text\" value=\"\"/></td>";
+    appendTxt = appendTxt + "<td><input class=\"macInput\" id=\"listRoutes" + count + ".switchInfo.macAddress\" name=\"listRoutes[" + count + "].switchInfo.macAddress\" type=\"text\" value=\"\"/></td>";
+    appendTxt = appendTxt + "<td><input class=\"portInput\" id=\"listRoutes" + count + ".switchInfo.inputPort\" name=\"listRoutes[" + count + "].switchInfo.inputPort\" type=\"text\" value=\"\"/></td>";
+    appendTxt = appendTxt + "<td><input class=\"portInput\" id=\"listRoutes" + count + ".switchInfo.outputPort\" name=\"listRoutes[" + count + "].switchInfo.outputPort\" type=\"text\" value=\"\"/></td>";
+    appendTxt = appendTxt + "<td class=\"td-last\"><input style=\"float:right\" class=\"deleteButton\" type=\"button\" value=\"Delete\"/></td>";
+    $("#Routes tr:last").after(appendTxt);
+    count = count + 1;
+    $(".deleteButton").button();
     }
-    
+
     function fill(){
-        deleteAll('Routes');
-//        $('Routes  tr:last').append('<tbody><tr></tr></tbody>');
-        count=0;
-        if(count==2)
-            return;
-        addRout();
-        $("#listRoutes0\\.sourceAddress").val("10.0.1.0");
-        $("#listRoutes0\\.destinationAddress").val("10.0.2.0");
-        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes0\\.switchInfo\\.inputPort").val("5");
-        $("#listRoutes0\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        $("#listRoutes1\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes1\\.destinationAddress").val("10.0.1.1");
-        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes1\\.switchInfo\\.outputPort").val("5");
-        addRout();
-        $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes2\\.destinationAddress").val("10.0.1.0");
-        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes2\\.switchInfo\\.inputPort").val("5");
-        $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        $("#listRoutes3\\.sourceAddress").val("10.0.1.0");
-        $("#listRoutes3\\.destinationAddress").val("10.0.2.51");
-        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes3\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes3\\.switchInfo\\.outputPort").val("5");
-     }
-     
-    function fill2(){
-        deleteAll("Routes");
-        count=0;
-        if(count==2)
-            return;
-        addRout();
-        $("#listRoutes0\\.sourceAddress").val("10.1.10.0");
-        $("#listRoutes0\\.destinationAddress").val("10.1.11.51");
-        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0b");
-        $("#listRoutes0\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes0\\.switchInfo\\.outputPort").val("2");
-        addRout();
-        $("#listRoutes1\\.sourceAddress").val("10.1.11.0");
-        $("#listRoutes1\\.destinationAddress").val("10.1.10.1");
-        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
-        $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes1\\.switchInfo\\.outputPort").val("2");
-        addRout();
-        $("#listRoutes2\\.sourceAddress").val("10.1.11.0");
-        $("#listRoutes2\\.destinationAddress").val("10.1.10.0");
-        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0b");
-        $("#listRoutes2\\.switchInfo\\.inputPort").val("2");
-        $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        
-        $("#listRoutes3\\.sourceAddress").val("10.1.10.10");
-        $("#listRoutes3\\.destinationAddress").val("10.1.11.0");
-        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
-        $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
-        $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
+    deleteAll('Routes');
+    //        $('Routes  tr:last').append('<tbody><tr></tr></tbody>');
+    count=0;
+    if(count==2)
+    return;
+    addRout();
+    $("#listRoutes0\\.sourceAddress").val("10.0.1.0");
+    $("#listRoutes0\\.destinationAddress").val("10.0.2.0");
+    $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+    $("#listRoutes0\\.switchInfo\\.inputPort").val("5");
+    $("#listRoutes0\\.switchInfo\\.outputPort").val("1");
+    addRout();
+    $("#listRoutes1\\.sourceAddress").val("10.0.2.0");
+    $("#listRoutes1\\.destinationAddress").val("10.0.1.1");
+    $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+    $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
+    $("#listRoutes1\\.switchInfo\\.outputPort").val("5");
+    addRout();
+    $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
+    $("#listRoutes2\\.destinationAddress").val("10.0.1.0");
+    $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+    $("#listRoutes2\\.switchInfo\\.inputPort").val("5");
+    $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
+    addRout();
+    $("#listRoutes3\\.sourceAddress").val("10.0.1.0");
+    $("#listRoutes3\\.destinationAddress").val("10.0.2.51");
+    $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+    $("#listRoutes3\\.switchInfo\\.inputPort").val("1");
+    $("#listRoutes3\\.switchInfo\\.outputPort").val("5");
     }
-        
+
+    function fill2(){
+    deleteAll("Routes");
+    count=0;
+    if(count==2)
+    return;
+    addRout();
+    $("#listRoutes0\\.sourceAddress").val("10.1.10.0");
+    $("#listRoutes0\\.destinationAddress").val("10.1.11.51");
+    $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0b");
+    $("#listRoutes0\\.switchInfo\\.inputPort").val("1");
+    $("#listRoutes0\\.switchInfo\\.outputPort").val("2");
+    addRout();
+    $("#listRoutes1\\.sourceAddress").val("10.1.11.0");
+    $("#listRoutes1\\.destinationAddress").val("10.1.10.1");
+    $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
+    $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
+    $("#listRoutes1\\.switchInfo\\.outputPort").val("2");
+    addRout();
+    $("#listRoutes2\\.sourceAddress").val("10.1.11.0");
+    $("#listRoutes2\\.destinationAddress").val("10.1.10.0");
+    $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0b");
+    $("#listRoutes2\\.switchInfo\\.inputPort").val("2");
+    $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
+    addRout();
+
+    $("#listRoutes3\\.sourceAddress").val("10.1.10.10");
+    $("#listRoutes3\\.destinationAddress").val("10.1.11.0");
+    $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
+    $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
+    $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
+    }
+
     function fillDemo(){
-        deleteAll("Routes");
-        count=0;
-        if(count==2)
-            return;
-        addRout();
-        $("#listRoutes0\\.sourceAddress").val("10.0.0.0");
-        $("#listRoutes0\\.destinationAddress").val("10.0.2.2");
-        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes0\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes0\\.switchInfo\\.outputPort").val("2");
-        addRout();
-        $("#listRoutes1\\.sourceAddress").val("10.0.0.0");
-        $("#listRoutes1\\.destinationAddress").val("10.0.2.2");
-        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes1\\.switchInfo\\.inputPort").val("2");
-        $("#listRoutes1\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes2\\.destinationAddress").val("10.0.0.1");
-        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes2\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes2\\.switchInfo\\.outputPort").val("2");
-        addRout();        
-        $("#listRoutes3\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes3\\.destinationAddress").val("10.0.0.1");
-        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
-        $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
+    deleteAll("Routes");
+    count=0;
+    if(count==2)
+    return;
+    addRout();
+    $("#listRoutes0\\.sourceAddress").val("10.0.0.0");
+    $("#listRoutes0\\.destinationAddress").val("10.0.2.2");
+    $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+    $("#listRoutes0\\.switchInfo\\.inputPort").val("1");
+    $("#listRoutes0\\.switchInfo\\.outputPort").val("2");
+    addRout();
+    $("#listRoutes1\\.sourceAddress").val("10.0.0.0");
+    $("#listRoutes1\\.destinationAddress").val("10.0.2.2");
+    $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+    $("#listRoutes1\\.switchInfo\\.inputPort").val("2");
+    $("#listRoutes1\\.switchInfo\\.outputPort").val("1");
+    addRout();
+    $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
+    $("#listRoutes2\\.destinationAddress").val("10.0.0.1");
+    $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
+    $("#listRoutes2\\.switchInfo\\.inputPort").val("1");
+    $("#listRoutes2\\.switchInfo\\.outputPort").val("2");
+    addRout();        
+    $("#listRoutes3\\.sourceAddress").val("10.0.2.0");
+    $("#listRoutes3\\.destinationAddress").val("10.0.0.1");
+    $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
+    $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
+    $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
     }        
 </script>
+<script>
+    $(function() {
+        var name = $( "#ipDest" ),
+        allFields = $( [] ).add( name ),
+        tips = $( ".validateTips" );
+        function updateTips( t ) {
+            tips.text( t ).addClass( "ui-state-highlight" );
+            setTimeout(function() {
+                tips.removeClass( "ui-state-highlight", 1500 );
+            }, 500 );
+        }
+        function checkLength( o, n, min, max ) {
+            if ( o.val().length > max || o.val().length < min ) {
+                o.addClass( "ui-state-error" );
+                updateTips( "Length of " + n + " must be between " + min + " and " + max + "." );
+                return false;
+            } else {
+            return true;
+            }
+        }
+        function checkRegexp( o, regexp, n ) {
+            if ( !( regexp.test( o.val() ) ) ) {
+                o.addClass( "ui-state-error" );
+                updateTips( n );
+                return false;
+            } else {
+                return true;
+            }
+        }
+        $( "#insertRouteIp" ).dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: false,
+            buttons: {
+                "Create route": function() {
+                    var bValid = true;
+                    allFields.removeClass( "ui-state-error" );
+                    bValid = bValid && checkLength( name, "username", 8, 16 );
+                    bValid = bValid && checkRegexp( name, /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/, "Insert an IP address with the following format: www.xxx.yyy.zzz" );
+
+                    if ( bValid ) {
+                        //send route to OpenNaaS
+                    
+                        $( this ).dialog( "close" );
+                    }
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            },
+            close: function() {
+                allFields.val( "" ).removeClass( "ui-state-error" );
+            }
+        });
+    });
+</script>
+<div id="insertRouteIp" title="Required information for this route">
+    <p class="validateTips">All form fields are required.</p>
+    <form>
+        <fieldset>
+            <label for="name">Destination IP:</label>
+            <input type="text" name="name" id="ipDest" class="text ui-widget-content ui-corner-all"/>
+        </fieldset>
+    </form>
+</div>

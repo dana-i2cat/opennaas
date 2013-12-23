@@ -1,11 +1,7 @@
-function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName, linkText) {
+function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
      //Pattern for table                          
-    var idMarkup = tableId ? ' id="' + tableId + '"' :
-            '';
-
-    var classMarkup = tableClassName ? ' class="' + tableClassName + '"' :
-            '';
-
+    var idMarkup = tableId ? ' id="' + tableId + '"' : '';
+    var classMarkup = tableClassName ? ' class="' + tableClassName + '"' : '';
     var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
 
     //Patterns for table content
@@ -19,7 +15,7 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName, linkText) {
     var trCon = '';
 
     if (parsedJson) {
-        var isStringArray = typeof (parsedJson[0]) == 'string';
+        var isStringArray = typeof (parsedJson[0]) === 'string';
         var headers;
 
         headers = array_keys(parsedJson[0]);

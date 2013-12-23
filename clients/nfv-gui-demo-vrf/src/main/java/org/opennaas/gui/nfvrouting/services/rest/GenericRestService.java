@@ -66,14 +66,6 @@ public abstract class GenericRestService {
          */
         protected void addHTTPBasicAuthentication(Client client) {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                LOGGER.error("Authorities...");
-                LOGGER.error("authentication: "+authentication.getAuthorities());
-                LOGGER.error("authentication: "+authentication.getAuthorities().size());
-                for (GrantedAuthority a : authentication.getAuthorities()){
-                    LOGGER.error(a.getAuthority());
-                    LOGGER.error(authentication.getName());
-                }
-                LOGGER.error("authentication: "+authentication.isAuthenticated());
                 client.addFilter(new HTTPBasicAuthFilter(authentication.getName(), (String) authentication.getCredentials()));
         }
 }
