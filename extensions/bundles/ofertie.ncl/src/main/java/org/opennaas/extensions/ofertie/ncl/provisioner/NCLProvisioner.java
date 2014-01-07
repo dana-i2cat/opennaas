@@ -41,7 +41,7 @@ import org.osgi.service.event.EventHandler;
  */
 public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
-	private final static String		NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl.cfg";
+	private final static String		NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl";
 	private final static String		AUTOREROUTE_KEY	= "ncl.autoreroute";
 
 	private IQoSPDP					qoSPDP;
@@ -297,7 +297,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 				try {
 					launchRerouteMechanism(switchName, portId);
 				} catch (Exception e) {
-					log.error(e);
+					log.error(e.getMessage());
 					// TODO can not throw exception, since EventHandler interface does not allow it.
 				}
 			} else {
@@ -313,10 +313,15 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		synchronized (mutex) {
 			String circuitId = selectCircuitToReallocate(switchName, portId);
 
+			if (circuitId == null) {
+				log.info("No circuits allocated for this port. Ignoring alarm.");
+				return;
+			}
+
 			try {
 				rerouteCircuit(circuitId);
 			} catch (Exception e) {
-				throw new Exception("Could not reallocate circuit " + circuitId, e);
+				throw new Exception("Could not reallocate circuit " + circuitId + ": " + e.getMessage(), e);
 			}
 		}
 	}
@@ -368,6 +373,9 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 
 		List<Circuit> circuitsInPort = getAllCircuitsInPort(switchName, portId);
 
+		if (circuitsInPort.isEmpty()) {
+			return null;
+		}
 		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
 		return circuitsInPort.get(0).getId();
 	}
@@ -413,6 +421,10 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		if (properties == null)
 			throw new IOException("Failed to determine auto-reroute option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
 
-		return (Boolean) properties.get(AUTOREROUTE_KEY);
+		String value = properties.getProperty(AUTOREROUTE_KEY);
+		if (value == null) {
+			return false;
+		}
+		return Boolean.parseBoolean(value);
 	}
 }

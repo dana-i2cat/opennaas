@@ -27,6 +27,10 @@
 		<property name="pathFinder" ref="pathFinder" />
 	</bean>
 	<bean id="nclController" class="org.opennaas.extensions.ofertie.ncl.controller.NCLController"/>
+	<bean id="nclMonitoring" class="org.opennaas.extensions.ofertie.ncl.monitoring.NCLMonitoring" init-method="init">
+		<property name="nclController" ref="nclController" />
+		<property name="nclModel" ref="nclModel" />
+	</bean>
 	
 	<!-- Instantiate NCLProvisioner and publish it -->
 	<bean id="nclProvisioner" class="org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner" init-method="registerAsCongestionEventListener" destroy-method="unregisterListener">
@@ -48,4 +52,5 @@
 			<entry key="org.apache.cxf.rs.out.interceptors" value="org.opennaas.extensions.ofertie.ncl.interceptor.ProviderOutInterceptor" />
 		</service-properties>
 	</service>
+	
 </blueprint>
