@@ -3,7 +3,7 @@ package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
-import org.opennaas.extensions.sdnnetwork.repository.SdnNetworkRepository;
+import org.opennaas.extensions.ofnetwork.repository.OFNetworkRepository;
 
 public class NetworkSelectorMockup implements INetworkSelector {
 
@@ -41,7 +41,7 @@ public class NetworkSelectorMockup implements INetworkSelector {
 	 * @return
 	 */
 	private String getFirstSDNNetworkInOpenNaaS() {
-		return resourceManager.listResourcesByType(SdnNetworkRepository.SDN_NETWORK_RESOURCE_TYPE).get(0)
+		return resourceManager.listResourcesByType(OFNetworkRepository.OF_NETWORK_RESOURCE_TYPE).get(0)
 				.getResourceIdentifier().getId();
 	}
 

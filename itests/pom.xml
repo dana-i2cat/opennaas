@@ -26,6 +26,7 @@
 		<module>ofertie.ncl</module>
 		<module>openflowforwarding/floodlight</module>
 		<module>ip/opener</module>
+		<module>sampleresource</module>
 	</modules>
 
 	<dependencies>

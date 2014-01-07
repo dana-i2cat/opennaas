@@ -18,7 +18,9 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
  */
 public class OpenflowSwitchRepository extends ResourceRepository {
 
-	Log	log	= LogFactory.getLog(OpenflowSwitchRepository.class);
+	public static final String	OF_SWITCH_RESOURCE_TYPE	= "openflowswitch";
+
+	Log							log						= LogFactory.getLog(OpenflowSwitchRepository.class);
 
 	public OpenflowSwitchRepository(String resourceType) {
 		super(resourceType);

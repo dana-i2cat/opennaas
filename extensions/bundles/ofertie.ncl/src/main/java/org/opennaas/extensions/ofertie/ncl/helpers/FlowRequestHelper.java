@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Port;
-import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
 /**
  * 
@@ -31,7 +31,7 @@ public abstract class FlowRequestHelper {
 		req.setSourceVlanId(21);
 		req.setDestinationVlanId(22);
 
-		req.setTos(1001);
+		req.setTos(16);
 
 		QoSRequirements qosRequirements = new QoSRequirements();
 		qosRequirements.setMaxBandwidth(100);

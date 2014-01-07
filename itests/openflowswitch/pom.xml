@@ -27,7 +27,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.sdnnetwork</artifactId>
+			<artifactId>org.opennaas.extensions.ofnetwork</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas.itests</groupId>

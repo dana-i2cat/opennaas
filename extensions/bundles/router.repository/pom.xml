@@ -48,7 +48,7 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.router.repository.Activator</Bundle-Activator>
-						<Import-Package>org.slf4j,*</Import-Package>
+						<Import-Package>org.slf4j,javax.persistence,*</Import-Package>
 						<!--<Export-Package>
 						org.opennaas.extensions.router.repository.*;version="${project.version}"
 						</Export-Package>-->

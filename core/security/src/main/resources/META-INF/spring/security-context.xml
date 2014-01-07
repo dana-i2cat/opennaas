@@ -194,36 +194,16 @@
 			value="org.springframework.security.acls.domain.BasePermission.READ" />
 	</bean>
 
-	<!-- Register OpenNaaS OSGi Services & Beans for Security -->
-
-	<!-- DataSourceSecurity bean -->
-	<bean id="dataSourceSecurity" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url"
-			value="jdbc:hsqldb:file:databases/security/security_db;hsqldb.default_table_type=cached;shutdown=true" />
-		<property name="username" value="sa" />
-		<property name="password" value="" />
-	</bean>
-
-	<!-- DataSourceSecurity exported as OSGi service -->
-	<osgi:service ref="dataSourceSecurity" interface="javax.sql.DataSource">
-		<osgi:service-properties>
-			<entry key="osgi.jndi.service.name" value="jdbc/opennaas-security" />
-		</osgi:service-properties>
-	</osgi:service>
-
-	<!-- SecurityRepository bean -->
-	<bean id="securityRepository"
-		class="org.opennaas.core.security.persistence.SecurityRepository"
-		init-method="init" destroy-method="close">
-		<property name="persistenceUnit" value="opennaas-security" />
-	</bean>
+	<!-- Get a dataSourceSecurity reference, used in aclService -->
+	<osgi:reference id="dataSourceSecurity" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-security)"/>
+	
+	<!-- Get a SecurityRepository reference, used in aclManager -->
+	<osgi:reference id="securityRepositoryService" interface="org.opennaas.core.security.persistence.SecurityRepository" />
 
 	<!-- ACLManager bean -->
 	<bean id="aclManager" class="org.opennaas.core.security.acl.ACLManager"
 		init-method="init">
-		<property name="securityRepository" ref="securityRepository" />
+		<property name="securityRepository" ref="securityRepositoryService" />
 		<property name="aclService" ref="aclService" />
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
 		<property name="usersPropertiesFile" value="users" />
