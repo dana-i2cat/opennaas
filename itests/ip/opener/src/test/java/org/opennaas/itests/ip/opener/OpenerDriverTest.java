@@ -1,4 +1,4 @@
-package org.opennaas.itests.router.mockserver;
+package org.opennaas.itests.ip.opener;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
@@ -42,11 +42,11 @@ import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.TestsConstants;
 import org.opennaas.itests.helpers.server.HTTPRequest;
 import org.opennaas.itests.helpers.server.HTTPResponse;
 import org.opennaas.itests.helpers.server.HTTPServerBehaviour;
 import org.opennaas.itests.helpers.server.MockHTTPServerTest;
-import org.opennaas.itests.router.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;

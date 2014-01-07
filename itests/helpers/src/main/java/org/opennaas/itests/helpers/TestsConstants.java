@@ -1,4 +1,4 @@
-package org.opennaas.itests.router;
+package org.opennaas.itests.helpers;
 
 public class TestsConstants {
 

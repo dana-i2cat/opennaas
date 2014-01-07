@@ -33,7 +33,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.router.TestsConstants;
+import org.opennaas.itests.helpers.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;

@@ -37,7 +37,7 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.router.TestsConstants;
+import org.opennaas.itests.helpers.TestsConstants;
 import org.opennaas.itests.router.helpers.ExistanceHelper;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;

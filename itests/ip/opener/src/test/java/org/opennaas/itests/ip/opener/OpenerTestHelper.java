@@ -1,4 +1,4 @@
-package org.opennaas.itests.router.mockserver;
+package org.opennaas.itests.ip.opener;
 
 import java.io.StringWriter;
 import java.util.List;
