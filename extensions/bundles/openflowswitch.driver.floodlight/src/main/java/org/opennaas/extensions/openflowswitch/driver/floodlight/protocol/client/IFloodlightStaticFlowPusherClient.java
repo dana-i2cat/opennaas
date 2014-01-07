@@ -66,8 +66,9 @@ public interface IFloodlightStaticFlowPusherClient {
 	/**
 	 * Gets a list of flows by switch
 	 */
-	@Path("list/{switchId}/json")
 	@GET
+	@Path("list/{switchId}/json")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public FloodlightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid) throws ProtocolException, Exception;
 
