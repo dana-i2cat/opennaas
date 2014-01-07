@@ -173,7 +173,7 @@ public class NCLMonitoring {
 
 						// raise alarm event for each congested port
 						for (Port congestedPort : newCongestedPorts) {
-							log.info("Throughput threshold exceeded, cogestion detected. Raising alarm event!");
+							log.info("Throughput threshold exceeded, congestion detected. Raising alarm event!");
 							notifyCongestion(congestedPort.getDeviceId(), congestedPort.getPortNumber());
 						}
 
