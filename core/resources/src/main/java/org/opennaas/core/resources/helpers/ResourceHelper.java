@@ -193,27 +193,9 @@ public class ResourceHelper {
 	}
 
 	public static CapabilityDescriptor newQueueCapabilityDescriptor() {
-		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
-		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
-		String uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		return newQueueCapabilityDescriptor("junos", "10.10");
 
-		CapabilityProperty property = new CapabilityProperty(
-				ResourceDescriptorConstants.PROTOCOL_URI, uri);
-		capabilityDescriptor.getCapabilityProperties().add(property);
-
-		property = new CapabilityProperty(
-				ResourceDescriptorConstants.ACTION_NAME, "junos");
-		capabilityDescriptor.getCapabilityProperties().add(property);
-
-		property = new CapabilityProperty(
-				ResourceDescriptorConstants.ACTION_VERSION, "10.10");
-		capabilityDescriptor.getCapabilityProperties().add(property);
-		Information capabilityInformation = new Information();
-		capabilityInformation.setType("queue");
-		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
-
-		return capabilityDescriptor;
 	}
 
 	public static CapabilityDescriptor newQueueCapabilityDescriptor(String actionsetName, String actionsetVersion) {
