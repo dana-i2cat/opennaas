@@ -24,6 +24,7 @@
 		<module>security</module>
 		<module>openflowswitch</module>
 		<module>ofertie.ncl</module>
+		<module>openflowforwarding/floodlight</module>
 	</modules>
 
 	<dependencies>

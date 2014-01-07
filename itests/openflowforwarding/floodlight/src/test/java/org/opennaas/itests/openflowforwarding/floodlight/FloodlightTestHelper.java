@@ -1,4 +1,4 @@
-package org.opennaas.itests.openflowswitch;
+package org.opennaas.itests.openflowforwarding.floodlight;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.opennaas.itests.openflowswitch;
+package org.opennaas.itests.openflowforwarding.floodlight;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
