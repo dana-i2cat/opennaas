@@ -184,9 +184,9 @@ public class NCLMonitoring {
 				}
 
 			} catch (ResourceException e) {
-
-			} catch (Exception e) {
 				log.error("Error processing network statistics", e);
+			} catch (ActivatorException e) {
+				log.error("Error getting OF network", e);
 			}
 		}
 
@@ -275,7 +275,7 @@ public class NCLMonitoring {
 		 * @throws ActivatorException
 		 * @throws ResourceException
 		 */
-		private IResource getFirstOFNetwork() throws ActivatorException, ResourceException {
+		private IResource getFirstOFNetwork() throws ActivatorException {
 			List<IResource> oFNetworks = Activator.getResourceManagerService().listResourcesByType(OFNetworkRepository.OF_NETWORK_RESOURCE_TYPE);
 			if (oFNetworks.size() > 0) {
 				return oFNetworks.get(0);
