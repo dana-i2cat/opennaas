@@ -141,18 +141,7 @@
 
 	<!-- Declare an acl cache -->
 	<bean id="aclCache"
-		class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
-		<constructor-arg>
-			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-				<property name="cacheManager">
-					<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-						<property name="configLocation" value="/META-INF/ehcache-failsafe.xml" />
-					</bean>
-				</property>
-				<property name="cacheName" value="aclCache" />
-			</bean>
-		</constructor-arg>
-	</bean>
+		class="org.opennaas.core.security.acl.NullAclCache" />
 
 	<!-- Declare an acl authorization strategy -->
 	<bean id="aclAuthorizationStrategy"
