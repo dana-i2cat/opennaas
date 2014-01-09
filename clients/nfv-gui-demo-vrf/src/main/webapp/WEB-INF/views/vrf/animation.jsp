@@ -29,19 +29,6 @@
             }
         });
     }, 500000);//5000
-    
-    $.ajax({
-        type: 'GET',
-        url : "getStreamInfo/",
-        async: false,
-        success : function (data) {
-            if(data !== ""){
-                returnedRoutes = data;
-                streamPacket(returnedRoutes);
-            }
-        }
-    });
-
 </script>
 </div>
 <div id="animaton_topology" class="topology">
@@ -49,6 +36,19 @@
 </div>
 <script src="<c:url value="/resources/js/topology/baseTopology.js" />"></script>
 <script src="<c:url value="/resources/js/topology/animation.js" />"></script>
+<script>
+$.ajax({
+        type: 'GET',
+        url : "getStreamInfo/",
+        async: false,
+        success : function (data) {
+            if(data !== ""){
+                returnedRoutes = data;
+                streamPacket(eval('(' + returnedRoutes + ')'));
+            }
+        }
+    });
+</script>
 
 <table id="jsonTable" class="tablesorter">
 </table> 

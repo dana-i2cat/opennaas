@@ -146,8 +146,10 @@ function move(){
 }
 
 function streamPacket(returnedRoutes){
-    var returnedRoutes = [{ip:'192.168.1.1'},{dpid:'00:00:00:00:00:00:00:01'},{dpid:'00:00:00:00:00:00:00:02'},{ip:'192.168.2.51'}];
-    
+//    var returnedRoutes = [{ip:'192.168.1.1'},{dpid:'00:00:00:00:00:00:00:01'},{dpid:'00:00:00:00:00:00:00:02'},{ip:'192.168.2.51'}];
+console.log(returnedRoutes);
+console.log("Counter: "+counterStream);
+var initial = nodes.filter(function (n) {return n.ip === returnedRoutes[0]['ip'];})[0];
     setTimeout(function () {
         var obj = returnedRoutes[counterStream];
         for(var key in obj){
@@ -162,15 +164,17 @@ console.log("I :"+counterStream+" Json key: "+key+" Json value: "+obj[key]);
         }
     
 console.log("X: "+dest1.px+" Y: "+dest1.py);
+console.log("X: "+packet.attr('x')+" Y: "+packet.attr('y'));
     counterStream++;
     if (counterStream < returnedRoutes.length) {
-        streamPacket();
+        streamPacket(returnedRoutes);
     }else if( packet.attr('x') === dest1.px && packet.attr('y') === dest1.py){
-        packet.transition().duration(1000).style('opacity', 0);
+        packet.transition().duration(500).style('opacity', 0);
+        packet.transition().delay(500).attr('x', initial.px).attr('y', initial.py);
         counterStream = 0;
-        streamPacket();
+        streamPacket(returnedRoutes);
     }else{
-        streamPacket();
+        streamPacket(returnedRoutes);
     }
     }, 1000);  
 }
