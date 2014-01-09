@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>net.i2cat</groupId>
 			<artifactId>netconf-server</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>${netconf-server.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>xmlunit</groupId>

@@ -128,6 +128,8 @@
 		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
 		<opennaas.gim.version>0.25-SNAPSHOT</opennaas.gim.version>
+		<!-- Netconf server for itests -->
+		<netconf-server.version>0.0.2</netconf-server.version>
 	</properties>
 
 	<dependencyManagement>
