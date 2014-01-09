@@ -170,8 +170,8 @@ public class NFVRoutingController {
      * @return the log of OpenNaaS
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getStreamInfo")
-    public @ResponseBody String get(ModelMap model) {
-        LOGGER.debug("Get log ------------------");
+    public @ResponseBody String getStreamRoute(ModelMap model) {
+        LOGGER.debug("Get stream route ------------------");
         String response = nfvRoutingBO.getStream();
 
         return response;

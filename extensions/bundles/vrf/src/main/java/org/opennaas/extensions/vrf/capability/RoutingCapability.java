@@ -66,11 +66,6 @@ public class RoutingCapability implements IRoutingCapability {
     /// /////////////////////////////
     @Override
     public Response getRoute(String ipSource, String ipDest, String switchDPID, int inputPort, boolean proactive) {
-        //---------------------DEMO
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        logMessage = dateFormat.format(date) + " -> Requested routed from: " + ipSource + ". Where is located " + ipDest + "? throught port " + inputPort + " of switch " + switchDPID;
-        //---------------------END DEMO
         int outPortSrcSw;
         Response response;
         int version;//IP version
@@ -86,6 +81,13 @@ public class RoutingCapability implements IRoutingCapability {
             return Response.serverError().entity("Ip not recognized").build();
         }
 
+        //---------------------DEMO
+        streamInfo = "";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        logMessage = dateFormat.format(date) + " -> Requested routed from: " + ipSource + ". Where is located " + ipDest + "? throught port " + inputPort + " of switch " + switchDPID;
+        //---------------------END DEMO
+        
         VRFModel model = getVRFModel();
         if (model.getTable(version) == null) {
             return Response.status(404).type("text/plain").entity("IP Table does not exist.").build();
