@@ -42,6 +42,7 @@ public class RoutingCapability implements IRoutingCapability {
     Log log = LogFactory.getLog(RoutingCapability.class);
     private VRFModel vrfModel;
     private String logMessage;
+    private String streamInfo;
 
     public VRFModel getVRFModel() {
         if (this.vrfModel == null) {
@@ -121,6 +122,7 @@ public class RoutingCapability implements IRoutingCapability {
         date = new Date();
         logMessage = logMessage + "\n" + dateFormat.format(date) + " -> Packet Routed to out port: " + outPortSrcSw + " of the switch: " + switchDPID;
         new updateLog().start();
+        streamInfo = listFlows.toString();
         //---------------------END DEMO
         return Response.ok(Integer.toString(outPortSrcSw) + ":" + listFlows).build();
     }
@@ -157,10 +159,11 @@ public class RoutingCapability implements IRoutingCapability {
         log.info("Removing route " + id + " from table IPv" + version);
         VRFModel model = getVRFModel();
         VRFRoute route = model.getTable(version).getRouteId(id);
-
+        
         //call OpenNaaS provisioner
         FloodlightOFFlow flow = Utils.VRFRouteToFloodlightFlow(route);
 
+        model.getTable(version).removeRoute(id);
         //Conversion List of VRFRoute to List of FloodlightFlow
         try {
             removeLink(flow);
@@ -175,6 +178,7 @@ public class RoutingCapability implements IRoutingCapability {
 
     @Override
     public Response removeRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort) {
+        log.info("Removing route given all parameters");
         VRFModel model = getVRFModel();
         int version;
         if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
@@ -374,7 +378,11 @@ public class RoutingCapability implements IRoutingCapability {
             return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
         }
         IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+        try{
         forwardingCapability.removeOpenflowForwardingRule(flow.getName());
+        } catch(Exception e){
+            log.error("Controller does not contain information about this route... "+e.getMessage());
+        }
         return Response.ok().build();
     }
 
@@ -434,6 +442,11 @@ public class RoutingCapability implements IRoutingCapability {
             }
             removeLog();
         }
+    }
+    
+    @Override
+    public String getStream(){
+        return streamInfo;
     }
     //---------------------END DEMO FUNCTIONS
 }

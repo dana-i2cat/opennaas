@@ -86,7 +86,7 @@ public interface IRoutingCapability {
      * @param outputPort
      * @return status
      */
-    @Path("/route")
+    @Path("/routeParam")
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     public Response removeRoute(@FormParam("ipSource") String ipSource,
@@ -148,6 +148,14 @@ public interface IRoutingCapability {
     @Produces(MediaType.TEXT_PLAIN)
     public String getLog();
     
+    /**
+     * Send the path
+     * @return 
+     */
+    @Path("/stream")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getStream();
    
     /* ------------- DEMO ------------- */
 }

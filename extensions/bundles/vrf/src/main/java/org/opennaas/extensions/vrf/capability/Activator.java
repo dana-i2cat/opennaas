@@ -1,18 +1,12 @@
 package org.opennaas.extensions.vrf.capability;
 
-import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.action.IActionSet;
-import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Filter;
-import org.osgi.framework.InvalidSyntaxException;
 
 public class Activator extends AbstractActivator implements BundleActivator {
 
