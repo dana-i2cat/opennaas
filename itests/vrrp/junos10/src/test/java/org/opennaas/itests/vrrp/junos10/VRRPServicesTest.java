@@ -1,4 +1,4 @@
-package org.opennaas.itests.router.vrrp;
+package org.opennaas.itests.vrrp.junos10;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
@@ -48,13 +48,13 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.router.TestsConstants;
-import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -71,12 +71,19 @@ import org.xml.sax.SAXException;
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class VRRPServicesTest {
-	private final static Log	log					= LogFactory.getLog(VRRPServicesTest.class);
+	private final static Log	log						= LogFactory.getLog(VRRPServicesTest.class);
 
-	private final static String	RESOURCE_INFO_NAME	= "VRRP services test";
+	private final static String	RESOURCE_INFO_NAME		= "VRRP services test";
 
-	public static final String	CAPABILITY_URI		= "ssh://user:pass@localhost:2222/";
-	public static final String	RESOURCE_URI		= "ssh://user:pass@localhost:2222/";
+	public static final String	CAPABILITY_URI			= "ssh://user:pass@localhost:2222/";
+	public static final String	RESOURCE_URI			= "ssh://user:pass@localhost:2222/";
+
+	public static final String	ACTION_NAME				= "junos";
+	public static final String	RESOURCE_TYPE			= "router";
+
+	public static final String	QUEUE_CAPABILIY_TYPE	= "queue";
+	public static final String	VRRP_CAPABILITY_TYPE	= "vrrp";
+	public static final String	CAPABILIY_VERSION		= "10.10";
 
 	protected ICapability		iVRRPCapability;
 	protected IResource			routerResource;
@@ -130,11 +137,11 @@ public class VRRPServicesTest {
 
 		// execute capability
 		IVRRPCapability vrrpCapability = (IVRRPCapability) routerResource.getCapability(InitializerTestHelper
-				.getCapabilityInformation(TestsConstants.VRRP_CAPABILITY_TYPE));
-		vrrpCapability.configureVRRP((VRRPProtocolEndpoint) ParamCreationHelper
-				.newParamsVRRPGroupWithOneEndpoint("192.168.100.1", "fe-0/3/2", "192.168.1.1", "255.255.255.0").getProtocolEndpoint().get(0));
+				.getCapabilityInformation(VRRP_CAPABILITY_TYPE));
+		vrrpCapability.configureVRRP((VRRPProtocolEndpoint) newParamsVRRPGroupWithOneEndpoint("192.168.100.1", "fe-0/3/2", "192.168.1.1",
+				"255.255.255.0").getProtocolEndpoint().get(0));
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 
 		// assertions
@@ -238,10 +245,10 @@ public class VRRPServicesTest {
 		// Add VRRP Capability Descriptor
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		CapabilityDescriptor vrrpCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.ACTION_NAME,
-				TestsConstants.CAPABILIY_VERSION,
-				TestsConstants.VRRP_CAPABILITY_TYPE,
-				TestsConstants.CAPABILITY_URI);
+		CapabilityDescriptor vrrpCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME,
+				CAPABILIY_VERSION,
+				VRRP_CAPABILITY_TYPE,
+				CAPABILITY_URI);
 		lCapabilityDescriptors.add(vrrpCapabilityDescriptor);
 
 		// Add Queue Capability Descriptor
@@ -249,7 +256,7 @@ public class VRRPServicesTest {
 		lCapabilityDescriptors.add(queueCapabilityDescriptor);
 
 		// Router Resource Descriptor
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, TestsConstants.RESOURCE_TYPE,
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE,
 				RESOURCE_URI, RESOURCE_INFO_NAME);
 
 		// Create resource
@@ -274,6 +281,34 @@ public class VRRPServicesTest {
 
 		// Remove resource
 		resourceManager.removeResource(routerResource.getResourceIdentifier());
+	}
+
+	private static VRRPGroup newParamsVRRPGroupWithOneEndpoint(String virtualIPAddress, String interfaceName, String interfaceIPAddress,
+			String interfaceSubnetMask) {
+		// VRRPGroup
+		VRRPGroup vrrpGroup = new VRRPGroup();
+		vrrpGroup.setVrrpName(201);
+		vrrpGroup.setVirtualIPAddress(virtualIPAddress);
+
+		// VRRPProtocolEndpoint
+		VRRPProtocolEndpoint vrrProtocolEndpoint1 = new VRRPProtocolEndpoint();
+		vrrProtocolEndpoint1.setPriority(100);
+		vrrProtocolEndpoint1.setService(vrrpGroup);
+		vrrProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
+		// IPProtocolEndpoint
+		IPProtocolEndpoint ipProtocolEndpoint1 = new IPProtocolEndpoint();
+		ipProtocolEndpoint1.setIPv4Address(interfaceIPAddress);
+		ipProtocolEndpoint1.setSubnetMask(interfaceSubnetMask);
+		ipProtocolEndpoint1.setProtocolIFType(ProtocolIFType.IPV4);
+		vrrProtocolEndpoint1.bindServiceAccessPoint(ipProtocolEndpoint1);
+
+		// EthernetPort
+		EthernetPort eth1 = new EthernetPort();
+		eth1.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth1.setName(interfaceName);
+		ipProtocolEndpoint1.addLogiaclPort(eth1);
+
+		return vrrpGroup;
 	}
 
 }
