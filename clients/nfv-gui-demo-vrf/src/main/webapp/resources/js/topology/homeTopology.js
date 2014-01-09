@@ -84,7 +84,8 @@ console.log("Id num " + d.id_num + "node: " + d.id);
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
             if(d.type === "switch")
-                getFlowTable(d.dpid);
+                //getFlowTable(d.dpid);
+                updateSwInfoTxt(d.dpid, d.controller);
             // select node
             mousedown_node = d;
             if (mousedown_node === selected_node) selected_node = null;
@@ -175,7 +176,8 @@ restart();
 
 /**
  * Call OpenNaaS get Flow Table
- *
+ * @param {type} dpid
+ * @returns {undefined}
  */
 function getFlowTable(dpid) {
     $.ajax({

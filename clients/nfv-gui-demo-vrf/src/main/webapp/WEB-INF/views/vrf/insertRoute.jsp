@@ -57,12 +57,12 @@
 
 <script language="JavaScript" type="text/JavaScript">
     function deleteAll(table){
-    this.table = document.getElementById(table);
-    rows = this.table.getElementsByTagName("tr");
-    x=1;
-    while ( x<rows.length) {
-    document.getElementById(table).deleteRow(x);
-    }
+        this.table = document.getElementById(table);
+        rows = this.table.getElementsByTagName("tr");
+        x=1;
+        while ( x<rows.length) {
+            document.getElementById(table).deleteRow(x);
+        }
     }
 
     count = 1;
@@ -135,7 +135,6 @@
     $("#listRoutes2\\.switchInfo\\.inputPort").val("2");
     $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
     addRout();
-
     $("#listRoutes3\\.sourceAddress").val("10.1.10.10");
     $("#listRoutes3\\.destinationAddress").val("10.1.11.0");
     $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:0a");
@@ -175,68 +174,144 @@
     }        
 </script>
 <script>
-    $(function() {
-        var name = $( "#ipDest" ),
-        allFields = $( [] ).add( name ),
-        tips = $( ".validateTips" );
-        function updateTips( t ) {
-            tips.text( t ).addClass( "ui-state-highlight" );
-            setTimeout(function() {
-                tips.removeClass( "ui-state-highlight", 1500 );
-            }, 500 );
+    var ipSrcDialog = "";
+    var ipDestDialog = "";
+    function updateTips( t ) {
+        tips.text( t ).addClass( "ui-state-highlight" );
+        setTimeout(function() {
+         tips.removeClass( "ui-state-highlight", 1500 );
+        }, 500 );
+    }
+    /* Move to a centralized file? */
+    function checkLength( o, n, min, max ) {
+        var newO;
+        if(typeof o === 'string' || o instanceof String ){
+            newO = o;
+        }else{
+            newO = o.val();
         }
-        function checkLength( o, n, min, max ) {
-            if ( o.val().length > max || o.val().length < min ) {
-                o.addClass( "ui-state-error" );
-                updateTips( "Length of " + n + " must be between " + min + " and " + max + "." );
-                return false;
-            } else {
+        if ( newO.length > max || newO.length < min ) {
+            o.addClass( "ui-state-error" );
+            updateTips( "Length of " + n + " must be between " + min + " and " + max + "." );
+            return false;
+        } else {
             return true;
-            }
         }
-        function checkRegexp( o, regexp, n ) {
-            if ( !( regexp.test( o.val() ) ) ) {
-                o.addClass( "ui-state-error" );
-                updateTips( n );
-                return false;
-            } else {
-                return true;
-            }
+    }
+        //192.168.2.1
+    function checkRegexp( o, regexp, n ) {
+        var newO;
+        if(typeof o === 'string' || o instanceof String ){
+            newO = o;
+        }else{
+            newO = o.val();
         }
-        $( "#insertRouteIp" ).dialog({
-            autoOpen: false,
-            height: 300,
-            width: 350,
-            modal: false,
-            buttons: {
-                "Create route": function() {
-                    var bValid = true;
-                    allFields.removeClass( "ui-state-error" );
-                    bValid = bValid && checkLength( name, "username", 8, 16 );
-                    bValid = bValid && checkRegexp( name, /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/, "Insert an IP address with the following format: www.xxx.yyy.zzz" );
+        if ( !( regexp.test( newO ) ) ) {
+            o.addClass( "ui-state-error" );
+            updateTips( n );
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    //
+    function checkIp( ip ){
+        var validIp = true;
+        validIp = validIp && checkLength( ip, "ip", 8, 16 );
+        validIp = validIp && checkRegexp( ip, /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/, "Insert an IP address with the following format: www.xxx.yyy.zzz" );
+        return validIp;
+    }
 
-                    if ( bValid ) {
-                        //send route to OpenNaaS
-                    
+    function insertIpDialog(newLink, originLink){
+        var defer = $.Deferred();//allows to return values using dialogs. --> synchronous
+        var ipSrc = $( "#ipSrc" );
+        var ipDest = $( "#ipDest" );
+        var srcValid = true;
+        var dstValid = true;
+        allFields = $( [] ).add( name );
+        tips = $( ".validateTips" );
+//Obtain the source Ip of the graph. Only in the case that one of the selected nodes is a host. If not (is a switch), doesn't save anything...
+        if(newLink.source.ip){
+            srcValid = checkIp(newLink.source.ip);
+            if ( srcValid ) {
+                ipSrc.value =  newLink.source.ip;
+            }
+        } else if(newLink.target.ip){
+            dstValid = checkIp(newLink.target.ip);
+            if ( dstValid ) {
+                document.getElementById('ipSrc').value = newLink.target.ip;
+                ipSrc.value =  newLink.target.ip;
+            }
+        }
+console.log(ipSrc.val());
+        document.getElementById('ipSrc').value = ipSrc.val();//recover the IP value, obtained from graph, or from html tag (input) (saved before)
+        document.getElementById('ipDest').value = ipSrc.val();
+        
+            $( "#insertRouteIp" ).dialog({
+                autoOpen: true,
+                height: 300,
+                close: function () { 
+                        $(this).dialog('destroy');
+                        allFields.val( "" ).removeClass( "ui-state-error" );
+                    },
+                width: 350,
+                modal: true,
+                buttons: {
+                    "Create Route": function() {
+                        srcValid = true;
+                        dstValid = true;
+//                      allFields.removeClass( "ui-state-error" );
+                        srcValid = checkIp(ipSrc);
+                        dstValid = checkIp(ipDest);
+
+                        if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
+                            ipSrcDialog = ipSrc.val();
+                            ipDestDialog = ipDest.val();
+                            document.getElementById('ipSrc').value = ipSrcDialog;
+                            document.getElementById('ipDest').value = ipDestDialog;
+                            defer.resolve(ipDestDialog);//response is not required
+                            insertManualLink(newLink, originLink, ipSrcDialog, ipDestDialog);
+                            $( this ).dialog( "close" );
+                        }
+
+                    },
+                    Cancel: function() {
+                        removeLastLink();//remove last link inserted (push) and remove the dragged line
+                        defer.resolve("cancel");//response is not required
                         $( this ).dialog( "close" );
                     }
-                },
-                Cancel: function() {
-                    $( this ).dialog( "close" );
                 }
-            },
-            close: function() {
-                allFields.val( "" ).removeClass( "ui-state-error" );
-            }
-        });
-    });
+            });
+
+        $( "#ipDest" ).val(ipDestDialog);
+        return defer.promise();
+    }
+
+    /**
+     * Insert manual link given the ip src/dst and port src/dst
+     *
+     * @param {type} newLink
+     * @param {type} originLink
+     * @param {type} ipSrc
+     * @param {type} ipDest
+     * @returns {undefined}
+     */
+    function insertManualLink(newLink, originLink, ipSrc, ipDest){
+console.log(originLink);
+            insertRoute(ipSrc, ipDest, newLink.source.dpid, originLink.srcPort, originLink.dstPort);
+    }
+    
 </script>
-<div id="insertRouteIp" title="Required information for this route">
+<div id="insertRouteIp" title="Required information for this route" style="display:none">
     <p class="validateTips">All form fields are required.</p>
     <form>
         <fieldset>
+            <label for="name">Source IP:</label>
+            <input type="text" name="ipSrc" id="ipSrc" class="text ui-widget-content ui-corner-all" value=""/>
+            <br/>
             <label for="name">Destination IP:</label>
-            <input type="text" name="name" id="ipDest" class="text ui-widget-content ui-corner-all"/>
+            <input type="text" name="ipDest" id="ipDest" class="text ui-widget-content ui-corner-all" value=""/>
         </fieldset>
     </form>
 </div>

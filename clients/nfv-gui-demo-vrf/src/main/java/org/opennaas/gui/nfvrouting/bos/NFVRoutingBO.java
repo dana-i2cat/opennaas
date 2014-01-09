@@ -71,4 +71,8 @@ public class NFVRoutingBO {
         return nfvRoutingService.insertRoute(ipSrc, ipDst, dpid, srcPort, dstPort);
     }
 
+    public String getStream() {
+        return nfvRoutingService.getStream();
+    }
+
 }

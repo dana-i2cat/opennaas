@@ -68,37 +68,37 @@ console.log(parsedJson.routeTable[i]);
 }
 
 function removeAll(){
-        var table = document.getElementById("jsonTable");
-        for ( var i = 1; row = table.rows[i]; i++ ) {
-            row = table.rows[i];       
-            col = row.cells[0];
-            del(col.firstChild.nodeValue);
-            //alert(col.firstChild.nodeValue);
-        }
-        for(var i = table.rows.length - 1; i > 0; i--){
-            table.deleteRow(i);
-        }
+    var table = document.getElementById("jsonTable");
+    for ( var i = 1; row = table.rows[i]; i++ ) {
+        row = table.rows[i];       
+        col = row.cells[0];
+        del(col.firstChild.nodeValue);
+        //alert(col.firstChild.nodeValue);
     }
-    function del(id, version){
-        var result = "";
-        $.ajax({
-            type: 'POST',
-            url : "deleteRoute/"+id+"?type="+getURLParameter("type"),
-            async: false,
-            success : function (data) {
-                $("#dynamicContent").html(data);
-                result = data;                 
-            }
-        });
-        if(document.getElementById("removedOk") === null){
-            $("<div id='removedOk' class='success'>Removed correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
-            $('.success').next('br').remove();
+    for(var i = table.rows.length - 1; i > 0; i--){
+        table.deleteRow(i);
+    }
+}
+
+function del(id){
+    var result = "";
+    $.ajax({
+        type: 'POST',
+        url : "deleteRoute/"+id+"?type="+getURLParameter("type"),
+        async: false,
+        success : function (data) {
+            $("#dynamicContent").html(data);
+            result = data;                 
+        }
+    });
+    if(document.getElementById("removedOk") === null){
+        $("<div id='removedOk' class='success'>Removed correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
+        $('.success').next('br').remove();
             setTimeout(function() {
-                //$('.success').remove();
-                $('.success').slideUp("slow", function() { $('.success').remove();});
-                //$('.success').fadeOut(300, function(){ $(this).remove();});
-            }, 3000);
-        }
-        
-        return result;
+            //$('.success').remove();
+            $('.success').slideUp("slow", function() { $('.success').remove();});
+            //$('.success').fadeOut(300, function(){ $(this).remove();});
+        }, 3000);
     }
+    return result;
+}

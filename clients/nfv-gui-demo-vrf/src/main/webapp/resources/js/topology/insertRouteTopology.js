@@ -7,7 +7,7 @@ var adjacencyMatrix = createAdjacencyMatrix();//calculate adjacent matrix of the
 console.log(adjacencyMatrix);
 var selectedNode = false;
 var originNode;
-var mode = auto;//manual
+var mode = auto;//auto-man
 var activeNode = null;
 var sourceIp;
 var destinationIp;
@@ -86,7 +86,7 @@ console.log("Click on Link " + d.type);
         })
         .on('mouseover', function (d) {
 console.log("Mouseover Id num " + d.id_num + "node: " + d.id + ". SelectNode: " + selectedNode);
-            if(mode === auto && activeNode != null)
+            if(mode === auto && activeNode !== null)
                 showPath(d.id_num);
         })
         .on('mouseout', function (d) {
@@ -163,6 +163,9 @@ console.log("Source h " + source.id+" Dest h " + target.id);
             var originLink;//match link
             var newLink;//new defined link (CSS changes)
             originLink = links.filter(function (l) {return (l.source === source && l.target === target); })[0];
+            if ( typeof originLink === 'undefined') {
+                originLink = links.filter(function (l) {return (l.source === target && l.target === source); })[0];
+            }
 
             if (originLink) {
                 originLink[direction] = true;
@@ -171,28 +174,26 @@ console.log("Source h " + source.id+" Dest h " + target.id);
             if ( mode === man){
                 
 console.log("New Link. Manual mode. ");
-//                var newLink = false;
-                if(target.type === "switch"){
-                    $( "#insertRouteIp" ).dialog( "open" );
-                }else{
-                    dest1 = nodes.filter(function(n) {return n.id === target.id; })[0];
-    console.log(dest1);
-                    newLink = {source: source, target: dest1, left: false, right: false, type: "new_link"};
-                    //this link exists? It is possible to make this connection?
-                    for (var i = 0; i < links.length; ++i) {
-                        if( (newLink.source === links[i].source && newLink.target === links[i].target ) || 
-                            newLink.source === links[i].target && newLink.target === links[i].source){
+
+dest1 = nodes.filter(function(n) {return n.id === target.id; })[0];
+console.log(dest1);
+                newLink = {source: source, target: dest1, left: false, right: false, type: "new_link"};
+
+                insertIpDialog(newLink, originLink).done(function (answer) {
+                        var ipDest = answer;
+console.log("Destination IP " + ipDest);//TRUE
+                    });
+                //this link exists? It is possible to make this connection?
+                for (var i = 0; i < links.length; ++i) {
+                    if( (newLink.source === links[i].source && newLink.target === links[i].target ) || 
+                        newLink.source === links[i].target && newLink.target === links[i].source){
                             newLink[direction] = true;
-    console.log(newLink);
-                        links.push(newLink);
-    //                    var response = findPortsGivenLinks(originLink);
-                        insertRoute(ipSrc, ipDst, dpid, originLink.srcPort, originLink.dstPort);
-    //console.log(response);
-    //                        console.log(link);
-    console.log(links);
+console.log(newLink);
+console.log(originLink);
+                            links.push(newLink);
+console.log(links);
                             break;
                         }
-                    }
                 }
             }
             // select new link
@@ -274,7 +275,7 @@ console.log("Set Active < " + to);
  */
 function showPath(to) {
     clearPath();
-    if (activeNode != to) {
+    if (activeNode !== to) {
 console.log("ShowPath " + to+"  from: " + activeNode);
         var path = constructPath(shortestPathInfo, to);
         var prev = activeNode;
@@ -298,7 +299,7 @@ function clearPath() {
 console.log("..................CLEAR PATH....................");
     for (var i = 0; i < nodes.length; i++) {
         for (var j = i + 1; j < nodes.length; j++) {
-            if (adjacencyMatrix[i][j] != Infinity) {
+            if (adjacencyMatrix[i][j] !== Infinity) {
                 if (document.getElementById("path" + i + j) === null)
                     document.getElementById("path" + j + i).setAttributeNS(null, "class", "link");
                 else
@@ -317,7 +318,7 @@ console.log("..................CLEAR PATH....................");
 function setPath(to) {
 console.log("SetPath");
     var orgLink;
-    if (activeNode != to) {
+    if (activeNode !== to) {
         var path = constructPath(shortestPathInfo, to);
 console.log(path);        
         var prev = activeNode;
@@ -360,14 +361,23 @@ console.log("src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+
 console.log("...................:Send to OpenNaaS:.........................");
 }
 
+/**
+ * Hide a path
+ * @param {type} to
+ * @returns {undefined}
+ */
 function hidePath(to) {
     clearPath();
-    if (activeNode != to) {
+    if (activeNode !== to) {
         var c = document.getElementById("c" + to);
         c.removeAttributeNS(null, "class");
     }
 }
-
+/**
+ * Cahnge the insert routes mode. Automatic or manual (auto-man)
+ * @param {type} ref
+ * @returns {undefined}
+ */
 function change(ref) {
      if(mode === auto){
         mode = man;
@@ -378,7 +388,17 @@ function change(ref) {
     setActive(null);
 }
 
+/**
+ * Allows to insert new routes
+ * @param {type} ipSrc
+ * @param {type} ipDst
+ * @param {type} dpid
+ * @param {type} inPort
+ * @param {type} outPort
+ * @returns {data}
+ */
 function insertRoute(ipSrc, ipDst, dpid, inPort, outPort) {
+console.log("Insert Route request: "+ipSrc+" "+ipDst+" "+dpid+" "+inPort+" "+outPort);
     var response;
     $.ajax({
         type: "GET",
@@ -389,7 +409,6 @@ function insertRoute(ipSrc, ipDst, dpid, inPort, outPort) {
 //            $('#ajaxUpdate').html(data);
         }
     });
-            console.log("!aaaaaaaaaaaaaaaaaaaaaa"+response);
     if(document.getElementById("insertRoute") === null){
         if(response === "Already exist"){
             $("<div id='insertRoute' class='error'>"+response+"</div>" ).insertAfter( "#header_menu").before("<br>");
@@ -404,7 +423,6 @@ function insertRoute(ipSrc, ipDst, dpid, inPort, outPort) {
             }, 3000);
         
     }
-        
     return response;
 }
 /**
@@ -426,5 +444,13 @@ function findPortsGivenLinks(reqLink){
     console.log(ports);
     return ports;
 }
-    
-    
+
+/**
+ * Remove the last link inserted in the stack. Also the dragged line is removed
+ * @returns {undefined}
+ */
+function removeLastLink(){
+    links.pop();
+    restart();
+    cleanDrag();
+}

@@ -19,7 +19,7 @@
             url : "getLog/",
             async: false,
             success : function (data) {
-                if(data != ""){
+                if(data !== ""){
                     var image = '<img src="/opennaas-routing-nfv/resources/images/arrow_icon.svg.png" width="15px"/>';
                     document.getElementById('log').innerHTML = image+data;
                 }else{
@@ -29,11 +29,24 @@
             }
         });
     }, 500000);//5000
+    
+    $.ajax({
+        type: 'GET',
+        url : "getStreamInfo/",
+        async: false,
+        success : function (data) {
+            if(data !== ""){
+                returnedRoutes = data;                 
+            }
+        });
 
 </script>
 </div>
 <div id="animaton_topology" class="topology">
     <p id="chart" ></p>
 </div>
+<script src="<c:url value="/resources/js/topology/baseTopology.js" />"></script>
+<script src="<c:url value="/resources/js/topology/animation.js" />"></script>
+
 <table id="jsonTable" class="tablesorter">
 </table> 

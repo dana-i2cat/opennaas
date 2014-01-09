@@ -128,6 +128,7 @@ public class NFVRoutingController {
     public @ResponseBody
     String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
         LOGGER.debug("Remove Route ------------------> " + id);
+        LOGGER.error("REMOVE ROUTE " + id+" "+type);
         String response = "";
         int version;
         if (type.equals("IPv4")) {
@@ -141,7 +142,7 @@ public class NFVRoutingController {
         try {
             response = nfvRoutingBO.deleteRoute(id, version);
             model.addAttribute("json", response);
-            model.addAttribute("infoMsg", "Route addded correctly.");
+            model.addAttribute("infoMsg", "Route removed correctly.");
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
@@ -155,10 +156,23 @@ public class NFVRoutingController {
      * @return the log of OpenNaaS
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getLog")
-    public @ResponseBody
-    String getLog(ModelMap model) {
+    public @ResponseBody String getLog(ModelMap model) {
         LOGGER.debug("Get log ------------------");
         String response = nfvRoutingBO.getLog();
+
+        return response;
+    }
+    
+    /**
+     * Used in the Demo in order to obtain a route each 5 seconds
+     *
+     * @param model
+     * @return the log of OpenNaaS
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getStreamInfo")
+    public @ResponseBody String get(ModelMap model) {
+        LOGGER.debug("Get log ------------------");
+        String response = nfvRoutingBO.getStream();
 
         return response;
     }

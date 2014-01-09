@@ -1,10 +1,11 @@
 /*
- Topology definition. Nodes and links
+ Topology definition. Nodes and links. Images path.
  */
 
 var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch.png";
 var hostImage = "/nfv-gui-demo-vrf/resources/images/topology/host.png";
 var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller.png";
+var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
 
 var nodes = [
     {id_num: 0, id: "SW1", type: "switch", controller: "controllersVM:8191", reflexive: false, fixed: true, x: 150, y: 160, dpid: "00:00:00:00:00:00:00:01"},

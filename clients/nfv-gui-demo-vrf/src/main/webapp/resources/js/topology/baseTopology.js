@@ -153,3 +153,39 @@ console.log("Removing actual paths..");
         setActive(null);
     }    
 }
+
+function ip2long(ip){
+    var components;
+    var regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+    if(components = ip.match(regex)){
+        var iplong = 0;
+        var power  = 1;
+        for(var i=4; i>=1; i-=1){
+            iplong += power * parseInt(components[i]);
+            power  *= 256;
+        }
+        return iplong;
+    }
+    else return -1;
+}
+
+function inSubNet(ip, subnet){
+console.log("IP: "+ip);
+console.log("Subnet: "+subnet);
+    var mask, base_ip, long_ip = ip2long(ip);
+    var regex = /^(.*?)\/(\d{1,2})$/;
+    if( (mask = subnet.match(regex)) && ((base_ip=ip2long(mask[1])) >= 0) ){
+        var freedom = Math.pow(2, 32 - parseInt(mask[2]));
+        return (long_ip > base_ip) && (long_ip < base_ip + freedom - 1);
+    }
+    else return false;
+}
+
+function ValidateIPaddress(ipaddress){
+    console.log(ipaddress);
+    var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    if(ipaddress.match(ipformat)){
+        return true;
+    }
+    return false;
+}  

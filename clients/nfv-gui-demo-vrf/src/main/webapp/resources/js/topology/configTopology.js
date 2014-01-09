@@ -160,19 +160,14 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
                         dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
                     }else if (key === "ip"){
                         dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
+                        highlight(dest1.ip);
                     }
-                    //if (dest1 == null){
                     link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
                     link[direction] = true;
-                    console.log(link);
+console.log(link);
                     links.push(link);
-                    highlight(source.ip);
-                    console.log(source.ip);
+console.log(source.ip);
                     source = dest1;
-                    console.log(dest1.ip);
-                    
-                    highlight(dest1.ip);
-//                    highlight(obj[key], source.ip, target.ip);
                 }
             }
             d3.selectAll('.link2').attr('d', 'M0,0L0,0'); //Remove the requested path
@@ -242,7 +237,8 @@ restart();
 
 /**
  * Call OpenNaaS get Route Table
- *
+ * @param {type} dpid
+ * @returns {undefined}
  */
 function getRouteTable(dpid) {
     $.ajax({
@@ -253,7 +249,14 @@ function getRouteTable(dpid) {
         }
     });
 }
-
+/**
+ * Get Route to OpenNaaS
+ * @param {type} ipSrc
+ * @param {type} ipDst
+ * @param {type} dpid
+ * @param {type} inPort
+ * @returns {data}
+ */
 function getRoute(ipSrc, ipDst, dpid, inPort) {
     var response;
     $.ajax({
@@ -262,12 +265,16 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
         url: "getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort,
         success: function (data) {
             response = data;
-//            $('#ajaxUpdate').html(data);
         }
     });
     return response;
 }
 
+/**
+ * Highlight the rows according to the requested route
+ * @param {type} word
+ * @returns {undefined}
+ */
 function highlight(word){
     var table = document.getElementById('jsonTable');
     var tbody = table.getElementsByTagName('tbody')[0];
@@ -276,10 +283,13 @@ function highlight(word){
 
     for (var j = 0; j < items.length; j++) {
         var tds = items[j].getElementsByTagName('td');
-        for (var i = 0; i < tds.length; i++) {
+        for (var i = 0; i < tds.length-1; i++) {
             if(tds[i].innerHTML === word){
                 table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-                console.log("PRINT "+word);
+console.log("PRINT "+word);
+            }else if(inSubNet(word, tds[i].innerHTML)){
+                table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+console.log("PRINT due is contained in subnet.. "+word);
             }
         }
     }

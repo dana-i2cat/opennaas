@@ -86,14 +86,13 @@ public class NFVRoutingService extends GenericRestService {
     public String deleteRoute(int id, int version) {
         String response = null;
         try {
-            LOGGER.info("Remove route");
+            LOGGER.error("Remove route "+id+". Version IPv"+version+" "+Integer.toString(id));
             String url = getURL("vrf/routing/route");
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
-            webResource.queryParam("id", Integer.toString(id)).queryParam("version", Integer.toString(version));
-            response = webResource.delete(String.class);
-            LOGGER.info("Removed route: " + response);
+            webResource.queryParam("id", Integer.toString(id)).queryParam("version", Integer.toString(version)).delete();
+            LOGGER.error("Removed route: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
@@ -143,6 +142,7 @@ public class NFVRoutingService extends GenericRestService {
             WebResource webResource = client.resource(url);
             response = webResource.get(String.class);
             LOGGER.info("Controller status: " + response);
+            LOGGER.error("Resource ID: "+response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
@@ -172,23 +172,7 @@ public class NFVRoutingService extends GenericRestService {
 
      }
      */
-    //---------------------DEMO
-    public String getLog() {
-        String response;
-        try {
-            LOGGER.info("Get log of OpenNaaS");
-            String url = getURL("vrf/routing/log");
-            Client client = Client.create();
-            addHTTPBasicAuthentication(client);
-            WebResource webResource = client.resource(url);
-            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
-            LOGGER.info("Log....: " + response);
-        } catch (ClientHandlerException e) {
-            LOGGER.error(e.getMessage());
-            return "OpenNaaS not started";
-        }
-        return response;
-    }
+    
 
     public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
         ClientResponse response;
@@ -235,6 +219,40 @@ public class NFVRoutingService extends GenericRestService {
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
 //            throw e;
+        }
+        return response;
+    }
+
+    //---------------------DEMO
+    public String getLog() {
+        String response;
+        try {
+            LOGGER.info("Get log of OpenNaaS");
+            String url = getURL("vrf/routing/log");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Log....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response;
+    }
+    public String getStream() {
+        String response;
+        try {
+            LOGGER.info("Get stream info to OpenNaaS");
+            String url = getURL("vrf/routing/stream");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Stream....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
         }
         return response;
     }
