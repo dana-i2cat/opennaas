@@ -28,6 +28,7 @@
 		<module>monitoring/floodlight</module>
 		<module>ip/opener</module>
 		<module>sampleresource</module>
+		<module>vrrp/junos10</module>
 	</modules>
 
 	<dependencies>
