@@ -50,7 +50,8 @@ public class GetNetworkStatisticsAction extends Action {
 			} catch (ResourceException e) {
 				log.debug("Switch with resource with name = '" + resource.getResourceDescriptor().getInformation().getName() + "' and ID = " + resource
 						.getResourceDescriptor().getId() + " has not Monitoring Capability. Skipping it.");
-				break;
+				// continue with next switch
+				continue;
 			}
 			try {
 				SwitchPortStatistics switchStatistics = monitorCapab.getPortStatistics();
