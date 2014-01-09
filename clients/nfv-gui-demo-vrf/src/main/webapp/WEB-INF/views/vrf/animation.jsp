@@ -36,9 +36,11 @@
         async: false,
         success : function (data) {
             if(data !== ""){
-                returnedRoutes = data;                 
+                returnedRoutes = data;
+                streamPacket(returnedRoutes);
             }
-        });
+        }
+    });
 
 </script>
 </div>

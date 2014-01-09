@@ -149,9 +149,9 @@ console.log("Source h " + source.id+" Dest h " + target.id);
 //request to OpenNaaS
             swNode = nodes.filter(function (n) {return n.id === source.SW; });
             var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
-//            returnedRoutes = [{dpid:'00:00:00:00:00:00:00:01'},{dpid:'00:00:00:00:00:00:00:03'},{ip:'192.168.2.51'}];
+//            returnedRoutes = [{ip:'192.168.1.1'},{dpid:'00:00:00:00:00:00:00:01'},{dpid:'00:00:00:00:00:00:00:03'},{ip:'192.168.2.51'}];
 console.log(returnedRoutes);
-            for(var i=0;i<returnedRoutes.length;i++){
+            for(var i=1;i<returnedRoutes.length;i++){//i=1 because the first position is the source
                 var obj = returnedRoutes[i];
                  for(var key in obj){
 console.log("Json key: "+key+" Json value: "+obj[key]);

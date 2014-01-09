@@ -109,7 +109,8 @@ public class RoutingCapability implements IRoutingCapability {
             response = proactiveRouting(switchInfo, route, version);
             listOF = ((List<FloodlightOFFlow>) response.getEntity());
             listFlows.append("[");
-            listFlows.append("{dpid:'").append(switchDPID).append("'},");//first switch id
+            listFlows.append("{ip:'").append(ipSource)//source IP
+                    .append("{dpid:'").append(switchDPID).append("'},");//first switch id
         
             for (int i = 0; i< listOF.size(); i++) {
                 listFlows.append("{dpid:'");
