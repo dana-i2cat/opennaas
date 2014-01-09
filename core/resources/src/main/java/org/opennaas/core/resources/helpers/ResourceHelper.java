@@ -193,6 +193,12 @@ public class ResourceHelper {
 	}
 
 	public static CapabilityDescriptor newQueueCapabilityDescriptor() {
+
+		return newQueueCapabilityDescriptor("junos", "10.10");
+
+	}
+
+	public static CapabilityDescriptor newQueueCapabilityDescriptor(String actionsetName, String actionsetVersion) {
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
@@ -203,11 +209,11 @@ public class ResourceHelper {
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		property = new CapabilityProperty(
-				ResourceDescriptorConstants.ACTION_NAME, "junos");
+				ResourceDescriptorConstants.ACTION_NAME, actionsetName);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		property = new CapabilityProperty(
-				ResourceDescriptorConstants.ACTION_VERSION, "10.10");
+				ResourceDescriptorConstants.ACTION_VERSION, actionsetVersion);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 		Information capabilityInformation = new Information();
 		capabilityInformation.setType("queue");

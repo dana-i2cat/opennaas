@@ -104,7 +104,9 @@
 							   org.opennaas.extensions.router.opener.commandsets.*;version="${project.version}",
              				   org.opennaas.extensions.router.opener.actionssets;version="${project.version}",
              				   org.opennaas.extensions.router.opener.actionssets.actions;version="${project.version}",
-             				   org.opennaas.extensions.router.opener.protocol;version="${project.version}"
+             				   org.opennaas.extensions.router.opener.protocol;version="${project.version}",
+             				   org.opennaas.extensions.router.opener.client.rpc;version="${project.version}",
+             				   org.opennaas.extensions.router.opener.client.model;version="${project.version}",
 						</Export-Package>
 					</instructions>
 				</configuration>

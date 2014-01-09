@@ -45,7 +45,7 @@ import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStat
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.router.TestsConstants;
+import org.opennaas.itests.helpers.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;

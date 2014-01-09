@@ -2,10 +2,8 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
-	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
-						http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
- 						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
-						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0	http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 	http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 
 	<cm:property-placeholder persistent-id="org.opennaas"
 		update-strategy="reload" />
@@ -27,10 +25,16 @@
 		</service-properties>
 	</service>
 
+	<!-- Workaround for  https://issues.apache.org/jira/browse/ARIES-796:
+	Resolve and inject entityManagerFactory and get the entityManager using code in securityEntityManagerFactory. 
+	Obtained entityManager is not container managed, then. 
+	Given unit MUST already be registered as an OSGi service for this to work. -->
+	<reference id="securityEntityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=opennaas-security)"/>
 	<bean id="securityRepository"
 		class="org.opennaas.core.security.persistence.SecurityRepository"
 		init-method="init" destroy-method="close">
-		<property name="persistenceUnit" value="opennaas-security" />
+		<property name="entityManagerFactory" ref="securityEntityManagerFactory" />
 	</bean>
+	<service ref="securityRepository" interface="org.opennaas.core.security.persistence.SecurityRepository" />
 
 </blueprint>

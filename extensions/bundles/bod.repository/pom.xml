@@ -43,7 +43,7 @@
 				-->
 				<configuration>
 					<instructions>
-						<Import-Package>org.slf4j,*</Import-Package>
+						<Import-Package>org.slf4j,javax.persistence,*</Import-Package>
 						<!--<Export-Package>org.opennaas.extensions.router.repository.*;version="${project.version}"</Export-Package>-->
 					</instructions>
 				</configuration>
