@@ -46,6 +46,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.opennaas.itests</groupId>
+			<artifactId>org.opennaas.itests.helpers</artifactId>
+		</dependency>		
+		
+		<dependency>
 			<groupId>org.apache.servicemix</groupId>
 			<artifactId>apache-servicemix</artifactId>
 			<type>tar.gz</type>

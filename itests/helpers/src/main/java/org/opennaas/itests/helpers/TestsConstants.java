@@ -1,4 +1,4 @@
-package org.opennaas.itests.router;
+package org.opennaas.itests.helpers;
 
 public class TestsConstants {
 
@@ -16,5 +16,9 @@ public class TestsConstants {
 	public static final String	STATIC_ROUTE_CAPABILITY_TYPE	= "staticroute";
 	public static final String	VRRP_CAPABILITY_TYPE			= "vrrp";
 	public static final String	CAPABILIY_VERSION				= "10.10";
+
+	public static final String	OPENER_ACTIONSET_NAME			= "opener";
+	public static final String	OPENER_ACTIONSET_VERSION		= "0.01";
+	public static final String	OPENER_PROTOCOL					= "opener";
 
 }

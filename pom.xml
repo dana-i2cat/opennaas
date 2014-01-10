@@ -50,6 +50,7 @@
 		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
 		<dom4j.version>1.6.1_5</dom4j.version>
 		<easymock.version>3.1</easymock.version>
+		<powermock.version>1.5.1</powermock.version>
 		<felix.eventadmin.version>1.2.14</felix.eventadmin.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -70,6 +71,7 @@
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>
+		<jetty.version>7.5.4.v20111024</jetty.version>
 		<jodatime.version>2.1</jodatime.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 		<jdom.version>1.1_4</jdom.version>
@@ -121,6 +123,8 @@
 		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
 		<opennaas.gim.version>0.25-SNAPSHOT</opennaas.gim.version>
+		<!-- Netconf server for itests -->
+		<netconf-server.version>0.0.2</netconf-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -252,6 +256,11 @@
 				<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.actionsets.opener</artifactId>
+				<version>${project.version}</version>
+			</dependency>				
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
@@ -989,6 +998,21 @@
 				<version>${easymock.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<!-- PowerMock (https://code.google.com/p/powermock/) and
+			     Mockito (https://code.google.com/p/mockito/) 
+				 test frameworks -->
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-module-junit4</artifactId>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito</artifactId>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<!-- Integration tests -->
 			<dependency>
 				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
@@ -1088,7 +1112,25 @@
 				<version>${jsonassert.version}</version>
 			</dependency>			
 			
+			<!-- Jetty -->
+	       <dependency>
+	           <groupId>org.eclipse.jetty</groupId>
+	           <artifactId>jetty-server</artifactId>
+	           <version>${jetty.version}</version>
+	       </dependency>
+       
+		    <dependency>
+		       <groupId>org.eclipse.jetty</groupId>
+		       <artifactId>jetty-servlet</artifactId>
+	           <version>${jetty.version}</version>
+		   </dependency>     			
 			
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-http</artifactId>
+	           <version>${jetty.version}</version>				
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

@@ -6,6 +6,7 @@
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
 	<repository>mvn:org.apache.cxf.dosgi/cxf-dosgi/${cxf.dosgi.version}/xml/features</repository>
+	<repository>mvn:net.i2cat/netconf-server/${netconf-server.version}/xml/features</repository>
 
 
 	<!-- Required to install CXF in servicemix without NMR, activeMQ and camel -->
@@ -205,8 +206,14 @@
 	<feature name="itests-helpers" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-core</feature>
 		<feature version="${opennaas.version}">cxf-minimal</feature>
-			
+		
+		<feature version="${netconf-server.version}">netconf-server</feature>
+		
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
+		<bundle dependency="true">wrap:mvn:xmlunit/xmlunit/1.5</bundle>
 		
 		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>
 	</feature>

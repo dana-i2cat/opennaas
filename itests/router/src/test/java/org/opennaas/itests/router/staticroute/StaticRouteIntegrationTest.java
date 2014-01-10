@@ -32,7 +32,7 @@ import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.router.TestsConstants;
+import org.opennaas.itests.helpers.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;

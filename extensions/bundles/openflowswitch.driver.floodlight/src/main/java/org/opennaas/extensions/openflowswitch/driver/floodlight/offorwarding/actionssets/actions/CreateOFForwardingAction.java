@@ -19,7 +19,7 @@ import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
  */
 public class CreateOFForwardingAction extends FloodlightAction {
 
-	private static final String	FORWARDING_ACTION	= "output";
+	public static final String	FORWARDING_ACTION	= "output";
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
