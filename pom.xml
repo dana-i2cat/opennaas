@@ -103,13 +103,6 @@
 		<servicemix.saaj.specs>1.8.0</servicemix.saaj.specs>
 		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
 		<servicemix.javax-inject.version>1_2</servicemix.javax-inject.version>
-		<!-- 
-			Both versions of ehcache are linked, thus they must be updated together. 
-			ehcache.version is used for package version, servicemix.ehcache.version is used for bundles
-		-->
-		<!--  <ehcache.version>1.6.2</ehcache.version> -->
-		<ehcache.version>1.6.2</ehcache.version> 
-		<servicemix.ehcache.version>1.6.2_2</servicemix.ehcache.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<snmp4j.version>2.1.0_1</snmp4j.version>
@@ -583,7 +576,7 @@
 			    <artifactId>spring-context</artifactId>
 			    <version>${spring.version}</version>
 			</dependency>
-			<!-- Various Application Context utilities, including EhCache, JavaMail, Quartz, 
+			<!-- Various Application Context utilities, including JavaMail, Quartz, 
 			    and Freemarker integration
 			    Define this if you need any of these integrations-->
 			<dependency>
@@ -662,12 +655,6 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-acl</artifactId>
 				<version>${spring.security.version}</version>
-			</dependency>
-			<!-- Required for the ACL cache -->
-			<dependency>
-				<groupId>org.apache.servicemix.bundles</groupId>
-				<artifactId>org.apache.servicemix.bundles.ehcache</artifactId>
-				<version>${servicemix.ehcache.version}</version>
 			</dependency>
 			<!-- Web application development utilities applicable to both Servlet and 
 			    Portlet Environments 
