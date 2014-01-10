@@ -6,9 +6,6 @@ import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +15,7 @@ import javax.inject.Inject;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jetty.http.HttpStatus;
@@ -93,7 +91,8 @@ public class MonitoringTest extends MockHTTPServerTest {
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
 
 		HTTPRequest reqPortStats = new HTTPRequest(GET_ALL_PORTS_URL, HttpMethod.GET, MediaType.APPLICATION_JSON, null);
-		HTTPResponse respPortStats = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON, readSampleFile("/portStatistics.json"), "");
+		HTTPResponse respPortStats = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON, IOUtils.toString(this.getClass()
+				.getResourceAsStream("/portStatistics.json")), "");
 		HTTPServerBehaviour behaviourPortStats = new HTTPServerBehaviour(reqPortStats, respPortStats, false);
 
 		desiredBehaviours.add(behaviourPortStats);
@@ -239,18 +238,6 @@ public class MonitoringTest extends MockHTTPServerTest {
 		ICapability capab = ofSwitchResource.getCapabilityByInterface(clazz);
 		Assert.assertNotNull(capab);
 		return capab;
-	}
-
-	private String readSampleFile(String url) throws IOException {
-		String fileString = "";
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(getClass().getResourceAsStream(url)));
-		String line;
-		while ((line = br.readLine()) != null) {
-			fileString += line += "\n";
-		}
-		br.close();
-		return fileString;
 	}
 
 }
