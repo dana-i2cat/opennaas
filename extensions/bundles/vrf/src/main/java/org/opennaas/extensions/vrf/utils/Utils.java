@@ -264,7 +264,7 @@ public class Utils {
      * @param route
      * @return
      */
-    public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route) {
+    public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route, String etherType) {
         FloodlightOFFlow flow = new FloodlightOFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();
@@ -272,7 +272,7 @@ public class Utils {
         FloodlightOFAction action = new FloodlightOFAction();
         match.setSrcIp(route.getSourceAddress());
         match.setDstIp(route.getDestinationAddress());
-        match.setEtherType(null);
+        match.setEtherType(etherType);
 //        match.setIngressPort(String.valueOf(route.getSwitchInfo().getInputPort()));
 
         action.setType(FloodlightOFAction.TYPE_OUTPUT);

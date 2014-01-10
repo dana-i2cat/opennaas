@@ -164,12 +164,14 @@ public class RoutingCapability implements IRoutingCapability {
         VRFRoute route = model.getTable(version).getRouteId(id);
         
         //call OpenNaaS provisioner
-        FloodlightOFFlow flow = Utils.VRFRouteToFloodlightFlow(route);
+        FloodlightOFFlow flowArp = Utils.VRFRouteToFloodlightFlow(route, "2048");
+        FloodlightOFFlow flowIp = Utils.VRFRouteToFloodlightFlow(route, "0800");
 
         model.getTable(version).removeRoute(id);
         //Conversion List of VRFRoute to List of FloodlightFlow
         try {
-            removeLink(flow);
+            removeLink(flowArp);
+            removeLink(flowIp);
         } catch (ResourceException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ActivatorException ex) {
@@ -344,7 +346,8 @@ public class RoutingCapability implements IRoutingCapability {
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
-                listFlow.add(Utils.VRFRouteToFloodlightFlow(r));
+                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
+                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "0800"));
             }
         }
 
