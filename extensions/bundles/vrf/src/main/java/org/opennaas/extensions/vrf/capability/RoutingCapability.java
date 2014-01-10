@@ -164,8 +164,8 @@ public class RoutingCapability implements IRoutingCapability {
         VRFRoute route = model.getTable(version).getRouteId(id);
         
         //call OpenNaaS provisioner
-        FloodlightOFFlow flowArp = Utils.VRFRouteToFloodlightFlow(route, "2048");
-        FloodlightOFFlow flowIp = Utils.VRFRouteToFloodlightFlow(route, "0800");
+        FloodlightOFFlow flowArp = Utils.VRFRouteToFloodlightFlow(route, "2054");
+        FloodlightOFFlow flowIp = Utils.VRFRouteToFloodlightFlow(route, "2048");
 
         model.getTable(version).removeRoute(id);
         //Conversion List of VRFRoute to List of FloodlightFlow
@@ -347,7 +347,7 @@ public class RoutingCapability implements IRoutingCapability {
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
-                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "0800"));
+                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
             }
         }
 
