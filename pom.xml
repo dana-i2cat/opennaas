@@ -83,7 +83,7 @@
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
-		<netconf4j.version>0.0.4</netconf4j.version>
+		<netconf4j.version>0.0.6</netconf4j.version>
 		<nmr.version>1.6.1</nmr.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
