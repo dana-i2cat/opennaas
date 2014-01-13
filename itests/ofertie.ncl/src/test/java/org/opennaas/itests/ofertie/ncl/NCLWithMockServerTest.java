@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,8 +42,12 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
+import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.opennaas.itests.helpers.server.HTTPRequest;
 import org.opennaas.itests.helpers.server.HTTPResponse;
 import org.opennaas.itests.helpers.server.HTTPServerBehaviour;
@@ -61,7 +66,7 @@ import org.osgi.framework.BundleContext;
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class NCLTest extends MockHTTPServerTest {
+public class NCLWithMockServerTest extends MockHTTPServerTest {
 
 	// //// SWITCHES //// //
 	private static final String			SWITCH_1_ID						= "00:00:00:00:00:00:00:01";
@@ -116,12 +121,16 @@ public class NCLTest extends MockHTTPServerTest {
 	private WSEndpointListenerHandler	ofswitch5Listener;
 
 	// //// LOG //// //
-	private final static Log			log								= LogFactory.getLog(NCLTest.class);
+	private final static Log			log								= LogFactory.getLog(NCLWithMockServerTest.class);
 
 	// /// OTHERS //// //
 	private static final String			MOCK_URI						= "mock://user:pass@host.net:2212/mocksubsystem";
 	private final static String			FLOODLIGHT_ADD_FLOW_RESPONSE	= "Entry pushed";
 
+	private static final String			DEFAULT_FLOW_PRIORITY			= "32000";
+	private static final String			IP_ETHER_TYPE					= "0x0800";
+	private static final String			SRC_IP							= "192.168.10.10";
+	private static final String			DST_IP							= "192.168.10.11";
 	@Inject
 	private IResourceManager			resourceManager;
 
@@ -140,7 +149,7 @@ public class NCLTest extends MockHTTPServerTest {
 				includeFeatures("opennaas-openflowswitch", "opennaas-ofnetwork", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-ofertie-ncl", "itests-helpers"),
 				noConsole(),
-				OpennaasExamOptions.openDebugSocket(),
+				// OpennaasExamOptions.openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -232,13 +241,156 @@ public class NCLTest extends MockHTTPServerTest {
 
 		FlowRequest req = generateFlowRequest();
 		provisioner.allocateFlow(req);
+
+		checkSwitchesRules();
+
+	}
+
+	private void checkSwitchesRules() {
+
+		OpenflowSwitchModel switch1Model = (OpenflowSwitchModel) switchResource1.getModel();
+		OpenflowSwitchModel switch2Model = (OpenflowSwitchModel) switchResource2.getModel();
+		OpenflowSwitchModel switch3Model = (OpenflowSwitchModel) switchResource3.getModel();
+		OpenflowSwitchModel switch4Model = (OpenflowSwitchModel) switchResource4.getModel();
+		OpenflowSwitchModel switch5Model = (OpenflowSwitchModel) switchResource5.getModel();
+
+		Assert.assertNotNull(switch1Model);
+		Assert.assertNotNull(switch2Model);
+		Assert.assertNotNull(switch3Model);
+		Assert.assertNotNull(switch4Model);
+		Assert.assertNotNull(switch5Model);
+
+		Assert.assertEquals(SWITCH_1_ID, switch1Model.getSwitchId());
+		Assert.assertEquals(SWITCH_2_ID, switch2Model.getSwitchId());
+		Assert.assertEquals(SWITCH_4_ID, switch4Model.getSwitchId());
+		Assert.assertEquals(SWITCH_5_ID, switch5Model.getSwitchId());
+
+		// TODO Switch3Id should be empty in test. It's set by the allocateFlowAction, that it's not called
+		// because it does not belong to the selected route. When moving this functionality to another better side,
+		// fix this Assert.
+		Assert.assertFalse(switch3Model.getSwitchId().equals("SWITCH_3_ID"));
+		Assert.assertTrue(switch3Model.getSwitchId().isEmpty());
+
+		Assert.assertEquals(1, switch1Model.getOfTables().size());
+		Assert.assertEquals(1, switch2Model.getOfTables().size());
+		Assert.assertEquals(1, switch4Model.getOfTables().size());
+		Assert.assertEquals(1, switch5Model.getOfTables().size());
+
+		OFFlowTable tableSwitch1 = switch1Model.getOfTables().get(0);
+		OFFlowTable tableSwitch2 = switch2Model.getOfTables().get(0);
+		OFFlowTable tableSwitch4 = switch4Model.getOfTables().get(0);
+		OFFlowTable tableSwitch5 = switch5Model.getOfTables().get(0);
+
+		Assert.assertNotNull(tableSwitch1);
+		Assert.assertNotNull(tableSwitch2);
+		Assert.assertNotNull(tableSwitch4);
+		Assert.assertNotNull(tableSwitch5);
+
+		List<FloodlightOFFlow> rulesSwitch1 = tableSwitch1.getOfForwardingRules();
+		List<FloodlightOFFlow> rulesSwitch2 = tableSwitch2.getOfForwardingRules();
+		List<FloodlightOFFlow> rulesSwitch4 = tableSwitch4.getOfForwardingRules();
+		List<FloodlightOFFlow> rulesSwitch5 = tableSwitch5.getOfForwardingRules();
+
+		Assert.assertEquals(1, rulesSwitch1.size());
+		Assert.assertEquals(1, rulesSwitch2.size());
+		Assert.assertEquals(1, rulesSwitch4.size());
+		Assert.assertEquals(1, rulesSwitch5.size());
+
+		// Forwarding rule switch 1
+		FloodlightOFFlow flowSwitch1 = rulesSwitch1.get(0);
+		Assert.assertNotNull(flowSwitch1);
+		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch1.getPriority());
+		Assert.assertEquals(SWITCH_1_ID, flowSwitch1.getSwitchId());
+
+		FloodlightOFMatch match1 = flowSwitch1.getMatch();
+		Assert.assertNotNull(match1);
+		Assert.assertEquals(SRC_IP, match1.getSrcIp());
+		Assert.assertEquals(DST_IP, match1.getDstIp());
+
+		Assert.assertEquals(IP_ETHER_TYPE, match1.getEtherType());
+		Assert.assertEquals("3", match1.getIngressPort());
+		Assert.assertEquals("1", match1.getTosBits());
+
+		List<FloodlightOFAction> actionsSwitch1 = flowSwitch1.getActions();
+		Assert.assertNotNull(actionsSwitch1);
+		Assert.assertEquals(1, actionsSwitch1.size());
+
+		Assert.assertEquals("output", actionsSwitch1.get(0).getType());
+		Assert.assertEquals("1", actionsSwitch1.get(0).getValue());
+
+		// Forwarding rule switch 2
+		FloodlightOFFlow flowSwitch2 = rulesSwitch2.get(0);
+		Assert.assertNotNull(flowSwitch2);
+		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch2.getPriority());
+		Assert.assertEquals(SWITCH_2_ID, flowSwitch2.getSwitchId());
+
+		FloodlightOFMatch match2 = flowSwitch2.getMatch();
+		Assert.assertNotNull(match2);
+		Assert.assertEquals(SRC_IP, match2.getSrcIp());
+		Assert.assertEquals(DST_IP, match2.getDstIp());
+
+		Assert.assertEquals(IP_ETHER_TYPE, match2.getEtherType());
+		Assert.assertEquals("1", match2.getIngressPort());
+		Assert.assertEquals("1", match2.getTosBits());
+
+		List<FloodlightOFAction> actionsSwitch2 = flowSwitch2.getActions();
+		Assert.assertNotNull(actionsSwitch2);
+		Assert.assertEquals(1, actionsSwitch2.size());
+
+		Assert.assertEquals("output", actionsSwitch2.get(0).getType());
+		Assert.assertEquals("3", actionsSwitch2.get(0).getValue());
+
+		// Forwarding rule switch 4
+		FloodlightOFFlow flowSwitch4 = rulesSwitch4.get(0);
+		Assert.assertNotNull(flowSwitch4);
+		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch4.getPriority());
+		Assert.assertEquals(SWITCH_4_ID, flowSwitch4.getSwitchId());
+
+		FloodlightOFMatch match4 = flowSwitch4.getMatch();
+		Assert.assertNotNull(match4);
+		Assert.assertEquals(SRC_IP, match4.getSrcIp());
+		Assert.assertEquals(DST_IP, match4.getDstIp());
+
+		Assert.assertEquals(IP_ETHER_TYPE, match4.getEtherType());
+		Assert.assertEquals("3", match4.getIngressPort());
+		Assert.assertEquals("1", match4.getTosBits());
+
+		List<FloodlightOFAction> actionsSwitch4 = flowSwitch4.getActions();
+		Assert.assertNotNull(actionsSwitch4);
+		Assert.assertEquals(1, actionsSwitch4.size());
+
+		Assert.assertEquals("output", actionsSwitch4.get(0).getType());
+		Assert.assertEquals("1", actionsSwitch4.get(0).getValue());
+
+		// Forwarding rule switch 5
+		FloodlightOFFlow flowSwitch5 = rulesSwitch5.get(0);
+		Assert.assertNotNull(flowSwitch5);
+		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch5.getPriority());
+		Assert.assertEquals(SWITCH_4_ID, flowSwitch5.getSwitchId());
+
+		FloodlightOFMatch match5 = flowSwitch5.getMatch();
+		Assert.assertNotNull(match5);
+		Assert.assertEquals(SRC_IP, match5.getSrcIp());
+		Assert.assertEquals(DST_IP, match5.getDstIp());
+
+		Assert.assertEquals(IP_ETHER_TYPE, match5.getEtherType());
+		Assert.assertEquals("3", match5.getIngressPort());
+		Assert.assertEquals("1", match5.getTosBits());
+
+		List<FloodlightOFAction> actionsSwitch5 = flowSwitch5.getActions();
+		Assert.assertNotNull(actionsSwitch5);
+		Assert.assertEquals(1, actionsSwitch5.size());
+
+		Assert.assertEquals("output", actionsSwitch5.get(0).getType());
+		Assert.assertEquals("2", actionsSwitch5.get(0).getValue());
+
 	}
 
 	private FlowRequest generateFlowRequest() {
 
 		FlowRequest req = new FlowRequest();
-		req.setSourceIPAddress("192.168.10.10");
-		req.setDestinationIPAddress("192.168.10.11");
+		req.setSourceIPAddress(SRC_IP);
+		req.setDestinationIPAddress(DST_IP);
 		req.setTos(0);
 
 		return req;
@@ -259,27 +411,27 @@ public class NCLTest extends MockHTTPServerTest {
 
 		ofswitch1Listener = new WSEndpointListenerHandler();
 		ofswitch1Listener.registerWSEndpointListener(SWITCH1_FORWARDING_CONTEXT, context);
-		createSwitch(SERVER_URL, SWITCH_1_ID, SWITCH_1_NAME, switchResource1);
+		switchResource1 = createSwitch(SERVER_URL, SWITCH_1_ID, SWITCH_1_NAME);
 		ofswitch1Listener.waitForEndpointToBePublished();
 
 		ofswitch2Listener = new WSEndpointListenerHandler();
 		ofswitch2Listener.registerWSEndpointListener(SWITCH2_FORWARDING_CONTEXT, context);
-		createSwitch(SERVER_URL, SWITCH_2_ID, SWITCH_2_NAME, switchResource2);
+		switchResource2 = createSwitch(SERVER_URL, SWITCH_2_ID, SWITCH_2_NAME);
 		ofswitch2Listener.waitForEndpointToBePublished();
 
 		ofswitch3Listener = new WSEndpointListenerHandler();
 		ofswitch3Listener.registerWSEndpointListener(SWITCH3_FORWARDING_CONTEXT, context);
-		createSwitch(SERVER_URL, SWITCH_3_ID, SWITCH_3_NAME, switchResource3);
+		switchResource3 = createSwitch(SERVER_URL, SWITCH_3_ID, SWITCH_3_NAME);
 		ofswitch3Listener.waitForEndpointToBePublished();
 
 		ofswitch4Listener = new WSEndpointListenerHandler();
 		ofswitch4Listener.registerWSEndpointListener(SWITCH4_FORWARDING_CONTEXT, context);
-		createSwitch(SERVER_URL, SWITCH_4_ID, SWITCH_4_NAME, switchResource4);
+		switchResource4 = createSwitch(SERVER_URL, SWITCH_4_ID, SWITCH_4_NAME);
 		ofswitch4Listener.waitForEndpointToBePublished();
 
 		ofswitch5Listener = new WSEndpointListenerHandler();
 		ofswitch5Listener.registerWSEndpointListener(SWITCH5_FORWARDING_CONTEXT, context);
-		createSwitch(SERVER_URL, SWITCH_5_ID, SWITCH_5_NAME, switchResource5);
+		switchResource5 = createSwitch(SERVER_URL, SWITCH_5_ID, SWITCH_5_NAME);
 		ofswitch5Listener.waitForEndpointToBePublished();
 	}
 
@@ -304,8 +456,10 @@ public class NCLTest extends MockHTTPServerTest {
 
 	}
 
-	private void createSwitch(String serverURL, String switchId, String resourceName, IResource resource) throws ResourceException,
+	private IResource createSwitch(String serverURL, String switchId, String resourceName) throws ResourceException,
 			ProtocolException, InterruptedException {
+
+		IResource resource;
 
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
@@ -331,6 +485,8 @@ public class NCLTest extends MockHTTPServerTest {
 		// Start resource
 
 		resourceManager.startResource(resource.getResourceIdentifier());
+
+		return resource;
 
 	}
 

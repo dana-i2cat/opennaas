@@ -10,7 +10,7 @@
                "lengthU":8
             }
          ],
-         "priority":32767,
+         "priority":32000,
          "bufferId":-1,
          "cookie":45035997339880382,
          "idleTimeout":0,
@@ -19,16 +19,16 @@
          "match":{
             "dataLayerDestination":"00:00:00:00:00:00",
             "dataLayerSource":"00:00:00:00:00:00",
-            "dataLayerType":"0x0000",
+            "dataLayerType":"0x0800",
             "dataLayerVirtualLan":-1,
             "dataLayerVirtualLanPriorityCodePoint":0,
             "inputPort":1,
-            "networkDestination":"0.0.0.0",
+            "networkDestination":"192.168.10.11",
             "networkDestinationMaskLen":0,
             "networkProtocol":0,
-            "networkSource":"0.0.0.0",
+            "networkSource":"192.168.10.10",
             "networkSourceMaskLen":0,
-            "networkTypeOfService":0,
+            "networkTypeOfService":1,
             "transportDestination":0,
             "transportSource":0,
             "wildcards":4194302

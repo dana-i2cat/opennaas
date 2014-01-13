@@ -5,6 +5,7 @@
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.itests</artifactId>
 		<version>0.25-SNAPSHOT</version>
+		<relativePath>../../</relativePath>		
 	</parent>
 	<artifactId>org.opennaas.itests.ip.opener</artifactId>
 	<name>OpenNaaS :: iTests :: IP :: Opener</name>
