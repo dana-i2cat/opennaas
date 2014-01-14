@@ -218,6 +218,8 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 	@Override
 	protected void prepareBehaviours() throws JAXBException {
 
+		List<String> fieldsToOmit = new ArrayList<String>();
+
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
 
 		List<String> ifaces = new ArrayList<String>();
@@ -225,19 +227,19 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 		ifaces.add(IFACE_ETH1);
 		String respGetIfacesBody = OpenerTestHelper.sampleGetInterfacesResponse(ifaces);
 
-		HTTPRequest reqGetIfaces = new HTTPRequest(GET_INTERFACES_URL, HttpMethod.GET, XML_TYPE, "");
+		HTTPRequest reqGetIfaces = new HTTPRequest(GET_INTERFACES_URL, HttpMethod.GET, XML_TYPE, "", fieldsToOmit);
 		HTTPResponse respGetIfaces = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, respGetIfacesBody, "");
 		HTTPServerBehaviour behaviorGetIfaces = new HTTPServerBehaviour(reqGetIfaces, respGetIfaces, false);
 		desiredBehaviours.add(behaviorGetIfaces);
 
-		HTTPRequest reqGetEth0 = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH0, HttpMethod.GET, XML_TYPE, "");
+		HTTPRequest reqGetEth0 = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH0, HttpMethod.GET, XML_TYPE, "", fieldsToOmit);
 		HTTPResponse respGetEth0 = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, OpenerTestHelper.sampleGetInterfaceResponse(IFACE_ETH0,
 				null), "");
 		HTTPServerBehaviour behaviorGetEth0 = new HTTPServerBehaviour(reqGetEth0, respGetEth0, false);
 		desiredBehaviours.add(behaviorGetEth0);
 
 		// consumible behaviours for refresh action should be added "(#capabilies + 1) * #queuesExecutions" times.
-		HTTPRequest reqGetEth1 = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH1, HttpMethod.GET, XML_TYPE, "");
+		HTTPRequest reqGetEth1 = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH1, HttpMethod.GET, XML_TYPE, "", fieldsToOmit);
 		HTTPResponse respGetEth1 = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, OpenerTestHelper.sampleGetInterfaceResponse(IFACE_ETH1,
 				null), "");
 		HTTPServerBehaviour behaviorGetEth1 = new HTTPServerBehaviour(reqGetEth1, respGetEth1, true);
@@ -246,14 +248,14 @@ public class OpenerDriverTest extends MockHTTPServerTest {
 		desiredBehaviours.add(behaviorGetEth1);
 
 		HTTPRequest reqSetIp = new HTTPRequest(SET_IP_URL, HttpMethod.PUT, XML_TYPE, OpenerTestHelper.sampleSetInterfaceRequest(IFACE_ETH1,
-				SAMPLE_IP_WITH_MASK));
+				SAMPLE_IP_WITH_MASK), fieldsToOmit);
 		HTTPResponse respSetIp = new HTTPResponse(HttpStatus.CREATED_201, XML_TYPE, OpenerTestHelper.sampleSetInterfaceResponse(String
 				.valueOf(HttpStatus.CREATED_201)), "");
 		HTTPServerBehaviour behaviorSetIp = new HTTPServerBehaviour(reqSetIp, respSetIp, false);
 		desiredBehaviours.add(behaviorSetIp);
 
 		String getIfaceEth1Body = OpenerTestHelper.sampleGetInterfaceResponse(IFACE_ETH1, SAMPLE_IP_WITH_MASK);
-		HTTPRequest reqGetEth1Ip = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH1, HttpMethod.GET, XML_TYPE, "");
+		HTTPRequest reqGetEth1Ip = new HTTPRequest(GET_INTERFACE_URL + "/" + IFACE_ETH1, HttpMethod.GET, XML_TYPE, "", fieldsToOmit);
 		HTTPResponse respGetEth1Ip = new HTTPResponse(HttpStatus.OK_200, MediaType.TEXT_XML, getIfaceEth1Body, "");
 		HTTPServerBehaviour behaviorGetEth1Ip = new HTTPServerBehaviour(reqGetEth1Ip, respGetEth1Ip, true);
 		desiredBehaviours.add(behaviorGetEth1Ip);

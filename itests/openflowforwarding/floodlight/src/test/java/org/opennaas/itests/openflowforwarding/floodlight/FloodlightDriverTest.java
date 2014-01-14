@@ -226,19 +226,20 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 	protected void prepareBehaviours() throws JAXBException, IOException {
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
 
-		HTTPRequest reqCreateFlow = new HTTPRequest(ADD_FLOW_URL, HttpMethod.POST, MediaType.APPLICATION_JSON, readSampleFile("/addFlow.json"));
+		HTTPRequest reqCreateFlow = new HTTPRequest(ADD_FLOW_URL, HttpMethod.POST, MediaType.APPLICATION_JSON, readSampleFile("/addFlow.json"),
+				new ArrayList<String>());
 		HTTPResponse resqCreateFlow = new HTTPResponse(HttpStatus.CREATED_201, MediaType.APPLICATION_JSON, FLOODLIGHT_ADD_FLOW_RESPONSE, "");
 		HTTPServerBehaviour behaviourCreateFlow = new HTTPServerBehaviour(reqCreateFlow, resqCreateFlow, false);
 		desiredBehaviours.add(behaviourCreateFlow);
 
-		HTTPRequest reqGetFlows = new HTTPRequest(GET_FLOWS_URL, HttpMethod.GET, MediaType.APPLICATION_JSON, "");
+		HTTPRequest reqGetFlows = new HTTPRequest(GET_FLOWS_URL, HttpMethod.GET, MediaType.APPLICATION_JSON, "", new ArrayList<String>());
 		HTTPResponse respGetFlows = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON,
 				readSampleFile("/getSwitchFlowsWithOneFlow.json"), "");
 		HTTPServerBehaviour behaviourgetFlows = new HTTPServerBehaviour(reqGetFlows, respGetFlows, true);
 		desiredBehaviours.add(behaviourgetFlows);
 		desiredBehaviours.add(behaviourgetFlows);
 
-		HTTPRequest reqDelFlow = new HTTPRequest(REMOVE_FLOW_URL, HttpMethod.DELETE, MediaType.APPLICATION_JSON, "");
+		HTTPRequest reqDelFlow = new HTTPRequest(REMOVE_FLOW_URL, HttpMethod.DELETE, MediaType.APPLICATION_JSON, "", new ArrayList<String>());
 		HTTPResponse respDelFlow = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON,
 				"", "");
 		HTTPServerBehaviour behaviourDelFlows = new HTTPServerBehaviour(reqDelFlow, respDelFlow, true);

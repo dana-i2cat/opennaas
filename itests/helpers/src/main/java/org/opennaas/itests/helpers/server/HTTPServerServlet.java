@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.eclipse.jetty.http.HttpStatus;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.xml.sax.SAXException;
@@ -137,14 +138,16 @@ public class HTTPServerServlet extends HttpServlet {
 
 		String bodyMessage = getBodyMessage(request);
 
-		if (!bodyMatches(bodyMessage, request.getContentType(), possibleReq.getBodyMessage(), possibleReq.getContentType()))
+		if (!bodyMatches(bodyMessage, request.getContentType(), possibleReq.getBodyMessage(), possibleReq.getContentType(),
+				possibleReq.getOmittedFields()))
 			return false;
 
 		return true;
 
 	}
 
-	private boolean bodyMatches(String reqBody, String reqContentType, String possibleReqBody, String possibleReqContentType)
+	private boolean bodyMatches(String reqBody, String reqContentType, String possibleReqBody, String possibleReqContentType,
+			List<String> ommitedFields)
 			throws JsonProcessingException, IOException, SAXException, TransformerException, ParserConfigurationException {
 
 		if (!StringUtils.equals(reqContentType, possibleReqContentType))
@@ -161,17 +164,24 @@ public class HTTPServerServlet extends HttpServlet {
 			return compareXml(reqBody, possibleReqBody);
 
 		if (reqContentType.contains(MediaType.APPLICATION_JSON))
-			return compareJson(reqBody, possibleReqBody);
+			return compareJson(reqBody, possibleReqBody, ommitedFields);
 
 		return true;
 
 	}
 
-	private boolean compareJson(String reqBody, String possibleReqBody) throws JsonProcessingException, IOException {
+	private boolean compareJson(String reqBody, String possibleReqBody, List<String> ommitedFields) throws JsonProcessingException, IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode tree1 = mapper.readTree(reqBody);
 		JsonNode tree2 = mapper.readTree(possibleReqBody);
+
+		for (String field : ommitedFields) {
+
+			((ObjectNode) tree1).remove(field);
+			((ObjectNode) tree2).remove(field);
+
+		}
 
 		return tree1.equals(tree2);
 

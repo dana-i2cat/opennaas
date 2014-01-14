@@ -1,5 +1,7 @@
 package org.opennaas.itests.helpers.server;
 
+import java.util.List;
+
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -12,21 +14,23 @@ import javax.ws.rs.core.Request;
  */
 public class HTTPRequest {
 
-	private String	requestURL;
+	private String			requestURL;
 
-	private String	method;
-	private String	bodyMessage;
-	private String	contentType;
+	private String			method;
+	private String			bodyMessage;
+	private String			contentType;
+	private List<String>	omittedFields;
 
 	public HTTPRequest() {
 
 	}
 
-	public HTTPRequest(String requestURL, String method, String contentType, String bodyMessage) {
+	public HTTPRequest(String requestURL, String method, String contentType, String bodyMessage, List<String> omittedFields) {
 		this.requestURL = requestURL;
 		this.method = method;
 		this.contentType = contentType;
 		this.bodyMessage = bodyMessage;
+		this.omittedFields = omittedFields;
 	}
 
 	public String getRequestURL() {
@@ -94,6 +98,24 @@ public class HTTPRequest {
 	 */
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+	/**
+	 * Returns the fields of the body not to be included in the servlet when comparing the body with the incoming request..
+	 * 
+	 * @return
+	 */
+	public List<String> getOmittedFields() {
+		return omittedFields;
+	}
+
+	/**
+	 * Sets the fields of the body not to be compared in the servlet when comparing the body with the incoming request.
+	 * 
+	 * @return
+	 */
+	public void setOmittedFields(List<String> omittedFields) {
+		this.omittedFields = omittedFields;
 	}
 
 }

@@ -20,6 +20,7 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portst
  * #L%
  */
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -51,6 +52,7 @@ public interface IFloodlightPortsStatisticsClient {
 	 */
 	@GET
 	@Path("/switch/{switchId}/port/json")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public SwitchStatisticsMap getPortsStatistics(@PathParam("switchId") String switchId) throws ProtocolException, Exception;
 

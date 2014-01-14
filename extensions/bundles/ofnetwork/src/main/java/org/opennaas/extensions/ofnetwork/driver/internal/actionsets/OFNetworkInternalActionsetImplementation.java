@@ -29,7 +29,7 @@ import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNe
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.AllocateFlowAction;
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.DeallocateFlowAction;
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.GetAllocatedFlowsAction;
-import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.GetNetworkStatistics;
+import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.GetNetworkStatisticsAction;
 
 /**
  * An ActionSet Implementation for SDNNetwork capabilities that delegates to OFSwitches in the network.
@@ -48,7 +48,7 @@ public class OFNetworkInternalActionsetImplementation extends ActionSet {
 		this.putAction(OFProvisioningNetworkActionSet.DEALLOCATEFLOW, DeallocateFlowAction.class);
 		this.putAction(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS, GetAllocatedFlowsAction.class);
 
-		this.putAction(MonitoringNetworkActionSet.GET_NETWORK_STATISTICS, GetNetworkStatistics.class);
+		this.putAction(MonitoringNetworkActionSet.GET_NETWORK_STATISTICS, GetNetworkStatisticsAction.class);
 	}
 
 	@Override

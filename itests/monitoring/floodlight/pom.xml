@@ -7,12 +7,12 @@
 		<version>0.25-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
-	<artifactId>org.opennaas.itests.openflowforwarding.floodlight</artifactId>
-	<name>OpenNaaS :: iTests :: OpenflowForwarding :: Floodlight</name>
+	<artifactId>org.opennaas.itests.monitoring.floodlight</artifactId>
+	<name>OpenNaaS :: iTests :: Monitoring :: Floodlight</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
-		
+
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
@@ -22,7 +22,7 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.openflowswitch.driver.floodlight</artifactId>
@@ -34,5 +34,6 @@
 		</dependency>
 
 	</dependencies>
+
 
 </project>

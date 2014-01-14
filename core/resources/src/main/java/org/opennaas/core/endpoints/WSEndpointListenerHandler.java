@@ -46,9 +46,11 @@ import org.osgi.service.remoteserviceadmin.EndpointListener;
 
 public class WSEndpointListenerHandler {
 
-	private boolean	endpointPublished;
+	private final static String	CXF_CONTEXT	= "org.apache.cxf.rs.httpservice.context";
 
-	Log				log	= LogFactory.getLog(WSEndpointListener.class);
+	private boolean				endpointPublished;
+
+	Log							log			= LogFactory.getLog(WSEndpointListener.class);
 
 	/**
 	 * Creates a WSEndpointListenerHandler instance.
@@ -70,6 +72,25 @@ public class WSEndpointListenerHandler {
 
 		Properties props = new Properties();
 		props.put(EndpointListener.ENDPOINT_LISTENER_SCOPE, "(" + Constants.OBJECTCLASS + "=*)");
+
+		context.registerService(EndpointListener.class.getName(), new WSEndpointListener(this), props);
+
+		log.debug("EndpointListener registered for all endpoints.");
+
+	}
+
+	/**
+	 * Register a {@link WSEndpointListener} listening for publication of endpoint in a specific context url.
+	 * 
+	 * @param context
+	 * @throws InterruptedException
+	 */
+	public <T> void registerWSEndpointListener(String contextURL, BundleContext context) throws InterruptedException {
+
+		log.debug("Registeting EndpointListener for all endpoints");
+
+		Properties props = new Properties();
+		props.put(EndpointListener.ENDPOINT_LISTENER_SCOPE, "(" + CXF_CONTEXT + "=" + contextURL + ")");
 
 		context.registerService(EndpointListener.class.getName(), new WSEndpointListener(this), props);
 
