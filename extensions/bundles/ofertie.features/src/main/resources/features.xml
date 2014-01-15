@@ -8,6 +8,8 @@
 	<feature name="opennaas-ofertie-ncl" version="${project.version}">
 		<feature version="${project.version}">opennaas-ofnetwork</feature>
 		
+		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
+		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${project.version}</bundle>
 		
 	</feature>
