@@ -38,7 +38,9 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
@@ -239,7 +241,7 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 	@Test
 	public void allocateMostSpecificFlowTest() throws FlowAllocationException, ProvisionerException {
 
-		FlowRequest req = generateFlowRequest();
+		QosPolicyRequest req = generateQosPolicyRequest();
 		provisioner.allocateFlow(req);
 
 		checkSwitchesRules();
@@ -386,12 +388,18 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 
 	}
 
-	private FlowRequest generateFlowRequest() {
+	private QosPolicyRequest generateQosPolicyRequest() {
 
-		FlowRequest req = new FlowRequest();
-		req.setSourceIPAddress(SRC_IP);
-		req.setDestinationIPAddress(DST_IP);
-		req.setTos(0);
+		QosPolicyRequest req = new QosPolicyRequest();
+		Source source = new Source();
+		source.setAddress(SRC_IP);
+		req.setSource(source);
+
+		Destination destination = new Destination();
+		destination.setAddress(DST_IP);
+		req.setDestination(destination);
+
+		req.setLabel("0");
 
 		return req;
 	}

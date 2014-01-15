@@ -8,10 +8,10 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -33,9 +33,14 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
@@ -73,7 +78,7 @@ public class NCLProvisionerTest {
 
 	private IResource				sdnNetResource;
 
-	private FlowRequest				flowRequest;
+	private QosPolicyRequest		qosPolicyRequest;
 
 	private Map<String, IResource>	switches;
 
@@ -114,14 +119,12 @@ public class NCLProvisionerTest {
 	private static final int		SRC_PORT						= 0;
 	private static final int		DST_PORT						= 1;
 	private static final int		TOS								= 0;
-	private static final int		SRC_VLAN_ID						= 22;
-	private static final int		DST_VLAN_ID						= 22;
-	private static final int		QOS_MIN_DELAY					= 5;
-	private static final int		QOS_MAX_DELAY					= 10;
+	private static final int		QOS_MIN_LATENCY					= 5;
+	private static final int		QOS_MAX_LATENCY					= 10;
 	private static final int		QOS_MIN_JITTER					= 2;
 	private static final int		QOS_MAX_JITTER					= 4;
-	private static final int		QOS_MIN_BANDWIDTH				= 100;
-	private static final int		QOS_MAX_BANDWIDTH				= 1000;
+	private static final int		QOS_MIN_THROUGHPUT				= 100;
+	private static final int		QOS_MAX_THROUGHPUT				= 1000;
 	private static final int		QOS_MIN_PACKET_LOSS				= 0;
 	private static final int		QOS_MAX_PACKET_LOSS				= 1;
 
@@ -174,7 +177,7 @@ public class NCLProvisionerTest {
 	public void createResources() throws Exception {
 		createSwitches();
 		createSDNNetwork();
-		flowRequest = generateSampleFlowRequest();
+		qosPolicyRequest = generateSampleFlowRequest();
 	}
 
 	@After
@@ -195,19 +198,19 @@ public class NCLProvisionerTest {
 
 	public void testAllocateDeallocate(INCLProvisioner provisioner) throws Exception {
 
-		String circuitId = provisioner.allocateFlow(flowRequest);
+		String id = provisioner.allocateFlow(qosPolicyRequest);
 
-		Collection<Circuit> flows = provisioner.readAllocatedFlows();
-		Circuit allocatedFlow = null;
-		for (Circuit flow : flows) {
-			if (flow.getId().equals(circuitId)) {
-				allocatedFlow = flow;
+		Map<String, QosPolicyRequest> flows = provisioner.readAllocatedFlows();
+		QosPolicyRequest allocatedFlow = null;
+		for (Entry<String, QosPolicyRequest> entry : flows.entrySet()) {
+			if (entry.getKey().equals(id)) {
+				allocatedFlow = entry.getValue();
 				break;
 			}
 		}
 		Assert.assertNotNull("readAllocatedFlows() must contain allocated flow", allocatedFlow);
 
-		List<NetOFFlow> netFlows = provisioner.getFlowImplementation(circuitId);
+		List<NetOFFlow> netFlows = provisioner.getFlowImplementation(id);
 		Assert.assertNotNull("implementation must not be null", netFlows);
 		Assert.assertFalse("implementation must not be empty", netFlows.isEmpty());
 
@@ -234,9 +237,9 @@ public class NCLProvisionerTest {
 			Assert.assertNotNull("switch has flow with flowId equals to expected one", switchFlow);
 		}
 
-		provisioner.deallocateFlow(circuitId);
+		provisioner.deallocateFlow(id);
 		flows = provisioner.readAllocatedFlows();
-		Assert.assertTrue("There should no be allocated circuits.", flows.isEmpty());
+		Assert.assertTrue("There should no be allocated flows.", flows.isEmpty());
 		// Get flows in SDN network
 		allocatedNetFlows = sdnCapab.getAllocatedFlows();
 		// Get allocated flow in SDN network
@@ -266,32 +269,46 @@ public class NCLProvisionerTest {
 		return switches.get(deviceName);
 	}
 
-	private FlowRequest generateSampleFlowRequest() {
+	private QosPolicyRequest generateSampleFlowRequest() {
+		QosPolicyRequest req = new QosPolicyRequest();
 
-		FlowRequest myRequest = new FlowRequest();
-		QoSRequirements myQoSRequirements = new QoSRequirements();
+		Source source = new Source();
+		source.setAddress(SRC_IP_ADDRESS);
+		source.setPort(String.valueOf(SRC_PORT));
+		req.setSource(source);
 
-		myRequest.setRequestId(String.valueOf(TOS));
-		myRequest.setSourceIPAddress(SRC_IP_ADDRESS);
-		myRequest.setDestinationIPAddress(DST_IP_ADDRESS);
-		myRequest.setSourcePort(SRC_PORT);
-		myRequest.setDestinationPort(DST_PORT);
-		myRequest.setTos(TOS);
-		myRequest.setSourceVlanId(SRC_VLAN_ID);
-		myRequest.setDestinationVlanId(DST_VLAN_ID);
+		Destination destination = new Destination();
+		destination.setAddress(DST_IP_ADDRESS);
+		destination.setPort(String.valueOf(DST_PORT));
+		req.setDestination(destination);
 
-		myQoSRequirements.setMinDelay(QOS_MIN_DELAY);
-		myQoSRequirements.setMaxDelay(QOS_MAX_DELAY);
-		myQoSRequirements.setMinJitter(QOS_MIN_JITTER);
-		myQoSRequirements.setMaxJitter(QOS_MAX_JITTER);
-		myQoSRequirements.setMinBandwidth(QOS_MIN_BANDWIDTH);
-		myQoSRequirements.setMaxBandwidth(QOS_MAX_BANDWIDTH);
-		myQoSRequirements.setMinPacketLoss(QOS_MIN_PACKET_LOSS);
-		myQoSRequirements.setMaxPacketLoss(QOS_MAX_PACKET_LOSS);
+		req.setLabel(String.valueOf(TOS));
 
-		myRequest.setQoSRequirements(myQoSRequirements);
+		QosPolicy qosPolicy = new QosPolicy();
 
-		return myRequest;
+		Latency latency = new Latency();
+		latency.setMin(String.valueOf(QOS_MIN_LATENCY));
+		latency.setMax(String.valueOf(QOS_MAX_LATENCY));
+		qosPolicy.setLatency(latency);
+
+		Jitter jitter = new Jitter();
+		jitter.setMin(String.valueOf(QOS_MIN_JITTER));
+		jitter.setMax(String.valueOf(QOS_MAX_JITTER));
+		qosPolicy.setJitter(jitter);
+
+		Throughput throughput = new Throughput();
+		throughput.setMin(String.valueOf(QOS_MIN_THROUGHPUT));
+		throughput.setMax(String.valueOf(QOS_MAX_THROUGHPUT));
+		qosPolicy.setThroughput(throughput);
+
+		PacketLoss packetLoss = new PacketLoss();
+		packetLoss.setMin(String.valueOf(QOS_MIN_PACKET_LOSS));
+		packetLoss.setMax(String.valueOf(QOS_MAX_PACKET_LOSS));
+		qosPolicy.setPacketLoss(packetLoss);
+
+		req.setQosPolicy(qosPolicy);
+
+		return req;
 	}
 
 	private void createSwitches() throws ResourceException, ProtocolException {
