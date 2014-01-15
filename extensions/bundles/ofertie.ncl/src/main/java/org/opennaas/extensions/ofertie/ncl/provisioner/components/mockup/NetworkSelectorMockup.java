@@ -1,7 +1,7 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
 
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofnetwork.repository.OFNetworkRepository;
 
@@ -25,7 +25,7 @@ public class NetworkSelectorMockup implements INetworkSelector {
 	}
 
 	@Override
-	public String findNetworkForRequest(FlowRequest flowRequest)
+	public String findNetworkForRequest(QosPolicyRequest qosPolicyRequest)
 			throws Exception {
 		return getFirstSDNNetworkInOpenNaaS();
 	}

@@ -1,17 +1,17 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.components;
 
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 
 public interface INetworkSelector {
 
 	/**
-	 * Finds a network able to allocate given flowRequest
+	 * Finds a network able to allocate given qosPolicyRequest
 	 * 
 	 * @param flowRequest
-	 * @return id of a network able to allocate given flowRequest
+	 * @return id of a network able to allocate given qosPolicyRequest
 	 * @throws Exception
 	 */
-	public String findNetworkForRequest(FlowRequest flowRequest) throws Exception;
+	public String findNetworkForRequest(QosPolicyRequest qosPolicyRequest) throws Exception;
 
 	/**
 	 * Finds the network containing a flow with given flowId
