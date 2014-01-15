@@ -43,7 +43,7 @@
 		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-servlet_2.5_spec/${geronimo.servlet.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/${commons.jxpath.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
+		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ant/${ant.version}</bundle>
 		<bundle dependency="true">mvn:commons-configuration/commons-configuration/${commons.configuration.version}</bundle>
 		<bundle dependency="true">mvn:commons-codec/commons-codec/${commons.codec.version}</bundle>
