@@ -23,7 +23,8 @@
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/${felix.eventadmin.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/${servicemix.specs.version}</bundle> 
-
+		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
+		
 		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
 	</feature>	
 	
