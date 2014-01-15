@@ -36,7 +36,7 @@ public class RoutingTable {
     public void setVersion(int version) {
         this.version = version;
     }
-    
+
     public VRFRoute getRouteId(int id) {
         for (VRFRoute r : this.routeTable) {
             if (r.getId() == id) {
@@ -45,7 +45,7 @@ public class RoutingTable {
         }
         return null;
     }
-        
+
     public String addRoute(VRFRoute route) {
         if (RouteExists(route) == 0) {
             if (this.routeTable.isEmpty()) {
@@ -69,15 +69,15 @@ public class RoutingTable {
         log.info("This route no exists.");
         return false;
     }
-    
+
     public void removeRoute(VRFRoute route) {
         routeTable.remove(route);
     }
-    
+
     public void removeRoutes() {
         routeTable.clear();
     }
-    
+
     public int RouteExists(VRFRoute route) {
         for (VRFRoute r : this.routeTable) {
             if (r.equals(route)) {
@@ -111,13 +111,17 @@ public class RoutingTable {
 
     public List<VRFRoute> getListRoutes(VRFRoute route, L2Forward srcSwInfo, L2Forward destSwInfo) {
         List<VRFRoute> subnetList = new ArrayList<VRFRoute>();
+        VRFRoute route2 = new VRFRoute();
+        route2.setSourceAddress(route.getDestinationAddress());
+        route2.setDestinationAddress(route.getSourceAddress());
         for (VRFRoute r : this.getRouteTable()) {
-            if(!r.getSwitchInfo().getDPID().equals(srcSwInfo.getDPID())){
+            if (!r.getSwitchInfo().getDPID().equals(srcSwInfo.getDPID())) {
                 if (r.equalsOtherRoutes(route)) {
-                    log.debug("Match other route. Id match route: "+r.getId());
+                    subnetList.add(r);
+                } else if (r.equalsOtherRoutes(route2)) {
                     subnetList.add(r);
                 }
-           }
+            }
         }
         log.info("Returning all Routes.");
         return subnetList;

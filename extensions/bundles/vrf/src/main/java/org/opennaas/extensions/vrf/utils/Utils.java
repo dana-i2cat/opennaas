@@ -281,7 +281,7 @@ public class Utils {
         flow.setActions(listActions);
         flow.setActive(true);
         flow.setMatch(match);
-        flow.setName(String.valueOf(route.getId()));
+        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
         flow.setSwitchId(route.getSwitchInfo().getDPID());
 
         return flow;

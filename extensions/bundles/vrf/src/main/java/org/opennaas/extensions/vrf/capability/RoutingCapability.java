@@ -26,10 +26,10 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
+import org.opennaas.extensions.vrf.model.L2Forward;
+import org.opennaas.extensions.vrf.model.RoutingTable;
 import org.opennaas.extensions.vrf.model.VRFModel;
 import org.opennaas.extensions.vrf.model.VRFRoute;
-import org.opennaas.extensions.vrf.model.RoutingTable;
-import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.utils.Utils;
 
 /**
@@ -41,7 +41,7 @@ public class RoutingCapability implements IRoutingCapability {
 
     Log log = LogFactory.getLog(RoutingCapability.class);
     private VRFModel vrfModel;
-    private String logMessage;
+    private String logMessage = "Communication failure";
     private String streamInfo;
 
     public VRFModel getVRFModel() {
@@ -106,6 +106,7 @@ public class RoutingCapability implements IRoutingCapability {
         }
         /* Proactive routing */
         StringBuilder listFlows = new StringBuilder();
+        List<String> dupDPID = new ArrayList<String>();
         List<FloodlightOFFlow> listOF;
         if (proactive) {
             response = proactiveRouting(switchInfo, route, version);
@@ -113,11 +114,21 @@ public class RoutingCapability implements IRoutingCapability {
             listFlows.append("[");
             listFlows.append("{ip:'").append(ipSource).append("'},")//source IP
                     .append("{dpid:'").append(switchDPID).append("'},");//first switch id
-        
+
             for (int i = 0; i< listOF.size(); i++) {
-                listFlows.append("{dpid:'");
-                listFlows.append(listOF.get(i).getSwitchId());
-                listFlows.append("'},");//others switch ids
+                if ( i == 0){
+                    listFlows.append("{dpid:'");
+                    listFlows.append(listOF.get(i).getSwitchId());
+                    listFlows.append("'},");//others switch ids
+                }
+                for (int j = 0; j < i; j++){
+                    if ( !listFlows.toString().contains(listOF.get(i).getSwitchId()) ){
+                        listFlows.append("{dpid:'");
+                        listFlows.append(listOF.get(i).getSwitchId());
+                        listFlows.append("'},");//others switch ids
+                    }
+                }
+                
             }
             listFlows.append("{ip:'").append(ipDest).append("'}]");//final destination
         }
@@ -162,7 +173,7 @@ public class RoutingCapability implements IRoutingCapability {
         log.info("Removing route " + id + " from table IPv" + version);
         VRFModel model = getVRFModel();
         VRFRoute route = model.getTable(version).getRouteId(id);
-        
+        streamInfo = "";
         //call OpenNaaS provisioner
         FloodlightOFFlow flowArp = Utils.VRFRouteToFloodlightFlow(route, "2054");
         FloodlightOFFlow flowIp = Utils.VRFRouteToFloodlightFlow(route, "2048");
@@ -253,28 +264,6 @@ public class RoutingCapability implements IRoutingCapability {
         } catch (IOException ex) {
             Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-/*     //store the inputstream in a file        
-        File geysersVIDir = new File("data/vrf/");
-        if (!geysersVIDir.exists()) {
-            geysersVIDir.mkdir();
-            log.info("Folder geysersVI created");
-        }
-        
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(new File("data/vrf/" + filename + ".json"));
-            try {
-                Utils.copyStream(file, fos);
-                fos.close();
-            } catch (IOException ex) {
-                log.error("Copy file error: " + ex.getMessage());
-                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (FileNotFoundException ex) {
-            log.error("Error -> file not found " + ex.getMessage());
-            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-*/        
         VRFModel model = getVRFModel();
         String response = "Inserted";
         try {
@@ -338,7 +327,6 @@ public class RoutingCapability implements IRoutingCapability {
     private Response proactiveRouting(L2Forward srcSwInfo, VRFRoute route, int version) {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         VRFModel model = getVRFModel();
-        Response response;
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, srcSwInfo, srcSwInfo);
 
         List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
@@ -346,15 +334,25 @@ public class RoutingCapability implements IRoutingCapability {
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
+//log.error("Route "+r.getSourceAddress()+" "+r.getDestinationAddress()+" "+r.getSwitchInfo().getDPID()+" "+r.getSwitchInfo().getInputPort()+" "+r.getSwitchInfo().getOutputPort());
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
-                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
+//                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
             }
         }
 
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             try {
-                response = provisionLink(listFlow.get(i));
+//log.error("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId());
+//                response = provisionLink(listFlow.get(i));
+                FloodlightOFFlow flow = listFlow.get(i);
+                flow.getMatch().setEtherType("2048");
+                flow.setName(String.valueOf(route.getId())+"-2048-"+listFlow.get(i).getMatch().getSrcIp()+"-"+listFlow.get(i).getMatch().getDstIp());
+                provisionLink(flow);
+                
+                flow.getMatch().setEtherType("2054");
+                flow.setName(String.valueOf(route.getId())+"-2054-"+listFlow.get(i).getMatch().getSrcIp()+"-"+listFlow.get(i).getMatch().getDstIp());
+                provisionLink(flow);
             } catch (ResourceException e) {
 //                throw new ActionException("Error provisioning link : ", e);
             } catch (ActivatorException e) {
