@@ -18,7 +18,8 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * 
  * @author Eduard Grasa
  * @author Roc Vallès <roc.valles@i2cat.net>
- * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * @author Héctor Fernández
  */
 @Path("/")
 public interface IResourceManager {
@@ -92,6 +93,18 @@ public interface IResourceManager {
 	public List<IResource> listResourcesByType(@PathParam("type") String type);
 
 	/**
+	 * 
+	 * @param resourceType
+	 * @param resourceName
+	 * @return the resource Id
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("/getId/{resourceType}/{resourceName}")
+	public String getIdentifierFromResourceTypeName(@PathParam("resourceType") String resourceType, @PathParam("resourceName") String resourceName)
+			throws ResourceException;
+
+	/**
 	 * List all resources in container.
 	 * 
 	 * @return
@@ -104,6 +117,11 @@ public interface IResourceManager {
 	@GET
 	@Path("/getResourceTypes")
 	@Produces(MediaType.APPLICATION_XML)
+	public GenericListWrapper<String> getResourceTypesAPI();
+
+	/**
+	 * Returns a list of available resource types.
+	 */
 	public List<String> getResourceTypes();
 
 	/**
@@ -217,5 +235,28 @@ public interface IResourceManager {
 	@Path("getDescriptor/{resourceId}")
 	@Produces(MediaType.APPLICATION_XML)
 	public ResourceDescriptor getResourceDescriptor(@PathParam("resourceId") String resourceId) throws ResourceException;
+
+	/**
+	 * 
+	 * @param resourceType
+	 * @param resourceName
+	 * @return the resource status
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("/getStatus/{resourceId}")
+	public String getStatus(@PathParam("resourceId") String resourceId) throws ResourceException;
+
+	/**
+	 * List all the existing resources of a given type. If type is null, returns an empty list.
+	 * 
+	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
+	 *         value.
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("/listResourcesNameByType/{type}")
+	@Produces(MediaType.APPLICATION_XML)
+	GenericListWrapper<String> listResourcesNameByType(@PathParam("type") String type) throws ResourceException;
 
 }

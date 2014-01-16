@@ -23,7 +23,8 @@
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/${felix.eventadmin.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-m10/${servicemix.specs.version}</bundle> 
-
+		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
+		
 		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
 	</feature>	
 	
@@ -38,7 +39,7 @@
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${servicemix.cglib.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.serp/${servicemix.serp.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/${commons.dbcp.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
+		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
 		<bundle dependency="true">mvn:commons-pool/commons-pool/${commons.pool.version}</bundle>
 		<bundle dependency="true">mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
@@ -151,7 +152,7 @@
 		
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
+		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
 		<bundle dependency="true">wrap:mvn:xmlunit/xmlunit/1.5</bundle>
 		
