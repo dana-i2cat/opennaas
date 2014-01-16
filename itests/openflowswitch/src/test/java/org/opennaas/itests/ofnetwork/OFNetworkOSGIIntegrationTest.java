@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -38,6 +39,7 @@ import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningN
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.OFNetworkInternalActionsetImplementation;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
+import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
@@ -45,29 +47,31 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class OFNetworkOSGIIntegrationTest {
 
-	private final static Log	log						= LogFactory.getLog(OFNetworkOSGIIntegrationTest.class);
+	private final static Log			log						= LogFactory.getLog(OFNetworkOSGIIntegrationTest.class);
 
-	private static final String	NET_RESOURCE_TYPE		= "ofnetwork";
-	private static final String	NET_RESOURCE_NAME		= "net1";
+	private static final String			NET_RESOURCE_TYPE		= "ofnetwork";
+	private static final String			NET_RESOURCE_NAME		= "net1";
 
-	private static final String	SWITCH_RESOURCE_TYPE	= "openflowswitch";
-	private static final String	SWITCH_RESOURCE_NAME	= "s1";
+	private static final String			SWITCH_RESOURCE_TYPE	= "openflowswitch";
+	private static final String			SWITCH_RESOURCE_NAME	= "s1";
 
-	private static final String	WS_URI					= "http://localhost:8888/opennaas/" + NET_RESOURCE_TYPE + "/" + NET_RESOURCE_NAME + "/" + OFProvisioningNetworkCapability.CAPABILITY_TYPE;
-	private static final String	WS_USERNAME				= "admin";
-	private static final String	WS_PASSWORD				= "123456";
+	private static final String			WS_URI					= "http://localhost:8888/opennaas/" + NET_RESOURCE_TYPE + "/" + NET_RESOURCE_NAME + "/" + OFProvisioningNetworkCapability.CAPABILITY_TYPE;
+	private static final String			WS_USERNAME				= "admin";
+	private static final String			WS_PASSWORD				= "123456";
 
 	/**
 	 * Make sure blueprint for org.opennaas.extensions.ofnetwork bundle has finished its initialization
@@ -75,32 +79,40 @@ public class OFNetworkOSGIIntegrationTest {
 	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofnetwork)", timeout = 20000)
-	private BlueprintContainer	sdnNetworkBlueprintContainer;
+	private BlueprintContainer			sdnNetworkBlueprintContainer;
 
 	@Inject
-	private IProtocolManager	protocolManager;
+	protected BundleContext				context;
 
 	@Inject
-	private IResourceManager	resourceManager;
+	private IProtocolManager			protocolManager;
+
+	@Inject
+	private IResourceManager			resourceManager;
 
 	@Inject
 	@Filter("(type=ofnetwork)")
-	private IResourceRepository	sdnNetworkRepository;
+	private IResourceRepository			sdnNetworkRepository;
 
 	@Inject
 	@Filter("(capability=ofprovisionnet)")
-	private ICapabilityFactory	capabilityFactory;
+	private ICapabilityFactory			capabilityFactory;
 
 	@Inject
 	@Filter("(&(actionset.name=internal)(actionset.capability=ofprovisionnet))")
-	private IActionSet			actionset;
+	private IActionSet					actionset;
 
-	private ResourceDescriptor	sdnResourceDescriptor;
-	private ResourceDescriptor	ofswitchResourceDescriptor;
+	private ResourceDescriptor			sdnResourceDescriptor;
+	private ResourceDescriptor			ofswitchResourceDescriptor;
+
+	// WS endpoint listeners
+	private WSEndpointListenerHandler	ofNetListener;
+	private WSEndpointListenerHandler	switchListener;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
+				OpennaasExamOptions.openDebugSocket(),
 				includeFeatures("opennaas-ofnetwork", "itests-helpers", "opennaas-openflowswitch-driver-floodlight"),
 				noConsole(),
 				keepRuntimeFolder());
@@ -127,11 +139,19 @@ public class OFNetworkOSGIIntegrationTest {
 
 	}
 
-	@Before
 	@After
-	public void clearRM() throws ResourceException {
+	public void clearRM() throws ResourceException, InterruptedException {
 		resourceManager.destroyAllResources();
 
+		if (switchListener != null) {
+			switchListener.waitForEndpointToBeUnpublished();
+		}
+		if (ofNetListener != null) {
+			ofNetListener.waitForEndpointToBeUnpublished();
+		}
+
+		switchListener = null;
+		ofNetListener = null;
 	}
 
 	@Test
@@ -141,7 +161,11 @@ public class OFNetworkOSGIIntegrationTest {
 		Assert.assertEquals(State.INITIALIZED, resource.getState());
 		Assert.assertFalse(resourceManager.listResources().isEmpty());
 
+		ofNetListener = new WSEndpointListenerHandler();
+		ofNetListener.registerWSEndpointListener(context, IOFProvisioningNetworkCapability.class);
 		resourceManager.startResource(resource.getResourceIdentifier());
+		ofNetListener.waitForEndpointToBePublished();
+
 		Assert.assertEquals(State.ACTIVE, resource.getState());
 
 		// retrieve capability, will throw exception if unable
@@ -158,7 +182,11 @@ public class OFNetworkOSGIIntegrationTest {
 	public void ofProvisioningNetworkCapabilityTest() throws Exception {
 
 		IResource sdnResource = resourceManager.createResource(sdnResourceDescriptor);
+
+		ofNetListener = new WSEndpointListenerHandler();
+		ofNetListener.registerWSEndpointListener(context, IOFProvisioningNetworkCapability.class);
 		resourceManager.startResource(sdnResource.getResourceIdentifier());
+		ofNetListener.waitForEndpointToBePublished();
 
 		IResource switchResource = resourceManager.createResource(ofswitchResourceDescriptor);
 		Map<String, Object> sessionParameters = new HashMap<String, Object>();
@@ -167,7 +195,12 @@ public class OFNetworkOSGIIntegrationTest {
 		// If not exists the protocol session manager, it's created and add the session context
 		InitializerTestHelper.addSessionContextWithSessionParams(protocolManager, switchResource.getResourceIdentifier().getId(),
 				"mock://user:pass@host.net:2212/mocksubsystem", "floodlight", sessionParameters);
+
+		switchListener = new WSEndpointListenerHandler();
+		switchListener.registerWSEndpointListener(context, IOpenflowForwardingCapability.class);
 		resourceManager.startResource(switchResource.getResourceIdentifier());
+		switchListener.waitForEndpointToBePublished();
+
 		prepareClient(switchResource);
 
 		IOFProvisioningNetworkCapability capab = (IOFProvisioningNetworkCapability) sdnResource
@@ -180,7 +213,11 @@ public class OFNetworkOSGIIntegrationTest {
 	public void ofProvisioningNetworkCapabilityWSTest() throws Exception {
 
 		IResource resource = resourceManager.createResource(sdnResourceDescriptor);
+
+		ofNetListener = new WSEndpointListenerHandler();
+		ofNetListener.registerWSEndpointListener(context, IOFProvisioningNetworkCapability.class);
 		resourceManager.startResource(resource.getResourceIdentifier());
+		ofNetListener.waitForEndpointToBePublished();
 
 		IResource switchResource = resourceManager.createResource(ofswitchResourceDescriptor);
 		Map<String, Object> sessionParameters = new HashMap<String, Object>();
@@ -189,7 +226,12 @@ public class OFNetworkOSGIIntegrationTest {
 		// If not exists the protocol session manager, it's created and add the session context
 		InitializerTestHelper.addSessionContextWithSessionParams(protocolManager, switchResource.getResourceIdentifier().getId(),
 				"mock://user:pass@host.net:2212/mocksubsystem", "floodlight", sessionParameters);
+
+		switchListener = new WSEndpointListenerHandler();
+		switchListener.registerWSEndpointListener(context, IOpenflowForwardingCapability.class);
 		resourceManager.startResource(switchResource.getResourceIdentifier());
+		switchListener.waitForEndpointToBePublished();
+
 		prepareClient(switchResource);
 
 		IOFProvisioningNetworkCapability capabClient = InitializerTestHelper.createRestClient(WS_URI, IOFProvisioningNetworkCapability.class, null,
@@ -207,8 +249,8 @@ public class OFNetworkOSGIIntegrationTest {
 		capab.allocateFlows(flow1);
 		Assert.assertTrue("OF network should contain flows in first list", capab.getAllocatedFlows().containsAll(flow1));
 		capab.allocateFlows(flow2);
-		Assert.assertEquals("OF network should contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
-		Assert.assertEquals("OF network should contain flows in first list, too.", capab.getAllocatedFlows().containsAll(flow1));
+		Assert.assertTrue("OF network should contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
+		Assert.assertTrue("OF network should contain flows in first list, too.", capab.getAllocatedFlows().containsAll(flow1));
 
 		capab.deallocateFlows(flow1);
 		Assert.assertTrue("OF network should already contain flows in second list.", capab.getAllocatedFlows().containsAll(flow2));
