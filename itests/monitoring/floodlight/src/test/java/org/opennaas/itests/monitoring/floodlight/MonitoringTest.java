@@ -90,7 +90,9 @@ public class MonitoringTest extends MockHTTPServerTest {
 
 		desiredBehaviours = new ArrayList<HTTPServerBehaviour>();
 
-		HTTPRequest reqPortStats = new HTTPRequest(GET_ALL_PORTS_URL, HttpMethod.GET, MediaType.APPLICATION_JSON, null);
+		List<String> omittedFields = new ArrayList<String>();
+
+		HTTPRequest reqPortStats = new HTTPRequest(GET_ALL_PORTS_URL, HttpMethod.GET, MediaType.APPLICATION_JSON, null, omittedFields);
 		HTTPResponse respPortStats = new HTTPResponse(HttpStatus.OK_200, MediaType.APPLICATION_JSON, IOUtils.toString(this.getClass()
 				.getResourceAsStream("/portStatistics.json")), "");
 		HTTPServerBehaviour behaviourPortStats = new HTTPServerBehaviour(reqPortStats, respPortStats, false);
