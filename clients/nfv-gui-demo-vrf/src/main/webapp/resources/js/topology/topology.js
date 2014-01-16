@@ -6,6 +6,7 @@ var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch.png";
 var hostImage = "/nfv-gui-demo-vrf/resources/images/topology/host.png";
 var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller.png";
 var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
+var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link.png";
 
 var nodes = [
     {id_num: 0, id: "SW1", type: "switch", controller: "controllersVM:8191", reflexive: false, fixed: true, x: 150, y: 160, dpid: "00:00:00:00:00:00:00:01"},
@@ -13,8 +14,8 @@ var nodes = [
     {id_num: 2, id: "SW3", type: "switch", controller: "controllersVM2:8193", reflexive: false, fixed: true, x: 300, y: 60, dpid: "00:00:00:00:00:00:00:03"},
     {id_num: 3, id: "SW4", type: "switch", controller: "controllersVM2:8194", reflexive: false, fixed: true, x: 430, y: 340, dpid: "00:00:00:00:00:00:00:04"},
     {id_num: 4, id: "SW5", type: "switch", controller: "controllersVM2:8195", reflexive: false, fixed: true, x: 170, y: 340, dpid: "00:00:00:00:00:00:00:05"},
-    {id_num: 5, id: "h1", type: "host", reflexive: false, fixed: true, x: 50, y: 100, ip: "192.168.1.1", SW: "SW1", port: 2},
-    {id_num: 6, id: "h2", type: "host", reflexive: false, fixed: true, x: 550, y: 300, ip: "192.168.2.51", SW: "SW2", port: 2}
+    {id_num: 5, id: "h1", type: "host", reflexive: false, fixed: true, x: 50, y: 100, ip: "192.168.1.1", SW: "SW1", port: 5},
+    {id_num: 6, id: "h2", type: "host", reflexive: false, fixed: true, x: 550, y: 300, ip: "192.168.2.51", SW: "SW2", port: 5}
 ],
         lastNodeId = 2,
 links = [

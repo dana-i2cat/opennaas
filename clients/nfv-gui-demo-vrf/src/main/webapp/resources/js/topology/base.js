@@ -81,29 +81,24 @@ function keydown() {
 
     if (lastKeyDown !== -1) return;
     lastKeyDown = d3.event.keyCode;
-
-    // ctrl
-    if (d3.event.keyCode === 17) {
+    
+    if (d3.event.keyCode === 17) {// ctrl
         circle.call(force.drag);
         svg.classed('ctrl', true);
     }
 //console.log("KeyDown: "+selected_link.type);
-console.log("keyDown");
 //    if (!selected_node && !selected_link) return;
 //    if (selected_link.type != "new_link") return;
 }
 
 function keyup() {
     lastKeyDown = -1;
-
-    // ctrl
-    if (d3.event.keyCode === 17) {
+    if (d3.event.keyCode === 17) {// ctrl
         circle
             .on('mousedown.drag', null)
             .on('touchstart.drag', null);
         svg.classed('ctrl', false);
     }
-    console.log("keyUp");
 }
 
 function mousedown() {
@@ -145,7 +140,7 @@ function mouseup() {
 
 /* Remove the drag line used when we create links.. THis function is enabled when we click in any place of the div(<p>)*/
 function cleanDrag(){
-console.log("Removing actual paths..");
+//console.log("Removing actual paths..");
     if((typeof(mode) == "undefined")){
         d3.selectAll('.link2').attr('d', 'M0,0L0,0');
     } else if(mode == man){
@@ -170,8 +165,7 @@ function ip2long(ip){
 }
 
 function inSubNet(ip, subnet){
-console.log("IP: "+ip);
-console.log("Subnet: "+subnet);
+console.log("IP: "+ip+" Subnet: "+subnet);
     var mask, base_ip, long_ip = ip2long(ip);
     var regex = /^(.*?)\/(\d{1,2})$/;
     if( (mask = subnet.match(regex)) && ((base_ip=ip2long(mask[1])) >= 0) ){
@@ -182,7 +176,7 @@ console.log("Subnet: "+subnet);
 }
 
 function ValidateIPaddress(ipaddress){
-    console.log(ipaddress);
+console.log(ipaddress);
     var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     if(ipaddress.match(ipformat)){
         return true;

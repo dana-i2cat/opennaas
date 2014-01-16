@@ -73,6 +73,7 @@ console.log("Adding new link. Click on Link " + d.type);
             else
                 return hostImage;
         })
+        .on('mouseover', mouseoverimage)
         .on('mouseout', function (d) {
             if (!mousedown_node || d === mousedown_node) return;
             // unenlarge target node
@@ -282,15 +283,33 @@ function highlight(word){
     var tds = null;
 
     for (var j = 0; j < items.length; j++) {
-        var tds = items[j].getElementsByTagName('td');
+        tds = items[j].getElementsByTagName('td');
         for (var i = 0; i < tds.length-1; i++) {
             if(tds[i].innerHTML === word){
                 table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-console.log("PRINT "+word);
             }else if(inSubNet(word, tds[i].innerHTML)){
                 table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-console.log("PRINT due is contained in subnet.. "+word);
             }
         }
     }
+}
+
+function mouseoverimage(){
+    $('svg image').tipsy({
+        fade: true,
+        html: true, 
+        gravity: 'w', 
+        title: function() {
+            var d = this.__data__;
+            var info ="<b>Id:</b> "+d.id+"<br>";
+            if(d.type != "host"){
+                info +="<b>DPID:</b> "+d.dpid+"<br>";
+                info +="<b>Controller:</b> "+d.controller+"<br>";
+            } else {
+                info +="<b>IP:</b> "+d.ip+"<br>";
+                info +="<b>Connected with:</b> "+d.SW+"<br>";
+            }
+            return info;
+        }
+    });
 }

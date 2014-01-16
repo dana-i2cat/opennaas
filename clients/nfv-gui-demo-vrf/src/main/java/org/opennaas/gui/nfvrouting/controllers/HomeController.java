@@ -39,6 +39,10 @@ public class HomeController {
     public String home(Model model, Locale locale, HttpSession session) {
         LOGGER.debug("home");
         try {
+            String response = nfvRoutingBO.getRouteTable(4);
+            if (response.equals("OpenNaaS is not started")){
+                model.addAttribute("errorMsg", response);
+            }
 //            String response = nfvRoutingBO.getInfoControllers();
 //            model.addAttribute("json", response);
         } catch (Exception e) {

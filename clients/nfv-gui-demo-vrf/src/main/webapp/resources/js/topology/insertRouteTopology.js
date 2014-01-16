@@ -4,13 +4,13 @@
  */
 var file = "insertRoute";
 var adjacencyMatrix = createAdjacencyMatrix();//calculate adjacent matrix of the paths
-console.log(adjacencyMatrix);
 var selectedNode = false;
 var originNode;
 var mode = auto;//auto-man
 var activeNode = null;
 var sourceIp;
 var destinationIp;
+var stackRoute = new Array();
 
 // line displayed when dragging new nodes
 var drag_line = svg.append('svg:path')
@@ -47,7 +47,6 @@ function restart() {
             if (d3.event.ctrlKey) return;
             // select link
             mousedown_link = d;
-console.log("Click on Link " + d.type);
             if (mousedown_link === selected_link) selected_link = null;
             else selected_link = mousedown_link;
             selected_node = null;
@@ -85,7 +84,7 @@ console.log("Click on Link " + d.type);
                 return hostImage;
         })
         .on('mouseover', function (d) {
-console.log("Mouseover Id num " + d.id_num + "node: " + d.id + ". SelectNode: " + selectedNode);
+//console.log("Mouseover Id num " + d.id_num + "node: " + d.id + ". SelectNode: " + selectedNode);
             if(mode === auto && activeNode !== null)
                 showPath(d.id_num);
         })
@@ -96,7 +95,7 @@ console.log("Mouseover Id num " + d.id_num + "node: " + d.id + ". SelectNode: " 
         })
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
-console.log("Mousedown;" + d.id + " selectNode: " + selectedNode);
+//console.log("Mousedown;" + d.id + " selectNode: " + selectedNode);
             if (selectedNode) {
                 selectedNode = false;
                 destinationIp = d.ip;
@@ -137,7 +136,7 @@ console.log("Mousedown;" + d.id + " selectNode: " + selectedNode);
             else if (d.type === "host")
                 d3.select("#" + d.id).attr("x", "-9").attr("y", "35"); //move text
             if (!mousedown_node) return;
-console.log("Click on node " + d.id);
+//console.log("Click on node " + d.id);
             // needed by FF
             drag_line
                 .classed('hidden', true)
@@ -159,7 +158,7 @@ console.log("Click on node " + d.id);
                 target = mousedown_node;
                 direction = 'left';
             }
-console.log("Source h " + source.id+" Dest h " + target.id);
+//console.log("Source h " + source.id+" Dest h " + target.id);
             var originLink;//match link
             var newLink;//new defined link (CSS changes)
             originLink = links.filter(function (l) {return (l.source === source && l.target === target); })[0];
@@ -173,15 +172,15 @@ console.log("Source h " + source.id+" Dest h " + target.id);
             //new link
             if ( mode === man){
                 
-console.log("New Link. Manual mode. ");
+//console.log("New Link. Manual mode. ");
 
 dest1 = nodes.filter(function(n) {return n.id === target.id; })[0];
-console.log(dest1);
+//console.log(dest1);
                 newLink = {source: source, target: dest1, left: false, right: false, type: "new_link"};
 
                 insertIpDialog(newLink, originLink).done(function (answer) {
                         var ipDest = answer;
-console.log("Destination IP " + ipDest);//TRUE
+//console.log("Destination IP " + ipDest);//TRUE
                     });
                 //this link exists? It is possible to make this connection?
                 for (var i = 0; i < links.length; ++i) {
@@ -288,7 +287,7 @@ console.log(shortestPathInfo);
             if (l === null) {
                 id = "path" + prev + path[i];
             }
-            var l = document.getElementById(id);
+            l = document.getElementById(id);
             l.setAttributeNS(null, "class", "link2 dragline hidden");
             prev = path[i];
         }
@@ -296,7 +295,7 @@ console.log(shortestPathInfo);
 }
 
 function clearPath() {
-console.log("..................CLEAR PATH....................");
+//console.log("..................CLEAR PATH....................");
     for (var i = 0; i < nodes.length; i++) {
         for (var j = i + 1; j < nodes.length; j++) {
             if (adjacencyMatrix[i][j] !== Infinity) {
@@ -320,7 +319,7 @@ console.log("SetPath");
     var orgLink;
     if (activeNode !== to) {
         var path = constructPath(shortestPathInfo, to);
-console.log(path);        
+console.log(path);
         var prev = activeNode;
         var ipSrc = sourceIp;
         var ipDst = destinationIp;
@@ -335,11 +334,10 @@ console.log(path);
             }if (l2 === null) {
                 nextId = "path" + path[i] +path[i+1];
             }
-            var l = document.getElementById(id);
+            l = document.getElementById(id);
 
             prev = path[i];
-console.log("Prev"+prev);
-console.log("Id: "+id+" NextId: "+nextId);
+console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
             orgLink = links.filter(function (link) {return (link.id === id);})[0];
             nextLink = links.filter(function (link) {return (link.id === nextId);})[0];
             source1 = orgLink.source;
@@ -349,11 +347,11 @@ console.log("Id: "+id+" NextId: "+nextId);
 console.log(orgLink);
 //            if(orgLink.target.type == "switch"){//i si està al revés?????????? la definició del link...
                    
-console.log("Insert link num "+i);
-console.log(orgLink);
 console.log(nextLink);
-console.log("src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.dstPort);
+console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.dstPort);
             insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.dstPort);
+            //contrary direction
+            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.dstPort, orgLink.dstPort);
             //}
             
         }
@@ -435,13 +433,12 @@ function findPortsGivenLinks(reqLink){
     var ports = [];
     try{
         link = links.filter(function (l) {return (l.source === reqLink.source && l.target === reqLink.target);})[0];
-        console.log(link);
     } catch(e){
         link = links.filter(function (l) {return (l.source === reqLink.target && l.target === reqLink.source);})[0];
-        console.log(link);
+
     }
+console.log(link);
     ports.push({source: link.srcPort, target: link.dstPort});
-    console.log(ports);
     return ports;
 }
 

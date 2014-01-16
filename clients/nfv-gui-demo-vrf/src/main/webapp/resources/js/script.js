@@ -21,7 +21,7 @@ $(function() {
  * Javascript for link confirm
  */
 $(document).ready(function() {
-        
+
         $("#jsonTable").tablesorter(); 
 
         $(".deleteButton").live("click", function () {

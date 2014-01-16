@@ -1,4 +1,5 @@
 function ConvertJsonToRouteTable(parsedJson, tableId, tableClassName, linkText) {
+    waiting(true);
     //Patterns for links and NULL value
    
     //Pattern for table                          
@@ -23,9 +24,9 @@ function ConvertJsonToRouteTable(parsedJson, tableId, tableClassName, linkText) 
 
         headers = array_keys(parsedJson[0]);
         headers[0] = "Id";
-        headers[1] = "Source IP";
-        headers[2] = "Destination IP";
-        headers[3] = "OutPort";
+        headers[1] = "Src IP";
+        headers[2] = "Dst IP";
+        headers[3] = "DPID";
         headers[4] = "Action";
 
         for (i = 0; i < headers.length; i++)
@@ -43,14 +44,14 @@ function ConvertJsonToRouteTable(parsedJson, tableId, tableClassName, linkText) 
             }
         } else {
             if (headers) {
-
                 for (i = 0; i < parsedJson.routeTable.length; i++) {
                     var rowId = parsedJson.routeTable[i]['id'];
                     tbCon += tdRow.format(parsedJson.routeTable[i]['id']);
                     tbCon += tdRow.format(parsedJson.routeTable[i]['sourceAddress']);
                     tbCon += tdRow.format(parsedJson.routeTable[i]['destinationAddress']);
 //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].inputPort);
-                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
+                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].dpid.substr(21));
+//                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
                     tbCon += tdRowHide.format(parsedJson.routeTable[i]['switchInfo'].dpid);
 console.log(parsedJson.routeTable[i]);
                     tbCon += tdRow.format("<input onclick='del(" + rowId + "); return false;' class='deleteButton' type='button' value='Delete'/>");
@@ -61,13 +62,15 @@ console.log(parsedJson.routeTable[i]);
         }
         tb = tb.format(trCon);
         tbl = tbl.format(th, tb);
-
+        waiting(false);        
         return tbl;
     }
+    waiting(false);
     return null;
 }
 
 function removeAll(){
+    waiting(true);
     var table = document.getElementById("jsonTable");
     for ( var i = 1; row = table.rows[i]; i++ ) {
         row = table.rows[i];       
@@ -78,9 +81,11 @@ function removeAll(){
     for(var i = table.rows.length - 1; i > 0; i--){
         table.deleteRow(i);
     }
+    setTimeout( 'waiting(false)' ,2000);
 }
 
 function del(id){
+    waiting(true);
     var result = "";
     $.ajax({
         type: 'POST',
@@ -100,5 +105,14 @@ function del(id){
             //$('.success').fadeOut(300, function(){ $(this).remove();});
         }, 3000);
     }
+    setTimeout( 'waiting(false)' ,2000);
     return result;
+}
+
+function waiting(status){
+    $body = $("body");
+    if(status)
+        $body.addClass("loading");
+    else
+        $body.removeClass("loading");
 }

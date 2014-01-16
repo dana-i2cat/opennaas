@@ -2,6 +2,9 @@ shell:echo Script to insert the information of each controller and the default r
 
 #create resource from descriptor
 
+exec cp /opt/opennaas-routing-nfv/curlInsertRoutes.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
+exec cp /opt/opennaas-routing-nfv/mapSwDevices.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
+
 #insert routes from json file
 #routing:insertfileroute vrf:VRF-1 vrf.json
 exec sh curlInsertRoutes.sh

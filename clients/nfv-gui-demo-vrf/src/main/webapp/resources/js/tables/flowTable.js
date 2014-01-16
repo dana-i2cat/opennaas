@@ -1,4 +1,7 @@
 function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
+    
+     waiting(true);
+//showHidePreloader(true);    
      //Pattern for table                          
     var idMarkup = tableId ? ' id="' + tableId + '"' : '';
     var classMarkup = tableClassName ? ' class="' + tableClassName + '"' : '';
@@ -29,7 +32,14 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
         for (i = 0; i < headers.length; i++)
             thCon += thRow.format(headers[i]);
 
-        headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlow[0]);
+        var arr_size;
+        try{    
+            headers = array_keys(parsedJson.floodlightOFFlows.floodlightOFFlow[0]);
+            arr_size = parsedJson.floodlightOFFlows.floodlightOFFlow.length;
+        }catch (e){
+            headers = [];
+            arr_size = 0;
+        }
         th = th.format(tr.format(thCon));
 
         // Create table rows from Json data
@@ -41,7 +51,7 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
             }
         } else {
             if (headers) {
-                for (i = 0; i < parsedJson.floodlightOFFlows.floodlightOFFlow.length; i++) {
+                for (i = 0; i < arr_size; i++) {
 //                    tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].name);
                     tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.srcIp);
                     tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.dstIp);
@@ -55,8 +65,24 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
         }
         tb = tb.format(trCon);
         tbl = tbl.format(th, tb);
-
+setTimeout( 'waiting(false)', 1000);
+//showHidePreloader(false);
         return tbl;
     }
     return null;
+}
+
+function showHidePreloader(show){
+     if(show)
+         document.getElementById('preloader').style.display='block';
+     else
+         document.getElementById('preloader').style.display='none';
+}
+
+function waiting(status){
+    $body = $("body");
+    if(status)
+        $body.addClass("loading");
+    else
+        $body.removeClass("loading");
 }

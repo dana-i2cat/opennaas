@@ -4,8 +4,78 @@
  */
 var file = "home";
 // handles to link and node element groups
+var legendData = [{"label":"Static link"},
+              {"label":"OpenFlow Switch"},
+              {"label":"OpenFlow Controller"},
+              {"label":"Host"}];
+var hidden = true;//hide legend
+var legend_x = 520, legend_y = 35, legend_width = 150, legend_height = 120;
 var path = svg.append('svg:g').selectAll('path'),
-    circle = svg.append('svg:g').selectAll('g');
+    circle = svg.append('svg:g').selectAll('g')
+    legend = svg.selectAll('.legend').data(legendData),
+    legendLink = svg.selectAll(".legendText").data([0]);
+
+legend.enter().append("svg")
+        .attr("class", "legend")
+        .attr("width", legend_width)
+        .attr("height", legend_height)
+        .attr('x', legend_x)
+        .attr('y', function(d, i) { return legend_y + i*40; })
+        .style("opacity", 0)
+        .selectAll("g")
+        .append("g");
+
+legend.append("image")
+        .attr("width", 30)
+        .attr("height", 20)
+        .attr('xlink:href', function(d, i) { 
+            if( i == 0 )
+                return linkImage;
+            if( i == 1 )
+                return switchImage;
+            if( i == 2 )
+                return controllerImage;
+            if( i == 3 )
+                return hostImage;
+        });
+    
+    legend.append("text")
+        .attr("x", 34)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .text(function(d) { return d.label; });
+    
+    var rectangleData = [{ "x": legend_x-20, "y": legend_y-15, "rx": 20, "ry": 20, "height": 0, "width": legend_width+30}];
+    var rectangles = svg.selectAll("rect")
+        .data(rectangleData)
+        .enter()
+        .append("rect")
+        .attr("x", function (d) { return d.x; }).attr("y", function (d) { return d.y; })
+        .attr("rx", function (d) { return d.rx; }).attr("ry", function (d) { return d.ry; })
+        .attr("height", function (d) { return d.height; }).attr("width", function (d) { return d.width; })
+        .style("fill", "blue").style("stroke", "black")
+        .style("stroke-width", 2).style("fill-opacity", 0.1).style("stroke-opacity", 0.9)
+        .on('mousedown', function() { transition(); });
+    
+    legendLink = svg.append("foreignObject")
+        .attr("x", 550).attr("y", 0)
+        .attr("width", 100)
+        .attr("height", 20)
+        .append("xhtml:body")
+        .style("font", "14px 'Helvetica Neue'")
+        .html("<a id='legend-link' style='text-decoration: none;color: gray;}' href='javascript:toggleHideLegend()'>Legend</a>");
+    
+function toggleHideLegend(){
+    if ( hidden ) {
+	rectangles.transition().duration(1000).attr('height', legend_height+50);
+	legend.transition().delay(500).duration(800).style('opacity', 1);
+	hidden = false;
+    }else{
+	legend.transition().duration(800).style('opacity', 0);
+	rectangles.transition().delay(500).duration(1000).attr('height', 0);
+	hidden = true;
+    }
+}
 
 // update graph (called when needed)
 function restart() {
@@ -37,7 +107,6 @@ function restart() {
             if (d3.event.ctrlKey) return;
             // select link
             mousedown_link = d;
-console.log("Adding new link. Click on Link " + d.type);
             if (mousedown_link === selected_link) selected_link = null;
             else selected_link = mousedown_link;
             selected_node = null;
@@ -72,9 +141,6 @@ console.log("Adding new link. Click on Link " + d.type);
                 return switchImage;
             else
                 return hostImage;
-        })
-        .on('mouseover', function (d) {
-console.log("Id num " + d.id_num + "node: " + d.id);
         })
         .on('mouseout', function (d) {
             if (!mousedown_node || d === mousedown_node) return;
