@@ -23,6 +23,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
@@ -205,9 +206,9 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	}
 
 	@Override
-	public Map<String, QosPolicyRequest> readAllocatedFlows() throws ProvisionerException {
+	public QoSPolicyRequestsWrapper readAllocatedFlows() throws ProvisionerException {
 		synchronized (mutex) {
-			return getAllocatedQoSPolicyRequests();
+			return new QoSPolicyRequestsWrapper(getAllocatedQoSPolicyRequests());
 		}
 	}
 

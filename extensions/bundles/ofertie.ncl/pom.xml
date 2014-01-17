@@ -64,6 +64,7 @@
 							org.opennaas.extensions.ofertie.ncl.provisioner.api,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.model,
+							org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper,
 							org.opennaas.extensions.ofertie.ncl.controller.api,
 							org.opennaas.extensions.ofertie.ncl.monitoring.api.model
 						</Export-Package>
