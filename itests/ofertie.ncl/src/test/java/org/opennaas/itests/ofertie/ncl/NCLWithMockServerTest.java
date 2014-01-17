@@ -393,10 +393,12 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 		QosPolicyRequest req = new QosPolicyRequest();
 		Source source = new Source();
 		source.setAddress(SRC_IP);
+		source.setPort("0");
 		req.setSource(source);
 
 		Destination destination = new Destination();
 		destination.setAddress(DST_IP);
+		destination.setPort("0");
 		req.setDestination(destination);
 
 		req.setLabel("0");
