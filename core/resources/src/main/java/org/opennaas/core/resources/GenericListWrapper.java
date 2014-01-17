@@ -5,19 +5,17 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAnyElement;
 
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-@XmlRootElement(name = "elements")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GenericListWrapper<T> {
 
-	@XmlElement(name = "element")
+	@XmlAnyElement(lax = true)
 	private List<T>	items;
 
 	public GenericListWrapper() {
