@@ -384,8 +384,6 @@ public class NCLProvisionerTest {
 				FLOODLIGHT_ACTIONSET_VERSION, OpenflowForwardingCapability.CAPABILITY_TYPE, CAPABILITY_URI);
 		lCapabilityDescriptors.add(ofForwardingDescriptor);
 
-		lCapabilityDescriptors.add(ofForwardingDescriptor);
-
 		// OFSwitch Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, OFSWITCH_RESOURCE_TYPE,
 				RESOURCE_URI, switchName);
