@@ -45,10 +45,11 @@ VRF - OpenNaaS Custom CSS
 }
 /* Animation view */
 #animaton_topology{
-    width:70%;
+    width:100%;
+    text-align: center;
 }
 #animation_log{
-    width:27%;
+    width:100%;
 }
 input#ipSrc {
     width: 115px;

@@ -74,3 +74,27 @@ text.id {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;}
+
+
+
+.link {
+	fill: none;
+	stroke: orange;
+	stroke-width: 4px;
+	cursor: default;
+}
+.linkCtrl {
+stroke: #ccc; stroke-width: 2px; stroke-dasharray: 3, 3;
+}
+
+.node text {
+  pointer-events: none;
+  font: 12px sans-serif;
+}
+
+.link2 {
+  fill: none;
+  stroke: #000;
+  stroke-width: 4px;
+  cursor: default;
+}
