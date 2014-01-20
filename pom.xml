@@ -130,6 +130,14 @@
 		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
 		<opennaas.gim.version>0.25-SNAPSHOT</opennaas.gim.version>
+		<!-- Maven license plugin version -->
+		<license.plugin.version>1.6</license.plugin.version>
+		
+		<!-- Properties for license -->
+		<project.inceptionYear>2007</project.inceptionYear>
+		<project.organization.name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</project.organization.name>
+		<project.name>OpenNaaS</project.name>
+		
 		<!-- Netconf server for itests -->
 		<netconf-server.version>0.0.3</netconf-server.version>
 	</properties>
@@ -1320,6 +1328,11 @@
 						</dependency>
 					</dependencies>
 				</plugin>
+				<plugin>
+          			<groupId>org.codehaus.mojo</groupId>
+          			<artifactId>license-maven-plugin</artifactId>
+          			<version>${license.plugin.version}</version>
+        		</plugin>		
 			</plugins>
 		</pluginManagement>
 
