@@ -10,136 +10,21 @@ var drag_line = svg.append('svg:path')
     .attr('d', 'M0,0L0,0');
 
 // handles to link and node element groups
-var path = svg.append('svg:g').selectAll('path'),
-    circle = svg.append('svg:g').selectAll('g'),
-    packet = svg.selectAll('.packet').data([0]);
+var packet = svg.selectAll('.packet').data([0]);
 
-/**
- * Definition of the image that represents the packet
- */
 packet.enter().append('image')
         .attr('class', 'packet')
         .attr('x', '0')
         .attr('y', '110')
         .attr('width', '30')
         .attr('height', '30')
-        .attr('xlink:href', packetImage)
-        .style('opacity', 0);
+        .style("z-index", 999)
+        .attr('xlink:href', packetImage);
 
-// update graph (called when needed)
-function restart() {
-    // path (link) group
-    path = path.data(links);
-
-    // update existing links
-    path.classed('selected', function (d) {return d === selected_link;})
-    .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
-
-    // add new links
-    path.enter().append('svg:path')
-        .attr('class', function (d) {
-            if (d.type === 'static') {
-                return 'link';
-            } else {
-                return 'link2';
-            }
-        })
-        .classed('selected', function (d) {return d === selected_link;})
-        .style('marker-start', function (d) {return d.left ? 'url(#start-arrow)' : '';})
-        .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';})
-        .on('mousedown', function (d) {
-            if (d3.event.ctrlKey) return;
-            // select link
-            mousedown_link = d;
-console.log('Adding new link. Click on Link ' + d.type);
-            if (mousedown_link === selected_link) selected_link = null;
-            else selected_link = mousedown_link;
-            selected_node = null;
-            restart();
-        });
-
-    // remove old links
-    path.exit().remove();
-
-    // circle (node) group
-    // NB: the function arg is crucial here! nodes are known by id, not by index!
-    circle = circle.data(nodes, function (d) {return d.id;});
-
-    // update existing nodes (reflexive & selected visual states)
-    circle.selectAll('circle')
-        .style('fill', function (d) {
-            return (d === selected_node) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id);
-        })
-        .classed('reflexive', function (d) {return d.reflexive;});
-
-    // add new nodes
-    var g = circle.enter().append('svg:g');
-
-    g.append('svg:image')
-        .attr('class', function (d) {return d.type;})
-        .attr('x', '-40')
-        .attr('y', '-40')
-        .attr('width', '75')
-        .attr('height', '75')
-        .attr('xlink:href', function (d) {
-            if (d.type === 'switch')
-                return switchImage;
-            else
-                return hostImage;
-        })
-        .on('mouseout', function (d) {
-            if (!mousedown_node || d === mousedown_node) return;
-            // unenlarge target node
-            d3.select(this).attr('transform', '');
-        });
-        
-    // show node IDs
-    g.append('svg:text')
-        .attr('x', '-20')
-        .attr('y', function (d) {
-            if (d.type === 'switch') {
-                return '9';
-            } else {
-                return '30';
-            }
-        })
-        .attr('class', function (d) {
-            if (d.type === 'switch') {
-                return 'id_txt_sw';
-            } else {
-                return 'id_txt_host';
-            }
-        })
-        .attr('id', function (d) {
-            return d.id;
-        })
-        .style('fill', 'red')
-        .text(function (d) {
-            return d.id;
-        });
-
-    g.append('svg:image')
-        .attr('class', 'controller')
-        .attr('x', '-20')
-        .attr('y', '-60')
-        .attr('width', '40')
-        .attr('height', '40')
-        .attr('xlink:href', controllerImage);
-    // remove old nodes
-    circle.exit().remove();
-
-    
-    // set the graph in motion
-    force.start();
+function runtime(node) {
+console.log("Runtime");
+    //update();
 }
-
-// app starts here
-svg.on('mousedown', mousedown)
-    .on('mouseup', mouseup);
-d3.select(window)
-    .on('keydown', keydown)
-    .on('keyup', keyup);
-restart();
 
 /**
  * Enable the animation. Represents a stream of video that move the image (packet) through the network
