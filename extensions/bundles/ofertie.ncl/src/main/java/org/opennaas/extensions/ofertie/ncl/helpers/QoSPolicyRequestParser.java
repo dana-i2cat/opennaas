@@ -82,9 +82,9 @@ public abstract class QoSPolicyRequestParser {
 		match.setSrcPort(qosPolicyRequest.getSource() != null ? qosPolicyRequest.getSource().getPort() : null);
 		match.setDstPort(qosPolicyRequest.getDestination() != null ? qosPolicyRequest.getDestination().getPort() : null);
 
-		// The last two bits of the ToS are discarded, therefore we divide the hexadecimal value per 4
+		// The last two bits of the ToS are discarded, therefore we divide the value per 4
 		// More information at http://www.tucny.com/Home/dscp-tos
-		String tosBits = Integer.toHexString(Integer.parseInt(qosPolicyRequest.getLabel()) / 4);
+		String tosBits = Integer.toString(Integer.parseInt(qosPolicyRequest.getLabel()) / 4);
 		match.setTosBits(tosBits);
 
 		if (qosPolicyRequest.getSource() == null || qosPolicyRequest.getSource().getAddress() == null || qosPolicyRequest.getSource().getAddress()
