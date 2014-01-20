@@ -217,7 +217,7 @@ public class NCLProvisionerTest {
 
 		String id = provisioner.allocateFlow(qosPolicyRequest);
 
-		Map<String, QosPolicyRequest> flows = provisioner.readAllocatedFlows();
+		Map<String, QosPolicyRequest> flows = provisioner.readAllocatedFlows().getQoSPolicyRequests();
 		QosPolicyRequest allocatedFlow = null;
 		for (Entry<String, QosPolicyRequest> entry : flows.entrySet()) {
 			if (entry.getKey().equals(id)) {
@@ -255,7 +255,7 @@ public class NCLProvisionerTest {
 		}
 
 		provisioner.deallocateFlow(id);
-		flows = provisioner.readAllocatedFlows();
+		flows = provisioner.readAllocatedFlows().getQoSPolicyRequests();
 		Assert.assertTrue("There should not be allocated flows.", flows.isEmpty());
 		// Get flows in SDN network
 		allocatedNetFlows = sdnCapab.getAllocatedFlows();
@@ -382,8 +382,6 @@ public class NCLProvisionerTest {
 
 		CapabilityDescriptor ofForwardingDescriptor = ResourceHelper.newCapabilityDescriptor(FLOODLIGHT_ACTIONSET_NAME,
 				FLOODLIGHT_ACTIONSET_VERSION, OpenflowForwardingCapability.CAPABILITY_TYPE, CAPABILITY_URI);
-		lCapabilityDescriptors.add(ofForwardingDescriptor);
-
 		lCapabilityDescriptors.add(ofForwardingDescriptor);
 
 		// OFSwitch Resource Descriptor

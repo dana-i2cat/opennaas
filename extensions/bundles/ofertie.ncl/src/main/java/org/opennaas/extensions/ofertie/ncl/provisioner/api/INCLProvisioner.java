@@ -1,6 +1,5 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.api;
 
-import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -21,6 +20,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
@@ -84,7 +84,7 @@ public interface INCLProvisioner {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public Map<String, QosPolicyRequest> readAllocatedFlows() throws ProvisionerException;
+	public QoSPolicyRequestsWrapper readAllocatedFlows() throws ProvisionerException;
 
 	/**
 	 * Returns implementation of given flow

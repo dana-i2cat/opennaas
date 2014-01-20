@@ -18,6 +18,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.RouteIds;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.RouteSelectionInput;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.RouteSelectionMap;
@@ -49,6 +50,17 @@ public class ProvisionerSerializationTest {
 		RouteSelectionMap original = generateSampleRouteSelectionMap();
 		String xml = ObjectSerializer.toXml(original);
 		RouteSelectionMap generated = (RouteSelectionMap) ObjectSerializer.fromXml(xml, RouteSelectionMap.class);
+		String xml2 = ObjectSerializer.toXml(generated);
+		Assert.assertEquals(original, generated);
+		Assert.assertEquals(xml, xml2);
+		System.out.println(xml);
+	}
+
+	@Test
+	public void qoSPolicyRequestsWrapperSerializationTes() throws SerializationException {
+		QoSPolicyRequestsWrapper original = generateSampleQoSPolicyRequestsWrapper();
+		String xml = ObjectSerializer.toXml(original);
+		QoSPolicyRequestsWrapper generated = (QoSPolicyRequestsWrapper) ObjectSerializer.fromXml(xml, QoSPolicyRequestsWrapper.class);
 		String xml2 = ObjectSerializer.toXml(generated);
 		Assert.assertEquals(original, generated);
 		Assert.assertEquals(xml, xml2);
@@ -179,6 +191,16 @@ public class ProvisionerSerializationTest {
 
 		return req;
 
+	}
+
+	private QoSPolicyRequestsWrapper generateSampleQoSPolicyRequestsWrapper() {
+
+		Map<String, QosPolicyRequest> requests = new HashMap<String, QosPolicyRequest>();
+		for (int i = 0; i <= 3; i++) {
+			requests.put(String.valueOf(i), generateSampleFlow());
+		}
+
+		return new QoSPolicyRequestsWrapper(requests);
 	}
 
 }
