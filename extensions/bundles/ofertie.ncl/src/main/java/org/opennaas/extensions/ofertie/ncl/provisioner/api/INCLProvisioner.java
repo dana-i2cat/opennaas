@@ -30,7 +30,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.opennaas.core.resources.GenericListWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFoundException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
@@ -39,8 +38,8 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.NetOFFlows;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
-import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
  * 
@@ -116,7 +115,7 @@ public interface INCLProvisioner {
 	@Path("/{id}/implementation")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public GenericListWrapper<NetOFFlow> getFlowImplementation(@PathParam("id") String flowId) throws ProvisionerException;
+	public NetOFFlows getFlowImplementation(@PathParam("id") String flowId) throws ProvisionerException;
 
 	/**
 	 * Returns QoS network requirements for one flow
