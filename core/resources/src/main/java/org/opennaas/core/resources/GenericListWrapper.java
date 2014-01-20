@@ -6,12 +6,14 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GenericListWrapper<T> {
 
