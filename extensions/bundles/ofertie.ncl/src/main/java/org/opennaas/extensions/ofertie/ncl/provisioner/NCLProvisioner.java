@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.GenericListWrapper;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
@@ -24,6 +23,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.NetOFFlows;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
@@ -218,10 +218,10 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	}
 
 	@Override
-	public GenericListWrapper<NetOFFlow> getFlowImplementation(String flowId) throws ProvisionerException {
+	public NetOFFlows getFlowImplementation(String flowId) throws ProvisionerException {
 		synchronized (mutex) {
 			String qosPolicyRequestId = flowId;
-			return new GenericListWrapper<NetOFFlow>(getAllocatedFlows().get(qosPolicyRequestId));
+			return new NetOFFlows(getAllocatedFlows().get(qosPolicyRequestId));
 		}
 	}
 
