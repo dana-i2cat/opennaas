@@ -1,6 +1,5 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.api;
 
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -12,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.GenericListWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFoundException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
@@ -97,7 +97,7 @@ public interface INCLProvisioner {
 	@Path("/{id}/implementation")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public List<NetOFFlow> getFlowImplementation(@PathParam("id") String flowId) throws ProvisionerException;
+	public GenericListWrapper<NetOFFlow> getFlowImplementation(@PathParam("id") String flowId) throws ProvisionerException;
 
 	/**
 	 * Returns QoS network requirements for one flow
