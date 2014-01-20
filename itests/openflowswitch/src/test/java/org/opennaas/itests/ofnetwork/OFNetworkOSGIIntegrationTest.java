@@ -47,7 +47,6 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -112,7 +111,7 @@ public class OFNetworkOSGIIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				OpennaasExamOptions.openDebugSocket(),
+				// OpennaasExamOptions.openDebugSocket(),
 				includeFeatures("opennaas-ofnetwork", "itests-helpers", "opennaas-openflowswitch-driver-floodlight"),
 				noConsole(),
 				keepRuntimeFolder());
