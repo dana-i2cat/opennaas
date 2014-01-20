@@ -20,14 +20,13 @@ package org.opennaas.extensions.ofertie.ncl.test;
  * #L%
  */
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.PathLoader;
@@ -74,7 +73,7 @@ public class PathLoaderTest {
 	@Test
 	public void PathLoadingTest() throws IOException, SerializationException {
 
-		String xmlPaths = textFileToString(PATH_FILE_URL);
+		String xmlPaths = IOUtils.toString(this.getClass().getResourceAsStream(PATH_FILE_URL));
 
 		Map<String, Route> routes = PathLoader.getRoutesFromXml(xmlPaths);
 
@@ -283,15 +282,4 @@ public class PathLoaderTest {
 
 	}
 
-	private String textFileToString(String fileLocation) throws IOException {
-		String fileString = "";
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(getClass().getResourceAsStream(fileLocation)));
-		String line;
-		while ((line = br.readLine()) != null) {
-			fileString += line += "\n";
-		}
-		br.close();
-		return fileString;
-	}
 }

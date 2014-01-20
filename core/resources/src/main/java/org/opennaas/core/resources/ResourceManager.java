@@ -30,6 +30,7 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ILifecycle.State;
@@ -41,6 +42,8 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
  * 
  * @author Eduard Grasa
  * @author Roc Vallès <roc.valles@i2cat.net>
+ * @author Adrian Rosello Rey (i2CAT)
+ * @author Héctor Fernández
  * 
  */
 public class ResourceManager implements IResourceManager {
@@ -267,6 +270,15 @@ public class ResourceManager implements IResourceManager {
 	 * @return the available resource types
 	 */
 	@Override
+	public synchronized GenericListWrapper<String> getResourceTypesAPI() {
+
+		return new GenericListWrapper<String>(this.getResourceTypes());
+	}
+
+	/**
+	 * @return the available resource types
+	 */
+	@Override
 	public synchronized List<String> getResourceTypes() {
 		return new ArrayList<String>(resourceRepositories.keySet());
 	}
@@ -400,6 +412,35 @@ public class ResourceManager implements IResourceManager {
 	@Override
 	public String createResourceWS(ResourceDescriptor resourceDescriptor) throws ResourceException {
 		return createResource(resourceDescriptor).getResourceIdentifier().getId();
+	}
+
+	@Override
+	public GenericListWrapper<String> listResourcesNameByType(String type) throws ResourceException {
+		if (StringUtils.isEmpty(type))
+			throw new ResourceException("You didn't specify any resource type.");
+
+		IResourceRepository repo = resourceRepositories.get(type);
+
+		if (repo == null)
+			throw new ResourceException("Didn't find any resource repository of type " + type);
+
+		List<IResource> resources = repo.listResources();
+		List<String> resourcesNames = new ArrayList<String>();
+		for (IResource resource : resources)
+			resourcesNames.add(resource.getResourceDescriptor().getInformation().getName());
+
+		return new GenericListWrapper<String>(resourcesNames);
+	}
+
+	@Override
+	public String getIdentifierFromResourceTypeName(String resourceType, String resourceName) throws ResourceException {
+		return this.getIdentifierFromResourceName(resourceType, resourceName).getId();
+	}
+
+	@Override
+	public String getStatus(String resourceId) throws ResourceException {
+		return this.getResourceById(resourceId).getState().name();
+
 	}
 
 }

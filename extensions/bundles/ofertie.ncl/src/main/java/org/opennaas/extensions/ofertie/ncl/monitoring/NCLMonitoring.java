@@ -21,6 +21,7 @@ package org.opennaas.extensions.ofertie.ncl.monitoring;
  */
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,26 +57,28 @@ import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortSt
  */
 public class NCLMonitoring {
 
-	private static final Log	log							= LogFactory.getLog(NCLMonitoring.class);
+	private static final Log			log							= LogFactory.getLog(NCLMonitoring.class);
 
-	private static final String	NCL_MONITORING_FILE_ID		= "org.ofertie.ncl.monitoring";
-	private static final String	THROUGHPUT_THRESHOLD		= "throughput_threshold";
-	private static final String	STATISCS_POLLER_FREQUENCY	= "statistics_poller_freq";
+	private static final String			NCL_MONITORING_FILE_ID		= "org.ofertie.ncl.monitoring";
+	private static final String			THROUGHPUT_THRESHOLD		= "throughput_threshold";
+	private static final String			STATISCS_POLLER_FREQUENCY	= "statistics_poller_freq";
+
+	private static final DecimalFormat	DF							= new DecimalFormat("0.000");
 
 	// FIXME hardcoded link capacity to 1Gbits/s
-	private static final double	linkCapacity				= 1.0;
+	private static final double			linkCapacity				= 1.0;
 
-	private IEventManager		eventManager;
+	private IEventManager				eventManager;
 
-	private INCLController		nclController;
+	private INCLController				nclController;
 
-	private NCLModel			nclModel;
+	private NCLModel					nclModel;
 
-	private int					bandwidthThreshold;
-	private int					statisticsPollerFreq;
+	private int							bandwidthThreshold;
+	private int							statisticsPollerFreq;
 
-	private long				previousTimestamp			= -1;
-	private NetworkStatistics	previousNetworkStatistics	= null;
+	private long						previousTimestamp			= -1;
+	private NetworkStatistics			previousNetworkStatistics	= null;
 
 	public void init() {
 		log.info("Initializing Ofertie NCL monitoring...");
@@ -160,8 +163,6 @@ public class NCLMonitoring {
 							for (String switchName : currentNetworkStatistics.getSwitchStatistics().keySet()) {
 								log.debug("Analizing switch statistics for switch " + switchName);
 								for (Integer portId : currentNetworkStatistics.getSwitchStatistics().get(switchName).getStatistics().keySet()) {
-									log.debug("\tPort " + portId);
-
 									try {
 										long currentBytes = getPortReceivedBytes(currentNetworkStatistics, switchName, portId);
 										long previousBytes = getPortReceivedBytes(previousNetworkStatistics, switchName, portId);
@@ -170,11 +171,12 @@ public class NCLMonitoring {
 										double throughput = calculateThroughput(previousBytes, currentBytes,
 												previousTimestamp, currentTimestamp);
 
-										log.debug("\t\tCalculated throughput = " + throughput + " Gbits/s");
+										log.debug("\tPort " + portId + ", calculated throughput = " + DF.format(throughput) + " Gbits/s");
 
 										// check if throughput exceeds
 										if (isThresholdExceeded(throughput, linkCapacity, bandwidthThreshold)) {
-											log.debug("\t\tCongestion detected. Throughput > " + ((linkCapacity * bandwidthThreshold) / 100) + " Gbits/s");
+											log.debug("\tPort " + portId + ", congestion detected. Throughput > " + DF
+													.format((linkCapacity * bandwidthThreshold) / 100) + " Gbits/s");
 											// add congested port
 											Port congestedPort = new Port();
 											congestedPort.setDeviceId(switchName);

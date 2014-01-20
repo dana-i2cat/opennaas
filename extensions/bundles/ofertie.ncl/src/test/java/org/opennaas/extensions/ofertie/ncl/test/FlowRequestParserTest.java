@@ -25,9 +25,9 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestHelper;
-import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestParser;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestParser;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequesttHelper;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
@@ -43,10 +43,10 @@ public class FlowRequestParserTest {
 	@Test
 	public void parseFlowRequestTest() {
 
-		FlowRequest flowRequest = FlowRequestHelper.generateSampleFlowRequest();
-		Route route = FlowRequestHelper.generateSampleRoute();
+		QosPolicyRequest qosPolicyRequest = QoSPolicyRequesttHelper.generateSampleFlowRequest();
+		Route route = QoSPolicyRequesttHelper.generateSampleRoute();
 
-		List<NetOFFlow> sdnNetOFFlows = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
+		List<NetOFFlow> sdnNetOFFlows = QoSPolicyRequestParser.parseFlowRequestIntoSDNFlow(qosPolicyRequest, route);
 
 		Assert.assertTrue(route.getNetworkConnections().size() >= sdnNetOFFlows.size());
 
@@ -58,11 +58,11 @@ public class FlowRequestParserTest {
 				NetOFFlow sdnNetOFFlow = sdnNetOFFlows.get(j);
 
 				FloodlightOFMatch match = sdnNetOFFlow.getMatch();
-				Assert.assertEquals("Source ip should match. ", flowRequest.getSourceIPAddress(), match.getSrcIp());
-				Assert.assertEquals("Destination ip should match.", flowRequest.getDestinationIPAddress(), match.getDstIp());
-				Assert.assertEquals("Source port should match", String.valueOf(flowRequest.getSourcePort()), match.getSrcPort());
-				Assert.assertEquals("Destination port should match", String.valueOf(flowRequest.getDestinationPort()), match.getDstPort());
-				Assert.assertEquals("ToS should match", String.valueOf(flowRequest.getTos() / 4), match.getTosBits());
+				Assert.assertEquals("Source ip should match. ", qosPolicyRequest.getSource().getAddress(), match.getSrcIp());
+				Assert.assertEquals("Destination ip should match.", qosPolicyRequest.getDestination().getAddress(), match.getDstIp());
+				Assert.assertEquals("Source port should match", qosPolicyRequest.getSource().getPort(), match.getSrcPort());
+				Assert.assertEquals("Destination port should match", qosPolicyRequest.getDestination().getPort(), match.getDstPort());
+				Assert.assertEquals("ToS should match", String.valueOf(Integer.parseInt(qosPolicyRequest.getLabel()) / 4), match.getTosBits());
 
 				String ingressPort = route.getNetworkConnections().get(i).getSource().getPortNumber();
 				Assert.assertEquals("Ingress port should be source port of correspondent network connection.", ingressPort, match.getIngressPort());

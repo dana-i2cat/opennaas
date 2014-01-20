@@ -23,8 +23,14 @@ package org.opennaas.extensions.ofertie.ncl.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QoSRequirements;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
@@ -34,36 +40,47 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
  * @author Adrian Rosello (i2CAT)
  * 
  */
-public abstract class FlowRequestHelper {
+public abstract class QoSPolicyRequesttHelper {
 
-	public static FlowRequest generateSampleFlowRequest() {
+	public static QosPolicyRequest generateSampleFlowRequest() {
 
-		FlowRequest req = new FlowRequest();
+		QosPolicyRequest req = new QosPolicyRequest();
 
-		req.setRequestId("1001");
+		Source source = new Source();
+		source.setAddress("192.168.1.14");
+		source.setPort("0");
+		req.setSource(source);
 
-		req.setSourceIPAddress("192.168.1.14");
-		req.setDestinationIPAddress("192.168.1.13");
+		Destination destination = new Destination();
+		destination.setAddress("192.168.1.13");
+		destination.setPort("1");
+		req.setDestination(destination);
 
-		req.setSourcePort(0);
-		req.setDestinationPort(1);
+		req.setLabel("16");
 
-		req.setSourceVlanId(21);
-		req.setDestinationVlanId(22);
+		QosPolicy qosPolicy = new QosPolicy();
 
-		req.setTos(16);
+		Latency latency = new Latency();
+		latency.setMin("5");
+		latency.setMax("12");
+		qosPolicy.setLatency(latency);
 
-		QoSRequirements qosRequirements = new QoSRequirements();
-		qosRequirements.setMaxBandwidth(100);
-		qosRequirements.setMinBandwidth(10);
-		qosRequirements.setMaxDelay(12);
-		qosRequirements.setMinDelay(5);
-		qosRequirements.setMaxJitter(5);
-		qosRequirements.setMinJitter(2);
-		qosRequirements.setMaxPacketLoss(10);
-		qosRequirements.setMinPacketLoss(0);
+		Jitter jitter = new Jitter();
+		jitter.setMin("2");
+		jitter.setMax("5");
+		qosPolicy.setJitter(jitter);
 
-		req.setQoSRequirements(qosRequirements);
+		Throughput throughput = new Throughput();
+		throughput.setMin("10");
+		throughput.setMax("100");
+		qosPolicy.setThroughput(throughput);
+
+		PacketLoss packetLoss = new PacketLoss();
+		packetLoss.setMin("0");
+		packetLoss.setMax("100");
+		qosPolicy.setPacketLoss(packetLoss);
+
+		req.setQosPolicy(qosPolicy);
 
 		return req;
 	}

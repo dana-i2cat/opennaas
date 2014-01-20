@@ -2,6 +2,7 @@
 <features>
 
 	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:net.i2cat.netconf/netconf4j/${netconf4j.version}/xml/features</repository>
 	
 	<feature name="opennaas-protocols-all" version="${project.version}">
 		<feature version="${project.version}">opennaas-protocol-netconf</feature>
@@ -36,23 +37,9 @@
 
 	<feature name="opennaas-protocol-netconf" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-core</feature>
+		<feature version="${netconf4j.version}">netconf4j</feature>
 
-		<!-- Almost all bundles are dependencies of commons-configuration, that is a dependency of netconf4j -->
-		<bundle dependency="true">mvn:javax.mail/mail/${javamail.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.commons/com.springsource.org.apache.commons.beanutils/${beanutils.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-servlet_2.5_spec/${geronimo.servlet.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/${commons.jxpath.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ant/${ant.version}</bundle>
-		<bundle dependency="true">mvn:commons-configuration/commons-configuration/${commons.configuration.version}</bundle>
-		<bundle dependency="true">mvn:commons-codec/commons-codec/${commons.codec.version}</bundle>
-		<bundle dependency="true">mvn:commons-io/commons-io/${commons.io.version}</bundle>
-		<bundle dependency="true">mvn:commons-digester/commons-digester/${commons.digester.version}</bundle>
-
-		<bundle>mvn:net.i2cat.netconf/netconf4j/${netconf4j.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.netconf/${project.version}</bundle>
-
 	</feature>
 
 </features>

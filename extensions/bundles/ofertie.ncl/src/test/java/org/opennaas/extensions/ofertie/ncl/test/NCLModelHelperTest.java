@@ -52,14 +52,14 @@ public class NCLModelHelperTest {
 		flows.add(flow1);
 		flows.add(flow2);
 
-		Assert.assertTrue(NCLModelHelper.circuitFlowsContainPort(SWITCH_ID_1, PORT_ID_1, flows));
-		Assert.assertTrue(NCLModelHelper.circuitFlowsContainPort(SWITCH_ID_1, PORT_ID_2, flows));
+		Assert.assertTrue(NCLModelHelper.flowsContainPort(SWITCH_ID_1, PORT_ID_1, flows));
+		Assert.assertTrue(NCLModelHelper.flowsContainPort(SWITCH_ID_1, PORT_ID_2, flows));
 
-		Assert.assertTrue(NCLModelHelper.circuitFlowsContainPort(SWITCH_ID_2, PORT_ID_2, flows));
-		Assert.assertTrue(NCLModelHelper.circuitFlowsContainPort(SWITCH_ID_2, PORT_ID_3, flows));
+		Assert.assertTrue(NCLModelHelper.flowsContainPort(SWITCH_ID_2, PORT_ID_2, flows));
+		Assert.assertTrue(NCLModelHelper.flowsContainPort(SWITCH_ID_2, PORT_ID_3, flows));
 
-		Assert.assertFalse(NCLModelHelper.circuitFlowsContainPort(SWITCH_ID_1, PORT_ID_3, flows));
-		Assert.assertFalse(NCLModelHelper.circuitFlowsContainPort(SWITCH_ID_2, PORT_ID_1, flows));
+		Assert.assertFalse(NCLModelHelper.flowsContainPort(SWITCH_ID_1, PORT_ID_3, flows));
+		Assert.assertFalse(NCLModelHelper.flowsContainPort(SWITCH_ID_2, PORT_ID_1, flows));
 
 	}
 

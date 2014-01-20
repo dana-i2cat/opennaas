@@ -22,8 +22,8 @@ package org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup;
 
 import java.util.List;
 
-import org.opennaas.extensions.ofertie.ncl.helpers.FlowRequestParser;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestParser;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
@@ -62,10 +62,10 @@ public class RequestToFlowsLogic implements IRequestToFlowsLogic {
 	}
 
 	@Override
-	public List<NetOFFlow> getRequiredFlowsToSatisfyRequest(FlowRequest flowRequest) throws Exception {
+	public List<NetOFFlow> getRequiredFlowsToSatisfyRequest(QosPolicyRequest qosPolicyRequest) throws Exception {
 
-		Route route = getPathFinder().findPathForRequest(flowRequest);
-		List<NetOFFlow> flows = FlowRequestParser.parseFlowRequestIntoSDNFlow(flowRequest, route);
+		Route route = getPathFinder().findPathForRequest(qosPolicyRequest);
+		List<NetOFFlow> flows = QoSPolicyRequestParser.parseFlowRequestIntoSDNFlow(qosPolicyRequest, route);
 
 		return flows;
 	}

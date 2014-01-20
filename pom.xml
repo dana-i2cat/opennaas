@@ -43,7 +43,7 @@
 		<commons.digester.version>2.1</commons.digester.version>
 		<commons.io.version>1.4</commons.io.version>
 		<commons.jxpath.version>1.2_5</commons.jxpath.version>
-		<commons.lang.version>2.4_4</commons.lang.version>
+		<commons-lang.version>2.5</commons-lang.version>
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.7.7</cxf.version>
@@ -83,7 +83,7 @@
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
-		<netconf4j.version>0.0.6</netconf4j.version>
+		<netconf4j.version>0.0.7</netconf4j.version>
 		<nmr.version>1.6.1</nmr.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
@@ -139,7 +139,7 @@
 		<project.name>OpenNaaS</project.name>
 		
 		<!-- Netconf server for itests -->
-		<netconf-server.version>0.0.2</netconf-server.version>
+		<netconf-server.version>0.0.3</netconf-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -448,7 +448,7 @@
 			<dependency>
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
-				<version>2.5</version>
+				<version>${commons-lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -459,11 +459,6 @@
 				<groupId>commons-digester</groupId>
 				<artifactId>commons-digester</artifactId>
 				<version>${commons.digester.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.servicemix.bundles</groupId>
-				<artifactId>org.apache.servicemix.bundles.commons-lang</artifactId>
-				<version>${commons.lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>

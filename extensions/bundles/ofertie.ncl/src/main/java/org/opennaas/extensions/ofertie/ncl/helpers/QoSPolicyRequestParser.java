@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
@@ -38,15 +38,15 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public abstract class FlowRequestParser {
+public abstract class QoSPolicyRequestParser {
 
 	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
 
-	public static List<NetOFFlow> parseFlowRequestIntoSDNFlow(FlowRequest flowRequest, Route route) {
+	public static List<NetOFFlow> parseFlowRequestIntoSDNFlow(QosPolicyRequest qosPolicyRequest, Route route) {
 
 		List<NetOFFlow> flows = new ArrayList<NetOFFlow>();
 
-		FloodlightOFMatch commonMatch = buildOFMatchFromRequest(flowRequest);
+		FloodlightOFMatch commonMatch = buildOFMatchFromRequest(qosPolicyRequest);
 
 		for (NetworkConnection connection : route.getNetworkConnections()) {
 			if (connection.getSource().getDeviceId().equals(connection.getDestination().getDeviceId())) {
@@ -76,28 +76,30 @@ public abstract class FlowRequestParser {
 		return flows;
 	}
 
-	public static FloodlightOFMatch buildOFMatchFromRequest(FlowRequest flowRequest) {
+	public static FloodlightOFMatch buildOFMatchFromRequest(QosPolicyRequest qosPolicyRequest) {
 		FloodlightOFMatch match = new FloodlightOFMatch();
 
-		match.setSrcPort(String.valueOf(flowRequest.getSourcePort()));
-		match.setDstPort(String.valueOf(flowRequest.getDestinationPort()));
+		match.setSrcPort(qosPolicyRequest.getSource() != null ? qosPolicyRequest.getSource().getPort() : null);
+		match.setDstPort(qosPolicyRequest.getDestination() != null ? qosPolicyRequest.getDestination().getPort() : null);
 
-		// The last two bits of the ToS are discarded, therefore we devide the hexadecimal value per 4
+		// The last two bits of the ToS are discarded, therefore we divide the hexadecimal value per 4
 		// More information at http://www.tucny.com/Home/dscp-tos
-		String tosBits = Integer.toHexString(flowRequest.getTos() / 4);
+		String tosBits = Integer.toHexString(Integer.parseInt(qosPolicyRequest.getLabel()) / 4);
 		match.setTosBits(tosBits);
 
-		if (flowRequest.getSourceIPAddress() == null || flowRequest.getSourceIPAddress().isEmpty()) {
+		if (qosPolicyRequest.getSource() == null || qosPolicyRequest.getSource().getAddress() == null || qosPolicyRequest.getSource().getAddress()
+				.isEmpty()) {
 			// remove empty strings, use null instead
 			match.setSrcIp(null);
 		} else {
-			match.setSrcIp(flowRequest.getSourceIPAddress());
+			match.setSrcIp(qosPolicyRequest.getSource().getAddress());
 		}
-		if (flowRequest.getDestinationIPAddress() == null || flowRequest.getDestinationIPAddress().isEmpty()) {
+		if (qosPolicyRequest.getDestination() == null || qosPolicyRequest.getDestination().getAddress() == null || qosPolicyRequest.getDestination()
+				.getAddress().isEmpty()) {
 			// remove empty strings, use null instead
 			match.setDstIp(null);
 		} else {
-			match.setDstIp(flowRequest.getDestinationIPAddress());
+			match.setDstIp(qosPolicyRequest.getDestination().getAddress());
 		}
 
 		match.setEtherType(calculateRequiredEtherType(match));

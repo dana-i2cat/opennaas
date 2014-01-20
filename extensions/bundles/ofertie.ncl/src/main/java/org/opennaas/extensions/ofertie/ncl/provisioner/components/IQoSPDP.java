@@ -20,10 +20,10 @@ package org.opennaas.extensions.ofertie.ncl.provisioner.components;
  * #L%
  */
 
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 
 public interface IQoSPDP {
 
-	public boolean shouldAcceptRequest(String userId, FlowRequest flowRequest) throws Exception;
+	public boolean shouldAcceptRequest(String userId, QosPolicyRequest qosPolicyRequest) throws Exception;
 
 }

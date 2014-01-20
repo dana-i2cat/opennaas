@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
@@ -80,10 +80,10 @@ public class PathFinderMockup implements IPathFinder {
 	}
 
 	@Override
-	public Route findPathForRequest(FlowRequest flowRequest)
+	public Route findPathForRequest(QosPolicyRequest qosPolicyRequest)
 			throws Exception {
 
-		RouteSelectionInput input = createRouteSelectionInputFromRequest(flowRequest);
+		RouteSelectionInput input = createRouteSelectionInputFromRequest(qosPolicyRequest);
 		List<String> possibleRouteIds = routeSelectionLogic.getPotentialRoutes(input);
 
 		possibleRouteIds = filterNotCongestedRoutes(possibleRouteIds);
@@ -94,11 +94,11 @@ public class PathFinderMockup implements IPathFinder {
 		return routes.get(possibleRouteIds.get(0));
 	}
 
-	private RouteSelectionInput createRouteSelectionInputFromRequest(FlowRequest flowRequest) {
+	private RouteSelectionInput createRouteSelectionInputFromRequest(QosPolicyRequest qosPolicyRequest) {
 		return new RouteSelectionInput(
-				flowRequest.getSourceIPAddress(),
-				flowRequest.getDestinationIPAddress(),
-				String.valueOf(flowRequest.getTos()));
+				qosPolicyRequest.getSource().getAddress(),
+				qosPolicyRequest.getDestination().getAddress(),
+				String.valueOf(qosPolicyRequest.getLabel()));
 	}
 
 	private List<String> filterNotCongestedRoutes(List<String> routes) {

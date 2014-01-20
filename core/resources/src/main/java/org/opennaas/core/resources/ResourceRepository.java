@@ -222,6 +222,8 @@ public class ResourceRepository implements IResourceRepository {
 				// ignored, protocolManager availability is already checked in protocolManagerIsAvailable()
 				logger.warn("Ignoring fail to retrieve protocolManager during createProtocolSessionManagerForResource");
 			}
+		} else {
+			logger.warn("Unable to create protocolSessionManager for resource " + resourceDescriptor.getInformation().getName() + ". ProtocolManager is not available.");
 		}
 
 		logger.debug("Resource Initialized");
@@ -353,6 +355,16 @@ public class ResourceRepository implements IResourceRepository {
 			initResource(new Resource(), resourceDescriptor, resourceIdentifier);
 		} catch (CorruptStateException e) {
 			throw new ResourceException(e);
+		}
+		if (protocolManagerIsAvailable()) {
+			try {
+				createProtocolSessionManagerForResource(resourceIdentifier.getId());
+			} catch (ActivatorException e) {
+				// ignored, protocolManager availability is already checked in protocolManagerIsAvailable()
+				logger.warn("Ignoring fail to retrieve protocolManager during createProtocolSessionManagerForResource");
+			}
+		} else {
+			logger.warn("Unable to create protocolSessionManager for resource " + resourceDescriptor.getInformation().getName() + ". ProtocolManager is not available.");
 		}
 	}
 

@@ -25,10 +25,21 @@ package org.opennaas.core.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GenericListWrapper<T> {
 
+	@XmlAnyElement(lax = true)
 	private List<T>	items;
 
 	public GenericListWrapper() {
@@ -39,7 +50,6 @@ public class GenericListWrapper<T> {
 		this.items = items;
 	}
 
-	@XmlAnyElement(lax = true)
 	public List<T> getItems() {
 		return items;
 	}

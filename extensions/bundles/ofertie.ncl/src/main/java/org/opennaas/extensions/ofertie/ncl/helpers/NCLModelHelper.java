@@ -40,7 +40,7 @@ public abstract class NCLModelHelper {
 	 * @param circuitFlows
 	 * @return
 	 */
-	public static boolean circuitFlowsContainPort(String switchName, String portId, List<NetOFFlow> circuitFlows) {
+	public static boolean flowsContainPort(String switchName, String portId, List<NetOFFlow> circuitFlows) {
 
 		for (NetOFFlow flow : circuitFlows)
 			if (flow.getResourceId().equals(switchName))

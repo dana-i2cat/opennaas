@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Circuit;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
@@ -37,30 +37,30 @@ import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 public class NCLModel {
 
 	/**
-	 * Key: CircuitId, Value: Circuit
+	 * Key: id, Value: QosPolicyRequest
 	 */
-	private Map<String, Circuit>			allocatedCircuits;
+	private Map<String, QosPolicyRequest>		allocatedCircuits;
 
 	/**
 	 * Key: CircuitId, Value: NetOFFlow implementing the circuit
 	 */
-	private Map<String, List<NetOFFlow>>	allocatedFlows;
+	private Map<String, List<NetOFFlow>>		allocatedFlows;
 
-	private Set<Port>						congestedPorts;
+	private Set<Port>							congestedPorts;
 
-	private Map<Port, Set<Circuit>>			circuitsPerPort;
+	private Map<Port, Set<QosPolicyRequest>>	circuitsPerPort;
 
 	public NCLModel() {
-		allocatedCircuits = new HashMap<String, Circuit>();
+		allocatedCircuits = new HashMap<String, QosPolicyRequest>();
 		allocatedFlows = new HashMap<String, List<NetOFFlow>>();
 		congestedPorts = new HashSet<Port>();
-		circuitsPerPort = new HashMap<Port, Set<Circuit>>();
+		circuitsPerPort = new HashMap<Port, Set<QosPolicyRequest>>();
 	}
 
 	/**
 	 * @return the allocatedCircuits
 	 */
-	public Map<String, Circuit> getAllocatedCircuits() {
+	public Map<String, QosPolicyRequest> getAllocatedQoSPolicyRequests() {
 		return allocatedCircuits;
 	}
 
@@ -68,7 +68,7 @@ public class NCLModel {
 	 * @param allocatedCircuits
 	 *            the allocatedCircuits to set
 	 */
-	public void setAllocatedCircuits(Map<String, Circuit> allocatedCircuits) {
+	public void setAllocatedCircuits(Map<String, QosPolicyRequest> allocatedCircuits) {
 		this.allocatedCircuits = allocatedCircuits;
 	}
 
@@ -105,7 +105,7 @@ public class NCLModel {
 	/**
 	 * @return the circuitsPerPort
 	 */
-	public Map<Port, Set<Circuit>> getCircuitsPerPort() {
+	public Map<Port, Set<QosPolicyRequest>> getCircuitsPerPort() {
 		return circuitsPerPort;
 	}
 
@@ -113,7 +113,7 @@ public class NCLModel {
 	 * @param circuitsPerPort
 	 *            the circuitsPerPort to set
 	 */
-	public void setCircuitsPerPort(Map<Port, Set<Circuit>> circuitsPerPort) {
+	public void setCircuitsPerPort(Map<Port, Set<QosPolicyRequest>> circuitsPerPort) {
 		this.circuitsPerPort = circuitsPerPort;
 	}
 

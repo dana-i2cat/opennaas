@@ -1,16 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>org.opennaas.extensions.bundles</artifactId>
-    <groupId>org.opennaas</groupId>
-    <version>0.25-SNAPSHOT</version>
-  </parent>
-  <artifactId>org.opennaas.extensions.ofertie.ncl</artifactId>
-  	<!--  Maven configuration -->
-  	<modelVersion>4.0.0</modelVersion>
-  	<packaging>bundle</packaging>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>0.25-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.opennaas.extensions.ofertie.ncl</artifactId>
+	<!-- Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
 	<name>OpenNaaS :: OFERTIE :: NCL components </name>
 	<description>OFERTIE NCL Implementation</description>
- 	<dependencies>
+
+	<properties>
+		<jaxb2-maven-plugin.version>1.5</jaxb2-maven-plugin.version>
+		<jaxb2-commons-lang.version>2.3</jaxb2-commons-lang.version>
+	</properties>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
@@ -19,16 +26,20 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.ofnetwork</artifactId>
-		</dependency>		
-		<dependency>
-		    <groupId>org.apache.cxf</groupId>
-		    <artifactId>cxf-bundle-jaxrs</artifactId>
 		</dependency>
- 	</dependencies>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-jaxrs</artifactId>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -39,10 +50,8 @@
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<extensions>true</extensions>
-				<!--
-					| the following instructions build a simple set of public/private
-					classes into an OSGi bundle
-				-->
+				<!-- | the following instructions build a simple set of public/private 
+					classes into an OSGi bundle -->
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.ofertie.ncl.Activator</Bundle-Activator>
@@ -52,14 +61,105 @@
 							*
 						</Import-Package>
 						<Export-Package>
-						org.opennaas.extensions.ofertie.ncl.provisioner.api,
-						org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions,
-						org.opennaas.extensions.ofertie.ncl.provisioner.api.model,
-						org.opennaas.extensions.ofertie.ncl.controller.api
+							org.opennaas.extensions.ofertie.ncl.provisioner.api,
+							org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions,
+							org.opennaas.extensions.ofertie.ncl.provisioner.api.model,
+							org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper,
+							org.opennaas.extensions.ofertie.ncl.controller.api,
+							org.opennaas.extensions.ofertie.ncl.monitoring.api.model
 						</Export-Package>
-						</instructions>
+					</instructions>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>${jaxb2-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>xjc-provisioner</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<extension>true</extension>
+							<clearOutputDir>true</clearOutputDir>
+							<dtd>true</dtd>
+							<schemaDirectory>${basedir}/src/main/resources/dtd</schemaDirectory>
+
+							<outputDirectory>${basedir}/target/generated-sources/provisioner</outputDirectory>
+							<packageName>org.opennaas.extensions.ofertie.ncl.provisioner.api.model</packageName>
+
+							<staleFile>${project.build.directory}/jaxb2/.provisioner_stale</staleFile>
+
+							<schemaFiles>qos_policy_request.dtd</schemaFiles>
+							<arguments>-dtd -Xcommons-lang</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-monitoring</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<extension>true</extension>
+							<clearOutputDir>true</clearOutputDir>
+							<dtd>true</dtd>
+							<schemaDirectory>${basedir}/src/main/resources/dtd</schemaDirectory>
+
+							<outputDirectory>${basedir}/target/generated-sources/monitoring</outputDirectory>
+							<packageName>org.opennaas.extensions.ofertie.ncl.monitoring.api.model</packageName>
+
+							<staleFile>${project.build.directory}/jaxb2/.monitoring_stale</staleFile>
+
+							<schemaFiles>qos_monitoring.dtd</schemaFiles>
+							<arguments>-dtd -Xcommons-lang</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.jvnet.jaxb2_commons</groupId>
+						<artifactId>jaxb2-commons-lang</artifactId>
+						<version>${jaxb2-commons-lang.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
 		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>jaxb2-maven-plugin</artifactId>
+										<goals>
+											<goal>xjc</goal>
+										</goals>
+										<versionRange>[${jaxb2-maven-plugin.version},)</versionRange>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 	</build>
+
 </project>
