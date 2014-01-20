@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.24.3</version>
+		<version>0.25</version>
 	</parent>
 	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
@@ -22,8 +22,12 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>router.actionsets.junos</module>
-		<module>router.actionsets.opener</module>
+
+
+		<!-- All extensions Features -->
+	    <module>all.features</module>
+
+		<!-- Router Resource -->
 		<module>router.repository</module>
 		<module>router.capability.chassis</module>
 		<module>router.capability.ip</module>
@@ -34,54 +38,104 @@
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>
 		<module>router.model</module>
+		<module>router.features</module>
 
+		<!-- Router Actionsets -->
+		<module>router.actionsets.junos</module>
+		<module>router.actionsets.opener</module>
+		<module>router.actionsets.features</module>
+
+		<!-- Velocity templates -->		
 		<module>fragment.velocity</module>
-		<module>protocols.netconf</module>
+		
 		<module>queuemanager</module>
 		<module>com.wonesys.emsModule</module>
 
+		<!-- ROADM resource -->
 		<module>roadm.repository</module>
-		<module>roadm.protocols.wonesys</module>
-		<module>roadm.actionsets.wonesys</module>
 		<module>roadm.capability.connections</module>
 		<module>roadm.capability.monitoring</module>
+		<module>roadm.features</module>
 
+		<!-- ROADM Actionset -->
+		<module>roadm.actionsets.wonesys</module>
+		<module>roadm.actionsets.features</module>
+		
+
+		<!-- Network resource -->
 		<module>network.model</module>
 		<module>network.repository</module>
 		<module>network.capability.basic</module>
 		<module>network.capability.queue</module>
 		<module>network.capability.ospf</module>
+		<module>network.features</module>
 
+		<!-- BoD Resource -->
 		<module>bod.repository</module>
 		<module>bod.capability.l2bod</module>
+		<module>bod.features</module>
+
+		<!-- BoD Actionsets -->
 		<module>bod.actionsets.dummy</module>
 		<module>bod.autobahn</module>
+		<module>bod.actionsets.features</module>
 
+		<!-- Transports -->
 		<module>transports.sockets</module>
 		<module>transports.telnet</module>
 		<module>transports.virtual</module>
+		<module>transports.features</module>
+		
+		<!-- Protocols -->
+		<module>protocols.netconf</module>
 		<module>protocols.cli</module>
 		<module>protocols.tl1</module>
+		<module>roadm.protocols.wonesys</module>	
+		<module>protocols.features</module>		
+		
+		<!-- MacBridge Resource -->
 		<module>macbridge.model</module>
 		<module>macbridge.capability.vlanawarebridge</module>
 		<module>macbridge.ios.resource</module>
+    	<module>macbridge.features</module>
 		
+		<!-- VNMapper Resource -->
 		<module>vnmapper</module>
+		<module>vnmapper.features</module>
 		
+		<!-- vCPE -->
 		<module>vcpe</module>
+		<module>vcpe.features</module>
+	
+		<!-- Quantum Resource -->
+		<module>quantum</module>
+		<module>quantum.features</module>	
 		
+		<!-- PDU Resource -->
 		<module>gim</module>
 		<module>powernet</module>
 		<module>pdu</module>
 		<module>power.capabilities</module>
+		<module>pdu.features</module>		
 		
+		<!-- Sample Resource -->
 		<module>sampleresource</module>
+		<module>sampleresource.features</module>
 		
-		<module>quantum</module>
-		
-		<module>ofertie.ncl</module>
+		<!-- Openflow Switch Resource -->
 		<module>openflowswitch</module>
+		<module>openflowswitch.features</module>		
+	
+		<!-- Openflow Switch Drivers -->
 		<module>openflowswitch.driver.floodlight</module>
-		<module>sdnnetwork</module>
-	</modules>
+		<module>openflowswitch.driver.features</module>	
+		
+		<!-- OFNetwork -->
+		<module>ofnetwork</module>
+		<module>ofnetwork.features</module>
+		
+		<!-- OFERTIE -->
+		<module>ofertie.ncl</module>
+		<module>ofertie.features</module>
+  </modules>
 </project>

@@ -2,7 +2,7 @@
   <parent>
     <artifactId>org.opennaas.extensions.bundles</artifactId>
     <groupId>org.opennaas</groupId>
-    <version>0.24.3</version>
+    <version>0.25</version>
   </parent>
   <artifactId>org.opennaas.extensions.powernet</artifactId>
   	<!--  Maven configuration -->
@@ -41,7 +41,7 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.powernet.Activator</Bundle-Activator>
-						<Import-Package>org.slf4j,*</Import-Package>
+						<Import-Package>org.slf4j,javax.persistence,*</Import-Package>
 						<Export-Package>
 							org.opennaas.extensions.powernet.capability.mgt;version="${project.version}",
 							org.opennaas.extensions.powernet.model;version="${project.version}"

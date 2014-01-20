@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-roadm" version="${project.version}">
+		<feature version="${project.version}">opennaas-core</feature>
+		<feature version="${project.version}">opennaas-cim</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.connections/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.monitoring/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.repository/${project.version}</bundle>
+	</feature>
+
+
+</features>

@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.24.3</version>
+		<version>0.25</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.network.repository</artifactId>
@@ -44,7 +44,7 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.network.repository.Activator</Bundle-Activator>
-						<Import-Package>org.slf4j,*</Import-Package>
+						<Import-Package>org.slf4j,javax.persistence,*</Import-Package>
 						<!--<Export-Package>
 						org.opennaas.extensions.router.repository.*;version="${project.version}"
 						</Export-Package>-->

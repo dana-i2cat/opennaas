@@ -1,5 +1,25 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner.api.model;
 
+/*
+ * #%L
+ * OpenNaaS :: OFERTIE :: NCL components
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -9,22 +29,46 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * TODO define units for each attribute, try to make them stay in an int if possible (avoid floating point when possible).
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QoSRequirements {
 
-	private int	minDelay;
-	private int	maxDelay;
+	public static final String	MIN_DELAY		= "min_delay";
+	public static final String	MAX_DELAY		= "max_delay";
 
-	private int	minJitter;
-	private int	maxJitter;
+	public static final String	MIN_JITTER		= "min_jitter";
+	public static final String	MAX_JITTER		= "max_jitter";
 
-	private int	minBandwidth;
-	private int	maxBandwidth;
+	public static final String	MIN_BANDWIDTH	= "min_bandwitdth";
+	public static final String	MAX_BANDWIDTH	= "max_bandwitdth";
 
-	private int	minPacketLoss;
-	private int	maxPacketLoss;
+	public static final String	MIN_PACKET_LOSS	= "min_packet_loss";
+	public static final String	MAX_PACKET_LOSS	= "max_packet_loss";
+
+	private int					minDelay;
+	private int					maxDelay;
+
+	private int					minJitter;
+	private int					maxJitter;
+
+	private int					minBandwidth;
+	private int					maxBandwidth;
+
+	private int					minPacketLoss;
+	private int					maxPacketLoss;
+
+	public QoSRequirements() {
+		this.minDelay = -1;
+		this.maxDelay = -1;
+		this.minJitter = -1;
+		this.maxJitter = -1;
+		this.minBandwidth = -1;
+		this.maxBandwidth = -1;
+		this.minPacketLoss = -1;
+		this.maxPacketLoss = -1;
+	}
 
 	public int getMinDelay() {
 		return minDelay;
@@ -88,6 +132,50 @@ public class QoSRequirements {
 
 	public void setMaxPacketLoss(int maxPacketLoss) {
 		this.maxPacketLoss = maxPacketLoss;
+	}
+
+	public int getParameter(String parameterName) throws IllegalArgumentException {
+		if (parameterName.equalsIgnoreCase(MIN_DELAY)) {
+			return minDelay;
+		} else if (parameterName.equalsIgnoreCase(MAX_DELAY)) {
+			return maxDelay;
+		} else if (parameterName.equalsIgnoreCase(MIN_JITTER)) {
+			return minJitter;
+		} else if (parameterName.equalsIgnoreCase(MAX_JITTER)) {
+			return maxJitter;
+		} else if (parameterName.equalsIgnoreCase(MIN_BANDWIDTH)) {
+			return minBandwidth;
+		} else if (parameterName.equalsIgnoreCase(MAX_BANDWIDTH)) {
+			return maxBandwidth;
+		} else if (parameterName.equalsIgnoreCase(MIN_PACKET_LOSS)) {
+			return minPacketLoss;
+		} else if (parameterName.equalsIgnoreCase(MAX_PACKET_LOSS)) {
+			return maxPacketLoss;
+		} else {
+			throw new IllegalArgumentException("Parameter not found: " + parameterName);
+		}
+	}
+
+	public void setParameter(String parameterName, int value) throws IllegalArgumentException {
+		if (parameterName.equalsIgnoreCase(MIN_DELAY)) {
+			setMinDelay(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_DELAY)) {
+			setMaxDelay(value);
+		} else if (parameterName.equalsIgnoreCase(MIN_JITTER)) {
+			setMinJitter(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_JITTER)) {
+			setMaxJitter(value);
+		} else if (parameterName.equalsIgnoreCase(MIN_BANDWIDTH)) {
+			setMinBandwidth(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_BANDWIDTH)) {
+			setMaxBandwidth(value);
+		} else if (parameterName.equalsIgnoreCase(MIN_PACKET_LOSS)) {
+			setMinPacketLoss(value);
+		} else if (parameterName.equalsIgnoreCase(MAX_PACKET_LOSS)) {
+			setMaxPacketLoss(value);
+		} else {
+			throw new IllegalArgumentException("Parameter not found: " + parameterName);
+		}
 	}
 
 	/*

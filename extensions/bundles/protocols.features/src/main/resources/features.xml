@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:net.i2cat.netconf/netconf4j/${netconf4j.version}/xml/features</repository>
+	
+	<feature name="opennaas-protocols-all" version="${project.version}">
+		<feature version="${project.version}">opennaas-protocol-netconf</feature>
+		<feature version="${project.version}">opennaas-protocol-tl1</feature>
+		<feature version="${project.version}">opennaas-protocol-cli</feature>		
+		<feature version="${project.version}">opennaas-protocol-wonesys</feature>
+	</feature>
+
+
+	<feature name="opennaas-protocol-tl1" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.tl1/${project.version}</bundle>
+	</feature>
+
+	<feature name="opennaas-protocol-cli" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.cli/${project.version}</bundle>
+	</feature>
+
+	
+	<feature name="opennaas-protocol-wonesys" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+		
+		<bundle dependency="true">mvn:com.wonesys/org.opennaas.extensions.com.wonesys.emsModule/${project.version}</bundle>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.protocols.wonesys/${project.version}</bundle>
+	
+	</feature>
+
+
+	<feature name="opennaas-protocol-netconf" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+		<feature version="${netconf4j.version}">netconf4j</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.netconf/${project.version}</bundle>
+	</feature>
+
+</features>

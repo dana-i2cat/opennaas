@@ -1,18 +1,37 @@
 package org.opennaas.extensions.ofertie.ncl.test;
 
-import java.io.BufferedReader;
+/*
+ * #%L
+ * OpenNaaS :: OFERTIE :: NCL components
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.PathLoader;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.PathLoader;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
 public class PathLoaderTest {
 
@@ -54,7 +73,7 @@ public class PathLoaderTest {
 	@Test
 	public void PathLoadingTest() throws IOException, SerializationException {
 
-		String xmlPaths = textFileToString(PATH_FILE_URL);
+		String xmlPaths = IOUtils.toString(this.getClass().getResourceAsStream(PATH_FILE_URL));
 
 		Map<String, Route> routes = PathLoader.getRoutesFromXml(xmlPaths);
 
@@ -263,15 +282,4 @@ public class PathLoaderTest {
 
 	}
 
-	private String textFileToString(String fileLocation) throws IOException {
-		String fileString = "";
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(getClass().getResourceAsStream(fileLocation)));
-		String line;
-		while ((line = br.readLine()) != null) {
-			fileString += line += "\n";
-		}
-		br.close();
-		return fileString;
-	}
 }

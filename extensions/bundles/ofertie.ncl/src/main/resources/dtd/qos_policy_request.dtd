@@ -1,0 +1,55 @@
+<!-- 
+ QoS policy management
+ XML documents used by REST API methods of the NCL's provisioner
+ (http://provisionier.eu/flows)
+  --> 
+
+<!-- QoS policy request 
+ This message describes a flow for which an ID should be (created and) returned 
+ and a QoS policy which should be accommodated for that flow. 
+ Used by POST http://provisionier.eu/flows --> 
+<!ELEMENT qos_policy_request (
+	source,
+	destination,
+	label,
+	qos_policy?)>
+<!ATTLIST qos_policy_request atomic CDATA #FIXED "true">
+<!ELEMENT source (address, port)>
+<!ELEMENT destination (address, port)>
+<!ELEMENT address (#PCDATA)> 
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT label (#PCDATA)>
+<!-- delay is specified in milliseconds
+ timeout is specified in milliseconds
+ priority is specified as integral value in [0..9999] -->
+<!-- latency is specified in milliseconds -->
+<!ELEMENT latency (min?, max?)>
+<!ATTLIST latency
+	delay CDATA "0"
+	timeout CDATA "0"
+	priority CDATA "0">
+<!-- jitter is specified by the variance of packet delay in milliseconds -->
+<!ELEMENT jitter (min?, max?)>
+<!ATTLIST jitter
+	delay CDATA "0"
+	timeout CDATA "0"
+	priority CDATA "0">
+<!-- throughput is specified in bits per second (bit/s) -->
+<!ELEMENT throughput (min?, max?)>
+<!ATTLIST throughput
+	delay CDATA "0"
+	timeout CDATA "0"
+	priority CDATA "0">
+<!-- packet loss is specified in percent (0-100) -->
+<!ELEMENT packet_loss (min?, max?)>
+<!ATTLIST packet_loss
+	delay CDATA "0"
+	timeout CDATA "0"
+	priority CDATA "0">
+<!ELEMENT min (#PCDATA)> 
+<!ELEMENT max (#PCDATA)>
+
+<!-- QoS policy
+ Used by PUT http://provisionier.eu/flows/<flow ID> -->
+<!ELEMENT qos_policy (
+	latency?, jitter?, throughput?, packet_loss?)>

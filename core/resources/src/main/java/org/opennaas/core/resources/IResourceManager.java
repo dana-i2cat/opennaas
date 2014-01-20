@@ -1,5 +1,27 @@
 package org.opennaas.core.resources;
 
+/*
+ * #%L
+ * OpenNaaS :: Core :: Resources
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -18,7 +40,8 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * 
  * @author Eduard Grasa
  * @author Roc Vallès <roc.valles@i2cat.net>
- * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * @author Héctor Fernández
  */
 @Path("/")
 public interface IResourceManager {
@@ -92,6 +115,18 @@ public interface IResourceManager {
 	public List<IResource> listResourcesByType(@PathParam("type") String type);
 
 	/**
+	 * 
+	 * @param resourceType
+	 * @param resourceName
+	 * @return the resource Id
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("/getId/{resourceType}/{resourceName}")
+	public String getIdentifierFromResourceTypeName(@PathParam("resourceType") String resourceType, @PathParam("resourceName") String resourceName)
+			throws ResourceException;
+
+	/**
 	 * List all resources in container.
 	 * 
 	 * @return
@@ -104,6 +139,11 @@ public interface IResourceManager {
 	@GET
 	@Path("/getResourceTypes")
 	@Produces(MediaType.APPLICATION_XML)
+	public GenericListWrapper<String> getResourceTypesAPI();
+
+	/**
+	 * Returns a list of available resource types.
+	 */
 	public List<String> getResourceTypes();
 
 	/**
@@ -217,5 +257,28 @@ public interface IResourceManager {
 	@Path("getDescriptor/{resourceId}")
 	@Produces(MediaType.APPLICATION_XML)
 	public ResourceDescriptor getResourceDescriptor(@PathParam("resourceId") String resourceId) throws ResourceException;
+
+	/**
+	 * 
+	 * @param resourceType
+	 * @param resourceName
+	 * @return the resource status
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("/getStatus/{resourceId}")
+	public String getStatus(@PathParam("resourceId") String resourceId) throws ResourceException;
+
+	/**
+	 * List all the existing resources of a given type. If type is null, returns an empty list.
+	 * 
+	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
+	 *         value.
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("/listResourcesNameByType/{type}")
+	@Produces(MediaType.APPLICATION_XML)
+	GenericListWrapper<String> listResourcesNameByType(@PathParam("type") String type) throws ResourceException;
 
 }

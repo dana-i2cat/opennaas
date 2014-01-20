@@ -1,5 +1,25 @@
 package org.opennaas.itests.router.chassis;
 
+/*
+ * #%L
+ * OpenNaaS :: iTests :: Router
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
@@ -45,7 +65,7 @@ import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStat
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.router.TestsConstants;
+import org.opennaas.itests.helpers.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -92,7 +112,7 @@ public class ChassisCapabilityIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-junos", "itests-helpers"),
+				includeFeatures("opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
