@@ -11,7 +11,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.RequestToFlowsLogic;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
@@ -21,7 +24,7 @@ import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 public class RequestToFlowsLogicTest {
 
-	FlowRequest			flowRequest;
+	QosPolicyRequest	qosPolicyRequest;
 	Route				route;
 
 	RequestToFlowsLogic	requestToFlowsLogic;
@@ -29,7 +32,7 @@ public class RequestToFlowsLogicTest {
 
 	@Before
 	public void initFlowRequest() throws Exception {
-		flowRequest = generateEmptyFlowRequest();
+		qosPolicyRequest = generateEmptyFlowRequest();
 		route = generateSampleRoute();
 
 		initLogic();
@@ -40,7 +43,7 @@ public class RequestToFlowsLogicTest {
 		requestToFlowsLogic = new RequestToFlowsLogic();
 		requestToFlowsLogic.setPathFinder(pathFinder);
 
-		expect(pathFinder.findPathForRequest(flowRequest)).andReturn(route).anyTimes();
+		expect(pathFinder.findPathForRequest(qosPolicyRequest)).andReturn(route).anyTimes();
 		replay(pathFinder);
 
 	}
@@ -49,9 +52,9 @@ public class RequestToFlowsLogicTest {
 	public void requestWithSrcIPTest() throws Exception {
 		String srcIp = "192.168.0.2";
 
-		flowRequest.setSourceIPAddress(srcIp);
+		qosPolicyRequest.getSource().setAddress(srcIp);
 
-		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
@@ -65,9 +68,9 @@ public class RequestToFlowsLogicTest {
 	public void requestWithDstIPTest() throws Exception {
 		String dstIp = "192.168.0.3";
 
-		flowRequest.setDestinationIPAddress(dstIp);
+		qosPolicyRequest.getDestination().setAddress(dstIp);
 
-		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
@@ -82,10 +85,10 @@ public class RequestToFlowsLogicTest {
 		String srcIp = "192.168.0.2";
 		String dstIp = "192.168.0.3";
 
-		flowRequest.setSourceIPAddress(srcIp);
-		flowRequest.setDestinationIPAddress(dstIp);
+		qosPolicyRequest.getSource().setAddress(srcIp);
+		qosPolicyRequest.getDestination().setAddress(dstIp);
 
-		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
@@ -101,9 +104,9 @@ public class RequestToFlowsLogicTest {
 		int tos = 4;
 		int flowTos = tos / 4; // last 2 bits discarded
 
-		flowRequest.setTos(tos);
+		qosPolicyRequest.setLabel(String.valueOf(tos));
 
-		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
@@ -120,11 +123,11 @@ public class RequestToFlowsLogicTest {
 		int tos = 4;
 		int flowTos = tos / 4; // last 2 bits discarded
 
-		flowRequest.setSourceIPAddress(srcIp);
-		flowRequest.setDestinationIPAddress(dstIp);
-		flowRequest.setTos(tos);
+		qosPolicyRequest.getSource().setAddress(srcIp);
+		qosPolicyRequest.getDestination().setAddress(dstIp);
+		qosPolicyRequest.setLabel(String.valueOf(tos));
 
-		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
@@ -141,29 +144,29 @@ public class RequestToFlowsLogicTest {
 		int srcPort = 8080;
 		int dstPort = 80;
 
-		flowRequest.setSourcePort(srcPort);
+		qosPolicyRequest.getSource().setPort(String.valueOf(srcPort));
 
-		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		List<NetOFFlow> flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
 			Assert.assertEquals(String.valueOf(srcPort), flow.getMatch().getSrcPort());
 		}
 
-		flowRequest.setSourcePort(0);
-		flowRequest.setDestinationPort(dstPort);
+		qosPolicyRequest.getSource().setPort(String.valueOf(0));
+		qosPolicyRequest.getDestination().setPort(String.valueOf(dstPort));
 
-		flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
 			Assert.assertEquals(String.valueOf(dstPort), flow.getMatch().getDstPort());
 		}
 
-		flowRequest.setSourcePort(srcPort);
-		flowRequest.setDestinationPort(dstPort);
+		qosPolicyRequest.getSource().setPort(String.valueOf(srcPort));
+		qosPolicyRequest.getDestination().setPort(String.valueOf(dstPort));
 
-		flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(flowRequest);
+		flows = requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
@@ -173,10 +176,15 @@ public class RequestToFlowsLogicTest {
 		verify(pathFinder);
 	}
 
-	private FlowRequest generateEmptyFlowRequest() {
+	private QosPolicyRequest generateEmptyFlowRequest() {
 
-		FlowRequest request = new FlowRequest();
-		request.setRequestId("1");
+		QosPolicyRequest request = new QosPolicyRequest();
+
+		// set default values and empty object fields
+		request.setSource(new Source());
+		request.setDestination(new Destination());
+		request.setQosPolicy(new QosPolicy());
+		request.setLabel("0");
 
 		return request;
 	}

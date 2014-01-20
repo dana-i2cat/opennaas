@@ -1,0 +1,36 @@
+<!-- 
+ Performance monitoring
+ XML documents used by REST API methods of the NCL's monitoring component
+ (http://monitor.eu/metrics)
+ -->
+<!ELEMENT flow_metrics (
+	throughput?,
+	latency?,
+	packet_loss?,
+	data_send?, data_received?,
+	total_data_send?, (total_data_received? | flow+) )>
+<!ELEMENT throughput (in?, out?)>
+<!ELEMENT in (#PCDATA)>
+<!ELEMENT out (#PCDATA)>
+<!ELEMENT latency (#PCDATA)>
+<!ELEMENT packet_loss (#PCDATA)>
+<!ELEMENT data_send (#PCDATA)>
+<!ELEMENT data_received (#PCDATA)>
+<!ELEMENT total_data_send (#PCDATA)>
+<!ELEMENT total_data_received (#PCDATA)>
+
+<!ELEMENT flow (flow_metrics)>
+<!ATTLIST flow
+ id ID #REQUIRED>
+ 
+<!ELEMENT network_metrics (
+	throughput?,
+	data_send?, data_received?)>
+ 
+<!ELEMENT server_metrics (
+	client_count?,
+	cpu_load?,
+	ram_usage?)>
+<!ELEMENT client_count (#PCDATA)>
+<!ELEMENT cpu_load (#PCDATA)>
+<!ELEMENT ram_usage (#PCDATA)>
