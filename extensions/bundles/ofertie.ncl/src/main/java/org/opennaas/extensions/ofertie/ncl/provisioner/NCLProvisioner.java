@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.GenericListWrapper;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
@@ -216,10 +217,10 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 	}
 
 	@Override
-	public List<NetOFFlow> getFlowImplementation(String flowId) throws ProvisionerException {
+	public GenericListWrapper<NetOFFlow> getFlowImplementation(String flowId) throws ProvisionerException {
 		synchronized (mutex) {
 			String qosPolicyRequestId = flowId;
-			return getAllocatedFlows().get(qosPolicyRequestId);
+			return new GenericListWrapper<NetOFFlow>(getAllocatedFlows().get(qosPolicyRequestId));
 		}
 	}
 

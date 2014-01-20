@@ -227,7 +227,7 @@ public class NCLProvisionerTest {
 		}
 		Assert.assertNotNull("readAllocatedFlows() must contain allocated flow", allocatedFlow);
 
-		List<NetOFFlow> netFlows = provisioner.getFlowImplementation(id);
+		List<NetOFFlow> netFlows = provisioner.getFlowImplementation(id).getItems();
 		Assert.assertNotNull("implementation must not be null", netFlows);
 		Assert.assertFalse("implementation must not be empty", netFlows.isEmpty());
 
