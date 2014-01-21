@@ -12,25 +12,28 @@ var topPos_x = 90, topPos_y = 80;
 
 var nodes = [
     {id_num: 0, id: "SW1", type: "switch", controller: "Ctrl1", reflexive: false, fixed: true, x: 90, y: topPos_y, dpid: "00:00:00:00:00:00:00:01"},
-    {id_num: 1, id: "SW2", type: "switch", controller: "Ctrl1", reflexive: true, fixed: true, x: 180, y: topPos_y * 2, dpid: "00:00:00:00:00:00:00:02"},
+    {id_num: 1, id: "SW2", type: "switch", controller: "Ctrl1", reflexive: true, fixed: true, x: 180, y: topPos_y*2, dpid: "00:00:00:00:00:00:00:02"},
     {id_num: 2, id: "SW3", type: "switch", controller: "Ctrl1", reflexive: false, fixed: true, x: 280, y: topPos_y, dpid: "00:00:00:00:00:00:00:03"},
-    {id_num: 3, id: "SW4", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: 280, y: topPos_y + 200, dpid: "00:00:00:00:00:00:00:04"},
-    {id_num: 4, id: "SW5", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: 380, y: 200, dpid: "00:00:00:00:00:00:00:05"},
-    {id_num: 5, id: "SW6", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: 480, y: topPos_y + 200, dpid: "00:00:00:00:00:00:00:06"},
-    {id_num: 6, id: "SW7", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: 540, y: topPos_y, dpid: "00:00:00:00:00:00:00:07"},
-    {id_num: 7, id: "SW8", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: 670, y: topPos_y, dpid: "00:00:00:00:00:00:00:08"},
+    {id_num: 3, id: "SW4", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: 230 , y: topPos_y+210, dpid: "00:00:00:00:00:00:00:04"},
+    {id_num: 4, id: "SW5", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: 330, y: 210, dpid: "00:00:00:00:00:00:00:05"},
+    {id_num: 5, id: "SW6", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: 430, y: topPos_y+210, dpid: "00:00:00:00:00:00:00:06"},
+    {id_num: 6, id: "SW7", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: 440, y: topPos_y, dpid: "00:00:00:00:00:00:00:07"},
+    {id_num: 7, id: "SW8", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: 570, y: topPos_y, dpid: "00:00:00:00:00:00:00:08"},
+
     {id_num: 8, id: "h1", type: "host", reflexive: false, fixed: true, x: 30, y: 200, ip: "192.168.1.1", SW: "SW1", port: 5},
-    {id_num: 9, id: "h2", type: "host", reflexive: false, fixed: true, x: 680, y: 200, ip: "192.168.2.51", SW: "SW8", port: 5},
-    {id_num: 10, id: "h3", type: "host", reflexive: false, fixed: true, x: 100, y: 200, ip: "192.168.2.51", SW: "SW1", port: 5},
-    {id_num: 11, id: "h4", type: "host", reflexive: false, fixed: true, x: 250, y: 360, ip: "192.168.2.51", SW: "SW4", port: 5},
-    {id_num: 12, id: "h5", type: "host", reflexive: false, fixed: true, x: 340, y: 360, ip: "192.168.2.51", SW: "SW5", port: 5},
-    {id_num: 13, id: "h6", type: "host", reflexive: false, fixed: true, x: 420, y: 360, ip: "192.168.2.51", SW: "SW5", port: 5},
-    {id_num: 14, id: "h7", type: "host", reflexive: false, fixed: true, x: 550, y: 200, ip: "192.168.2.51", SW: "SW7", port: 5}],
+    {id_num: 9, id: "h2", type: "host", reflexive: false, fixed: true, x: 580, y: 200, ip: "192.168.2.51", SW: "SW8", port: 5},
+
+    {id_num: 10, id: "h3", type: "host", reflexive: false, fixed: true, x: 100, y: 200, ip: "192.168.3.3", SW: "SW1", port: 5},
+    {id_num: 11, id: "h4", type: "host", reflexive: false, fixed: true, x: 200, y: 380, ip: "192.168.4.4", SW: "SW4", port: 5},
+    {id_num: 12, id: "h5", type: "host", reflexive: false, fixed: true, x: 290, y: 380, ip: "192.168.5.5", SW: "SW5", port: 5},
+    {id_num: 13, id: "h6", type: "host", reflexive: false, fixed: true, x: 370, y: 380, ip: "192.168.6.6", SW: "SW5", port: 5},
+    {id_num: 14, id: "h7", type: "host", reflexive: false, fixed: true, x: 480, y: 200, ip: "192.168.7.7", SW: "SW7", port: 5}
+],
 controllers = [
     {id_num: 0, id: "Ctrl1", type: "controller", controller: "controllersVM:8191", reflexive: false, fixed: true, x: 180, y: 10},
-    {id_num: 1, id: "Ctrl2", type: "controller", controller: "controllersVM:8192", reflexive: false, fixed: true, x: 380, y: 100},
-    {id_num: 2, id: "Ctrl3", type: "controller", controller: "controllersVM2:8193", reflexive: false, fixed: true, x: 600, y: 10}],
-controllersLinks = [
+    {id_num: 1, id: "Ctrl2", type: "controller", controller: "controllersVM:8192", reflexive: false, fixed: true, x: 330, y: 150},
+    {id_num: 2, id: "Ctrl3", type: "controller", controller: "controllersVM2:8193", reflexive: false, fixed: true, x: 500, y: 10}],
+        controllersLinks = [
     {id: "00", source: nodes[0], target: controllers[0], left: false, right: false, type: "static"},
     {id: "10", source: nodes[1], target: controllers[0], left: false, right: false, type: "static"},
     {id: "20", source: nodes[2], target: controllers[0], left: false, right: false, type: "static"},

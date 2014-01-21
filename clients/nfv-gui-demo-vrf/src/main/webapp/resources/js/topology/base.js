@@ -33,7 +33,9 @@ var force = d3.layout.force()
 /**
  * Drawing topology (nodes, links, controllers)
  */
-
+var drag_line = svg.append('svg:path')
+    .attr('class', 'link2 dragline hidden')
+    .attr('d', 'M0,0L0,0');
 var link = svg.append("svg:g").selectAll("link.sw");
 var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
 var node = svg.append("svg:g").selectAll(".node");
@@ -54,10 +56,8 @@ console.log("Update image");
         .attr('id', function (d) {return d.id;})
         .attr('class', function (d) {
             if (d.type === "static") {
-//                console.log("STAAAAAAATIC");
                 return 'link';
             } else {
-                console.log("NOOOOO STAAAAAAATIC");
                 return 'link2';
             }
         })

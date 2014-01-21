@@ -4,6 +4,7 @@
  */
 var file = 'animation';//this javascript file corresponds to a animation page
 var counterStream = 0;//counter used in the animation of video streaming
+document.getElementById("ui-id-3").className += " ui-state-highlight";
 // line displayed when dragging new nodes
 var drag_line = svg.append('svg:path')
     .attr('class', 'link2 dragline hidden')

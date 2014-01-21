@@ -3,9 +3,8 @@
  *
  */
 var file = "config";
-var drag_line = svg.append('svg:path')
-    .attr('class', 'link2 dragline hidden')
-    .attr('d', 'M0,0L0,0');
+document.getElementById("ui-id-1").className += " ui-state-highlight";
+document.getElementById("ui-id-4").className += " ui-state-highlight";
 
 function runtime(node, links) {
 console.log("runtime");    
@@ -80,39 +79,26 @@ console.log("Source h " + source.id + " Dest h " + target.id);
                 link[direction] = true;
             }
             //request to OpenNaaS
-            swNode = nodes.filter(function (n) {
-                return n.id === source.SW;
-            });
-            //            var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
-            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
-            if (returnedRoutes == null) return;
-            for (var i = 0; i < returnedRoutes.length; i++) {
+            swNode = nodes.filter(function (n) {return n.id === source.SW; });
+//            var returnedR0outes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
+             returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
+console.log(returnedRoutes);
+            for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
                 var obj = returnedRoutes[i];
-                for (var key in obj) {
-                    console.log("Json key: " + key + " Json value: " + obj[key]);
-                    dest1 = nodes.filter(function (n) {
-                        return n.dpid === obj[key];
-                    })[0];
-                    if (key === "dpid") {
-                        dest1 = nodes.filter(function (n) {
-                            return n.dpid === obj[key];
-                        })[0];
-                    } else if (key === "ip") {
-                        dest1 = nodes.filter(function (n) {
-                            return n.ip === obj[key];
-                        })[0];
+                 for(var key in obj){
+console.log("Json key: "+key+" Json value: "+obj[key]);
+                    dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                    if(key === "dpid"){
+                        dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                    }else if (key === "ip"){
+                        dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
+                        highlight(dest1.ip);
                     }
-                    //if (dest1 == null){
-                    link = {
-                        source: source,
-                        target: dest1,
-                        left: false,
-                        right: false,
-                        type: "new_link"
-                    };
+                    link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
                     link[direction] = true;
-                    console.log(link);
+console.log(link);
                     links.push(link);
+console.log(source.ip);
                     source = dest1;
                 }
             }

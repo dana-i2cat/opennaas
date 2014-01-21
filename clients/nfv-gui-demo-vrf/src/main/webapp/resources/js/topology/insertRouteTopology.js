@@ -4,6 +4,7 @@
  */
 var file = "insertRoute";
 var adjacencyMatrix = createAdjacencyMatrix();//calculate adjacent matrix of the paths
+document.getElementById("ui-id-2").className += " ui-state-highlight";
 
 var selectedNode = false;
 var originNode;
@@ -11,10 +12,6 @@ var mode = auto;//man - auto
 var activeNode = null;
 var sourceIp;
 var destinationIp;
-
-var drag_line = svg.append('svg:path')
-    .attr('class', 'link2 dragline hidden')
-    .attr('d', 'M0,0L0,0');
 
 function runtime(node) {
     node
@@ -159,7 +156,7 @@ console.log("Set Active < " + to);
     //      clearPath();
     activeNode = to;
     if( mode === auto)
-        shortestPathInfo = shortestPath(adjacencyMatrix, 7, to);
+        shortestPathInfo = shortestPath(adjacencyMatrix, vertexNum, to);
 }
 /**
  * Show the actual path calculated by dijkstra algorithm
