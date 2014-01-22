@@ -38,10 +38,12 @@ h1 {
 
 .container #footer {
 /*	margin: 300px auto 0px auto;*/
-    width: 500px;
+    width: 100%;
     float: left;
-    position: relative;
-    left: 25%;
+    position: absolute;
+    bottom: 0;
+    height: 40px;
+    left: 0px;
 }
 
 /* Header styles

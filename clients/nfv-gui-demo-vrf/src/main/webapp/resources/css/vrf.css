@@ -50,6 +50,8 @@ VRF - OpenNaaS Custom CSS
 }
 #animation_log{
     width:100%;
+    position: relative;
+    bottom: 20px;
 }
 input#ipSrc {
     width: 115px;
