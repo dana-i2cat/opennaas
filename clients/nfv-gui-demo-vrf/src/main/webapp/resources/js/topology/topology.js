@@ -9,6 +9,7 @@ var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
 var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link.png";
 
 var topPos_x = 90, topPos_y = 80;
+var node_x = 30, node_y = 200;
 
 var nodes = [
     {id_num: 0, id: "SW1", type: "switch", controller: "Ctrl1", reflexive: false, fixed: true, x: sw_x, y: sw_y, dpid: "00:00:00:00:00:00:00:01"},
