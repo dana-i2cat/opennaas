@@ -15,6 +15,9 @@
 	<!-- from https://josh.media.berkeley.edu/?p=61 -->
 	<bean id="mySecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
 		<security:filter-chain-map path-type="ant">
+			<!-- Unsecured urls -->
+			<security:filter-chain pattern="/opennaas/ofertie/**" filters="none" />
+			<!-- Secured urls -->
 			<security:filter-chain pattern="/opennaas/**"
 				filters="securityContextPersistenceFilterWithASCFalseSkippingClearContext,
 				basicAuthenticationFilter,
