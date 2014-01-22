@@ -436,9 +436,9 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		log.info("Start of removeIP call");
 
 		if ((ip.getIPv4Address() != null) && (ip.getSubnetMask() != null) && !(ip.getIPv4Address().isEmpty()) && !(ip.getSubnetMask().isEmpty()))
-			addIPv4(logicalDevice, ip);
+			removeIPv4(logicalDevice, ip);
 		else if (ip.getIPv6Address() != null && !ip.getIPv6Address().isEmpty())
-			addIPv6(logicalDevice, ip);
+			removeIPv6(logicalDevice, ip);
 		else
 			throw new CapabilityException("IP address not set.");
 		log.info("End of removeIP call");
