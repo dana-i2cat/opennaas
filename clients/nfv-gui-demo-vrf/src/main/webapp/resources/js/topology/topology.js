@@ -8,7 +8,7 @@ var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller.pn
 var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
 var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link.png";
 
-var topPos_x = 90, topPos_y = 80;
+var sw_x = 90, sw_y = 80;
 var node_x = 30, node_y = 200;
 
 var nodes = [
