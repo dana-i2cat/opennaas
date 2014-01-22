@@ -136,9 +136,9 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	@Override
-	public ListResponse getAllProtocolSessionIdsWS() {
-		ListResponse resp = new ListResponse();
-		resp.setList(new ArrayList<String>(getAllProtocolSessionIds()));
+	public SessionIdList getAllProtocolSessionIdsWS() {
+		SessionIdList resp = new SessionIdList();
+		resp.setSessionsIds(new ArrayList<String>(getAllProtocolSessionIds()));
 		return resp;
 	}
 

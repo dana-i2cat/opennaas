@@ -27,29 +27,35 @@ package org.opennaas.core.protocols.sessionmanager;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Jordi
+ * @author Adrian Rosello Rey (i2CAT)
  */
 @XmlRootElement
-public class ListResponse {
+public class SessionIdList {
 
-	private List<?>	list;
+	private List<String>	sessions;
 
 	/**
-	 * @return the list
+	 * Returns the list of sessionsIds
+	 * 
+	 * @return
 	 */
-	public List<?> getList() {
-		return list;
+	@XmlElement(name = "session")
+	public List<String> getSessionsIds() {
+		return sessions;
 	}
 
 	/**
-	 * @param list
-	 *            the list to set
+	 * Sets a new list of sessionsIds
+	 * 
+	 * @param newSessions
 	 */
-	public void setList(List<?> list) {
-		this.list = list;
+	public void setSessionsIds(List<String> newSessions) {
+		this.sessions = newSessions;
 	}
 
 }

@@ -34,7 +34,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.opennaas.core.protocols.sessionmanager.ListResponse;
+import org.opennaas.core.protocols.sessionmanager.SessionIdList;
 
 /**
  * Manages all the sessions with a single device, identified by device_id
@@ -60,7 +60,7 @@ public interface IProtocolSessionManager {
 	@GET
 	@Path("/session/")
 	@Produces(MediaType.APPLICATION_XML)
-	public ListResponse getAllProtocolSessionIdsWS();
+	public SessionIdList getAllProtocolSessionIdsWS();
 
 	public Set<String> getAllProtocolSessionIds();
 
