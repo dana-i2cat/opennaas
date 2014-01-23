@@ -223,6 +223,7 @@ $(function() {
 	/* Buttons */
 
         $("#changeMode").button();
+        $("#manualType").button();
         $("#submitUpdateConfig").button();
         $("#defaultValues").button();
         $(".addRouteButton").button();

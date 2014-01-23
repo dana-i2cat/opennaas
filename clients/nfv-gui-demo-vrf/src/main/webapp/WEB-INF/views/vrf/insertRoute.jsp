@@ -14,10 +14,22 @@
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
 <script src="<c:url value="/resources/js/topology/insertRouteTopology.js" />"></script>
 <input id="changeMode" type="submit" class="button" value="Automatic" onClick="javascript:change(this);"/>
-<!--<div id="insert_info" class="ui-widget-content ui-corner-all padding">
+<input id="manualType" type="submit" class="button" style="display:none" value="Point-to-point" onClick="javascript:toggleManualType(this);"/>
+<br/><br/><br/>
+<div id="insert_info" class="ui-widget-content ui-corner-all padding" style="display:none">
     <h3>Route information:</h3>
+    <form>
+        <fieldset>
+            <label for="name">Source IP:</label>
+            <input type="text" name="ipSrc" id="ipSrc" class="text ui-widget-content ui-corner-all" value=""/>
+            <br/>
+            <label for="name">Destination IP:</label>
+            <input type="text" name="ipDest" id="ipDest" class="text ui-widget-content ui-corner-all" value=""/>
+        </fieldset>
+        <input style="margin-right: 11.5px" class="addRouteButton" onClick="insertPath()" type="button" value="Insert Routes" name="addDefaultValues"/>
+    </form>
 </div>
--->
+
 <div id="insert_routeTable" class="routeTable">
     <h3>Route table Insert</h3>
 </div>
@@ -50,9 +62,7 @@
         </div>
     </form:form>
     <br/><br/>
-    <input style="margin-right: 2.5px" class="addRouteButton" onClick="fill2()" type="button" value="Default Values 2" name="addDefaultValues"/>
-    <!-- <input style="margin-right: 2.5px" class="addRouteButton" onClick="fill()" type="button" value="Default Values" name="addDefaultValues"/>
-    --><input style="margin-right: 11.5px" class="addRouteButton" onClick="fillDemo()" type="button" value="Default Values" name="addDefaultValues"/>
+    <input style="margin-right: 11.5px" class="addRouteButton" onClick="fillDemo()" type="button" value="Default Values" name="addDefaultValues"/>
 </table> 
 
 <script language="JavaScript" type="text/JavaScript">
@@ -79,39 +89,7 @@
         $(".deleteButton").button();
     }
 
-    function fill(){
-        deleteAll('Routes');
-        //        $('Routes  tr:last').append('<tbody><tr></tr></tbody>');
-        count=0;
-        if(count==2)
-        return;
-        addRout();
-        $("#listRoutes0\\.sourceAddress").val("10.0.1.0");
-        $("#listRoutes0\\.destinationAddress").val("10.0.2.0");
-        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes0\\.switchInfo\\.inputPort").val("5");
-        $("#listRoutes0\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        $("#listRoutes1\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes1\\.destinationAddress").val("10.0.1.1");
-        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes1\\.switchInfo\\.outputPort").val("5");
-        addRout();
-        $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes2\\.destinationAddress").val("10.0.1.0");
-        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes2\\.switchInfo\\.inputPort").val("5");
-        $("#listRoutes2\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        $("#listRoutes3\\.sourceAddress").val("10.0.1.0");
-        $("#listRoutes3\\.destinationAddress").val("10.0.2.51");
-        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes3\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes3\\.switchInfo\\.outputPort").val("5");
-    }
-
-    function fill2(){
+    function fillDemo(){
         deleteAll("Routes");
         count=0;
         if(count==2)
@@ -140,95 +118,20 @@
         $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
         $("#listRoutes3\\.switchInfo\\.inputPort").val("5");
         $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
-    }
-
-    function fillDemo(){
-        deleteAll("Routes");
-        count=0;
-        if(count==2)
-        return;
-        addRout();
-        $("#listRoutes0\\.sourceAddress").val("10.0.0.0");
-        $("#listRoutes0\\.destinationAddress").val("10.0.2.2");
-        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes0\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes0\\.switchInfo\\.outputPort").val("2");
-        addRout();
-        $("#listRoutes1\\.sourceAddress").val("10.0.0.0");
-        $("#listRoutes1\\.destinationAddress").val("10.0.2.2");
-        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes1\\.switchInfo\\.inputPort").val("2");
-        $("#listRoutes1\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        $("#listRoutes2\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes2\\.destinationAddress").val("10.0.0.1");
-        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes2\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes2\\.switchInfo\\.outputPort").val("2");
-        addRout();        
-        $("#listRoutes3\\.sourceAddress").val("10.0.2.0");
-        $("#listRoutes3\\.destinationAddress").val("10.0.0.1");
-        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes3\\.switchInfo\\.inputPort").val("2");
-        $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
-    }        
+    }  
 </script>
 <script>
     var ipSrcDialog = "";
     var ipDestDialog = "";
-    function updateTips( t ) {
-        tips.text( t ).addClass( "ui-state-highlight" );
-        setTimeout(function() {
-         tips.removeClass( "ui-state-highlight", 1500 );
-        }, 500 );
-    }
-    /* Move to a centralized file? */
-    function checkLength( o, n, min, max ) {
-        var newO;
-        if(typeof o === 'string' || o instanceof String ){
-            newO = o;
-        }else{
-            newO = o.val();
-        }
-        if ( newO.length > max || newO.length < min ) {
-            o.addClass( "ui-state-error" );
-            updateTips( "Length of " + n + " must be between " + min + " and " + max + "." );
-            return false;
-        } else {
-            return true;
-        }
-    }
-        //192.168.2.1
-    function checkRegexp( o, regexp, n ) {
-        var newO;
-        if(typeof o === 'string' || o instanceof String ){
-            newO = o;
-        }else{
-            newO = o.val();
-        }
-        if ( !( regexp.test( newO ) ) ) {
-            o.addClass( "ui-state-error" );
-            updateTips( n );
-            return false;
-        } else {
-            return true;
-        }
-    }
     
-    //
-    function checkIp( ip ){
-        var validIp = true;
-        validIp = validIp && checkLength( ip, "ip", 8, 16 );
-        validIp = validIp && checkRegexp( ip, /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/, "Insert an IP address with the following format: www.xxx.yyy.zzz" );
-        return validIp;
-    }
-
+    var defer = $.Deferred();//allows to return values using dialogs. --> synchronous
+    var ipSrc = $( "#ipSrc" ).val();
+    var ipDest = $( "#ipDest" ).val();
+    var srcValid = true;
+    var dstValid = true;
+    
     function insertIpDialog(newLink, originLink){
-        var defer = $.Deferred();//allows to return values using dialogs. --> synchronous
-        var ipSrc = $( "#ipSrc" );
-        var ipDest = $( "#ipDest" );
-        var srcValid = true;
-        var dstValid = true;
+
         allFields = $( [] ).add( name );
         tips = $( ".validateTips" );
 //Obtain the source Ip of the graph. Only in the case that one of the selected nodes is a host. If not (is a switch), doesn't save anything...
@@ -244,48 +147,83 @@
                 ipSrc.value =  newLink.target.ip;
             }
         }
-//console.log(ipSrc.val());
+
         document.getElementById('ipSrc').value = ipSrc.val();//recover the IP value, obtained from graph, or from html tag (input) (saved before)
         document.getElementById('ipDest').value = ipSrc.val();
-        
-            $( "#insertRouteIp" ).dialog({
-                autoOpen: true,
-                height: 300,
-                close: function () { 
-                        $(this).dialog('destroy');
-                        allFields.val( "" ).removeClass( "ui-state-error" );
-                    },
-                width: 350,
-                modal: true,
-                buttons: {
-                    "Create Route": function() {
-                        srcValid = true;
-                        dstValid = true;
+        $( "#insertRouteIp" ).dialog({
+            autoOpen: true,
+            height: 300,
+            close: function () { 
+                $(this).dialog('destroy');
+                allFields.val( "" ).removeClass( "ui-state-error" );
+            },
+            width: 350,
+            modal: true,
+            buttons: {
+                "Create Route": function() {
+                    srcValid = true;
+                    dstValid = true;
 //                      allFields.removeClass( "ui-state-error" );
-                        srcValid = checkIp(ipSrc);
-                        dstValid = checkIp(ipDest);
+                    srcValid = checkIp(ipSrc);
+                    dstValid = checkIp(ipDest);
 
-                        if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
-                            ipSrcDialog = ipSrc.val();
-                            ipDestDialog = ipDest.val();
-                            document.getElementById('ipSrc').value = ipSrcDialog;
-                            document.getElementById('ipDest').value = ipDestDialog;
-                            defer.resolve(ipDestDialog);//response is not required
-                            insertManualLink(newLink, originLink, ipSrcDialog, ipDestDialog);
-                            $( this ).dialog( "close" );
-                        }
-
-                    },
-                    Cancel: function() {
-                        removeLastLink();//remove last link inserted (push) and remove the dragged line
-                        defer.resolve("cancel");//response is not required
+                    if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
+                        ipSrcDialog = ipSrc.val();
+                        ipDestDialog = ipDest.val();
+                        document.getElementById('ipSrc').value = ipSrcDialog;
+                        document.getElementById('ipDest').value = ipDestDialog;
+                        defer.resolve(ipDestDialog);//response is not required
+                        insertManualLink(newLink, originLink, ipSrcDialog, ipDestDialog);
                         $( this ).dialog( "close" );
                     }
-                }
-            });
 
+                },
+                Cancel: function() {
+                    removeLastLink();//remove last link inserted (push) and remove the dragged line
+                    defer.resolve("cancel");//response is not required
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
         $( "#ipDest" ).val(ipDestDialog);
         return defer.promise();
+    }
+    
+    function insertIpDiv(newLink){
+        allFields = $( [] ).add( name );
+        tips = $( ".validateTips" );
+//Obtain the source Ip of the graph. Only in the case that one of the selected nodes is a host. If not (is a switch), doesn't save anything...
+        if(newLink.source.ip){
+            srcValid = checkIp(newLink.source.ip);
+            if ( srcValid ) {
+                ipSrc =  newLink.source.ip;
+            }
+        } else if(newLink.target.ip){
+            dstValid = checkIp(newLink.target.ip);
+            if ( dstValid ) {
+                document.getElementById('ipSrc').value = newLink.target.ip;
+                ipSrc =  newLink.target.ip;
+            }
+        }
+console.log(ipSrc);
+        document.getElementById('ipSrc').value = ipSrc;//recover the IP value, obtained from graph, or from html tag (input) (saved before)
+        document.getElementById('ipDest').value = ipSrc;
+            
+        srcValid = true;
+        dstValid = true;
+//                      allFields.removeClass( "ui-state-error" );
+        srcValid = checkIp(ipSrc);
+        dstValid = checkIp(ipDest);
+
+        if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
+            ipSrcDialog = ipSrc;
+            ipDestDialog = ipDest;
+            document.getElementById('ipSrc').value = ipSrcDialog;
+            document.getElementById('ipDest').value = ipDestDialog;
+            defer.resolve(ipDestDialog);//response is not required
+        }
+
+        $( "#ipDest" ).val(ipDestDialog);
     }
 
     /**
@@ -294,8 +232,7 @@
      * @param {type} newLink
      * @param {type} originLink
      * @param {type} ipSrc
-     * @param {type} ipDest
-     * @returns {undefined}
+     * @param {type} ipDst
      */
     function insertManualLink(newLink, originLink, ipSrc, ipDst){
 console.log(originLink);
@@ -325,9 +262,8 @@ console.log("Saving route");
             route.outPort = "X";
             stackRoute.push(route);
         }
-        console.log(stackRoute);
+console.log(stackRoute);
     }
-    
 </script>
 <div id="insertRouteIp" title="Required information for this route" style="display:none">
     <p class="validateTips">All form fields are required.</p>

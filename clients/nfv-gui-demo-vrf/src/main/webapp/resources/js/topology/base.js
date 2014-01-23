@@ -1,8 +1,15 @@
-/*
-    Base file of d3js
-*/
+/**
+ *  Base file of d3js
+ */
 var auto = "Automatic";
 var man = "Manual";
+
+var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch.png";
+var hostImage = "/nfv-gui-demo-vrf/resources/images/topology/laptop.png";
+var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller2.png";
+var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
+var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link.png";
+
 // set up SVG for D3
 /*for each type of view, different size? */
 var width = 700,
@@ -42,15 +49,16 @@ var node = svg.append("svg:g").selectAll(".node");
 
 d3.json("", function (error, json) {
     force.start();
-  root = json;
-  update();
+    root = json;
+    update();
 });
 
 function update(){
 console.log("Update image");
+    /* Links between switches and hosts */
     link = link.data(links);
     link.classed('selected', function (d) {return d === selected_link;})
-    .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
+        .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
     
     link.enter().append("svg:line")
         .attr('id', function (d) {return d.id;})
@@ -62,7 +70,7 @@ console.log("Update image");
             }
         })
         .classed('selected', function (d) {return d === selected_link;});
-    
+    /* Links between switchs and controllers */
     controllerLink = controllerLink.data(controllersLinks);
     controllerLink.enter().append("svg:line")
         .attr("class", "linkCtrl")
@@ -78,6 +86,7 @@ console.log("Update image");
         .attr("x2", function (d) {return d.target.x;})
         .attr("y2", function (d) {return d.target.y;});
 
+        /* Drawing Controller nodes */
     var controller = svg.selectAll(".nodeCtrl")
         .data(controllers)
         .enter().append("g")
@@ -90,18 +99,15 @@ console.log("Update image");
         .attr('height', 50)
         .attr('xlink:href', function (d) {return controllerImage;});
 
+/* Drawin nodes (switchs and hosts) */
     node = node.data(nodes);
     node.enter().append("g")
         .attr("class", "node")
         .style("cursor", "pointer");
 
     node.append("image")
-        .attr('class', function (d) {
-            return d.type;
-        })
-        .attr('id', function (d) {
-            return d.id;
-        })
+        .attr('class', function (d) {return d.type;})
+        .attr('id', function (d) {return d.id;})
         .attr("x", -30)
         .attr("y", -30)
         .attr("width", 75)
@@ -117,12 +123,14 @@ console.log("Update image");
             else
                 return hostImage;
         }).on('mouseup', function (d) {
-            d3.selectAll(".switch").attr("width", 75); //image big
-            d3.selectAll(".host").attr("width", 75).attr("height", 45); //image big
-            d3.selectAll(".id_txt_sw").attr("x", "-20").attr("y", "9");
-            d3.selectAll(".id_txt_host").attr("x", "-20").attr("y", "30");
-            d3.select("#" + d.id).attr("width", 100).attr("height", 75); //image big
-            if (d.type === "switch")
+console.log("MouseUp");            
+        d3.selectAll(".switch").attr("width", 75); //image big
+        d3.selectAll(".host").attr("width", 75).attr("height", 45); //image big
+        d3.selectAll(".id_txt_sw").attr("x", "-20").attr("y", "9");
+        d3.selectAll(".id_txt_host").attr("x", "-20").attr("y", "30");
+        d3.select(this).attr("width", 100).attr("height", 75); //image big
+        
+        if (d.type === "switch")
                 d3.select("#" + d.id + "_text").attr("x", "-9").attr("y", "12"); //move text
             else if (d.type === "host")
                 d3.select("#" + d.id + "_text").attr("x", "-9").attr("y", "35"); //move text
@@ -134,11 +142,8 @@ console.log("Update image");
                 return;
             }
             selected_node = null;
-            //restart();
-            //mousedown();
-            //mouseup();
         });
-
+/* Drawing text of each node */
     node.append("text")
         .attr('class', function (d) {
             if (d.type === "switch") {
@@ -147,12 +152,15 @@ console.log("Update image");
                 return "id_txt_host";
             }
         })
-        .attr('id', function (d) {
-            return d.id + "_text";
+        .attr('id', function (d) {return d.id + "_text";})
+        .attr("dx", 12)
+        .attr("dy", function (d) {
+            if (d.type === "switch") {
+                return ".80em";
+            } else {
+                return ".30em";
+            }
         })
-
-    .attr("dx", 12)
-        .attr("dy", ".80em")
         .style('fill', 'red')
         .attr('x', "-20")
         .attr('y', function (d) {
@@ -162,16 +170,11 @@ console.log("Update image");
                 return "30";
             }
         })
-        .text(function (d) {
-            return d.id;
-        });
-
+        .text(function (d) {return d.id;});
 
     node.attr("transform", function (d) {
         return "translate(" + d.x + "," + d.y + ")";
     });
-    
-    
     
     force.on("tick", function () {
         runtime(node, links);
@@ -188,10 +191,8 @@ function updateLinks(){
         .attr('id', function (d) {return d.id;})
         .attr('class', function (d) {
             if (d.type === "static") {
-//                console.log("STAAAAAAATIC");
                 return 'link';
             } else {
-                console.log("NOOOOO STAAAAAAATIC");
                 return 'link2';
             }
         })
@@ -209,8 +210,6 @@ function updateLinks(){
 }
 
 /** End drawing topology **/
-
-/////////////////////////
 
 // update force layout (called automatically each iteration)
 function tick() {
@@ -246,6 +245,7 @@ function spliceLinksForNode(node) {
 // only respond once per keydown
 var lastKeyDown = -1;
 
+/*
 function keydown() {
     d3.event.preventDefault();
 
@@ -254,25 +254,26 @@ function keydown() {
 
     // ctrl
     if (d3.event.keyCode === 17) {
-        circle.call(force.drag);
+        node.call(force.drag);
         svg.classed('ctrl', true);
     }
     console.log("KeyDown: " + selected_link.type);
     if (!selected_node && !selected_link) return;
     if (selected_link.type != "new_link") return;
 }
-
+*/
+/*
 function keyup() {
     lastKeyDown = -1;
 
     // ctrl
     if (d3.event.keyCode === 17) {
-        circle
+        node
             .on('mousedown.drag', null)
             .on('touchstart.drag', null);
         svg.classed('ctrl', false);
     }
-}
+}*/
 
 function mousedown() {
     console.log("MouseDown");
@@ -293,6 +294,7 @@ function mousedown() {
     //    restart();
 }
 
+
 function mouseup() {
     console.log("MouseUp");
     if (mousedown_node && file != "home") {
@@ -308,14 +310,15 @@ function mouseup() {
     resetMouseVars();
 }
 
+
 /* Remove the drag line used when we create links.. THis function is enabled when we click in any place of the div(<p>)*/
 function cleanDrag() {
     console.log("Removing actual paths..");
     if ((typeof (mode) == "undefined")) {
         d3.selectAll('.link2').attr('d', 'M0,0L0,0');
-    } else if (mode == man) {
+    } else if (mode === man) {
         d3.selectAll('.link2').attr('d', 'M0,0L0,0');
-        setActive(null);
+//        setActive(null);
     }
 }
 

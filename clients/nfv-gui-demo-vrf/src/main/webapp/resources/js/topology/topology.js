@@ -2,12 +2,6 @@
  Topology definition. Nodes and links. Images path.
  */
 
-var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch.png";
-var hostImage = "/nfv-gui-demo-vrf/resources/images/topology/host.png";
-var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller2.png";
-var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
-var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link.png";
-
 var sw_x = 90, sw_y = 80;
 var node_x = 30, node_y = 200;
 
@@ -34,7 +28,7 @@ controllers = [
     {id_num: 0, id: "Ctrl1", type: "controller", controller: "controllersVM:8191", reflexive: false, fixed: true, x: sw_x*2, y: 10},
     {id_num: 1, id: "Ctrl2", type: "controller", controller: "controllersVM:8192", reflexive: false, fixed: true, x: sw_x*3+50, y: 150},
     {id_num: 2, id: "Ctrl3", type: "controller", controller: "controllersVM2:8193", reflexive: false, fixed: true, x: sw_x*5+60, y: 10}],
-        controllersLinks = [
+controllersLinks = [
     {id: "00", source: nodes[0], target: controllers[0], left: false, right: false, type: "static"},
     {id: "10", source: nodes[1], target: controllers[0], left: false, right: false, type: "static"},
     {id: "20", source: nodes[2], target: controllers[0], left: false, right: false, type: "static"},
