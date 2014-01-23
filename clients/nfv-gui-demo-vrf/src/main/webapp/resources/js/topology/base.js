@@ -5,8 +5,8 @@ var auto = "Automatic";
 var man = "Manual";
 // set up SVG for D3
 /*for each type of view, different size? */
-var width = 760,
-    height = 450,
+var width = 700,
+    height = 447,
     colors = d3.scale.category10();
 
 // set up initial nodes and links

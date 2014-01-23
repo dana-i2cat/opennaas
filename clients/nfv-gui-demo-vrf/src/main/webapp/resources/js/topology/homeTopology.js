@@ -20,7 +20,8 @@ function runtime(node) {
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
             if (d.type === "switch")
-                getFlowTable(d.dpid);
+//                getFlowTable(d.dpid);
+            updateSwInfoTxt(d.dpid, getControllerInfo(d.controller));
             // select node
             mousedown_node = d;
             if (mousedown_node === selected_node) selected_node = null;
@@ -46,7 +47,7 @@ legendData = [{
     {
         "label": "Host"
     }];
-var legend_x = 560,
+var legend_x = 500,
     legend_y = 290,
     legend_width = 150,
     legend_height = 120;
@@ -125,7 +126,7 @@ var rectangles = svg.selectAll("rect")
     });
 
 legendLink = svg.append("foreignObject")
-    .attr("x", 600).attr("y", legend_y - 35)
+    .attr("x", legend_x+40).attr("y", legend_y - 35)
     .attr("width", 480)
     .attr("height", 500)
     .append("xhtml:body")
@@ -158,4 +159,9 @@ function getFlowTable(dpid) {
             $('#ajaxUpdate').html(data);
         }
     });
+}
+
+function getControllerInfo(name){
+    var node = controllers.filter(function (l) {return (l.id === name ); })[0];
+    return node.controller;
 }

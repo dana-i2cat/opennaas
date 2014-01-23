@@ -14,16 +14,19 @@ VRF - OpenNaaS Custom CSS
 }
 /* Home view */
 #home_info{
-    width: 28%;
+    width: 32%;
 }
 #home_topology{
     min-height: 300px;
-    width:68%;
+    width:65%;
     margin-left: 5px;/*remove when we show the topology*/
 }
 #legend-link{
     text-decoration: none;
     color: gray;
+}
+.flowTable {
+    width: 10px;
 }
 /* Config Routes view */
 #config_topology {

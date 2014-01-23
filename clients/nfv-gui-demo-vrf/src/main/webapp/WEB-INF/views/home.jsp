@@ -35,13 +35,16 @@
         document.getElementById("IP").innerHTML ='<b>Controller IP: </b>';
         document.getElementById("Port").innerHTML ='<b>Controller Port: </b>';
 //        document.getElementById("Status").innerHTML ='<b>Status: </b>';
+
+removeFlowAll();
         $.ajax({
 		type: "GET",
 		url: "getInfoSw/"+dpid,
 		success: function(data) {
 			$('#ajaxUpdate').html(data);    
                         var json = convertXml2JSon(data);
-                        console.log(data);
+data = "";                        
+console.log(data);
 console.log(json);                        
                         var jsonHtmlTable = ConvertJsonToFlowTable(json, 'jsonFlowTable', null, 'Go to');
 //                        var status = getStatusCtrl(dpid);

@@ -23,11 +23,11 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
 
         headers = array_keys(parsedJson[0]);
 //        headers[0] = "Name";
-        headers[0] = "srcIp";
-        headers[1] = "dstIp";
+        headers[0] = "IP Src";
+        headers[1] = "IP Dst";
         headers[2] = "Ether-type";
-        headers[3] = "InPort";
-        headers[4] = "OutPort";
+        headers[3] = "In";
+        headers[4] = "Out";
 
         for (i = 0; i < headers.length; i++)
             thCon += thRow.format(headers[i]);
@@ -85,4 +85,13 @@ function waiting(status){
         $body.addClass("loading");
     else
         $body.removeClass("loading");
+}
+
+function removeFlowAll(){
+    var table = document.getElementById("jsonFlowTable");
+    try{
+        for(var i = table.rows.length - 1; i > 0; i--){
+           table.deleteRow(i);
+      }
+    }catch(e){}
 }
