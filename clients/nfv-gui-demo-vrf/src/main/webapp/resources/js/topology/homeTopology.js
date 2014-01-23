@@ -121,6 +121,7 @@ var rectangles = svg.selectAll("rect")
     })
     .style("fill", "blue").style("stroke", "black")
     .style("stroke-width", 2).style("fill-opacity", 0.1).style("stroke-opacity", 0.9)
+    .style("cursor", "pointer")
     .on('mousedown', function () {
         toggleHideLegend();
     });

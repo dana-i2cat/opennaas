@@ -4,7 +4,7 @@
 
 var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch.png";
 var hostImage = "/nfv-gui-demo-vrf/resources/images/topology/host.png";
-var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller.png";
+var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller2.png";
 var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
 var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link.png";
 
@@ -14,10 +14,10 @@ var node_x = 30, node_y = 200;
 var nodes = [
     {id_num: 0, id: "SW1", type: "switch", controller: "Ctrl1", reflexive: false, fixed: true, x: sw_x, y: sw_y, dpid: "00:00:00:00:00:00:00:01"},
     {id_num: 1, id: "SW2", type: "switch", controller: "Ctrl1", reflexive: true, fixed: true, x: sw_x*2, y: sw_y*2, dpid: "00:00:00:00:00:00:00:02"},
-    {id_num: 2, id: "SW3", type: "switch", controller: "Ctrl1", reflexive: false, fixed: false, x: sw_x*3, y: sw_y, dpid: "00:00:00:00:00:00:00:03"},
-    {id_num: 3, id: "SW4", type: "switch", controller: "Ctrl2", reflexive: false, fixed: false, x: sw_x*2+50 , y: sw_y+210, dpid: "00:00:00:00:00:00:00:04"},
-    {id_num: 4, id: "SW5", type: "switch", controller: "Ctrl2", reflexive: false, fixed: false, x: sw_x*3+50, y: 210, dpid: "00:00:00:00:00:00:00:05"},
-    {id_num: 5, id: "SW6", type: "switch", controller: "Ctrl2", reflexive: false, fixed: false, x: sw_x*4+50, y: sw_y+210, dpid: "00:00:00:00:00:00:00:06"},
+    {id_num: 2, id: "SW3", type: "switch", controller: "Ctrl1", reflexive: false, fixed: true, x: sw_x*3, y: sw_y, dpid: "00:00:00:00:00:00:00:03"},
+    {id_num: 3, id: "SW4", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: sw_x*2+50 , y: sw_y+210, dpid: "00:00:00:00:00:00:00:04"},
+    {id_num: 4, id: "SW5", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: sw_x*3+50, y: 210, dpid: "00:00:00:00:00:00:00:05"},
+    {id_num: 5, id: "SW6", type: "switch", controller: "Ctrl2", reflexive: false, fixed: true, x: sw_x*4+50, y: sw_y+210, dpid: "00:00:00:00:00:00:00:06"},
     {id_num: 6, id: "SW7", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: sw_x*5, y: sw_y, dpid: "00:00:00:00:00:00:00:07"},
     {id_num: 7, id: "SW8", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: sw_x*6+30, y: sw_y, dpid: "00:00:00:00:00:00:00:08"},
 

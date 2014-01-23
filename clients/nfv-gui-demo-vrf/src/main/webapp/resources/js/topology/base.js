@@ -85,14 +85,15 @@ console.log("Update image");
 
     controller.append("image")
         .attr("x", function (d) {return d.x - 20;})
-        .attr("y", function (d) {return d.y - 15;})
+        .attr("y", function (d) {return d.y - 10;})
         .attr("width", 50)
         .attr('height', 50)
         .attr('xlink:href', function (d) {return controllerImage;});
 
     node = node.data(nodes);
     node.enter().append("g")
-        .attr("class", "node");
+        .attr("class", "node")
+        .style("cursor", "pointer");
 
     node.append("image")
         .attr('class', function (d) {
