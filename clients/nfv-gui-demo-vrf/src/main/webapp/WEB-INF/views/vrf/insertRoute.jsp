@@ -148,8 +148,8 @@ console.log(ipDest);
         } else if(newLink.target.ip){
             dstValid = checkIp(newLink.target.ip);
             if ( dstValid ) {
-                document.getElementById('dialogIpSrc').value = newLink.target.ip;
-                ipSrc =  newLink.target.ip;
+                document.getElementById('dialogIpDest').value = newLink.target.ip;
+                ipDst =  newLink.target.ip;
             }
         }
 console.log("IpSource "+ipSrc);
@@ -210,13 +210,14 @@ console.log("End")                    ;
         } else if(newLink.target.ip){
             dstValid = checkIp(newLink.target.ip);
             if ( dstValid ) {
-                document.getElementById('ipSrc').value = newLink.target.ip;
-                ipSrc =  newLink.target.ip;
+                document.getElementById('ipDest').value = newLink.target.ip;
+                ipDest =  newLink.target.ip;
             }
         }
 console.log(ipSrc);
+console.log(ipDest);
         document.getElementById('ipSrc').value = ipSrc;//recover the IP value, obtained from graph, or from html tag (input) (saved before)
-        document.getElementById('ipDest').value = ipSrc;
+        document.getElementById('ipDest').value = ipDest;
             
         srcValid = true;
         dstValid = true;
@@ -229,7 +230,7 @@ console.log(ipSrc);
             defer.resolve(ipDestDialog);//response is not required
         }
 
-        $( "#ipDest" ).val(ipDestDialog);
+        $( "#ipDest" ).val(ipDest);
     }
 
     /**

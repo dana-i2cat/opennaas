@@ -117,3 +117,49 @@ body.loading .modal {
 #manualType{
     width: 120px;
 }
+
+
+/** Scrollable table */
+
+.outer {
+position:relative;
+padding:4em 0 3em 0;
+width: 100%;
+margin:0 auto 3em auto;
+}
+.innera {
+overflow:auto;
+width: 100%;
+height:400px;
+}
+.outer table caption {
+position:absolute;
+width:51.7em;
+text-align:center;
+top:0;
+left:0;
+height:1.5em;
+}
+.outer thead tr {
+position:absolute;
+top:1.5em;
+height:1.5em;
+left:0;
+}
+.outer tfoot td {
+position:absolute;
+width:51.5em;
+text-align:center;
+background:#f0c992; 
+bottom:0;
+left:0
+}
+.outer th, .outer td {
+width:10em; 
+text-align:left;
+}
+.outer th {
+    
+}
+.outer .dk {background:#fff;
+}

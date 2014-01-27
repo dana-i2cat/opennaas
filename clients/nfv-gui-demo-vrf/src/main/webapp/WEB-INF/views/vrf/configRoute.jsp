@@ -13,7 +13,10 @@
 	
 <div id="config_routeTable" class="ui-widget-content ui-corner-all routTable padding">
     <h3>Configured routes</h3>
+    <div class="outer">
+	<div class="innera">
     <table id="jsonTable" class="tablesorter"></table>
+        </div></div>
     <script>
         var text = "<input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAll()' type='button' value='Remove all table' name='Remove all table'/>";
         var jsonRoutes = ${json};
