@@ -4,11 +4,11 @@
 var auto = "Automatic";
 var man = "Manual";
 
-var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch.png";
+var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch2.png";
 var hostImage = "/nfv-gui-demo-vrf/resources/images/topology/laptop.png";
 var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller2.png";
 var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
-var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link.png";
+var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link_green.png";
 
 // set up SVG for D3
 /*for each type of view, different size? */
@@ -62,14 +62,9 @@ console.log("Update image");
     
     link.enter().append("svg:line")
         .attr('id', function (d) {return d.id;})
-        .attr('class', function (d) {
-            if (d.type === "static") {
-                return 'link';
-            } else {
-                return 'link2';
-            }
-        })
+        .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
         .classed('selected', function (d) {return d === selected_link;});
+
     /* Links between switchs and controllers */
     controllerLink = controllerLink.data(controllersLinks);
     controllerLink.enter().append("svg:line")
@@ -86,7 +81,7 @@ console.log("Update image");
         .attr("x2", function (d) {return d.target.x;})
         .attr("y2", function (d) {return d.target.y;});
 
-        /* Drawing Controller nodes */
+    /* Drawing Controller nodes */
     var controller = svg.selectAll(".nodeCtrl")
         .data(controllers)
         .enter().append("g")
@@ -99,7 +94,7 @@ console.log("Update image");
         .attr('height', 50)
         .attr('xlink:href', function (d) {return controllerImage;});
 
-/* Drawin nodes (switchs and hosts) */
+    /* Drawin nodes (switchs and hosts) */
     node = node.data(nodes);
     node.enter().append("g")
         .attr("class", "node")
@@ -111,29 +106,20 @@ console.log("Update image");
         .attr("x", -30)
         .attr("y", -30)
         .attr("width", 75)
-        .attr('height', function (d) {
+        .attr('height', function (d) { return (d.type === "switch") ? "75" : "45";})
+        .attr('xlink:href', function (d) { return (d.type === "switch") ? switchImage : hostImage;})
+        .on('mouseup', function (d) {
+console.log("BASE MouseUp");
+            d3.selectAll(".switch").attr("width", 75); //image big
+            d3.selectAll(".host").attr("width", 75).attr("height", 45); //image big
+            d3.selectAll(".id_txt_sw").attr("x", "-24").attr("y", "9");
+            d3.selectAll(".id_txt_host").attr("x", "-10").attr("y", "30");
+            d3.select(this).attr("width", 100).attr("height", 75); //image big
+
             if (d.type === "switch")
-                return "75";
-            else
-                return "45";
-        })
-        .attr('xlink:href', function (d) {
-            if (d.type === "switch")
-                return switchImage;
-            else
-                return hostImage;
-        }).on('mouseup', function (d) {
-console.log("MouseUp");            
-        d3.selectAll(".switch").attr("width", 75); //image big
-        d3.selectAll(".host").attr("width", 75).attr("height", 45); //image big
-        d3.selectAll(".id_txt_sw").attr("x", "-20").attr("y", "9");
-        d3.selectAll(".id_txt_host").attr("x", "-20").attr("y", "30");
-        d3.select(this).attr("width", 100).attr("height", 75); //image big
-        
-        if (d.type === "switch")
-                d3.select("#" + d.id + "_text").attr("x", "-9").attr("y", "12"); //move text
+                d3.select("#" + d.id + "_text").attr("x", "-15").attr("y", "12"); //move text
             else if (d.type === "host")
-                d3.select("#" + d.id + "_text").attr("x", "-9").attr("y", "35"); //move text
+                d3.select("#" + d.id + "_text").attr("x", "-9").attr("y", "55"); //move text
             if (!mousedown_node) return;
             if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
@@ -143,34 +129,17 @@ console.log("MouseUp");
             }
             selected_node = null;
         });
-/* Drawing text of each node */
+        
+    /* Drawing text of each node */
     node.append("text")
-        .attr('class', function (d) {
-            if (d.type === "switch") {
-                return 'id_txt_sw';
-            } else {
-                return "id_txt_host";
-            }
-        })
-        .attr('id', function (d) {return d.id + "_text";})
+        .attr('id', function (d) { return d.id + "_text";})
+        .attr('class', function (d) { return (d.type === "switch") ? 'id_txt_sw' : "id_txt_host";})
         .attr("dx", 12)
-        .attr("dy", function (d) {
-            if (d.type === "switch") {
-                return ".80em";
-            } else {
-                return ".30em";
-            }
-        })
-        .style('fill', 'red')
-        .attr('x', "-20")
-        .attr('y', function (d) {
-            if (d.type === "switch") {
-                return "9";
-            } else {
-                return "30";
-            }
-        })
-        .text(function (d) {return d.id;});
+        .attr("dy", function (d) { return (d.type === "switch") ? "1.10em" : ".30em";})
+        .style('fill',  function (d) { return (d.type === "switch") ? "black" : "red";})
+        .attr('x',  function (d) { return (d.type === "switch") ? "-23" : "-10";})
+        .attr('y', function (d) { return (d.type === "switch") ? "9" :  "30";})
+        .text(function (d) { return d.id;});
 
     node.attr("transform", function (d) {
         return "translate(" + d.x + "," + d.y + ")";
@@ -181,27 +150,20 @@ console.log("MouseUp");
     });
 }
 
+/**
+ * Redraw the links
+ * @returns {undefined}
+ */
 function updateLinks(){
-    console.log("Update image");
+console.log("Update links");
     link = link.data(links);
     link.classed('selected', function (d) {return d === selected_link;})
-    .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
+        .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
     
     link.enter().append("svg:line")
         .attr('id', function (d) {return d.id;})
-        .attr('class', function (d) {
-            if (d.type === "static") {
-                return 'link';
-            } else {
-                return 'link2';
-            }
-        })
+        .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
         .classed('selected', function (d) {return d === selected_link;});
-    
-    controllerLink = controllerLink.data(controllersLinks);
-    controllerLink.enter().append("svg:line")
-        .attr("class", "linkCtrl")
-        .attr("stroke", "green");
     
     link.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
@@ -242,67 +204,33 @@ function spliceLinksForNode(node) {
     });
 }
 
-// only respond once per keydown
-var lastKeyDown = -1;
-
-/*
-function keydown() {
-    d3.event.preventDefault();
-
-    if (lastKeyDown !== -1) return;
-    lastKeyDown = d3.event.keyCode;
-
-    // ctrl
-    if (d3.event.keyCode === 17) {
-        node.call(force.drag);
-        svg.classed('ctrl', true);
-    }
-    console.log("KeyDown: " + selected_link.type);
-    if (!selected_node && !selected_link) return;
-    if (selected_link.type != "new_link") return;
-}
-*/
-/*
-function keyup() {
-    lastKeyDown = -1;
-
-    // ctrl
-    if (d3.event.keyCode === 17) {
-        node
-            .on('mousedown.drag', null)
-            .on('touchstart.drag', null);
-        svg.classed('ctrl', false);
-    }
-}*/
-
 function mousedown() {
     console.log("MouseDown");
     // because :active only works in WebKit?
-    svg.classed('active', true);
-
-    if (d3.event.ctrlKey || mousedown_node || mousedown_link) return;
-
-    // insert new node at point
-    var point = d3.mouse(this),
-        node = {
-            id: ++lastNodeId,
-            reflexive: false
-        };
-    node.x = point[0];
-    node.y = point[1];
+//    svg.classed('active', true);
+//
+//    if (d3.event.ctrlKey || mousedown_node || mousedown_link) return;
+//
+//    // insert new node at point
+//    var point = d3.mouse(this),
+//        node = {
+//            id: ++lastNodeId,
+//            reflexive: false
+//        };
+//    node.x = point[0];
+//    node.y = point[1];
     //nodes.push(node);
     //    restart();
 }
 
 
 function mouseup() {
-    console.log("MouseUp");
+console.log("MouseUp");
     if (mousedown_node && file != "home") {
         drag_line
             .classed('hidden', true)
             .style('marker-end', '');
     }
-
     // because :active only works in WebKit?
     svg.classed('active', false);
 
@@ -313,12 +241,11 @@ function mouseup() {
 
 /* Remove the drag line used when we create links.. THis function is enabled when we click in any place of the div(<p>)*/
 function cleanDrag() {
-    console.log("Removing actual paths..");
-    if ((typeof (mode) == "undefined")) {
+console.log("Removing actual paths..");
+    if ((typeof(mode) == "undefined")) {
         d3.selectAll('.link2').attr('d', 'M0,0L0,0');
     } else if (mode === man) {
         d3.selectAll('.link2').attr('d', 'M0,0L0,0');
-//        setActive(null);
     }
 }
 
@@ -338,7 +265,6 @@ function ip2long(ip){
 }
 
 function inSubNet(ip, subnet){
-console.log("IP: "+ip+" Subnet: "+subnet);
     var mask, base_ip, long_ip = ip2long(ip);
     var regex = /^(.*?)\/(\d{1,2})$/;
     if( (mask = subnet.match(regex)) && ((base_ip=ip2long(mask[1])) >= 0) ){
@@ -349,7 +275,6 @@ console.log("IP: "+ip+" Subnet: "+subnet);
 }
 
 function ValidateIPaddress(ipaddress){
-console.log(ipaddress);
     var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     if(ipaddress.match(ipformat)){
         return true;

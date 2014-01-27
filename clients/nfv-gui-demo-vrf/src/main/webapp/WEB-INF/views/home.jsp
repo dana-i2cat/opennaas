@@ -6,12 +6,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<script language="JavaScript" type="text/JavaScript">
-//    objectArray = ${json};
-//    var jsonHtmlTable = ConvertJsonToFlowTable(objectArray, 'jsonTable', null, 'Go to');
-//    document.write(jsonHtmlTable);
-</script>
-
 <div id="home_info" class="ui-widget-content ui-corner-all padding">
     <h3>Switch Information:</h3>
     <ul>

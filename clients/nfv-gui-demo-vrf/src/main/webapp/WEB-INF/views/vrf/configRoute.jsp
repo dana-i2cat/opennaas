@@ -16,7 +16,7 @@
     <table id="jsonTable" class="tablesorter"></table>
     <script>
         var text = "<input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAll()' type='button' value='Remove all table' name='Remove all table'/>";
-        var jsonRoutes = ${json};
+        var jsonRoutes = '${json}';
         if( jsonRoutes != 'OpenNaaS is not started' && 
             JSON.stringify(jsonRoutes.routeTable) !=  '[]'){
             
@@ -31,9 +31,8 @@
 <script src="<c:url value="/resources/js/topology/configTopology.js" />"></script>
 
 <script language="JavaScript" type="text/JavaScript">
-    var jsonRoutes = ${json};
     var type = getURLParameter("type");
-    var jsonHtmlTable = ConvertJsonToRouteTable(jsonRoutes, 'jsonTable', null, 'Download');
+    var jsonHtmlTable = ConvertJsonToRouteTable(${json}, 'jsonTable', null, 'Download');
     document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
 </script>
 

@@ -16,7 +16,7 @@
 <input id="changeMode" type="submit" class="button" value="Automatic" onClick="javascript:change(this);"/>
 <input id="manualType" type="submit" class="button" style="display:none" value="Point-to-point" onClick="javascript:toggleManualType(this);"/>
 <br/><br/><br/>
-<div id="insert_info" class="ui-widget-content ui-corner-all padding" style="display:none">
+<div id="insertRouteInfo" class="ui-widget-content ui-corner-all" style="display:none">
     <h3>Route information:</h3>
     <form>
         <fieldset>
@@ -38,24 +38,25 @@
 
     <form:form modelAttribute="insertRoutes" name="frm" method="post" onSubmit="return Validate();"> 
         <div class="config4">
-            <table id="Routes" class="TableSorter"><thead><tr>
+            <table id="Routes" class="TableSorter">
+                <thead>
+                    <tr>
                         <th><form:label path="">Source Address</form:label></th>
                         <th><form:label path="">Destination Address</form:label></th>
                         <th><form:label path="">Switch Mac</form:label></th>
                         <th><form:label path="">Input Port</form:label></th>
                         <th><form:label path="">Output Port</form:label></th>
-                            <th></th>
-                        </tr></thead>
-                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tr>
                     <td><form:input class="ipInput" path="listRoutes[0].sourceAddress" type="text" value="192.168.1.1"/></td>                    
                     <td><form:input class="ipInput" path="listRoutes[0].destinationAddress" type="text" value="192.168.2.1"/></td>
                     <td><form:input class="macInput" path="listRoutes[0].switchInfo.macAddress" type="text" value="00:00:00:00:00:00:00:10"/></td>
                     <td><form:input class="portInput" path="listRoutes[0].switchInfo.inputPort" type="text" value="1"/></td>
                     <td><form:input class="portInput" path="listRoutes[0].switchInfo.outputPort" type="text" value="2"/></td>
-                    <td class="td-last"><input style="float:right" class="deleteButton" type="button" value="Delete"/>
-                    </td>
+                    <td class="td-last"><input style="float:right" class="deleteButton" type="button" value="Delete"/></td>
                 </tr>
-
             </table>
             <input style="margin-right: 11.5px" class="addRouteButton" onClick="addRout()" type="button" value="Add" name="addRoute"/>
             <input id="submitUpdateConfig" class="button" type="submit" value="Update" />
@@ -88,36 +89,38 @@
         count = count + 1;
         $(".deleteButton").button();
     }
-
+    function insertNewInsertRowDemo(i, srcSubnet, dstSubnet, dpid, inPort, outPort){
+        addRout();
+        $("#listRoutes"+i+"\\.sourceAddress").val(srcSubnet);
+        $("#listRoutes"+i+"\\.destinationAddress").val(dstSubnet);
+        $("#listRoutes"+i+"\\.switchInfo\\.macAddress").val(dpid);
+        $("#listRoutes"+i+"\\.switchInfo\\.inputPort").val(inPort);
+        $("#listRoutes"+i+"\\.switchInfo\\.outputPort").val(outPort);
+        i++;
+        return i;
+    }
     function fillDemo(){
+        var ipSrc = "192.168.1.1";
+        var ipDst = "192.168.2.51";
+        var srcSubnet = "192.168.1.0/24";
+        var dstSubnet = "192.168.2.0/24";
+        var path = ["00:00:00:00:00:00:00:01", "00:00:00:00:00:00:00:03", "00:00:00:00:00:00:00:04", "00:00:00:00:00:00:00:06", "00:00:00:00:00:00:00:07", "00:00:00:00:00:00:00:08"];
+        var inPorts = [3, 1, 1, 1, 1, 1];
+        var outPorts = [2, 3, 3, 3, 2, 2];
         deleteAll("Routes");
         count=0;
         if(count==2)
         return;
-        addRout();
-        $("#listRoutes0\\.sourceAddress").val("192.168.1.1");
-        $("#listRoutes0\\.destinationAddress").val("192.168.2.51");
-        $("#listRoutes0\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes0\\.switchInfo\\.inputPort").val("5");
-        $("#listRoutes0\\.switchInfo\\.outputPort").val("1");
-        addRout();
-        $("#listRoutes1\\.sourceAddress").val("192.168.1.1");
-        $("#listRoutes1\\.destinationAddress").val("192.168.2.51");
-        $("#listRoutes1\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes1\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes1\\.switchInfo\\.outputPort").val("5");
-        addRout();
-        $("#listRoutes2\\.sourceAddress").val("192.168.2.51");
-        $("#listRoutes2\\.destinationAddress").val("192.168.1.1");
-        $("#listRoutes2\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:01");
-        $("#listRoutes2\\.switchInfo\\.inputPort").val("1");
-        $("#listRoutes2\\.switchInfo\\.outputPort").val("5");
-        addRout();
-        $("#listRoutes3\\.sourceAddress").val("192.168.2.51");
-        $("#listRoutes3\\.destinationAddress").val("192.168.1.1");
-        $("#listRoutes3\\.switchInfo\\.macAddress").val("00:00:00:00:00:00:00:02");
-        $("#listRoutes3\\.switchInfo\\.inputPort").val("5");
-        $("#listRoutes3\\.switchInfo\\.outputPort").val("1");
+        
+        var j=0;
+        j = insertNewInsertRowDemo(j, ipSrc, dstSubnet, path[0], inPorts[0], outPorts[0]);
+        j = insertNewInsertRowDemo(j, dstSubnet, ipSrc, path[0], outPorts[0], inPorts[0]);
+        for(i = 1; i < path.length - 1; i++) {
+            j = insertNewInsertRowDemo(j, srcSubnet, dstSubnet, path[i], inPorts[i], outPorts[i]);
+            j = insertNewInsertRowDemo(j, dstSubnet, srcSubnet, path[i], outPorts[i], inPorts[i]);
+        }
+        j = insertNewInsertRowDemo(j, srcSubnet, ipDst, path[path.length-1], inPorts[inPorts.length-1], outPorts[outPorts.length-1]);
+        j = insertNewInsertRowDemo(j, ipDst, srcSubnet, path[path.length-1], outPorts[outPorts.length-1], inPorts[inPorts.length-1]);
     }  
 </script>
 <script>
@@ -131,25 +134,25 @@
     var dstValid = true;
     
     function insertIpDialog(newLink, originLink){
-
+console.log(newLink);
         allFields = $( [] ).add( name );
         tips = $( ".validateTips" );
 //Obtain the source Ip of the graph. Only in the case that one of the selected nodes is a host. If not (is a switch), doesn't save anything...
         if(newLink.source.ip){
             srcValid = checkIp(newLink.source.ip);
             if ( srcValid ) {
-                ipSrc.value =  newLink.source.ip;
+                ipSrc =  newLink.source.ip;
             }
         } else if(newLink.target.ip){
             dstValid = checkIp(newLink.target.ip);
             if ( dstValid ) {
-                document.getElementById('ipSrc').value = newLink.target.ip;
-                ipSrc.value =  newLink.target.ip;
+                document.getElementById('dialogIpSrc').value = newLink.target.ip;
+                ipSrc =  newLink.target.ip;
             }
         }
-
-        document.getElementById('ipSrc').value = ipSrc.val();//recover the IP value, obtained from graph, or from html tag (input) (saved before)
-        document.getElementById('ipDest').value = ipSrc.val();
+console.log("IpSource "+ipSrc);
+        document.getElementById('dialogIpSrc').value = ipSrc;//recover the IP value, obtained from graph, or from html tag (input) (saved before)
+        document.getElementById('dialogIpDest').value = ipSrc;
         $( "#insertRouteIp" ).dialog({
             autoOpen: true,
             height: 300,
@@ -168,24 +171,24 @@
                     dstValid = checkIp(ipDest);
 
                     if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
-                        ipSrcDialog = ipSrc.val();
-                        ipDestDialog = ipDest.val();
-                        document.getElementById('ipSrc').value = ipSrcDialog;
-                        document.getElementById('ipDest').value = ipDestDialog;
+                        ipSrcDialog = ipSrc;
+                        ipDestDialog = ipDest;
+                        document.getElementById('dialogIpSrc').value = ipSrcDialog;
+                        document.getElementById('dialogIpDest').value = ipDestDialog;
                         defer.resolve(ipDestDialog);//response is not required
                         insertManualLink(newLink, originLink, ipSrcDialog, ipDestDialog);
                         $( this ).dialog( "close" );
                     }
 
                 },
-                Cancel: function() {
+                Cancel: function() {             
                     removeLastLink();//remove last link inserted (push) and remove the dragged line
                     defer.resolve("cancel");//response is not required
                     $( this ).dialog( "close" );
                 }
             }
         });
-        $( "#ipDest" ).val(ipDestDialog);
+        $( "#dialogIpDest" ).val(ipDestDialog);
         return defer.promise();
     }
     
@@ -211,15 +214,12 @@ console.log(ipSrc);
             
         srcValid = true;
         dstValid = true;
-//                      allFields.removeClass( "ui-state-error" );
         srcValid = checkIp(ipSrc);
         dstValid = checkIp(ipDest);
 
         if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
-            ipSrcDialog = ipSrc;
-            ipDestDialog = ipDest;
-            document.getElementById('ipSrc').value = ipSrcDialog;
-            document.getElementById('ipDest').value = ipDestDialog;
+            document.getElementById('ipSrc').value = ipSrc;
+            document.getElementById('ipDest').value = ipDest;
             defer.resolve(ipDestDialog);//response is not required
         }
 
@@ -270,10 +270,10 @@ console.log(stackRoute);
     <form>
         <fieldset>
             <label for="name">Source IP:</label>
-            <input type="text" name="ipSrc" id="ipSrc" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="ipSrc" id="dialogIpSrc" class="text ui-widget-content ui-corner-all" value=""/>
             <br/>
             <label for="name">Destination IP:</label>
-            <input type="text" name="ipDest" id="ipDest" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="ipDest" id="dialogIpDest" class="text ui-widget-content ui-corner-all" value=""/>
         </fieldset>
     </form>
 </div>

@@ -7,9 +7,9 @@ document.getElementById("ui-id-1").className += " ui-state-highlight";
 document.getElementById("ui-id-4").className += " ui-state-highlight";
 
 function runtime(node, links) {
-console.log("runtime");    
 
     node
+        .on('mouseover', mouseoverimage)
         .on('mouseout', function (d) {
             if (!mousedown_node || d === mousedown_node) return;
             // unenlarge target node
@@ -34,10 +34,8 @@ console.log("runtime");
             //restart();
         })
         .on('mouseup', function (d) {
-
-            
             if (!mousedown_node) return;
-            if (d.type == "switch") {
+            if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
                 //show a warning message in order to inform that the connection to a destination switch is not allowed.
                 //http request to OpenNaaS
@@ -54,35 +52,21 @@ console.log("Click on node " + d.id);
                 resetMouseVars();
                 return;
             }
-            // unenlarge target node
-//            d3.select(this).attr('transform', '');
-console.log("MouseUp Click");
             // add link to graph (update if exists)
             // NB: links are strictly source < target; arrows separately specified by booleans
-            var source, target, direction;
-            if (mousedown_node.id < mouseup_node.id) {
-                source = mousedown_node;
-                target = mouseup_node;
-                direction = 'right';
-            } else {
-                source = mouseup_node;
-                target = mousedown_node;
-                direction = 'left';
-            }
-console.log("Source h " + source.id + " Dest h " + target.id);
-            var link;
-            link = links.filter(function (l) {
-                return (l.source === source && l.target === target);
-            })[0];
+            var source, target;
+            source = mousedown_node;
+            target = mouseup_node;
 
-            if (link) {
-                link[direction] = true;
-            }
+console.log("Source " + source.id + " to Dest " + target.id);
+            var link;
+            link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
+
             //request to OpenNaaS
             swNode = nodes.filter(function (n) {return n.id === source.SW; });
-//            var returnedR0outes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
-             returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
-console.log(returnedRoutes);
+            var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
+//             returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
+    if( typeof returnedRoutes !== 'undefined' ){
             for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
                 var obj = returnedRoutes[i];
                  for(var key in obj){
@@ -95,19 +79,18 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
                         highlight(dest1.ip);
                     }
                     link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
-                    link[direction] = true;
 console.log(link);
                     links.push(link);
-console.log(source.ip);
                     source = dest1;
                 }
             }
+        }
             d3.selectAll('.link2').attr('d', 'M0,0L0,0'); //Remove the requested path
 
             // select new link
             selected_link = link;
             selected_node = null;
-            update();
+            updateLinks();
         });
 
 }
@@ -123,9 +106,9 @@ function mousemove() {
 svg.on('mousedown', mousedown)
     .on('mousemove', mousemove)
     .on('mouseup', mouseup);
-d3.select(window)
-    .on('keydown', keydown)
-    .on('keyup', keyup);
+//d3.select(window)
+//    .on('keydown', keydown)
+//    .on('keyup', keyup);
 
 //The same
 
@@ -166,28 +149,31 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
 
 /**
  * Highlight the rows according to the requested route
- * @param {type} word
+ * @param {type} word to search in the route table
  * @returns {undefined}
  */
 function highlight(word){
     var table = document.getElementById('jsonTable');
-    var tbody = table.getElementsByTagName('tbody')[0];
-    var items = tbody.getElementsByTagName('tr');
-    var tds = null;
+    if ( table.getElementsByTagName('tr').length > 1 ){
+        var tbody = table.getElementsByTagName('tbody')[0];
+        var items = tbody.getElementsByTagName('tr');
+        var tds = null;
 
-    for (var j = 0; j < items.length; j++) {
-        tds = items[j].getElementsByTagName('td');
-        for (var i = 0; i < tds.length-1; i++) {
-            if(tds[i].innerHTML === word){
-                table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-            }else if(inSubNet(word, tds[i].innerHTML)){
-                table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+        for (var j = 0; j < items.length; j++) {
+            tds = items[j].getElementsByTagName('td');
+            for (var i = 0; i < tds.length-1; i++) {
+                if(tds[i].innerHTML === word){
+                    table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+                }else if(inSubNet(word, tds[i].innerHTML)){
+                    table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+                }
             }
         }
     }
 }
 
 function mouseoverimage(){
+console.log("Mouseover");
     $('svg image').tipsy({
         fade: true,
         html: true, 
@@ -195,7 +181,7 @@ function mouseoverimage(){
         title: function() {
             var d = this.__data__;
             var info ="<b>Id:</b> "+d.id+"<br>";
-            if(d.type != "host"){
+            if(d.type !== "host"){
                 info +="<b>DPID:</b> "+d.dpid+"<br>";
                 info +="<b>Controller:</b> "+d.controller+"<br>";
             } else {

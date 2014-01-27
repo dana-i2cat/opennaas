@@ -3,8 +3,8 @@
  *
  */
 var file = 'animation';//this javascript file corresponds to a animation page
-var counterStream = 0;//counter used in the animation of video streaming
 document.getElementById("ui-id-3").className += " ui-state-highlight";
+var counterStream = 0;//counter used in the animation of video streaming
 // line displayed when dragging new nodes
 var drag_line = svg.append('svg:path')
     .attr('class', 'link2 dragline hidden')
@@ -69,20 +69,20 @@ function streamPacket(returnedRoutes){
  */
 function sortReturnedRoutes(routes){
     var newRoute = [];
-    var node = {}
+    var node = {};
     var set = true;
     newRoute.push({ip: routes[0]['ip']});
 
-    var nodeSrc = nodes.filter(function (n) {return n.ip === routes[0]['ip']})[0];
+    var nodeSrc = nodes.filter(function (n) {return n.ip === routes[0]['ip']; })[0];
     var nodeDst;
     var type;
 
     for (var j = 1; j < routes.length; ++j) {//each node where the packet goes through
         if ( routes[j]['dpid'] ){
-            nodeDst = nodes.filter(function (n) {return n.dpid === routes[j]['dpid']})[0];
+            nodeDst = nodes.filter(function (n) {return n.dpid === routes[j]['dpid'];})[0];
             type = "dpid";
         }else{
-            nodeDst = nodes.filter(function (n) {return n.ip === routes[j]['ip']})[0];
+            nodeDst = nodes.filter(function (n) {return n.ip === routes[j]['ip'];})[0];
             type = "ip";
         }
         for ( var i = 0; i < links.length; i++){//find the dest node given a source node. Initial node is the source host
@@ -114,7 +114,7 @@ function sortReturnedRoutes(routes){
  * @returns {Array|arraymove.arr}
  */
 function arraymove(arr, fromIndex, toIndex) {
-    var element = arr[fromIndex]
+    var element = arr[fromIndex];
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
     return arr;

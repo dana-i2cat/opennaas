@@ -14,8 +14,8 @@ svg:not(.active):not(.ctrl) {
 
 path.link {
   fill: none;
-    cursor: default !important;
-  stroke: orange;
+  cursor: default !important;
+  stroke: #009E26;
   stroke-width: 4px;
   cursor: default;
 }
@@ -79,7 +79,7 @@ text.id {
 
 .link {
 	fill: none;
-	stroke: orange;
+	stroke: #009E26;
 	stroke-width: 4px;
 	cursor: default;
 }
@@ -90,6 +90,7 @@ stroke: #ccc; stroke-width: 2px; stroke-dasharray: 3, 3;
 .node text {
   pointer-events: none;
   font: 12px sans-serif;
+  font-weight: bold;
 }
 
 .link2 {
