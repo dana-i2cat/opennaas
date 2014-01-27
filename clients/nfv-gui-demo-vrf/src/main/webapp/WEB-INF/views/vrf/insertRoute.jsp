@@ -128,13 +128,15 @@
     var ipDestDialog = "";
     
     var defer = $.Deferred();//allows to return values using dialogs. --> synchronous
-    var ipSrc = $( "#ipSrc" ).val();
-    var ipDest = $( "#ipDest" ).val();
+    var ipSrc = $( "#dialogIpSrc" ).val();
+    var ipDest = $( "#dialogIpDest" ).val();
+console.log(ipDest);    
     var srcValid = true;
     var dstValid = true;
     
     function insertIpDialog(newLink, originLink){
-console.log(newLink);
+var ipDest = $( "#dialogIpDest" ).val();
+console.log(ipDest);        
         allFields = $( [] ).add( name );
         tips = $( ".validateTips" );
 //Obtain the source Ip of the graph. Only in the case that one of the selected nodes is a host. If not (is a switch), doesn't save anything...
@@ -151,8 +153,9 @@ console.log(newLink);
             }
         }
 console.log("IpSource "+ipSrc);
+
         document.getElementById('dialogIpSrc').value = ipSrc;//recover the IP value, obtained from graph, or from html tag (input) (saved before)
-        document.getElementById('dialogIpDest').value = ipSrc;
+        document.getElementById('dialogIpDest').value = ipDest;
         $( "#insertRouteIp" ).dialog({
             autoOpen: true,
             height: 300,
@@ -164,12 +167,15 @@ console.log("IpSource "+ipSrc);
             modal: true,
             buttons: {
                 "Create Route": function() {
+                    var ipDest = $( "#dialogIpDest" ).val(); 
+console.log("Create Route "+ipSrc+ " to "+ipDest);
                     srcValid = true;
                     dstValid = true;
 //                      allFields.removeClass( "ui-state-error" );
                     srcValid = checkIp(ipSrc);
                     dstValid = checkIp(ipDest);
-
+console.log(srcValid);
+console.log(dstValid);
                     if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
                         ipSrcDialog = ipSrc;
                         ipDestDialog = ipDest;
@@ -179,7 +185,7 @@ console.log("IpSource "+ipSrc);
                         insertManualLink(newLink, originLink, ipSrcDialog, ipDestDialog);
                         $( this ).dialog( "close" );
                     }
-
+console.log("End")                    ;
                 },
                 Cancel: function() {             
                     removeLastLink();//remove last link inserted (push) and remove the dragged line
@@ -227,12 +233,12 @@ console.log(ipSrc);
     }
 
     /**
-     * Insert manual link given the ip src/dst and port src/dst
-     *
+     * 
      * @param {type} newLink
      * @param {type} originLink
      * @param {type} ipSrc
      * @param {type} ipDst
+     * @returns {undefined}
      */
     function insertManualLink(newLink, originLink, ipSrc, ipDst){
 console.log(originLink);

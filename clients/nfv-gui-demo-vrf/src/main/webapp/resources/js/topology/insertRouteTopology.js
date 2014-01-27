@@ -17,8 +17,7 @@ var mode = auto;//man - auto
 var manualType = "Point-to-point";//Point-to-point or End-to-end
 var originNode = null;
 var activeNode = null;
-var sourceIp;
-var destinationIp;
+var sourceIp, destinationIp;
 var stackRoute = new Array();
 var manualPath = [];//manual path end-to-end
 
@@ -27,9 +26,6 @@ function runtime(node) {
         .on('mouseover', function (d) {
             if(mode === auto && activeNode !== null)
                 showPath(d.id_num);
-        })
-        .on('mouseout', function (d) {
-            if (!mousedown_node || d === mousedown_node) return;
         })
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
@@ -65,7 +61,6 @@ function runtime(node) {
         .on('mouseup', function (d) {    
             if ( d.id_num === activeNode) return;
             if (!mousedown_node) return;
-console.log("MouseUp on node " + d.id);
             // needed by FF
             drag_line
                 .classed('hidden', true)
@@ -80,7 +75,7 @@ console.log("MouseUp on node " + d.id);
             source = mousedown_node;
             target = mouseup_node;
          
-console.log("Source h " + source.id+" Dest h " + target.id);
+console.log("MouseUp on node " + d.id+" Source h " + source.id+" Dest h " + target.id);
             var originLink;//Link that match with source <-> target
             var newLink;//New defined link (this should includes CSS changes)
 

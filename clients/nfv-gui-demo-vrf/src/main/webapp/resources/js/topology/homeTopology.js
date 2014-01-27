@@ -7,11 +7,6 @@ var file = "home";
 function runtime(node) {
 
     node
-        .on('mouseout', function (d) {
-            if (!mousedown_node || d === mousedown_node) return;
-            // unenlarge target node
-            //            d3.select(this).attr('transform', '');//put the nodes at [0,0]
-        })
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
             if (d.type === "switch")
@@ -72,9 +67,7 @@ legend.append("text")
     .attr("x", 34)
     .attr("y", 10)
     .attr("dy", ".35em")
-    .text(function (d) {
-        return d.label;
-    });
+    .text(function (d) { return d.label; });
 
 var rectangleData = [{ "x": legend_x - 20, "y": legend_y - 20, 
                         "rx": 20, "ry": 20, "height": 0, "width": legend_width + 30 }];
@@ -83,7 +76,7 @@ var rectangles = svg.selectAll("rect")
     .enter()
     .append("rect")
     .attr("x", function (d) {return d.x;})
-    .attr("y", function (d) {return d.y +200;})
+    .attr("y", function (d) {return d.y + 200;})
     .attr("rx", function (d) {return d.rx;})
     .attr("ry", function (d) {return d.ry;})
     .attr("height", function (d) {return d.height;})
@@ -91,9 +84,7 @@ var rectangles = svg.selectAll("rect")
     .style("fill", "blue").style("stroke", "black")
     .style("stroke-width", 2).style("fill-opacity", 0.1).style("stroke-opacity", 0.9)
     .style("cursor", "pointer")
-    .on('mousedown', function () {
-        toggleHideLegend();
-    });
+    .on('mousedown', function () { toggleHideLegend(); });
 
 legendLink = svg.append("foreignObject")
     .attr("x", legend_x+100).attr("y", legend_y+140)

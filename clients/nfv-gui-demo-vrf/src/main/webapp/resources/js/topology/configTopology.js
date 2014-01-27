@@ -9,15 +9,9 @@ document.getElementById("ui-id-4").className += " ui-state-highlight";
 function runtime(node, links) {
 
     node
-        .on('mouseover', mouseoverimage)
-        .on('mouseout', function (d) {
-            if (!mousedown_node || d === mousedown_node) return;
-            // unenlarge target node
-            //            d3.select(this).attr('transform', '');
-        })
+        .on('mouseover', mouseOverImage)
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
-            console.log("Mousedown");
             // select node
             mousedown_node = d;
             if (mousedown_node === selected_node) selected_node = null;
@@ -66,24 +60,24 @@ console.log("Source " + source.id + " to Dest " + target.id);
             swNode = nodes.filter(function (n) {return n.id === source.SW; });
             var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
 //             returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
-    if( typeof returnedRoutes !== 'undefined' ){
-            for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
-                var obj = returnedRoutes[i];
-                 for(var key in obj){
+            if( typeof returnedRoutes !== 'undefined' ){
+                for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
+                    var obj = returnedRoutes[i];
+                     for(var key in obj){
 console.log("Json key: "+key+" Json value: "+obj[key]);
-                    dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
-                    if(key === "dpid"){
                         dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
-                    }else if (key === "ip"){
-                        dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
-                        highlight(dest1.ip);
-                    }
-                    link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
+                        if(key === "dpid"){
+                            dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                        }else if (key === "ip"){
+                            dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
+                            highlight(dest1.ip);
+                        }
+                        link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
 console.log(link);
-                    links.push(link);
-                    source = dest1;
+                        links.push(link);
+                        source = dest1;
+                    }
                 }
-            }
         }
             d3.selectAll('.link2').attr('d', 'M0,0L0,0'); //Remove the requested path
 
@@ -92,11 +86,13 @@ console.log(link);
             selected_node = null;
             updateLinks();
         });
-
 }
 
+/**
+ * Show the black line
+ * @returns {undefined}
+ */
 function mousemove() {
-    console.log("MouseMove");
     if (!mousedown_node) return;
     // update drag line
     drag_line.attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + d3.mouse(this)[0] + ',' + d3.mouse(this)[1]);
@@ -106,11 +102,6 @@ function mousemove() {
 svg.on('mousedown', mousedown)
     .on('mousemove', mousemove)
     .on('mouseup', mouseup);
-//d3.select(window)
-//    .on('keydown', keydown)
-//    .on('keyup', keyup);
-
-//The same
 
 /**
  * Call OpenNaaS get Route Table
@@ -172,10 +163,9 @@ function highlight(word){
     }
 }
 
-function mouseoverimage(){
-console.log("Mouseover");
+function mouseOverImage(){
     $('svg image').tipsy({
-        fade: true,
+        fade: false,
         html: true, 
         gravity: 'w', 
         title: function() {

@@ -16,10 +16,8 @@
     <table id="jsonTable" class="tablesorter"></table>
     <script>
         var text = "<input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAll()' type='button' value='Remove all table' name='Remove all table'/>";
-        var jsonRoutes = '${json}';
-        if( jsonRoutes != 'OpenNaaS is not started' && 
-            JSON.stringify(jsonRoutes.routeTable) !=  '[]'){
-            
+        var jsonRoutes = ${json};
+        if( JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !==  '[]'){
             $('#jsonTable').after(text);
         }
     </script>

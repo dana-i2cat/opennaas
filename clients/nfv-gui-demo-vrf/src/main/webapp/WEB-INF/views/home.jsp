@@ -30,21 +30,20 @@
         document.getElementById("Port").innerHTML ='<b>Controller Port: </b>';
 //        document.getElementById("Status").innerHTML ='<b>Status: </b>';
 
-removeFlowAll();
+        removeFlowAll();
         $.ajax({
-		type: "GET",
-		url: "getInfoSw/"+dpid,
-		success: function(data) {
-			$('#ajaxUpdate').html(data);    
-                        var json = convertXml2JSon(data);
-data = "";                        
-console.log(data);
-console.log(json);                        
-                        var jsonHtmlTable = ConvertJsonToFlowTable(json, 'jsonFlowTable', null, 'Go to');
+            type: "GET",
+            url: "getInfoSw/"+dpid,
+            success: function(data) {
+                $('#ajaxUpdate').html(data);    
+                var json = convertXml2JSon(data);
+                data = "";                        
+
+                var jsonHtmlTable = ConvertJsonToFlowTable(json, 'jsonFlowTable', null, 'Go to');
 //                        var status = getStatusCtrl(dpid);
 console.log(jsonHtmlTable);
-                        document.getElementById("jsonFlowTable").innerHTML = jsonHtmlTable;
-		}
+                document.getElementById("jsonFlowTable").innerHTML = jsonHtmlTable;
+            }
 	});
         document.getElementById("DPID").innerHTML ='<b>DPID: </b>'+dpid;
         document.getElementById("IP").innerHTML ='<b>Controller IP: </b>'+controller.split(":")[0];

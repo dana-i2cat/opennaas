@@ -54,7 +54,6 @@ d3.json("", function (error, json) {
 });
 
 function update(){
-console.log("Update image");
     /* Links between switches and hosts */
     link = link.data(links);
     link.classed('selected', function (d) {return d === selected_link;})
@@ -175,7 +174,7 @@ console.log("Update links");
 
 // update force layout (called automatically each iteration)
 function tick() {
-    console.log("tinck");
+console.log("tinck");
 
 /*        node.attr('transform', function (d) {
         return 'translate(' + d.x + ',' + d.y + ')';
@@ -205,7 +204,7 @@ function spliceLinksForNode(node) {
 }
 
 function mousedown() {
-    console.log("MouseDown");
+console.log("MouseDown");
     // because :active only works in WebKit?
 //    svg.classed('active', true);
 //

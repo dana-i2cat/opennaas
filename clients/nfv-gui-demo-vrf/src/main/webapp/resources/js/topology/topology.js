@@ -22,8 +22,7 @@ var nodes = [
     {id_num: 11, id: "h4", type: "host", reflexive: false, fixed: true, x: node_x*6+20, y: node_y+180, ip: "192.168.4.4", SW: "SW4", port: 5},
     {id_num: 12, id: "h5", type: "host", reflexive: false, fixed: true, x: node_x*9+20, y: node_y+180, ip: "192.168.5.5", SW: "SW5", port: 5},
     {id_num: 13, id: "h6", type: "host", reflexive: false, fixed: true, x: node_x*12+10, y: node_y+180, ip: "192.168.6.6", SW: "SW5", port: 5},
-    {id_num: 14, id: "h7", type: "host", reflexive: false, fixed: true, x: node_x*16, y: node_y, ip: "192.168.7.7", SW: "SW7", port: 5}
-],
+    {id_num: 14, id: "h7", type: "host", reflexive: false, fixed: true, x: node_x*16, y: node_y, ip: "192.168.7.7", SW: "SW7", port: 5}],
 controllers = [
     {id_num: 0, id: "Ctrl1", type: "controller", controller: "controllersVM:8191", reflexive: false, fixed: true, x: sw_x*2, y: 10},
     {id_num: 1, id: "Ctrl2", type: "controller", controller: "controllersVM:8192", reflexive: false, fixed: true, x: sw_x*3+50, y: 150},
