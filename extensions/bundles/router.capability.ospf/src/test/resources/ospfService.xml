@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ospfService>
     <ospfArea>
-        <name>0.0.0.0</name>
+        <areaId>0.0.0.0</areaId>
         <ospfProtocolEndpoint>
             <name>fe-0/3/3.1</name>
             <enabledState>ENABLED</enabledState>

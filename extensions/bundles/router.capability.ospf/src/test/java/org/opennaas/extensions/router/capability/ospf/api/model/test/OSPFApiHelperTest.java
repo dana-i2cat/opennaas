@@ -1,5 +1,26 @@
 package org.opennaas.extensions.router.capability.ospf.api.model.test;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: OSPF capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -15,14 +36,16 @@ import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class OSPFApiHelperTest {
 
 	private final static String	ENDPOINT_1_NAME	= "endpoint1";
 	private final static String	ENDPOINT_2_NAME	= "endpoint2";
 
-	private final static String	OSPF_AREA_1		= "ospfArea1";
-	private final static String	OSPF_AREA_2		= "ospfArea2";
+	private final static String	OSPF_AREA_1		= "0.0.0.0";
+
+	private final static String	OSPF_AREA_2		= "10.10.0.0";
 
 	@Test
 	public void buildOSPFProtocolEndpointWrapperTest() {
@@ -75,13 +98,13 @@ public class OSPFApiHelperTest {
 		area.addEndpointInArea(ospfEndpoint2);
 
 		OSPFAreaWrapper areaWrapper = OSPFApiHelper.buildOSPFAreaWrapper(area);
-		Assert.assertEquals(area.getName(), areaWrapper.getName());
+		Assert.assertEquals(String.valueOf(area.getAreaID()), areaWrapper.getAreaID());
 		Assert.assertEquals(2, areaWrapper.getOspfProtocolEndpoints().size());
 		Assert.assertEquals(area.getEndpointsInArea().size(), areaWrapper.getOspfProtocolEndpoints().size());
 	}
 
 	@Test
-	public void buildOSPFServiceWrapperTest() {
+	public void buildOSPFServiceWrapperTest() throws IOException {
 
 		OSPFService service = new OSPFService();
 		OSPFAreaConfiguration areaConfig1 = new OSPFAreaConfiguration();
@@ -104,13 +127,14 @@ public class OSPFApiHelperTest {
 
 	}
 
-	private OSPFArea generateOSPFArea(String name) {
+	private OSPFArea generateOSPFArea(String areaId) throws IOException {
 
 		OSPFProtocolEndpointBase ospfEndpoint1 = generateOSPFEndpoint(ENDPOINT_1_NAME, EnabledState.ENABLED);
 		OSPFProtocolEndpointBase ospfEndpoint2 = generateOSPFEndpoint(ENDPOINT_2_NAME, EnabledState.DISABLED);
 
 		OSPFArea area = new OSPFArea();
-		area.setName(name);
+
+		area.setAreaID(IPUtilsHelper.ipv4StringToLong(areaId));
 		area.addEndpointInArea(ospfEndpoint1);
 		area.addEndpointInArea(ospfEndpoint2);
 
