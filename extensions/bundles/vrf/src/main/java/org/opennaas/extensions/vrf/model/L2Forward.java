@@ -31,12 +31,12 @@ public class L2Forward {
         this.dpid = macAddress;
     }
 
-    public String getMacAddress() {
+    public String getDPID() {
         return dpid;
     }
 
-    public void setMacAddress(String macAddress) {
-        this.dpid = macAddress;
+    public void setDPID(String dpid) {
+        this.dpid = dpid;
     }
 
     public List<String> getListPorts() {

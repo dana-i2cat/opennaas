@@ -2,11 +2,13 @@ package org.opennaas.extensions.sdnnetwork.capability.ofprovision;
 
 import java.util.Collection;
 import java.util.UUID;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.ModelElementNotFoundException;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -227,4 +229,22 @@ public class OFProvisioningNetworkCapability extends AbstractCapability implemen
 	public String getMapDeviceResource(String deviceId) throws CapabilityException {
 		return ((SDNNetworkModel) resource.getModel()).getDeviceResourceMap().get(deviceId);
 	}
+
+        @Override
+        public Response getMapDevices() throws CapabilityException {
+            return Response.ok(((SDNNetworkModel) resource.getModel()).getDeviceResourceMap()).build();
+        }
+                
+        @Override
+        public String getNameDevice(String deviceId) throws CapabilityException {
+            String resourceName = null;
+            String resId = getMapDeviceResource(deviceId);
+            try {
+                resourceName = Activator.getResourceManagerService().getNameFromResourceID(resId);
+            } catch (ActivatorException ex) {
+            } catch (ResourceException ex) {
+            }
+  
+            return resourceName;
+        }
 }

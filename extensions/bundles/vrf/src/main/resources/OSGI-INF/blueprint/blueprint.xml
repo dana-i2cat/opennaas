@@ -8,9 +8,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 <!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
     <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
   
-    <bean id="routing" class="org.opennaas.extensions.vrf.capability.routing.RoutingCapability"/>
+    <bean id="routing" class="org.opennaas.extensions.vrf.capability.RoutingCapability"/>
   
-    <service ref="routing" interface="org.opennaas.extensions.vrf.capability.routing.IRoutingCapability">
+    <service ref="routing" interface="org.opennaas.extensions.vrf.capability.IRoutingCapability">
         <service-properties>
             <!-- Rest -->
             <entry key="service.exported.interfaces" value="*"/>

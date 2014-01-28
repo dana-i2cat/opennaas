@@ -1,21 +1,22 @@
 package org.opennaas.extensions.vrf.utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.apache.commons.io.IOUtils;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
@@ -47,27 +48,6 @@ public class Utils {
             }
         }
         return sb.toString();
-    }
-
-    /**
-     * Accepts an IPv4 address of the form xxx.xxx.xxx.xxx, ie 192.168.0.1 and
-     * returns the corresponding byte array.
-     *
-     * @param ipAddress The IP address in the form xx.xxx.xxx.xxx.
-     * @return The IP address separated into bytes
-     */
-    public static byte[] StringIPv4toBytes(String ipAddress) {
-        String[] octets = ipAddress.split("\\.");
-        if (octets.length != 4) {
-            throw new IllegalArgumentException("Specified IPv4 address must"
-                    + "contain 4 sets of numerical digits separated by periods");
-        }
-
-        byte[] result = new byte[4];
-        for (int i = 0; i < 4; ++i) {
-            result[i] = Integer.valueOf(octets[i]).byteValue();
-        }
-        return result;
     }
 
     /**
@@ -107,10 +87,7 @@ public class Utils {
      * @return
      */
     public static boolean isIPv4Address(String ipAddress) {
-        if (ipAddress.contains(":")) {
-            return false;
-        }
-        return true;
+        return !ipAddress.contains(":");
     }
 
     public static String tryToCompressIPv6(String ipv6) {
@@ -260,137 +237,6 @@ public class Utils {
     }
 
     /**
-     * Prepare the json that should be send to the controller (Floodlight)
-     *
-     * @param name
-     * @param dpid
-     * @param destIp
-     * @param ethertype
-     * @param output
-     * @return The json formed
-     */
-    public static String createJson(String name, String dpid, String destIp, String ethertype, int output) {
-        return "{\"name\":\"" + name + "\", "
-                + "\"switch\": \"" + dpid + "\", "
-                + "\"priority\":\"32767\", "
-                + "\"dst-ip\":\"" + destIp + ", "
-                + "\"ether-type\":\"" + ethertype + "\", "
-                + "\"active\":\"true\", "
-                + "\"actions\":\"output=" + output + "\"}";
-    }
-
-    /**
-     * Prepare the json that should be send to the controller (Floodlight). With
-     * the ingress port
-     *
-     * @param name
-     * @param dpid
-     * @param destIp
-     * @param ethertype
-     * @param ingress
-     * @param output
-     * @return The json formed
-     */
-    public static String createJson(String name, String dpid, String destIp, String ethertype, int ingress, int output) {
-        return "{\"name\":\"" + name + "\", "
-                + "\"switch\": \"" + dpid + "\", "
-                + "\"priority\":\"32767\", "
-                + "\"ingress-port\":\"" + ingress + ", "
-                + "\"dst-ip\":\"" + destIp + ", "
-                + "\"ether-type\":\"" + ethertype + "\", "
-                + "\"active\":\"true\", "
-                + "\"actions\":\"output=" + output + "\"}";
-    }
-
-    /**
-     * HttpRequest in order to insert a new flow. The flow in json format.
-     *
-     * @param Url
-     * @param json
-     */
-    public static void putFlowHttpRequest(String Url, String json) {
-        try {
-            URL url = new URL(Url);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-            wr.write(json);
-            wr.flush();
-            wr.close();
-            conn.connect();
-            conn.getResponseCode();
-        } catch (UnknownHostException e) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, "Url is null. Maybe the controllers are not registred.", e);
-        } catch (Exception ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * HttpRequest to the controller in order to remove a specific flow
-     *
-     * @param uri
-     * @param flow
-     * @return
-     */
-    public static String removeHttpRequest(String uri, String flow, String flowName) {
-        String response = "";
-        try {
-            URL url = new URL(uri + "/wm/staticflowentrypusher/json");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            // override HTTP method allowing sending body
-            connection.setRequestProperty("X-HTTP-Method-Override", "DELETE");
-            connection.setDoOutput(true);
-
-            // prepare body
-            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-            wr.write(flow);
-            wr.flush();
-            wr.close();
-            // get HTTP Response
-            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
-            if (!response.equals("{\"status\" : \"Entry " + flowName + " deleted\"}")) {
-                try {
-                    throw new Exception("Invalid response: " + response);
-                } catch (Exception ex) {
-                    Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } catch (IOException e) {
-
-        }
-        return response;
-    }
-
-    /**
-     * Remove all flow entries of the specified switch (dpid)
-     *
-     * @param uri
-     * @param dpid
-     * @return status
-     */
-    public static String removeAllHttpRequest(String uri, String dpid) {
-        String response = "";
-        try {
-            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/" + dpid + "/json");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-
-            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-            wr.flush();
-            wr.close();
-            response = IOUtils.toString(connection.getInputStream(), "UTF-8");
-
-        } catch (IOException e) {
-
-        }
-        return response;
-    }
-
-    /**
      * Mapping VRFRoute to Route used by SDN-OF module of OpenNaaS Layer3 to
      * layer2
      *
@@ -402,10 +248,10 @@ public class Utils {
 //        netCon.setId();//internal-id, nom del flow que guarda el floodlight
         netCon.setName(String.valueOf(route.getId()));//user friendly name
         Port port = new Port();
-        port.setDeviceId(route.getSwitchInfo().getMacAddress());
+        port.setDeviceId(route.getSwitchInfo().getDPID());
         port.setPortNumber(String.valueOf(route.getSwitchInfo().getInputPort()));
         netCon.setSource(port);
-        port.setDeviceId(route.getSwitchInfo().getMacAddress());
+        port.setDeviceId(route.getSwitchInfo().getDPID());
         port.setPortNumber(String.valueOf(route.getSwitchInfo().getOutputPort()));
         netCon.setDestination(port);
         return netCon;
@@ -418,7 +264,7 @@ public class Utils {
      * @param route
      * @return
      */
-    public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route) {
+    public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route, String etherType) {
         FloodlightOFFlow flow = new FloodlightOFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();
@@ -426,7 +272,7 @@ public class Utils {
         FloodlightOFAction action = new FloodlightOFAction();
         match.setSrcIp(route.getSourceAddress());
         match.setDstIp(route.getDestinationAddress());
-        match.setEtherType(null);
+        match.setEtherType(etherType);
 //        match.setIngressPort(String.valueOf(route.getSwitchInfo().getInputPort()));
 
         action.setType(FloodlightOFAction.TYPE_OUTPUT);
@@ -435,9 +281,57 @@ public class Utils {
         flow.setActions(listActions);
         flow.setActive(true);
         flow.setMatch(match);
-        flow.setName(String.valueOf(route.getId()));
-        flow.setSwitchId(route.getSwitchInfo().getMacAddress());
+        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
+        flow.setSwitchId(route.getSwitchInfo().getDPID());
 
         return flow;
+    }
+
+    /**
+     * Copy InputStream to OutputStream (file).
+     * @param is
+     * @param os
+     * @throws IOException 
+     */
+    public static void copyStream(InputStream is, OutputStream os) throws IOException {
+        int BUFFER_SIZE = 16384;
+        byte[] buf = new byte[BUFFER_SIZE];
+        while (true) {
+            int len = is.read(buf);
+            if (len == -1) {
+                return;
+            }
+            os.write(buf, 0, len);
+        }
+    }
+
+    /**
+     * To convert the InputStream to String we use the Reader.read(char[]
+     * buffer) method. We iterate until the Reader return -1 which means there's
+     * no more data to read. We use the StringWriter class to produce the
+     * string.
+     * @param is
+     * @return The string that contains the value of the inputstream
+     * @throws IOException
+     */
+    public static String convertStreamToString(InputStream is) throws IOException {
+        int BUFFER_SIZE = 1024;
+        if (is != null) {
+            Writer writer = new StringWriter();
+
+            char[] buffer = new char[BUFFER_SIZE];
+            try {
+                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                int n;
+                while ((n = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, n);
+                }
+            } finally {
+                is.close();
+            }
+            return writer.toString();
+        } else {
+            return "";
+        }
     }
 }

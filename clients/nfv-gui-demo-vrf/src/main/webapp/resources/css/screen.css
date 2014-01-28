@@ -57,6 +57,7 @@ a img {
 /* typography.css */
 html {
 	font-size: 100.01%;
+        height: 100%;
 }
 
 body {
@@ -64,6 +65,8 @@ body {
 	color: #222;
 	background: #fff;
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+        position: relative;
+        min-height: 100%;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -221,7 +224,7 @@ thead th {
 }
 
 th,td,caption {
-	padding: 4px 10px 4px 5px;
+	padding: 4px 5px 4px 5px;
 }
 
 tr.even td {
@@ -405,7 +408,7 @@ input.error {
 
 /* grid.css */
 .container {
-	width: 950px;
+	width: 1000px;
 	margin: 15px auto;
 }
 

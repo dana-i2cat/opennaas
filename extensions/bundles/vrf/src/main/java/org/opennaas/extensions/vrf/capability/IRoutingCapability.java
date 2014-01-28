@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vrf.capability.routing;
+package org.opennaas.extensions.vrf.capability;
 
 import java.io.InputStream;
 import javax.ws.rs.Consumes;
@@ -50,6 +50,7 @@ public interface IRoutingCapability {
      * @param switchDPID
      * @param inputPort
      * @param outputPort
+     * @param lifeTime
      * @return status
      */
     @Path("/route")
@@ -59,7 +60,8 @@ public interface IRoutingCapability {
             @FormParam("ipDest") String ipDest,
             @FormParam("switchDPID") String switchDPID,
             @FormParam("inputPort") int inputPort,
-            @FormParam("outputPort") int outputPort);
+            @FormParam("outputPort") int outputPort,
+            @FormParam("lifeTime") int lifeTime);
 
     /**
      * Remove route given id of the route and the IP version
@@ -84,7 +86,7 @@ public interface IRoutingCapability {
      * @param outputPort
      * @return status
      */
-    @Path("/route")
+    @Path("/routeParam")
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     public Response removeRoute(@FormParam("ipSource") String ipSource,
@@ -125,19 +127,18 @@ public interface IRoutingCapability {
     public Response getRoutes(@PathParam("version") int version);
 
     /**
-     * Insert Routes from file
+     * Insert Routes from json file
      *
      * @param fileName The name of the file
      * @return Status of the request.
      */
     @Path("/insertRouteFromFile/{fileName}")
     @POST
-    @Consumes("application/octet-stream")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response insertRouteFile(
-            @PathParam("fileName") String fileName/*, 
-            InputStream viDescription*/);
+    public Response insertRouteFile(@PathParam("fileName") String fileName, InputStream viDescription);
 
+    /* ------------- DEMO ------------- */
     /**
      * Used in demonstrations. Request a log from OpenNaaS in order to see the route requests events.
      * @return 
@@ -146,4 +147,15 @@ public interface IRoutingCapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getLog();
+    
+    /**
+     * Send the path
+     * @return 
+     */
+    @Path("/stream")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getStream();
+   
+    /* ------------- DEMO ------------- */
 }

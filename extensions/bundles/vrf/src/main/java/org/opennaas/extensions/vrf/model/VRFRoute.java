@@ -1,8 +1,8 @@
 package org.opennaas.extensions.vrf.model;
 
-import org.opennaas.extensions.vrf.utils.Utils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.vrf.utils.Utils;
 /**
  *
  * @author Josep Batallé (josep.batalle@i2cat.net)
@@ -13,7 +13,7 @@ public class VRFRoute {
     private String sourceAddress;
     private String destinationAddress;
     private L2Forward switchInfo;
-    private Long timeToLive;
+    private long lifeTime;
 
     public VRFRoute(){
         
@@ -23,6 +23,13 @@ public class VRFRoute {
         this.sourceAddress = sourceIp;
         this.destinationAddress = destIp;
         this.switchInfo = SwitchInfo;
+    }
+    
+    public VRFRoute(String sourceIp, String destIp, L2Forward SwitchInfo, long lifeTime) {
+        this.sourceAddress = sourceIp;
+        this.destinationAddress = destIp;
+        this.switchInfo = SwitchInfo;
+        this.lifeTime = lifeTime;
     }
     
     public int getId() {
@@ -58,11 +65,11 @@ public class VRFRoute {
     }
 
     public Long getTimeToLive() {
-        return timeToLive;
+        return lifeTime;
     }
 
     public void setTimeToLive(Long timeToLive) {
-        this.timeToLive = timeToLive;
+        this.lifeTime = timeToLive;
     }
 
     @Override
@@ -82,7 +89,7 @@ public class VRFRoute {
         if(!Utils.netMatch(thisDst, otherDst)){
                 return false;
         }
-        if (this.switchInfo.getMacAddress() != other.switchInfo.getMacAddress() && (this.switchInfo.getMacAddress() == null || !this.switchInfo.getMacAddress().equals(other.switchInfo.getMacAddress()))) {
+        if (this.switchInfo.getDPID() != other.switchInfo.getDPID() && (this.switchInfo.getDPID() == null || !this.switchInfo.getDPID().equals(other.switchInfo.getDPID()))) {
             return false;
         }
         return true;
@@ -97,6 +104,11 @@ public class VRFRoute {
         return hash;
     }
 
+    /**
+     * Try to match Subnet addr with destination addr.
+     * @param obj
+     * @return 
+     */
     public boolean equalsOtherRoutes(Object obj) {
         if (obj == null) {
             return false;
