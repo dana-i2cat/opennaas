@@ -25,4 +25,29 @@ public class OSPFServiceWrapper implements Serializable {
 		this.ospfAreas = ospfAreas;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ospfAreas == null) ? 0 : ospfAreas.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OSPFServiceWrapper other = (OSPFServiceWrapper) obj;
+		if (ospfAreas == null) {
+			if (other.ospfAreas != null)
+				return false;
+		} else if (!ospfAreas.equals(other.ospfAreas))
+			return false;
+		return true;
+	}
+
 }

@@ -4,11 +4,11 @@
         <name>0.0.0.0</name>
         <ospfProtocolEndpoint>
             <name>fe-0/3/3.1</name>
-            <enabledState>true</enabledState>
+            <enabledState>ENABLED</enabledState>
         </ospfProtocolEndpoint>
         <ospfProtocolEndpoint>
             <name>fe-0/3/3.2</name>
-            <enabledState>false</enabledState>
+            <enabledState>DISABLED</enabledState>
         </ospfProtocolEndpoint>
     </ospfArea>
 </ospfService>

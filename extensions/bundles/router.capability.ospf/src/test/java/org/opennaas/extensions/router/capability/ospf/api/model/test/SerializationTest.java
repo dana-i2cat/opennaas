@@ -3,6 +3,7 @@ package org.opennaas.extensions.router.capability.ospf.api.model.test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -16,6 +17,7 @@ import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.router.capability.ospf.api.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capability.ospf.api.OSPFProtocolEndpointWrapper;
 import org.opennaas.extensions.router.capability.ospf.api.OSPFServiceWrapper;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.xml.sax.SAXException;
 
 public class SerializationTest {
@@ -26,8 +28,8 @@ public class SerializationTest {
 	public void OSPFServiceSerializationTest() throws SerializationException, IOException, SAXException, TransformerException,
 			ParserConfigurationException {
 
-		OSPFProtocolEndpointWrapper pE1 = generateProtocolEndpointWrapper("fe-0/3/3.1", true);
-		OSPFProtocolEndpointWrapper pE2 = generateProtocolEndpointWrapper("fe-0/3/3.2", false);
+		OSPFProtocolEndpointWrapper pE1 = generateProtocolEndpointWrapper("fe-0/3/3.1", EnabledState.ENABLED);
+		OSPFProtocolEndpointWrapper pE2 = generateProtocolEndpointWrapper("fe-0/3/3.2", EnabledState.DISABLED);
 		Collection<OSPFProtocolEndpointWrapper> endpoints = new ArrayList<OSPFProtocolEndpointWrapper>();
 		endpoints.add(pE1);
 		endpoints.add(pE2);
@@ -65,12 +67,12 @@ public class SerializationTest {
 		Collection<OSPFProtocolEndpointWrapper> protocolEndpoints = ospfArea.getOspfProtocolEndpoints();
 		Assert.assertEquals(2, protocolEndpoints.size());
 
-		OSPFProtocolEndpointWrapper pE = protocolEndpoints.iterator().next();
-		Assert.assertTrue((pE.getName().equals("fe-0/3/3.1") && pE.isEnabled()) || (pE.getName().equals("fe-0/3/3.2") && !pE.isEnabled()));
+		Iterator<OSPFProtocolEndpointWrapper> iterator = protocolEndpoints.iterator();
+		OSPFProtocolEndpointWrapper pE = iterator.next();
 
-		OSPFProtocolEndpointWrapper pE2 = protocolEndpoints.iterator().next();
-		Assert.assertTrue((pE2.getName().equals("fe-0/3/3.1") && pE2.isEnabled()) || (pE2.getName().equals("fe-0/3/3.2") && !pE2.isEnabled()));
-
+		OSPFProtocolEndpointWrapper pE2 = iterator.next();
+		Assert.assertTrue((pE.getName().equals("fe-0/3/3.1") && pE.getEnabledState().equals(EnabledState.ENABLED) || (pE2.getName().equals(
+				"fe-0/3/3.2") && pE2.getName().equals(EnabledState.DISABLED))));
 	}
 
 	private OSPFAreaWrapper generateAreaWrapper(String name, Collection<OSPFProtocolEndpointWrapper> endpoints) {
@@ -82,7 +84,7 @@ public class SerializationTest {
 		return area;
 	}
 
-	private OSPFProtocolEndpointWrapper generateProtocolEndpointWrapper(String name, boolean enabled) {
+	private OSPFProtocolEndpointWrapper generateProtocolEndpointWrapper(String name, EnabledState enabled) {
 
 		OSPFProtocolEndpointWrapper pE = new OSPFProtocolEndpointWrapper();
 
