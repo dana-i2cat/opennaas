@@ -32,6 +32,7 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.ManagedSystemElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
@@ -84,6 +85,24 @@ public class ModelHelper {
 
 		InetAddress address = Inet4Address.getByAddress(bytes);
 		return address.getHostAddress();
+	}
+
+	/**
+	 * Returns a list of Logical Routers given a Router model
+	 * 
+	 * @param computerSystem
+	 * @return
+	 */
+	public static List<ComputerSystem> getLogicalRouters(ComputerSystem computerSystem) {
+		List<ComputerSystem> list = new ArrayList<ComputerSystem>();
+
+		for (ManagedSystemElement systemElement : computerSystem.getManagedSystemElements()) {
+			if (systemElement instanceof ComputerSystem) {
+				list.add((ComputerSystem) systemElement);
+			}
+		}
+
+		return list;
 	}
 
 	public static VRRPGroup copyVRRPConfiguration(VRRPGroup vrrpGroup) {
