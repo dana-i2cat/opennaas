@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class Switch {

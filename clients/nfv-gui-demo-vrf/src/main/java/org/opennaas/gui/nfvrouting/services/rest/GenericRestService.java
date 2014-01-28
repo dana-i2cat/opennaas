@@ -8,15 +8,20 @@ import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * @author Jordi
  */
 public abstract class GenericRestService {
 
-	private static final Logger						LOGGER	= Logger.getLogger(GenericRestService.class);
+	private static final Logger LOGGER	= Logger.getLogger(GenericRestService.class);
 
 	@Autowired
 	private ReloadableResourceBundleMessageSource	configSource;
@@ -37,7 +42,7 @@ public abstract class GenericRestService {
 	/**
 	 * Check if response code is between 200 and 299
 	 * 
-	 * @param code
+         * @param response
 	 * @return true if response code is between 200 and 299
 	 * @throws RestServiceException
 	 */
@@ -53,4 +58,14 @@ public abstract class GenericRestService {
 		}
 		return true;
 	}
+        
+         /**
+         * Add HTTP Basic Authentication header to REST call using current Authentication object stored in Spring Security SecurityContextHolder
+         * 
+         * @param client
+         */
+        protected void addHTTPBasicAuthentication(Client client) {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                client.addFilter(new HTTPBasicAuthFilter(authentication.getName(), (String) authentication.getCredentials()));
+        }
 }

@@ -1,7 +1,6 @@
 package org.opennaas.gui.nfvrouting.entities;
 
 /**
- *
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class ControllerInfo {
@@ -33,5 +32,4 @@ public class ControllerInfo {
     public void setMacAddress(String dpid) {
         this.dpid = dpid;
     }
-    
 }

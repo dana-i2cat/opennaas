@@ -1,0 +1,58 @@
+svg {
+    background-color: #FFF;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+svg:not(.active):not(.ctrl) {
+    cursor: default;
+}
+
+svg:not(.active):not(.ctrl) path.link {
+    cursor: pointer;
+}
+
+.node text {
+    pointer-events: none;
+    font: 12px sans-serif;
+    font-weight: bold;
+}
+/* Color node text*/
+.id_txt_sw{
+    fill: #000000;
+}
+.id_txt_host{
+    fill: #ff0000;
+}
+
+*.host{
+    /*  cursor: default;*/
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.link {
+    fill: none;
+    stroke: #009E26;
+    stroke-width: 4px;
+    cursor: default;
+}
+.linkCtrl {
+    stroke: #ccc; 
+    stroke-width: 2px; 
+    stroke-dasharray: 3, 3;
+}
+
+.link2 {
+    fill: none;
+    stroke: #000;
+    stroke-width: 4px;
+    cursor: default;
+}

@@ -11,22 +11,39 @@ h1 {
 ----------------------------------*/
 .container #menu {
 	float: left;
-	width: 200px;
+/*	width: 200px;*/
 	margin-top: 0px;
+//        border-bottom-right-radius: 4px;
+}
+#nav {
+/*    float: left;*/
+    border: 0;
+    margin: auto;
+    width: 40%;
+    padding-top: 3px;
+}
+#nav li{
+    padding-right: 6px;
+}
+#nav li span{
+    background-image: url(ui-lightness/images/ui-icons_222222_256x240.png);
+    background-position: -63px 2px;
 }
 
 .container #body {
-	float: left;
-	width: 750px;
-	min-height: 310px;
+    float: left;
+    width: 100%;//750px
+    min-height: 310px;
 }
 
 .container #footer {
 /*	margin: 300px auto 0px auto;*/
-	width: 500px;
-	float: left;
-	position: relative;
-	left: 25%;
+    width: 100%;
+    float: left;
+    position: absolute;
+    bottom: 0;
+    height: 60px;
+    left: 0px;
 }
 
 /* Header styles
