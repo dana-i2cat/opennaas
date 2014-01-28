@@ -21,13 +21,28 @@ VRF - OpenNaaS Custom CSS
     width:65%;
     margin-left: 5px;/*remove when we show the topology*/
 }
+
+.flowTable {
+    width: 10px;
+}
 #legend-link{
     text-decoration: none;
     color: gray;
 }
-.flowTable {
-    width: 10px;
+
+.legendRect{
+    fill:blue;
+    stroke: black;
+    stroke-width: 2;
+    fill-opacity: 0.1;
+    stroke-opacity: 0.9;
+    cursor: pointer;
 }
+.legendLink body{
+    background: none;
+    font: 14px 'Helvetica Neue';
+}
+
 /* Config Routes view */
 #config_topology {
     width:62%;
@@ -46,6 +61,10 @@ VRF - OpenNaaS Custom CSS
 #insert_info{
     width:28%;
 }
+#insertRouteInfo{
+    padding: 10px;
+    width: 28%;
+}
 /* Animation view */
 #animaton_topology{
     width:100%;
@@ -56,18 +75,15 @@ VRF - OpenNaaS Custom CSS
     position: relative;
     bottom: 20px;
 }
-input#ipSrc {
-    width: 115px;
+#log{
+    font-size: 20px;
+    background:black;
+    color:white;
+    min-height:200px;
+    width:100%;
+    margin:0 auto;
 }
-input#ipDest {
-    width: 115px;
-}
-input#dialogIpSrc {
-    width: 115px;
-}
-input#dialogIpDest {
-    width: 115px;
-}
+
 /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
    with position:fixed. Width, height, top and left speak
@@ -82,9 +98,9 @@ input#dialogIpDest {
     height:     100%;
     width:      100%;
     background: rgba( 255, 255, 255, .8 ) 
-                url('http://i.stack.imgur.com/FhHRx.gif') 
-                50% 50% 
-                no-repeat;
+        url('http://i.stack.imgur.com/FhHRx.gif') 
+        50% 50% 
+        no-repeat;
 }
 
 /* When the body has the loading class, we turn
@@ -108,8 +124,7 @@ body.loading .modal {
 }
 
 .menu .ui-menu-item.selected > .ui-state-focus,
-.menu .ui-menu-item.selected > .ui-state-active
-{
+.menu .ui-menu-item.selected > .ui-state-active{
     background-color: red ;
     background-image: none;
 }
@@ -118,48 +133,59 @@ body.loading .modal {
     width: 120px;
 }
 
-
 /** Scrollable table */
-
 .outer {
-position:relative;
-padding:4em 0 3em 0;
-width: 100%;
-margin:0 auto 3em auto;
+    position:relative;
+    padding:4em 0 0 0;
 }
 .innera {
-overflow:auto;
-width: 100%;
-height:400px;
-}
-.outer table caption {
-position:absolute;
-width:51.7em;
-text-align:center;
-top:0;
-left:0;
-height:1.5em;
+    overflow:auto;
+    width: 100%;
+    height: 300px;
 }
 .outer thead tr {
-position:absolute;
-top:1.5em;
-height:1.5em;
-left:0;
+    position:absolute;
+    top:1.5em;
+    height:1.5em;
+    left:0;
 }
 .outer tfoot td {
-position:absolute;
-width:51.5em;
-text-align:center;
-background:#f0c992; 
-bottom:0;
-left:0
+    position:absolute;
+    width:51.5em;
+    text-align:center;
+    background:#f0c992; 
+    bottom:0;
+    left:0
 }
 .outer th, .outer td {
-width:10em; 
-text-align:left;
+    width:10em; 
+    text-align:left;
 }
-.outer th {
-    
+
+/* Input form */
+input.ipInput {
+    width: 8em;
 }
-.outer .dk {background:#fff;
+.macInput{
+    width: 11em;
+}
+.portInput{
+    width: 2em;
+}
+.controllerPort{
+    width: 2.5em;
+}
+#jsonTable thead {
+    cursor: pointer;
+}
+.addRouteButton{
+    float:right;
+    margin-right: 26px;
+}
+.addCtrlInfoButton{
+    float:right;
+    margin-right: 65px;
+}
+#submitUpdateConfig{
+    float: right;
 }

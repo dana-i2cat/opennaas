@@ -26,7 +26,7 @@ function ConvertJsonToRouteTable(parsedJson, tableId, tableClassName, linkText) 
         headers[0] = "Id";
         headers[1] = "Src IP";
         headers[2] = "Dst IP";
-        headers[3] = "DPID";
+        headers[3] = "Switch";
         headers[4] = "Action";
 
         for (i = 0; i < headers.length; i++)
@@ -50,7 +50,10 @@ function ConvertJsonToRouteTable(parsedJson, tableId, tableClassName, linkText) 
                     tbCon += tdRow.format(parsedJson.routeTable[i]['sourceAddress']);
                     tbCon += tdRow.format(parsedJson.routeTable[i]['destinationAddress']);
 //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].inputPort);
-                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].dpid.substr(21));
+//                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].dpid.substr(21));
+                    var dpid = parsedJson.routeTable[i]['switchInfo'].dpid;
+                    var switchId = nodes.filter(function (d) {return (d.dpid === dpid ); })[0].id;
+                    tbCon += tdRow.format(switchId);
 //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
                     tbCon += tdRowHide.format(parsedJson.routeTable[i]['switchInfo'].dpid);
 console.log(parsedJson.routeTable[i]);

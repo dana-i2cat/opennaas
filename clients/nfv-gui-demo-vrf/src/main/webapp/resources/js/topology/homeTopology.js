@@ -5,13 +5,13 @@
 var file = "home";
 
 function runtime(node) {
-
     node
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
-            if (d.type === "switch")
+            if (d.type === "switch"){
                 getFlowTable(d.dpid);
-            updateSwInfoTxt(d.dpid, getControllerInfo(d.controller));
+                updateSwInfoTxt(d.dpid, getControllerInfo(d.controller));
+            }
             // select node
             mousedown_node = d;
             if (mousedown_node === selected_node) selected_node = null;
@@ -75,25 +75,22 @@ var rectangles = svg.selectAll("rect")
     .data(rectangleData)
     .enter()
     .append("rect")
+    .attr("class", "legendRect")
     .attr("x", function (d) {return d.x;})
     .attr("y", function (d) {return d.y + 200;})
     .attr("rx", function (d) {return d.rx;})
     .attr("ry", function (d) {return d.ry;})
     .attr("height", function (d) {return d.height;})
     .attr("width", function (d) {return d.width;})
-    .style("fill", "blue").style("stroke", "black")
-    .style("stroke-width", 2).style("fill-opacity", 0.1).style("stroke-opacity", 0.9)
-    .style("cursor", "pointer")
     .on('mousedown', function () { toggleHideLegend(); });
 
 legendLink = svg.append("foreignObject")
     .attr("x", legend_x+100).attr("y", legend_y+140)
+    .attr("class", "legendLink")
     .attr("width", 100)
     .attr("height", 60)
     .append("xhtml:body")
-    .style("background", "none")
-    .style("font", "14px 'Helvetica Neue'")
-    .html("<a id='legend-link' style='background: none; text-decoration: none;color: gray;' href='javascript:toggleHideLegend()'>Legend</a>");
+    .html("<a id='legend-link' href='javascript:toggleHideLegend()'>Legend</a>");
     
 function toggleHideLegend(){
     if ( hidden ) {

@@ -112,7 +112,6 @@ console.log(link);
 
             selected_node = null;
             updateLinks();
-            mousedown();
             mouseup();
             cleanDrag();//remove the visual connection
         });
@@ -127,8 +126,7 @@ function mousemove() {
 }
 
 // app starts here
-svg.on('mousedown', mousedown)
-    .on('mousemove', mousemove)
+svg.on('mousemove', mousemove)
     .on('mouseup', mouseup);
 
 /**
@@ -304,10 +302,6 @@ function removeLastLink(){
 console.log(lastLink);
     var element = document.getElementById(lastLink.id);
     element.parentNode.removeChild(element);
-    
-//    cleanDrag();
-//    clearPath();
-//    updateLinks();
 }
 
 /**
@@ -322,15 +316,12 @@ function change(ref) {
         document.getElementById('manualType').style.display = 'inline-block';
         if( getManualType() === "End-to-end" ){
             document.getElementById('insertRouteInfo').style.display = 'inline-block';
-            document.getElementById('insertRouteInfo').style.width = '27%';
-            document.getElementById('insertRouteInfo').style.padding = '10px';
         }
      }else{
         mode = auto;
         document.getElementById('manualType').style.display = 'none';
         document.getElementById('insertRouteInfo').style.display = 'none';
-    }
-    
+    }    
     ref.value= mode;
     setActive(null);
 }
@@ -344,7 +335,6 @@ function toggleManualType(ref){
     if ( manualType === "Point-to-point" ){
         manualType = "End-to-end";
         document.getElementById('insertRouteInfo').style.display = 'inline-block';
-        document.getElementById('insertRouteInfo').style.padding = '10px';
     } else {
         manualType = "Point-to-point";
         document.getElementById('insertRouteInfo').style.display = 'none';

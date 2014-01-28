@@ -11,6 +11,9 @@
 <div id="header_logo">
     <img src="<c:url value="/resources/images/opennaas-orange-150.png" />" height= "99px" width= "150px" alt="OpenNaaS Logo">
 </div>
+<script>
+    var urlVar = "<c:url value="/resources/images" />";
+</script>
 <div id="header_title">
     <h1><spring:message code="header.title"/></h1>
 </div>	

@@ -4,14 +4,13 @@
 var auto = "Automatic";
 var man = "Manual";
 
-var switchImage = "/nfv-gui-demo-vrf/resources/images/topology/switch2.png";
-var hostImage = "/nfv-gui-demo-vrf/resources/images/topology/laptop.png";
-var controllerImage = "/nfv-gui-demo-vrf/resources/images/topology/controller2.png";
-var packetImage = "/nfv-gui-demo-vrf/resources/images/topology/movie_tape.gif";
-var linkImage = "/nfv-gui-demo-vrf/resources/images/topology/link_green.png";
+var switchImage = urlVar+"/topology/switch2.png";//urlVar obtained in header!
+var hostImage = urlVar+"/topology/laptop.png";
+var controllerImage = urlVar+"/topology/controller2.png";
+var packetImage = urlVar+"/topology/movie_tape.gif";
+var linkImage = urlVar+"/topology/link_green.png";
 
 // set up SVG for D3
-/*for each type of view, different size? */
 var width = 700,
     height = 447,
     colors = d3.scale.category10();
@@ -23,9 +22,8 @@ var width = 700,
 var svg = d3.select('#chart')
     .append('svg')
     .attr('width', width)
-    .attr('height', height)
-/*.on('click', cleanDrag())*/
-;
+    .attr('height', height);
+/*.on('click', cleanDrag());*/
 
 // init D3 force layout
 var force = d3.layout.force()
@@ -36,7 +34,6 @@ var force = d3.layout.force()
     .charge(-500)
     .on('tick', tick);
 
-/////////////////////
 /**
  * Drawing topology (nodes, links, controllers)
  */
@@ -93,7 +90,12 @@ function update(){
         .attr('height', 50)
         .attr('xlink:href', function (d) {return controllerImage;});
 
-    /* Drawin nodes (switchs and hosts) */
+    /* Drawing nodes (switchs and hosts) */
+    var node_x = "-30", node_y = "-30";
+    var node_width = "75", node_height = "75";
+    var node_width_big = "100", node_height_big = node_height;
+    var node_txt_x_sw = "-24", node_txt_y_sw = "9";
+    var node_txt_x_h = "-10", node_txt_y_h = "30";
     node = node.data(nodes);
     node.enter().append("g")
         .attr("class", "node")
@@ -102,23 +104,22 @@ function update(){
     node.append("image")
         .attr('class', function (d) {return d.type;})
         .attr('id', function (d) {return d.id;})
-        .attr("x", -30)
-        .attr("y", -30)
+        .attr("x", node_x)
+        .attr("y", node_y)
         .attr("width", 75)
         .attr('height', function (d) { return (d.type === "switch") ? "75" : "45";})
         .attr('xlink:href', function (d) { return (d.type === "switch") ? switchImage : hostImage;})
         .on('mouseup', function (d) {
-console.log("BASE MouseUp");
-            d3.selectAll(".switch").attr("width", 75); //image big
-            d3.selectAll(".host").attr("width", 75).attr("height", 45); //image big
-            d3.selectAll(".id_txt_sw").attr("x", "-24").attr("y", "9");
-            d3.selectAll(".id_txt_host").attr("x", "-10").attr("y", "30");
-            d3.select(this).attr("width", 100).attr("height", 75); //image big
+            d3.selectAll(".switch").attr("width", node_width); //image normal
+            d3.selectAll(".host").attr("width", node_width).attr("height", 45); //image normal
+            d3.selectAll(".id_txt_sw").attr("x", node_txt_x_sw).attr("y", node_txt_y_sw);
+            d3.selectAll(".id_txt_host").attr("x", node_txt_x_h).attr("y", node_txt_y_h);
+            d3.select(this).attr("width", node_width_big).attr("height", node_height_big); //image big
 
             if (d.type === "switch")
-                d3.select("#" + d.id + "_text").attr("x", "-15").attr("y", "12"); //move text
+                d3.select("#" + d.id + "_text").attr("x", -15).attr("y", 12); //move text when big
             else if (d.type === "host")
-                d3.select("#" + d.id + "_text").attr("x", "-9").attr("y", "55"); //move text
+                d3.select("#" + d.id + "_text").attr("x", -9).attr("y", 55); //move text when big
             if (!mousedown_node) return;
             if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
@@ -135,9 +136,8 @@ console.log("BASE MouseUp");
         .attr('class', function (d) { return (d.type === "switch") ? 'id_txt_sw' : "id_txt_host";})
         .attr("dx", 12)
         .attr("dy", function (d) { return (d.type === "switch") ? "1.10em" : ".30em";})
-        .style('fill',  function (d) { return (d.type === "switch") ? "black" : "red";})
-        .attr('x',  function (d) { return (d.type === "switch") ? "-23" : "-10";})
-        .attr('y', function (d) { return (d.type === "switch") ? "9" :  "30";})
+        .attr('x',  function (d) { return (d.type === "switch") ? node_txt_x_sw : node_txt_x_h;})
+        .attr('y', function (d) { return (d.type === "switch") ? node_txt_y_sw :  node_txt_y_h;})
         .text(function (d) { return d.id;});
 
     node.attr("transform", function (d) {
@@ -176,9 +176,6 @@ console.log("Update links");
 function tick() {
 console.log("tinck");
 
-/*        node.attr('transform', function (d) {
-        return 'translate(' + d.x + ',' + d.y + ')';
-    });*/
 }
 
 // mouse event vars
@@ -203,29 +200,9 @@ function spliceLinksForNode(node) {
     });
 }
 
-function mousedown() {
-console.log("MouseDown");
-    // because :active only works in WebKit?
-//    svg.classed('active', true);
-//
-//    if (d3.event.ctrlKey || mousedown_node || mousedown_link) return;
-//
-//    // insert new node at point
-//    var point = d3.mouse(this),
-//        node = {
-//            id: ++lastNodeId,
-//            reflexive: false
-//        };
-//    node.x = point[0];
-//    node.y = point[1];
-    //nodes.push(node);
-    //    restart();
-}
-
-
 function mouseup() {
 console.log("MouseUp");
-    if (mousedown_node && file != "home") {
+    if (mousedown_node) {
         drag_line
             .classed('hidden', true)
             .style('marker-end', '');

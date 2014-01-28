@@ -8,20 +8,18 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<script src="<c:url value="/resources/js/topology/jquery.tipsy.js" />"></script>
-<link rel="stylesheet" href="<c:url value="/resources/css/topology/tipsy.css" />" type="text/css">
-	
 <div id="config_routeTable" class="ui-widget-content ui-corner-all routTable padding">
     <h3>Configured routes</h3>
     <div class="outer">
 	<div class="innera">
-    <table id="jsonTable" class="tablesorter"></table>
-        </div></div>
+            <table id="jsonTable" class="tablesorter"></table>
+        </div>
+    </div>
     <script>
-        var text = "<input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAll()' type='button' value='Remove all table' name='Remove all table'/>";
+        var text = "<input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAll()' type='button' value='Clean table' name='Clean table'/>";
         var jsonRoutes = ${json};
         if( JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !==  '[]'){
-            $('#jsonTable').after(text);
+            $('.outer').after(text);
         }
     </script>
 </div>

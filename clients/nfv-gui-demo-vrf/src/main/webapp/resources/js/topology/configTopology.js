@@ -7,7 +7,6 @@ document.getElementById("ui-id-1").className += " ui-state-highlight";
 document.getElementById("ui-id-4").className += " ui-state-highlight";
 
 function runtime(node, links) {
-
     node
         .on('mouseover', mouseOverImage)
         .on('mousedown', function (d) {
@@ -35,7 +34,6 @@ function runtime(node, links) {
                 //http request to OpenNaaS
                 return;
             }
-console.log("Click on node " + d.id);
             // needed by FF
             drag_line
                 .classed('hidden', true)
@@ -73,7 +71,6 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
                             highlight(dest1.ip);
                         }
                         link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
-console.log(link);
                         links.push(link);
                         source = dest1;
                     }
@@ -99,8 +96,7 @@ function mousemove() {
 
 }
 // app starts here
-svg.on('mousedown', mousedown)
-    .on('mousemove', mousemove)
+svg.on('mousemove', mousemove)
     .on('mouseup', mouseup);
 
 /**

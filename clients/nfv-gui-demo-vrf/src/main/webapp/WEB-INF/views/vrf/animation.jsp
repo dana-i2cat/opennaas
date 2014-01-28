@@ -14,7 +14,7 @@
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
 <script src="<c:url value="/resources/js/topology/animation.js" />"></script>
 <script>
-$.ajax({
+    $.ajax({
         type: 'GET',
         url : "getStreamInfo/",
         async: false,
@@ -29,7 +29,7 @@ $.ajax({
 
 <div id="animation_log" class="ui-widget-content ui-corner-all padding">
     <h3>Log OpenNaaS</h3>
-    <div id="log" class="ui-corner-all" align="center" style="font-size:20px;background:black;color:white;min-height:200px;width:100%;margin:0 auto;"></div>
+    <div id="log" class="ui-corner-all" align="center"></div>
 
 <script>
     setInterval(function(){ 

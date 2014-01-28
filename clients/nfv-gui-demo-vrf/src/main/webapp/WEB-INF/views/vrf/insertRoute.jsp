@@ -21,10 +21,10 @@
     <form>
         <fieldset>
             <label for="name">Source IP:</label>
-            <input type="text" name="ipSrc" id="ipSrc" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="ipSrc" id="ipSrc" class="ipInput text ui-widget-content ui-corner-all" value=""/>
             <br/>
             <label for="name">Destination IP:</label>
-            <input type="text" name="ipDest" id="ipDest" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="ipDest" id="ipDest" class="ipInput text ui-widget-content ui-corner-all" value=""/>
         </fieldset>
         <input style="margin-right: 11.5px" class="addRouteButton" onClick="insertPath()" type="button" value="Insert Routes" name="addDefaultValues"/>
     </form>
@@ -277,10 +277,10 @@ console.log(stackRoute);
     <form>
         <fieldset>
             <label for="name">Source IP:</label>
-            <input type="text" name="ipSrc" id="dialogIpSrc" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="ipSrc" id="dialogIpSrc" class="ipInput text ui-widget-content ui-corner-all" value=""/>
             <br/>
             <label for="name">Destination IP:</label>
-            <input type="text" name="ipDest" id="dialogIpDest" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="ipDest" id="dialogIpDest" class="ipInput text ui-widget-content ui-corner-all" value=""/>
         </fieldset>
     </form>
 </div>

@@ -17,12 +17,13 @@
 			<link rel="stylesheet" href="opennaas/resources/css/ie.css" type="text/css" >
 		<![endif]-->
 	<link rel="stylesheet" href="<c:url value="/resources/css/ui-lightness/jquery-ui-1.10.0.custom.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/opennaas.css" />" type="text/css"><link rel="stylesheet" href="<c:url value="/resources/css/routing.css" />" type="text/css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/opennaas.css" />" type="text/css">
         <!-- VRF CSS -->
         <link rel="stylesheet" href="<c:url value="/resources/css/vrf.css" />" type="text/css">
         <!-- Topology graph d3js CSS -->
         <link rel="stylesheet" href="<c:url value="/resources/css/topology/topology.css" />" type="text/css">
-	
+        <link rel="stylesheet" href="<c:url value="/resources/css/topology/tipsy.css" />" type="text/css">
+        
         <!-- Javascript -->
 	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui-1.10.0.custom.js" />"></script>
@@ -43,6 +44,8 @@
         
         <script src="<c:url value="/resources/js/topology/topology.js" />"></script>
         <script src="<c:url value="/resources/js/topology/dijkstra.js" />"></script>
+        <!-- Tipsy js -->
+        <script src="<c:url value="/resources/js/topology/jquery.tipsy.js" />"></script>
 </head>
 <body>
 	<div class="container">
