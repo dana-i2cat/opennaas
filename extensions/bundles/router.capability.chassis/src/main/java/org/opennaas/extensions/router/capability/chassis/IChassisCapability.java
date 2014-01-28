@@ -23,12 +23,15 @@ package org.opennaas.extensions.router.capability.chassis;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capability.chassis.api.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -115,6 +118,23 @@ public interface IChassisCapability extends ICapability {
 	/*
 	 * Logical Routers
 	 */
+	/**
+	 * Returns a list of logical router names
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getLogicalRouters")
+	@Produces(MediaType.APPLICATION_XML)
+	public LogicalRoutersNamesList getLogicalRoutersNames();
+
+	/**
+	 * Returns a list of logical router
+	 * 
+	 * @return
+	 */
+	public List<ComputerSystem> getLogicalRouters();
+
 	/**
 	 * Creates a logical router.
 	 * 

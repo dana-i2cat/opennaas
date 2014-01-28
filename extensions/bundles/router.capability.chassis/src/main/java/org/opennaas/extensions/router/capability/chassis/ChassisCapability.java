@@ -35,6 +35,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.chassis.api.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
@@ -266,6 +267,23 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		IAction action = createActionAndCheckParams(ChassisActionSet.SET_VLANID, iface);
 		queueAction(action);
 		log.info("End of setEncapsulationLabel call");
+	}
+
+	@Override
+	public LogicalRoutersNamesList getLogicalRoutersNames() {
+		LogicalRoutersNamesList logicalRoutersNamesList = new LogicalRoutersNamesList();
+		logicalRoutersNamesList.setLogicalRouters(new ArrayList<String>());
+
+		List<ComputerSystem> lrList = getLogicalRouters();
+		for (ComputerSystem computerSystem : lrList) {
+			logicalRoutersNamesList.getLogicalRoutersNames().add(computerSystem.getName());
+		}
+
+		return logicalRoutersNamesList;
+	}
+
+	public List<ComputerSystem> getLogicalRouters() {
+		return ModelHelper.getLogicalRouters((ComputerSystem) resource.getModel());
 	}
 
 	/*
