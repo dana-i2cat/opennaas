@@ -334,16 +334,14 @@ public class RoutingCapability implements IRoutingCapability {
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
-//log.error("Route "+r.getSourceAddress()+" "+r.getDestinationAddress()+" "+r.getSwitchInfo().getDPID()+" "+r.getSwitchInfo().getInputPort()+" "+r.getSwitchInfo().getOutputPort());
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
-//                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
             }
         }
 
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             try {
-//log.error("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId());
+log.error("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId()+" "+listFlow.get(i).getActions().get(0).getType()+": "+listFlow.get(i).getActions().get(0).getValue());
 //                response = provisionLink(listFlow.get(i));
                 FloodlightOFFlow flow = listFlow.get(i);
                 flow.getMatch().setEtherType("2048");
@@ -362,7 +360,7 @@ public class RoutingCapability implements IRoutingCapability {
         return Response.ok(listFlow).build();
     }
 
-    private Response provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException, ActivatorException {
+    private Response provisionLink(FloodlightOFFlow flow) throws ResourceException, ActivatorException {
         log.info("Provision Flow Link Floodlight");
         String switchId = flow.getSwitchId();
         IResource resource = getResourceByName(switchId);

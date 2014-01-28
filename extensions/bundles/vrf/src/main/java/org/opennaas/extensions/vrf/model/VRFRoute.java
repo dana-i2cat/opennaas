@@ -1,8 +1,8 @@
 package org.opennaas.extensions.vrf.model;
 
-import org.opennaas.extensions.vrf.utils.Utils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.vrf.utils.Utils;
 /**
  *
  * @author Josep Batallé (josep.batalle@i2cat.net)
