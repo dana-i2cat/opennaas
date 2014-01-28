@@ -27,8 +27,8 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.ManagedSystemElement;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.capability.chassis.api.LogicalRoutersNamesList;
 
 @Command(scope = "chassis", name = "listLogicalRouters", description = "List all logical resources of a given resource.")
 public class ListLogicalRoutersCommand extends GenericKarafCommand {
@@ -63,21 +63,13 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 			}
 
 			IResource resource = manager.getResource(resourceIdentifier);
-
 			validateResource(resource);
 
-			// TODO implement force refresh of the router configuration
-			// maybe asking (parser) only for logical router information
-			//
-			ComputerSystem model = (ComputerSystem) resource.getModel();
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			LogicalRoutersNamesList namesList = chassisCapability.getLogicalRoutersNames();
 
-			// printInfo("Found " + model.getChildren().size() + " logical resources.");
-			for (ManagedSystemElement systemElement : model.getManagedSystemElements()) {
-
-				if (systemElement instanceof ComputerSystem) {
-
-					printSymbol(systemElement.getName());
-				}
+			for (String name : namesList.getLogicalRoutersNames()) {
+				printSymbol(name);
 			}
 
 		} catch (ResourceException e) {
