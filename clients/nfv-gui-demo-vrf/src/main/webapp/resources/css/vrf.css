@@ -49,6 +49,7 @@ VRF - OpenNaaS Custom CSS
 }
 #config_routeTable{
     width:35%;
+    margin-bottom: 55px;
 }
 /* Insert Routes view */
 #insert_topology {
@@ -57,6 +58,8 @@ VRF - OpenNaaS Custom CSS
 }
 #insert_routeTable{
     width:100%;
+    padding: 10px;
+    margin-bottom: 55px;
 }
 #insert_info{
     width:28%;
@@ -163,8 +166,15 @@ body.loading .modal {
 }
 
 /* Input form */
+.ipLabel{
+    float: left;
+}
 input.ipInput {
     width: 8em;
+    margin-top: -2px;
+}
+#insertRouteInfo input.ipInput{
+    float: right;
 }
 .macInput{
     width: 11em;

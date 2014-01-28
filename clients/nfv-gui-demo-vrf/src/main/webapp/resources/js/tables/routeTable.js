@@ -56,7 +56,6 @@ function ConvertJsonToRouteTable(parsedJson, tableId, tableClassName, linkText) 
                     tbCon += tdRow.format(switchId);
 //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
                     tbCon += tdRowHide.format(parsedJson.routeTable[i]['switchInfo'].dpid);
-console.log(parsedJson.routeTable[i]);
                     tbCon += tdRow.format("<input onclick='del(" + rowId + "); return false;' class='deleteButton' type='button' value='Delete'/>");
                     trCon += tr.format(tbCon);
                     tbCon = '';

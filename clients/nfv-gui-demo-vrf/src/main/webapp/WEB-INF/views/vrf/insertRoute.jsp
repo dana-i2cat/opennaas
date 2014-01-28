@@ -20,21 +20,19 @@
     <h3>Route information:</h3>
     <form>
         <fieldset>
-            <label for="name">Source IP:</label>
+            <label for="name" class="ipLabel">Source IP:</label>
             <input type="text" name="ipSrc" id="ipSrc" class="ipInput text ui-widget-content ui-corner-all" value=""/>
-            <br/>
-            <label for="name">Destination IP:</label>
+            <br/><br/>
+            <label for="name" class="ipLabel">Destination IP:</label>
             <input type="text" name="ipDest" id="ipDest" class="ipInput text ui-widget-content ui-corner-all" value=""/>
         </fieldset>
         <input style="margin-right: 11.5px" class="addRouteButton" onClick="insertPath()" type="button" value="Insert Routes" name="addDefaultValues"/>
     </form>
 </div>
 
-<div id="insert_routeTable" class="routeTable">
-    <h3>Route table Insert</h3>
-</div>
+<div id="insert_routeTable" class="routeTable ui-widget-content ui-corner-all">
+    <h3>Insert routes into table manually:</h3>
 
-<table id="jsonTable" class="tablesorter">
 
     <form:form modelAttribute="insertRoutes" name="frm" method="post" onSubmit="return Validate();"> 
         <div class="config4">
@@ -64,8 +62,7 @@
     </form:form>
     <br/><br/>
     <input style="margin-right: 11.5px" class="addRouteButton" onClick="fillDemo()" type="button" value="Default Values" name="addDefaultValues"/>
-</table> 
-
+</div>
 <script language="JavaScript" type="text/JavaScript">
     function deleteAll(table){
         this.table = document.getElementById(table);
@@ -276,10 +273,10 @@ console.log(stackRoute);
     <p class="validateTips">All form fields are required.</p>
     <form>
         <fieldset>
-            <label for="name">Source IP:</label>
+            <label for="name" class="ipLabel">Source IP:</label>
             <input type="text" name="ipSrc" id="dialogIpSrc" class="ipInput text ui-widget-content ui-corner-all" value=""/>
-            <br/>
-            <label for="name">Destination IP:</label>
+            <br/><br/>
+            <label for="name" class="ipLabel">Destination IP:</label>
             <input type="text" name="ipDest" id="dialogIpDest" class="ipInput text ui-widget-content ui-corner-all" value=""/>
         </fieldset>
     </form>

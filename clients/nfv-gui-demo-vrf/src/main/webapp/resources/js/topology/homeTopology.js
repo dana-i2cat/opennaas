@@ -30,7 +30,7 @@ legendData = [{"label": "Static link"},
             {"label": "OpenFlow Controller"},
             {"label": "Host"}];
 var legend_x = 500,
-    legend_y = 250,
+    legend_y = 270,
     legend_width = 150,
     legend_height = 120;
 var hidden = true;

@@ -36,3 +36,9 @@
 </script>
 
 <div class="modal"></div>
+
+<script>
+    if ( $(window).height() > 450 ){
+        $(".innera").height($(window).height() - 350);
+    }
+</script>
