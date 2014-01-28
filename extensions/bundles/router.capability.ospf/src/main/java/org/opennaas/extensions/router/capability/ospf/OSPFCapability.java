@@ -33,6 +33,8 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.ospf.api.OSPFApiHelper;
+import org.opennaas.extensions.router.capability.ospf.api.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -395,6 +397,15 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		}
 		log.info("End of showOSPFConfiguration call");
 		return ospfService;
+	}
+
+	@Override
+	public OSPFServiceWrapper readOSPFConfiguration() throws CapabilityException {
+		OSPFService ospfService = showOSPFConfiguration();
+
+		OSPFServiceWrapper ospfServiceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+
+		return ospfServiceWrapper;
 	}
 
 	/**
