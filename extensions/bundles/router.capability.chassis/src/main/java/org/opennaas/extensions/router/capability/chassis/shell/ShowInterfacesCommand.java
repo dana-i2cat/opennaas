@@ -28,7 +28,6 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
@@ -56,8 +55,8 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 			List<NetworkPort> interfaces = ModelHelper.getInterfaces(model);
 			printInterfaces(interfaces);
 
-			List<GREService> greServiceList = model.getAllHostedServicesByType(new GREService());
-			printGREServicesAsInterfaces(greServiceList);
+			List<ProtocolEndpoint> grePEPs = ModelHelper.getGREProtocolEndpoints(model);
+			printGREPEPsAsInterfaces(grePEPs);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -111,19 +110,16 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 
 	}
 
-	private void printGREServicesAsInterfaces(List<GREService> greServices) {
-		if (!greServices.isEmpty()) {
-			GREService greService = greServices.get(0);
-			for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+	private void printGREPEPsAsInterfaces(List<ProtocolEndpoint> grePEPs) {
+		for (ProtocolEndpoint pE : grePEPs) {
 
-				printSymbolWithoutDoubleLine("GRE INTERFACE: " + pE.getName());
+			printSymbolWithoutDoubleLine("GRE INTERFACE: " + pE.getName());
 
-				printSymbolWithoutDoubleLine(doubleTab + "STATE: " + pE.getOperationalStatus());
+			printSymbolWithoutDoubleLine(doubleTab + "STATE: " + pE.getOperationalStatus());
 
-				if (pE.getDescription() != null && !pE.getDescription().equals(""))
-					printSymbolWithoutDoubleLine(doubleTab + "description: " + pE.getDescription());
-				printSymbol("");
-			}
+			if (pE.getDescription() != null && !pE.getDescription().equals(""))
+				printSymbolWithoutDoubleLine(doubleTab + "description: " + pE.getDescription());
+			printSymbol("");
 		}
 	}
 }

@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -48,6 +49,17 @@ public class ModelHelper {
 			}
 		}
 		return ports;
+	}
+
+	public static List<ProtocolEndpoint> getGREProtocolEndpoints(System system) {
+		List<ProtocolEndpoint> greEps = new ArrayList<ProtocolEndpoint>();
+		List<GREService> greServices = system.getAllHostedServicesByType(new GREService());
+		// FIXME why do we use greServices.get(0) instead of iterating over all greServices?
+		if (!greServices.isEmpty()) {
+			GREService greService = greServices.get(0);
+			greEps.addAll(greService.getProtocolEndpoint());
+		}
+		return greEps;
 	}
 
 	public static long ipv4StringToLong(String ip) throws IOException {
