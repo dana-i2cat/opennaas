@@ -121,7 +121,7 @@ public class RequestToFlowsLogicTest {
 
 	@Test
 	public void requestWithToSTest() throws Exception {
-		int tos = 4;
+		int tos = 42;
 		int flowTos = tos / 4; // last 2 bits discarded
 
 		qosPolicyRequest.setLabel(String.valueOf(tos));
@@ -130,7 +130,7 @@ public class RequestToFlowsLogicTest {
 		for (NetOFFlow flow : flows) {
 			Assert.assertNotNull(flow);
 			Assert.assertNotNull(flow.getMatch());
-			Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
+			Assert.assertEquals(flowTos, Integer.parseInt(flow.getMatch().getTosBits()));
 			Assert.assertEquals("2048", flow.getMatch().getEtherType());
 		}
 		verify(pathFinder);
@@ -153,7 +153,7 @@ public class RequestToFlowsLogicTest {
 			Assert.assertNotNull(flow.getMatch());
 			Assert.assertEquals(srcIp, flow.getMatch().getSrcIp());
 			Assert.assertEquals(dstIp, flow.getMatch().getDstIp());
-			Assert.assertEquals(String.valueOf(flowTos), flow.getMatch().getTosBits());
+			Assert.assertEquals(flowTos, Integer.parseInt(flow.getMatch().getTosBits()));
 			Assert.assertEquals("2048", flow.getMatch().getEtherType());
 		}
 		verify(pathFinder);
