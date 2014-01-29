@@ -30,13 +30,16 @@
 				-->
 				<configuration>
 					<instructions>		
-					    	<Import-Package>!org.opennaas.extensions.router.capabilities.api.model,
-  							org.slf4j,
-							org.apache.felix.service.command,
-							*
+					    	<Import-Package>
+					    	    !org.opennaas.extensions.router.capabilities.api.model.*,
+					    	    !org.opennaas.extensions.router.capabilities.api.helper.*,					    	    
+  								org.slf4j,
+								org.apache.felix.service.command,
+								*
 							</Import-Package>				
 						<Export-Package>
-							org.opennaas.extensions.router.capabilities.api.model;version="${project.version}"
+							org.opennaas.extensions.router.capabilities.api.helper;version="${project.version}",
+							org.opennaas.extensions.router.capabilities.api.model.ospf;version="${project.version}"							
 						</Export-Package>
 					</instructions>
 				</configuration>

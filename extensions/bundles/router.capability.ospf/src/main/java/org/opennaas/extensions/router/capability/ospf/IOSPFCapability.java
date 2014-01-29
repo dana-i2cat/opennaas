@@ -23,12 +23,15 @@ package org.opennaas.extensions.router.capability.ospf;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
@@ -195,5 +198,10 @@ public interface IOSPFCapability extends ICapability {
 	 */
 	// TODO: export this method using rest too
 	public OSPFService showOSPFConfiguration() throws CapabilityException;
+
+	@Path("/readOSPFConfiguration")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public OSPFServiceWrapper readOSPFConfiguration() throws CapabilityException;
 
 }

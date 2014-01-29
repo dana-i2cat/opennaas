@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ospfService>
+    <ospfArea>
+        <areaId>0.0.0.0</areaId>
+        <ospfProtocolEndpoint>
+            <name>fe-0/3/3.1</name>
+            <enabledState>ENABLED</enabledState>
+        </ospfProtocolEndpoint>
+        <ospfProtocolEndpoint>
+            <name>fe-0/3/3.2</name>
+            <enabledState>DISABLED</enabledState>
+        </ospfProtocolEndpoint>
+    </ospfArea>
+</ospfService>
