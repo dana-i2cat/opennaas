@@ -36,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.api.helper.ResourceManagerAPIHelper;
 import org.opennaas.core.resources.api.model.ResourceListWrapper;
+import org.opennaas.core.resources.api.model.ResourceTypeListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
@@ -272,9 +273,13 @@ public class ResourceManager implements IResourceManager {
 	 * @return the available resource types
 	 */
 	@Override
-	public synchronized GenericListWrapper<String> getResourceTypesAPI() {
+	public synchronized ResourceTypeListWrapper getResourceTypesAPI() {
 
-		return new GenericListWrapper<String>(this.getResourceTypes());
+		ResourceTypeListWrapper wrapper = new ResourceTypeListWrapper();
+		wrapper.setResourcesTypes(this.getResourceTypes());
+
+		return wrapper;
+
 	}
 
 	/**

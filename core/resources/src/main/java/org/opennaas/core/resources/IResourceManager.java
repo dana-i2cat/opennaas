@@ -33,6 +33,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.api.model.ResourceListWrapper;
+import org.opennaas.core.resources.api.model.ResourceTypeListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
@@ -150,7 +151,7 @@ public interface IResourceManager {
 	@GET
 	@Path("/getResourceTypes")
 	@Produces(MediaType.APPLICATION_XML)
-	public GenericListWrapper<String> getResourceTypesAPI();
+	public ResourceTypeListWrapper getResourceTypesAPI();
 
 	/**
 	 * Returns a list of available resource types.
