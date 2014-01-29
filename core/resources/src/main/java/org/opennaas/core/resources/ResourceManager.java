@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.api.helper.ResourceManagerAPIHelper;
+import org.opennaas.core.resources.api.model.ResourceInfo;
 import org.opennaas.core.resources.api.model.ResourceListWrapper;
 import org.opennaas.core.resources.api.model.ResourceTypeListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -478,6 +479,15 @@ public class ResourceManager implements IResourceManager {
 		IResource resource = this.getResourceById(resourceId);
 
 		this.forceStopResource(resource.getResourceIdentifier());
+	}
+
+	@Override
+	public ResourceInfo getResourceInfoById(String resourceId) throws ResourceException {
+
+		IResource resource = this.getResourceById(resourceId);
+		ResourceInfo resourceInfo = ResourceManagerAPIHelper.buildResourceInfo(resource);
+
+		return resourceInfo;
 	}
 
 }

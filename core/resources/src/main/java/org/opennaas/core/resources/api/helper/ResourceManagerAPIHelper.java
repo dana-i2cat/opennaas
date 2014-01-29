@@ -23,10 +23,14 @@ package org.opennaas.core.resources.api.helper;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.api.model.ResourceInfo;
 import org.opennaas.core.resources.api.model.ResourceListWrapper;
+import org.opennaas.core.resources.capability.ICapability;
 
 /**
  * 
@@ -47,6 +51,29 @@ public abstract class ResourceManagerAPIHelper {
 		wrapper.setResources(resourcesIds);
 
 		return wrapper;
+	}
+
+	public static ResourceInfo buildResourceInfo(IResource resource) {
+
+		ResourceInfo resourceInfo = new ResourceInfo();
+
+		IResourceIdentifier resourceIdentifier = resource.getResourceIdentifier();
+
+		resourceInfo.setResourceId(resourceIdentifier.getId());
+		resourceInfo.setType(resourceIdentifier.getType());
+
+		resourceInfo.setState(resource.getState());
+		resourceInfo.setName(resource.getResourceDescriptor().getInformation().getName());
+
+		Collection<String> capabList = new ArrayList<String>();
+
+		List<? extends ICapability> capabilities = resource.getCapabilities();
+		for (ICapability capability : capabilities)
+			capabList.add(capability.getCapabilityName());
+
+		resourceInfo.setCapabilityNames(capabList);
+
+		return resourceInfo;
 	}
 
 }

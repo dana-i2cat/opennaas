@@ -33,6 +33,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.api.model.ResourceInfo;
 import org.opennaas.core.resources.api.model.ResourceListWrapper;
 import org.opennaas.core.resources.api.model.ResourceTypeListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -300,4 +301,8 @@ public interface IResourceManager {
 	@Produces(MediaType.APPLICATION_XML)
 	public ResourceListWrapper listResourcesNameByType(@PathParam("type") String type) throws ResourceException;
 
+	@GET
+	@Path("getResource/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceInfo getResourceInfoById(@PathParam("resourceId") String resourceId) throws ResourceException;
 }
