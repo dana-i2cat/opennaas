@@ -139,6 +139,11 @@ public interface IResourceManager {
 	 */
 	public List<IResource> listResources();
 
+	@Path("getResources")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceListWrapper listResourcesAPI();
+
 	/**
 	 * Returns a list of available resource types.
 	 */

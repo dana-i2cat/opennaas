@@ -453,4 +453,13 @@ public class ResourceManager implements IResourceManager {
 
 		return wrapper;
 	}
+
+	@Override
+	public ResourceListWrapper listResourcesAPI() {
+		List<IResource> resources = this.listResources();
+
+		ResourceListWrapper wrapper = ResourceManagerAPIHelper.buildResourceListWrapper(resources);
+
+		return wrapper;
+	}
 }
