@@ -44,6 +44,9 @@ import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 import org.opennaas.extensions.router.model.wrappers.AddInterfacesToLogicalRouterRequest;
+import org.opennaas.extensions.router.model.wrappers.InterfaceInfo;
+import org.opennaas.extensions.router.model.wrappers.InterfaceInfoList;
+import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
 import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesFromLogicalRouterRequest;
 import org.opennaas.extensions.router.model.wrappers.SetEncapsulationLabelRequest;
 import org.opennaas.extensions.router.model.wrappers.SetEncapsulationRequest;
@@ -139,6 +142,46 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
+	}
+
+	@Override
+	public InterfacesNamesList getInterfacesNames() throws CapabilityException {
+		InterfacesNamesList inl = new InterfacesNamesList();
+		inl.setInterfaces(new ArrayList<String>());
+
+		ComputerSystem model = (ComputerSystem) resource.getModel();
+		List<NetworkPort> interfaces = ModelHelper.getInterfaces(model);
+		List<ProtocolEndpoint> grePEPs = ModelHelper.getGREProtocolEndpoints(model);
+
+		for (NetworkPort interf : interfaces) {
+			inl.getInterfaces().add(ModelHelper.getInterfaceName(interf));
+		}
+
+		for (ProtocolEndpoint grePEP : grePEPs) {
+			inl.getInterfaces().add(ModelHelper.getInterfaceName(grePEP));
+		}
+
+		return inl;
+	}
+
+	@Override
+	public InterfaceInfo getInterfaceInfo(String interfaceName) throws CapabilityException {
+		NetworkPort np = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
+		if (np == null) {
+			ProtocolEndpoint grePEP = ModelHelper.getGREProtocolEndpointFromName(interfaceName, (ComputerSystem) resource.getModel());
+			if (grePEP == null) {
+				throw new CapabilityException("No interface found with given name: " + interfaceName);
+			}
+
+			return ModelHelper.getInterfaceInfo(grePEP);
+		}
+
+		return ModelHelper.getInterfaceInfo(np);
+	}
+
+	@Override
+	public InterfaceInfoList getInterfacesInfo() {
+		return ModelHelper.getInterfacesInfo(ModelHelper.getInterfacesInfo((ComputerSystem) resource.getModel()));
 	}
 
 	/*

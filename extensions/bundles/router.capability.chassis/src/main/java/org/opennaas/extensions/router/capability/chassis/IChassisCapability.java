@@ -27,6 +27,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -37,6 +38,9 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.wrappers.AddInterfacesToLogicalRouterRequest;
+import org.opennaas.extensions.router.model.wrappers.InterfaceInfo;
+import org.opennaas.extensions.router.model.wrappers.InterfaceInfoList;
+import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
 import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesFromLogicalRouterRequest;
 import org.opennaas.extensions.router.model.wrappers.SetEncapsulationLabelRequest;
 import org.opennaas.extensions.router.model.wrappers.SetEncapsulationRequest;
@@ -46,6 +50,36 @@ public interface IChassisCapability extends ICapability {
 	/*
 	 * Interfaces
 	 */
+
+	/**
+	 * Returns a list of interfaces names
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getInterfaces")
+	@Produces(MediaType.APPLICATION_XML)
+	public InterfacesNamesList getInterfacesNames() throws CapabilityException;
+
+	/**
+	 * Returns interfaces info of a given interface
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getInterfaceInfo")
+	@Produces(MediaType.APPLICATION_XML)
+	public InterfaceInfo getInterfaceInfo(@QueryParam("interfaceName") String interfaceName) throws CapabilityException;
+
+	/**
+	 * Returns interfaces info
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getInterfacesInfo")
+	@Produces(MediaType.APPLICATION_XML)
+	public InterfaceInfoList getInterfacesInfo() throws CapabilityException;
 
 	/**
 	 * Activates given physical interface (iface) so it can receive/send traffic.
