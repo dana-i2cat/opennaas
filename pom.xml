@@ -292,6 +292,11 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+			 	<groupId>org.opennaas</groupId>
+			 	<artifactId>org.opennaas.extensions.router.capabilities.api</artifactId>
+			 	<version>${project.version}</version>
+			</dependency>			
+			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
 				<version>${project.version}</version>
