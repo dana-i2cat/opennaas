@@ -263,6 +263,8 @@ public interface IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
+	@POST
+	@Path("destroyAllResources")
 	public void destroyAllResources() throws ResourceException;
 
 	/**

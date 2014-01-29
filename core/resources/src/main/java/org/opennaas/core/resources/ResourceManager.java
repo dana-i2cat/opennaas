@@ -475,4 +475,5 @@ public class ResourceManager implements IResourceManager {
 
 		this.forceStopResource(resource.getResourceIdentifier());
 	}
+
 }
