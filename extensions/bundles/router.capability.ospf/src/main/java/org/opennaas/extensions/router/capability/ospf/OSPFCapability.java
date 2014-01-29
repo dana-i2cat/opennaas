@@ -380,7 +380,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	@Override
 	public OSPFService showOSPFConfiguration() throws CapabilityException {
 		log.info("Start of showOSPFConfiguration call");
-		OSPFService ospfService = null;
+		OSPFService ospfService = new OSPFService();
 		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
 		if (lServices == null || lServices.isEmpty()) {
 			return null;
