@@ -49,6 +49,8 @@ import org.xml.sax.SAXException;
 public class ResourceListWrapperSerializationTest {
 
 	private static final String	FILE_PATH	= "/api/resourceList.xml";
+	private static final String	ROUTER_1_ID	= "ft9234-gth6-gh-678df4v";
+	private static final String	ROUTER_2_ID	= "rhn78i-cvf7-ju-4rpp0lm";
 
 	@Test
 	public void serializationTest() throws SerializationException, IOException, SAXException, TransformerException, ParserConfigurationException {
@@ -56,8 +58,8 @@ public class ResourceListWrapperSerializationTest {
 		ResourceListWrapper wrapper = new ResourceListWrapper();
 		List<String> resourcesNames = new ArrayList<String>();
 
-		resourcesNames.add("router1");
-		resourcesNames.add("router2");
+		resourcesNames.add(ROUTER_1_ID);
+		resourcesNames.add(ROUTER_2_ID);
 		wrapper.setResources(resourcesNames);
 
 		String xml = ObjectSerializer.toXml(wrapper);
@@ -83,8 +85,8 @@ public class ResourceListWrapperSerializationTest {
 		String resourceA = resourceIterator.next();
 		String resourceB = resourceIterator.next();
 
-		Assert.assertTrue(resourceA.equals("router1") || resourceA.equals("router2"));
-		Assert.assertTrue(resourceB.equals("router1") || resourceB.equals("router2"));
+		Assert.assertTrue(resourceA.equals(ROUTER_1_ID) || resourceA.equals(ROUTER_2_ID));
+		Assert.assertTrue(resourceB.equals(ROUTER_1_ID) || resourceB.equals(ROUTER_2_ID));
 		Assert.assertFalse(resourceA.equals(resourceB));
 	}
 }

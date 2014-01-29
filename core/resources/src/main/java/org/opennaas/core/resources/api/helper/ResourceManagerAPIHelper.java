@@ -46,7 +46,7 @@ public abstract class ResourceManagerAPIHelper {
 
 		if (resources != null)
 			for (IResource resource : resources)
-				resourcesIds.add(resource.getResourceDescriptor().getInformation().getName());
+				resourcesIds.add(resource.getResourceIdentifier().getId());
 
 		wrapper.setResources(resourcesIds);
 
