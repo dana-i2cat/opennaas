@@ -34,6 +34,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.api.helper.ResourceManagerAPIHelper;
+import org.opennaas.core.resources.api.model.ResourceListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
@@ -443,4 +445,12 @@ public class ResourceManager implements IResourceManager {
 
 	}
 
+	@Override
+	public ResourceListWrapper listResourcesByTypeAPI(String type) {
+		List<IResource> resources = this.listResourcesByType(type);
+
+		ResourceListWrapper wrapper = ResourceManagerAPIHelper.buildResourceListWrapper(resources);
+
+		return wrapper;
+	}
 }

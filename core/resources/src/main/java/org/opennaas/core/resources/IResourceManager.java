@@ -32,6 +32,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.api.model.ResourceListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
@@ -72,7 +73,7 @@ public interface IResourceManager {
 	 * Create a new resource with a given resourceDescriptor
 	 * 
 	 * @param resourceDescriptor
-	 * @returns the new resource
+	 * @returns the new resourcetype
 	 * @throws ResourceException
 	 */
 	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException;
@@ -113,6 +114,11 @@ public interface IResourceManager {
 	 *         value.
 	 */
 	public List<IResource> listResourcesByType(@PathParam("type") String type);
+
+	@Path("/getResourcesByType/{type}")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceListWrapper listResourcesByTypeAPI(@PathParam("type") String type);
 
 	/**
 	 * 
@@ -199,7 +205,7 @@ public interface IResourceManager {
 	 * Stop an existing resource
 	 * 
 	 * @param resourceIdentifier
-	 * @throws ResourceException
+	 * @throws ResourceExceptiontype
 	 */
 	public void stopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
