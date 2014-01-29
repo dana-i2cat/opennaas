@@ -298,6 +298,6 @@ public interface IResourceManager {
 	@GET
 	@Path("/listResourcesNameByType/{type}")
 	@Produces(MediaType.APPLICATION_XML)
-	GenericListWrapper<String> listResourcesNameByType(@PathParam("type") String type) throws ResourceException;
+	public ResourceListWrapper listResourcesNameByType(@PathParam("type") String type) throws ResourceException;
 
 }

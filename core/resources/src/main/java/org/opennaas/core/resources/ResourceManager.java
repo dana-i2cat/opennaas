@@ -422,7 +422,9 @@ public class ResourceManager implements IResourceManager {
 	}
 
 	@Override
-	public GenericListWrapper<String> listResourcesNameByType(String type) throws ResourceException {
+	public ResourceListWrapper listResourcesNameByType(String type) throws ResourceException {
+		ResourceListWrapper wrapper = new ResourceListWrapper();
+
 		if (StringUtils.isEmpty(type))
 			throw new ResourceException("You didn't specify any resource type.");
 
@@ -436,7 +438,9 @@ public class ResourceManager implements IResourceManager {
 		for (IResource resource : resources)
 			resourcesNames.add(resource.getResourceDescriptor().getInformation().getName());
 
-		return new GenericListWrapper<String>(resourcesNames);
+		wrapper.setResources(resourcesNames);
+
+		return wrapper;
 	}
 
 	@Override
