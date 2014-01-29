@@ -467,4 +467,12 @@ public class ResourceManager implements IResourceManager {
 
 		return wrapper;
 	}
+
+	@Override
+	public void forceStopResource(String resourceId) throws ResourceException {
+
+		IResource resource = this.getResourceById(resourceId);
+
+		this.forceStopResource(resource.getResourceIdentifier());
+	}
 }
