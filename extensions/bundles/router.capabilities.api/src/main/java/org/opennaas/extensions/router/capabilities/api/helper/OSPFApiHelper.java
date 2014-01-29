@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ospf.api;
+package org.opennaas.extensions.router.capabilities.api.helper;
 
 /*
  * #%L
@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFProtocolEndpointWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;

@@ -31,7 +31,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFServiceWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;

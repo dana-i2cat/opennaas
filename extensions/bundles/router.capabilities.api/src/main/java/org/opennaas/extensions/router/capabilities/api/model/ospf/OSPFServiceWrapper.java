@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ospf.api;
+package org.opennaas.extensions.router.capabilities.api.model.ospf;
 
 /*
  * #%L

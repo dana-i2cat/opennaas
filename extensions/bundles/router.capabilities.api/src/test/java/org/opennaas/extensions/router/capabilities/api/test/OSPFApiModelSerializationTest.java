@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ospf.api.model.test;
+package org.opennaas.extensions.router.capabilities.api.test;
 
 /*
  * #%L
@@ -34,13 +34,13 @@ import org.junit.Test;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.helpers.XmlHelper;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFAreaWrapper;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFProtocolEndpointWrapper;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFServiceWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFProtocolEndpointWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.xml.sax.SAXException;
 
-public class SerializationTest {
+public class OSPFApiModelSerializationTest {
 
 	private static final String	PATH_FILE_URL	= "/ospfService.xml";
 

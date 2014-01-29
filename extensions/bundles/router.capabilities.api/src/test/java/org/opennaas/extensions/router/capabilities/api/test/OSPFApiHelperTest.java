@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ospf.api.model.test;
+package org.opennaas.extensions.router.capabilities.api.test;
 
 /*
  * #%L
@@ -27,10 +27,10 @@ import java.util.Iterator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFApiHelper;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFAreaWrapper;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFProtocolEndpointWrapper;
-import org.opennaas.extensions.router.capability.ospf.api.OSPFServiceWrapper;
+import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFProtocolEndpointWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
