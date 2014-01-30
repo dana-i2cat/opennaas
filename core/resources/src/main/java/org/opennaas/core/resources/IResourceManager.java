@@ -27,11 +27,15 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.api.model.ResourceInfo;
+import org.opennaas.core.resources.api.model.ResourceListWrapper;
+import org.opennaas.core.resources.api.model.ResourceTypeListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
@@ -72,7 +76,7 @@ public interface IResourceManager {
 	 * Create a new resource with a given resourceDescriptor
 	 * 
 	 * @param resourceDescriptor
-	 * @returns the new resource
+	 * @returns the new resourcetype
 	 * @throws ResourceException
 	 */
 	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException;
@@ -114,6 +118,11 @@ public interface IResourceManager {
 	 */
 	public List<IResource> listResourcesByType(@PathParam("type") String type);
 
+	@Path("/getResourcesByType/{type}")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceListWrapper listResourcesByTypeAPI(@PathParam("type") String type);
+
 	/**
 	 * 
 	 * @param resourceType
@@ -133,13 +142,18 @@ public interface IResourceManager {
 	 */
 	public List<IResource> listResources();
 
+	@Path("getResources")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceListWrapper listResourcesAPI();
+
 	/**
 	 * Returns a list of available resource types.
 	 */
 	@GET
 	@Path("/getResourceTypes")
 	@Produces(MediaType.APPLICATION_XML)
-	public GenericListWrapper<String> getResourceTypesAPI();
+	public ResourceTypeListWrapper getResourceTypesAPI();
 
 	/**
 	 * Returns a list of available resource types.
@@ -199,7 +213,7 @@ public interface IResourceManager {
 	 * Stop an existing resource
 	 * 
 	 * @param resourceIdentifier
-	 * @throws ResourceException
+	 * @throws ResourceExceptiontype
 	 */
 	public void stopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
@@ -241,11 +255,17 @@ public interface IResourceManager {
 	 */
 	public void forceStopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
+	@PUT
+	@Path("/forceStop/{resourceId}")
+	public void forceStopResource(@PathParam("resourceId") String resourceId) throws ResourceException;
+
 	/**
 	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
+	@POST
+	@Path("destroyAllResources")
 	public void destroyAllResources() throws ResourceException;
 
 	/**
@@ -279,6 +299,10 @@ public interface IResourceManager {
 	@GET
 	@Path("/listResourcesNameByType/{type}")
 	@Produces(MediaType.APPLICATION_XML)
-	GenericListWrapper<String> listResourcesNameByType(@PathParam("type") String type) throws ResourceException;
+	public ResourceListWrapper listResourcesNameByType(@PathParam("type") String type) throws ResourceException;
 
+	@GET
+	@Path("getResource/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceInfo getResourceInfoById(@PathParam("resourceId") String resourceId) throws ResourceException;
 }

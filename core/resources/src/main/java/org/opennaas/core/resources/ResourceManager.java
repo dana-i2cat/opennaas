@@ -34,6 +34,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.api.helper.ResourceManagerAPIHelper;
+import org.opennaas.core.resources.api.model.ResourceInfo;
+import org.opennaas.core.resources.api.model.ResourceListWrapper;
+import org.opennaas.core.resources.api.model.ResourceTypeListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
@@ -270,9 +274,13 @@ public class ResourceManager implements IResourceManager {
 	 * @return the available resource types
 	 */
 	@Override
-	public synchronized GenericListWrapper<String> getResourceTypesAPI() {
+	public synchronized ResourceTypeListWrapper getResourceTypesAPI() {
 
-		return new GenericListWrapper<String>(this.getResourceTypes());
+		ResourceTypeListWrapper wrapper = new ResourceTypeListWrapper();
+		wrapper.setResourcesTypes(this.getResourceTypes());
+
+		return wrapper;
+
 	}
 
 	/**
@@ -415,7 +423,9 @@ public class ResourceManager implements IResourceManager {
 	}
 
 	@Override
-	public GenericListWrapper<String> listResourcesNameByType(String type) throws ResourceException {
+	public ResourceListWrapper listResourcesNameByType(String type) throws ResourceException {
+		ResourceListWrapper wrapper = new ResourceListWrapper();
+
 		if (StringUtils.isEmpty(type))
 			throw new ResourceException("You didn't specify any resource type.");
 
@@ -429,7 +439,9 @@ public class ResourceManager implements IResourceManager {
 		for (IResource resource : resources)
 			resourcesNames.add(resource.getResourceDescriptor().getInformation().getName());
 
-		return new GenericListWrapper<String>(resourcesNames);
+		wrapper.setResources(resourcesNames);
+
+		return wrapper;
 	}
 
 	@Override
@@ -441,6 +453,41 @@ public class ResourceManager implements IResourceManager {
 	public String getStatus(String resourceId) throws ResourceException {
 		return this.getResourceById(resourceId).getState().name();
 
+	}
+
+	@Override
+	public ResourceListWrapper listResourcesByTypeAPI(String type) {
+		List<IResource> resources = this.listResourcesByType(type);
+
+		ResourceListWrapper wrapper = ResourceManagerAPIHelper.buildResourceListWrapper(resources);
+
+		return wrapper;
+	}
+
+	@Override
+	public ResourceListWrapper listResourcesAPI() {
+		List<IResource> resources = this.listResources();
+
+		ResourceListWrapper wrapper = ResourceManagerAPIHelper.buildResourceListWrapper(resources);
+
+		return wrapper;
+	}
+
+	@Override
+	public void forceStopResource(String resourceId) throws ResourceException {
+
+		IResource resource = this.getResourceById(resourceId);
+
+		this.forceStopResource(resource.getResourceIdentifier());
+	}
+
+	@Override
+	public ResourceInfo getResourceInfoById(String resourceId) throws ResourceException {
+
+		IResource resource = this.getResourceById(resourceId);
+		ResourceInfo resourceInfo = ResourceManagerAPIHelper.buildResourceInfo(resource);
+
+		return resourceInfo;
 	}
 
 }
