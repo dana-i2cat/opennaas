@@ -153,27 +153,6 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
-    /*    public String getControllerStatus(String ip) {
-     String response = null;
-     String resourceName = "";
-     try {
-     LOGGER.info("Calling get Controller Status");
-     String url = getURL("openflowswitch/" + resourceName + "/offorwarding/getOFForwardingRules");
-     Client client = Client.create();
-     addHTTPBasicAuthentication(client);
-     WebResource webResource = client.resource(url);
-     response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
-     LOGGER.info("Controller status: " + response);
-     } catch (ClientHandlerException e) {
-     LOGGER.error(e.getMessage());
-     throw e;
-     }
-     return response;
-
-     }
-     */
-    
-
     public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
         ClientResponse response;
         try {

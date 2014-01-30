@@ -76,8 +76,9 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
                         source = dest1;
                     }
                 }
-        }
-            d3.selectAll('.link2').attr('d', 'M0,0L0,0'); //Remove the requested path
+            }
+            cleanDisplayedLink();
+            d3.selectAll('.dragline').attr('d', 'M0,0L0,0'); //Remove the requested path
 
             // select new link
             selected_link = link;
@@ -145,6 +146,7 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
 function highlight(ipSrc, ipDst){
     var table = document.getElementById('jsonTable');
     if ( table.getElementsByTagName('tr').length > 1 ){
+        cleanHighlight();
         var tbody = table.getElementsByTagName('tbody')[0];
         var items = tbody.getElementsByTagName('tr');
         var tds = null;
@@ -164,7 +166,27 @@ function highlight(ipSrc, ipDst){
         }
     }
 }
-
+/**
+ * Remove the highlight of the routes obtained before
+ * @returns {undefined}
+ */
+function cleanHighlight(){
+    console.log("Clean highlight");
+    var table = document.getElementById('jsonTable');
+    var tbody = table.getElementsByTagName('tbody')[0];
+    var items = tbody.getElementsByTagName('tr');
+    for (var j = 0; j < items.length; j++) {
+        document.getElementById('jsonTable').getElementsByTagName('tr')[j+1].style.background = "transparent";
+    }
+}
+/**
+ * Remove the displayed links of other obtained routes.
+ * @returns {undefined}
+ */
+function cleanDisplayedLink(){
+    console.log("Clean displayed route links. Using link2 class.");
+    $( ".link2" ).remove();
+}
 function mouseOverImage(){
     $('svg image').tipsy({
         fade: false,

@@ -56,3 +56,8 @@ svg:not(.active):not(.ctrl) path.link {
     stroke-width: 4px;
     cursor: default;
 }
+.dragline{
+    stroke: #000;
+    stroke-width: 4px;
+    cursor: default;
+}
