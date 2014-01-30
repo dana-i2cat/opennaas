@@ -80,4 +80,53 @@ public class InterfaceInfo {
 		this.description = description;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((peerUnit == null) ? 0 : peerUnit.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((vlan == null) ? 0 : vlan.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InterfaceInfo other = (InterfaceInfo) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (peerUnit == null) {
+			if (other.peerUnit != null)
+				return false;
+		} else if (!peerUnit.equals(other.peerUnit))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		if (vlan == null) {
+			if (other.vlan != null)
+				return false;
+		} else if (!vlan.equals(other.vlan))
+			return false;
+		return true;
+	}
+
 }

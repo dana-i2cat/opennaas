@@ -48,4 +48,29 @@ public class InterfacesNamesList {
 		this.interfaces = interfaces;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((interfaces == null) ? 0 : interfaces.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InterfacesNamesList other = (InterfacesNamesList) obj;
+		if (interfaces == null) {
+			if (other.interfaces != null)
+				return false;
+		} else if (!interfaces.equals(other.interfaces))
+			return false;
+		return true;
+	}
+
 }
