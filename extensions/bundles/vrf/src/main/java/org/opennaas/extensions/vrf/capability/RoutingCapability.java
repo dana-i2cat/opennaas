@@ -93,7 +93,7 @@ public class RoutingCapability implements IRoutingCapability {
             return Response.status(404).type("text/plain").entity("IP Table does not exist.").build();
         }
 
-        log.info("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort);
+        log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort);
         L2Forward switchInfo = new L2Forward(inputPort, switchDPID);
 
         VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
@@ -334,6 +334,7 @@ public class RoutingCapability implements IRoutingCapability {
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
+//log.error(r.getSourceAddress()+" "+r.getDestinationAddress()+" "+r.getSwitchInfo().getDPID());
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
             }
         }
@@ -341,7 +342,7 @@ public class RoutingCapability implements IRoutingCapability {
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             try {
-log.error("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId()+" "+listFlow.get(i).getActions().get(0).getType()+": "+listFlow.get(i).getActions().get(0).getValue());
+log.debug("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId()+" "+listFlow.get(i).getActions().get(0).getType()+": "+listFlow.get(i).getActions().get(0).getValue());
 //                response = provisionLink(listFlow.get(i));
                 FloodlightOFFlow flow = listFlow.get(i);
                 flow.getMatch().setEtherType("2048");

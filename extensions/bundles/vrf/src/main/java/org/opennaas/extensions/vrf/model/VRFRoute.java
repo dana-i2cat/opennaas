@@ -123,6 +123,13 @@ public class VRFRoute {
         if(!Utils.netMatch(thisDst, otherDst)){
             return false;
         }
+        
+        String thisSrc = this.getSourceAddress();
+        String otherSrc = other.getSourceAddress();
+        if(!Utils.netMatch(thisSrc, otherSrc)){
+            return false;
+        }
+        
          return true;
     }
 }

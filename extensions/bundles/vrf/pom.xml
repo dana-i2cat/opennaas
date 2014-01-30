@@ -9,7 +9,7 @@
     <!--  Maven configuration -->
     <modelVersion>4.0.0</modelVersion>
     <packaging>bundle</packaging>
-    <name>NFV :: OpenNaaS :: Virtualized Routing Function </name>
+    <name>NFV :: OpenNaaS :: Virtual Routing Function </name>
     <description>Virtualization of the Routing Function over an OpenFlow infrastructure</description>
     <dependencies>
         <dependency>

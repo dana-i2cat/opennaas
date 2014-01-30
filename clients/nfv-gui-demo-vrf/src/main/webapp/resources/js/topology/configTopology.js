@@ -57,6 +57,7 @@ console.log("Source " + source.id + " to Dest " + target.id);
             //request to OpenNaaS
             swNode = nodes.filter(function (n) {return n.id === source.SW; });
             var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
+            console.log(returnedRoutes);
 //             returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
             if( typeof returnedRoutes !== 'undefined' ){
                 for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
@@ -68,7 +69,7 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
                             dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
                         }else if (key === "ip"){
                             dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
-                            highlight(dest1.ip);
+                            highlight(dest1.ip, target.ip);
                         }
                         link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
                         links.push(link);
@@ -122,6 +123,7 @@ function getRouteTable(dpid) {
  * @returns {data}
  */
 function getRoute(ipSrc, ipDst, dpid, inPort) {
+    console.log("getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort);
     var response;
     $.ajax({
         type: "GET",
@@ -136,23 +138,27 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
 
 /**
  * Highlight the rows according to the requested route
- * @param {type} word to search in the route table
+ * @param {type} ipSrc to search in the route table
+ * @param {type} ipDst to search in the route table
  * @returns {undefined}
  */
-function highlight(word){
+function highlight(ipSrc, ipDst){
     var table = document.getElementById('jsonTable');
     if ( table.getElementsByTagName('tr').length > 1 ){
         var tbody = table.getElementsByTagName('tbody')[0];
         var items = tbody.getElementsByTagName('tr');
         var tds = null;
-
         for (var j = 0; j < items.length; j++) {
             tds = items[j].getElementsByTagName('td');
             for (var i = 0; i < tds.length-1; i++) {
-                if(tds[i].innerHTML === word){
-                    table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-                }else if(inSubNet(word, tds[i].innerHTML)){
-                    table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+                if(tds[i].innerHTML === ipSrc){
+                    if( tds[i].innerHTML === ipDst || inSubNet(ipDst, tds[i].innerHTML) ){
+                        table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+                    }
+                }else if(tds[i].innerHTML === ipSrc){
+                    if(tds[i].innerHTML === ipSrc || inSubNet(ipSrc, tds[i].innerHTML)){
+                        table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+                    }
                 }
             }
         }
