@@ -319,7 +319,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 		List<ComputerSystem> lrList = getLogicalRouters();
 		for (ComputerSystem computerSystem : lrList) {
-			logicalRoutersNamesList.getLogicalRoutersNames().add(computerSystem.getName());
+			logicalRoutersNamesList.getLogicalRouters().add(computerSystem.getName());
 		}
 
 		return logicalRoutersNamesList;

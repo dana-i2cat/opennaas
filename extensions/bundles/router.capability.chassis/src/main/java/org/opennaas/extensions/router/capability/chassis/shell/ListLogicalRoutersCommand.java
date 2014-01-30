@@ -68,7 +68,7 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
 			LogicalRoutersNamesList namesList = chassisCapability.getLogicalRoutersNames();
 
-			for (String name : namesList.getLogicalRoutersNames()) {
+			for (String name : namesList.getLogicalRouters()) {
 				printSymbol(name);
 			}
 

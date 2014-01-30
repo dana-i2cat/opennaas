@@ -40,12 +40,37 @@ public class LogicalRoutersNamesList {
 	@XmlElement(name = "logicalRouter")
 	private List<String>	logicalRouters;
 
-	public List<String> getLogicalRoutersNames() {
+	public List<String> getLogicalRouters() {
 		return logicalRouters;
 	}
 
 	public void setLogicalRouters(List<String> logicalRouters) {
 		this.logicalRouters = logicalRouters;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((logicalRouters == null) ? 0 : logicalRouters.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LogicalRoutersNamesList other = (LogicalRoutersNamesList) obj;
+		if (logicalRouters == null) {
+			if (other.logicalRouters != null)
+				return false;
+		} else if (!logicalRouters.equals(other.logicalRouters))
+			return false;
+		return true;
 	}
 
 }
