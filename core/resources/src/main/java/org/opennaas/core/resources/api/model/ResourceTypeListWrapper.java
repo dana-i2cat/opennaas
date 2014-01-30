@@ -54,4 +54,29 @@ public class ResourceTypeListWrapper implements Serializable {
 	public void setResourcesTypes(Collection<String> resourcesTypes) {
 		this.resourcesTypes = resourcesTypes;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((resourcesTypes == null) ? 0 : resourcesTypes.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ResourceTypeListWrapper other = (ResourceTypeListWrapper) obj;
+		if (resourcesTypes == null) {
+			if (other.resourcesTypes != null)
+				return false;
+		} else if (!resourcesTypes.equals(other.resourcesTypes))
+			return false;
+		return true;
+	}
 }
