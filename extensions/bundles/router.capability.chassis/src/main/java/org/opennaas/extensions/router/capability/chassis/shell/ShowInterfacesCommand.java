@@ -20,19 +20,14 @@ package org.opennaas.extensions.router.capability.chassis.shell;
  * #L%
  */
 
-import java.util.List;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.extensions.router.model.VLANEndpoint;
-import org.opennaas.extensions.router.model.utils.ModelHelper;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.wrappers.InterfaceInfo;
+import org.opennaas.extensions.router.model.wrappers.InterfaceInfoList;
 
 @Command(scope = "chassis", name = "showInterfaces", description = "List all interfaces of a given resource.")
 public class ShowInterfacesCommand extends GenericKarafCommand {
@@ -50,13 +45,10 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 			IResource resource = getResourceFromFriendlyName(resourceId);
 			validateResource(resource);
 
-			ComputerSystem model = (ComputerSystem) resource.getModel();
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			InterfaceInfoList interfacesInfoList = chassisCapability.getInterfacesInfo();
 
-			List<NetworkPort> interfaces = ModelHelper.getInterfaces(model);
-			printInterfaces(interfaces);
-
-			List<ProtocolEndpoint> grePEPs = ModelHelper.getGREProtocolEndpoints(model);
-			printGREPEPsAsInterfaces(grePEPs);
+			printInterfacesInfo(interfacesInfoList);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -72,13 +64,11 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private void printInterfaces(List<NetworkPort> interfaces) {
+	private void printInterfacesInfo(InterfaceInfoList interfaceInfoList) {
 
-		for (NetworkPort netPort : interfaces) {
+		for (InterfaceInfo interfaceInfo : interfaceInfoList.getInterfaceInfos()) {
 
-			int portNumber = netPort.getPortNumber();
-			String ifaceName = netPort.getName() + "." + String.valueOf(portNumber);
-
+			String ifaceName = interfaceInfo.getName();
 			if (ifaceName.length() < 15) {
 				int dif = 15 - ifaceName.length();
 				for (int i = 0; i < dif; i++)
@@ -86,40 +76,28 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 			}
 			printSymbolWithoutDoubleLine("INTERFACE: " + ifaceName);
 
-			if (netPort instanceof LogicalTunnelPort)
-				printSymbolWithoutDoubleLine(doubleTab + "Peer-Unit: " + ((LogicalTunnelPort) netPort).getPeer_unit());
+			String peerUnit = interfaceInfo.getPeerUnit();
+			if (peerUnit != null)
+				printSymbolWithoutDoubleLine(doubleTab + "Peer-Unit: " + peerUnit);
 
-			if (netPort.getProtocolEndpoint() != null) {
+			String vlan = interfaceInfo.getVlan();
+			if (vlan != null) {
+				printSymbolWithoutDoubleLine(doubleTab + "VLAN id: " + vlan);
+			}
 
-				for (ProtocolEndpoint pE : netPort.getProtocolEndpoint()) {
-					if (pE instanceof VLANEndpoint) {
-						printSymbolWithoutDoubleLine(doubleTab + "VLAN id: " + Integer
-								.toString(((VLANEndpoint) pE).getVlanID()));
-					}
-				}
-				printSymbolWithoutDoubleLine(doubleTab + "STATE: " + netPort.getOperationalStatus());
+			String state = interfaceInfo.getState();
+			if (state != null) {
+				printSymbolWithoutDoubleLine(doubleTab + "STATE: " + state);
 
 			}
 
-			if (netPort.getDescription() != null && !netPort.getDescription().equals("")) {
-				printSymbolWithoutDoubleLine(doubleTab + "description: " + netPort.getDescription());
+			String description = interfaceInfo.getDescription();
+			if (description != null && !description.isEmpty()) {
+				printSymbolWithoutDoubleLine(doubleTab + "description: " + description);
 			}
 
 			printSymbol("");
 		}
 
-	}
-
-	private void printGREPEPsAsInterfaces(List<ProtocolEndpoint> grePEPs) {
-		for (ProtocolEndpoint pE : grePEPs) {
-
-			printSymbolWithoutDoubleLine("GRE INTERFACE: " + pE.getName());
-
-			printSymbolWithoutDoubleLine(doubleTab + "STATE: " + pE.getOperationalStatus());
-
-			if (pE.getDescription() != null && !pE.getDescription().equals(""))
-				printSymbolWithoutDoubleLine(doubleTab + "description: " + pE.getDescription());
-			printSymbol("");
-		}
 	}
 }
