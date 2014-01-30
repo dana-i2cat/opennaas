@@ -187,18 +187,25 @@ function cleanDisplayedLink(){
     console.log("Clean displayed route links. Using link2 class.");
     $( ".link2" ).remove();
 }
+/**
+ * Show the tipsy dialog
+ * @returns {undefined}
+ */
 function mouseOverImage(){
     $('svg image').tipsy({
         fade: false,
         html: true, 
-        gravity: 'w', 
+        gravity: $.fn.tipsy.autoNS, //north(n)/west(w)/dynamic
         title: function() {
+console.log("display");
             var d = this.__data__;
             var info ="<b>Id:</b> "+d.id+"<br>";
-            if(d.type !== "host"){
+            if(d.type === "switch"){
                 info +="<b>DPID:</b> "+d.dpid+"<br>";
                 info +="<b>Controller:</b> "+d.controller+"<br>";
-            } else {
+            } else if( d.type === "controller" ){
+                 info +="<b>IP:</b> "+d.controller+"<br>";
+            }else if(d.type === "host"){
                 info +="<b>IP:</b> "+d.ip+"<br>";
                 info +="<b>Connected with:</b> "+d.SW+"<br>";
             }

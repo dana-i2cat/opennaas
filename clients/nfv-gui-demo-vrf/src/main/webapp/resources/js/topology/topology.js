@@ -41,20 +41,20 @@ vertexNum = nodes.length,
 links = [
     {id: "path01", source: nodes[0], target: nodes[1], left: false, right: false, srcPort: 1, dstPort: 1, type: "static"},
     {id: "path02", source: nodes[0], target: nodes[2], left: false, right: false, srcPort: 2, dstPort: 1, type: "static"},
-    {id: "path12", source: nodes[1], target: nodes[2], left: false, right: false, srcPort: 3, dstPort: 1, type: "static"},
+    {id: "path12", source: nodes[1], target: nodes[2], left: false, right: false, srcPort: 2, dstPort: 2, type: "static"},
     {id: "path23", source: nodes[2], target: nodes[3], left: false, right: false, srcPort: 3, dstPort: 1, type: "static"},
-    {id: "path34", source: nodes[3], target: nodes[4], left: false, right: false, srcPort: 3, dstPort: 1, type: "static"},
+    {id: "path34", source: nodes[3], target: nodes[4], left: false, right: false, srcPort: 2, dstPort: 1, type: "static"},
     {id: "path35", source: nodes[3], target: nodes[5], left: false, right: false, srcPort: 3, dstPort: 1, type: "static"},
-    {id: "path45", source: nodes[4], target: nodes[5], left: false, right: false, srcPort: 3, dstPort: 1, type: "static"},
+    {id: "path45", source: nodes[4], target: nodes[5], left: false, right: false, srcPort: 3, dstPort: 2, type: "static"},
     {id: "path56", source: nodes[5], target: nodes[6], left: false, right: false, srcPort: 3, dstPort: 1, type: "static"},
-    {id: "path67", source: nodes[6], target: nodes[7], left: false, right: false, srcPort: 3, dstPort: 1, type: "static"},
-    {id: "path80", source: nodes[8], target: nodes[0], left: false, right: false, srcPort: 5, dstPort: 5, type: "static"},
-    {id: "path97", source: nodes[9], target: nodes[7], left: false, right: false, srcPort: 5, dstPort: 5, type: "static"},
-    {id: "path100", source: nodes[10], target: nodes[0], left: false, right: false, srcPort: 5, dstPort: 5, type: "static"},
-    {id: "path113", source: nodes[11], target: nodes[3], left: false, right: false, srcPort: 5, dstPort: 5, type: "static"},
-    {id: "path124", source: nodes[12], target: nodes[4], left: false, right: false, srcPort: 5, dstPort: 5, type: "static"},
-    {id: "path134", source: nodes[13], target: nodes[4], left: false, right: false, srcPort: 5, dstPort: 5, type: "static"},
-    {id: "path146", source: nodes[14], target: nodes[6], left: false, right: false, srcPort: 5, dstPort: 5, type: "static"}
+    {id: "path67", source: nodes[6], target: nodes[7], left: false, right: false, srcPort: 2, dstPort: 1, type: "static"},
+    {id: "path80", source: nodes[8], target: nodes[0], left: false, right: false, srcPort: 3, dstPort: 3, type: "static"},
+    {id: "path97", source: nodes[9], target: nodes[7], left: false, right: false, srcPort: 2, dstPort: 2, type: "static"},
+    {id: "path100", source: nodes[10], target: nodes[0], left: false, right: false, srcPort: 4, dstPort: 4, type: "static"},
+    {id: "path113", source: nodes[11], target: nodes[3], left: false, right: false, srcPort: 4, dstPort: 4, type: "static"},
+    {id: "path124", source: nodes[12], target: nodes[4], left: false, right: false, srcPort: 3, dstPort: 3, type: "static"},
+    {id: "path134", source: nodes[13], target: nodes[4], left: false, right: false, srcPort: 4, dstPort: 4, type: "static"},
+    {id: "path146", source: nodes[14], target: nodes[6], left: false, right: false, srcPort: 3, dstPort: 3, type: "static"}
 ];
 
 function createAdjacencyMatrix() {
