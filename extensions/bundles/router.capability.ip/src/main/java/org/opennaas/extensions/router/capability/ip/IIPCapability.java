@@ -25,10 +25,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.ModelElementNotFoundException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capability.ip.api.IPAddresses;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -50,6 +53,30 @@ public interface IIPCapability extends ICapability {
 	@Path("/getInterfaces")
 	@Produces(MediaType.APPLICATION_XML)
 	public InterfacesNamesList getInterfacesNames() throws CapabilityException;
+
+	/**
+	 * 
+	 * @param interfaceName
+	 * @return IP addresses of given interface
+	 * @throws ModelElementNotFoundException
+	 *             if given interface is not in available
+	 */
+	@GET
+	@Path("/getIPs/{interfaceName}")
+	@Produces(MediaType.APPLICATION_XML)
+	public IPAddresses getIPs(@QueryParam("interfaceName") String interfaceName) throws ModelElementNotFoundException;
+
+	/**
+	 * 
+	 * @param interfaceName
+	 * @return
+	 * @throws ModelElementNotFoundException
+	 *             if given interface is not in available
+	 */
+	@GET
+	@Path("/getDescription/{interfaceName}")
+	@Produces(MediaType.APPLICATION_XML)
+	public String getDescription(@QueryParam("interfaceName") String interfaceName) throws ModelElementNotFoundException;
 
 	@POST
 	@Path("/setIPv4")

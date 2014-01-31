@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.ModelElementNotFoundException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -33,6 +34,8 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.ip.api.API2ModelTranslator;
+import org.opennaas.extensions.router.capability.ip.api.IPAddresses;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
@@ -492,5 +495,28 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			throw new CapabilityException("Unvalid Address format.");
 
 		log.info("End of removeIP call");
+	}
+
+	@Override
+	public IPAddresses getIPs(String interfaceName) throws ModelElementNotFoundException {
+		List<IPProtocolEndpoint> ips;
+
+		NetworkPort port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
+		if (port == null)
+			throw new ModelElementNotFoundException("Couldn't find interface " + interfaceName);
+
+		ips = port.getProtocolEndpointsByType(IPProtocolEndpoint.class);
+
+		return API2ModelTranslator.ipPEPs2IPAddresses(ips);
+	}
+
+	@Override
+	public String getDescription(String interfaceName) throws ModelElementNotFoundException {
+
+		NetworkPort port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
+		if (port == null)
+			throw new ModelElementNotFoundException("Couldn't find interface " + interfaceName);
+
+		return port.getDescription();
 	}
 }
