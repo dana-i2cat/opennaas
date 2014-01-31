@@ -180,13 +180,11 @@ console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
             link = {source: source1, target: dest1, left: false, right: false, type:"new_link"};
             links.push(link);
 console.log(orgLink);
-//            if(orgLink.target.type == "switch"){//i si està al revés?????????? la definició del link...
-                   
 console.log(nextLink);
-console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.dstPort);
-            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.dstPort);
-            //contrary direction
-            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.dstPort, orgLink.dstPort);
+console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);
+            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.srcPort);
+            //opposite direction
+            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.srcPort, orgLink.dstPort);
         }
     }
 console.log("...................:Send to OpenNaaS:.........................");

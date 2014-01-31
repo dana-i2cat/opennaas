@@ -15,14 +15,14 @@ var nodes = [
     {id_num: 6, id: "SW7", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: sw_x*5, y: sw_y, dpid: "00:00:00:00:00:00:00:07"},
     {id_num: 7, id: "SW8", type: "switch", controller: "Ctrl3", reflexive: false, fixed: true, x: sw_x*6+30, y: sw_y, dpid: "00:00:00:00:00:00:00:08"},
 
-    {id_num: 8, id: "h1", type: "host", reflexive: false, fixed: true, x: node_x, y: node_y, ip: "192.168.1.1", SW: "SW1", port: 5},
-    {id_num: 9, id: "h2", type: "host", reflexive: false, fixed: true, x: node_x*19+10, y: node_y, ip: "192.168.2.51", SW: "SW8", port: 5},
+    {id_num: 8, id: "h1", type: "host", reflexive: false, fixed: true, x: node_x, y: node_y, ip: "192.168.1.1", SW: "SW1", port: 3},
+    {id_num: 9, id: "h2", type: "host", reflexive: false, fixed: true, x: node_x*19+10, y: node_y, ip: "192.168.2.51", SW: "SW8", port: 2},
 
-    {id_num: 10, id: "h3", type: "host", reflexive: false, fixed: true, x: node_x*3+10, y: node_y, ip: "192.168.3.3", SW: "SW1", port: 5},
-    {id_num: 11, id: "h4", type: "host", reflexive: false, fixed: true, x: node_x*6+20, y: node_y+180, ip: "192.168.4.4", SW: "SW4", port: 5},
-    {id_num: 12, id: "h5", type: "host", reflexive: false, fixed: true, x: node_x*9+20, y: node_y+180, ip: "192.168.5.5", SW: "SW5", port: 5},
-    {id_num: 13, id: "h6", type: "host", reflexive: false, fixed: true, x: node_x*12+10, y: node_y+180, ip: "192.168.6.6", SW: "SW5", port: 5},
-    {id_num: 14, id: "h7", type: "host", reflexive: false, fixed: true, x: node_x*16, y: node_y, ip: "192.168.7.7", SW: "SW7", port: 5}],
+    {id_num: 10, id: "h3", type: "host", reflexive: false, fixed: true, x: node_x*3+10, y: node_y, ip: "192.168.3.3", SW: "SW1", port: 4},
+    {id_num: 11, id: "h4", type: "host", reflexive: false, fixed: true, x: node_x*6+20, y: node_y+180, ip: "192.168.4.4", SW: "SW4", port: 4},
+    {id_num: 12, id: "h5", type: "host", reflexive: false, fixed: true, x: node_x*9+20, y: node_y+180, ip: "192.168.5.5", SW: "SW5", port: 3},
+    {id_num: 13, id: "h6", type: "host", reflexive: false, fixed: true, x: node_x*12+10, y: node_y+180, ip: "192.168.6.6", SW: "SW5", port: 4},
+    {id_num: 14, id: "h7", type: "host", reflexive: false, fixed: true, x: node_x*16, y: node_y, ip: "192.168.7.7", SW: "SW7", port: 3}],
 controllers = [
     {id_num: 0, id: "Ctrl1", type: "controller", controller: "controllersVM:8191", reflexive: false, fixed: true, x: sw_x*2, y: 10},
     {id_num: 1, id: "Ctrl2", type: "controller", controller: "controllersVM:8192", reflexive: false, fixed: true, x: sw_x*3+50, y: 150},

@@ -226,7 +226,8 @@ console.log(ipDest);
             document.getElementById('ipDest').value = ipDest;
             defer.resolve(ipDestDialog);//response is not required
         }
-
+sourceIp = ipSrc;
+destinationIp = ipDest;
         $( "#ipDest" ).val(ipDest);
     }
 
