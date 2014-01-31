@@ -20,6 +20,9 @@ package org.opennaas.extensions.router.capability.ip;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -30,12 +33,16 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
+import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
 import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
@@ -74,6 +81,26 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	public void deactivate() throws CapabilityException {
 		registration.unregister();
 		super.deactivate();
+	}
+
+	@Override
+	public InterfacesNamesList getInterfacesNames() throws CapabilityException {
+		InterfacesNamesList inl = new InterfacesNamesList();
+		inl.setInterfaces(new ArrayList<String>());
+
+		ComputerSystem model = (ComputerSystem) resource.getModel();
+		List<NetworkPort> interfaces = ModelHelper.getInterfaces(model);
+		List<ProtocolEndpoint> grePEPs = ModelHelper.getGREProtocolEndpoints(model);
+
+		for (NetworkPort interf : interfaces) {
+			inl.getInterfaces().add(ModelHelper.getInterfaceName(interf));
+		}
+
+		for (ProtocolEndpoint grePEP : grePEPs) {
+			inl.getInterfaces().add(ModelHelper.getInterfaceName(grePEP));
+		}
+
+		return inl;
 	}
 
 	@Override

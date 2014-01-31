@@ -21,8 +21,10 @@ package org.opennaas.extensions.router.capability.ip;
  */
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -30,10 +32,24 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
 import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 @Path("/")
 public interface IIPCapability extends ICapability {
+
+	/*
+	 * Interfaces
+	 */
+	/**
+	 * Returns a list of interfaces names
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getInterfaces")
+	@Produces(MediaType.APPLICATION_XML)
+	public InterfacesNamesList getInterfacesNames() throws CapabilityException;
 
 	@POST
 	@Path("/setIPv4")
