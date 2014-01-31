@@ -25,6 +25,11 @@ import java.util.List;
 
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
+ */
 public class API2ModelTranslator {
 
 	public static IPAddresses ipPEPs2IPAddresses(List<IPProtocolEndpoint> peps) {
