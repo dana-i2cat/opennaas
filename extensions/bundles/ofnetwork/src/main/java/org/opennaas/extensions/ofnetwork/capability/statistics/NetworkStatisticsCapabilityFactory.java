@@ -1,4 +1,4 @@
-package org.opennaas.extensions.ofnetwork.capability.monitoring;
+package org.opennaas.extensions.ofnetwork.capability.statistics;
 
 /*
  * #%L
@@ -26,12 +26,12 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
-public class MonitoringNetworkCapabilityFactory extends AbstractCapabilityFactory {
+public class NetworkStatisticsCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
 		ICapability capability = this.create(resource.getResourceDescriptor()
-				.getCapabilityDescriptor(MonitoringNetworkCapability.CAPABILITY_TYPE),
+				.getCapabilityDescriptor(NetworkStatisticsCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
@@ -39,6 +39,6 @@ public class MonitoringNetworkCapabilityFactory extends AbstractCapabilityFactor
 
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
-		return new MonitoringNetworkCapability(capabilityDescriptor, resourceId);
+		return new NetworkStatisticsCapability(capabilityDescriptor, resourceId);
 	}
 }
