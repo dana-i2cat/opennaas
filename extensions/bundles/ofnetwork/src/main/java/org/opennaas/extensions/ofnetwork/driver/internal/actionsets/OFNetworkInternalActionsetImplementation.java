@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
-import org.opennaas.extensions.ofnetwork.capability.monitoring.MonitoringNetworkActionSet;
 import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkActionSet;
+import org.opennaas.extensions.ofnetwork.capability.statistics.NetworkStatisticsActionSet;
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.AllocateFlowAction;
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.DeallocateFlowAction;
 import org.opennaas.extensions.ofnetwork.driver.internal.actionsets.actions.GetAllocatedFlowsAction;
@@ -48,7 +48,7 @@ public class OFNetworkInternalActionsetImplementation extends ActionSet {
 		this.putAction(OFProvisioningNetworkActionSet.DEALLOCATEFLOW, DeallocateFlowAction.class);
 		this.putAction(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS, GetAllocatedFlowsAction.class);
 
-		this.putAction(MonitoringNetworkActionSet.GET_NETWORK_STATISTICS, GetNetworkStatisticsAction.class);
+		this.putAction(NetworkStatisticsActionSet.GET_NETWORK_STATISTICS, GetNetworkStatisticsAction.class);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class OFNetworkInternalActionsetImplementation extends ActionSet {
 		actionNames.add(OFProvisioningNetworkActionSet.DEALLOCATEFLOW);
 		actionNames.add(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS);
 
-		actionNames.add(MonitoringNetworkActionSet.GET_NETWORK_STATISTICS);
+		actionNames.add(NetworkStatisticsActionSet.GET_NETWORK_STATISTICS);
 
 		return actionNames;
 	}

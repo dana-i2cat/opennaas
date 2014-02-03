@@ -1,4 +1,4 @@
-package org.opennaas.extensions.ofnetwork.capability.monitoring;
+package org.opennaas.extensions.ofnetwork.capability.statistics;
 
 /*
  * #%L
@@ -43,29 +43,29 @@ import org.opennaas.extensions.ofnetwork.model.NetworkStatistics;
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public class MonitoringNetworkCapability extends AbstractCapability implements IMonitoringNetworkCapability {
+public class NetworkStatisticsCapability extends AbstractCapability implements INetworkStatisticsCapability {
 
-	public static final String	CAPABILITY_TYPE	= "netmonitoring";
+	public static final String	CAPABILITY_TYPE	= "netstatistics";
 
-	Log							log				= LogFactory.getLog(MonitoringNetworkCapability.class);
+	Log							log				= LogFactory.getLog(NetworkStatisticsCapability.class);
 
 	private String				resourceId		= "";
 
-	public MonitoringNetworkCapability(CapabilityDescriptor descriptor, String resourceId) {
+	public NetworkStatisticsCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
-		log.debug("Built new Monitoring Network Capability");
+		log.debug("Built new Network Statistics Capability");
 	}
 
 	// //////////////////////////////////// //
-	// IMonitoringNetworkCapability Methods //
+	// INetworkStatisticsCapability Methods //
 	// //////////////////////////////////// //
 
 	@Override
 	public NetworkStatistics getNetworkStatistics() throws CapabilityException {
 		log.info("Start of getNetworkStatistics call");
 
-		IAction action = createActionAndCheckParams(MonitoringNetworkActionSet.GET_NETWORK_STATISTICS, null);
+		IAction action = createActionAndCheckParams(NetworkStatisticsActionSet.GET_NETWORK_STATISTICS, null);
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
@@ -111,7 +111,7 @@ public class MonitoringNetworkCapability extends AbstractCapability implements I
 	@Override
 	public void activate() throws CapabilityException {
 		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
-				IMonitoringNetworkCapability.class.getName());
+				INetworkStatisticsCapability.class.getName());
 		super.activate();
 	}
 

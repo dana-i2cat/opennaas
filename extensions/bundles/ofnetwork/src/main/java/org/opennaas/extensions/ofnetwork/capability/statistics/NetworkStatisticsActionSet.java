@@ -1,4 +1,4 @@
-package org.opennaas.extensions.ofnetwork.capability.monitoring;
+package org.opennaas.extensions.ofnetwork.capability.statistics;
 
 /*
  * #%L
@@ -20,13 +20,8 @@ package org.opennaas.extensions.ofnetwork.capability.monitoring;
  * #L%
  */
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.IActionSetDefinition;
 import org.opennaas.extensions.ofnetwork.model.NetworkStatistics;
 
 /**
@@ -34,12 +29,11 @@ import org.opennaas.extensions.ofnetwork.model.NetworkStatistics;
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-@Path("/")
-public interface IMonitoringNetworkCapability extends ICapability {
+public class NetworkStatisticsActionSet implements IActionSetDefinition {
 
-	@GET
-	@Path("readNetworkStatistics")
-	@Produces(MediaType.APPLICATION_XML)
-	public NetworkStatistics getNetworkStatistics() throws CapabilityException;
-
+	/**
+	 * An action that retrieves the statistics of all port of the network switches. It receives no parameters, and it returns a
+	 * {@link NetworkStatistics} object in the {@link ActionResponse#getResult()} method.
+	 */
+	public static final String	GET_NETWORK_STATISTICS	= "getNetworkStatistics";
 }
