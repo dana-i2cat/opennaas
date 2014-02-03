@@ -56,7 +56,7 @@ function runtime(node) {
                     .classed('hidden', false)
                     .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + mousedown_node.x + ',' + mousedown_node.y);
             }
-            updateLinks();
+            //updateLinks();
         })
         .on('mouseup', function (d) {    
             if ( d.id_num === activeNode) return;
@@ -157,13 +157,15 @@ function showPath(to) {
  */
 function setPath(to) {
 console.log("SetPath");
-    var orgLink;
+    var orgLink, nextLink;
     if (activeNode !== to) {
         var path = constructPath(shortestPathInfo, to);
 console.log(path);
         var prev = activeNode;
         var ipSrc = sourceIp;
         var ipDst = destinationIp;
+        var sourceNode = nodes.filter(function (nodes) {return (nodes.ip === sourceIp);})[0];
+        var targetNode;
         for (var i = 0; i < path.length -1; i++) {
             var id, nextId;
             id = (document.getElementById("path" + path[i] + prev) !== null) ? "path" + path[i] + prev : "path" + prev + path[i];
@@ -182,9 +184,32 @@ console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
 console.log(orgLink);
 console.log(nextLink);
 console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);
-            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.srcPort);
+/*search the source dpid -> the dpid common in path and nextPath */
+            srcPort = orgLink.dstPort
+            dstPort = nextLink.srcPort;
+            if ( orgLink.source === sourceNode ){
+                targetNode = orgLink.target;
+                srcPort = orgLink.dstPort;
+                if( nextLink.source === orgLink.target ){
+                    dstPort = nextLink.srcPort;
+                }else{
+                    dstPort = nextLink.dstPort;
+                }
+            } else if (orgLink.target === sourceNode){
+                targetNode = orgLink.source;
+                srcPort = orgLink.srcPort;
+                if( nextLink.source === orgLink.target ){
+                    dstPort = nextLink.srcPort;
+                }else{
+                    dstPort = nextLink.dstPort;
+                }
+            }
+console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+targetNode.dpid+" "+srcPort+" "+dstPort);
+            insertRoute(ipSrc, ipDst, targetNode.dpid, srcPort, dstPort);
             //opposite direction
-            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.srcPort, orgLink.dstPort);
+            insertRoute(ipDst, ipSrc, targetNode.dpid, dstPort, srcPort);
+            
+            sourceNode = targetNode;
         }
     }
 console.log("...................:Send to OpenNaaS:.........................");
@@ -253,10 +278,10 @@ console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
             link = {source: source1, target: dest1, left: false, right: false, type:"new_link"};
             links.push(link);
 
-console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.dstPort);
-            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.dstPort);
+console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);
+            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.srcPort);
             //contrary direction
-            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.dstPort, orgLink.dstPort);
+            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.srcPort, orgLink.dstPort);
         }
     }
     originNode = null;

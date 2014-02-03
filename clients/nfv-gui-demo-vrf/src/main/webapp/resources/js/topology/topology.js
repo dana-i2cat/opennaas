@@ -50,11 +50,11 @@ links = [
     {id: "path67", source: nodes[6], target: nodes[7], left: false, right: false, srcPort: 2, dstPort: 1, type: "static"},
     {id: "path80", source: nodes[8], target: nodes[0], left: false, right: false, srcPort: 3, dstPort: 3, type: "static"},
     {id: "path97", source: nodes[9], target: nodes[7], left: false, right: false, srcPort: 2, dstPort: 2, type: "static"},
-    {id: "path100", source: nodes[10], target: nodes[0], left: false, right: false, srcPort: 4, dstPort: 4, type: "static"},
-    {id: "path113", source: nodes[11], target: nodes[3], left: false, right: false, srcPort: 4, dstPort: 4, type: "static"},
-    {id: "path124", source: nodes[12], target: nodes[4], left: false, right: false, srcPort: 3, dstPort: 3, type: "static"},
-    {id: "path134", source: nodes[13], target: nodes[4], left: false, right: false, srcPort: 4, dstPort: 4, type: "static"},
-    {id: "path146", source: nodes[14], target: nodes[6], left: false, right: false, srcPort: 3, dstPort: 3, type: "static"}
+    {id: "path100", source: nodes[10], target: nodes[0], left: false, right: false, srcPort: nodes[10].port, dstPort: nodes[10].port, type: "static"},
+    {id: "path113", source: nodes[11], target: nodes[3], left: false, right: false, srcPort: nodes[11].port, dstPort: nodes[11].port, type: "static"},
+    {id: "path124", source: nodes[12], target: nodes[4], left: false, right: false, srcPort: nodes[12].port, dstPort: nodes[12].port, type: "static"},
+    {id: "path134", source: nodes[13], target: nodes[4], left: false, right: false, srcPort: nodes[13].port, dstPort: nodes[13].port, type: "static"},
+    {id: "path146", source: nodes[14], target: nodes[6], left: false, right: false, srcPort: nodes[14].port, dstPort: nodes[14].port, type: "static"}
 ];
 
 function createAdjacencyMatrix() {

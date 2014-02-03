@@ -111,6 +111,10 @@ public class RoutingCapability implements IRoutingCapability {
         if (proactive) {
             response = proactiveRouting(switchInfo, route, version);
             listOF = ((List<FloodlightOFFlow>) response.getEntity());
+            log.error("Size ListFlows "+listOF.size());
+            if( listOF.isEmpty() ){
+                return Response.status(404).type("text/plain").entity("Route Not found.").build();
+            }
             listFlows.append("[");
             listFlows.append("{ip:'").append(ipSource).append("'},")//source IP
                     .append("{dpid:'").append(switchDPID).append("'},");//first switch id
@@ -346,11 +350,11 @@ log.debug("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getM
 //                response = provisionLink(listFlow.get(i));
                 FloodlightOFFlow flow = listFlow.get(i);
                 flow.getMatch().setEtherType("2048");
-                flow.setName(String.valueOf(route.getId())+"-2048-"+listFlow.get(i).getMatch().getSrcIp()+"-"+listFlow.get(i).getMatch().getDstIp());
+                flow.setName(String.valueOf(route.getId())+"-2048-"+listFlow.get(i).getMatch().getSrcIp()+"-"+listFlow.get(i).getMatch().getDstIp()+"-"+listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
                 provisionLink(flow);
                 
                 flow.getMatch().setEtherType("2054");
-                flow.setName(String.valueOf(route.getId())+"-2054-"+listFlow.get(i).getMatch().getSrcIp()+"-"+listFlow.get(i).getMatch().getDstIp());
+                flow.setName(String.valueOf(route.getId())+"-2054-"+listFlow.get(i).getMatch().getSrcIp()+"-"+listFlow.get(i).getMatch().getDstIp()+"-"+listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
                 provisionLink(flow);
             } catch (ResourceException e) {
 //                throw new ActionException("Error provisioning link : ", e);
