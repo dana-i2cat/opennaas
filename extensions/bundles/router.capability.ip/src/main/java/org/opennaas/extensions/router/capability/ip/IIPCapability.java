@@ -35,10 +35,24 @@ import org.opennaas.extensions.router.capability.ip.api.IPAddresses;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
 import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 @Path("/")
 public interface IIPCapability extends ICapability {
+
+	/*
+	 * Interfaces
+	 */
+	/**
+	 * Returns a list of interfaces names
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getInterfaces")
+	@Produces(MediaType.APPLICATION_XML)
+	public InterfacesNamesList getInterfacesNames() throws CapabilityException;
 
 	/**
 	 * 
