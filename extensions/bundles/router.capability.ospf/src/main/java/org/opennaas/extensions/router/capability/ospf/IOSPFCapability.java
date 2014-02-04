@@ -33,6 +33,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.OSPFArea;
@@ -101,10 +102,18 @@ public interface IOSPFCapability extends ICapability {
 	 * @param ospfAreaConfiguration
 	 * @throws CapabilityException
 	 */
-	@Path("/configureOSPFArea")
+	public void configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
+
+	/**
+	 * Configures an OSPF area.
+	 * 
+	 * @param ospfAreaConfiguration
+	 * @throws CapabilityException
+	 */
+	@Path("/area")
 	@Consumes(MediaType.APPLICATION_XML)
 	@POST
-	public void configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
+	public void configureOSPFArea(OSPFAreaWrapper ospfAreaWrapper) throws CapabilityException;
 
 	/**
 	 * Remove an OSPF area.

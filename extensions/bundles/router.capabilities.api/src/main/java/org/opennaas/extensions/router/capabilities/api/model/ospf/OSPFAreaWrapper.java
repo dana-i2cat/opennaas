@@ -25,9 +25,16 @@ import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.opennaas.extensions.router.model.OSPFArea.AreaType;
+
+/**
+ * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
 @XmlRootElement(name = "ospfArea")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OSPFAreaWrapper implements Serializable {
@@ -36,15 +43,17 @@ public class OSPFAreaWrapper implements Serializable {
 
 	private String									areaId;
 
-	@XmlElement(name = "ospfProtocolEndpoint")
-	private Collection<OSPFProtocolEndpointWrapper>	ospfProtocolEndpoints;
+	private AreaType								areaType;
+
+	@XmlElementWrapper(name = "ospfProtocolEndpoints")
+	private Collection<OSPFProtocolEndpointWrapper>	ospfProtocolEndpoint;
 
 	public Collection<OSPFProtocolEndpointWrapper> getOspfProtocolEndpoints() {
-		return ospfProtocolEndpoints;
+		return ospfProtocolEndpoint;
 	}
 
 	public void setOspfProtocolEndpoints(Collection<OSPFProtocolEndpointWrapper> ospfProtocolEndpoints) {
-		this.ospfProtocolEndpoints = ospfProtocolEndpoints;
+		this.ospfProtocolEndpoint = ospfProtocolEndpoints;
 	}
 
 	public String getAreaID() {
@@ -55,12 +64,21 @@ public class OSPFAreaWrapper implements Serializable {
 		this.areaId = name;
 	}
 
+	public AreaType getAreaType() {
+		return areaType;
+	}
+
+	public void setAreaType(AreaType areaType) {
+		this.areaType = areaType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((areaId == null) ? 0 : areaId.hashCode());
-		result = prime * result + ((ospfProtocolEndpoints == null) ? 0 : ospfProtocolEndpoints.hashCode());
+		result = prime * result + ((areaType == null) ? 0 : areaType.hashCode());
+		result = prime * result + ((ospfProtocolEndpoint == null) ? 0 : ospfProtocolEndpoint.hashCode());
 		return result;
 	}
 
@@ -78,10 +96,12 @@ public class OSPFAreaWrapper implements Serializable {
 				return false;
 		} else if (!areaId.equals(other.areaId))
 			return false;
-		if (ospfProtocolEndpoints == null) {
-			if (other.ospfProtocolEndpoints != null)
+		if (areaType != other.areaType)
+			return false;
+		if (ospfProtocolEndpoint == null) {
+			if (other.ospfProtocolEndpoint != null)
 				return false;
-		} else if (!ospfProtocolEndpoints.equals(other.ospfProtocolEndpoints))
+		} else if (!ospfProtocolEndpoint.equals(other.ospfProtocolEndpoint))
 			return false;
 		return true;
 	}

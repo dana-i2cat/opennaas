@@ -20,6 +20,7 @@ package org.opennaas.extensions.router.capabilities.api.helper;
  * #L%
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,12 +30,14 @@ import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFProtocolEn
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public abstract class OSPFApiHelper {
 
-	public static OSPFServiceWrapper buildOSPFServiceWrapper(OSPFService ospfService) {
+	public static OSPFServiceWrapper buildOSPFServiceWrapper(OSPFService ospfService) throws IOException {
 
 		OSPFServiceWrapper ospfServiceWrapper = new OSPFServiceWrapper();
 		Collection<OSPFAreaWrapper> ospfAreaWrappers = new ArrayList<OSPFAreaWrapper>();
@@ -56,10 +59,13 @@ public abstract class OSPFApiHelper {
 
 	}
 
-	public static OSPFAreaWrapper buildOSPFAreaWrapper(OSPFArea ospfArea) {
+	public static OSPFAreaWrapper buildOSPFAreaWrapper(OSPFArea ospfArea) throws IOException {
 
 		OSPFAreaWrapper ospfAreaWrapper = new OSPFAreaWrapper();
-		ospfAreaWrapper.setAreaID((String.valueOf(ospfArea.getAreaID())));
+		ospfAreaWrapper.setAreaID(IPUtilsHelper.ipv4LongToString(ospfArea.getAreaID()));
+
+		if (ospfArea.getAreaType() != null)
+			ospfAreaWrapper.setAreaType(ospfArea.getAreaType());
 
 		Collection<OSPFProtocolEndpointWrapper> ospfEndpointsWrapper = buildOSPFProtocolEndpointsWrapperCollection(ospfArea.getEndpointsInArea());
 		ospfAreaWrapper.setOspfProtocolEndpoints(ospfEndpointsWrapper);
@@ -104,5 +110,36 @@ public abstract class OSPFApiHelper {
 
 		return service;
 
+	}
+
+	public static OSPFAreaConfiguration buildOSPFAreaConfiguration(OSPFAreaWrapper ospfAreaWrapper) throws IOException {
+
+		OSPFAreaConfiguration ospfAreaConfig = new OSPFAreaConfiguration();
+
+		OSPFArea ospfArea = buildOSPFArea(ospfAreaWrapper);
+
+		ospfAreaConfig.setOSPFArea(ospfArea);
+
+		return ospfAreaConfig;
+	}
+
+	private static OSPFArea buildOSPFArea(OSPFAreaWrapper ospfAreaWrapper) throws IOException {
+
+		OSPFArea ospfArea = new OSPFArea();
+
+		ospfArea.setAreaID(IPUtilsHelper.ipv4StringToLong(ospfAreaWrapper.getAreaID()));
+
+		if (ospfAreaWrapper.getAreaType() != null)
+			ospfArea.setAreaType(ospfAreaWrapper.getAreaType());
+
+		for (OSPFProtocolEndpointWrapper endpointWrapper : ospfAreaWrapper.getOspfProtocolEndpoints()) {
+			OSPFProtocolEndpoint ospfEndpoint = new OSPFProtocolEndpoint();
+			ospfEndpoint.setEnabledState(endpointWrapper.getEnabledState());
+			ospfEndpoint.setName(endpointWrapper.getName());
+
+			ospfArea.addEndpointInArea(ospfEndpoint);
+		}
+
+		return ospfArea;
 	}
 }

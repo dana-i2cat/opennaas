@@ -20,6 +20,7 @@ package org.opennaas.extensions.router.capability.ospf;
  * #L%
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
@@ -230,6 +232,20 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of configureOSPFArea call");
 	}
 
+	@Override
+	public void configureOSPFArea(OSPFAreaWrapper ospfAreaWrapper) throws CapabilityException {
+
+		OSPFAreaConfiguration ospfAreaConfig;
+
+		try {
+			ospfAreaConfig = OSPFApiHelper.buildOSPFAreaConfiguration(ospfAreaWrapper);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+		configureOSPFArea(ospfAreaConfig);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -416,9 +432,15 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 	@Override
 	public OSPFServiceWrapper readOSPFConfiguration() throws CapabilityException {
-		OSPFService ospfService = showOSPFConfiguration();
 
-		OSPFServiceWrapper ospfServiceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		OSPFServiceWrapper ospfServiceWrapper;
+
+		OSPFService ospfService = showOSPFConfiguration();
+		try {
+			ospfServiceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
 
 		return ospfServiceWrapper;
 	}

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,6 +34,7 @@ import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFProtocolEn
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFArea.AreaType;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
@@ -88,7 +90,7 @@ public class OSPFApiHelperTest {
 	}
 
 	@Test
-	public void buildOSPFAreaWrapperTest() {
+	public void buildOSPFAreaWrapperTest() throws IOException {
 
 		OSPFProtocolEndpointBase ospfEndpoint1 = generateOSPFEndpoint(ENDPOINT_1_NAME, EnabledState.ENABLED);
 		OSPFProtocolEndpointBase ospfEndpoint2 = generateOSPFEndpoint(ENDPOINT_2_NAME, EnabledState.DISABLED);
@@ -99,7 +101,7 @@ public class OSPFApiHelperTest {
 		area.addEndpointInArea(ospfEndpoint2);
 
 		OSPFAreaWrapper areaWrapper = OSPFApiHelper.buildOSPFAreaWrapper(area);
-		Assert.assertEquals(String.valueOf(area.getAreaID()), areaWrapper.getAreaID());
+		Assert.assertEquals(IPUtilsHelper.ipv4LongToString(area.getAreaID()), areaWrapper.getAreaID());
 		Assert.assertEquals(2, areaWrapper.getOspfProtocolEndpoints().size());
 		Assert.assertEquals(area.getEndpointsInArea().size(), areaWrapper.getOspfProtocolEndpoints().size());
 	}
@@ -168,6 +170,68 @@ public class OSPFApiHelperTest {
 		Assert.assertNotNull(ospfService.getEnabledState());
 		Assert.assertEquals(wrapper.getEnabledState(), ospfService.getEnabledState());
 		Assert.assertEquals(EnabledState.ENABLED, ospfService.getEnabledState());
+
+	}
+
+	@Test
+	public void buildOSPFAreaConfigurationTest() throws IOException {
+
+		OSPFAreaWrapper areaWrapper = new OSPFAreaWrapper();
+		areaWrapper.setAreaID(OSPF_AREA_1);
+		areaWrapper.setAreaType(AreaType.NSSA);
+
+		Collection<OSPFProtocolEndpointWrapper> ospfProtocolEndpoints = generateOSPFEndpointsWrappers();
+		areaWrapper.setOspfProtocolEndpoints(ospfProtocolEndpoints);
+
+		OSPFAreaConfiguration ospfConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaWrapper);
+
+		Assert.assertNotNull(ospfConfig);
+		Assert.assertNotNull(ospfConfig.getOSPFArea());
+
+		OSPFArea ospfArea = ospfConfig.getOSPFArea();
+		Assert.assertNotNull(ospfArea.getAreaID());
+		Assert.assertEquals(areaWrapper.getAreaID(), IPUtilsHelper.ipv4LongToString(ospfArea.getAreaID()));
+		Assert.assertEquals(OSPF_AREA_1, IPUtilsHelper.ipv4LongToString(ospfArea.getAreaID()));
+
+		Assert.assertNotNull(ospfArea.getAreaType());
+		Assert.assertEquals(areaWrapper.getAreaType(), ospfArea.getAreaType());
+		Assert.assertEquals(AreaType.NSSA, ospfArea.getAreaType());
+
+		Assert.assertNotNull(ospfArea.getEndpointsInArea());
+
+		List<OSPFProtocolEndpointBase> endpoints = ospfArea.getEndpointsInArea();
+		Assert.assertEquals(2, endpoints.size());
+
+		Iterator<OSPFProtocolEndpointBase> endpointIterator = endpoints.iterator();
+		OSPFProtocolEndpointBase endpoint1 = endpointIterator.next();
+		OSPFProtocolEndpointBase endpoint2 = endpointIterator.next();
+
+		Assert.assertTrue(endpoint1.getName().equals(ENDPOINT_1_NAME) || endpoint1.getName().equals(ENDPOINT_2_NAME));
+		Assert.assertTrue(endpoint2.getName().equals(ENDPOINT_1_NAME) || endpoint2.getName().equals(ENDPOINT_2_NAME));
+		Assert.assertFalse(endpoint1.getName().equals(endpoint2.getName()));
+
+		Assert.assertTrue(endpoint1.getEnabledState().equals(EnabledState.ENABLED) || endpoint1.getEnabledState().equals(EnabledState.DISABLED));
+		Assert.assertTrue(endpoint2.getEnabledState().equals(EnabledState.ENABLED) || endpoint2.getEnabledState().equals(EnabledState.DISABLED));
+		Assert.assertFalse(endpoint1.getEnabledState().equals(endpoint2.getEnabledState()));
+
+	}
+
+	private Collection<OSPFProtocolEndpointWrapper> generateOSPFEndpointsWrappers() {
+
+		List<OSPFProtocolEndpointWrapper> endpointList = new ArrayList<OSPFProtocolEndpointWrapper>();
+		endpointList.add(generateOSPFProtocolEndpointWrapper(ENDPOINT_1_NAME, EnabledState.ENABLED));
+		endpointList.add(generateOSPFProtocolEndpointWrapper(ENDPOINT_2_NAME, EnabledState.DISABLED));
+
+		return endpointList;
+	}
+
+	private OSPFProtocolEndpointWrapper generateOSPFProtocolEndpointWrapper(String endpointName, EnabledState state) {
+
+		OSPFProtocolEndpointWrapper wrapper = new OSPFProtocolEndpointWrapper();
+		wrapper.setName(endpointName);
+		wrapper.setState(state);
+
+		return wrapper;
 
 	}
 
