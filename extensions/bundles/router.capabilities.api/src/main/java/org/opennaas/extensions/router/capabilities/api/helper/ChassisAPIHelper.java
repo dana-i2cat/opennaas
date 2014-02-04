@@ -181,4 +181,20 @@ public class ChassisAPIHelper {
 		return lp;
 	}
 
+	/**
+	 * Translates a {@link String} subinterface name to an empty {@link NetworkPort}
+	 * 
+	 * @param subInterfaceName
+	 * @return
+	 */
+	public static NetworkPort subInterfaceName2NetworkPort(String subInterfaceName) {
+		if (subInterfaceName == null || subInterfaceName.isEmpty()) {
+			throw new IllegalArgumentException("Invalid subInterfaceName");
+		}
+
+		NetworkPort networkPort = new NetworkPort();
+		networkPort.setName(subInterfaceName);
+		return networkPort;
+	}
+
 }

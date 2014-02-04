@@ -67,4 +67,15 @@ public class ChassisAPIHelperTest {
 		Assert.assertNotNull("Generated LogicalPort name must be not null", name);
 		Assert.assertEquals("Name must be " + IFACE_NAME, IFACE_NAME, name);
 	}
+
+	@Test
+	public void testSubInterfaceName2NetworkPort() {
+		NetworkPort np = ChassisAPIHelper.subInterfaceName2NetworkPort(IFACE_NAME);
+
+		Assert.assertNotNull("Generated NetworkPort must be not null", np);
+
+		String name = np.getName();
+		Assert.assertNotNull("Generated NetworkPort name must be not null", name);
+		Assert.assertEquals("Name must be " + IFACE_NAME, IFACE_NAME, name);
+	}
 }
