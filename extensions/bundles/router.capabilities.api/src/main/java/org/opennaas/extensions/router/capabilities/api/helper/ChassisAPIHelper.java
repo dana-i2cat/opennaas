@@ -21,11 +21,13 @@ package org.opennaas.extensions.router.capabilities.api.helper;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.System;
@@ -117,4 +119,49 @@ public class ChassisAPIHelper {
 		interfaceInfoList.setInterfaceInfos(interfaceInfos);
 		return interfaceInfoList;
 	}
+
+	/**
+	 * Translates an {@link InterfaceInfo} to {@link NetworkPort}
+	 * 
+	 * @param interfaceInfo
+	 * @return
+	 */
+	public static NetworkPort interfaceInfo2NetworkPort(InterfaceInfo interfaceInfo) {
+		NetworkPort networkPort = new NetworkPort();
+
+		// split name
+		String[] name = interfaceInfo.getName().split("\\.");
+		if (name.length < 1 || name.length > 2) {
+			throw new IllegalArgumentException("Invalid InterfaceInfo.name value. It should be in form \"ifacename\" or \"ifacename.unit\"");
+		}
+
+		// set name and port number based on the name splitting
+		networkPort.setName(name[0]);
+		networkPort.setPortNumber(name.length > 1 ? Integer.parseInt(name[1]) : 0);
+
+		// VLAN
+		String vlan = interfaceInfo.getVlan();
+		if (vlan != null && !vlan.isEmpty()) {
+			VLANEndpoint vlanEndpoint = new VLANEndpoint();
+			vlanEndpoint.setVlanID(Integer.parseInt(vlan));
+			networkPort.addProtocolEndpoint(vlanEndpoint);
+		}
+
+		// state
+		String state = interfaceInfo.getState();
+		if (state != null && !state.isEmpty()) {
+			try {
+				networkPort.setOperationalStatus(OperationalStatus.valueOf(state));
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(
+						"Invalid InterfaceInfo.state value. It must be one of these: " + Arrays.toString(OperationalStatus.values()), e);
+			}
+		}
+
+		// description
+		networkPort.setDescription(interfaceInfo.getDescription());
+
+		return networkPort;
+	}
+
 }
