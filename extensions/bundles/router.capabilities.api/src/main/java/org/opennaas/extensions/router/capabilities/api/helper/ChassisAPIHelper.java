@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
+import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -162,6 +163,22 @@ public class ChassisAPIHelper {
 		networkPort.setDescription(interfaceInfo.getDescription());
 
 		return networkPort;
+	}
+
+	/**
+	 * Translates a {@link String} interface name to an empty {@link LogicalPort}
+	 * 
+	 * @param interfaceName
+	 * @return
+	 */
+	public static LogicalPort interfaceName2LogicalPort(String interfaceName) {
+		if (interfaceName == null || interfaceName.isEmpty()) {
+			throw new IllegalArgumentException("Invalid interfaceName");
+		}
+
+		LogicalPort lp = new LogicalPort();
+		lp.setName(interfaceName);
+		return lp;
 	}
 
 }

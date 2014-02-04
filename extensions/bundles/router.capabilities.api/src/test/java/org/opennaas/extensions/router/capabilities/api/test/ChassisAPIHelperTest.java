@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
+import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.VLANEndpoint;
@@ -54,5 +55,16 @@ public class ChassisAPIHelperTest {
 		ii.setDescription(IFACE_DESCRIPTION);
 
 		return ii;
+	}
+
+	@Test
+	public void testInterfaceName2LogicalPort() {
+		LogicalPort lp = ChassisAPIHelper.interfaceName2LogicalPort(IFACE_NAME);
+
+		Assert.assertNotNull("Generated LogicalPort must be not null", lp);
+
+		String name = lp.getName();
+		Assert.assertNotNull("Generated LogicalPort name must be not null", name);
+		Assert.assertEquals("Name must be " + IFACE_NAME, IFACE_NAME, name);
 	}
 }
