@@ -32,18 +32,18 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.AddInterfacesToLogicalRouterRequest;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.RemoveInterfacesFromLogicalRouterRequest;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
 import org.opennaas.extensions.router.capability.chassis.api.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
-import org.opennaas.extensions.router.model.wrappers.AddInterfacesToLogicalRouterRequest;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfo;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfoList;
-import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
-import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesFromLogicalRouterRequest;
-import org.opennaas.extensions.router.model.wrappers.SetEncapsulationLabelRequest;
-import org.opennaas.extensions.router.model.wrappers.SetEncapsulationRequest;
 
 public interface IChassisCapability extends ICapability {
 

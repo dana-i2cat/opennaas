@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.opennaas.extensions.router.model.wrappers;
+package org.opennaas.extensions.router.capabilities.api.model.ospf;
 
 /*
  * #%L
@@ -27,32 +24,18 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.OSPFArea;
 
 /**
  * @author Jordi
  */
 @XmlRootElement
-public class AddInterfacesToLogicalRouterRequest {
+public class RemoveInterfacesInOSPFAreaRequest {
 
-	private ComputerSystem		logicalRouter;
 	private List<LogicalPort>	interfaces;
 
-	/**
-	 * @return the logicalRouter
-	 */
-	public ComputerSystem getLogicalRouter() {
-		return logicalRouter;
-	}
-
-	/**
-	 * @param logicalRouter
-	 *            the logicalRouter to set
-	 */
-	public void setLogicalRouter(ComputerSystem logicalRouter) {
-		this.logicalRouter = logicalRouter;
-	}
+	private OSPFArea			ospfArea;
 
 	/**
 	 * @return the interfaces
@@ -67,6 +50,21 @@ public class AddInterfacesToLogicalRouterRequest {
 	 */
 	public void setInterfaces(List<LogicalPort> interfaces) {
 		this.interfaces = interfaces;
+	}
+
+	/**
+	 * @return the ospfArea
+	 */
+	public OSPFArea getOspfArea() {
+		return ospfArea;
+	}
+
+	/**
+	 * @param ospfArea
+	 *            the ospfArea to set
+	 */
+	public void setOspfArea(OSPFArea ospfArea) {
+		this.ospfArea = ospfArea;
 	}
 
 }

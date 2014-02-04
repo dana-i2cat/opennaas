@@ -25,9 +25,9 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfo;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfoList;
 
 @Command(scope = "chassis", name = "showInterfaces", description = "List all interfaces of a given resource.")
 public class ShowInterfacesCommand extends GenericKarafCommand {

@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.model.wrappers;
+package org.opennaas.extensions.router.capabilities.api.model.chassis;
 
 /*
  * #%L
