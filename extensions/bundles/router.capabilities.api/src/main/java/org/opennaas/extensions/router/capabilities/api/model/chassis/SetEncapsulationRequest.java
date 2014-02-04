@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.extensions.router.model.wrappers;
+package org.opennaas.extensions.router.capabilities.api.model.chassis;
 
 /*
  * #%L
@@ -26,15 +26,16 @@ package org.opennaas.extensions.router.model.wrappers;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
 /**
  * @author Jordi
  */
 @XmlRootElement
-public class SetEncapsulationLabelRequest {
+public class SetEncapsulationRequest {
 
-	private LogicalPort	iface;
-	private String		encapsulationLabel;
+	private LogicalPort		iface;
+	private ProtocolIFType	encapsulation;
 
 	/**
 	 * @return the iface
@@ -52,18 +53,18 @@ public class SetEncapsulationLabelRequest {
 	}
 
 	/**
-	 * @return the encapsulationLabel
+	 * @return the encapsulation
 	 */
-	public String getEncapsulationLabel() {
-		return encapsulationLabel;
+	public ProtocolIFType getEncapsulation() {
+		return encapsulation;
 	}
 
 	/**
-	 * @param encapsulationLabel
-	 *            the encapsulationLabel to set
+	 * @param encapsulation
+	 *            the encapsulation to set
 	 */
-	public void setEncapsulationLabel(String encapsulationLabel) {
-		this.encapsulationLabel = encapsulationLabel;
+	public void setEncapsulation(ProtocolIFType encapsulation) {
+		this.encapsulation = encapsulation;
 	}
 
 }

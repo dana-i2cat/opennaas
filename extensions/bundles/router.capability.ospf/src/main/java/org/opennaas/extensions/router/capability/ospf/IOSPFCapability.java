@@ -34,15 +34,16 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.AddInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.RemoveInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
-import org.opennaas.extensions.router.model.wrappers.AddInterfacesInOSPFAreaRequest;
-import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaRequest;
 
 /**
  * @author Jordi Puig
@@ -156,6 +157,17 @@ public interface IOSPFCapability extends ICapability {
 	 */
 	public void addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea)
 			throws CapabilityException;
+
+	/**
+	 * Adds given interfaces to given OSPF area
+	 * 
+	 * @param addInterfacesOSPFRequest
+	 * @throws CapabilityException
+	 */
+	@Path("/area/interfaces")
+	@PUT
+	@Consumes(MediaType.APPLICATION_XML)
+	public void addInterfacesInOSPFArea(@QueryParam("areaId") String areaId, InterfacesNamesList interfaces) throws CapabilityException;
 
 	/**
 	 * Remove given interfaces from given OSPF area

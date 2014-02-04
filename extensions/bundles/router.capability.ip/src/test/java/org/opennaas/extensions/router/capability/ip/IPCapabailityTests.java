@@ -34,12 +34,12 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.mock.MockResource;
+import org.opennaas.extensions.router.capabilities.api.model.ip.SetIpAddressRequest;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 

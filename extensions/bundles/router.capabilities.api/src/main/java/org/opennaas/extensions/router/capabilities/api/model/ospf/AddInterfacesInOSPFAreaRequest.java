@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.opennaas.extensions.router.model.wrappers;
+package org.opennaas.extensions.router.capabilities.api.model.ospf;
 
 /*
  * #%L
@@ -23,48 +20,51 @@ package org.opennaas.extensions.router.model.wrappers;
  * #L%
  */
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.OSPFArea;
 
 /**
  * @author Jordi
  */
 @XmlRootElement
-public class SetEncapsulationRequest {
+public class AddInterfacesInOSPFAreaRequest {
 
-	private LogicalPort		iface;
-	private ProtocolIFType	encapsulation;
+	private List<LogicalPort>	interfaces;
+
+	private OSPFArea			ospfArea;
 
 	/**
-	 * @return the iface
+	 * @return the interfaces
 	 */
-	public LogicalPort getIface() {
-		return iface;
+	public List<LogicalPort> getInterfaces() {
+		return interfaces;
 	}
 
 	/**
-	 * @param iface
-	 *            the iface to set
+	 * @param interfaces
+	 *            the interfaces to set
 	 */
-	public void setIface(LogicalPort iface) {
-		this.iface = iface;
+	public void setInterfaces(List<LogicalPort> interfaces) {
+		this.interfaces = interfaces;
 	}
 
 	/**
-	 * @return the encapsulation
+	 * @return the ospfArea
 	 */
-	public ProtocolIFType getEncapsulation() {
-		return encapsulation;
+	public OSPFArea getOspfArea() {
+		return ospfArea;
 	}
 
 	/**
-	 * @param encapsulation
-	 *            the encapsulation to set
+	 * @param ospfArea
+	 *            the ospfArea to set
 	 */
-	public void setEncapsulation(ProtocolIFType encapsulation) {
-		this.encapsulation = encapsulation;
+	public void setOspfArea(OSPFArea ospfArea) {
+		this.ospfArea = ospfArea;
 	}
 
 }

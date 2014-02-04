@@ -35,8 +35,11 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.AddInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.RemoveInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -47,8 +50,6 @@ import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.Service;
-import org.opennaas.extensions.router.model.wrappers.AddInterfacesInOSPFAreaRequest;
-import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaRequest;
 
 /**
  * @author Isart Canyameres
@@ -316,6 +317,12 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		action = createActionAndCheckParams(OSPFActionSet.OSPF_ADD_INTERFACE_IN_AREA, area);
 		queueAction(action);
 		log.info("End of addInterfacesInOSPFArea call");
+	}
+
+	@Override
+	public void addInterfacesInOSPFArea(String areaId, InterfacesNamesList interfaces) throws CapabilityException {
+		// TODO Auto-generated method stub
+
 	}
 
 	/*
