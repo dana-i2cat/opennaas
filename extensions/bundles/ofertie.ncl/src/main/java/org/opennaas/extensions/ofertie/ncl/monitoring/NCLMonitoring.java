@@ -42,7 +42,7 @@ import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
-import org.opennaas.extensions.ofnetwork.capability.monitoring.IMonitoringNetworkCapability;
+import org.opennaas.extensions.ofnetwork.capability.statistics.INetworkStatisticsCapability;
 import org.opennaas.extensions.ofnetwork.events.LinkCongestionEvent;
 import org.opennaas.extensions.ofnetwork.model.NetworkStatistics;
 import org.opennaas.extensions.ofnetwork.repository.OFNetworkRepository;
@@ -216,20 +216,20 @@ public class NCLMonitoring {
 
 			NetworkStatistics currentNetworkStatistics = null;
 
-			IMonitoringNetworkCapability monitoringNetworkCapability = null;
+			INetworkStatisticsCapability networkStatisticsCapability = null;
 			try {
 				// get port switch statistics for each network
-				monitoringNetworkCapability = (IMonitoringNetworkCapability) network
-						.getCapabilityByInterface(IMonitoringNetworkCapability.class);
+				networkStatisticsCapability = (INetworkStatisticsCapability) network
+						.getCapabilityByInterface(INetworkStatisticsCapability.class);
 			} catch (ResourceException e) {
-				// there is not IMonitoringNetworkCapability in this network
-				log.debug("Openflow network resource without IMonitoringNetworkCapability.");
+				// there is not INetworkStatisticsCapability in this network
+				log.debug("Openflow network resource without INetworkStatisticsCapability.");
 			}
 
-			if (monitoringNetworkCapability != null) {
+			if (networkStatisticsCapability != null) {
 
 				log.debug("Getting network statistics...");
-				currentNetworkStatistics = monitoringNetworkCapability.getNetworkStatistics();
+				currentNetworkStatistics = networkStatisticsCapability.getNetworkStatistics();
 			}
 			return currentNetworkStatistics;
 		}
