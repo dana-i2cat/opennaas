@@ -51,6 +51,7 @@ import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaR
 /**
  * @author Isart Canyameres
  * @author Jordi Puig
+ * @author Adrián Roselló Rey (i2CAT)
  */
 public class OSPFCapability extends AbstractCapability implements IOSPFCapability {
 
@@ -209,6 +210,11 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CLEAR, ospfService);
 		queueAction(action);
 		log.info("End of clearOSPFconfiguration call");
+	}
+
+	@Override
+	public void clearOSPFconfiguration() throws CapabilityException {
+		clearOSPFconfiguration(new OSPFService());
 	}
 
 	/*

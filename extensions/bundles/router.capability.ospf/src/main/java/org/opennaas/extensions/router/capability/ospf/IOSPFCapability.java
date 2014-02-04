@@ -23,6 +23,7 @@ package org.opennaas.extensions.router.capability.ospf;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -43,6 +44,7 @@ import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaR
 /**
  * @author Jordi Puig
  * @author Isart Canyameres
+ * @author Adrián Roselló Rey (i2CAT)
  */
 @Path("/")
 public interface IOSPFCapability extends ICapability {
@@ -80,16 +82,17 @@ public interface IOSPFCapability extends ICapability {
 	@POST
 	public void configureOSPF(OSPFServiceWrapper ospfServiceWrapper) throws CapabilityException;
 
+	public void clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException;
+
 	/**
 	 * Removes all OSPF configuration.
 	 * 
 	 * @param ospfService
 	 * @throws CapabilityException
 	 */
-	@Path("/clearOSPFconfiguration")
-	@Consumes(MediaType.APPLICATION_XML)
-	@POST
-	public void clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException;
+	@Path("/")
+	@DELETE
+	public void clearOSPFconfiguration() throws CapabilityException;
 
 	/**
 	 * Configures an OSPF area.
