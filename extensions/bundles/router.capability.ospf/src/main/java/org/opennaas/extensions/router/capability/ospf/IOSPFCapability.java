@@ -29,6 +29,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -121,10 +122,18 @@ public interface IOSPFCapability extends ICapability {
 	 * @param ospfAreaConfiguration
 	 * @throws CapabilityException
 	 */
-	@Path("/removeOSPFArea")
-	@Consumes(MediaType.APPLICATION_XML)
-	@POST
+
 	public void removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
+
+	/**
+	 * Remove an OSPF area.
+	 * 
+	 * @param ospfAreaConfiguration
+	 * @throws CapabilityException
+	 */
+	@Path("/area")
+	@DELETE
+	public void removeOSPFArea(@QueryParam("areaId") String areaId) throws CapabilityException;
 
 	/**
 	 * Adds given interfaces to given OSPF area

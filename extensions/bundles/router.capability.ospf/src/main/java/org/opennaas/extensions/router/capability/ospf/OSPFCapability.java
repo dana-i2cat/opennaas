@@ -259,6 +259,21 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End removeOSPFArea call");
 	}
 
+	@Override
+	public void removeOSPFArea(String areaId) throws CapabilityException {
+
+		OSPFAreaConfiguration areaConfig;
+
+		try {
+			areaConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaId);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+
+		removeOSPFArea(areaConfig);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

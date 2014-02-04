@@ -112,6 +112,13 @@ public abstract class OSPFApiHelper {
 
 	}
 
+	/**
+	 * Creates an OSPFAreaConfiguration with an OSPFArea and OSPFProtocolEndpoints (if any) from the given OSPFAreaWrapper.
+	 * 
+	 * @param ospfAreaWrapper
+	 * @return
+	 * @throws IOException
+	 */
 	public static OSPFAreaConfiguration buildOSPFAreaConfiguration(OSPFAreaWrapper ospfAreaWrapper) throws IOException {
 
 		OSPFAreaConfiguration ospfAreaConfig = new OSPFAreaConfiguration();
@@ -141,5 +148,23 @@ public abstract class OSPFApiHelper {
 		}
 
 		return ospfArea;
+	}
+
+	/**
+	 * Creates a basic OSPFAreaConfiguration with an OSPFArea with the specified areaId.
+	 * 
+	 * @param areaId
+	 * @return
+	 * @throws IOException
+	 */
+	public static OSPFAreaConfiguration buildOSPFAreaConfiguration(String areaId) throws IOException {
+
+		OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
+		OSPFArea ospfArea = new OSPFArea();
+
+		ospfArea.setAreaID(IPUtilsHelper.ipv4StringToLong(areaId));
+		areaConfig.setOSPFArea(ospfArea);
+
+		return areaConfig;
 	}
 }
