@@ -291,12 +291,12 @@ function sortReturnedRoutes(routes){
                 newRoute.push(node);
                 set = false;
                 break;
-            }else{
+            }else{//if not exists a match, move the dpid to the final of the array in order to analyze later
                 set = true;
             }
         }
         //The follow defined node is not connected with the source node. Moving this node to the next position (j+1)
-        if (set) {
+        if ( set ) {
             routes = arraymove(routes, j, routes.length);
             set = false;
             j--;

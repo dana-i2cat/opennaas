@@ -68,10 +68,7 @@ function runtime(node) {
             // check for drag-to-self
             mouseup_node = d;
 
-            // add link to graph (update if exists)
-            // NB: links are strictly source < target; arrows separately specified by booleans
             var source, target, dest1;
-//            if (mousedown_node.id < mouseup_node.id) {
             source = mousedown_node;
             target = mouseup_node;
          
@@ -80,7 +77,7 @@ console.log("MouseUp on node " + d.id+" Source h " + source.id+" Dest h " + targ
             var newLink;//New defined link (this should includes CSS changes)
 
             originLink = links.filter(function (l) {return (l.source === source && l.target === target); })[0];
-            if ( typeof originLink === 'undefined') {
+            if ( typeof originLink === 'undefined' ) {
                 originLink = links.filter(function (l) {return (l.source === target && l.target === source); })[0];
             }
 
@@ -88,7 +85,7 @@ console.log("MouseUp on node " + d.id+" Source h " + source.id+" Dest h " + targ
             if ( mode === man ){
 console.log("New Link. Manual mode. ");
                 dest1 = nodes.filter(function(n) {return n.id === target.id; })[0];
-                newLink = {id: links.length, source: source, target: dest1, left: false, right: false, type: "new_link"};
+                newLink = {id: links.length, source: source, target: dest1, type: "new_link"};
                                 
                 //this link exists? It is possible to make this connection?
                 for (var i = 0; i < links.length; ++i) {
@@ -97,7 +94,6 @@ console.log("New Link. Manual mode. ");
 
                         manualPath.push(newLink.target.id_num);
                         links.push(newLink);
-console.log(link);
                         if ( manualType === "Point-to-point" ){
                             insertIpDialog(newLink, originLink).done(function (answer) {
 //console.log("Destination IP " + answer);//TRUE
@@ -170,8 +166,6 @@ console.log(path);
             var id, nextId;
             id = (document.getElementById("path" + path[i] + prev) !== null) ? "path" + path[i] + prev : "path" + prev + path[i];
             nextId = (document.getElementById("path" + path[i+1] + path[i]) !== null) ? "path" + path[i+1] + path[i] : "path" + path[i] +path[i+1];
-//            var l = document.getElementById(id);
-//            var l2 = document.getElementById(nextId);
 
             prev = path[i];
 console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
@@ -179,11 +173,12 @@ console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
             nextLink = links.filter(function (link) {return (link.id === nextId);})[0];
             source1 = orgLink.source;
             dest1 = orgLink.target;
-            link = {source: source1, target: dest1, left: false, right: false, type:"new_link"};
+            link = {source: source1, target: dest1, type:"new_link"};
             links.push(link);
 console.log(orgLink);
 console.log(nextLink);
 console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);
+
 /*search the source dpid -> the dpid common in path and nextPath */
             srcPort = orgLink.dstPort
             dstPort = nextLink.srcPort;
@@ -195,7 +190,7 @@ console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.
                 }else{
                     dstPort = nextLink.dstPort;
                 }
-            } else if (orgLink.target === sourceNode){
+            } else if ( orgLink.target === sourceNode ){
                 targetNode = orgLink.source;
                 srcPort = orgLink.srcPort;
                 if( nextLink.source === orgLink.target ){
@@ -275,7 +270,7 @@ console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
 
             source1 = orgLink.source;
             dest1 = orgLink.target;
-            link = {source: source1, target: dest1, left: false, right: false, type:"new_link"};
+            link = {source: source1, target: dest1, type:"new_link"};
             links.push(link);
 
 console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);

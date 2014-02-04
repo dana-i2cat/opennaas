@@ -46,10 +46,10 @@ function runtime(node, links) {
             }
             // add link to graph (update if exists)
             // NB: links are strictly source < target; arrows separately specified by booleans
-            var source, target;
+            var source, target, newSource;
             source = mousedown_node;
             target = mouseup_node;
-
+            newSource = source;
 console.log("Source " + source.id + " to Dest " + target.id);
             var link;
             link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
@@ -57,10 +57,11 @@ console.log("Source " + source.id + " to Dest " + target.id);
             //request to OpenNaaS
             swNode = nodes.filter(function (n) {return n.id === source.SW; });
             var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
-console.log(JSON.stringify(returnedRoutes));
-//             returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
-returnedRoutes = sortReturnedRoutes(returnedRoutes);
-console.log(JSON.stringify(returnedRoutes));
+console.log("Before: "+JSON.stringify(returnedRoutes));
+//            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
+            returnedRoutes = sortReturnedRoutes(returnedRoutes);
+console.log("After sort: "+JSON.stringify(returnedRoutes));
+cleanHighlight();
             if( typeof returnedRoutes !== 'undefined' ){
                 for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
                     var obj = returnedRoutes[i];
@@ -71,11 +72,11 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
                             dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
                         }else if (key === "ip"){
                             dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
-                            highlight(dest1.ip, target.ip);
+                            highlight( source.ip, target.ip );
                         }
-                        link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
+                        link = {source: newSource, target: dest1, type: "new_link"};
                         links.push(link);
-                        source = dest1;
+                        newSource = dest1;
                     }
                 }
             }
@@ -148,24 +149,23 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
 function highlight(ipSrc, ipDst){
     var table = document.getElementById('jsonTable');
     if ( table.getElementsByTagName('tr').length > 1 ){
-        cleanHighlight();
+console.log("Highlight "+ipSrc+" "+ipDst);
         var tbody = table.getElementsByTagName('tbody')[0];
         var items = tbody.getElementsByTagName('tr');
         var tds = null;
         for (var j = 0; j < items.length; j++) {
             tds = items[j].getElementsByTagName('td');
-            for (var i = 0; i < tds.length-1; i++) {
-                if(tds[i].innerHTML === ipSrc){
-                    if( tds[i].innerHTML === ipDst || inSubNet(ipDst, tds[i].innerHTML) ){
-                        table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-                    }
-                }else if(tds[i].innerHTML === ipSrc){
-                    if(tds[i].innerHTML === ipSrc || inSubNet(ipSrc, tds[i].innerHTML)){
-                        table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-                    }
+            if(tds[1].innerHTML === ipSrc){
+                if( tds[2].innerHTML === ipDst || inSubNet(ipDst, tds[2].innerHTML) ){
+                    table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
+                }
+            } else if(tds[1].innerHTML === ipDst){
+                if(tds[2].innerHTML === ipSrc || inSubNet(ipSrc, tds[2].innerHTML)){
+                    table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
                 }
             }
         }
+        console.log("End");
     }
 }
 /**
@@ -173,7 +173,7 @@ function highlight(ipSrc, ipDst){
  * @returns {undefined}
  */
 function cleanHighlight(){
-    console.log("Clean highlight");
+console.log("Clean highlight");
     var table = document.getElementById('jsonTable');
     var tbody = table.getElementsByTagName('tbody')[0];
     var items = tbody.getElementsByTagName('tr');
@@ -199,7 +199,6 @@ function mouseOverImage(){
         html: true, 
         gravity: $.fn.tipsy.autoNS, //north(n)/west(w)/dynamic
         title: function() {
-console.log("display");
             var d = this.__data__;
             var info ="<b>Id:</b> "+d.id+"<br>";
             if(d.type === "switch"){

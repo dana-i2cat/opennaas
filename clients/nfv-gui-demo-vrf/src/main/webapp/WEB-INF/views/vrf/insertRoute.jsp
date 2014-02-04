@@ -171,8 +171,7 @@ console.log("Create Route "+ipSrc+ " to "+ipDest);
 //                      allFields.removeClass( "ui-state-error" );
                     srcValid = checkIp(ipSrc);
                     dstValid = checkIp(ipDest);
-console.log(srcValid);
-console.log(dstValid);
+
                     if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
                         ipSrcDialog = ipSrc;
                         ipDestDialog = ipDest;
@@ -182,7 +181,6 @@ console.log(dstValid);
                         insertManualLink(newLink, originLink, ipSrcDialog, ipDestDialog);
                         $( this ).dialog( "close" );
                     }
-console.log("End")                    ;
                 },
                 Cancel: function() {             
                     removeLastLink();//remove last link inserted (push) and remove the dragged line
