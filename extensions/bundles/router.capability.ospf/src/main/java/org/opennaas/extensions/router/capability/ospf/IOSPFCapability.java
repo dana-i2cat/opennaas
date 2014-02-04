@@ -26,6 +26,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -54,8 +55,8 @@ public interface IOSPFCapability extends ICapability {
 	 * 
 	 * @throws CapabilityException
 	 */
-	@Path("/activateOSPF")
-	@POST
+	@Path("/status/active")
+	@PUT
 	public void activateOSPF() throws CapabilityException;
 
 	/**
@@ -63,8 +64,8 @@ public interface IOSPFCapability extends ICapability {
 	 * 
 	 * @throws CapabilityException
 	 */
-	@Path("/deactivateOSPF")
-	@POST
+	@Path("/status/inactive")
+	@PUT
 	public void deactivateOSPF() throws CapabilityException;
 
 	public void configureOSPF(OSPFService ospfService) throws CapabilityException;
