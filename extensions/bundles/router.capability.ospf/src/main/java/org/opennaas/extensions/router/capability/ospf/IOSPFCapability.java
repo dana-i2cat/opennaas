@@ -199,7 +199,7 @@ public interface IOSPFCapability extends ICapability {
 	// TODO: export this method using rest too
 	public OSPFService showOSPFConfiguration() throws CapabilityException;
 
-	@Path("/readOSPFConfiguration")
+	@Path("/")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public OSPFServiceWrapper readOSPFConfiguration() throws CapabilityException;
