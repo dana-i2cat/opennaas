@@ -144,6 +144,15 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of configureOSPF call");
 	}
 
+	@Override
+	public void configureOSPF(OSPFServiceWrapper ospfServiceWrapper) throws CapabilityException {
+
+		OSPFService ospfService = OSPFApiHelper.buildOSPFService(ospfServiceWrapper);
+
+		configureOSPF(ospfService);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

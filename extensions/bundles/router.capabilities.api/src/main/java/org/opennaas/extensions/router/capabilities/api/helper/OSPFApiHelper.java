@@ -47,6 +47,10 @@ public abstract class OSPFApiHelper {
 		}
 
 		ospfServiceWrapper.setOspfArea(ospfAreaWrappers);
+		ospfServiceWrapper.setEnabledState(ospfService.getEnabledState());
+
+		if (ospfService.getRouterID() != null)
+			ospfServiceWrapper.setRouterId(ospfService.getRouterID());
 
 		return ospfServiceWrapper;
 
@@ -87,5 +91,18 @@ public abstract class OSPFApiHelper {
 		endpointWrapper.setState(pE.getEnabledState());
 
 		return endpointWrapper;
+	}
+
+	public static OSPFService buildOSPFService(OSPFServiceWrapper ospfServiceWrapper) {
+
+		OSPFService service = new OSPFService();
+
+		if (ospfServiceWrapper.getRouterId() != null)
+			service.setRouterID(ospfServiceWrapper.getRouterId());
+
+		service.setEnabledState(ospfServiceWrapper.getEnabledState());
+
+		return service;
+
 	}
 }

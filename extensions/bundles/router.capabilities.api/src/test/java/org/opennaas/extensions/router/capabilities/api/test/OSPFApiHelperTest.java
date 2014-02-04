@@ -44,8 +44,9 @@ public class OSPFApiHelperTest {
 	private final static String	ENDPOINT_2_NAME	= "endpoint2";
 
 	private final static String	OSPF_AREA_1		= "0.0.0.0";
-
 	private final static String	OSPF_AREA_2		= "10.10.0.0";
+
+	private final static String	routerId		= "10.10.10.10";
 
 	@Test
 	public void buildOSPFProtocolEndpointWrapperTest() {
@@ -114,8 +115,15 @@ public class OSPFApiHelperTest {
 		areaConfig2.setOSPFArea(generateOSPFArea(OSPF_AREA_2));
 		service.addOSPFAreaConfiguration(areaConfig1);
 		service.addOSPFAreaConfiguration(areaConfig2);
+		service.setEnabledState(EnabledState.ENABLED);
+		service.setRouterID(routerId);
 
 		OSPFServiceWrapper serviceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(service);
+
+		Assert.assertEquals(service.getEnabledState(), serviceWrapper.getEnabledState());
+		Assert.assertEquals(EnabledState.ENABLED, serviceWrapper.getEnabledState());
+		Assert.assertEquals(service.getRouterID(), serviceWrapper.getRouterId());
+		Assert.assertEquals(routerId, serviceWrapper.getRouterId());
 
 		Assert.assertEquals(2, serviceWrapper.getOspfAreas().size());
 		Iterator<OSPFAreaWrapper> iterator = serviceWrapper.getOspfAreas().iterator();
@@ -124,6 +132,42 @@ public class OSPFApiHelperTest {
 		OSPFAreaWrapper areaWrapper2 = iterator.next();
 
 		Assert.assertFalse(areaWrapper1.equals(areaWrapper2));
+
+	}
+
+	@Test
+	public void buildOSPFServiceTest() {
+
+		// without routerId
+
+		OSPFServiceWrapper wrapper = new OSPFServiceWrapper();
+		wrapper.setEnabledState(EnabledState.ENABLED);
+
+		OSPFService ospfService = OSPFApiHelper.buildOSPFService(wrapper);
+
+		Assert.assertNotNull(ospfService);
+		Assert.assertNull(ospfService.getRouterID());
+
+		Assert.assertNotNull(ospfService.getEnabledState());
+		Assert.assertEquals(wrapper.getEnabledState(), ospfService.getEnabledState());
+		Assert.assertEquals(EnabledState.ENABLED, ospfService.getEnabledState());
+
+		// with routerId
+
+		wrapper = new OSPFServiceWrapper();
+		wrapper.setRouterId(routerId);
+		wrapper.setEnabledState(EnabledState.ENABLED);
+
+		ospfService = OSPFApiHelper.buildOSPFService(wrapper);
+
+		Assert.assertNotNull(ospfService);
+		Assert.assertNotNull(ospfService.getRouterID());
+		Assert.assertEquals(wrapper.getRouterId(), ospfService.getRouterID());
+		Assert.assertEquals(routerId, ospfService.getRouterID());
+
+		Assert.assertNotNull(ospfService.getEnabledState());
+		Assert.assertEquals(wrapper.getEnabledState(), ospfService.getEnabledState());
+		Assert.assertEquals(EnabledState.ENABLED, ospfService.getEnabledState());
 
 	}
 

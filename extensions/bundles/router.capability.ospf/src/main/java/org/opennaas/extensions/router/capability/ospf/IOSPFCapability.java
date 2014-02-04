@@ -65,6 +65,8 @@ public interface IOSPFCapability extends ICapability {
 	@POST
 	public void deactivateOSPF() throws CapabilityException;
 
+	public void configureOSPF(OSPFService ospfService) throws CapabilityException;
+
 	/**
 	 * Configure OSPF service.
 	 * 
@@ -73,10 +75,10 @@ public interface IOSPFCapability extends ICapability {
 	 * @param ospfService
 	 * @throws CapabilityException
 	 */
-	@Path("/configureOSPF")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@POST
-	public void configureOSPF(OSPFService ospfService) throws CapabilityException;
+	public void configureOSPF(OSPFServiceWrapper ospfServiceWrapper) throws CapabilityException;
 
 	/**
 	 * Removes all OSPF configuration.
