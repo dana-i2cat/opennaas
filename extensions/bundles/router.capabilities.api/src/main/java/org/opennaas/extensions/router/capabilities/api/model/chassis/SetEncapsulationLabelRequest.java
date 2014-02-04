@@ -1,4 +1,7 @@
-package org.opennaas.extensions.router.model.wrappers;
+/**
+ * 
+ */
+package org.opennaas.extensions.router.capabilities.api.model.chassis;
 
 /*
  * #%L
@@ -20,51 +23,47 @@ package org.opennaas.extensions.router.model.wrappers;
  * #L%
  */
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.OSPFArea;
 
 /**
  * @author Jordi
  */
 @XmlRootElement
-public class RemoveInterfacesInOSPFAreaRequest {
+public class SetEncapsulationLabelRequest {
 
-	private List<LogicalPort>	interfaces;
-
-	private OSPFArea			ospfArea;
+	private LogicalPort	iface;
+	private String		encapsulationLabel;
 
 	/**
-	 * @return the interfaces
+	 * @return the iface
 	 */
-	public List<LogicalPort> getInterfaces() {
-		return interfaces;
+	public LogicalPort getIface() {
+		return iface;
 	}
 
 	/**
-	 * @param interfaces
-	 *            the interfaces to set
+	 * @param iface
+	 *            the iface to set
 	 */
-	public void setInterfaces(List<LogicalPort> interfaces) {
-		this.interfaces = interfaces;
+	public void setIface(LogicalPort iface) {
+		this.iface = iface;
 	}
 
 	/**
-	 * @return the ospfArea
+	 * @return the encapsulationLabel
 	 */
-	public OSPFArea getOspfArea() {
-		return ospfArea;
+	public String getEncapsulationLabel() {
+		return encapsulationLabel;
 	}
 
 	/**
-	 * @param ospfArea
-	 *            the ospfArea to set
+	 * @param encapsulationLabel
+	 *            the encapsulationLabel to set
 	 */
-	public void setOspfArea(OSPFArea ospfArea) {
-		this.ospfArea = ospfArea;
+	public void setEncapsulationLabel(String encapsulationLabel) {
+		this.encapsulationLabel = encapsulationLabel;
 	}
 
 }

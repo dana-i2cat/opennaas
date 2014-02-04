@@ -35,6 +35,14 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.AddInterfacesToLogicalRouterRequest;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.RemoveInterfacesFromLogicalRouterRequest;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
 import org.opennaas.extensions.router.capability.chassis.api.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -43,13 +51,6 @@ import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
-import org.opennaas.extensions.router.model.wrappers.AddInterfacesToLogicalRouterRequest;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfo;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfoList;
-import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
-import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesFromLogicalRouterRequest;
-import org.opennaas.extensions.router.model.wrappers.SetEncapsulationLabelRequest;
-import org.opennaas.extensions.router.model.wrappers.SetEncapsulationRequest;
 
 public class ChassisCapability extends AbstractCapability implements IChassisCapability {
 
@@ -173,15 +174,15 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 				throw new CapabilityException("No interface found with given name: " + interfaceName);
 			}
 
-			return ModelHelper.getInterfaceInfo(grePEP);
+			return ChassisAPIHelper.getInterfaceInfo(grePEP);
 		}
 
-		return ModelHelper.getInterfaceInfo(np);
+		return ChassisAPIHelper.getInterfaceInfo(np);
 	}
 
 	@Override
 	public InterfaceInfoList getInterfacesInfo() {
-		return ModelHelper.getInterfacesInfo(ModelHelper.getInterfacesInfo((ComputerSystem) resource.getModel()));
+		return ChassisAPIHelper.getInterfacesInfo(ChassisAPIHelper.getInterfacesInfo((ComputerSystem) resource.getModel()));
 	}
 
 	/*

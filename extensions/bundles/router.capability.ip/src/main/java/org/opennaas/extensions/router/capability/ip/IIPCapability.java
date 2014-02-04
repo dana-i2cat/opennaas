@@ -31,12 +31,12 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.core.resources.ModelElementNotFoundException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.ip.SetIpAddressRequest;
 import org.opennaas.extensions.router.capability.ip.api.IPAddresses;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.wrappers.InterfacesNamesList;
-import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 @Path("/")
 public interface IIPCapability extends ICapability {
