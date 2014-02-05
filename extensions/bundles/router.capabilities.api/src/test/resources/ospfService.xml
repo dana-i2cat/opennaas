@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ospfService>
+<ns2:ospfService xmlns:ns2="opennaas.api">
     <ospfArea>
         <areaId>0.0.0.0</areaId>
         <ospfProtocolEndpoints>
@@ -13,4 +13,4 @@
 	        </ospfProtocolEndpoint>
         </ospfProtocolEndpoints>
     </ospfArea>
-</ospfService>
+</ns2:ospfService>

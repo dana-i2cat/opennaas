@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 
-@XmlRootElement(name = "ospfService")
+@XmlRootElement(name = "ospfService", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OSPFServiceWrapper implements Serializable {
 

@@ -35,7 +35,7 @@ import org.opennaas.extensions.router.model.OSPFArea.AreaType;
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-@XmlRootElement(name = "ospfArea")
+@XmlRootElement(name = "ospfArea", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OSPFAreaWrapper implements Serializable {
 
