@@ -188,6 +188,19 @@ public interface IOSPFCapability extends ICapability {
 	 * @param ospfArea
 	 * @throws CapabilityException
 	 */
+	@Path("/area/interfaces/delete")
+	@PUT
+	@Consumes(MediaType.APPLICATION_XML)
+	public void removeInterfacesInOSPFArea(@QueryParam("areaId") String areaId, InterfacesNamesList interfaces)
+			throws CapabilityException;
+
+	/**
+	 * Remove given interfaces from given OSPF area
+	 * 
+	 * @param interfaces
+	 * @param ospfArea
+	 * @throws CapabilityException
+	 */
 	public void removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea)
 			throws CapabilityException;
 

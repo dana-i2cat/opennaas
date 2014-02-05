@@ -350,6 +350,25 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		removeInterfacesInOSPFArea(request.getInterfaces(), request.getOspfArea());
 	}
 
+	@Override
+	public void removeInterfacesInOSPFArea(String areaId, InterfacesNamesList interfaces) throws CapabilityException {
+		OSPFAreaConfiguration ospfConfig;
+		List<LogicalPort> ifaces = new ArrayList<LogicalPort>();
+
+		try {
+			ospfConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaId);
+
+			for (String iface : interfaces.getInterfaces())
+				ifaces.add(ChassisAPIHelper.interfaceName2LogicalPort(iface));
+
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+
+		removeInterfacesInOSPFArea(ifaces, ospfConfig.getOSPFArea());
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
