@@ -21,8 +21,10 @@ package org.opennaas.extensions.router.capability.ip;
  */
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -33,115 +35,228 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.ip.IPAddresses;
-import org.opennaas.extensions.router.capabilities.api.model.ip.SetIpAddressRequest;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 
+/**
+ * 
+ * @author Isart Canyameres Gimenez (i2cat)
+ * 
+ */
 @Path("/")
 public interface IIPCapability extends ICapability {
 
-	/*
-	 * Interfaces
-	 */
 	/**
 	 * Returns a list of interfaces names
 	 * 
-	 * @return
+	 * @return available interfaces names.
 	 */
 	@GET
-	@Path("/getInterfaces")
+	@Path("/interfaces")
 	@Produces(MediaType.APPLICATION_XML)
 	public InterfacesNamesList getInterfacesNames() throws CapabilityException;
 
 	/**
 	 * 
 	 * @param interfaceName
+	 *            identifying the interface this operation applies to
 	 * @return IP addresses of given interface
 	 * @throws ModelElementNotFoundException
 	 *             if given interface is not in available
+	 * @since 0.26
 	 */
 	@GET
-	@Path("/getIPs/{interfaceName}")
+	@Path("/interfaces/addresses")
 	@Produces(MediaType.APPLICATION_XML)
-	public IPAddresses getIPs(@QueryParam("interfaceName") String interfaceName) throws ModelElementNotFoundException;
+	public IPAddresses getIPs(@QueryParam("interface") String interfaceName) throws ModelElementNotFoundException;
 
 	/**
+	 * Returns description for given interface
 	 * 
 	 * @param interfaceName
-	 * @return
+	 *            identifying the interface this operation applies to
+	 * @return description for given interface.
 	 * @throws ModelElementNotFoundException
 	 *             if given interface is not in available
+	 * @since 0.26
 	 */
 	@GET
-	@Path("/getDescription/{interfaceName}")
+	@Path("/interfaces/description")
 	@Produces(MediaType.APPLICATION_XML)
-	public String getDescription(@QueryParam("interfaceName") String interfaceName) throws ModelElementNotFoundException;
+	public String getDescription(@QueryParam("interface") String interfaceName) throws ModelElementNotFoundException;
 
+	/**
+	 * Sets given ipv4Address to the interface identified by given interfaceName.
+	 * 
+	 * This operation removes any other ipv4 address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipv4Address
+	 *            to set
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
 	@POST
-	@Path("/setIPv4")
+	@Path("/interfaces/addresses/ipv4")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void setIPv4(SetIpAddressRequest request)
-			throws CapabilityException;
+	public void setIPv4(@QueryParam("interface") String interfaceName, String ipv4Address) throws CapabilityException;
 
+	/**
+	 * Sets given ipv6Address to the interface identified by given interfaceName.
+	 * 
+	 * This operation removes any other ipv6 address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipv6Address
+	 *            to set
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
 	@POST
-	@Path("/setIPv6")
+	@Path("/interfaces/addresses/ipv6")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void setIPv6(SetIpAddressRequest request)
-			throws CapabilityException;
+	public void setIPv6(@QueryParam("interface") String interfaceName, String ipv6Address) throws CapabilityException;
 
+	/**
+	 * Sets given ipAddress to the interface identified by given interfaceName.
+	 * 
+	 * This operation removes any other ip address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipAddress
+	 *            to set
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
 	@POST
-	@Path("/setIP")
+	@Path("/interfaces/addresses/ip")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void setIP(SetIpAddressRequest request)
-			throws CapabilityException;
+	public void setIP(@QueryParam("interface") String interfaceName, String ipAddress) throws CapabilityException;
 
 	/**
 	 * Set the description for the given interface
 	 * 
-	 * @param iface
-	 * @param ip
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param description
 	 * @throws CapabilityException
+	 * @since 0.26
 	 */
 	@POST
-	@Path("/setInterfaceDescription")
+	@Path("/interfaces/description")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException;
+	public void setInterfaceDescription(@QueryParam("interface") String interfaceName, String description) throws CapabilityException;
 
-	@POST
-	@Path("/addIPv4")
+	/**
+	 * Adds given ipv4Address to the interface identified by given interfaceName.
+	 * 
+	 * This operation has no effect to any other ip address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipv4Address
+	 *            to set
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
+	@PUT
+	@Path("/interfaces/addresses/ipv4")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void addIPv4(SetIpAddressRequest request)
+	public void addIPv4(@QueryParam("interface") String interfaceName, String ipv4Address)
 			throws CapabilityException;
 
-	@POST
-	@Path("/addIPv6")
+	/**
+	 * Adds given ipv6Address to the interface identified by given interfaceName.
+	 * 
+	 * This operation has no effect to any other ip address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipv6Address
+	 *            to set
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
+	@PUT
+	@Path("/interfaces/addresses/ipv6")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void addIPv6(SetIpAddressRequest request)
+	public void addIPv6(@QueryParam("interface") String interfaceName, String ipv6Address)
 			throws CapabilityException;
 
-	@POST
-	@Path("/addIP")
+	/**
+	 * Adds given ipAddress to the interface identified by given interfaceName.
+	 * 
+	 * This operation has no effect to any other ip address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipAddress
+	 *            to set
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
+	@PUT
+	@Path("/interfaces/addresses/ip")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void addIP(SetIpAddressRequest request)
+	public void addIP(@QueryParam("interface") String interfaceName, String ipAddress)
 			throws CapabilityException;
 
-	@POST
-	@Path("/removeIPv4")
+	/**
+	 * Removes given ipv4Address from the interface identified by given interfaceName.
+	 * 
+	 * This operation has no effect to any other ip address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipv4Address
+	 *            to remove
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
+	@DELETE
+	@Path("/interfaces/addresses/ipv4")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void removeIPv4(SetIpAddressRequest request)
+	public void removeIPv4(@QueryParam("interface") String interfaceName, @QueryParam("ip") String ipv4Address)
 			throws CapabilityException;
 
-	@POST
-	@Path("/removeIPv6")
+	/**
+	 * Removes given ipv6Address from the interface identified by given interfaceName.
+	 * 
+	 * This operation has no effect to any other ip address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipv6Address
+	 *            to remove
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
+	@DELETE
+	@Path("/interfaces/addresses/ipv6")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void removeIPv6(SetIpAddressRequest request)
+	public void removeIPv6(@QueryParam("interface") String interfaceName, @QueryParam("ip") String ipv6Address)
 			throws CapabilityException;
 
-	@POST
-	@Path("/removeIP")
+	/**
+	 * Removes given ipAddress from the interface identified by given interfaceName.
+	 * 
+	 * This operation has no effect to any other ip address in given interface.
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param ipAddress
+	 *            to remove
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
+	@DELETE
+	@Path("/interfaces/addresses/ip")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void removeIP(SetIpAddressRequest request)
+	public void removeIP(@QueryParam("interface") String interfaceName, @QueryParam("ip") String ipAddress)
 			throws CapabilityException;
 
 	/**
@@ -178,5 +293,7 @@ public interface IIPCapability extends ICapability {
 	public void removeIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException;
 
 	public void removeIP(LogicalDevice logicalDevice, String ipAddress) throws CapabilityException;
+
+	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException;
 
 }
