@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFProtocolEndpointWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
@@ -130,7 +131,7 @@ public abstract class OSPFApiHelper {
 		return ospfAreaConfig;
 	}
 
-	private static OSPFArea buildOSPFArea(OSPFAreaWrapper ospfAreaWrapper) throws IOException {
+	public static OSPFArea buildOSPFArea(OSPFAreaWrapper ospfAreaWrapper) throws IOException {
 
 		OSPFArea ospfArea = new OSPFArea();
 
@@ -160,11 +161,46 @@ public abstract class OSPFApiHelper {
 	public static OSPFAreaConfiguration buildOSPFAreaConfiguration(String areaId) throws IOException {
 
 		OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
-		OSPFArea ospfArea = new OSPFArea();
-
-		ospfArea.setAreaID(IPUtilsHelper.ipv4StringToLong(areaId));
+		OSPFArea ospfArea = buildOSPFArea(areaId);
 		areaConfig.setOSPFArea(ospfArea);
 
 		return areaConfig;
+	}
+
+	/**
+	 * Creates an OSPFArea with the specific id.
+	 * 
+	 * @param areaId
+	 * @return
+	 * @throws IOException
+	 */
+	public static OSPFArea buildOSPFArea(String areaId) throws IOException {
+
+		OSPFArea ospfArea = new OSPFArea();
+
+		ospfArea.setAreaID(IPUtilsHelper.ipv4StringToLong(areaId));
+
+		return ospfArea;
+	}
+
+	/**
+	 * Creates a list of OSFProtocolEndpoint with the name of the interfaces specified in the InterfacesNamesList
+	 * 
+	 * @param interfaces
+	 * @return
+	 */
+	public static List<OSPFProtocolEndpoint> buildOSPFProtocolEndpointsWrapperCollection(InterfacesNamesList interfaces) {
+
+		List<OSPFProtocolEndpoint> ospfEndpoints = new ArrayList<OSPFProtocolEndpoint>();
+
+		for (String iface : interfaces.getInterfaces()) {
+
+			OSPFProtocolEndpoint ospfEndpoint = new OSPFProtocolEndpoint();
+			ospfEndpoint.setName(iface);
+
+			ospfEndpoints.add(ospfEndpoint);
+		}
+
+		return ospfEndpoints;
 	}
 }

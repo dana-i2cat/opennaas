@@ -197,10 +197,18 @@ public interface IOSPFCapability extends ICapability {
 	 * @param interfaces
 	 * @throws CapabilityException
 	 */
-	@Path("/enableOSPFInterfaces")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
 	public void enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
+
+	/**
+	 * Enable OSPF in given interfaces, if they are already configured.
+	 * 
+	 * @param interfaces
+	 * @throws CapabilityException
+	 */
+	@Path("/interfaces/status/enable")
+	@PUT
+	@Consumes(MediaType.APPLICATION_XML)
+	public void enableOSPFInterfaces(InterfacesNamesList interfaces) throws CapabilityException;
 
 	/**
 	 * Disable OSPF in given interfaces, if they are already configured.

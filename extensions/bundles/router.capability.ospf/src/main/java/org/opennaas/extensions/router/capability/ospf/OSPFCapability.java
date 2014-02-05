@@ -397,6 +397,14 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of enableOSPFInterfaces call");
 	}
 
+	@Override
+	public void enableOSPFInterfaces(InterfacesNamesList interfaces) throws CapabilityException {
+
+		List<OSPFProtocolEndpoint> endpoints = OSPFApiHelper.buildOSPFProtocolEndpointsWrapperCollection(interfaces);
+
+		enableOSPFInterfaces(endpoints);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
