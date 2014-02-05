@@ -33,6 +33,7 @@ import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
@@ -234,5 +235,14 @@ public class ChassisAPIHelper {
 		}
 
 		return networkPorstList;
+	}
+
+	public static ProtocolIFType string2ProtocolIFType(String protocolIfType) {
+		try {
+			return ProtocolIFType.valueOf(protocolIfType);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Invalid protocolIfType value. It must be one of these: " + Arrays.toString(ProtocolIFType.values()),
+					e);
+		}
 	}
 }

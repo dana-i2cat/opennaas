@@ -13,6 +13,7 @@ import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 
 /**
@@ -149,4 +150,18 @@ public class ChassisAPIHelperTest {
 		Assert.assertTrue("Generated NetworkPort list must contain " + IFACE_NAME_3, namesList.contains(IFACE_NAME_3));
 	}
 
+	@Test
+	public void testString2ProtocolIFType() {
+		ProtocolIFType[] pitValues = ProtocolIFType.values();
+
+		for (ProtocolIFType protocolIFType : pitValues) {
+			ProtocolIFType generatedPit = ChassisAPIHelper.string2ProtocolIFType(protocolIFType.toString());
+			Assert.assertEquals("ProtoclIFType value " + protocolIFType.toString() + " must be well generated", protocolIFType, generatedPit);
+		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testNotValidString2ProtocolIFType() {
+		ChassisAPIHelper.string2ProtocolIFType("Bad__ProtocolIFType");
+	}
 }
