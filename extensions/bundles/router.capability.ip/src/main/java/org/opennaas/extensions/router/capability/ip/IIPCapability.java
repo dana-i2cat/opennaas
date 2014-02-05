@@ -58,20 +58,6 @@ public interface IIPCapability extends ICapability {
 	public InterfacesNamesList getInterfacesNames() throws CapabilityException;
 
 	/**
-	 * 
-	 * @param interfaceName
-	 *            identifying the interface this operation applies to
-	 * @return IP addresses of given interface
-	 * @throws ModelElementNotFoundException
-	 *             if given interface is not in available
-	 * @since 0.26
-	 */
-	@GET
-	@Path("/interfaces/addresses")
-	@Produces(MediaType.APPLICATION_XML)
-	public IPAddresses getIPs(@QueryParam("interface") String interfaceName) throws ModelElementNotFoundException;
-
-	/**
 	 * Returns description for given interface
 	 * 
 	 * @param interfaceName
@@ -85,6 +71,34 @@ public interface IIPCapability extends ICapability {
 	@Path("/interfaces/description")
 	@Produces(MediaType.APPLICATION_XML)
 	public String getDescription(@QueryParam("interface") String interfaceName) throws ModelElementNotFoundException;
+
+	/**
+	 * Set the description for the given interface
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @param description
+	 * @throws CapabilityException
+	 * @since 0.26
+	 */
+	@POST
+	@Path("/interfaces/description")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setInterfaceDescription(@QueryParam("interface") String interfaceName, String description) throws CapabilityException;
+
+	/**
+	 * 
+	 * @param interfaceName
+	 *            identifying the interface this operation applies to
+	 * @return IP addresses of given interface
+	 * @throws ModelElementNotFoundException
+	 *             if given interface is not in available
+	 * @since 0.26
+	 */
+	@GET
+	@Path("/interfaces/addresses")
+	@Produces(MediaType.APPLICATION_XML)
+	public IPAddresses getIPs(@QueryParam("interface") String interfaceName) throws ModelElementNotFoundException;
 
 	/**
 	 * Sets given ipv4Address to the interface identified by given interfaceName.
@@ -136,20 +150,6 @@ public interface IIPCapability extends ICapability {
 	@Path("/interfaces/addresses/ip")
 	@Consumes(MediaType.APPLICATION_XML)
 	public void setIP(@QueryParam("interface") String interfaceName, String ipAddress) throws CapabilityException;
-
-	/**
-	 * Set the description for the given interface
-	 * 
-	 * @param interfaceName
-	 *            identifying the interface this operation applies to
-	 * @param description
-	 * @throws CapabilityException
-	 * @since 0.26
-	 */
-	@POST
-	@Path("/interfaces/description")
-	@Consumes(MediaType.APPLICATION_XML)
-	public void setInterfaceDescription(@QueryParam("interface") String interfaceName, String description) throws CapabilityException;
 
 	/**
 	 * Adds given ipv4Address to the interface identified by given interfaceName.
@@ -259,14 +259,14 @@ public interface IIPCapability extends ICapability {
 	public void removeIP(@QueryParam("interface") String interfaceName, @QueryParam("ip") String ipAddress)
 			throws CapabilityException;
 
+	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException;
+
 	/**
 	 * Set the given ip to the logical device
 	 * 
 	 * @param params
 	 * @throws CapabilityException
 	 */
-	// cannot have a POST method with two params
-	// only a single object can go in a POST body (using setIPv4(SetIpAddressRequest) instead) :)
 	public void setIPv4(LogicalDevice logicalDevice, IPProtocolEndpoint ip)
 			throws CapabilityException;
 
@@ -293,7 +293,5 @@ public interface IIPCapability extends ICapability {
 	public void removeIP(LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException;
 
 	public void removeIP(LogicalDevice logicalDevice, String ipAddress) throws CapabilityException;
-
-	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException;
 
 }
