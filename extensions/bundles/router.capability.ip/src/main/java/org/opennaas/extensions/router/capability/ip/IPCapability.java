@@ -50,13 +50,14 @@ import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
 
-	public static final String	CAPABILITY_TYPE	= "ip";
+	public static final String	CAPABILITY_TYPE				= "ip";
+	public static final String	INVALID_ADDRESS_ERROR_MSG	= "Invalid address format.";
 
-	public final static String	IP				= CAPABILITY_TYPE;
+	public final static String	IP							= CAPABILITY_TYPE;
 
-	Log							log				= LogFactory.getLog(IPCapability.class);
+	Log							log							= LogFactory.getLog(IPCapability.class);
 
-	private String				resourceId		= "";
+	private String				resourceId					= "";
 
 	public IPCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -174,7 +175,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			setIPv6(iface, ipEndpoint);
 		}
 		else
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		log.info("End of setIP call");
 	}
@@ -295,7 +296,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			ipEndpoint = buildIPv6ProtocolEndpoint(ipAddress);
 		}
 		else
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		return ipEndpoint;
 	}
@@ -375,7 +376,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			addIPv6(iface, ipEndpoint);
 		}
 		else
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		log.info("End of addIP call");
 	}
@@ -456,7 +457,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			removeIPv6(iface, ipEndpoint);
 		}
 		else
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		log.info("End of removeIP call");
 	}
@@ -487,7 +488,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void setIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
 		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
@@ -497,7 +498,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void setIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
 		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
@@ -507,7 +508,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void setIP(String interfaceName, String ipAddress) throws CapabilityException {
 		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
@@ -524,7 +525,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void addIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
 		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
@@ -534,7 +535,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void addIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
 		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
@@ -545,7 +546,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void addIP(String interfaceName, String ipAddress) throws CapabilityException {
 		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
@@ -555,7 +556,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void removeIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
 		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
@@ -565,7 +566,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void removeIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
 		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
@@ -575,7 +576,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void removeIP(String interfaceName, String ipAddress) throws CapabilityException {
 		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
-			throw new CapabilityException("Unvalid Address format.");
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
