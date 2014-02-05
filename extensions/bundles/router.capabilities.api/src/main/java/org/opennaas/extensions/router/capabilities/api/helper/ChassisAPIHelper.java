@@ -219,4 +219,20 @@ public class ChassisAPIHelper {
 
 		return logicalRouter;
 	}
+
+	/**
+	 * Translates a {@link InterfacesNamesList} interfaces names list to a {@link List<NetworkPort>}
+	 * 
+	 * @param interfacesNamesList
+	 * @return
+	 */
+	public static List<NetworkPort> interfaceNameList2NetworkPortList(InterfacesNamesList interfacesNamesList) {
+		List<NetworkPort> networkPorstList = new ArrayList<NetworkPort>();
+
+		for (String interfaceName : interfacesNamesList.getInterfaces()) {
+			networkPorstList.add(subInterfaceName2NetworkPort(interfaceName));
+		}
+
+		return networkPorstList;
+	}
 }

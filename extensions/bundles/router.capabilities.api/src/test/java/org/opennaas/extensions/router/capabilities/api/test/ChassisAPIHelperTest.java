@@ -132,4 +132,21 @@ public class ChassisAPIHelperTest {
 		return inl;
 	}
 
+	@Test
+	public void testInterfaceNameList2NetworkPortList() {
+		List<NetworkPort> npl = ChassisAPIHelper.interfaceNameList2NetworkPortList(buildValidInterfacesNamesList());
+
+		Assert.assertNotNull("Generated NetworkPort list must be not null", npl);
+		Assert.assertEquals("Generated NetworkPort list must contain 3 items", 3, npl.size());
+
+		List<String> namesList = new ArrayList<String>();
+		for (NetworkPort networkPort : npl) {
+			namesList.add(networkPort.getName());
+		}
+
+		Assert.assertTrue("Generated NetworkPort list must contain " + IFACE_NAME_1, namesList.contains(IFACE_NAME_1));
+		Assert.assertTrue("Generated NetworkPort list must contain " + IFACE_NAME_2, namesList.contains(IFACE_NAME_2));
+		Assert.assertTrue("Generated NetworkPort list must contain " + IFACE_NAME_3, namesList.contains(IFACE_NAME_3));
+	}
+
 }
