@@ -125,6 +125,7 @@ public class ChassisAPIHelperTest {
 		String name = lr.getName();
 		Assert.assertNotNull("Generated ComputerSystem name must be not null", name);
 		Assert.assertEquals("Name must be " + LR_NAME, LR_NAME, name);
+		Assert.assertEquals("Name and element name must be equal " + name + ", " + lr.getElementName(), name, lr.getElementName());
 
 		List<LogicalDevice> ld = lr.getLogicalDevices();
 		Assert.assertNotNull("Generated ComputerSystem LogicalDevices must be not null", ld);

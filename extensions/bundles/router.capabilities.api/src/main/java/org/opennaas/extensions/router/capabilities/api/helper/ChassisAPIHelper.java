@@ -211,6 +211,7 @@ public class ChassisAPIHelper {
 	public static ComputerSystem logicalRouter2ComputerSystem(String logicalRouterName, InterfacesNamesList interfacesNames) {
 		ComputerSystem logicalRouter = new ComputerSystem();
 		logicalRouter.setName(logicalRouterName);
+		logicalRouter.setElementName(logicalRouterName);
 
 		if (interfacesNames != null) {
 			for (String interfaceName : interfacesNames.getInterfaces()) {
