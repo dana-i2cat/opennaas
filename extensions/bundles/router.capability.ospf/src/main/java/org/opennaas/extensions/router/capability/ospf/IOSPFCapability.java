@@ -216,10 +216,18 @@ public interface IOSPFCapability extends ICapability {
 	 * @param interfaces
 	 * @throws CapabilityException
 	 */
-	@Path("/disableOSPFInterfaces")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
 	public void disableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
+
+	/**
+	 * Disable OSPF in given interfaces, if they are already configured.
+	 * 
+	 * @param interfaces
+	 * @throws CapabilityException
+	 */
+	@Path("interfaces/status/disable")
+	@PUT
+	@Consumes(MediaType.APPLICATION_XML)
+	public void disableOSPFInterfaces(InterfacesNamesList interfaces) throws CapabilityException;
 
 	/**
 	 * Returns OSPF full configuration from the router
