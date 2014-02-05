@@ -34,6 +34,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
 import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.AddInterfacesInOSPFAreaRequest;
@@ -322,12 +323,19 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	@Override
 	public void addInterfacesInOSPFArea(String areaId, InterfacesNamesList interfaces) throws CapabilityException {
 		OSPFAreaConfiguration ospfConfig;
+		List<LogicalPort> ifaces = new ArrayList<LogicalPort>();
+
 		try {
 			ospfConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaId);
+
+			for (String iface : interfaces.getInterfaces())
+				ifaces.add(ChassisAPIHelper.interfaceName2LogicalPort(iface));
 
 		} catch (IOException e) {
 			throw new CapabilityException(e);
 		}
+
+		addInterfacesInOSPFArea(ifaces, ospfConfig.getOSPFArea());
 
 	}
 

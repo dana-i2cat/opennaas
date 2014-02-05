@@ -27,8 +27,8 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.capability.chassis.api.LogicalRoutersNamesList;
 
 @Command(scope = "chassis", name = "listLogicalRouters", description = "List all logical resources of a given resource.")
 public class ListLogicalRoutersCommand extends GenericKarafCommand {
