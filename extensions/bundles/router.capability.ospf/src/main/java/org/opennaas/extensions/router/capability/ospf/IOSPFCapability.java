@@ -35,10 +35,8 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
-import org.opennaas.extensions.router.capabilities.api.model.ospf.AddInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
-import org.opennaas.extensions.router.capabilities.api.model.ospf.RemoveInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
@@ -139,18 +137,6 @@ public interface IOSPFCapability extends ICapability {
 	/**
 	 * Adds given interfaces to given OSPF area
 	 * 
-	 * @param addInterfacesOSPFRequest
-	 * @throws CapabilityException
-	 */
-	@Path("/addInterfacesInOSPFArea")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void addInterfacesInOSPFArea(AddInterfacesInOSPFAreaRequest addInterfacesInOSPFAreaRequest)
-			throws CapabilityException;
-
-	/**
-	 * Adds given interfaces to given OSPF area
-	 * 
 	 * @param interfaces
 	 * @param ospfArea
 	 * @throws CapabilityException
@@ -168,18 +154,6 @@ public interface IOSPFCapability extends ICapability {
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	public void addInterfacesInOSPFArea(@QueryParam("areaId") String areaId, InterfacesNamesList interfaces) throws CapabilityException;
-
-	/**
-	 * Remove given interfaces from given OSPF area
-	 * 
-	 * @param removeInterfacesOSPFRequest
-	 * @throws CapabilityException
-	 */
-	@Path("/removeInterfacesInOSPFArea")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void removeInterfacesInOSPFArea(RemoveInterfacesInOSPFAreaRequest removeInterfacesInOSPFAreaRequest)
-			throws CapabilityException;
 
 	/**
 	 * Remove given interfaces from given OSPF area
@@ -249,8 +223,6 @@ public interface IOSPFCapability extends ICapability {
 	 * 
 	 * @throws CapabilityException
 	 */
-	@Path("/getOSPFConfiguration")
-	@POST
 	public void getOSPFConfiguration() throws CapabilityException;
 
 	/**
@@ -261,7 +233,6 @@ public interface IOSPFCapability extends ICapability {
 	 * @return ospfService
 	 * @throws CapabilityException
 	 */
-	// TODO: export this method using rest too
 	public OSPFService showOSPFConfiguration() throws CapabilityException;
 
 	@Path("/")

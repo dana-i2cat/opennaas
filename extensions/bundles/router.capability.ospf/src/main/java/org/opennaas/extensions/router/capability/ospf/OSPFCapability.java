@@ -37,10 +37,8 @@ import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
 import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
-import org.opennaas.extensions.router.capabilities.api.model.ospf.AddInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
-import org.opennaas.extensions.router.capabilities.api.model.ospf.RemoveInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -279,17 +277,6 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#addInterfacesInOSPFArea(org.opennaas.extensions.router.model.wrappers.
-	 * AddInterfacesOSPFRequest)
-	 */
-	@Override
-	public void addInterfacesInOSPFArea(AddInterfacesInOSPFAreaRequest request) throws CapabilityException {
-		addInterfacesInOSPFArea(request.getInterfaces(), request.getOspfArea());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFService#addInterfacesInOSPFArea(java.util.List,
 	 * org.opennaas.extensions.router.model.OSPFArea)
 	 */
@@ -337,17 +324,6 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 		addInterfacesInOSPFArea(ifaces, ospfConfig.getOSPFArea());
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#removeInterfacesInOSPFArea(org.opennaas.extensions.router.model.wrappers.
-	 * AddInterfacesOSPFRequest)
-	 */
-	@Override
-	public void removeInterfacesInOSPFArea(RemoveInterfacesInOSPFAreaRequest request) throws CapabilityException {
-		removeInterfacesInOSPFArea(request.getInterfaces(), request.getOspfArea());
 	}
 
 	@Override
