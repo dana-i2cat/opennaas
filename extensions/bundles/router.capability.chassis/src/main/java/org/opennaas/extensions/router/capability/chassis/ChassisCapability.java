@@ -40,10 +40,10 @@ import org.opennaas.extensions.router.capabilities.api.model.chassis.AddInterfac
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.RemoveInterfacesFromLogicalRouterRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
-import org.opennaas.extensions.router.capability.chassis.api.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
