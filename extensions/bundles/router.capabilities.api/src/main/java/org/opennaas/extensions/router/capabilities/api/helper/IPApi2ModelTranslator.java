@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ip.api;
+package org.opennaas.extensions.router.capabilities.api.helper;
 
 /*
  * #%L
@@ -23,6 +23,7 @@ package org.opennaas.extensions.router.capability.ip.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.router.capabilities.api.model.ip.IPAddresses;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 
 /**
@@ -30,7 +31,7 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class API2ModelTranslator {
+public class IPApi2ModelTranslator {
 
 	public static IPAddresses ipPEPs2IPAddresses(List<IPProtocolEndpoint> peps) {
 		IPAddresses ipAddresses = new IPAddresses();

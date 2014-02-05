@@ -34,10 +34,10 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.IPApi2ModelTranslator;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.ip.IPAddresses;
 import org.opennaas.extensions.router.capabilities.api.model.ip.SetIpAddressRequest;
-import org.opennaas.extensions.router.capability.ip.api.API2ModelTranslator;
-import org.opennaas.extensions.router.capability.ip.api.IPAddresses;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
@@ -507,7 +507,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		ips = port.getProtocolEndpointsByType(IPProtocolEndpoint.class);
 
-		return API2ModelTranslator.ipPEPs2IPAddresses(ips);
+		return IPApi2ModelTranslator.ipPEPs2IPAddresses(ips);
 	}
 
 	@Override

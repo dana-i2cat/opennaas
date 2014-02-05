@@ -27,7 +27,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.router.capability.ip.api.API2ModelTranslator;
+import org.opennaas.extensions.router.capabilities.api.helper.IPApi2ModelTranslator;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
@@ -47,7 +47,7 @@ public class API2ModelTranslatorTest {
 
 	@Test
 	public void ipv4TranslationTest() throws SerializationException {
-		List<String> addresses = API2ModelTranslator.ipPEP2IPAddresses(ipv4PEP);
+		List<String> addresses = IPApi2ModelTranslator.ipPEP2IPAddresses(ipv4PEP);
 		Assert.assertNotNull(addresses);
 		Assert.assertFalse(addresses.isEmpty());
 		Assert.assertEquals(1, addresses.size());

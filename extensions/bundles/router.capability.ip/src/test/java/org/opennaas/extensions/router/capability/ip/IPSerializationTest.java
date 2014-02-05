@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.helpers.XmlHelper;
-import org.opennaas.extensions.router.capability.ip.api.IPAddresses;
+import org.opennaas.extensions.router.capabilities.api.model.ip.IPAddresses;
 
 /**
  * 
