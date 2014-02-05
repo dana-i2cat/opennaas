@@ -87,6 +87,48 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		super.deactivate();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
+	@Override
+	public IActionSet getActionSet() throws CapabilityException {
+		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
+		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
+
+		try {
+			return Activator.getIPActionSetService(name, version);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
+	}
+
+	// ********************************
+	// * IIPCapability implementation *
+	// ********************************
+
 	@Override
 	public InterfacesNamesList getInterfacesNames() throws CapabilityException {
 		InterfacesNamesList inl = new InterfacesNamesList();
@@ -106,6 +148,131 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		return inl;
 	}
+
+	@Override
+	public String getDescription(String interfaceName) throws ModelElementNotFoundException {
+
+		NetworkPort port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
+		if (port == null)
+			throw new ModelElementNotFoundException("Couldn't find interface " + interfaceName);
+
+		return port.getDescription();
+	}
+
+	@Override
+	public void setInterfaceDescription(String interfaceName, String description) throws CapabilityException {
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		port.setDescription(description);
+		setInterfaceDescription(port);
+	}
+
+	@Override
+	public IPAddresses getIPs(String interfaceName) throws ModelElementNotFoundException {
+		List<IPProtocolEndpoint> ips;
+
+		NetworkPort port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
+		if (port == null)
+			throw new ModelElementNotFoundException("Couldn't find interface " + interfaceName);
+
+		ips = port.getProtocolEndpointsByType(IPProtocolEndpoint.class);
+
+		return IPApi2ModelTranslator.ipPEPs2IPAddresses(ips);
+	}
+
+	@Override
+	public void setIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
+		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
+		setIPv4(port, ipPEP);
+	}
+
+	@Override
+	public void setIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
+		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
+		setIPv6(port, ipPEP);
+	}
+
+	@Override
+	public void setIP(String interfaceName, String ipAddress) throws CapabilityException {
+		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
+		setIP(port, ipPEP);
+	}
+
+	@Override
+	public void addIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
+		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
+		addIPv4(port, ipPEP);
+	}
+
+	@Override
+	public void addIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
+		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
+		addIPv4(port, ipPEP);
+
+	}
+
+	@Override
+	public void addIP(String interfaceName, String ipAddress) throws CapabilityException {
+		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
+		addIPv4(port, ipPEP);
+	}
+
+	@Override
+	public void removeIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
+		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
+		removeIPv4(port, ipPEP);
+	}
+
+	@Override
+	public void removeIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
+		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
+		removeIPv4(port, ipPEP);
+	}
+
+	@Override
+	public void removeIP(String interfaceName, String ipAddress) throws CapabilityException {
+		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
+			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
+
+		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
+		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
+		removeIPv4(port, ipPEP);
+	}
+
+	// ******************************************************************
+	// * IIPCapability implementation using model objects as parameters *
+	// ******************************************************************
 
 	/*
 	 * (non-Javadoc)
@@ -206,99 +373,6 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		IAction action = createActionAndCheckParams(IPActionSet.SET_INTERFACE_DESCRIPTION, iface);
 		queueAction(action);
 		log.info("End of setInterfaceDescription call");
-	}
-
-	/**
-	 * 
-	 * @return QueuemanagerService this capability is associated to.
-	 * @throws CapabilityException
-	 *             if desired queueManagerService could not be retrieved.
-	 */
-	private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
-		try {
-			return Activator.getQueueManagerService(resourceId);
-		} catch (ActivatorException e) {
-			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
-	 */
-	@Override
-	public IActionSet getActionSet() throws CapabilityException {
-		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
-		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
-
-		try {
-			return Activator.getIPActionSetService(name, version);
-		} catch (ActivatorException e) {
-			throw new CapabilityException(e);
-		}
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
-	 */
-	@Override
-	public String getCapabilityName() {
-		return CAPABILITY_TYPE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
-	 */
-	@Override
-	public void queueAction(IAction action) throws CapabilityException {
-		getQueueManager(resourceId).queueAction(action);
-	}
-
-	private IPProtocolEndpoint buildIPv6ProtocolEndpoint(String ipAddress) {
-
-		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
-
-		String ipv6 = IPUtilsHelper.getAddressFromIP(ipAddress);
-		String preffixLength = IPUtilsHelper.getPrefixFromIp(ipAddress);
-
-		ipEndpoint.setIPv6Address(ipv6);
-		ipEndpoint.setPrefixLength(Short.valueOf(preffixLength));
-		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
-
-		return ipEndpoint;
-	}
-
-	private IPProtocolEndpoint buildIPv4ProtocolEndpoint(String ipAddress) {
-
-		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
-
-		String ipv4 = IPUtilsHelper.getAddressFromIP(ipAddress);
-		String netMask = IPUtilsHelper.getPrefixFromIp(ipAddress);
-
-		ipEndpoint.setIPv4Address(ipv4);
-		ipEndpoint.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(netMask));
-		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
-
-		return ipEndpoint;
-	}
-
-	private IPProtocolEndpoint buildIPProtoclEndpoint(String ipAddress) throws CapabilityException {
-		IPProtocolEndpoint ipEndpoint;
-		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
-			ipEndpoint = buildIPv4ProtocolEndpoint(ipAddress);
-		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress)) {
-			ipEndpoint = buildIPv6ProtocolEndpoint(ipAddress);
-		}
-		else
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		return ipEndpoint;
 	}
 
 	@Override
@@ -462,125 +536,59 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		log.info("End of removeIP call");
 	}
 
-	@Override
-	public IPAddresses getIPs(String interfaceName) throws ModelElementNotFoundException {
-		List<IPProtocolEndpoint> ips;
+	private IPProtocolEndpoint buildIPv6ProtocolEndpoint(String ipAddress) {
 
-		NetworkPort port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
-		if (port == null)
-			throw new ModelElementNotFoundException("Couldn't find interface " + interfaceName);
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
 
-		ips = port.getProtocolEndpointsByType(IPProtocolEndpoint.class);
+		String ipv6 = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String preffixLength = IPUtilsHelper.getPrefixFromIp(ipAddress);
 
-		return IPApi2ModelTranslator.ipPEPs2IPAddresses(ips);
+		ipEndpoint.setIPv6Address(ipv6);
+		ipEndpoint.setPrefixLength(Short.valueOf(preffixLength));
+		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV6);
+
+		return ipEndpoint;
 	}
 
-	@Override
-	public String getDescription(String interfaceName) throws ModelElementNotFoundException {
+	private IPProtocolEndpoint buildIPv4ProtocolEndpoint(String ipAddress) {
 
-		NetworkPort port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
-		if (port == null)
-			throw new ModelElementNotFoundException("Couldn't find interface " + interfaceName);
+		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
 
-		return port.getDescription();
+		String ipv4 = IPUtilsHelper.getAddressFromIP(ipAddress);
+		String netMask = IPUtilsHelper.getPrefixFromIp(ipAddress);
+
+		ipEndpoint.setIPv4Address(ipv4);
+		ipEndpoint.setSubnetMask(IPUtilsHelper.parseShortToLongIpv4NetMask(netMask));
+		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV4);
+
+		return ipEndpoint;
 	}
 
-	@Override
-	public void setIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
-		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
+	private IPProtocolEndpoint buildIPProtoclEndpoint(String ipAddress) throws CapabilityException {
+		IPProtocolEndpoint ipEndpoint;
+		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
+			ipEndpoint = buildIPv4ProtocolEndpoint(ipAddress);
+		} else if (IPUtilsHelper.isIPv6ValidAddress(ipAddress)) {
+			ipEndpoint = buildIPv6ProtocolEndpoint(ipAddress);
+		}
+		else
 			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
-		setIPv4(port, ipPEP);
+		return ipEndpoint;
 	}
 
-	@Override
-	public void setIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
-		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
-		setIPv6(port, ipPEP);
-	}
-
-	@Override
-	public void setIP(String interfaceName, String ipAddress) throws CapabilityException {
-		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
-		setIP(port, ipPEP);
-	}
-
-	@Override
-	public void setInterfaceDescription(String interfaceName, String description) throws CapabilityException {
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		port.setDescription(description);
-		setInterfaceDescription(port);
-	}
-
-	@Override
-	public void addIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
-		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
-		addIPv4(port, ipPEP);
-	}
-
-	@Override
-	public void addIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
-		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
-		addIPv4(port, ipPEP);
-
-	}
-
-	@Override
-	public void addIP(String interfaceName, String ipAddress) throws CapabilityException {
-		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
-		addIPv4(port, ipPEP);
-	}
-
-	@Override
-	public void removeIPv4(String interfaceName, String ipv4Address) throws CapabilityException {
-		if (!IPUtilsHelper.isIPv4ValidAddress(ipv4Address))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPv4ProtocolEndpoint(ipv4Address);
-		removeIPv4(port, ipPEP);
-	}
-
-	@Override
-	public void removeIPv6(String interfaceName, String ipv6Address) throws CapabilityException {
-		if (!IPUtilsHelper.isIPv6ValidAddress(ipv6Address))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
-		removeIPv4(port, ipPEP);
-	}
-
-	@Override
-	public void removeIP(String interfaceName, String ipAddress) throws CapabilityException {
-		if (!IPUtilsHelper.isIPValidAddress(ipAddress))
-			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
-
-		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
-		removeIPv4(port, ipPEP);
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
+		}
 	}
 
 }
