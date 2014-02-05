@@ -23,6 +23,8 @@ package org.opennaas.extensions.router.capability.chassis;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.QueryParam;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -205,6 +207,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 	}
 
+	public void upPhysicalInterface(String ifaceName) throws CapabilityException {
+		try {
+			upPhysicalInterface(ChassisAPIHelper.interfaceName2LogicalPort(ifaceName));
+		} catch (IllegalArgumentException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -219,6 +229,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESTATUS, iface);
 		queueAction(action);
 		log.info("End of downPhysicalInterface call");
+	}
+
+	public void downPhysicalInterface(@QueryParam("ifaceName") String ifaceName) throws CapabilityException {
+		try {
+			downPhysicalInterface(ChassisAPIHelper.interfaceName2LogicalPort(ifaceName));
+		} catch (IllegalArgumentException e) {
+			throw new CapabilityException(e);
+		}
 	}
 
 	/*

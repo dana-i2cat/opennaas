@@ -25,6 +25,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -93,10 +94,11 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	@POST
-	@Path("/upPhysicalInterface")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void upPhysicalInterface(LogicalPort iface) throws CapabilityException;
+
+	@PUT
+	@Path("/interfaces/status/up")
+	public void upPhysicalInterface(@QueryParam("ifaceName") String ifaceName) throws CapabilityException;
 
 	/**
 	 * Deactivates given physical interface (iface) so it can not receive/send traffic.
@@ -110,10 +112,11 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	@POST
-	@Path("/downPhysicalInterface")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void downPhysicalInterface(LogicalPort iface) throws CapabilityException;
+
+	@PUT
+	@Path("/interfaces/status/down")
+	public void downPhysicalInterface(@QueryParam("ifaceName") String ifaceName) throws CapabilityException;
 
 	/**
 	 * Creates given logical interface (iface).
