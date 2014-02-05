@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
@@ -197,4 +199,24 @@ public class ChassisAPIHelper {
 		return networkPort;
 	}
 
+	/**
+	 * Translates a {@link String} logical router name and an optional {@link InterfacesNamesList} interfaces names to a {@link ComputerSystem} with
+	 * this information
+	 * 
+	 * @param logicalRouterName
+	 * @param interfacesNames
+	 * @return
+	 */
+	public static ComputerSystem logicalRouter2ComputerSystem(String logicalRouterName, InterfacesNamesList interfacesNames) {
+		ComputerSystem logicalRouter = new ComputerSystem();
+		logicalRouter.setName(logicalRouterName);
+
+		if (interfacesNames != null) {
+			for (String interfaceName : interfacesNames.getInterfaces()) {
+				logicalRouter.addLogicalDevice(subInterfaceName2NetworkPort(interfaceName));
+			}
+		}
+
+		return logicalRouter;
+	}
 }

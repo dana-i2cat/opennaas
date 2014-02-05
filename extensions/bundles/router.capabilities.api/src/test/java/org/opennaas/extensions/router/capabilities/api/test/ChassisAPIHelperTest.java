@@ -1,11 +1,15 @@
 package org.opennaas.extensions.router.capabilities.api.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
@@ -25,6 +29,18 @@ public class ChassisAPIHelperTest {
 	private static final String	IFACE_VLAN			= "13";
 	private static final String	IFACE_STATE			= "OK";
 	private static final String	IFACE_DESCRIPTION	= "Test description.";
+
+	private static final String	LR_NAME				= "logical_router";
+
+	private static final String	IFACE_1				= "fe-1/0/0";
+	private static final String	PORT_1				= "1";
+	private static final String	IFACE_NAME_1		= IFACE_1 + "." + PORT_1;
+	private static final String	IFACE_2				= "fe-2/0/0";
+	private static final String	PORT_2				= "2";
+	private static final String	IFACE_NAME_2		= IFACE_2 + "." + PORT_2;
+	private static final String	IFACE_3				= "fe-3/0/0";
+	private static final String	PORT_3				= "3";
+	private static final String	IFACE_NAME_3		= IFACE_3 + "." + PORT_3;
 
 	@Test
 	public void testInterfaceInfo2NetworkPort() {
@@ -78,4 +94,42 @@ public class ChassisAPIHelperTest {
 		Assert.assertNotNull("Generated NetworkPort name must be not null", name);
 		Assert.assertEquals("Name must be " + IFACE_NAME, IFACE_NAME, name);
 	}
+
+	@Test
+	public void testLogicalRouter2ComputerSystem() {
+		ComputerSystem lr = ChassisAPIHelper.logicalRouter2ComputerSystem(LR_NAME, buildValidInterfacesNamesList());
+
+		Assert.assertNotNull("Generated ComputerSystem must be not null", lr);
+
+		String name = lr.getName();
+		Assert.assertNotNull("Generated ComputerSystem name must be not null", name);
+		Assert.assertEquals("Name must be " + LR_NAME, LR_NAME, name);
+
+		List<LogicalDevice> ld = lr.getLogicalDevices();
+		Assert.assertNotNull("Generated ComputerSystem LogicalDevices must be not null", ld);
+		Assert.assertEquals("Generated ComputerSystem must contain 3 LogicalDevices", 3, ld.size());
+
+		List<String> namesList = new ArrayList<String>();
+		for (LogicalDevice logicalDevice : ld) {
+			namesList.add(logicalDevice.getName());
+		}
+
+		Assert.assertTrue("Generated ComputerSystem LogicalDevices must contain " + IFACE_NAME_1, namesList.contains(IFACE_NAME_1));
+		Assert.assertTrue("Generated ComputerSystem LogicalDevices must contain " + IFACE_NAME_2, namesList.contains(IFACE_NAME_2));
+		Assert.assertTrue("Generated ComputerSystem LogicalDevices must contain " + IFACE_NAME_3, namesList.contains(IFACE_NAME_3));
+	}
+
+	private static InterfacesNamesList buildValidInterfacesNamesList() {
+		InterfacesNamesList inl = new InterfacesNamesList();
+
+		List<String> interfaces = new ArrayList<String>();
+		interfaces.add(IFACE_NAME_1);
+		interfaces.add(IFACE_NAME_2);
+		interfaces.add(IFACE_NAME_3);
+
+		inl.setInterfaces(interfaces);
+
+		return inl;
+	}
+
 }
