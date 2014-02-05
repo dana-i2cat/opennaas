@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ip;
+package org.opennaas.extensions.router.capabilities.api.test;
 
 /*
  * #%L
@@ -36,7 +36,7 @@ import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class API2ModelTranslatorTest {
+public class IPApi2ModelTranslatorTest {
 
 	private IPProtocolEndpoint	ipv4PEP;
 
