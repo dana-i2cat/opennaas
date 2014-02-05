@@ -45,7 +45,7 @@ import org.opennaas.extensions.router.model.VLANEndpoint;
 public class ChassisAPIHelperTest {
 
 	private static final String	IFACE				= "ge-2/0/0";
-	private static final String	PORT				= "13";
+	private static final int	PORT				= 13;
 	private static final String	IFACE_NAME			= IFACE + "." + PORT;
 	private static final String	IFACE_VLAN			= "13";
 	private static final String	IFACE_STATE			= "OK";
@@ -54,13 +54,13 @@ public class ChassisAPIHelperTest {
 	private static final String	LR_NAME				= "logical_router";
 
 	private static final String	IFACE_1				= "fe-1/0/0";
-	private static final String	PORT_1				= "1";
+	private static final int	PORT_1				= 1;
 	private static final String	IFACE_NAME_1		= IFACE_1 + "." + PORT_1;
 	private static final String	IFACE_2				= "fe-2/0/0";
-	private static final String	PORT_2				= "2";
+	private static final int	PORT_2				= 2;
 	private static final String	IFACE_NAME_2		= IFACE_2 + "." + PORT_2;
 	private static final String	IFACE_3				= "fe-3/0/0";
-	private static final String	PORT_3				= "3";
+	private static final int	PORT_3				= 3;
 	private static final String	IFACE_NAME_3		= IFACE_3 + "." + PORT_3;
 
 	@Test
@@ -70,7 +70,7 @@ public class ChassisAPIHelperTest {
 
 		Assert.assertNotNull("Generated NetworkPort should be not null", np);
 		Assert.assertEquals("Name must be " + IFACE, IFACE, np.getName());
-		Assert.assertEquals("Port must be " + PORT, PORT, String.valueOf(np.getPortNumber()));
+		Assert.assertEquals("Port must be " + PORT, PORT, np.getPortNumber());
 
 		List<ProtocolEndpoint> pe = np.getProtocolEndpoint();
 		Assert.assertNotNull("Generated NetworkPort must contain ProtocolEndpoints.", pe);
@@ -113,7 +113,10 @@ public class ChassisAPIHelperTest {
 
 		String name = np.getName();
 		Assert.assertNotNull("Generated NetworkPort name must be not null", name);
-		Assert.assertEquals("Name must be " + IFACE_NAME, IFACE_NAME, name);
+		Assert.assertEquals("Name must be " + IFACE, IFACE, name);
+
+		int port = np.getPortNumber();
+		Assert.assertEquals("Port number must be " + PORT, PORT, port);
 	}
 
 	@Test
@@ -128,17 +131,34 @@ public class ChassisAPIHelperTest {
 		Assert.assertEquals("Name and element name must be equal " + name + ", " + lr.getElementName(), name, lr.getElementName());
 
 		List<LogicalDevice> ld = lr.getLogicalDevices();
-		Assert.assertNotNull("Generated ComputerSystem LogicalDevices must be not null", ld);
-		Assert.assertEquals("Generated ComputerSystem must contain 3 LogicalDevices", 3, ld.size());
+		verify3IfacesAndPorts(ld);
+	}
 
-		List<String> namesList = new ArrayList<String>();
-		for (LogicalDevice logicalDevice : ld) {
-			namesList.add(logicalDevice.getName());
+	/*
+	 * Verifies that logicalDevicesList contains 3 NetworkPorts with expected names and port numbers
+	 */
+	private void verify3IfacesAndPorts(List<? extends LogicalDevice> logicalDevicesList) {
+		Assert.assertNotNull("Generated ComputerSystem LogicalDevices must be not null", logicalDevicesList);
+		Assert.assertEquals("Generated ComputerSystem must contain 3 LogicalDevices", 3, logicalDevicesList.size());
+		boolean contains1 = false, contains2 = false, contains3 = false;
+
+		for (LogicalDevice logicalDevice : logicalDevicesList) {
+			Assert.assertTrue("Generated ComputerSystem LogicalDevices must be instaces of NetworkPort.", logicalDevice instanceof NetworkPort);
+
+			NetworkPort np = (NetworkPort) logicalDevice;
+			if (np.getName().equals(IFACE_1) && np.getPortNumber() == PORT_1) {
+				contains1 = true;
+			}
+			if (np.getName().equals(IFACE_2) && np.getPortNumber() == PORT_2) {
+				contains2 = true;
+			}
+			if (np.getName().equals(IFACE_3) && np.getPortNumber() == PORT_3) {
+				contains3 = true;
+			}
 		}
 
-		Assert.assertTrue("Generated ComputerSystem LogicalDevices must contain " + IFACE_NAME_1, namesList.contains(IFACE_NAME_1));
-		Assert.assertTrue("Generated ComputerSystem LogicalDevices must contain " + IFACE_NAME_2, namesList.contains(IFACE_NAME_2));
-		Assert.assertTrue("Generated ComputerSystem LogicalDevices must contain " + IFACE_NAME_3, namesList.contains(IFACE_NAME_3));
+		Assert.assertTrue("Generated ComputerSystem LogicalDevices must contain " + IFACE_NAME_1 + ", " + IFACE_NAME_2 + " and " + IFACE_NAME_3,
+				contains1 && contains2 && contains3);
 	}
 
 	private static InterfacesNamesList buildValidInterfacesNamesList() {
@@ -157,18 +177,7 @@ public class ChassisAPIHelperTest {
 	@Test
 	public void testInterfaceNameList2NetworkPortList() {
 		List<NetworkPort> npl = ChassisAPIHelper.interfaceNameList2NetworkPortList(buildValidInterfacesNamesList());
-
-		Assert.assertNotNull("Generated NetworkPort list must be not null", npl);
-		Assert.assertEquals("Generated NetworkPort list must contain 3 items", 3, npl.size());
-
-		List<String> namesList = new ArrayList<String>();
-		for (NetworkPort networkPort : npl) {
-			namesList.add(networkPort.getName());
-		}
-
-		Assert.assertTrue("Generated NetworkPort list must contain " + IFACE_NAME_1, namesList.contains(IFACE_NAME_1));
-		Assert.assertTrue("Generated NetworkPort list must contain " + IFACE_NAME_2, namesList.contains(IFACE_NAME_2));
-		Assert.assertTrue("Generated NetworkPort list must contain " + IFACE_NAME_3, namesList.contains(IFACE_NAME_3));
+		verify3IfacesAndPorts(npl);
 	}
 
 	@Test

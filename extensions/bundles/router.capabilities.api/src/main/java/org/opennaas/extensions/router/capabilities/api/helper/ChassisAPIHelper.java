@@ -133,15 +133,9 @@ public class ChassisAPIHelper {
 	public static NetworkPort interfaceInfo2NetworkPort(InterfaceInfo interfaceInfo) {
 		NetworkPort networkPort = new NetworkPort();
 
-		// split name
-		String[] name = interfaceInfo.getName().split("\\.");
-		if (name.length < 1 || name.length > 2) {
-			throw new IllegalArgumentException("Invalid InterfaceInfo.name value. It should be in form \"ifacename\" or \"ifacename.unit\"");
-		}
-
-		// set name and port number based on the name splitting
-		networkPort.setName(name[0]);
-		networkPort.setPortNumber(name.length > 1 ? Integer.parseInt(name[1]) : 0);
+		// set name and port number based on the splitting
+		networkPort.setName(getInterfaceName(interfaceInfo.getName()));
+		networkPort.setPortNumber(getInterfacePortNumber(interfaceInfo.getName()));
 
 		// VLAN
 		String vlan = interfaceInfo.getVlan();
@@ -169,6 +163,44 @@ public class ChassisAPIHelper {
 	}
 
 	/**
+	 * Split interface and port number String in form ifacename.unit into an String arrays with two values
+	 * 
+	 * @param nameAndPort
+	 * @return
+	 */
+	public static String[] splitInterfaceNameAndPort(String nameAndPort) {
+		if (nameAndPort == null || nameAndPort.isEmpty()) {
+			throw new IllegalArgumentException("Invalid nameAndPort");
+		}
+		// split name and port
+		String[] split = nameAndPort.split("\\.");
+		if (split.length != 2) {
+			throw new IllegalArgumentException("Invalid nameAndPort value. It should be in form \"ifacename.unit\"");
+		}
+		return split;
+	}
+
+	/**
+	 * Gets the interface name from an String in form ifacename.unit
+	 * 
+	 * @param nameAndPort
+	 * @return
+	 */
+	public static String getInterfaceName(String nameAndPort) {
+		return splitInterfaceNameAndPort(nameAndPort)[0];
+	}
+
+	/**
+	 * Gets the interface port number from an String in form ifacename.unit
+	 * 
+	 * @param nameAndPort
+	 * @return
+	 */
+	public static int getInterfacePortNumber(String nameAndPort) {
+		return Integer.parseInt(splitInterfaceNameAndPort(nameAndPort)[1]);
+	}
+
+	/**
 	 * Translates a {@link String} interface name to an empty {@link LogicalPort}
 	 * 
 	 * @param interfaceName
@@ -191,12 +223,9 @@ public class ChassisAPIHelper {
 	 * @return
 	 */
 	public static NetworkPort subInterfaceName2NetworkPort(String subInterfaceName) {
-		if (subInterfaceName == null || subInterfaceName.isEmpty()) {
-			throw new IllegalArgumentException("Invalid subInterfaceName");
-		}
-
 		NetworkPort networkPort = new NetworkPort();
-		networkPort.setName(subInterfaceName);
+		networkPort.setName(getInterfaceName(subInterfaceName));
+		networkPort.setPortNumber(getInterfacePortNumber(subInterfaceName));
 		return networkPort;
 	}
 
