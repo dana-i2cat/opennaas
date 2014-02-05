@@ -321,7 +321,13 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 	@Override
 	public void addInterfacesInOSPFArea(String areaId, InterfacesNamesList interfaces) throws CapabilityException {
-		// TODO Auto-generated method stub
+		OSPFAreaConfiguration ospfConfig;
+		try {
+			ospfConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaId);
+
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
 
 	}
 

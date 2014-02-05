@@ -203,4 +203,9 @@ public abstract class OSPFApiHelper {
 
 		return ospfEndpoints;
 	}
+
+	public static OSPFAreaConfiguration buildOSPFAreaConfiguration(String areaId, InterfacesNamesList interfaces) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
