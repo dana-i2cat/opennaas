@@ -302,7 +302,6 @@ function sortReturnedRoutes(routes){
             j--;
         }
     }
-//console.log(newRoute);
     return newRoute;
 }
 

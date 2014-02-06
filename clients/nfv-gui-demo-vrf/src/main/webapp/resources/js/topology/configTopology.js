@@ -149,7 +149,6 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
 function highlight(ipSrc, ipDst){
     var table = document.getElementById('jsonTable');
     if ( table.getElementsByTagName('tr').length > 1 ){
-console.log("Highlight "+ipSrc+" "+ipDst);
         var tbody = table.getElementsByTagName('tbody')[0];
         var items = tbody.getElementsByTagName('tr');
         var tds = null;
@@ -165,7 +164,6 @@ console.log("Highlight "+ipSrc+" "+ipDst);
                 }
             }
         }
-        console.log("End");
     }
 }
 /**

@@ -146,7 +146,7 @@ public interface IRoutingCapability {
     @Path("/log")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getLog();
+    public String getLogMessage();
     
     /**
      * Send the path

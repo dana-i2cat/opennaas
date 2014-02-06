@@ -85,9 +85,10 @@ public class RoutingCapability implements IRoutingCapability {
         streamInfo = "";
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        logMessage = dateFormat.format(date) + " -> Requested routed from: " + ipSource + ". Where is located " + ipDest + "? throught port " + inputPort + " of switch " + switchDPID;
+if(proactive)
+        logMessage = dateFormat.format(date) + " Request received " + switchDPID +" -> " + ipSource + " throught port " + inputPort + " -> Route requested: " + ipDest;
         //---------------------END DEMO
-        
+
         VRFModel model = getVRFModel();
         if (model.getTable(version) == null) {
             return Response.status(404).type("text/plain").entity("IP Table does not exist.").build();
@@ -108,7 +109,7 @@ public class RoutingCapability implements IRoutingCapability {
         StringBuilder listFlows = new StringBuilder();
         List<String> dupDPID = new ArrayList<String>();
         List<FloodlightOFFlow> listOF;
-        if (proactive) {
+//        if (proactive) {
             response = proactiveRouting(switchInfo, route, version);
             listOF = ((List<FloodlightOFFlow>) response.getEntity());
             log.error("Size ListFlows "+listOF.size());
@@ -132,13 +133,14 @@ public class RoutingCapability implements IRoutingCapability {
                         listFlows.append("'},");//others switch ids
                     }
                 }
-                
+
             }
             listFlows.append("{ip:'").append(ipDest).append("'}]");//final destination
-        }
+//        }
         //---------------------DEMO
         date = new Date();
-        logMessage = logMessage + "\n" + dateFormat.format(date) + " -> Packet Routed to out port: " + outPortSrcSw + " of the switch: " + switchDPID;
+if(proactive)
+        logMessage = logMessage + "<br>" + dateFormat.format(date) + " -> Packet Routed to out port: " + outPortSrcSw + " of the switch: " + switchDPID;
         new updateLog().start();
         streamInfo = listFlows.toString();
         //---------------------END DEMO
@@ -427,13 +429,18 @@ log.debug("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getM
 
     //---------------------START DEMO FUNCTIONS & CLASSES
     @Override
-    public String getLog() {
+    public String getLogMessage() {
         return logMessage;
     }
 
-    public void removeLog() {
-        logMessage = "";
+    public void setLogMessage(String logMessage) {
+        this.logMessage = logMessage;
     }
+
+    public void setStreamInfo(String streamInfo) {
+        this.streamInfo = streamInfo;
+    }
+    
 
     public class updateLog extends Thread {
 
@@ -447,7 +454,7 @@ log.debug("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getM
             } catch (InterruptedException ex) {
                 Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
             }
-            removeLog();
+//            setLogMessage("");
         }
     }
     
