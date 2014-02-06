@@ -295,6 +295,10 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	public void setIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of setIPv4 call");
 
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Configuration for Loopback interface not allowed");
+		}
+
 		// copy of iface
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
@@ -319,6 +323,11 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void setIPv6(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of setIPv6 call");
+
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Configuration for Loopback interface not allowed");
+		}
+
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
 		if (iface instanceof NetworkPort) {
@@ -390,6 +399,11 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void addIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of addIPv4 call");
+
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Configuration for Loopback interface not allowed");
+		}
+
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
 		if (iface instanceof NetworkPort) {
@@ -411,6 +425,11 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void addIPv6(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of addIPv6 call");
+
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Configuration for Loopback interface not allowed");
+		}
+
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
 		if (iface instanceof NetworkPort) {
@@ -470,6 +489,11 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void removeIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of removeIPv4 call");
+
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Configuration for Loopback interface not allowed");
+		}
+
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
 		if (iface instanceof NetworkPort) {
@@ -493,6 +517,11 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public void removeIPv6(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
 		log.info("Start of removeIPv6 call");
+
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Configuration for Loopback interface not allowed");
+		}
+
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
 		if (iface instanceof NetworkPort) {

@@ -245,6 +245,18 @@ public class ChassisAPIHelper {
 		return interfaceName.startsWith("lt");
 	}
 
+	/**
+	 * Determines if an interface is a loopback interface given the interface name.
+	 * 
+	 * FIXME: JunOS specific logic!!!
+	 * 
+	 * @param subInterfaceName
+	 * @return
+	 */
+	public static boolean isLoopback(String interfaceName) {
+		return interfaceName.startsWith("lo");
+	}
+
 	public static boolean isPhysicalInterface(String interfaceName) {
 		if (interfaceName == null || interfaceName.isEmpty()) {
 			throw new IllegalArgumentException("Invalid interfaceName");
