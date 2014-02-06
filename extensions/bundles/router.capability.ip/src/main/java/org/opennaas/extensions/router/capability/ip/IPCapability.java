@@ -289,6 +289,19 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.opennaas.extensions.router.capability.ip.IIPCapability#setInterfaceDescription(org.opennaas.extensions.router.model.LogicalPort)
+	 */
+	@Override
+	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException {
+		log.info("Start of setInterfaceDescription call");
+		IAction action = createActionAndCheckParams(IPActionSet.SET_INTERFACE_DESCRIPTION, iface);
+		queueAction(action);
+		log.info("End of setInterfaceDescription call");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.opennaas.extensions.router.capability.ip.IIPCapability#setIPv4(org.opennaas.extensions.router.model.LogicalPort)
 	 */
 	@Override
@@ -381,19 +394,6 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		log.info("End of setIP call");
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.router.capability.ip.IIPCapability#setInterfaceDescription(org.opennaas.extensions.router.model.LogicalPort)
-	 */
-	@Override
-	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException {
-		log.info("Start of setInterfaceDescription call");
-		IAction action = createActionAndCheckParams(IPActionSet.SET_INTERFACE_DESCRIPTION, iface);
-		queueAction(action);
-		log.info("End of setInterfaceDescription call");
 	}
 
 	@Override
