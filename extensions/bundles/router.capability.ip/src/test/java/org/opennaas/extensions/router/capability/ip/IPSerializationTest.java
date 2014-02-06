@@ -74,7 +74,7 @@ public class IPSerializationTest {
 		List<String> addresses = new ArrayList<String>(10);
 
 		String ip_prefix = "192.168.1.";
-		String mask = "255.255.255.0";
+		String mask = "24";
 		for (int i = 100; i < 110; i++) {
 			addresses.add(ip_prefix + String.valueOf(i) + "/" + mask);
 		}

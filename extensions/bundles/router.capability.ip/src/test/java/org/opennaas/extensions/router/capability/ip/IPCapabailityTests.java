@@ -50,7 +50,7 @@ import org.powermock.reflect.Whitebox;
 public class IPCapabailityTests {
 
 	private static final String	IPV4_ADDRESS			= "192.168.22.1";
-	private static final String	IPV4_SUBNET_MASK		= "255.255.255.0";
+	private static final String	IPV4_SUBNET_MASK		= "24";
 	private static final String	INTERFACE				= "fe-0/1/1";
 	private static final int	PORT_NUMBER				= 1;
 
