@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.opennaas.extensions.router.capabilities.api.model.ip.IPAddresses;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * 
@@ -56,7 +57,7 @@ public class IPApi2ModelTranslator {
 		String completeipv6 = null;
 
 		if (ipv4 != null && mask != null) {
-			completeipv4 = ipv4 + "/" + mask;
+			completeipv4 = ipv4 + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(mask);
 		}
 
 		if (ipv6 != null && prefix != null) {
