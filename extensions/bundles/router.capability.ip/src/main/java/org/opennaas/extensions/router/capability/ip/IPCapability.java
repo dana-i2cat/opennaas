@@ -217,7 +217,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
+		IPProtocolEndpoint ipPEP = buildIPProtocolEndpoint(ipAddress);
 		setIP(port, ipPEP);
 	}
 
@@ -248,7 +248,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
+		IPProtocolEndpoint ipPEP = buildIPProtocolEndpoint(ipAddress);
 		addIPv4(port, ipPEP);
 	}
 
@@ -278,7 +278,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 			throw new CapabilityException(INVALID_ADDRESS_ERROR_MSG);
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
-		IPProtocolEndpoint ipPEP = buildIPProtoclEndpoint(ipAddress);
+		IPProtocolEndpoint ipPEP = buildIPProtocolEndpoint(ipAddress);
 		removeIPv4(port, ipPEP);
 	}
 
@@ -576,7 +576,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		return ipEndpoint;
 	}
 
-	private IPProtocolEndpoint buildIPProtoclEndpoint(String ipAddress) throws CapabilityException {
+	private IPProtocolEndpoint buildIPProtocolEndpoint(String ipAddress) throws CapabilityException {
 		IPProtocolEndpoint ipEndpoint;
 		if (IPUtilsHelper.isIPv4ValidAddress(ipAddress)) {
 			ipEndpoint = buildIPv4ProtocolEndpoint(ipAddress);
