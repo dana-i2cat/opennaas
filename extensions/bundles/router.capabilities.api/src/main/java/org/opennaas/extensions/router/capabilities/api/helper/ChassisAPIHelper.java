@@ -245,6 +245,18 @@ public class ChassisAPIHelper {
 		return interfaceName.startsWith("lt");
 	}
 
+	public static boolean isPhysicalInterface(String interfaceName) {
+		if (interfaceName == null || interfaceName.isEmpty()) {
+			throw new IllegalArgumentException("Invalid interfaceName");
+		}
+		// split name and port
+		String[] split = interfaceName.split("\\.");
+		if (split.length == 1)
+			return true;
+
+		return false;
+	}
+
 	/**
 	 * Translates a {@link String} logical router name and an optional {@link InterfacesNamesList} interfaces names to a {@link ComputerSystem} with
 	 * this information

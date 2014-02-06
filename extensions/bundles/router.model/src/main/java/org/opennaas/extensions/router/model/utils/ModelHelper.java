@@ -52,6 +52,17 @@ public class ModelHelper {
 		return ports;
 	}
 
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// public static List<LogicalPort> getPhysicalInterfaces(System system) {
+	// List<LogicalPort> ports = new ArrayList<LogicalPort>();
+	// for (LogicalDevice dev : system.getLogicalDevices()) {
+	// if (dev.getClass().equals(LogicalPort.class)) {
+	// ports.add((LogicalPort) dev);
+	// }
+	// }
+	// return ports;
+	// }
+
 	public static List<ProtocolEndpoint> getGREProtocolEndpoints(System system) {
 		List<ProtocolEndpoint> greEps = new ArrayList<ProtocolEndpoint>();
 		List<GREService> greServices = system.getAllHostedServicesByType(new GREService());
@@ -82,6 +93,23 @@ public class ModelHelper {
 	public static String getInterfaceName(ProtocolEndpoint greProtocolEndpoint) {
 		return greProtocolEndpoint.getName();
 	}
+
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// /**
+	// * Returns the NetworkPort associated with given name, null if it not found
+	// *
+	// * @param name
+	// * @param system
+	// * @return
+	// */
+	// public static LogicalPort getLogicalPortFromName(String name, System system) {
+	// for (LogicalPort port : getPhysicalInterfaces(system)) {
+	// if (port.getName().equals(name)) {
+	// return port;
+	// }
+	// }
+	// return null;
+	// }
 
 	/**
 	 * Returns the NetworkPort associated with given name, null if it not found
