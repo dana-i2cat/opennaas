@@ -21,7 +21,6 @@ package org.opennaas.extensions.router.capabilities.api.helper;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
@@ -260,6 +259,18 @@ public class ChassisAPIHelper {
 	}
 
 	/**
+	 * Return specific LogicalPort instance object based on the interface name
+	 * 
+	 * @param interfaceName
+	 * @return
+	 */
+	public static LogicalPort string2LogicalPort(String interfaceName) {
+		if (isPhysicalInterface(interfaceName))
+			return interfaceName2LogicalPort(interfaceName);
+		return subInterfaceName2NetworkPort(interfaceName);
+	}
+
+	/**
 	 * Determines if an interface is a LogicalTunnelPort given the interface name.
 	 * 
 	 * FIXME: JunOS specific logic!!!
@@ -357,12 +368,20 @@ public class ChassisAPIHelper {
 		return networkPorstList;
 	}
 
+	/**
+	 * Returns ProtocolIFType based on OpenNaaS defined strings<br>
+	 * FIXME: think in a better method to expose these arbitrary strings to the user.
+	 * 
+	 * @param protocolIfType
+	 * @return
+	 */
 	public static ProtocolIFType string2ProtocolIFType(String protocolIfType) {
-		try {
-			return ProtocolIFType.valueOf(protocolIfType);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid protocolIfType value. It must be one of these: " + Arrays.toString(ProtocolIFType.values()),
-					e);
+		if (protocolIfType.equals("tagged-ethernet")) {
+			return ProtocolIFType.LAYER_2_VLAN_USING_802_1Q;
+		} else if (protocolIfType.equals("none")) {
+			return ProtocolIFType.UNKNOWN;
+		} else {
+			return ProtocolIFType.OTHER;
 		}
 	}
 }
