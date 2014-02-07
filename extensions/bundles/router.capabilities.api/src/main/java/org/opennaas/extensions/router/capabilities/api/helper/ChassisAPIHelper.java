@@ -28,6 +28,7 @@ import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceIn
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
@@ -131,11 +132,7 @@ public class ChassisAPIHelper {
 	 * @return
 	 */
 	public static NetworkPort interfaceInfo2NetworkPort(InterfaceInfo interfaceInfo) {
-		NetworkPort networkPort = new NetworkPort();
-
-		// set name and port number based on the splitting
-		networkPort.setName(getInterfaceName(interfaceInfo.getName()));
-		networkPort.setPortNumber(getInterfacePortNumber(interfaceInfo.getName()));
+		NetworkPort networkPort = subInterfaceName2NetworkPort(interfaceInfo.getName());
 
 		// VLAN
 		String vlan = interfaceInfo.getVlan();
@@ -223,10 +220,53 @@ public class ChassisAPIHelper {
 	 * @return
 	 */
 	public static NetworkPort subInterfaceName2NetworkPort(String subInterfaceName) {
-		NetworkPort networkPort = new NetworkPort();
+		NetworkPort networkPort;
+		if (isLogicalTunnelPort(subInterfaceName)) {
+			networkPort = new LogicalTunnelPort();
+		} else {
+			networkPort = new EthernetPort();
+		}
 		networkPort.setName(getInterfaceName(subInterfaceName));
 		networkPort.setPortNumber(getInterfacePortNumber(subInterfaceName));
 		return networkPort;
+	}
+
+	/**
+	 * Determines if an interface is a LogicalTunnelPort given the interface name.
+	 * 
+	 * FIXME: JunOS specific logic!!!
+	 * 
+	 * @param subInterfaceName
+	 * @return
+	 */
+	public static boolean isLogicalTunnelPort(String subInterfaceName) {
+
+		String interfaceName = getInterfaceName(subInterfaceName);
+		return interfaceName.startsWith("lt");
+	}
+
+	/**
+	 * Determines if an interface is a loopback interface given the interface name.
+	 * 
+	 * FIXME: JunOS specific logic!!!
+	 * 
+	 * @param subInterfaceName
+	 * @return
+	 */
+	public static boolean isLoopback(String interfaceName) {
+		return interfaceName.startsWith("lo");
+	}
+
+	public static boolean isPhysicalInterface(String interfaceName) {
+		if (interfaceName == null || interfaceName.isEmpty()) {
+			throw new IllegalArgumentException("Invalid interfaceName");
+		}
+		// split name and port
+		String[] split = interfaceName.split("\\.");
+		if (split.length == 1)
+			return true;
+
+		return false;
 	}
 
 	/**
