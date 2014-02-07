@@ -59,7 +59,7 @@ public interface IChassisCapability extends ICapability {
 	 * @return
 	 */
 	@GET
-	@Path("/getInterfaces")
+	@Path("/interfaces")
 	@Produces(MediaType.APPLICATION_XML)
 	public InterfacesNamesList getInterfacesNames() throws CapabilityException;
 
@@ -69,7 +69,7 @@ public interface IChassisCapability extends ICapability {
 	 * @return
 	 */
 	@GET
-	@Path("/getInterfaceInfo")
+	@Path("/interfaces/info")
 	@Produces(MediaType.APPLICATION_XML)
 	public InterfaceInfo getInterfaceInfo(@QueryParam("interfaceName") String interfaceName) throws CapabilityException;
 
@@ -78,9 +78,6 @@ public interface IChassisCapability extends ICapability {
 	 * 
 	 * @return
 	 */
-	@GET
-	@Path("/getInterfacesInfo")
-	@Produces(MediaType.APPLICATION_XML)
 	public InterfaceInfoList getInterfacesInfo() throws CapabilityException;
 
 	/**
