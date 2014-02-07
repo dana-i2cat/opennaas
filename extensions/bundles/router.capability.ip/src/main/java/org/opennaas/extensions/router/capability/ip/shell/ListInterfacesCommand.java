@@ -48,6 +48,12 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			// print ifaces & its ip address
 			for (String ifaceName : interfacesNames) {
 				List<String> ipAddresses = null;
+				printSymbolWithoutDoubleLine("[" + ifaceName + "]  ");
+
+				String description = ipCapability.getDescription(ifaceName);
+				if (description != null && !description.isEmpty()) {
+					printSymbolWithoutDoubleLine(doubleTab + "description: " + description);
+				}
 
 				try {
 					ipAddresses = ipCapability.getIPs(ifaceName).getIpAddresses();
@@ -56,23 +62,14 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 					continue;
 				}
 
-				printSymbolWithoutDoubleLine("[" + ifaceName + "]  ");
-
 				if (ipAddresses != null && !ipAddresses.isEmpty()) {
-					String description = ipCapability.getDescription(ifaceName);
-					if (description != null && !description.isEmpty()) {
-						printSymbolWithoutDoubleLine(doubleTab + "description: " + description);
-					}
-
 					printSymbol("");
-
 					for (String ipAddress : ipAddresses) {
 						printSymbol(doubleTab + "IP/MASK: " + ipAddress);
 					}
 				} else {
 					printSymbol("");
 				}
-
 			}
 
 		} catch (ResourceException e) {
