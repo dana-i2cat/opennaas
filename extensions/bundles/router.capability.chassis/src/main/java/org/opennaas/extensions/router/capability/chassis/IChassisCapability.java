@@ -39,7 +39,6 @@ import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceIn
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -272,22 +271,6 @@ public interface IChassisCapability extends ICapability {
 	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
 	 * is required for queued actions to take effect.
 	 * 
-	 * @param request
-	 * @throws CapabilityException
-	 *             if any error occurred. In that case, queue remains untouched.
-	 */
-	@POST
-	@Path("/setEncapsulationLabel")
-	@Consumes(MediaType.APPLICATION_XML)
-	public void setEncapsulationLabel(SetEncapsulationLabelRequest request) throws CapabilityException;
-
-	/**
-	 * Configures the encapsulation label to use in given iface.
-	 * 
-	 * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
-	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
-	 * is required for queued actions to take effect.
-	 * 
 	 * @param iface
 	 *            to use given label
 	 * @param encapsulationLabel
@@ -297,4 +280,9 @@ public interface IChassisCapability extends ICapability {
 	 */
 	public void setEncapsulationLabel(LogicalPort iface, String encapsulationLabel) throws CapabilityException;
 
+	@PUT
+	@Path("/interfaces/encapsulation/label/{encapsulationLabel}")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setEncapsulationLabel(@QueryParam("ifaceName") String ifaceName, @PathParam("encapsulationLabel") String encapsulationLabel)
+			throws CapabilityException;
 }

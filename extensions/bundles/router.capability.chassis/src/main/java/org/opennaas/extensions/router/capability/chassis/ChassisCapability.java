@@ -43,7 +43,6 @@ import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceIn
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
@@ -316,17 +315,6 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.router.capability.chassis.IChassisCapability#setEncapsulationLabel(org.opennaas.extensions.router.model.wrappers.
-	 * SetEncapsulationLabelRequest)
-	 */
-	@Override
-	public void setEncapsulationLabel(SetEncapsulationLabelRequest request) throws CapabilityException {
-		setEncapsulationLabel(request.getIface(), request.getEncapsulationLabel());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.opennaas.extensions.router.capability.chassis.IChassisCapability#setEncapsulationLabel(org.opennaas.extensions.router.model.LogicalPort,
 	 * java.lang.String)
@@ -334,6 +322,12 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	@Override
 	public void setEncapsulationLabel(LogicalPort iface, String encapsulationLabel) throws CapabilityException {
 		log.info("Start of setEncapsulationLabel call");
+
+		// check parameters
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Encapsulation in loopback interfaces is not supported.");
+		}
+
 		// specify label in iface
 		// we use the name of the endpoint to store the encapsulation label
 		// and mark protocolType as unknown (it will be discovered by opennaas)
@@ -346,6 +340,10 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		IAction action = createActionAndCheckParams(ChassisActionSet.SET_VLANID, iface);
 		queueAction(action);
 		log.info("End of setEncapsulationLabel call");
+	}
+
+	public void setEncapsulationLabel(String ifaceName, String encapsulationLabel) throws CapabilityException {
+		setEncapsulationLabel(ChassisAPIHelper.subInterfaceName2NetworkPort(ifaceName), encapsulationLabel);
 	}
 
 	@Override
