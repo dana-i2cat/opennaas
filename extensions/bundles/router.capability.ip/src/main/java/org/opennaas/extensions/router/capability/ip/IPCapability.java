@@ -238,7 +238,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
-		addIPv4(port, ipPEP);
+		addIPv6(port, ipPEP);
 
 	}
 
@@ -249,7 +249,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPProtocolEndpoint(ipAddress);
-		addIPv4(port, ipPEP);
+		addIP(port, ipPEP);
 	}
 
 	@Override
@@ -269,7 +269,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPv6ProtocolEndpoint(ipv6Address);
-		removeIPv4(port, ipPEP);
+		removeIPv6(port, ipPEP);
 	}
 
 	@Override
@@ -279,7 +279,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		NetworkPort port = ChassisAPIHelper.subInterfaceName2NetworkPort(interfaceName);
 		IPProtocolEndpoint ipPEP = buildIPProtocolEndpoint(ipAddress);
-		removeIPv4(port, ipPEP);
+		removeIP(port, ipPEP);
 	}
 
 	// ******************************************************************
