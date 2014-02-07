@@ -35,12 +35,10 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.AddInterfacesToLogicalRouterRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.RemoveInterfacesFromLogicalRouterRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -212,18 +210,6 @@ public interface IChassisCapability extends ICapability {
 	/**
 	 * Adds given interfaces to given logical router, thus giving control over them to the logical router.
 	 * 
-	 * @param request
-	 * @throws CapabilityException
-	 *             if any error occurred. In that case, queue remains untouched.
-	 */
-	@POST
-	@Path("/addInterfacesToLogicalRouter")
-	@Consumes(MediaType.APPLICATION_XML)
-	public void addInterfacesToLogicalRouter(AddInterfacesToLogicalRouterRequest request) throws CapabilityException;
-
-	/**
-	 * Adds given interfaces to given logical router, thus giving control over them to the logical router.
-	 * 
 	 * @param logicalRouter
 	 *            that will receive the interfaces
 	 * @param interfaces
@@ -231,20 +217,13 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException;
+	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<? extends LogicalPort> interfaces) throws CapabilityException;
 
-	/**
-	 * Removes given interfaces from given logical router, returning control over them to the physical router.
-	 * 
-	 * 
-	 * @param request
-	 * @throws CapabilityException
-	 *             if any error occurred. In that case, queue remains untouched.
-	 */
-	@POST
-	@Path("/removeInterfacesFromLogicalRouter")
+	@PUT
+	@Path("/logicalrouter/{logicalRouterName}/interfaces")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void removeInterfacesFromLogicalRouter(RemoveInterfacesFromLogicalRouterRequest request) throws CapabilityException;
+	public void addInterfacesToLogicalRouter(@PathParam("logicalRouterName") String logicalRouterName, InterfacesNamesList interfacesNamesList)
+			throws CapabilityException;
 
 	/**
 	 * Removes given interfaces from given logical router, returning control over them to the physical router.
@@ -257,7 +236,13 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException;
+	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<? extends LogicalPort> interfaces) throws CapabilityException;
+
+	@PUT
+	@Path("/logicalrouter/{logicalRouterName}/interfaces/delete")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void removeInterfacesFromLogicalRouter(@PathParam("logicalRouterName") String logicalRouterName, InterfacesNamesList interfacesNamesList)
+			throws CapabilityException;
 
 	/**
 	 * Configures the type of encapsulation to use in given iface.

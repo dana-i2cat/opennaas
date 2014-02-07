@@ -39,12 +39,10 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.AddInterfacesToLogicalRouterRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.RemoveInterfacesFromLogicalRouterRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -425,23 +423,11 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.opennaas.extensions.router.capability.chassis.IChassisCapability#addInterfacesToLogicalRouter(org.opennaas.extensions.router.model.wrappers
-	 * .AddInterfacesToLogicalRouterRequest)
-	 */
-	@Override
-	public void addInterfacesToLogicalRouter(AddInterfacesToLogicalRouterRequest request) throws CapabilityException {
-		addInterfacesToLogicalRouter(request.getLogicalRouter(), request.getInterfaces());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.opennaas.extensions.router.capability.chassis.IChassisCapability#addInterfacesToLogicalRouter(org.opennaas.extensions.router.model.
 	 * ComputerSystem, java.util.List)
 	 */
 	@Override
-	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
+	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<? extends LogicalPort> interfaces) throws CapabilityException {
 		log.info("Start of addInterfacesToLogicalRouter call");
 
 		if (isVirtual(resource)) {
@@ -464,16 +450,9 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.opennaas.extensions.router.capability.chassis.IChassisCapability#removeInterfacesFromLogicalRouter(org.opennaas.extensions.router.model
-	 * .wrappers.RemoveInterfacesFromLogicalRouterRequest)
-	 */
-	@Override
-	public void removeInterfacesFromLogicalRouter(RemoveInterfacesFromLogicalRouterRequest request) throws CapabilityException {
-		removeInterfacesFromLogicalRouter(request.getLogicalRouter(), request.getInterfaces());
+	public void addInterfacesToLogicalRouter(String logicalRouterName, InterfacesNamesList interfacesNamesList) throws CapabilityException {
+		addInterfacesToLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, null),
+				ChassisAPIHelper.interfaceNameList2NetworkPortList(interfacesNamesList));
 	}
 
 	/*
@@ -484,7 +463,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	 * .ComputerSystem, java.util.List)
 	 */
 	@Override
-	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
+	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<? extends LogicalPort> interfaces) throws CapabilityException {
 		log.info("Start of removeInterfacesFromLogicalRouter call");
 
 		if (isVirtual(resource)) {
@@ -505,6 +484,12 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		}
 		log.info("End of removeInterfacesFromLogicalRouter call");
 
+	}
+
+	public void removeInterfacesFromLogicalRouter(String logicalRouterName, InterfacesNamesList interfacesNamesList)
+			throws CapabilityException {
+		removeInterfacesFromLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, null),
+				ChassisAPIHelper.interfaceNameList2NetworkPortList(interfacesNamesList));
 	}
 
 	/**
