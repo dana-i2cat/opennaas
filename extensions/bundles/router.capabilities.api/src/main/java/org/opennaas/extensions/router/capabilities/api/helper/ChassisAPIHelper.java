@@ -332,7 +332,7 @@ public class ChassisAPIHelper {
 		logicalRouter.setName(logicalRouterName);
 		logicalRouter.setElementName(logicalRouterName);
 
-		if (interfacesNames != null) {
+		if (interfacesNames != null && interfacesNames.getInterfaces() != null) {
 			for (String interfaceName : interfacesNames.getInterfaces()) {
 				logicalRouter.addLogicalDevice(subInterfaceName2NetworkPort(interfaceName));
 			}
