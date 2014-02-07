@@ -23,6 +23,7 @@ package org.opennaas.extensions.router.capability.chassis;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
 import org.apache.commons.logging.Log;
@@ -387,6 +388,10 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		log.info("End of createLogicalRouter call");
 	}
 
+	public void createLogicalRouter(String logicalRouterName, InterfacesNamesList interfacesNamesList) throws CapabilityException {
+		createLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, interfacesNamesList));
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -411,6 +416,10 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		IAction action = createActionAndCheckParams(ChassisActionSet.DELETELOGICALROUTER, logicalRouter);
 		queueAction(action);
 		log.info("E of deleteLogicalRouter call");
+	}
+
+	public void deleteLogicalRouter(@PathParam("logicalRouterName") String logicalRouterName) throws CapabilityException {
+		deleteLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, null));
 	}
 
 	/*

@@ -28,6 +28,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -162,12 +163,12 @@ public interface IChassisCapability extends ICapability {
 	 * @return
 	 */
 	@GET
-	@Path("/getLogicalRouters")
+	@Path("/logicalrouter")
 	@Produces(MediaType.APPLICATION_XML)
 	public LogicalRoutersNamesList getLogicalRoutersNames();
 
 	/**
-	 * Returns a list of logical router
+	 * Returns a list of logical routers
 	 * 
 	 * @return
 	 */
@@ -185,10 +186,13 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	@POST
-	@Path("/createLogicalRouter")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void createLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException;
+
+	@POST
+	@Path("/logicalrouter/{logicalRouterName}")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void createLogicalRouter(@PathParam("logicalRouterName") String logicalRouterName, InterfacesNamesList interfacesNamesList)
+			throws CapabilityException;
 
 	/**
 	 * Deletes given logical router.
@@ -198,10 +202,12 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	@POST
-	@Path("/deleteLogicalRouter")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void deleteLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException;
+
+	@DELETE
+	@Path("/logicalrouter/{logicalRouterName}")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void deleteLogicalRouter(@PathParam("logicalRouterName") String logicalRouterName) throws CapabilityException;
 
 	/**
 	 * Adds given interfaces to given logical router, thus giving control over them to the logical router.
