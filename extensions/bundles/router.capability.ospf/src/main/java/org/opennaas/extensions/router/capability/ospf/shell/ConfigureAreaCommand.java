@@ -26,11 +26,9 @@ import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
 import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
-import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFArea.AreaType;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * @author Isart Canyameres
@@ -59,29 +57,22 @@ public class ConfigureAreaCommand extends GenericKarafCommand {
 			// FIXME Cannot read model to get interfaces.
 			// model may not be updated :S
 
-			AreaType selectedAreaType = null;
-			for (AreaType type : AreaType.values()) {
-				if (areaType.equals(type.toString()))
-					selectedAreaType = type;
-			}
+			AreaType selectedAreaType = getSelectedAreaType();
 			if (selectedAreaType == null) {
 				throw new Exception("Invalid area type: " + areaType);
 			}
 
-			OSPFArea area = new OSPFArea();
-			area.setAreaID(ModelHelper.ipv4StringToLong(areaId));
-			area.setAreaType(selectedAreaType);
-
-			OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
-			areaConfig.setOSPFArea(area);
+			OSPFAreaWrapper areaWrapper = new OSPFAreaWrapper();
+			areaWrapper.setAreaID(areaId);
+			areaWrapper.setAreaType(selectedAreaType);
 
 			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
 
-			if (delete) {
-				ospfCapability.removeOSPFArea(areaConfig);
-			} else {
-				ospfCapability.configureOSPFArea(areaConfig);
-			}
+			if (delete)
+				ospfCapability.removeOSPFArea(areaId);
+			else
+				ospfCapability.configureOSPFArea(areaWrapper);
+
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -93,6 +84,16 @@ public class ConfigureAreaCommand extends GenericKarafCommand {
 			return -1;
 		}
 		printEndCommand();
+		return null;
+	}
+
+	private AreaType getSelectedAreaType() {
+
+		for (AreaType type : AreaType.values()) {
+			if (areaType.equals(type.toString()))
+				return type;
+		}
+
 		return null;
 	}
 
