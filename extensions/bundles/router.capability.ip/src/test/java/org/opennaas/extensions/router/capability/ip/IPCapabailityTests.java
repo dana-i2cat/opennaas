@@ -34,8 +34,6 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.mock.MockResource;
-import org.opennaas.extensions.router.capabilities.api.model.ip.SetIpAddressRequest;
-import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -51,10 +49,13 @@ import org.powermock.reflect.Whitebox;
  */
 public class IPCapabailityTests {
 
-	private static final String	IPV4_ADDRESS		= "192.168.22.1";
-	private static final String	IPV4_SUBNET_MASK	= "255.255.255.0";
-	private static final String	INTERFACE			= "fe-0/1/1";
-	private static final int	PORT_NUMBER			= 1;
+	private static final String	IPV4_ADDRESS			= "192.168.22.1";
+	private static final String	IPV4_SUBNET_MASK		= "24";
+	private static final String	INTERFACE				= "fe-0/1/1";
+	private static final int	PORT_NUMBER				= 1;
+
+	private static final String	INTERFACE_NAME			= INTERFACE + PORT_NUMBER;
+	private static final String	IPV4_COMPOSED_ADDRESS	= IPV4_ADDRESS + "/" + IPV4_SUBNET_MASK;
 
 	private IPCapability		ipCapability;
 
@@ -66,11 +67,9 @@ public class IPCapabailityTests {
 
 	@Test
 	public void testSetIp() throws SecurityException, NoSuchMethodException, Exception {
-		// generate a test SetIpAddressRequest
-		SetIpAddressRequest ipv4Request = generateSetIpv4Request();
 
 		// call to setIP() with an IP address v4
-		ipCapability.setIP(ipv4Request);
+		ipCapability.setIP(INTERFACE_NAME, IPV4_COMPOSED_ADDRESS);
 
 		// verify the call to queueAction method
 		Mockito.verify(ipCapability, Mockito.times(1)).queueAction((IAction) Mockito.anyObject());
@@ -110,39 +109,18 @@ public class IPCapabailityTests {
 		Whitebox.setInternalState(partialMockedIPCapability, Log.class, LogFactory.getLog(IPCapability.class), AbstractCapability.class);
 
 		// do real method calls on capability calls
-		PowerMockito.doCallRealMethod().when(partialMockedIPCapability).setIP(Mockito.any(SetIpAddressRequest.class));
+		PowerMockito.doCallRealMethod().when(partialMockedIPCapability).setIP(Mockito.anyString(), Mockito.anyString());
 		PowerMockito.doCallRealMethod().when(partialMockedIPCapability)
 				.setIP(Mockito.any(LogicalDevice.class), Mockito.any(IPProtocolEndpoint.class));
 		PowerMockito.doCallRealMethod().when(partialMockedIPCapability).setIP(Mockito.any(LogicalDevice.class), Mockito.anyString());
-		PowerMockito.doCallRealMethod().when(partialMockedIPCapability).setIPv4(Mockito.any(SetIpAddressRequest.class));
+		PowerMockito.doCallRealMethod().when(partialMockedIPCapability).setIPv4(Mockito.anyString(), Mockito.anyString());
 		PowerMockito.doCallRealMethod().when(partialMockedIPCapability)
 				.setIPv4(Mockito.any(LogicalDevice.class), Mockito.any(IPProtocolEndpoint.class));
-		PowerMockito.doCallRealMethod().when(partialMockedIPCapability).setIPv6(Mockito.any(SetIpAddressRequest.class));
+		PowerMockito.doCallRealMethod().when(partialMockedIPCapability).setIPv6(Mockito.anyString(), Mockito.anyString());
 		PowerMockito.doCallRealMethod().when(partialMockedIPCapability)
 				.setIPv6(Mockito.any(LogicalDevice.class), Mockito.any(IPProtocolEndpoint.class));
 
 		return partialMockedIPCapability;
 	}
 
-	private static final EthernetPort generateLogicalPort() {
-		EthernetPort port = new EthernetPort();
-		port.setName(INTERFACE);
-		port.setPortNumber(PORT_NUMBER);
-
-		return port;
-	}
-
-	private static final IPProtocolEndpoint generateIPv4() {
-		IPProtocolEndpoint ep = new IPProtocolEndpoint();
-		ep.setIPv4Address(IPV4_ADDRESS);
-		ep.setSubnetMask(IPV4_SUBNET_MASK);
-		return ep;
-	}
-
-	private static final SetIpAddressRequest generateSetIpv4Request() {
-		SetIpAddressRequest req = new SetIpAddressRequest();
-		req.setLogicalDevice(generateLogicalPort());
-		req.setIpProtocolEndpoint(generateIPv4());
-		return req;
-	}
 }

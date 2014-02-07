@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ip.api;
+package org.opennaas.extensions.router.capabilities.api.helper;
 
 /*
  * #%L
@@ -23,14 +23,16 @@ package org.opennaas.extensions.router.capability.ip.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.router.capabilities.api.model.ip.IPAddresses;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class API2ModelTranslator {
+public class IPApi2ModelTranslator {
 
 	public static IPAddresses ipPEPs2IPAddresses(List<IPProtocolEndpoint> peps) {
 		IPAddresses ipAddresses = new IPAddresses();
@@ -55,7 +57,7 @@ public class API2ModelTranslator {
 		String completeipv6 = null;
 
 		if (ipv4 != null && mask != null) {
-			completeipv4 = ipv4 + "/" + mask;
+			completeipv4 = ipv4 + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(mask);
 		}
 
 		if (ipv6 != null && prefix != null) {
