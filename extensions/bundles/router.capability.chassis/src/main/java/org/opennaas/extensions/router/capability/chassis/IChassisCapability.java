@@ -23,6 +23,7 @@ package org.opennaas.extensions.router.capability.chassis;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -130,10 +131,12 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	@POST
-	@Path("/createSubInterface")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void createSubInterface(NetworkPort iface) throws CapabilityException;
+
+	@POST
+	@Path("/interfaces")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void createSubInterface(InterfaceInfo interfaceInfo) throws CapabilityException;
 
 	/**
 	 * Deletes given logical interface (iface).
@@ -147,10 +150,11 @@ public interface IChassisCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	@POST
-	@Path("/deleteSubInterface")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void deleteSubInterface(NetworkPort iface) throws CapabilityException;
+
+	@DELETE
+	@Path("/interfaces")
+	public void deleteSubInterface(@QueryParam("ifaceName") String ifaceName) throws CapabilityException;
 
 	/*
 	 * Logical Routers

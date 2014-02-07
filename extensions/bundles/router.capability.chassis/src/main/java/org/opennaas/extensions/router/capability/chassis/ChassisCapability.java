@@ -252,6 +252,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		log.info("End of createSubInterface call");
 	}
 
+	public void createSubInterface(InterfaceInfo interfaceInfo) throws CapabilityException {
+		try {
+			createSubInterface(ChassisAPIHelper.interfaceInfo2NetworkPort(interfaceInfo));
+		} catch (Exception e) {
+			throw new CapabilityException(e);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -263,6 +271,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		IAction action = createActionAndCheckParams(ChassisActionSet.DELETESUBINTERFACE, iface);
 		queueAction(action);
 		log.info("End of deleteSubInterface call");
+	}
+
+	public void deleteSubInterface(@QueryParam("ifaceName") String ifaceName) throws CapabilityException {
+		try {
+			deleteSubInterface(ChassisAPIHelper.subInterfaceName2NetworkPort(ifaceName));
+		} catch (Exception e) {
+			throw new CapabilityException(e);
+		}
 	}
 
 	/*
