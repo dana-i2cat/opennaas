@@ -40,7 +40,6 @@ import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceIn
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -251,22 +250,6 @@ public interface IChassisCapability extends ICapability {
 	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
 	 * is required for queued actions to take effect.
 	 * 
-	 * @param request
-	 * @throws CapabilityException
-	 *             if any error occurred. In that case, queue remains untouched.
-	 */
-	@POST
-	@Path("/setEncapsulation")
-	@Consumes(MediaType.APPLICATION_XML)
-	public void setEncapsulation(SetEncapsulationRequest request) throws CapabilityException;
-
-	/**
-	 * Configures the type of encapsulation to use in given iface.
-	 * 
-	 * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
-	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
-	 * is required for queued actions to take effect.
-	 * 
 	 * @param iface
 	 *            to be configured
 	 * @param encapsulationType
@@ -275,6 +258,12 @@ public interface IChassisCapability extends ICapability {
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
 	public void setEncapsulation(LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException;
+
+	@PUT
+	@Path("/interfaces/encapsulation/type/{encapsulationType}")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setEncapsulation(@QueryParam("ifaceName") String ifaceName, @PathParam("encapsulationType") String encapsulationType)
+			throws CapabilityException;
 
 	/**
 	 * Configures the encapsulation label to use in given iface.

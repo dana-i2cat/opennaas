@@ -44,7 +44,6 @@ import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceIn
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
@@ -283,23 +282,22 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.router.capability.chassis.IChassisCapability#setEncapsulation(org.opennaas.extensions.router.model.wrappers.
-	 * SetEncapsulationRequest)
-	 */
-	@Override
-	public void setEncapsulation(SetEncapsulationRequest request) throws CapabilityException {
-		setEncapsulation(request.getIface(), request.getEncapsulation());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.opennaas.extensions.router.capability.chassis.IChassisCapability#setEncapsulation(org.opennaas.extensions.router.model.LogicalPort,
 	 * org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType)
 	 */
 	@Override
 	public void setEncapsulation(LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException {
 		log.info("Start of setEncapsulation call");
+
+		// check parameters
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Encapsulation in loopback interfaces is not supported.");
+		}
+
+		if (encapsulationType.equals(ProtocolIFType.OTHER)) {
+			throw new CapabilityException("Unsupported encapsulation type.");
+		}
+
 		if (!encapsulationType.equals(ProtocolIFType.UNKNOWN)) {
 			ProtocolEndpoint encapsulationEndpoint = new ProtocolEndpoint();
 			encapsulationEndpoint.setProtocolIFType(encapsulationType);
@@ -309,6 +307,10 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		removeCurrentEncapsulation(iface);
 		setDesiredEncapsulation(iface);
 		log.info("End of setEncapsulation call");
+	}
+
+	public void setEncapsulation(String ifaceName, String encapsulationType) throws CapabilityException {
+		setEncapsulation(ChassisAPIHelper.string2LogicalPort(ifaceName), ChassisAPIHelper.string2ProtocolIFType(encapsulationType));
 	}
 
 	/*
