@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Julio Carlos Barrera
  * 
  */
-@XmlRootElement(name = "interfaces")
+@XmlRootElement(name = "interfaces", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InterfacesNamesList {
 

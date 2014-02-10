@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-@XmlRootElement(name = "ipAddresses")
+@XmlRootElement(name = "ipAddresses", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IPAddresses {
 
