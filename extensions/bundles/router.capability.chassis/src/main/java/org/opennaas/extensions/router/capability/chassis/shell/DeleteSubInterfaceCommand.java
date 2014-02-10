@@ -23,15 +23,8 @@ package org.opennaas.extensions.router.capability.chassis.shell;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
 @Command(scope = "chassis", name = "deleteSubInterface", description = "Delete a subinterface on a given resource.")
 public class DeleteSubInterfaceCommand extends GenericKarafCommand {
@@ -48,37 +41,11 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 		printInitCommand("delete  subInterfaces");
 
 		try {
-			IResourceManager manager = getResourceManager();
-
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
-
-			IResourceIdentifier resourceIdentifier = null;
-
-			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return -1;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-
-			validateResource(resource);
+			IResource resource = getResourceFromFriendlyName(resourceId);
 
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
-			chassisCapability.deleteSubInterface(prepareParams());
+			chassisCapability.deleteSubInterface(subinterface);
 
-		} catch (ResourceException e) {
-			printError(e);
-			printEndCommand();
-			return -1;
 		} catch (Exception e) {
 			printError("Error deleting interface.");
 			printError(e);
@@ -87,22 +54,6 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
-	}
-
-	private NetworkPort prepareParams() {
-		String[] args = subinterface.split("\\.");
-		NetworkPort port;
-		if (args[0].startsWith("lt")) {
-			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
-			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
-			port = logicalTunnel;
-		} else {
-			port = new EthernetPort();
-		}
-
-		port.setName(args[0]);
-		port.setPortNumber(Integer.parseInt(args[1]));
-		return port;
 	}
 
 }

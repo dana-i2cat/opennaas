@@ -23,6 +23,9 @@ package org.opennaas.extensions.router.capability.chassis;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -36,14 +39,10 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.AddInterfacesToLogicalRouterRequest;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfoList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.RemoveInterfacesFromLogicalRouterRequest;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationLabelRequest;
-import org.opennaas.extensions.router.capabilities.api.model.chassis.SetEncapsulationRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
@@ -205,6 +204,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 	}
 
+	public void upPhysicalInterface(String ifaceName) throws CapabilityException {
+		try {
+			upPhysicalInterface(ChassisAPIHelper.interfaceName2LogicalPort(ifaceName));
+		} catch (IllegalArgumentException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -221,6 +228,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		log.info("End of downPhysicalInterface call");
 	}
 
+	public void downPhysicalInterface(@QueryParam("ifaceName") String ifaceName) throws CapabilityException {
+		try {
+			downPhysicalInterface(ChassisAPIHelper.interfaceName2LogicalPort(ifaceName));
+		} catch (IllegalArgumentException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -232,6 +247,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESUBINTERFACE, iface);
 		queueAction(action);
 		log.info("End of createSubInterface call");
+	}
+
+	public void createSubInterface(InterfaceInfo interfaceInfo) throws CapabilityException {
+		try {
+			createSubInterface(ChassisAPIHelper.interfaceInfo2NetworkPort(interfaceInfo));
+		} catch (Exception e) {
+			throw new CapabilityException(e);
+		}
 	}
 
 	/*
@@ -247,15 +270,12 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		log.info("End of deleteSubInterface call");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.router.capability.chassis.IChassisCapability#setEncapsulation(org.opennaas.extensions.router.model.wrappers.
-	 * SetEncapsulationRequest)
-	 */
-	@Override
-	public void setEncapsulation(SetEncapsulationRequest request) throws CapabilityException {
-		setEncapsulation(request.getIface(), request.getEncapsulation());
+	public void deleteSubInterface(@QueryParam("ifaceName") String ifaceName) throws CapabilityException {
+		try {
+			deleteSubInterface(ChassisAPIHelper.subInterfaceName2NetworkPort(ifaceName));
+		} catch (Exception e) {
+			throw new CapabilityException(e);
+		}
 	}
 
 	/*
@@ -267,6 +287,16 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	@Override
 	public void setEncapsulation(LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException {
 		log.info("Start of setEncapsulation call");
+
+		// check parameters
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Encapsulation in loopback interfaces is not supported.");
+		}
+
+		if (encapsulationType.equals(ProtocolIFType.OTHER)) {
+			throw new CapabilityException("Unsupported encapsulation type.");
+		}
+
 		if (!encapsulationType.equals(ProtocolIFType.UNKNOWN)) {
 			ProtocolEndpoint encapsulationEndpoint = new ProtocolEndpoint();
 			encapsulationEndpoint.setProtocolIFType(encapsulationType);
@@ -278,15 +308,8 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		log.info("End of setEncapsulation call");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.router.capability.chassis.IChassisCapability#setEncapsulationLabel(org.opennaas.extensions.router.model.wrappers.
-	 * SetEncapsulationLabelRequest)
-	 */
-	@Override
-	public void setEncapsulationLabel(SetEncapsulationLabelRequest request) throws CapabilityException {
-		setEncapsulationLabel(request.getIface(), request.getEncapsulationLabel());
+	public void setEncapsulation(String ifaceName, String encapsulationType) throws CapabilityException {
+		setEncapsulation(ChassisAPIHelper.string2LogicalPort(ifaceName), ChassisAPIHelper.string2ProtocolIFType(encapsulationType));
 	}
 
 	/*
@@ -299,6 +322,12 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	@Override
 	public void setEncapsulationLabel(LogicalPort iface, String encapsulationLabel) throws CapabilityException {
 		log.info("Start of setEncapsulationLabel call");
+
+		// check parameters
+		if (ChassisAPIHelper.isLoopback(iface.getName())) {
+			throw new CapabilityException("Encapsulation in loopback interfaces is not supported.");
+		}
+
 		// specify label in iface
 		// we use the name of the endpoint to store the encapsulation label
 		// and mark protocolType as unknown (it will be discovered by opennaas)
@@ -311,6 +340,10 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		IAction action = createActionAndCheckParams(ChassisActionSet.SET_VLANID, iface);
 		queueAction(action);
 		log.info("End of setEncapsulationLabel call");
+	}
+
+	public void setEncapsulationLabel(String ifaceName, String encapsulationLabel) throws CapabilityException {
+		setEncapsulationLabel(ChassisAPIHelper.subInterfaceName2NetworkPort(ifaceName), encapsulationLabel);
 	}
 
 	@Override
@@ -353,6 +386,10 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		log.info("End of createLogicalRouter call");
 	}
 
+	public void createLogicalRouter(String logicalRouterName, InterfacesNamesList interfacesNamesList) throws CapabilityException {
+		createLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, interfacesNamesList));
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -379,16 +416,8 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		log.info("E of deleteLogicalRouter call");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.opennaas.extensions.router.capability.chassis.IChassisCapability#addInterfacesToLogicalRouter(org.opennaas.extensions.router.model.wrappers
-	 * .AddInterfacesToLogicalRouterRequest)
-	 */
-	@Override
-	public void addInterfacesToLogicalRouter(AddInterfacesToLogicalRouterRequest request) throws CapabilityException {
-		addInterfacesToLogicalRouter(request.getLogicalRouter(), request.getInterfaces());
+	public void deleteLogicalRouter(@PathParam("logicalRouterName") String logicalRouterName) throws CapabilityException {
+		deleteLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, null));
 	}
 
 	/*
@@ -398,7 +427,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	 * ComputerSystem, java.util.List)
 	 */
 	@Override
-	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
+	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<? extends LogicalPort> interfaces) throws CapabilityException {
 		log.info("Start of addInterfacesToLogicalRouter call");
 
 		if (isVirtual(resource)) {
@@ -421,16 +450,9 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.opennaas.extensions.router.capability.chassis.IChassisCapability#removeInterfacesFromLogicalRouter(org.opennaas.extensions.router.model
-	 * .wrappers.RemoveInterfacesFromLogicalRouterRequest)
-	 */
-	@Override
-	public void removeInterfacesFromLogicalRouter(RemoveInterfacesFromLogicalRouterRequest request) throws CapabilityException {
-		removeInterfacesFromLogicalRouter(request.getLogicalRouter(), request.getInterfaces());
+	public void addInterfacesToLogicalRouter(String logicalRouterName, InterfacesNamesList interfacesNamesList) throws CapabilityException {
+		addInterfacesToLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, null),
+				ChassisAPIHelper.interfaceNameList2NetworkPortList(interfacesNamesList));
 	}
 
 	/*
@@ -441,7 +463,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	 * .ComputerSystem, java.util.List)
 	 */
 	@Override
-	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
+	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<? extends LogicalPort> interfaces) throws CapabilityException {
 		log.info("Start of removeInterfacesFromLogicalRouter call");
 
 		if (isVirtual(resource)) {
@@ -462,6 +484,12 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		}
 		log.info("End of removeInterfacesFromLogicalRouter call");
 
+	}
+
+	public void removeInterfacesFromLogicalRouter(String logicalRouterName, InterfacesNamesList interfacesNamesList)
+			throws CapabilityException {
+		removeInterfacesFromLogicalRouter(ChassisAPIHelper.logicalRouter2ComputerSystem(logicalRouterName, null),
+				ChassisAPIHelper.interfaceNameList2NetworkPortList(interfacesNamesList));
 	}
 
 	/**

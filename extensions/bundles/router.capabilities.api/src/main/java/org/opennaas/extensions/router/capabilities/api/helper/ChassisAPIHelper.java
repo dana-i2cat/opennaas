@@ -21,7 +21,6 @@ package org.opennaas.extensions.router.capabilities.api.helper;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
@@ -31,8 +30,8 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.System;
@@ -126,35 +125,63 @@ public class ChassisAPIHelper {
 	}
 
 	/**
-	 * Translates an {@link InterfaceInfo} to {@link NetworkPort}
+	 * FIXME this logic must be moved to the implementation driver because it is Junos specific.<br>
+	 * Generates a valid Network port instance (including its subclasses) based on the interface name
 	 * 
 	 * @param interfaceInfo
 	 * @return
+	 * @throws Exception
 	 */
-	public static NetworkPort interfaceInfo2NetworkPort(InterfaceInfo interfaceInfo) {
-		NetworkPort networkPort = subInterfaceName2NetworkPort(interfaceInfo.getName());
+	public static NetworkPort interfaceInfo2NetworkPort(InterfaceInfo interfaceInfo) throws IllegalArgumentException {
+		// get interface parameters
+		String interfaceName = interfaceInfo.getName();
+		String subInterfaceName = ChassisAPIHelper.getInterfaceName(interfaceName);
+		int portNumber = ChassisAPIHelper.getInterfacePortNumber(interfaceName);
+		int vlanId;
+		try {
+			vlanId = interfaceInfo.getVlan() != null ? Integer.parseInt(interfaceInfo.getVlan()) : -1;
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Invalid vlanId value: " + interfaceInfo.getVlan(), e);
+		}
+		int peerUnit;
+		try {
+			peerUnit = interfaceInfo.getPeerUnit() != null ? Integer.parseInt(interfaceInfo.getPeerUnit()) : -1;
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Invalid peer unit value: " + interfaceInfo.getPeerUnit(), e);
+		}
+		String description = interfaceInfo.getDescription();
 
-		// VLAN
-		String vlan = interfaceInfo.getVlan();
-		if (vlan != null && !vlan.isEmpty()) {
+		// check ethernet ports
+		if (isEthernetPort(interfaceName)) {
+			if (vlanId == -1 && portNumber != 0)
+				throw new IllegalArgumentException("Only unit 0 is valid for non tagged-ethernet encapsulation.");
+		}
+
+		NetworkPort networkPort = null;
+
+		// check if it is a logical tunnel
+		if (isLogicalTunnelPort(interfaceName)) {
+			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
+			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
+			if (peerUnit == -1)
+				throw new IllegalArgumentException("peerUnit must be specified in lt interfaces");
+			logicalTunnel.setPeer_unit(peerUnit);
+			networkPort = logicalTunnel;
+		} else {
+			networkPort = new EthernetPort();
+		}
+
+		networkPort.setName(subInterfaceName);
+
+		networkPort.setPortNumber(portNumber);
+
+		if (vlanId != -1) {
 			VLANEndpoint vlanEndpoint = new VLANEndpoint();
-			vlanEndpoint.setVlanID(Integer.parseInt(vlan));
+			vlanEndpoint.setVlanID(vlanId); // TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
 			networkPort.addProtocolEndpoint(vlanEndpoint);
 		}
 
-		// state
-		String state = interfaceInfo.getState();
-		if (state != null && !state.isEmpty()) {
-			try {
-				networkPort.setOperationalStatus(OperationalStatus.valueOf(state));
-			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException(
-						"Invalid InterfaceInfo.state value. It must be one of these: " + Arrays.toString(OperationalStatus.values()), e);
-			}
-		}
-
-		// description
-		networkPort.setDescription(interfaceInfo.getDescription());
+		networkPort.setDescription(description);
 
 		return networkPort;
 	}
@@ -232,6 +259,18 @@ public class ChassisAPIHelper {
 	}
 
 	/**
+	 * Return specific LogicalPort instance object based on the interface name
+	 * 
+	 * @param interfaceName
+	 * @return
+	 */
+	public static LogicalPort string2LogicalPort(String interfaceName) {
+		if (isPhysicalInterface(interfaceName))
+			return interfaceName2LogicalPort(interfaceName);
+		return subInterfaceName2NetworkPort(interfaceName);
+	}
+
+	/**
 	 * Determines if an interface is a LogicalTunnelPort given the interface name.
 	 * 
 	 * FIXME: JunOS specific logic!!!
@@ -246,6 +285,20 @@ public class ChassisAPIHelper {
 	}
 
 	/**
+	 * Determines if an interface is an EthernetPort given the interface name.
+	 * 
+	 * FIXME: JunOS specific logic!!!
+	 * 
+	 * @param subInterfaceName
+	 * @return
+	 */
+	public static boolean isEthernetPort(String subInterfaceName) {
+
+		String interfaceName = getInterfaceName(subInterfaceName);
+		return interfaceName.startsWith("ge") || interfaceName.startsWith("fe");
+	}
+
+	/**
 	 * Determines if an interface is a loopback interface given the interface name.
 	 * 
 	 * FIXME: JunOS specific logic!!!
@@ -257,6 +310,14 @@ public class ChassisAPIHelper {
 		return interfaceName.startsWith("lo");
 	}
 
+	/**
+	 * Determines if interfaceName is a physical one.
+	 * 
+	 * FIXME: JunOS specific logic!!!
+	 * 
+	 * @param subInterfaceName
+	 * @return
+	 */
 	public static boolean isPhysicalInterface(String interfaceName) {
 		if (interfaceName == null || interfaceName.isEmpty()) {
 			throw new IllegalArgumentException("Invalid interfaceName");
@@ -282,7 +343,7 @@ public class ChassisAPIHelper {
 		logicalRouter.setName(logicalRouterName);
 		logicalRouter.setElementName(logicalRouterName);
 
-		if (interfacesNames != null) {
+		if (interfacesNames != null && interfacesNames.getInterfaces() != null) {
 			for (String interfaceName : interfacesNames.getInterfaces()) {
 				logicalRouter.addLogicalDevice(subInterfaceName2NetworkPort(interfaceName));
 			}
@@ -307,12 +368,20 @@ public class ChassisAPIHelper {
 		return networkPorstList;
 	}
 
+	/**
+	 * Returns ProtocolIFType based on OpenNaaS defined strings<br>
+	 * FIXME: think in a better method to expose these arbitrary strings to the user.
+	 * 
+	 * @param protocolIfType
+	 * @return
+	 */
 	public static ProtocolIFType string2ProtocolIFType(String protocolIfType) {
-		try {
-			return ProtocolIFType.valueOf(protocolIfType);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid protocolIfType value. It must be one of these: " + Arrays.toString(ProtocolIFType.values()),
-					e);
+		if (protocolIfType.equals("tagged-ethernet")) {
+			return ProtocolIFType.LAYER_2_VLAN_USING_802_1Q;
+		} else if (protocolIfType.equals("none")) {
+			return ProtocolIFType.UNKNOWN;
+		} else {
+			return ProtocolIFType.OTHER;
 		}
 	}
 }
