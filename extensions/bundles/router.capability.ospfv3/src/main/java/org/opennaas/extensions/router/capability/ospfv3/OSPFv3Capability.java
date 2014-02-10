@@ -20,6 +20,7 @@ package org.opennaas.extensions.router.capability.ospfv3;
  * #L%
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -367,7 +368,12 @@ public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capab
 		log.info("Start of readOSPFv3Configuration call.");
 
 		OSPFService ospfService = showOSPFv3Configuration();
-		OSPFServiceWrapper serviceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		OSPFServiceWrapper serviceWrapper;
+		try {
+			serviceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
 
 		log.info("End of readOSPFv3Configuration call");
 
