@@ -45,7 +45,6 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			validateResource(resource);
 
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
 			ipCapability.setInterfaceDescription(subinterface, description);

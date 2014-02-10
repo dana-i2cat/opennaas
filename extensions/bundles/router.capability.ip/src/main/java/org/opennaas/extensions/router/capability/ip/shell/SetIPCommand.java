@@ -45,7 +45,6 @@ public class SetIPCommand extends GenericKarafCommand {
 
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			validateResource(resource);
 
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
 			ipCapability.setIP(interfaceName, ipAddress);

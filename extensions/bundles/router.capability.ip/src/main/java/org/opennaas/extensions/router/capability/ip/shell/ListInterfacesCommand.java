@@ -40,7 +40,6 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			validateResource(resource);
 
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
 			List<String> interfacesNames = ipCapability.getInterfacesNames().getInterfaces();

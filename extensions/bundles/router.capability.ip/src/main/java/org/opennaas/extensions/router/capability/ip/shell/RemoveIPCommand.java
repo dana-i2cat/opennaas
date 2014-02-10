@@ -42,7 +42,6 @@ public class RemoveIPCommand extends GenericKarafCommand {
 
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			validateResource(resource);
 
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
 			ipCapability.removeIP(interfaceName, ipAddress);
