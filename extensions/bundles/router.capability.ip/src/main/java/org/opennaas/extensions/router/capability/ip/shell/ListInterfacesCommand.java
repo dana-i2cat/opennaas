@@ -59,7 +59,6 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 					ipAddresses = ipCapability.getIPs(ifaceName).getIpAddresses();
 				} catch (ModelElementNotFoundException e) {
 					// ignore, not all interfaces can have IPProtocolEndpoints associated, like GRE
-					continue;
 				}
 
 				if (ipAddresses != null && !ipAddresses.isEmpty()) {

@@ -152,17 +152,30 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	@Override
 	public String getDescription(String interfaceName) throws ModelElementNotFoundException {
 
-		LogicalPort port;
+		String description = null;
+		Boolean interfaceFound = false;
 		if (ChassisAPIHelper.isPhysicalInterface(interfaceName)) {
 			throw new IllegalArgumentException("Not implemented. Physical interfaces not stored in model.");
 			// port = ModelHelper.getLogicalPortFromName(interfaceName, (ComputerSystem) resource.getModel());
 		} else {
-			port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
+
+			LogicalPort port = ModelHelper.getNetworkPortFromName(interfaceName, (ComputerSystem) resource.getModel());
+			if (port != null) {
+				interfaceFound = true;
+				description = port.getDescription();
+			} else {
+				ProtocolEndpoint gre = ModelHelper.getGREProtocolEndpointFromName(interfaceName, (ComputerSystem) resource.getModel());
+				if (gre != null) {
+					interfaceFound = true;
+					description = gre.getDescription();
+				}
+			}
 		}
-		if (port == null)
+
+		if (!interfaceFound)
 			throw new ModelElementNotFoundException("Couldn't find interface " + interfaceName);
 
-		return port.getDescription();
+		return description;
 	}
 
 	@Override
