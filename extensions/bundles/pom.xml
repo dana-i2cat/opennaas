@@ -84,6 +84,9 @@
 		<module>openflowswitch.driver.floodlight</module>
 		<module>sdnnetwork</module>
 
-		<module>vrf</module>
+		<module>vrf.model</module>
+		<module>vrf.staticroute</module>
+                <module>vrf.dijkstraroute</module>
+                <module>vrf.selector</module>
   </modules>
 </project>

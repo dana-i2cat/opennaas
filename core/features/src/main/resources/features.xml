@@ -364,8 +364,11 @@
 
                 <bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
                 <bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.staticroute/${project.version}</bundle>
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.dijkstraroute/${project.version}</bundle>
 
-                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf/${project.version}</bundle>
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.selector/${project.version}</bundle>
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.model/${project.version}</bundle>
         </feature>
 
 	<feature name="opennaas" version="${project.version}">
