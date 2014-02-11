@@ -228,7 +228,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	/**
-	 * TODO A method don't have to return null!!! REFACTOR
+	 * 
 	 * 
 	 * @param resourceId
 	 * @return
@@ -240,29 +240,17 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		try {
 			manager = getResourceManager();
 		} catch (Exception e) {
-			printError("Error getting resource manager.");
-			printError(e);
-			return null;
-		}
-		if (manager == null) {
-			printError("Error in manager.");
-			printEndCommand();
-			return null;
+			throw new ResourceException("Error getting resource manager.", e);
 		}
 
 		String[] argsRouterName = new String[2];
 		try {
 			argsRouterName = splitResourceName(resourceId);
 		} catch (Exception e) {
-			return null;
+			throw new ResourceException("Error processing resource ID .", e);
 		}
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-		if (resourceIdentifier == null) {
-			printError("Error in identifier.");
-			printEndCommand();
-			return null;
-		}
 
 		IResource resource = manager.getResource(resourceIdentifier);
 		validateResource(resource);
@@ -292,7 +280,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	public static final String	NOTMODELINITIALIZED			= "The resource didn't have a model initialized. Start the resource first.";
 	public static final String	NOTCAPABILITIESINITIALIZED	= "The resource didn't have the capabilities initialized. Start the resource first.";
 
-	protected boolean validateResource(IResource resource) throws ResourceException {
+	private boolean validateResource(IResource resource) throws ResourceException {
 		if (resource == null)
 			throw new ResourceException(NORESOURCEFOUND);
 		if (resource.getModel() == null)

@@ -29,8 +29,10 @@ import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.ManagedSystemElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
@@ -48,6 +50,97 @@ public class ModelHelper {
 			}
 		}
 		return ports;
+	}
+
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// public static List<LogicalPort> getPhysicalInterfaces(System system) {
+	// List<LogicalPort> ports = new ArrayList<LogicalPort>();
+	// for (LogicalDevice dev : system.getLogicalDevices()) {
+	// if (dev.getClass().equals(LogicalPort.class)) {
+	// ports.add((LogicalPort) dev);
+	// }
+	// }
+	// return ports;
+	// }
+
+	public static List<ProtocolEndpoint> getGREProtocolEndpoints(System system) {
+		List<ProtocolEndpoint> greEps = new ArrayList<ProtocolEndpoint>();
+		List<GREService> greServices = system.getAllHostedServicesByType(new GREService());
+		// FIXME why do we use greServices.get(0) instead of iterating over all greServices?
+		if (!greServices.isEmpty()) {
+			GREService greService = greServices.get(0);
+			greEps.addAll(greService.getProtocolEndpoint());
+		}
+		return greEps;
+	}
+
+	/**
+	 * Returns interface name given a NetworkPort
+	 * 
+	 * @param networkPort
+	 * @return
+	 */
+	public static String getInterfaceName(NetworkPort networkPort) {
+		return networkPort.getName() + "." + String.valueOf(networkPort.getPortNumber());
+	}
+
+	/**
+	 * Returns interface name given a GRE ProtocolEndpoint
+	 * 
+	 * @param networkPort
+	 * @return
+	 */
+	public static String getInterfaceName(ProtocolEndpoint greProtocolEndpoint) {
+		return greProtocolEndpoint.getName();
+	}
+
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// /**
+	// * Returns the NetworkPort associated with given name, null if it not found
+	// *
+	// * @param name
+	// * @param system
+	// * @return
+	// */
+	// public static LogicalPort getLogicalPortFromName(String name, System system) {
+	// for (LogicalPort port : getPhysicalInterfaces(system)) {
+	// if (port.getName().equals(name)) {
+	// return port;
+	// }
+	// }
+	// return null;
+	// }
+
+	/**
+	 * Returns the NetworkPort associated with given name, null if it not found
+	 * 
+	 * @param name
+	 * @param system
+	 * @return
+	 */
+	public static NetworkPort getNetworkPortFromName(String name, System system) {
+		for (NetworkPort networkPort : getInterfaces(system)) {
+			if (getInterfaceName(networkPort).equals(name)) {
+				return networkPort;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the GRE ProtocolEndpoint associated with given name, null if it not found
+	 * 
+	 * @param name
+	 * @param system
+	 * @return
+	 */
+	public static ProtocolEndpoint getGREProtocolEndpointFromName(String name, System system) {
+		for (ProtocolEndpoint protocolEndpoint : getGREProtocolEndpoints(system)) {
+			if (getInterfaceName(protocolEndpoint).equals(name)) {
+				return protocolEndpoint;
+			}
+		}
+		return null;
 	}
 
 	public static long ipv4StringToLong(String ip) throws IOException {
@@ -72,6 +165,24 @@ public class ModelHelper {
 
 		InetAddress address = Inet4Address.getByAddress(bytes);
 		return address.getHostAddress();
+	}
+
+	/**
+	 * Returns a list of Logical Routers given a Router model
+	 * 
+	 * @param computerSystem
+	 * @return
+	 */
+	public static List<ComputerSystem> getLogicalRouters(ComputerSystem computerSystem) {
+		List<ComputerSystem> list = new ArrayList<ComputerSystem>();
+
+		for (ManagedSystemElement systemElement : computerSystem.getManagedSystemElements()) {
+			if (systemElement instanceof ComputerSystem) {
+				list.add((ComputerSystem) systemElement);
+			}
+		}
+
+		return list;
 	}
 
 	public static VRRPGroup copyVRRPConfiguration(VRRPGroup vrrpGroup) {

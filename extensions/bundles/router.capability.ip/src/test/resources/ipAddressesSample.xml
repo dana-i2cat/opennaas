@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:ipAddresses xmlns:ns2="opennaas.api">
+    <ipAddress>192.168.1.100/24</ipAddress>
+    <ipAddress>192.168.1.101/24</ipAddress>
+    <ipAddress>192.168.1.102/24</ipAddress>
+    <ipAddress>192.168.1.103/24</ipAddress>
+    <ipAddress>192.168.1.104/24</ipAddress>
+    <ipAddress>192.168.1.105/24</ipAddress>
+    <ipAddress>192.168.1.106/24</ipAddress>
+    <ipAddress>192.168.1.107/24</ipAddress>
+    <ipAddress>192.168.1.108/24</ipAddress>
+    <ipAddress>192.168.1.109/24</ipAddress>
+</ns2:ipAddresses>

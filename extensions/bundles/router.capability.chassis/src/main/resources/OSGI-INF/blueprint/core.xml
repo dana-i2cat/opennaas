@@ -37,12 +37,14 @@
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.AddInterfaceToLRCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
+				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="chassis/removeInterfaceFromLR">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.RemoveInterfaceFromLRCommand"/>
 			<completers>
+				<ref component-id="resourceNameCompleter"/>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>

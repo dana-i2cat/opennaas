@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:ospfService xmlns:ns2="opennaas.api">
+    <ospfArea>
+        <areaId>0.0.0.0</areaId>
+        <ospfProtocolEndpoints>
+	        <ospfProtocolEndpoint>
+	            <name>fe-0/3/3.1</name>
+	            <enabledState>ENABLED</enabledState>
+	        </ospfProtocolEndpoint>
+	        <ospfProtocolEndpoint>
+	            <name>fe-0/3/3.2</name>
+	            <enabledState>DISABLED</enabledState>
+	        </ospfProtocolEndpoint>
+        </ospfProtocolEndpoints>
+    </ospfArea>
+</ns2:ospfService>

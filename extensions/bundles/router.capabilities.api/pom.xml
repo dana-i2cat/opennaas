@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.opennaas</groupId>
+    <artifactId>org.opennaas.extensions.bundles</artifactId>
+    <version>0.26</version>
+  </parent>
+  <artifactId>org.opennaas.extensions.router.capabilities.api</artifactId>
+  <packaging>bundle</packaging>
+  <name>OpenNaaS :: Router :: Capabilities :: API</name>
+  <dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+	</dependencies>
+<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>		
+					    	<Import-Package>
+					    	    !org.opennaas.extensions.router.capabilities.api.model.*,
+					    	    !org.opennaas.extensions.router.capabilities.api.helper.*,					    	    
+  								org.slf4j,
+								org.apache.felix.service.command,
+								*
+							</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>	
+</project>

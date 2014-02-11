@@ -28,7 +28,7 @@
 		<feature version="${project.version}">opennaas-router-driver-all</feature>		
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
-		<feature version="${project.version}">opennaas-bod-driver-autobahn</feature>			
+		<feature version="${project.version}">opennaas-bod-driver-all</feature>			
 		<feature version="${project.version}">opennaas-vnmapper</feature>
 		<feature version="${project.version}">opennaas-roadm</feature>
 		<feature version="${project.version}">opennaas-roadm-driver-proteus</feature>

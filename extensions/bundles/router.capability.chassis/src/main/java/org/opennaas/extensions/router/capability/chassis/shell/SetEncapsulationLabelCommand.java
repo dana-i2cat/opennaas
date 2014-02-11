@@ -25,8 +25,6 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
 
 @Command(scope = "chassis", name = "setEncapsulationlabel", description = "Set an encapsulation label in a given interface.")
 public class SetEncapsulationLabelCommand extends GenericKarafCommand {
@@ -46,14 +44,10 @@ public class SetEncapsulationLabelCommand extends GenericKarafCommand {
 		printInitCommand("set Encapsulation label");
 
 		try {
-			checkArguments();
-
-			LogicalPort iface = createParams(interfaceName);
-
 			IResource resource = getResourceFromFriendlyName(resourceId);
 
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
-			chassisCapability.setEncapsulationLabel(iface, label);
+			chassisCapability.setEncapsulationLabel(interfaceName, label);
 
 		} catch (Exception e) {
 			printError("Error setting vlan.");
@@ -64,36 +58,6 @@ public class SetEncapsulationLabelCommand extends GenericKarafCommand {
 
 		printEndCommand();
 		return null;
-	}
-
-	private void checkArguments() throws Exception {
-		// FIXME It is necessary to setvlans in loopback if we want configure LRs
-		if (isLoopbackInterfaceName(interfaceName)) {
-			throw new UnsupportedOperationException("Encapsulation in loopback interfaces is not supported.");
-		}
-	}
-
-	private LogicalPort createParams(String interfaceName) throws Exception {
-
-		LogicalPort iface;
-		if (isPhysicalInterfaceName(interfaceName)) {
-			iface = new LogicalPort();
-			iface.setName(interfaceName);
-		} else {
-			iface = new NetworkPort();
-			String[] interfaceNameAndPortNumber = splitInterfaces(interfaceName);
-			iface.setName(interfaceNameAndPortNumber[0]);
-			((NetworkPort) iface).setPortNumber(Integer.parseInt(interfaceNameAndPortNumber[1]));
-		}
-		return iface;
-	}
-
-	private boolean isLoopbackInterfaceName(String interfaceName) {
-		return interfaceName.startsWith("lo");
-	}
-
-	private boolean isPhysicalInterfaceName(String interfaceName) {
-		return !(interfaceName.contains("."));
 	}
 
 }

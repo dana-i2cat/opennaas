@@ -23,7 +23,7 @@ package org.opennaas.itests.roadm.mock;
 import java.util.List;
 import java.util.Set;
 
-import org.opennaas.core.protocols.sessionmanager.ListResponse;
+import org.opennaas.core.protocols.sessionmanager.SessionIdList;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -116,8 +116,9 @@ public class MockProtocolSessionManager implements IProtocolSessionManager {
 	}
 
 	@Override
-	public ListResponse getAllProtocolSessionIdsWS() {
+	public SessionIdList getAllProtocolSessionIdsWS() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

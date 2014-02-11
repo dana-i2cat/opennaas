@@ -21,8 +21,6 @@
 					##ENABLED/DISABLED
 					#if($ospfPep.getEnabledState().toString().equals($disabledState))
 					<disable/>
-					#else
-					<disable operation="delete"/>
 					#end
 				</interface>
 				#end
