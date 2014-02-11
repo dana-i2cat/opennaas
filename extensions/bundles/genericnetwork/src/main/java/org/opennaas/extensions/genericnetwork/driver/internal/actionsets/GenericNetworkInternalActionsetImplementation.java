@@ -38,11 +38,11 @@ import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public class OFNetworkInternalActionsetImplementation extends ActionSet {
+public class GenericNetworkInternalActionsetImplementation extends ActionSet {
 
 	public static final String	ACTIONSET_ID	= "internal";
 
-	public OFNetworkInternalActionsetImplementation() {
+	public GenericNetworkInternalActionsetImplementation() {
 		super.setActionSetId(ACTIONSET_ID);
 		this.putAction(OFProvisioningNetworkActionSet.ALLOCATEFLOW, AllocateFlowAction.class);
 		this.putAction(OFProvisioningNetworkActionSet.DEALLOCATEFLOW, DeallocateFlowAction.class);

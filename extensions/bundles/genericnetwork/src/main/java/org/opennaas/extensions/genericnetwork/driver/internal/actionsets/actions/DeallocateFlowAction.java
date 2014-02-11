@@ -30,7 +30,7 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.model.NetOFFlow;
-import org.opennaas.extensions.genericnetwork.model.OFNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 
 /**
@@ -53,7 +53,7 @@ public class DeallocateFlowAction extends Action {
 			forwardingCapability.removeOpenflowForwardingRule(netFlow.getName());
 
 			// update model
-			((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().get(resourceName).remove(netFlow);
+			((GenericNetworkModel) getModelToUpdate()).getNetFlowsPerResource().get(resourceName).remove(netFlow);
 
 		} catch (Exception e) {
 			throw new ActionException("Error deallocating flow : ", e);

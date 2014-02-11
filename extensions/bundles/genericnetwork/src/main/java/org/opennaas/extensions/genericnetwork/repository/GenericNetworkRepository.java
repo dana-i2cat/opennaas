@@ -30,13 +30,13 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class OFNetworkRepository extends ResourceRepository {
+public class GenericNetworkRepository extends ResourceRepository {
 
 	public static final String	OF_NETWORK_RESOURCE_TYPE	= "ofnetwork";
 
-	Log							log							= LogFactory.getLog(OFNetworkRepository.class);
+	Log							log							= LogFactory.getLog(GenericNetworkRepository.class);
 
-	public OFNetworkRepository(String resourceType) {
+	public GenericNetworkRepository(String resourceType) {
 		super(resourceType);
 	}
 

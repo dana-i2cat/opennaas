@@ -33,7 +33,7 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.model.NetOFFlow;
-import org.opennaas.extensions.genericnetwork.model.OFNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
@@ -61,12 +61,12 @@ public class AllocateFlowAction extends Action {
 			forwardingCapability.createOpenflowForwardingRule(flow);
 
 			// update model
-			if (((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().containsKey(resourceName)) {
-				((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().get(resourceName).add(netFlow);
+			if (((GenericNetworkModel) getModelToUpdate()).getNetFlowsPerResource().containsKey(resourceName)) {
+				((GenericNetworkModel) getModelToUpdate()).getNetFlowsPerResource().get(resourceName).add(netFlow);
 			} else {
 				List<NetOFFlow> netFlows = new ArrayList<NetOFFlow>();
 				netFlows.add(netFlow);
-				((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().put(resourceName, netFlows);
+				((GenericNetworkModel) getModelToUpdate()).getNetFlowsPerResource().put(resourceName, netFlows);
 			}
 
 		} catch (Exception e) {

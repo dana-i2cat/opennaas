@@ -32,7 +32,7 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.genericnetwork.capability.ofprovision.OFProvisioningNetworkActionSet;
 import org.opennaas.extensions.genericnetwork.model.NetOFFlow;
-import org.opennaas.extensions.genericnetwork.model.OFNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 
 /**
  * 
@@ -54,7 +54,7 @@ public class GetAllocatedFlowsAction extends Action {
 			throws ActionException {
 
 		Set<NetOFFlow> flows = new HashSet<NetOFFlow>();
-		Iterator<List<NetOFFlow>> it = ((OFNetworkModel) getModelToUpdate()).getNetFlowsPerResource().values().iterator();
+		Iterator<List<NetOFFlow>> it = ((GenericNetworkModel) getModelToUpdate()).getNetFlowsPerResource().values().iterator();
 		while (it.hasNext()) {
 			flows.addAll(it.next());
 		}

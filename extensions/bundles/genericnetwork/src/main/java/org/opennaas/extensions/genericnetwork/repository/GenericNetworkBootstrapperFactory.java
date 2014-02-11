@@ -28,11 +28,11 @@ import org.opennaas.core.resources.IResourceBootstrapperFactory;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class OFNetworkBootstrapperFactory implements IResourceBootstrapperFactory {
+public class GenericNetworkBootstrapperFactory implements IResourceBootstrapperFactory {
 
 	@Override
 	public IResourceBootstrapper createResourceBootstrapper() {
-		return new OFNetworkBootstrapper();
+		return new GenericNetworkBootstrapper();
 	}
 
 }

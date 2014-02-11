@@ -2,7 +2,7 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Build the bootstrapper -->
-	<bean id="bootstrapperFactory" class="org.opennaas.extensions.genericnetwork.repository.OFNetworkBootstrapperFactory"/>
+	<bean id="bootstrapperFactory" class="org.opennaas.extensions.genericnetwork.repository.GenericNetworkBootstrapperFactory"/>
 	<!-- Workaround for  https://issues.apache.org/jira/browse/ARIES-796:
 	Resolve and inject entityManagerFactory and get the entityManager using code in ResourceDescriptorRepository. 
 	Obtained entityManager is not container managed, then. 
@@ -14,7 +14,7 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	
-	<bean id="ofNetworkRepository" class="org.opennaas.extensions.genericnetwork.repository.OFNetworkRepository"
+	<bean id="genericNetworkRepository" class="org.opennaas.extensions.genericnetwork.repository.GenericNetworkRepository"
           init-method="init">
 		<argument value="ofnetwork"/>
 		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
@@ -23,10 +23,10 @@
 	
 	<!-- Get capability factories from the OSGi registry -->
 	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
-		<reference-listener ref="ofNetworkRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+		<reference-listener ref="genericNetworkRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
 	</reference-list>
 	
-	<service ref="ofNetworkRepository" interface="org.opennaas.core.resources.IResourceRepository">
+	<service ref="genericNetworkRepository" interface="org.opennaas.core.resources.IResourceRepository">
 		<service-properties>
 			<entry key="type" value="ofnetwork"/>
 			<entry key="version" value="1.0.0"/>
@@ -61,8 +61,8 @@
 	</service>	
 	
 	<!--  Internal ActionSet  -->
-	<bean id="ofNetworkInternalActionSet" class="org.opennaas.extensions.genericnetwork.driver.internal.actionsets.OFNetworkInternalActionsetImplementation"/>
-	<service ref="ofNetworkInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+	<bean id="genericNetworkInternalActionSet" class="org.opennaas.extensions.genericnetwork.driver.internal.actionsets.GenericNetworkInternalActionsetImplementation"/>
+	<service ref="genericNetworkInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
 			<!--  identify the floodlight actionset -->
 			<entry key="actionset.name" value="internal"/>

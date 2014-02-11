@@ -41,7 +41,7 @@ import org.opennaas.core.resources.SerializationException;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OFNetworkModel implements IModel {
+public class GenericNetworkModel implements IModel {
 
 	/**
 	 * Auto-generated serial version number
@@ -56,11 +56,11 @@ public class OFNetworkModel implements IModel {
 	private Map<String, List<NetOFFlow>>	netFlowsPerResource;
 
 	/**
-	 * Maps device ID in OFNetworkModel and resource ID in OpenNaaS
+	 * Maps device ID in GenericNetworkModel and resource ID in OpenNaaS
 	 */
 	private Map<String, String>				deviceResourceMap;
 
-	public OFNetworkModel() {
+	public GenericNetworkModel() {
 		deviceResourceMap = new HashMap<String, String>();
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
 	}

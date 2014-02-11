@@ -26,16 +26,16 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.extensions.genericnetwork.model.OFNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class OFNetworkBootstrapper implements IResourceBootstrapper {
+public class GenericNetworkBootstrapper implements IResourceBootstrapper {
 
-	Log				log	= LogFactory.getLog(OFNetworkBootstrapper.class);
+	Log				log	= LogFactory.getLog(GenericNetworkBootstrapper.class);
 
 	private IModel	oldModel;
 
@@ -43,7 +43,7 @@ public class OFNetworkBootstrapper implements IResourceBootstrapper {
 	public void bootstrap(Resource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 		oldModel = resource.getModel();
-		resource.setModel(new OFNetworkModel());
+		resource.setModel(new GenericNetworkModel());
 
 	}
 
