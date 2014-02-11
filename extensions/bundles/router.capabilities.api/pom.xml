@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.opennaas</groupId>
     <artifactId>org.opennaas.extensions.bundles</artifactId>
-    <version>0.26-SNAPSHOT</version>
+    <version>0.27-SNAPSHOT</version>
   </parent>
   <artifactId>org.opennaas.extensions.router.capabilities.api</artifactId>
   <packaging>bundle</packaging>
@@ -36,11 +36,7 @@
   								org.slf4j,
 								org.apache.felix.service.command,
 								*
-							</Import-Package>				
-						<Export-Package>
-							org.opennaas.extensions.router.capabilities.api.helper;version="${project.version}",
-							org.opennaas.extensions.router.capabilities.api.model.ospf;version="${project.version}"							
-						</Export-Package>
+							</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>

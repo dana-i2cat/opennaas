@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.model.wrappers;
+package org.opennaas.extensions.router.capabilities.api.model.chassis;
 
 /*
  * #%L
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Julio Carlos Barrera
  * 
  */
-@XmlRootElement(name = "interfaceInfos")
+@XmlRootElement(name = "interfaceInfos", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InterfaceInfoList {
 

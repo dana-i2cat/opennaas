@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 
-@XmlRootElement(name = "ospfProtocolEndpoint")
+@XmlRootElement(name = "ospfProtocolEndpoint", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OSPFProtocolEndpointWrapper implements Serializable {
 

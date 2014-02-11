@@ -26,8 +26,8 @@ import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
-import org.opennaas.extensions.router.model.OSPFService;
 
 /**
  * @author Isart Canyameres
@@ -51,18 +51,17 @@ public class ConfigureCommand extends GenericKarafCommand {
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 
-			OSPFService ospfService = new OSPFService();
-			if (routerId != null) {
-				ospfService.setRouterID(routerId);
-			}
+			OSPFServiceWrapper ospfService = new OSPFServiceWrapper();
+			if (routerId != null)
+				ospfService.setRouterId(routerId);
 
 			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
 
-			if (delete) {
-				ospfCapability.clearOSPFconfiguration(ospfService);
-			} else {
+			if (delete)
+				ospfCapability.clearOSPFconfiguration();
+			else
 				ospfCapability.configureOSPF(ospfService);
-			}
+
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();

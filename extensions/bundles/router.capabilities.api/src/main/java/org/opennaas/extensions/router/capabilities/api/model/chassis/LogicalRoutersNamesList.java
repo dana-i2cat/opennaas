@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.chassis.api;
+package org.opennaas.extensions.router.capabilities.api.model.chassis;
 
 /*
  * #%L
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Julio Carlos Barrera
  * 
  */
-@XmlRootElement(name = "logicalRouters")
+@XmlRootElement(name = "logicalRouters", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LogicalRoutersNamesList {
 
