@@ -182,16 +182,11 @@ public class ChassisAPIHelperTest {
 
 	@Test
 	public void testString2ProtocolIFType() {
-		ProtocolIFType[] pitValues = ProtocolIFType.values();
-
-		for (ProtocolIFType protocolIFType : pitValues) {
-			ProtocolIFType generatedPit = ChassisAPIHelper.string2ProtocolIFType(protocolIFType.toString());
-			Assert.assertEquals("ProtoclIFType value " + protocolIFType.toString() + " must be well generated", protocolIFType, generatedPit);
-		}
+		Assert.assertEquals("ProtoclIFType value must be well generated", ProtocolIFType.LAYER_2_VLAN_USING_802_1Q,
+				ChassisAPIHelper.string2ProtocolIFType("tagged-ethernet"));
+		Assert.assertEquals("ProtoclIFType value must be well generated", ProtocolIFType.UNKNOWN, ChassisAPIHelper.string2ProtocolIFType("none"));
+		Assert.assertEquals("ProtoclIFType value must be well generated", ProtocolIFType.OTHER,
+				ChassisAPIHelper.string2ProtocolIFType("other-not-listed-value"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testNotValidString2ProtocolIFType() {
-		ChassisAPIHelper.string2ProtocolIFType("Bad__ProtocolIFType");
-	}
 }

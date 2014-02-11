@@ -40,7 +40,6 @@ public class ClearCommand extends GenericKarafCommand {
 		try {
 
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			validateResource(resource);
 
 			QueueManager queue = (QueueManager) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			queue.clear();

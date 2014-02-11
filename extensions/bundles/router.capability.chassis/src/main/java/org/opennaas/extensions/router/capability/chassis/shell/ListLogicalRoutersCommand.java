@@ -42,28 +42,7 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 		printInitCommand("list logical routers");
 
 		try {
-			IResourceManager manager = getResourceManager();
-
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
-
-			IResourceIdentifier resourceIdentifier = null;
-
-			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return null;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-			validateResource(resource);
+			IResource resource = getResourceFromFriendlyName(resourceId);
 
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
 			LogicalRoutersNamesList namesList = chassisCapability.getLogicalRoutersNames();

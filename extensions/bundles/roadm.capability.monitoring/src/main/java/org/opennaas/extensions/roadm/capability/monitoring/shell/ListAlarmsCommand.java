@@ -48,10 +48,8 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		printInitCommand("list alarms");
 		try {
-			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String friendlyId : resourceIDs) {
-				IResourceIdentifier resourceIdentifier = getResourceIdentifier(friendlyId, manager);
-				IResource resource = manager.getResource(resourceIdentifier);
+				IResource resource = getResourceFromFriendlyName(friendlyId);
 				IMonitoringCapability monitoringCapability = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
 				List<ResourceAlarm> alarms = monitoringCapability.getAlarms();
 				printAlarms(alarms);
@@ -61,13 +59,6 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
-	}
-
-	private IResourceIdentifier getResourceIdentifier(String friendlyName, IResourceManager resourceManager) throws Exception {
-		String[] argsRouterName = new String[2];
-		argsRouterName = splitResourceName(friendlyName);
-		IResourceIdentifier identifier = resourceManager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-		return identifier;
 	}
 
 	private void printAlarms(List<ResourceAlarm> alarms) {

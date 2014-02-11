@@ -51,29 +51,8 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 		IQueueManagerCapability queue;
 		try {
-			IResourceManager manager = getResourceManager();
+			IResource resource = getResourceFromFriendlyName(resourceId);
 
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
-
-			IResourceIdentifier resourceIdentifier = null;
-			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-
-			/* validate resource identifier */
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return -1;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-			validateResource(resource);
 			queue = (IQueueManagerCapability) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			if (queue == null) {
 				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);

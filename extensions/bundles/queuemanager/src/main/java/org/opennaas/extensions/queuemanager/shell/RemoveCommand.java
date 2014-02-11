@@ -45,29 +45,8 @@ public class RemoveCommand extends GenericKarafCommand {
 		printInitCommand("Remove action from queue");
 
 		try {
-			IResourceManager manager = getResourceManager();
+			IResource resource = getResourceFromFriendlyName(resourceId);
 
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
-
-			IResourceIdentifier resourceIdentifier = null;
-			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-
-			/* validate resource identifier */
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return -1;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-			validateResource(resource);
 			IQueueManagerCapability queue = (IQueueManagerCapability) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			// printSymbol("Removing action " + posQueue + "...");
 			ModifyParams params = ModifyParams.newRemoveOperation(posQueue);

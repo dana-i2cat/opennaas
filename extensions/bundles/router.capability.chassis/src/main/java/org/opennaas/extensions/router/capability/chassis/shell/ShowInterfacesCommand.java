@@ -43,7 +43,6 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 		try {
 
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			validateResource(resource);
 
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
 			InterfaceInfoList interfacesInfoList = chassisCapability.getInterfacesInfo();
