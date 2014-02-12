@@ -34,7 +34,7 @@ import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortSt
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-@XmlRootElement
+@XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NetworkStatistics {
 

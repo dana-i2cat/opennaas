@@ -32,7 +32,7 @@ import org.opennaas.extensions.openflowswitch.model.OFFlow;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-@XmlRootElement
+@XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NetOFFlow extends OFFlow {
 

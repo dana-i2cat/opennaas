@@ -40,7 +40,7 @@ import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnectionImp
  * @author Julio Carlos Barrera
  * 
  */
-@XmlRootElement
+@XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GenericNetworkModel implements IModel {
 
