@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.model.circuit;
+package org.opennaas.extensions.genericnetwork.model.driver;
 
 /*
  * #%L
- * OpenNaaS :: OFERTIE :: NCL components
+ * OpenNaaS :: Generic Network
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -25,63 +25,69 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * An identifier of what is being used to implement a NetworkConnection. This class is meant to be used for drivers to track the object being used to
+ * implement a NetworkConnection. It would normally refer to a Circuit, or to an OFFlow, but that depends on the driver.
  * 
- * @author Julio Carlos Barrera
+ * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Port {
+public class NetworkConnectionImplementationId {
 
 	private String	deviceId;
-	private String	portNumber;
+
+	private String	circuitId;
 
 	/**
-	 * Default constructor
+	 * @return the deviceId
 	 */
-	public Port() {
-	}
-
-	/**
-	 * Copy constructor
-	 * 
-	 * @param port
-	 *            Port to copy
-	 */
-	public Port(Port port) {
-		this.deviceId = port.deviceId;
-		this.portNumber = port.portNumber;
-	}
-
-	public String getId() {
-		return deviceId + "-" + portNumber;
-	}
-
 	public String getDeviceId() {
 		return deviceId;
 	}
 
+	/**
+	 * @param deviceId
+	 *            the deviceId to set
+	 */
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
 
-	public String getPortNumber() {
-		return portNumber;
+	/**
+	 * @return the circuitId
+	 */
+	public String getCircuitId() {
+		return circuitId;
 	}
 
-	public void setPortNumber(String portNumber) {
-		this.portNumber = portNumber;
+	/**
+	 * @param circuitId
+	 *            the circuitId to set
+	 */
+	public void setCircuitId(String circuitId) {
+		this.circuitId = circuitId;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((circuitId == null) ? 0 : circuitId.hashCode());
 		result = prime * result + ((deviceId == null) ? 0 : deviceId.hashCode());
-		result = prime * result + ((portNumber == null) ? 0 : portNumber.hashCode());
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,18 +96,17 @@ public class Port {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Port other = (Port) obj;
+		NetworkConnectionImplementationId other = (NetworkConnectionImplementationId) obj;
+		if (circuitId == null) {
+			if (other.circuitId != null)
+				return false;
+		} else if (!circuitId.equals(other.circuitId))
+			return false;
 		if (deviceId == null) {
 			if (other.deviceId != null)
 				return false;
 		} else if (!deviceId.equals(other.deviceId))
 			return false;
-		if (portNumber == null) {
-			if (other.portNumber != null)
-				return false;
-		} else if (!portNumber.equals(other.portNumber))
-			return false;
 		return true;
 	}
-
 }

@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.model.circuit;
+package org.opennaas.extensions.genericnetwork.model.topology;
 
 /*
  * #%L
- * OpenNaaS :: Generic Network
+ * OpenNaaS :: OFERTIE :: NCL components
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -25,48 +25,46 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * An identifier of what is being used to implement a NetworkConnection. This class is meant to be used for drivers to track the object being used to
- * implement a NetworkConnection. It would normally refer to a Circuit, or to an OFFlow, but that depends on the driver.
  * 
- * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NetworkConnectionImplementationId {
+public class Port extends TopologyElement {
 
-	private String	deviceId;
-
-	private String	circuitId;
+	private String	id;
 
 	/**
-	 * @return the deviceId
+	 * Default constructor
 	 */
-	public String getDeviceId() {
-		return deviceId;
+	public Port() {
+		super();
 	}
 
 	/**
-	 * @param deviceId
-	 *            the deviceId to set
+	 * Copy constructor
+	 * 
+	 * @param port
+	 *            Port to copy
 	 */
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
+	public Port(Port port) {
+		this.id = port.id;
 	}
 
 	/**
-	 * @return the circuitId
+	 * @return the id
 	 */
-	public String getCircuitId() {
-		return circuitId;
+	public String getId() {
+		return id;
 	}
 
 	/**
-	 * @param circuitId
-	 *            the circuitId to set
+	 * @param id
+	 *            the id to set
 	 */
-	public void setCircuitId(String circuitId) {
-		this.circuitId = circuitId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/*
@@ -78,8 +76,7 @@ public class NetworkConnectionImplementationId {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((circuitId == null) ? 0 : circuitId.hashCode());
-		result = prime * result + ((deviceId == null) ? 0 : deviceId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -96,17 +93,13 @@ public class NetworkConnectionImplementationId {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		NetworkConnectionImplementationId other = (NetworkConnectionImplementationId) obj;
-		if (circuitId == null) {
-			if (other.circuitId != null)
+		Port other = (Port) obj;
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!circuitId.equals(other.circuitId))
-			return false;
-		if (deviceId == null) {
-			if (other.deviceId != null)
-				return false;
-		} else if (!deviceId.equals(other.deviceId))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
+
 }
