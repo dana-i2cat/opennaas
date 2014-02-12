@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnectionImplementationId;
 
 /**
  * 
@@ -46,19 +47,25 @@ public class GenericNetworkModel implements IModel {
 	/**
 	 * Auto-generated serial version number
 	 */
-	private static final long				serialVersionUID	= -3223373735906486372L;
+	private static final long										serialVersionUID	= -3223373735906486372L;
 
 	// FIXME: don't store this in the model.
 	// capability should read this information each time it is asked for it.
 	/**
 	 * Maps deviceId and Flows in each
 	 */
-	private Map<String, List<NetOFFlow>>	netFlowsPerResource;
+	private Map<String, List<NetOFFlow>>							netFlowsPerResource;
+
+	/**
+	 * Maps circuitId to its implementation (the implementation of its NetworkConnections). It is meant to be used for drivers to store
+	 * circuitImplementation.
+	 */
+	private Map<String, List<NetworkConnectionImplementationId>>	circuitImplementation;
 
 	/**
 	 * Maps device ID in GenericNetworkModel and resource ID in OpenNaaS
 	 */
-	private Map<String, String>				deviceResourceMap;
+	private Map<String, String>										deviceResourceMap;
 
 	public GenericNetworkModel() {
 		deviceResourceMap = new HashMap<String, String>();
@@ -82,6 +89,14 @@ public class GenericNetworkModel implements IModel {
 
 	public void setDeviceResourceMap(Map<String, String> deviceResourceMap) {
 		this.deviceResourceMap = deviceResourceMap;
+	}
+
+	public Map<String, List<NetworkConnectionImplementationId>> getCircuitImplementation() {
+		return circuitImplementation;
+	}
+
+	public void setCircuitImplementation(Map<String, List<NetworkConnectionImplementationId>> circuitImplementation) {
+		this.circuitImplementation = circuitImplementation;
 	}
 
 	@Override
