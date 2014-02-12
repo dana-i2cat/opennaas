@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.model.circuit;
+package org.opennaas.extensions.genericnetwork.model.driver;
 
 /**
  * Wrapper class storing device and port IDs.
