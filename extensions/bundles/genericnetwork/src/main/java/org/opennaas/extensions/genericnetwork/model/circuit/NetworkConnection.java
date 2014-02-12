@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.opennaas.extensions.genericnetwork.model.topology.Port;
+
 /**
  * 
  * @author Julio Carlos Barrera
