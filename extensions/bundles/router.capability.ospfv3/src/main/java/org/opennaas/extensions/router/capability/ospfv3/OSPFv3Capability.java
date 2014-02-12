@@ -20,6 +20,7 @@ package org.opennaas.extensions.router.capability.ospfv3;
  * #L%
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,9 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.AddInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.RemoveInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -45,8 +48,6 @@ import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.Service;
-import org.opennaas.extensions.router.model.wrappers.AddInterfacesInOSPFAreaRequest;
-import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaRequest;
 
 public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capability {
 
@@ -367,7 +368,12 @@ public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capab
 		log.info("Start of readOSPFv3Configuration call.");
 
 		OSPFService ospfService = showOSPFv3Configuration();
-		OSPFServiceWrapper serviceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		OSPFServiceWrapper serviceWrapper;
+		try {
+			serviceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
 
 		log.info("End of readOSPFv3Configuration call");
 

@@ -32,17 +32,13 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.System;
-import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfo;
-import org.opennaas.extensions.router.model.wrappers.InterfaceInfoList;
 
 public class ModelHelper {
 
@@ -55,6 +51,17 @@ public class ModelHelper {
 		}
 		return ports;
 	}
+
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// public static List<LogicalPort> getPhysicalInterfaces(System system) {
+	// List<LogicalPort> ports = new ArrayList<LogicalPort>();
+	// for (LogicalDevice dev : system.getLogicalDevices()) {
+	// if (dev.getClass().equals(LogicalPort.class)) {
+	// ports.add((LogicalPort) dev);
+	// }
+	// }
+	// return ports;
+	// }
 
 	public static List<ProtocolEndpoint> getGREProtocolEndpoints(System system) {
 		List<ProtocolEndpoint> greEps = new ArrayList<ProtocolEndpoint>();
@@ -74,7 +81,7 @@ public class ModelHelper {
 	 * @return
 	 */
 	public static String getInterfaceName(NetworkPort networkPort) {
-		return getInterfaceInfo(networkPort).getName();
+		return networkPort.getName() + "." + String.valueOf(networkPort.getPortNumber());
 	}
 
 	/**
@@ -84,8 +91,25 @@ public class ModelHelper {
 	 * @return
 	 */
 	public static String getInterfaceName(ProtocolEndpoint greProtocolEndpoint) {
-		return getInterfaceInfo(greProtocolEndpoint).getName();
+		return greProtocolEndpoint.getName();
 	}
+
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// /**
+	// * Returns the NetworkPort associated with given name, null if it not found
+	// *
+	// * @param name
+	// * @param system
+	// * @return
+	// */
+	// public static LogicalPort getLogicalPortFromName(String name, System system) {
+	// for (LogicalPort port : getPhysicalInterfaces(system)) {
+	// if (port.getName().equals(name)) {
+	// return port;
+	// }
+	// }
+	// return null;
+	// }
 
 	/**
 	 * Returns the NetworkPort associated with given name, null if it not found
@@ -117,85 +141,6 @@ public class ModelHelper {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Returns Interface Information from a given GRE ProtocolEndpoint
-	 * 
-	 * @param greProtocolEndpoint
-	 * @return
-	 */
-	public static InterfaceInfo getInterfaceInfo(ProtocolEndpoint greProtocolEndpoint) {
-		InterfaceInfo interfaceInfo = new InterfaceInfo();
-
-		interfaceInfo.setName(greProtocolEndpoint.getName());
-		interfaceInfo.setDescription(greProtocolEndpoint.getDescription());
-
-		return interfaceInfo;
-	}
-
-	/**
-	 * Returns Interface Information from a given NetworkPort
-	 * 
-	 * @param networkPort
-	 * @return
-	 */
-	public static InterfaceInfo getInterfaceInfo(NetworkPort networkPort) {
-		InterfaceInfo interfaceInfo = new InterfaceInfo();
-
-		interfaceInfo.setName(networkPort.getName() + "." + String.valueOf(networkPort.getPortNumber()));
-		if (networkPort instanceof LogicalTunnelPort) {
-			interfaceInfo.setPeerUnit(String.valueOf(((LogicalTunnelPort) networkPort).getPeer_unit()));
-		}
-
-		if (networkPort.getProtocolEndpoint() != null) {
-			for (ProtocolEndpoint pE : networkPort.getProtocolEndpoint()) {
-				if (pE instanceof VLANEndpoint) {
-					interfaceInfo.setVlan(Integer.toString(((VLANEndpoint) pE).getVlanID()));
-				}
-			}
-			interfaceInfo.setState(networkPort.getOperationalStatus().toString());
-		}
-
-		interfaceInfo.setDescription(networkPort.getDescription());
-
-		return interfaceInfo;
-	}
-
-	/**
-	 * Returns InterfaceInfo list of all interfaces from given System
-	 * 
-	 * @param interfaces
-	 * @param greProtocolEndpoints
-	 * @return
-	 */
-	public static List<InterfaceInfo> getInterfacesInfo(System system) {
-		List<NetworkPort> interfaces = getInterfaces(system);
-		List<ProtocolEndpoint> greProtocolEndpoints = getGREProtocolEndpoints(system);
-
-		List<InterfaceInfo> interfaceInfos = new ArrayList<InterfaceInfo>();
-
-		for (NetworkPort networkPort : interfaces) {
-			interfaceInfos.add(getInterfaceInfo(networkPort));
-		}
-
-		for (ProtocolEndpoint greProtocolEndpoint : greProtocolEndpoints) {
-			interfaceInfos.add(getInterfaceInfo(greProtocolEndpoint));
-		}
-
-		return interfaceInfos;
-	}
-
-	/**
-	 * Returns InterfaceInfoList from given InterfaceInfo list
-	 * 
-	 * @param interfaceInfos
-	 * @return
-	 */
-	public static InterfaceInfoList getInterfacesInfo(List<InterfaceInfo> interfaceInfos) {
-		InterfaceInfoList interfaceInfoList = new InterfaceInfoList();
-		interfaceInfoList.setInterfaceInfos(interfaceInfos);
-		return interfaceInfoList;
 	}
 
 	public static long ipv4StringToLong(String ip) throws IOException {

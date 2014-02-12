@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ip;
+package org.opennaas.extensions.router.capabilities.api.test;
 
 /*
  * #%L
@@ -27,16 +27,17 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.router.capability.ip.api.API2ModelTranslator;
+import org.opennaas.extensions.router.capabilities.api.helper.IPApi2ModelTranslator;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class API2ModelTranslatorTest {
+public class IPApi2ModelTranslatorTest {
 
 	private IPProtocolEndpoint	ipv4PEP;
 
@@ -47,7 +48,7 @@ public class API2ModelTranslatorTest {
 
 	@Test
 	public void ipv4TranslationTest() throws SerializationException {
-		List<String> addresses = API2ModelTranslator.ipPEP2IPAddresses(ipv4PEP);
+		List<String> addresses = IPApi2ModelTranslator.ipPEP2IPAddresses(ipv4PEP);
 		Assert.assertNotNull(addresses);
 		Assert.assertFalse(addresses.isEmpty());
 		Assert.assertEquals(1, addresses.size());
@@ -57,7 +58,7 @@ public class API2ModelTranslatorTest {
 		String mask = firstAddress.split("/")[1];
 
 		Assert.assertEquals(ipv4PEP.getIPv4Address(), ip);
-		Assert.assertEquals(ipv4PEP.getSubnetMask(), mask);
+		Assert.assertEquals(IPUtilsHelper.parseLongToShortIpv4NetMask(ipv4PEP.getSubnetMask()), mask);
 	}
 
 	private IPProtocolEndpoint generateSampleIPv4PEP() {

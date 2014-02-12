@@ -28,8 +28,8 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 
 /**
  * @author Isart Canyameres
@@ -52,16 +52,11 @@ public class DisableInterfaceCommand extends GenericKarafCommand {
 			// FIXME Cannot read model to get OSPFProtocolEndpoints and their OSPFArea.
 			// model may not be updated :S
 
-			List<OSPFProtocolEndpoint> ospfPeps = new ArrayList<OSPFProtocolEndpoint>(interfaceNames.size());
-			OSPFProtocolEndpoint pep;
-			for (String ifaceName : interfaceNames) {
-				pep = new OSPFProtocolEndpoint();
-				pep.setName(ifaceName);
-				ospfPeps.add(pep);
-			}
+			InterfacesNamesList interfaces = getInterfaces();
 
 			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
-			ospfCapability.disableOSPFInterfaces(ospfPeps);
+			ospfCapability.disableOSPFInterfaces(interfaces);
+
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -74,5 +69,14 @@ public class DisableInterfaceCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
+	}
+
+	private InterfacesNamesList getInterfaces() {
+		InterfacesNamesList ifaces = new InterfacesNamesList();
+		List<String> interfaces = new ArrayList<String>();
+		interfaces.addAll(interfaceNames);
+		ifaces.setInterfaces(interfaces);
+
+		return ifaces;
 	}
 }

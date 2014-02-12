@@ -40,7 +40,6 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			validateResource(resource);
 
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
 			List<String> interfacesNames = ipCapability.getInterfacesNames().getInterfaces();
@@ -48,31 +47,27 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			// print ifaces & its ip address
 			for (String ifaceName : interfacesNames) {
 				List<String> ipAddresses = null;
+				printSymbolWithoutDoubleLine("[" + ifaceName + "]  ");
+
+				String description = ipCapability.getDescription(ifaceName);
+				if (description != null && !description.isEmpty()) {
+					printSymbolWithoutDoubleLine(doubleTab + "description: " + description);
+				}
 
 				try {
 					ipAddresses = ipCapability.getIPs(ifaceName).getIpAddresses();
 				} catch (ModelElementNotFoundException e) {
 					// ignore, not all interfaces can have IPProtocolEndpoints associated, like GRE
-					continue;
 				}
 
-				printSymbolWithoutDoubleLine("[" + ifaceName + "]  ");
-
 				if (ipAddresses != null && !ipAddresses.isEmpty()) {
-					String description = ipCapability.getDescription(ifaceName);
-					if (description != null && !description.isEmpty()) {
-						printSymbolWithoutDoubleLine(doubleTab + "description: " + description);
-					}
-
 					printSymbol("");
-
 					for (String ipAddress : ipAddresses) {
 						printSymbol(doubleTab + "IP/MASK: " + ipAddress);
 					}
 				} else {
 					printSymbol("");
 				}
-
 			}
 
 		} catch (ResourceException e) {

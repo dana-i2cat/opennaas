@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.ip.api;
+package org.opennaas.extensions.router.capabilities.api.model.chassis;
 
 /*
  * #%L
@@ -28,53 +28,34 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * Wrapper class containing Interfaces names list
  * 
- * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
-@XmlRootElement(name = "ipAddresses")
+@XmlRootElement(name = "interfaces", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IPAddresses {
+public class InterfacesNamesList {
 
-	/**
-	 * These String's should represent a complete IP address and its network mask (address/mask).
-	 */
-	@XmlElement(name = "ipAddress")
-	private List<String>	ipAddresses;
+	@XmlElement(name = "interface")
+	private List<String>	interfaces;
 
-	/**
-	 * @return the ipAddresses
-	 */
-	public List<String> getIpAddresses() {
-		return ipAddresses;
+	public List<String> getInterfaces() {
+		return interfaces;
 	}
 
-	/**
-	 * @param ipAddresses
-	 *            the ipAddresses to set
-	 */
-	public void setIpAddresses(List<String> ipAddresses) {
-		this.ipAddresses = ipAddresses;
+	public void setInterfaces(List<String> interfaces) {
+		this.interfaces = interfaces;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ipAddresses == null) ? 0 : ipAddresses.hashCode());
+		result = prime * result + ((interfaces == null) ? 0 : interfaces.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -83,11 +64,11 @@ public class IPAddresses {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IPAddresses other = (IPAddresses) obj;
-		if (ipAddresses == null) {
-			if (other.ipAddresses != null)
+		InterfacesNamesList other = (InterfacesNamesList) obj;
+		if (interfaces == null) {
+			if (other.interfaces != null)
 				return false;
-		} else if (!ipAddresses.equals(other.ipAddresses))
+		} else if (!interfaces.equals(other.interfaces))
 			return false;
 		return true;
 	}
