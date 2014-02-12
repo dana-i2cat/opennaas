@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.model.circuit;
+package org.opennaas.extensions.genericnetwork.model.driver;
 
 /*
  * #%L
