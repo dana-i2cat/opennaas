@@ -30,8 +30,8 @@ import org.opennaas.core.resources.action.IActionSetDefinition;
 public class NetTopologyActionSet implements IActionSetDefinition {
 
 	/**
-	 * Retrieves current network topology
+	 * Loads network topology into resource model
 	 */
-	public static final String	GET_TOPOLOGY	= "getTopology";
+	public static final String	LOAD_TOPOLOGY	= "loadTopology";
 
 }
