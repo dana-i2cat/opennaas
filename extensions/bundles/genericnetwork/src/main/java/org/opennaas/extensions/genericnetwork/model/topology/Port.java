@@ -22,6 +22,7 @@ package org.opennaas.extensions.genericnetwork.model.topology;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Port extends TopologyElement {
 
+	@XmlID
 	private String	id;
 
 	/**
@@ -94,6 +96,11 @@ public class Port extends TopologyElement {
 		if (getClass() != obj.getClass())
 			return false;
 		Port other = (Port) obj;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;

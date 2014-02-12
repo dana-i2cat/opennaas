@@ -4,7 +4,10 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * 
@@ -13,11 +16,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({ Domain.class, Switch.class })
 public class NetworkElement extends TopologyElement {
 
-	private String		id;
+	protected String	id;
 
-	private Set<Port>	ports;
+	@XmlElementWrapper(name = "ports")
+	@XmlElement(name = "port")
+	protected Set<Port>	ports;
 
 	/**
 	 * @return the id
@@ -77,6 +83,11 @@ public class NetworkElement extends TopologyElement {
 		if (getClass() != obj.getClass())
 			return false;
 		NetworkElement other = (NetworkElement) obj;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
