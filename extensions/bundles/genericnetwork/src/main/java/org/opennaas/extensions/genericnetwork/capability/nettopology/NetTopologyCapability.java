@@ -30,6 +30,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 
 /**
@@ -88,8 +89,6 @@ public class NetTopologyCapability extends AbstractCapability implements INetTop
 
 	@Override
 	public Topology getTopology() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		return ((GenericNetworkModel) resource.getModel()).getTopology();
 	}
-
 }
