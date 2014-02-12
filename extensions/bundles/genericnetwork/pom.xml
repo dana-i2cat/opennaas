@@ -20,6 +20,11 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
 		</dependency>
+		<!-- Google Guava library -->
+		<dependency>
+			<groupId>com.googlecode.guava-osgi</groupId>
+			<artifactId>guava-osgi</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

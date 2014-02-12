@@ -32,7 +32,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
+import org.opennaas.extensions.genericnetwork.model.circuit.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnectionImplementationId;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * 
@@ -67,9 +71,16 @@ public class GenericNetworkModel implements IModel {
 	 */
 	private Map<String, String>										deviceResourceMap;
 
+	/**
+	 * Bidirectional Map storing the relation between network topology port IDs and per-device port IDs.<br>
+	 * Using Guava's {@link BiMap}, more info <a href="https://code.google.com/p/guava-libraries/wiki/NewCollectionTypesExplained#BiMap">here</a>.
+	 */
+	private BiMap<String, DevicePortId>								networkDevicePortIdsMap;
+
 	public GenericNetworkModel() {
 		deviceResourceMap = new HashMap<String, String>();
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
+		networkDevicePortIdsMap = HashBiMap.create();
 	}
 
 	public Map<String, List<NetOFFlow>> getNetFlowsPerResource() {
@@ -97,6 +108,14 @@ public class GenericNetworkModel implements IModel {
 
 	public void setCircuitImplementation(Map<String, List<NetworkConnectionImplementationId>> circuitImplementation) {
 		this.circuitImplementation = circuitImplementation;
+	}
+
+	public BiMap<String, DevicePortId> getNetworkDevicePortIdsMap() {
+		return networkDevicePortIdsMap;
+	}
+
+	public void setNetworkDevicePortIdsMap(BiMap<String, DevicePortId> networkDevicePortIdsMap) {
+		this.networkDevicePortIdsMap = networkDevicePortIdsMap;
 	}
 
 	@Override
