@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Link {
+public class Link extends TopologyElement {
 
 	private Port	srcPort;
 

@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Port {
+public class Port extends TopologyElement {
 
 	private String	id;
 
@@ -42,6 +42,7 @@ public class Port {
 	 * Default constructor
 	 */
 	public Port() {
+		super();
 	}
 
 	/**

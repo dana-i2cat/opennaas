@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NetworkElement {
+public class NetworkElement extends TopologyElement {
 
 	private String		id;
 
