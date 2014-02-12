@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnectionImplementationId;
+import org.opennaas.extensions.genericnetwork.model.driver.NetworkConnectionImplementationId;
+import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 
 /**
  * 
@@ -49,6 +50,8 @@ public class GenericNetworkModel implements IModel {
 	 */
 	private static final long										serialVersionUID	= -3223373735906486372L;
 
+	private Topology												topology;
+
 	// FIXME: don't store this in the model.
 	// capability should read this information each time it is asked for it.
 	/**
@@ -58,7 +61,7 @@ public class GenericNetworkModel implements IModel {
 
 	/**
 	 * Maps circuitId to its implementation (the implementation of its NetworkConnections). It is meant to be used for drivers to store
-	 * circuitImplementation.
+	 * circuitImplementation. Key: circuitId, Value: List of ids in the driver.
 	 */
 	private Map<String, List<NetworkConnectionImplementationId>>	circuitImplementation;
 
@@ -70,6 +73,21 @@ public class GenericNetworkModel implements IModel {
 	public GenericNetworkModel() {
 		deviceResourceMap = new HashMap<String, String>();
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
+	}
+
+	/**
+	 * @return the topology
+	 */
+	public Topology getTopology() {
+		return topology;
+	}
+
+	/**
+	 * @param topology
+	 *            the topology to set
+	 */
+	public void setTopology(Topology topology) {
+		this.topology = topology;
 	}
 
 	public Map<String, List<NetOFFlow>> getNetFlowsPerResource() {
