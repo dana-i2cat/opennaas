@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.model.topology;
+package org.opennaas.extensions.genericnetwork.capability.nettopology;
 
 /*
  * #%L
- * OpenNaaS :: Generic Network
+ * OpenNaaS :: OF Network
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -20,17 +20,18 @@ package org.opennaas.extensions.genericnetwork.model.topology;
  * #L%
  */
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.opennaas.core.resources.action.IActionSetDefinition;
 
 /**
  * 
- * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
-@XmlRootElement(namespace = "opennaas.api")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Switch extends NetworkElement {
+public class NetTopologyActionSet implements IActionSetDefinition {
+
+	/**
+	 * Loads network topology into resource model
+	 */
+	public static final String	LOAD_TOPOLOGY	= "loadTopology";
 
 }
