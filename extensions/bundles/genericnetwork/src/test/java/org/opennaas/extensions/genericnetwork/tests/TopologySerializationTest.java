@@ -1,6 +1,8 @@
 package org.opennaas.extensions.genericnetwork.tests;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -28,8 +30,36 @@ public class TopologySerializationTest {
 
 	@Test
 	public void topologySerializationDeserializationTest() throws SerializationException {
-		Topology generated = (Topology) inverseSerializationTest(topology);
-		// TODO check ports in topology and in links are the same instance (use ==), not a copy.
+		inverseSerializationTest(topology);
+	}
+
+	@Test
+	public void linkDeserializationUsesPortReferencesTest() throws SerializationException {
+		String xml = ObjectSerializer.toXml(topology);
+		Topology generated = (Topology) ObjectSerializer.fromXml(xml, Topology.class);
+
+		List<Port> ports = new ArrayList<Port>();
+		for (NetworkElement ne : generated.getNetworkElements()) {
+			ports.addAll(ne.getPorts());
+		}
+
+		List<Port> referencedPorts = new ArrayList<Port>();
+		for (Link link : generated.getLinks()) {
+			referencedPorts.add(link.getSrcPort());
+			referencedPorts.add(link.getDstPort());
+		}
+
+		boolean isReferenced;
+		for (Port referenced : referencedPorts) {
+			isReferenced = false;
+			for (Port p : ports) {
+				if (referenced == p) {
+					isReferenced = true;
+					break;
+				}
+			}
+			Assert.assertTrue("Port " + referenced.getId() + " must be a reference to an existing port", isReferenced);
+		}
 	}
 
 	/**
