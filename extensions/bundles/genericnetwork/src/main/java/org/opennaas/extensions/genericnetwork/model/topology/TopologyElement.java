@@ -22,6 +22,7 @@ package org.opennaas.extensions.genericnetwork.model.topology;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * 
@@ -29,9 +30,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({ Link.class, NetworkElement.class, Port.class })
 public class TopologyElement {
 
-	private TopologyElementState	state;
+	protected TopologyElementState	state;
 
 	public TopologyElement() {
 		state = new TopologyElementState();

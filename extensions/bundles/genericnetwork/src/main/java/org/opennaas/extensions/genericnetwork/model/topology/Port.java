@@ -22,6 +22,8 @@ package org.opennaas.extensions.genericnetwork.model.topology;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,6 +35,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Port extends TopologyElement {
 
+	/**
+	 * A unique id identifying this port in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach port p_i in network elements of a topology
+	 * 
+	 * p_x.getId() != p_y.getId() when (x != y)
+	 */
+	@XmlAttribute(name = "id")
+	@XmlID
 	private String	id;
 
 	/**
@@ -53,6 +66,15 @@ public class Port extends TopologyElement {
 	}
 
 	/**
+	 * 
+	 * A unique id identifying this port in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach port p_i in network elements of a topology
+	 * 
+	 * p_x.getId() != p_y.getId() when (x != y)
+	 * 
 	 * @return the id
 	 */
 	public String getId() {
@@ -60,6 +82,15 @@ public class Port extends TopologyElement {
 	}
 
 	/**
+	 * 
+	 * A unique id identifying this port in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach port p_i in network elements of a topology
+	 * 
+	 * p_x.getId() != p_y.getId() when (x != y)
+	 * 
 	 * @param id
 	 *            the id to set
 	 */
@@ -94,6 +125,11 @@ public class Port extends TopologyElement {
 		if (getClass() != obj.getClass())
 			return false;
 		Port other = (Port) obj;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
