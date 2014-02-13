@@ -24,7 +24,12 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * 
@@ -33,13 +38,35 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({ Domain.class, Switch.class })
 public class NetworkElement extends TopologyElement {
 
-	private String		id;
+	/**
+	 * A unique id identifying this networkelement in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach networkelement ne_i in a topology
+	 * 
+	 * ne_x.getId() != ne_y.getId() when (x != y)
+	 */
+	@XmlAttribute(name = "id")
+	@XmlID
+	protected String	id;
 
-	private Set<Port>	ports;
+	@XmlElementWrapper(name = "ports")
+	@XmlElement(name = "port")
+	protected Set<Port>	ports;
 
 	/**
+	 * A unique id identifying this networkelement in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach networkelement ne_i in a topology
+	 * 
+	 * ne_x.getId() != ne_y.getId() when (x != y)
+	 * 
 	 * @return the id
 	 */
 	public String getId() {
@@ -47,6 +74,15 @@ public class NetworkElement extends TopologyElement {
 	}
 
 	/**
+	 * 
+	 * A unique id identifying this networkelement in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach networkelement ne_i in a topology
+	 * 
+	 * ne_x.getId() != ne_y.getId() when (x != y)
+	 * 
 	 * @param id
 	 *            the id to set
 	 */
@@ -97,6 +133,11 @@ public class NetworkElement extends TopologyElement {
 		if (getClass() != obj.getClass())
 			return false;
 		NetworkElement other = (NetworkElement) obj;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;

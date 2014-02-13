@@ -22,19 +22,20 @@ package org.opennaas.extensions.genericnetwork.model.topology;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-@XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Link extends TopologyElement {
 
+	@XmlIDREF
 	private Port	srcPort;
 
+	@XmlIDREF
 	private Port	dstPort;
 
 	/**
@@ -95,6 +96,11 @@ public class Link extends TopologyElement {
 		if (getClass() != obj.getClass())
 			return false;
 		Link other = (Link) obj;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
 		if (dstPort == null) {
 			if (other.dstPort != null)
 				return false;
