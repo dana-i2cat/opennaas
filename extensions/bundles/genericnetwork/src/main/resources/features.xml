@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.features/${opennaas.version}/xml/features</repository>
+    
+    
+	<feature name="opennaas-genericnetwork" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-openflowswitch</feature>
+	    
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.genericnetwork/${project.version}</bundle>
+	</feature>
+</features>
