@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:qos_policy_request xmlns:ns2="opennaas.api">
+    <source>
+        <address>147.84.157.98</address>
+        <transportPort>22</transportPort>
+        <linkPort>2</linkPort>
+    </source>
+    <destination>
+        <address>89.104.14.13</address>
+        <transportPort>22</transportPort>
+        <linkPort>3</linkPort>
+    </destination>
+    <label>4</label>
+    <qos_policy>
+        <latency priority="1" timeout="60" delay="10">
+            <min>0</min>
+            <max>1</max>
+        </latency>
+        <jitter priority="1" timeout="60" delay="10">
+            <min>0</min>
+            <max>2</max>
+        </jitter>
+        <throughput priority="1" timeout="60" delay="10">
+            <min>0</min>
+            <max>5</max>
+        </throughput>
+        <packet_loss priority="1" timeout="60" delay="10">
+            <min>0</min>
+            <max>1</max>
+        </packet_loss>
+    </qos_policy>
+</ns2:qos_policy_request>
