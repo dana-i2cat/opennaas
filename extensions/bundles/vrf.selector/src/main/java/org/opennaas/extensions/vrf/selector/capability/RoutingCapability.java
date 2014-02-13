@@ -56,4 +56,17 @@ public class RoutingCapability implements IRoutingCapability {
         }
         return response;
     }
+
+    @Override
+    public Response setSelectorMode(String mode) {
+        if( mode.equals("static") ){
+            this.mode = "static";
+        } else if( mode.equals("dijkstra") ){
+            this.mode = "dijkstra";
+        }
+        else{
+            return Response.serverError().entity("Incorrect mode. Possible modes: static, dijkstra.").build();
+        }
+        return Response.ok().build();
+    }
 }

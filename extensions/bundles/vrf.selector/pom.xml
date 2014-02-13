@@ -14,11 +14,19 @@
     <dependencies>
         <dependency>
             <groupId>org.opennaas</groupId>
+            <artifactId>org.opennaas.core.resources</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.opennaas</groupId>
             <artifactId>org.opennaas.extensions.vrf.staticroute</artifactId>
         </dependency>
         <dependency>
             <groupId>org.opennaas</groupId>
             <artifactId>org.opennaas.extensions.vrf.dijkstraroute</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-bundle</artifactId>
         </dependency>
     </dependencies>
     <build>
