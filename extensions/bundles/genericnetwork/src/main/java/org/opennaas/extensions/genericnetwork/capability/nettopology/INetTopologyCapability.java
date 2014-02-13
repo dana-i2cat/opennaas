@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.model.topology;
+package org.opennaas.extensions.genericnetwork.capability.nettopology;
 
 /*
  * #%L
@@ -20,17 +20,32 @@ package org.opennaas.extensions.genericnetwork.model.topology;
  * #L%
  */
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 
 /**
+ * Network Topology Capability interface
  * 
- * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
-@XmlRootElement(namespace = "opennaas.api")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Switch extends NetworkElement {
+@Path("/")
+public interface INetTopologyCapability {
+
+	/**
+	 * Retrieves network topology
+	 * 
+	 * @return
+	 * @throws CapabilityException
+	 */
+	@Path("/topology")
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public Topology getTopology() throws CapabilityException;
 
 }
