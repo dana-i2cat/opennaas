@@ -35,7 +35,6 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.genericnetwork.Activator;
-import org.opennaas.extensions.genericnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
 import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
 
 /**
@@ -102,7 +101,7 @@ public class NetworkStatisticsCapability extends AbstractCapability implements I
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
-			return Activator.getActionSetService(OFProvisioningNetworkCapability.CAPABILITY_TYPE, name, version);
+			return Activator.getActionSetService(NetworkStatisticsCapability.CAPABILITY_TYPE, name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
