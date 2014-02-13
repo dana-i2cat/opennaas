@@ -4,8 +4,10 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
@@ -19,6 +21,17 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @XmlSeeAlso({ Domain.class, Switch.class })
 public class NetworkElement extends TopologyElement {
 
+	/**
+	 * A unique id identifying this networkelement in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach networkelement ne_i in a topology
+	 * 
+	 * ne_x.getId() != ne_y.getId() when (x != y)
+	 */
+	@XmlAttribute(name = "id")
+	@XmlID
 	protected String	id;
 
 	@XmlElementWrapper(name = "ports")
@@ -26,6 +39,14 @@ public class NetworkElement extends TopologyElement {
 	protected Set<Port>	ports;
 
 	/**
+	 * A unique id identifying this networkelement in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach networkelement ne_i in a topology
+	 * 
+	 * ne_x.getId() != ne_y.getId() when (x != y)
+	 * 
 	 * @return the id
 	 */
 	public String getId() {
@@ -33,6 +54,15 @@ public class NetworkElement extends TopologyElement {
 	}
 
 	/**
+	 * 
+	 * A unique id identifying this networkelement in the topology.
+	 * 
+	 * Unique refers to a topology, meaning that:
+	 * 
+	 * foreach networkelement ne_i in a topology
+	 * 
+	 * ne_x.getId() != ne_y.getId() when (x != y)
+	 * 
 	 * @param id
 	 *            the id to set
 	 */
