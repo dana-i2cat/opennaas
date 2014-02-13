@@ -4,13 +4,13 @@
  */
 var file = "home";
 
-function runtime(node) {
+function runtime(node, links, controller) {
     node
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
             if (d.type === "switch"){
-                getFlowTable(d.dpid);
-                updateSwInfoTxt(d.dpid, getControllerInfo(d.controller));
+//                getFlowTable(d.dpid);
+                switchSelected(d.dpid, getControllerInfo(d.controller));
             }
             // select node
             mousedown_node = d;
@@ -22,6 +22,15 @@ function runtime(node) {
             }); //disable drag in Firefox 3.0 and later
             //restart();
         });
+        
+    controller
+            .on('mousedown', function (d){
+                //list of switches connected with this controller
+                var ctrlId = d.id;
+                var listSw = new Array();
+                listSw = nodes.filter(function (d) { return (d.controller === ctrlId)});
+                updateCtrlInfo(listSw, controllers);
+            });
 }
 
 /** Show Legend **/
@@ -69,7 +78,7 @@ legend.append("text")
     .attr("dy", ".35em")
     .text(function (d) { return d.label; });
 
-var rectangleData = [{ "x": legend_x - 20, "y": legend_y - 20, 
+var rectangleData = [{ "x": legend_x - 30, "y": legend_y - 20, 
                         "rx": 20, "ry": 20, "height": 0, "width": legend_width + 30 }];
 var rectangles = svg.selectAll("rect")
     .data(rectangleData)
@@ -90,7 +99,7 @@ legendLink = svg.append("foreignObject")
     .attr("width", 100)
     .attr("height", 60)
     .append("xhtml:body")
-    .html("<a id='legend-link' href='javascript:toggleHideLegend()'>Legend</a>");
+    .html("<a id='legend-link' href='javascript:toggleHideLegend()' height='50px'>Legend</a>");
     
 function toggleHideLegend(){
     if ( hidden ) {

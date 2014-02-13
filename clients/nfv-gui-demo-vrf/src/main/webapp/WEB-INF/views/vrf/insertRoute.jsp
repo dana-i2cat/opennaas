@@ -9,7 +9,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div id="insert_topology" class="topology">
-    <p onmousedown="cleanDrag()" id="chart" ></p>
+    <c:if test="${!empty topologyName}">
+         <p onmousedown="cleanDrag()" id="chart" ></p>
+    </c:if>
+    <c:if test="${empty topologyName}">
+        <br/><h3>No topology file loaded</h3><br/>
+    </c:if>
 </div>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
 <script src="<c:url value="/resources/js/topology/insertRouteTopology.js" />"></script>

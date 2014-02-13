@@ -172,6 +172,7 @@ public class NFVRoutingService extends GenericRestService {
 
     /**
      * Insert Route from javascript
+     * 
      * @param ipSrc
      * @param ipDst
      * @param dpid
@@ -234,5 +235,22 @@ public class NFVRoutingService extends GenericRestService {
             return "OpenNaaS not started";
         }
         return response;
+    }
+
+    public String getRoute(String ipSrc, String ipDst) {
+        LOGGER.error("SERVICE GET ROUTE");
+        ClientResponse response = null;
+        try {
+            String url = getURL("vrf/staticrouting/routes/4/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst));
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
+            LOGGER.error("Log....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response.getEntity(String.class);
     }
 }

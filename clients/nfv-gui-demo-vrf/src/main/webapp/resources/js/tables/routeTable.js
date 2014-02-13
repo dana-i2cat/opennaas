@@ -1,11 +1,10 @@
-function ConvertJsonToRouteTable(parsedJson, tableId, tableClassName, linkText) {
+    function ConvertJsonToRouteTable(parsedJson, tableId) {
     waiting(true);
     //Patterns for links and NULL value
    
     //Pattern for table                          
-    var idMarkup = tableId ? ' id="' + tableId + '"' : '';
-    var classMarkup = tableClassName ? ' class="' + tableClassName + '"' :'';
-    var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
+    var idMarkup = tableId ? ' id="' + tableId + '"' : '';    
+    var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + '>{0}{1}</table>';
 
     //Patterns for table content
     var th = '<thead>{0}</thead>';
@@ -117,4 +116,51 @@ function waiting(status){
         $body.addClass("loading");
     else
         $body.removeClass("loading");
+}
+
+function getRouteList(jsonReceived){
+    var possibleRoutes = [];
+console.log(jsonReceived.routeTable);
+    var listRoutes = jsonReceived.routeTable;
+    var listNodes = new Array();
+
+    listRoutes.forEach(function(entry){
+        var found = jQuery.inArray(entry.destinationAddress, listNodes);
+        if (found == -1 && entry.destinationAddress.indexOf("/") == -1) {
+            listNodes.push(entry.destinationAddress);
+        }
+    });
+
+console.log(listNodes);
+    var routeObject = new Object();
+    var initial = listNodes[0];
+    console.log(listNodes.length);
+    for ( var i = 0; i <= listNodes.length -1; i++){
+    //getRoute(initial, listNode[i+1]);
+        routeObject = new Object();
+        routeObject.id = "id"+i;
+        console.log(initial);
+        routeObject.node = initial;
+        possibleRoutes.push(routeObject);
+        initial = listNodes[i+1];
+        
+    }
+    return possibleRoutes;
+}
+function getSpecificRoute(src, dst){
+console.log("Get specific route "+src+" "+dst);
+        var result = "";
+        $.ajax({
+            type: 'GET',
+            url : "route/"+src+"/"+dst,
+            async: false,
+            success : function (data) {
+//                $("#dynamicContent").html(data);
+                result = data;                 
+            }
+        });
+    var json = eval("(" + result + ")");
+//console.log(result);
+    var jsonHtmlTable = ConvertJsonToRouteTable(json, 'jsonTable'); 
+    document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
 }

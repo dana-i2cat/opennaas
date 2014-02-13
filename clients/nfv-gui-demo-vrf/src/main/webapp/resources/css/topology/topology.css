@@ -1,5 +1,5 @@
 svg {
-    background-color: #FFF;
+/*    background-color: #FFF;*/
     cursor: default;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -52,7 +52,7 @@ svg:not(.active):not(.ctrl) path.link {
 
 .link2 {
     fill: none;
-    stroke: #000;
+    stroke: #F00;
     stroke-width: 4px;
     cursor: default;
 }

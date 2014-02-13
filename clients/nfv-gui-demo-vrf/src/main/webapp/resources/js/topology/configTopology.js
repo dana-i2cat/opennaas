@@ -137,6 +137,7 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
             response = data;
         }
     });
+console.log(response);    
     return response;
 }
 
@@ -149,6 +150,7 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
 function highlight(ipSrc, ipDst){
     var table = document.getElementById('jsonTable');
     if ( table.getElementsByTagName('tr').length > 1 ){
+console.log("Highlight "+ipSrc+" "+ipDst);
         var tbody = table.getElementsByTagName('tbody')[0];
         var items = tbody.getElementsByTagName('tr');
         var tds = null;
@@ -164,6 +166,7 @@ function highlight(ipSrc, ipDst){
                 }
             }
         }
+        console.log("End");
     }
 }
 /**
@@ -192,7 +195,7 @@ function cleanDisplayedLink(){
  * @returns {undefined}
  */
 function mouseOverImage(){
-    $('svg image').tipsy({
+    $('.node').tipsy({
         fade: false,
         html: true, 
         gravity: $.fn.tipsy.autoNS, //north(n)/west(w)/dynamic

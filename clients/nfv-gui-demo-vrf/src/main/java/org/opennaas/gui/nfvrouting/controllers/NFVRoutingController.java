@@ -1,6 +1,7 @@
 package org.opennaas.gui.nfvrouting.controllers;
 
 import java.util.Locale;
+import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.insertRoutes;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
@@ -9,10 +10,10 @@ import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,11 +37,17 @@ public class NFVRoutingController {
      * @param type
      * @param model
      * @param locale
+     * @param session
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRouteTable")
-    public String getRouteTable(@RequestParam("type") String type, Model model, Locale locale) {
+    public String getRouteTable(@RequestParam("type") String type, ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Route Table ------------------> IPv" + type);
+        
+        if ((String) session.getAttribute("topologyName") != null) {
+                model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
+        
         int typ;
         if (type.equals("IPv4")) {
             typ = 4;
@@ -59,7 +66,7 @@ public class NFVRoutingController {
             model.addAttribute("json", response);
         } catch (RestServiceException e) {
             model.addAttribute("errorMsg", e.getMessage());
-            return "home";
+            return "configRoute";
         }
         return "configRoute";
     }
@@ -69,10 +76,15 @@ public class NFVRoutingController {
      * Redirect to insert view
      *
      * @param model
+     * @param session
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/insertRoute")
-    public String insertRoute(Model model) {
+    public String insertRoute(ModelMap model, HttpSession session) {
+        if ((String) session.getAttribute("topologyName") != null) {
+                model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
+        
         model.addAttribute(new insertRoutes());
         return "insertRoute";
     }
@@ -83,11 +95,15 @@ public class NFVRoutingController {
      * @param route
      * @param result
      * @param model
+     * @param session
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/insertRoute")
-    public String insertRoutePost(insertRoutes route, BindingResult result, ModelMap model) {
+    public String insertRoutePost(insertRoutes route, BindingResult result, ModelMap model, HttpSession session) {
         LOGGER.info("Insert route ------------------> " + route.getListRoutes());
+        if ((String) session.getAttribute("topologyName") != null) {
+                model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
         try {
             for (Route r : route.getListRoutes()) {
                 String response = nfvRoutingBO.insertRoute(r);
@@ -107,11 +123,15 @@ public class NFVRoutingController {
      * @param route
      * @param result
      * @param model
+     * @param session
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/animation")
-    public String animation(insertRoutes route, BindingResult result, ModelMap model) {
+    public String animation(insertRoutes route, BindingResult result, ModelMap model, HttpSession session) {
         LOGGER.info("Animation ------------------> " + route.getListRoutes());
+        if ((String) session.getAttribute("topologyName") != null) {
+                model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
 
         return "animation";
     }
@@ -210,7 +230,7 @@ public class NFVRoutingController {
         LOGGER.debug("Get Route ------------------");
         LOGGER.debug("Requested route: "+ipSrc+" "+ipDst+" "+dpid+" "+inPort+"------------------");
         String response = nfvRoutingBO.getRoute(ipSrc, ipDst, dpid, inPort);
-        LOGGER.debug("Response: "+response);
+        LOGGER.error("Response: "+response);
         
         return response.split(":", 2)[1];
     }
@@ -239,6 +259,60 @@ public class NFVRoutingController {
             model.addAttribute("errorMsg", e.getMessage());
         }
 
+        return response;
+    }
+    
+     /**
+     * Get route paths
+     *
+     * @param ipSrc
+     * @param ipDst
+     * @param model
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/route/{ipSrc}/{ipDst:.+}")
+    public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, ModelMap model) {
+        LOGGER.error("Get ROUTE " + ipSrc+" "+ipDst);
+        String response = "";
+        try {
+            response = nfvRoutingBO.getRoute(ipSrc, ipDst);
+            LOGGER.error(response);
+            model.addAttribute("json", response);
+            model.addAttribute("infoMsg", "Route removed correctly.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
+        return response;
+    }
+    
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/updateTopo")
+    public @ResponseBody String updateTopo(@RequestBody String json, ModelMap model) {
+        LOGGER.error("Update TOPO ");
+        String response = "";
+        try {
+            //store data to file.json
+            LOGGER.error(response);
+            model.addAttribute("json", response);
+            model.addAttribute("infoMsg", "Route removed correctly.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
+        return response;
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getTopo")
+    public @ResponseBody String getTopo(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, ModelMap model) {
+        LOGGER.error("Get ROUTE " + ipSrc+" "+ipDst);
+        String response = "";
+        try {
+            //get json file
+            response = nfvRoutingBO.getRoute(ipSrc, ipDst);
+            LOGGER.error(response);
+            model.addAttribute("json", response);
+            model.addAttribute("infoMsg", "Route removed correctly.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
         return response;
     }
 }

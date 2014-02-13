@@ -4,6 +4,7 @@ VRF - OpenNaaS Custom CSS
 
 .topology{/*class*/
     float:left;
+    padding: 1px;
 }
 .routeTable{
     float:left;
@@ -19,7 +20,7 @@ VRF - OpenNaaS Custom CSS
 #home_topology{
     min-height: 300px;
     width:65%;
-    margin-left: 5px;/*remove when we show the topology*/
+    margin-left: 3px;/*remove when we show the topology*/
 }
 
 .flowTable {

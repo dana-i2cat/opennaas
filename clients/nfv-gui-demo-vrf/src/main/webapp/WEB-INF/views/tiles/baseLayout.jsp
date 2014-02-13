@@ -45,7 +45,8 @@
         <script src="<c:url value="/resources/js/topology/topology.js" />"></script>
         <script src="<c:url value="/resources/js/topology/dijkstra.js" />"></script>
         <!-- Tipsy js -->
-        <script src="<c:url value="/resources/js/topology/jquery.tipsy.js" />"></script>
+        <script src="<c:url value="/resources/js/topology/jquery.tipsy.js" />"></script>        
+        <script src="<c:url value="/resources/js/topology/sessvars.js" />"></script>
 </head>
 <body>
 	<div class="container">
