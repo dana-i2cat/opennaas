@@ -1,0 +1,20 @@
+<resourceDescriptor>
+
+    <capabilityDescriptors>
+        <capabilityProperty name="actionset.name" value="internal" />
+        <capabilityProperty name="actionset.version" value="1.0.0" />
+        <information><type>ofprovisionnet</type></information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty name="actionset.name" value="internal" />
+        <capabilityProperty name="actionset.version" value="1.0.0" />
+        <information><type>netstatistics</type></information>
+    </capabilityDescriptors>
+
+    <information>
+        <type>genericnetwork</type>
+        <name>genericnet</name>
+    </information>
+    <properties/>
+</resourceDescriptor>
