@@ -22,6 +22,7 @@ package org.opennaas.core.resources;
  * #L%
  */
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
@@ -87,6 +88,26 @@ public class ObjectSerializer {
 			JAXBContext context = JAXBContext.newInstance(objectClass);
 			Object obj = context
 					.createUnmarshaller().unmarshal(in);
+			return obj;
+		} catch (JAXBException e) {
+			throw new SerializationException(e);
+		}
+	}
+
+	/**
+	 * Deserialize the XML InputStream into an instance of provided class
+	 * 
+	 * @param xml
+	 * @param objectClass
+	 * @return
+	 * @throws SerializationException
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T fromXml(InputStream xml, Class<T> objectClass) throws SerializationException {
+		try {
+			JAXBContext context = JAXBContext.newInstance(objectClass);
+			T obj = (T) context
+					.createUnmarshaller().unmarshal(xml);
 			return obj;
 		} catch (JAXBException e) {
 			throw new SerializationException(e);

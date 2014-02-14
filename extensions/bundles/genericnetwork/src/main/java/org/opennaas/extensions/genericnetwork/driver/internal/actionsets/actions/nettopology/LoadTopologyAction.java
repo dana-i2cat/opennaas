@@ -20,6 +20,11 @@ package org.opennaas.extensions.genericnetwork.driver.internal.actionsets.action
  * #L%
  */
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import org.opennaas.core.resources.ObjectSerializer;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -42,21 +47,39 @@ public class LoadTopologyAction extends Action {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		// TODO Check file exists and contains a topology
+		if (!(params instanceof String)) {
+			throw new ActionException(getActionID() + " should receive a path to a topology file");
+		}
+
+		try {
+			// Check file exists
+			FileInputStream file = new FileInputStream((String) params);
+		} catch (FileNotFoundException e) {
+			throw new ActionException(getActionID() + " should receive a path to an existing topology file", e);
+		}
+
 		return true;
 	}
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
-		Topology topology = loadTopologyFromFile();
-		updateModel(topology);
+		Topology topology;
+		try {
 
-		return ActionResponse.okResponse(getActionID());
+			topology = loadTopologyFromFile();
+			updateModel(topology);
+			return ActionResponse.okResponse(getActionID());
+
+		} catch (FileNotFoundException e) {
+			throw new ActionException(getActionID() + " should receive a path to an existing topology file", e);
+		} catch (SerializationException e) {
+			throw new ActionException("Invalid topology file: " + params, e);
+		}
 	}
 
-	private Topology loadTopologyFromFile() {
-		// TODO Load file content, parse it in a topology, and return it
-		return null;
+	private Topology loadTopologyFromFile() throws FileNotFoundException, SerializationException {
+		FileInputStream file = new FileInputStream((String) params);
+		return ObjectSerializer.fromXml(file, Topology.class);
 	}
 
 	private void updateModel(Topology topology) {
