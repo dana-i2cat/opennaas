@@ -23,12 +23,17 @@ package org.opennaas.extensions.genericnetwork.capability.pathfinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
@@ -49,8 +54,15 @@ public class PathFindingCapability extends AbstractCapability implements IPathFi
 
 	@Override
 	public Route findPathForRequest(PathRequest pathRequest) throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+
+		IAction action = createActionAndCheckParams(PathFindingActionSet.FIND_PATH_FOR_REQUEST, pathRequest);
+
+		ActionResponse response = executeAction(action);
+
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
+			throw new ActionException(response.toString());
+
+		return (Route) response.getResult();
 	}
 
 	@Override
@@ -77,6 +89,29 @@ public class PathFindingCapability extends AbstractCapability implements IPathFi
 	public void queueAction(IAction arg0) throws CapabilityException {
 		throw new UnsupportedOperationException("Not Implemented. This capability is not using the queue.");
 
+	}
+
+	private ActionResponse executeAction(IAction action) throws CapabilityException {
+
+		try {
+			IProtocolManager protocolManager = getProtocolManagerService();
+			IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
+
+			ActionResponse response = action.execute(protocolSessionManager);
+			return response;
+
+		} catch (ProtocolException pe) {
+			log.error("Error getting protocol session - " + pe.getMessage());
+			throw new CapabilityException(pe);
+		} catch (ActivatorException ae) {
+			String errorMsg = "Error getting protocol manager - " + ae.getMessage();
+			log.error(errorMsg);
+			throw new CapabilityException(errorMsg, ae);
+		}
+	}
+
+	private IProtocolManager getProtocolManagerService() throws ActivatorException {
+		return Activator.getProtocolManagerService();
 	}
 
 }
