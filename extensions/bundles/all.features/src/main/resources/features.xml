@@ -9,6 +9,7 @@
 	<repository>mvn:org.opennaas/org.opennaas.extensions.ofnetwork.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.genericnetwork/${opennaas.version}/xml/features</repository>	
 	<repository>mvn:org.opennaas/org.opennaas.extensions.pdu.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.quantum.features/${opennaas.version}/xml/features</repository> 
 	<repository>mvn:org.opennaas/org.opennaas.extensions.roadm.features/${opennaas.version}/xml/features</repository> 
@@ -41,6 +42,7 @@
 		<feature version="${project.version}">opennaas-quantum</feature>
 		<feature version="${project.version}">opennaas-ofnetwork</feature>
 		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
+		<feature version="${project.version}">opennaas-genericnetwork</feature>
 	</feature>
 	
 </features>
