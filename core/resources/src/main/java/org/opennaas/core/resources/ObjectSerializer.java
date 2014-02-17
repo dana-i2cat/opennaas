@@ -22,6 +22,7 @@ package org.opennaas.core.resources;
  * #L%
  */
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
@@ -74,10 +75,12 @@ public class ObjectSerializer {
 	}
 
 	/**
-	 * Unserialize the XML String into an IEngineMessage
+	 * Deserialize the XML String into an instance of provided class
 	 * 
 	 * @param xml
+	 * @param objectClass
 	 * @return
+	 * @throws SerializationException
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Object fromXml(String xml, Class objectClass) throws SerializationException {
@@ -94,10 +97,35 @@ public class ObjectSerializer {
 	}
 
 	/**
-	 * Unserialize the XML String into a list of IEngineMessage
+	 * Deserialize the XML InputStream into an instance of provided class
+	 * 
+	 * @param xml
+	 * @param objectClass
+	 * @return
+	 * @throws SerializationException
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> fromXML(String xml, Class<T> clazz) throws SerializationException {
+	public static <T> T fromXml(InputStream xml, Class<T> objectClass) throws SerializationException {
+		try {
+			JAXBContext context = JAXBContext.newInstance(objectClass);
+			T obj = (T) context
+					.createUnmarshaller().unmarshal(xml);
+			return obj;
+		} catch (JAXBException e) {
+			throw new SerializationException(e);
+		}
+	}
+
+	/**
+	 * Deserialize the XML String into a List of instances of provided class
+	 * 
+	 * @param xml
+	 * @param clazz
+	 * @return
+	 * @throws SerializationException
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> listFromXml(String xml, Class<T> clazz) throws SerializationException {
 
 		StringReader in = new StringReader(xml);
 		JAXBContext context;
