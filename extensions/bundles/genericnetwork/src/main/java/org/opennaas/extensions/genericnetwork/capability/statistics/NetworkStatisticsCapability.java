@@ -44,7 +44,7 @@ import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
  */
 public class NetworkStatisticsCapability extends AbstractCapability implements INetworkStatisticsCapability {
 
-	public static final String	CAPABILITY_TYPE	= "netstatistics";
+	public static final String	CAPABILITY_TYPE	= "gnetstatistics";
 
 	Log							log				= LogFactory.getLog(NetworkStatisticsCapability.class);
 
