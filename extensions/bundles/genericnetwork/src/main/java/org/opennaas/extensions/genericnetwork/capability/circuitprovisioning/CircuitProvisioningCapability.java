@@ -83,8 +83,7 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 
 	@Override
 	public void replace(OldAndNewCircuits oldAndNewCircuits) throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		replace(oldAndNewCircuits.getOldCircuits(), oldAndNewCircuits.getNewCircuits());
 	}
 
 	@Override
