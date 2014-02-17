@@ -89,8 +89,48 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 
 	@Override
 	public void replace(List<Circuit> oldCircuits, List<Circuit> newCircuits) throws CapabilityException {
-		// TODO Auto-generated method stub
+		List<Circuit> toAllocate = new ArrayList<Circuit>(newCircuits.size());
+		List<String> toDeallocate = new ArrayList<String>(oldCircuits.size());
+		List<Circuit> commonCircuits = new ArrayList<Circuit>(oldCircuits.size());
 
+		// toAllocate contains all flows in newCircuits that are not in oldCircuits
+		// commonCircuits contains all flows that are both in oldCircuits and in newCircuits
+		for (Circuit newCircuit : newCircuits) {
+			if (!oldCircuits.contains(newCircuit)) {
+				toAllocate.add(newCircuit);
+			} else {
+				commonCircuits.add(newCircuit);
+			}
+		}
+
+		// toDeallocate contains all flows in oldCircuits that are not in newCircuits
+		// commonCircuits contains all flows that are both in oldCircuits and in newCircuits
+		for (Circuit oldCircuit : oldCircuits) {
+			if (!commonCircuits.contains(oldCircuit)) {
+				toDeallocate.add(oldCircuit.getCircuitId());
+			}
+		}
+
+		allocateCircuits(toAllocate);
+		deallocateCircuits(toDeallocate);
+	}
+
+	private void allocateCircuits(List<Circuit> circuits) throws CapabilityException {
+		// Allocate in reverse order.
+		// Reverse order is desired to ensure "circuits" are completely established when traffic starts to pass within them.
+		// This is so to minimize the amount of packet-in messages to treat.
+		for (int i = circuits.size() - 1; i >= 0; i--) {
+			allocate(circuits.get(i));
+		}
+	}
+
+	private void deallocateCircuits(List<String> circuitIds) throws CapabilityException {
+		// Deallocate in given order.
+		// Given order is desired to ensure "circuits" do not accept traffic when deallocation is taking place.
+		// This is so to minimize the amount of packet-in messages to treat.
+		for (String circuitId : circuitIds) {
+			deallocate(circuitId);
+		}
 	}
 
 	@Override

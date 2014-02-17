@@ -33,9 +33,16 @@ import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
  */
 public class CircuitProvisioningAPIHelper {
 
+	/**
+	 * Transforms a {@link List} of {@link Circuit} to a new instance of {@link CircuitsList}
+	 * 
+	 * @param list
+	 * @return
+	 */
 	public static CircuitsList listOfCircuits2CircuitList(List<Circuit> list) {
 		CircuitsList circuitsList = new CircuitsList();
 		circuitsList.setCircuits(list);
 		return circuitsList;
 	}
+
 }
