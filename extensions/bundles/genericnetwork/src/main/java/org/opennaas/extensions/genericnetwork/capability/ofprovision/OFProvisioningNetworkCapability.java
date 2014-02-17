@@ -49,7 +49,7 @@ import org.opennaas.extensions.genericnetwork.model.NetOFFlow;
  */
 public class OFProvisioningNetworkCapability extends AbstractCapability implements IOFProvisioningNetworkCapability {
 
-	public static final String	CAPABILITY_TYPE	= "ofprovisionnet";
+	public static final String	CAPABILITY_TYPE	= "gofprovisionnet";
 
 	Log							log				= LogFactory.getLog(OFProvisioningNetworkCapabilityFactory.class);
 

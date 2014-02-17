@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions;
+package org.opennaas.extensions.genericnetwork.actionsets.internal.ofprovision.actions;
 
 /*
  * #%L

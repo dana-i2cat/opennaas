@@ -26,12 +26,17 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
+/**
+ * Network Statistics Capability Factory
+ * 
+ * @author Julio Carlos Barrera
+ * 
+ */
 public class NetworkStatisticsCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor()
-				.getCapabilityDescriptor(NetworkStatisticsCapability.CAPABILITY_TYPE),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(NetworkStatisticsCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
