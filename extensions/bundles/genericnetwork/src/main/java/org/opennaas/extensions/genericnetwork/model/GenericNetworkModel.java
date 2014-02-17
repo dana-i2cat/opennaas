@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.driver.NetworkConnectionImplementationId;
 import org.opennaas.extensions.genericnetwork.model.topology.Port;
@@ -71,6 +72,11 @@ public class GenericNetworkModel implements IModel {
 	private Map<String, List<NetworkConnectionImplementationId>>	circuitImplementation;
 
 	/**
+	 * Map containing allocated circuits
+	 */
+	private Map<String, Circuit>									allocatedCircuits;
+
+	/**
 	 * Maps device ID in GenericNetworkModel and resource ID in OpenNaaS
 	 */
 	private Map<String, String>										deviceResourceMap;
@@ -82,8 +88,9 @@ public class GenericNetworkModel implements IModel {
 	private BiMap<Port, DevicePortId>								networkDevicePortIdsMap;
 
 	public GenericNetworkModel() {
-		deviceResourceMap = new HashMap<String, String>();
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
+		allocatedCircuits = new HashMap<String, Circuit>();
+		deviceResourceMap = new HashMap<String, String>();
 		networkDevicePortIdsMap = HashBiMap.create();
 	}
 
@@ -108,6 +115,14 @@ public class GenericNetworkModel implements IModel {
 
 	public void setNetFlowsPerResource(Map<String, List<NetOFFlow>> netFlowsPerResource) {
 		this.netFlowsPerResource = netFlowsPerResource;
+	}
+
+	public Map<String, Circuit> getAllocatedCircuits() {
+		return allocatedCircuits;
+	}
+
+	public void setAllocatedCircuits(Map<String, Circuit> allocatedCircuits) {
+		this.allocatedCircuits = allocatedCircuits;
 	}
 
 	public Map<String, String> getDeviceResourceMap() {
