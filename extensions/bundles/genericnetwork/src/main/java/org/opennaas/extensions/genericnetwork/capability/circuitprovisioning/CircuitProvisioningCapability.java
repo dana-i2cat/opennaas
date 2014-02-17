@@ -20,11 +20,14 @@ package org.opennaas.extensions.genericnetwork.capability.circuitprovisioning;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
@@ -38,6 +41,8 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.CircuitsList;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.OldAndNewCircuits;
+import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.helpers.CircuitProvisioningAPIHelper;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 
 /**
@@ -67,14 +72,13 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 
 	@Override
 	public CircuitsList getCircuitsAPI() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		return CircuitProvisioningAPIHelper.listOfCircuits2CircuitList(getCircuits());
 	}
 
 	@Override
 	public List<Circuit> getCircuits() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Circuit> allocatedCircuitsMap = ((GenericNetworkModel) resource.getModel()).getAllocatedCircuits();
+		return new ArrayList<Circuit>(allocatedCircuitsMap.values());
 	}
 
 	@Override
@@ -91,14 +95,24 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 
 	@Override
 	public void allocate(Circuit circuit) throws CapabilityException {
-		// TODO Auto-generated method stub
+		IAction action = createActionAndCheckParams(CircuitProvisioningActionSet.ALLOCATE_CIRCUIT, circuit);
 
+		ActionResponse response = executeAction(action);
+
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			throw new ActionException(response.toString());
+		}
 	}
 
 	@Override
 	public void deallocate(String circuitId) throws CapabilityException {
-		// TODO Auto-generated method stub
+		IAction action = createActionAndCheckParams(CircuitProvisioningActionSet.DEALLOCATE_CIRCUIT, circuitId);
 
+		ActionResponse response = executeAction(action);
+
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			throw new ActionException(response.toString());
+		}
 	}
 
 	@Override
@@ -132,7 +146,6 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 	}
 
 	private ActionResponse executeAction(IAction action) throws CapabilityException {
-
 		try {
 			IProtocolManager protocolManager = getProtocolManagerService();
 			IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
