@@ -27,7 +27,6 @@
         <li id="DPID"><b>DPID:</b></li>
         <li id="IP"><b>Controller IP:</b></li>
         <li id="Port"><b>Controller Port:</b></li>
-<!--        <li id="Status"><b>Status:</b></li>-->
     </ul>
     <h3>Flow table:</h3>
     <table id="jsonFlowTable" class="tablesorter"></table>
@@ -46,8 +45,8 @@
                     <p><form:label for="fileName" path="fileName">Topology Name</form:label><br/>
                     <form:input path="fileName" type="text" name="fileName" id="fileName" class="ipInput text ui-widget-content ui-corner-all" value=""/></p>
                     <p><form:label for="file" path="file">Topology File</form:label><br/>
-                    <form:input path="file" id="owlFile" type="file"/></p>
-                    <input id="submitVI" class="button1" type="submit" value="<spring:message code="buttons.upload"/>" />
+                    <form:input class="submitButton" path="file" id="owlFile" type="file"/></p>
+                    <input id="submitVI" class="submitButton" type="submit" value="<spring:message code="buttons.upload"/>" />
                 </fieldset>
             </form:form>
         </div>

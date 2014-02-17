@@ -65,7 +65,7 @@ public class RoutingCapability implements IRoutingCapability {
             this.mode = "dijkstra";
         }
         else{
-            return Response.serverError().entity("Incorrect mode. Possible modes: static, dijkstra.").build();
+            return Response.serverError().entity("Incorrect mode. Possible modes: static, dijkstra. Remain active mode: "+mode).build();
         }
         return Response.ok().build();
     }

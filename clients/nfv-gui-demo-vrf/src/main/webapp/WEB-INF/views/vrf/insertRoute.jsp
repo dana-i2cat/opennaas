@@ -8,7 +8,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<div id="insert_topology" class="topology">
+<div id="insert_topology" class="topology ui-widget-content ui-corner-all">
     <c:if test="${!empty topologyName}">
          <p onmousedown="cleanDrag()" id="chart" ></p>
     </c:if>

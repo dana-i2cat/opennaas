@@ -9,11 +9,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div id="animaton_topology" class="topology ui-widget-content ui-corner-all">
-    <%--<c:if test="${!empty topologyName}">--%>
-        <p id="chart" ></p>
-    <%--</c:if>--%>
+    <c:if test="${!empty topologyName}">
+        <p onmousedown="cleanDrag()" id="chart" ></p>
+    </c:if>
     <c:if test="${empty topologyName}">
-        <br/><h3><spring:message code="topology.notdefined"/></h3><br/>
+        <h3><spring:message code="topology.notdefined"/></h3><br/>
     </c:if>
 </div>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>

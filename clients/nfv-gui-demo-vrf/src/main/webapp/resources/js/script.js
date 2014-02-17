@@ -102,6 +102,7 @@ $(function() {
         $(".addRouteButton").button();
         $(".addCtrlInfoButton").button();
         $(".deleteButton").button();        
+        $(".submitButton").button();
 
 	$("#button1").button();
 	$("#button2").button();
@@ -115,7 +116,6 @@ $(function() {
 	$("#button10").button();
 	$("#button11").button();
 	$("#button12").button();
-	$("#submitButton").button();
 
 	$("#selectTemplateButton").button();
 	$("#updateIpButton").button();
