@@ -33,54 +33,59 @@
 		</service-properties>
 	</service>
 	
-	<!-- Capabilities factories -->
+	<!-- ########################################
+	     Openflow Provisioning Network Capability 
+	     ########################################
+	 -->
 	<bean id="openflowProvisioningNetworkCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.ofprovision.OFProvisioningNetworkCapabilityFactory">
-		<property name="type" value="ofprovisionnet"/>
-	</bean>	
+		<property name="type" value="gofprovisionnet"/>
+	</bean>
+	
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="openflowProvisioningNetworkCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="ofprovisionnet"/>
-			<entry key="capability.model" value="genericnetwork"/>
-			<entry key="capability.version" value="1.0.0"/>
-		</service-properties>
-	</service>
-	
-	<bean id="networkStatisticsCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.statistics.NetworkStatisticsCapabilityFactory">
-		<property name="type" value="netstatistics"/>
-	</bean>	
-	<!-- Register the Service as an OSGi Service -->
-	<service ref="networkStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
-		<service-properties>
-			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="netstatistics"/>
-			<entry key="capability.model" value="genericnetwork"/>
-			<entry key="capability.version" value="1.0.0"/>
-		</service-properties>
-	</service>	
-	
-	<bean id="netTopologyCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapabilityFactory">
-		<property name="type" value="nettopology"/>
-	</bean>	
-	<!-- Register the Service as an OSGi Service -->
-	<service ref="netTopologyCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
-		<service-properties>
-			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="nettopology"/>
+			<entry key="capability" value="gofprovisionnet"/>
 			<entry key="capability.model" value="genericnetwork"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
 	
 	<!--  Internal ActionSet  -->
-	<bean id="genericNetworkInternalActionSet" class="org.opennaas.extensions.genericnetwork.driver.internal.actionsets.GenericNetworkInternalActionsetImplementation"/>
-	<service ref="genericNetworkInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+	<bean id="ofFProvisioningInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.ofprovision.OFProvisioningInternalActionsetImplementation" />
+	<service ref="ofFProvisioningInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
-			<!--  identify the floodlight actionset -->
 			<entry key="actionset.name" value="internal"/>
-			<entry key="actionset.capability" value="ofprovisionnet"/>
+			<entry key="actionset.capability" value="gofprovisionnet"/>
 			<entry key="actionset.version" value="1.0.0"/>
 		</service-properties>
 	</service>
+
+	<!-- ########################################
+	     Networks statistics Capability 
+	     ########################################
+	 -->
+	<bean id="networkStatisticsCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.statistics.NetworkStatisticsCapabilityFactory">
+		<property name="type" value="gnetstatistics"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="networkStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="gnetstatistics"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>	
+	
+	<!--  Internal ActionSet  -->
+	<bean id="networkStatisticsInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.statistics.NetworkStatisticsInternalActionsetImplementation" />
+	<service ref="networkStatisticsInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="gnetstatistics"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+
 </blueprint>
