@@ -47,7 +47,7 @@ public abstract class PathLoader {
 		LOG.debug("Parsing routes from xml.");
 
 		Map<String, Route> finalPaths = new HashMap<String, Route>();
-		List<Route> routes = ObjectSerializer.fromXML(xmlWithPaths, Route.class);
+		List<Route> routes = ObjectSerializer.listFromXml(xmlWithPaths, Route.class);
 
 		for (Route route : routes) {
 			finalPaths.put(route.getId(), route);
