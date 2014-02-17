@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.driver.internal.actionsets;
+package org.opennaas.extensions.genericnetwork.actionsets.internal.statistics;
 
 /*
  * #%L
@@ -24,29 +24,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
-import org.opennaas.extensions.genericnetwork.capability.ofprovision.OFProvisioningNetworkActionSet;
+import org.opennaas.extensions.genericnetwork.actionsets.internal.statistics.actions.GetNetworkStatisticsAction;
 import org.opennaas.extensions.genericnetwork.capability.statistics.NetworkStatisticsActionSet;
-import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.AllocateFlowAction;
-import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.DeallocateFlowAction;
-import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.GetAllocatedFlowsAction;
-import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.GetNetworkStatisticsAction;
 
 /**
- * An ActionSet Implementation for SDNNetwork capabilities that delegates to OFSwitches in the network.
+ * An ActionSet Implementation that delegates to OFSwitches in the network.
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Julio Carlos Barrera
  * 
  */
-public class GenericNetworkInternalActionsetImplementation extends ActionSet {
+public class NetworkStatisticsInternalActionsetImplementation extends ActionSet {
 
 	public static final String	ACTIONSET_ID	= "internal";
 
-	public GenericNetworkInternalActionsetImplementation() {
+	public NetworkStatisticsInternalActionsetImplementation() {
 		super.setActionSetId(ACTIONSET_ID);
-		this.putAction(OFProvisioningNetworkActionSet.ALLOCATEFLOW, AllocateFlowAction.class);
-		this.putAction(OFProvisioningNetworkActionSet.DEALLOCATEFLOW, DeallocateFlowAction.class);
-		this.putAction(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS, GetAllocatedFlowsAction.class);
 
 		this.putAction(NetworkStatisticsActionSet.GET_NETWORK_STATISTICS, GetNetworkStatisticsAction.class);
 	}
@@ -54,10 +48,6 @@ public class GenericNetworkInternalActionsetImplementation extends ActionSet {
 	@Override
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
-
-		actionNames.add(OFProvisioningNetworkActionSet.ALLOCATEFLOW);
-		actionNames.add(OFProvisioningNetworkActionSet.DEALLOCATEFLOW);
-		actionNames.add(OFProvisioningNetworkActionSet.GETALLOCATEDFLOWS);
 
 		actionNames.add(NetworkStatisticsActionSet.GET_NETWORK_STATISTICS);
 
