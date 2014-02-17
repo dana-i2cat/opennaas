@@ -3,13 +3,13 @@
     <capabilityDescriptors>
         <capabilityProperty name="actionset.name" value="internal" />
         <capabilityProperty name="actionset.version" value="1.0.0" />
-        <information><type>ofprovisionnet</type></information>
+        <information><type>gofprovisionnet</type></information>
     </capabilityDescriptors>
 
     <capabilityDescriptors>
         <capabilityProperty name="actionset.name" value="internal" />
         <capabilityProperty name="actionset.version" value="1.0.0" />
-        <information><type>netstatistics</type></information>
+        <information><type>gnetstatistics</type></information>
     </capabilityDescriptors>
 
     <information>
