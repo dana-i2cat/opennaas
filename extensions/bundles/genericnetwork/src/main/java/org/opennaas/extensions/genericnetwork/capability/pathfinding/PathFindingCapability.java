@@ -20,6 +20,9 @@ package org.opennaas.extensions.genericnetwork.capability.pathfinding;
  * #L%
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -52,10 +55,22 @@ public class PathFindingCapability extends AbstractCapability implements IPathFi
 
 	}
 
+	/**
+	 * FIXME This method should not get the url from descriptor and create the action which such param. This implies a mixing between the capability
+	 * and the action implementation, which is the one requiring to read routes from file. Since the action has no access to the resource descriptor,
+	 * we're implementing such a workaround.
+	 * 
+	 */
 	@Override
 	public Route findPathForRequest(PathRequest pathRequest) throws CapabilityException {
 
-		IAction action = createActionAndCheckParams(PathFindingActionSet.FIND_PATH_FOR_REQUEST, pathRequest);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(PathFindingParamsMapping.REQUEST_KEY, pathRequest);
+		params.put(PathFindingParamsMapping.ROUTES_FILE_KEY, this.getCapabilityDescriptor().getProperty(PathFindingParamsMapping.ROUTES_FILE_KEY));
+		params.put(PathFindingParamsMapping.ROUTES_MAPPING_KEY,
+				this.getCapabilityDescriptor().getProperty(PathFindingParamsMapping.ROUTES_MAPPING_KEY));
+
+		IAction action = createActionAndCheckParams(PathFindingActionSet.FIND_PATH_FOR_REQUEST, params);
 
 		ActionResponse response = executeAction(action);
 
