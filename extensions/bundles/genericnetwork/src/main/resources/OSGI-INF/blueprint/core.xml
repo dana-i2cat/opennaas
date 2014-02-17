@@ -104,6 +104,16 @@
  			<entry key="capability.version" value="1.0.0"/>
  		</service-properties>
  	</service>
+ 	
+ 	<!--  Internal ActionSet  -->
+	<bean id="nettopologyInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.nettopology.NetTopologyInternalActionSetImplementation" />
+	<service ref="nettopologyInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="nettopology"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
 	
 	<!-- ########################################
 	     PathFinding Capability 

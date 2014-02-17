@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.nettopology;
+package org.opennaas.extensions.genericnetwork.actionsets.internal.nettopology.actions;
 
 /*
  * #%L
