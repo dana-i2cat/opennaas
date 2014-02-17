@@ -106,6 +106,23 @@
 	</service>
 	
 	<!-- ########################################
+	     NetTopology Capability 
+	     ########################################
+	 -->
+	<bean id="netTopologyCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapabilityFactory">
+ 		<property name="type" value="nettopology"/>
+ 	</bean>	
+ 	<!-- Register the Service as an OSGi Service -->
+ 	<service ref="netTopologyCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+ 		<service-properties>
+ 			<!--  TODO it is necessary to use two parameters to get capability -->
+ 			<entry key="capability" value="nettopology"/>
+ 			<entry key="capability.model" value="genericnetwork"/>
+ 			<entry key="capability.version" value="1.0.0"/>
+ 		</service-properties>
+ 	</service>
+	
+	<!-- ########################################
 	     PathFinding Capability 
 	     ########################################
 	 -->
