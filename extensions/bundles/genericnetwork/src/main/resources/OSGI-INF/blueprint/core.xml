@@ -98,4 +98,15 @@
 		</service-properties>
 	</service>		
 
+	<!-- PathFinding Internal ActionSet  -->
+	<bean id="pathFindingInternalActionSet" class="org.opennaas.extensions.genericnetwork.driver.internal.actionsets.PathFindingInternalActionSetImplementation"/>
+	<service ref="pathFindingInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="pathfinding"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
 </blueprint>
