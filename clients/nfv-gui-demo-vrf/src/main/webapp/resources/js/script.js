@@ -76,6 +76,16 @@ $(document).ready(function() {
 		});
 		$("#dialog").dialog("open");
 	});
+        
+        $("input#owlFile").on("change", function() {
+            if(document.getElementById('fileName').value == ""){
+                var dealers = $("input#owlFile");
+                var arrfilepath = dealers.val().split("\\");
+                var filename = arrfilepath[arrfilepath.length - 1];
+                var name = filename.substr(0, filename.lastIndexOf('.'));
+                document.getElementById('fileName').value += name;
+            }
+        });
 });
 
 /**

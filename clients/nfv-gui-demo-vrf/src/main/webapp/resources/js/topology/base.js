@@ -71,7 +71,9 @@ function update(){
         .attr('id', function (d) {return d.id;})
         .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
         .classed('selected', function (d) {return d === selected_link;});
-
+    //remove selected/drawed links
+    d3.selectAll(".link2").remove();
+    
     /* Links between switchs and controllers */
     controllerLink = controllerLink.data(controllersLinks);
     controllerLink.enter().append("svg:line")

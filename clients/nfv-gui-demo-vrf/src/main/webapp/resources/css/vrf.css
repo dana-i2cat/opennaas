@@ -4,7 +4,7 @@ VRF - OpenNaaS Custom CSS
 
 .topology{/*class*/
     float:left;
-    padding: 1px;
+    padding: 10px;
 }
 .routeTable{
     float:left;
@@ -19,7 +19,7 @@ VRF - OpenNaaS Custom CSS
 }
 #home_topology{
     min-height: 300px;
-    width:65%;
+    width:63%;
     margin-left: 3px;/*remove when we show the topology*/
 }
 
@@ -30,7 +30,6 @@ VRF - OpenNaaS Custom CSS
     text-decoration: none;
     color: gray;
 }
-
 .legendRect{
     fill:blue;
     stroke: black;
@@ -46,11 +45,15 @@ VRF - OpenNaaS Custom CSS
 
 /* Config Routes view */
 #config_topology {
-    width:62%;
+    width:60%;
+    margin-left: 3px;/*remove when we show the topology*/
 }
 #config_routeTable{
     width:35%;
     margin-bottom: 55px;
+}
+#innerTextRoute{
+    text-decoration: underline;
 }
 /* Insert Routes view */
 #insert_topology {

@@ -38,7 +38,7 @@
         <p id="chart" ></p>
     </c:if>
     <c:if test="${empty topologyName}">
-        <h3>Topology is not detected</h3>
+        <h3><spring:message code="topology.notdefined"/></h3>
         <div id="create">
             <form:form modelAttribute="uploadedFile" name="frm" method="post" enctype="multipart/form-data" onSubmit="return Validate();">
                 <fieldset>

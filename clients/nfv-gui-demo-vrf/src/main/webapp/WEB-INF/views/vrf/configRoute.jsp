@@ -29,7 +29,7 @@
         <p onmousedown="cleanDrag()" id="chart" ></p>
     </c:if>
     <c:if test="${empty topologyName}">
-        <br/><h3>No topology file loaded</h3><br/>
+        <h3><spring:message code="topology.notdefined"/></h3><br/>
     </c:if>
 </div>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
@@ -48,7 +48,7 @@ console.log(listRoutes[0]);
         initial = listRoutes[i];
         for ( var j = i; j < listRoutes.length; j++){
             if( listRoutes[i] != listRoutes[j] ){
-                document.getElementById("listRoutes").innerHTML += '<a href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node+'\',\''+listRoutes[j].node+'\')">Route: '+listRoutes[i].id+'</a><br/>';
+                document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node+'\',\''+listRoutes[j].node+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[j].node+'/'+listRoutes[i].node+'</span></a><br/>';
                 initial = listRoutes[i+1];
             }
         }

@@ -13,7 +13,7 @@
         <p id="chart" ></p>
     <%--</c:if>--%>
     <c:if test="${empty topologyName}">
-        <br/><h3>No topology file loaded</h3><br/>
+        <br/><h3><spring:message code="topology.notdefined"/></h3><br/>
     </c:if>
 </div>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
