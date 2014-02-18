@@ -56,7 +56,6 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
-import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -111,7 +110,7 @@ public class TopologyTest {
 				includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "itests-helpers"),
 				systemTimeout(1000 * 60 * 10),
 				noConsole(),
-				OpennaasExamOptions.openDebugSocket(),
+				// OpennaasExamOptions.openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
