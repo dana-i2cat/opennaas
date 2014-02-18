@@ -26,6 +26,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 
 /**
@@ -35,7 +36,7 @@ import org.opennaas.extensions.genericnetwork.model.topology.Topology;
  * 
  */
 @Path("/")
-public interface INetTopologyCapability {
+public interface INetTopologyCapability extends ICapability {
 
 	/**
 	 * Retrieves network topology
