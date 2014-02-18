@@ -6,6 +6,8 @@
 	<feature name="opennaas-genericnetwork" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-openflowswitch</feature>
 	    
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.genericnetwork/${project.version}</bundle>
 	</feature>
 </features>

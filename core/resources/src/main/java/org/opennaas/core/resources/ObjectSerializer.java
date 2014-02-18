@@ -143,4 +143,22 @@ public class ObjectSerializer {
 
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> listFromXml(InputStream xml, Class<T> clazz) throws SerializationException {
+
+		JAXBContext context;
+		try {
+			context = JAXBContext.newInstance(GenericListWrapper.class, clazz);
+			GenericListWrapper<T> wrapper = (GenericListWrapper<T>) context.createUnmarshaller().unmarshal(new StreamSource(xml),
+					GenericListWrapper.class).getValue();
+
+			return wrapper.getItems();
+
+		} catch (JAXBException e) {
+			throw new SerializationException(e);
+
+		}
+
+	}
+
 }
