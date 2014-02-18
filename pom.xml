@@ -353,11 +353,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
-				<version>${project.version}</version>	    
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
