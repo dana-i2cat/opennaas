@@ -6,6 +6,8 @@
                 <srcIP>192.168.10.10</srcIP>
                 <dstIP>192.168.10.11</dstIP>
                 <tos>0</tos>
+                <srcPort>portA</srcPort>
+                <dstPort>portB</dstPort>
             </key>
             <value>
                 <routeIds>1</routeIds>
@@ -17,6 +19,8 @@
                 <srcIP>192.168.10.11</srcIP>
                 <dstIP>192.168.10.10</dstIP>
                 <tos>0</tos>
+                <srcPort>portB</srcPort>
+                <dstPort>portA</dstPort>                
             </key>
             <value>
                 <routeIds>2</routeIds>
@@ -28,6 +32,8 @@
                 <srcIP>192.168.10.10</srcIP>
                 <dstIP>192.168.10.11</dstIP>
                 <tos>4</tos>
+                <srcPort>portA</srcPort>
+                <dstPort>portC</dstPort>                
             </key>
             <value>
                 <routeIds>3</routeIds>
@@ -38,6 +44,8 @@
                 <srcIP>192.168.10.11</srcIP>
                 <dstIP>192.168.10.10</dstIP>
                 <tos>4</tos>
+                <srcPort>portC</srcPort>
+                <dstPort>portA</dstPort>                     
             </key>
             <value>
                 <routeIds>4</routeIds>

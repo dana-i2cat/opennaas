@@ -94,6 +94,8 @@ public class FindPathForRequestTest {
 
 	private static final String	SRC_IP							= "192.168.10.10";
 	private static final String	DST_IP							= "192.168.10.11";
+	private static final String	SRC_PORT						= "portA";
+	private static final String	DST_PORT						= "portC";
 	private static final String	TOS								= "4";
 
 	@Configuration
@@ -125,9 +127,9 @@ public class FindPathForRequestTest {
 	}
 
 	@Test
-	public void findPathForRequestTest() throws ResourceException {
+	public void findPathForRequestTestWithoutPorts() throws ResourceException {
 
-		PathRequest request = generateSampleRequest();
+		PathRequest request = generateSampleRequestWithoutPorts();
 
 		IPathFindingCapability pathFindingCapab = (IPathFindingCapability) genericNetwork.getCapabilityByInterface(IPathFindingCapability.class);
 		Route route = pathFindingCapab.findPathForRequest(request);
@@ -136,7 +138,37 @@ public class FindPathForRequestTest {
 		Assert.assertEquals("PathFinding capability should have selected route with id 3", "3", route.getId());
 	}
 
-	private PathRequest generateSampleRequest() {
+	@Test
+	public void findPathForRequestTestWithPorts() throws ResourceException {
+
+		PathRequest request = generateSampleRequestWithPorts();
+
+		IPathFindingCapability pathFindingCapab = (IPathFindingCapability) genericNetwork.getCapabilityByInterface(IPathFindingCapability.class);
+		Route route = pathFindingCapab.findPathForRequest(request);
+
+		Assert.assertNotNull(route);
+		Assert.assertEquals("PathFinding capability should have selected route with id 3", "3", route.getId());
+	}
+
+	private PathRequest generateSampleRequestWithPorts() {
+		PathRequest request = new PathRequest();
+
+		Source source = new Source();
+		source.setAddress(SRC_IP);
+		source.setLinkPort(SRC_PORT);
+
+		Destination destination = new Destination();
+		destination.setAddress(DST_IP);
+		destination.setLinkPort(DST_PORT);
+
+		request.setSource(source);
+		request.setDestination(destination);
+		request.setLabel(TOS);
+
+		return request;
+	}
+
+	private PathRequest generateSampleRequestWithoutPorts() {
 
 		PathRequest request = new PathRequest();
 
