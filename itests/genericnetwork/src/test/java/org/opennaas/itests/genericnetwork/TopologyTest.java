@@ -137,10 +137,10 @@ public class TopologyTest {
 		netResource = resourceManager.createResource(resourceDescriptor);
 
 		// Start resource
-		wsListener = new WSEndpointListenerHandler();
-		wsListener.registerWSEndpointListener(NETTOPOLOGY_WS_CONTEXT, context);
+		// wsListener = new WSEndpointListenerHandler();
+		// wsListener.registerWSEndpointListener(NETTOPOLOGY_WS_CONTEXT, context);
 		resourceManager.startResource(netResource.getResourceIdentifier());
-		wsListener.waitForEndpointToBePublished();
+		// wsListener.waitForEndpointToBePublished();
 
 	}
 
@@ -150,7 +150,7 @@ public class TopologyTest {
 			resourceManager.stopResource(netResource.getResourceIdentifier());
 		}
 		resourceManager.removeResource(netResource.getResourceIdentifier());
-		wsListener.waitForEndpointToBeUnpublished();
+		// wsListener.waitForEndpointToBeUnpublished();
 	}
 
 	@Test
