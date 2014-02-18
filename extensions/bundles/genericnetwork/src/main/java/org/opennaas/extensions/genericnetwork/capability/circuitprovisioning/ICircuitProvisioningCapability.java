@@ -33,6 +33,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.CircuitsList;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.OldAndNewCircuits;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
@@ -44,7 +45,7 @@ import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
  * 
  */
 @Path("/")
-public interface ICircuitProvisioningCapability {
+public interface ICircuitProvisioningCapability extends ICapability {
 
 	/**
 	 * Retrieves current circuits
