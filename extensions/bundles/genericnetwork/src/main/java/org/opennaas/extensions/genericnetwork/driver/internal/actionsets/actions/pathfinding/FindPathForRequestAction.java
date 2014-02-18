@@ -69,11 +69,17 @@ public class FindPathForRequestAction extends Action {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 
+		Map<String, ?> mapParam;
+
 		if (!(params instanceof Map<?, ?>))
 			throw new ActionException(
 					"Invalid params for action " + this.actionID + ". Excected param is a map with keys " + PathFindingParamsMapping.ROUTES_FILE_KEY + " and " + PathFindingParamsMapping.REQUEST_KEY);
 
-		Map<String, ?> mapParam = (Map) params;
+		try {
+			mapParam = (Map) params;
+		} catch (ClassCastException e) {
+			throw new ActionException(e);
+		}
 
 		// checks the hashmap contains all information
 		if (!mapParam.keySet().contains(PathFindingParamsMapping.ROUTES_FILE_KEY) || !mapParam.keySet()
