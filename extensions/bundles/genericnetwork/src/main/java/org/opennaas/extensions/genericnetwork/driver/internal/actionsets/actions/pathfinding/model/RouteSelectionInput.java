@@ -57,6 +57,46 @@ public class RouteSelectionInput {
 		this.dstPort = dstPort;
 	}
 
+	public String getSrcIP() {
+		return srcIP;
+	}
+
+	public void setSrcIP(String srcIP) {
+		this.srcIP = srcIP;
+	}
+
+	public String getDstIP() {
+		return dstIP;
+	}
+
+	public void setDstIP(String dstIP) {
+		this.dstIP = dstIP;
+	}
+
+	public String getTos() {
+		return tos;
+	}
+
+	public void setTos(String tos) {
+		this.tos = tos;
+	}
+
+	public String getSrcPort() {
+		return srcPort;
+	}
+
+	public void setSrcPort(String srcPort) {
+		this.srcPort = srcPort;
+	}
+
+	public String getDstPort() {
+		return dstPort;
+	}
+
+	public void setDstPort(String dstPort) {
+		this.dstPort = dstPort;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
