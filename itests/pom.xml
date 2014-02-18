@@ -30,6 +30,7 @@
 		<module>sampleresource</module>
 		<module>vrrp/junos10</module>
 		<module>genericnetwork</module>
+		<module>pathfinding/internal</module>
 	</modules>
 
 	<dependencies>

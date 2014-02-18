@@ -76,7 +76,7 @@
 			<entry key="capability.model" value="genericnetwork"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
-	</service>	
+	</service>
 	
 	<!--  Internal ActionSet  -->
 	<bean id="networkStatisticsInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.statistics.NetworkStatisticsInternalActionsetImplementation" />
@@ -85,6 +85,23 @@
 			<entry key="actionset.name" value="internal"/>
 			<entry key="actionset.capability" value="gnetstatistics"/>
 			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     Circuit provisioning Capability 
+	     ########################################
+	 -->
+	<bean id="circuitprovisioningCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.CircuitProvisioningCapabilityFactory">
+		<property name="type" value="circuitprovisioning"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="circuitprovisioningCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="circuitprovisioning"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
 	
@@ -132,4 +149,15 @@
 		</service-properties>
 	</service>		
 
+	<!-- PathFinding Internal ActionSet  -->
+	<bean id="pathFindingInternalActionSet" class="org.opennaas.extensions.genericnetwork.driver.internal.actionsets.PathFindingInternalActionSetImplementation"/>
+	<service ref="pathFindingInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="pathfinding"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
 </blueprint>

@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.capability.nettopology;
+package org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.helpers;
 
 /*
  * #%L
@@ -20,33 +20,29 @@ package org.opennaas.extensions.genericnetwork.capability.nettopology;
  * #L%
  */
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.util.List;
 
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.genericnetwork.model.topology.Topology;
+import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.CircuitsList;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 
 /**
- * Network Topology Capability interface
+ * Circuit Provisioning API Helper to transform API objects to capability objects and vice-versa
  * 
  * @author Julio Carlos Barrera
  * 
  */
-@Path("/")
-public interface INetTopologyCapability extends ICapability {
+public class CircuitProvisioningAPIHelper {
 
 	/**
-	 * Retrieves network topology
+	 * Transforms a {@link List} of {@link Circuit} to a new instance of {@link CircuitsList}
 	 * 
+	 * @param list
 	 * @return
-	 * @throws CapabilityException
 	 */
-	@Path("/topology")
-	@GET
-	@Produces(MediaType.APPLICATION_XML)
-	public Topology getTopology() throws CapabilityException;
+	public static CircuitsList listOfCircuits2CircuitList(List<Circuit> list) {
+		CircuitsList circuitsList = new CircuitsList();
+		circuitsList.setCircuits(list);
+		return circuitsList;
+	}
 
 }
