@@ -31,6 +31,8 @@ public class RouteSelectionInput {
 	private String	srcIP;
 	private String	dstIP;
 	private String	tos;
+	private String	srcPort;
+	private String	dstPort;
 
 	/**
 	 * Default constructor. ONLY FOR JAXB. Not to be used manually.
@@ -46,26 +48,27 @@ public class RouteSelectionInput {
 		this.tos = tos;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
+	public RouteSelectionInput(String srcIP, String dstIP, String tos, String srcPort, String dstPort) {
+		super();
+		this.srcIP = srcIP;
+		this.dstIP = dstIP;
+		this.tos = tos;
+		this.srcPort = srcPort;
+		this.dstPort = dstPort;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((dstIP == null) ? 0 : dstIP.hashCode());
+		result = prime * result + ((dstPort == null) ? 0 : dstPort.hashCode());
 		result = prime * result + ((srcIP == null) ? 0 : srcIP.hashCode());
+		result = prime * result + ((srcPort == null) ? 0 : srcPort.hashCode());
 		result = prime * result + ((tos == null) ? 0 : tos.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -80,10 +83,20 @@ public class RouteSelectionInput {
 				return false;
 		} else if (!dstIP.equals(other.dstIP))
 			return false;
+		if (dstPort == null) {
+			if (other.dstPort != null)
+				return false;
+		} else if (!dstPort.equals(other.dstPort))
+			return false;
 		if (srcIP == null) {
 			if (other.srcIP != null)
 				return false;
 		} else if (!srcIP.equals(other.srcIP))
+			return false;
+		if (srcPort == null) {
+			if (other.srcPort != null)
+				return false;
+		} else if (!srcPort.equals(other.srcPort))
 			return false;
 		if (tos == null) {
 			if (other.tos != null)
