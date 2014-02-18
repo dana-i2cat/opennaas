@@ -39,18 +39,21 @@ import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions
  */
 public class PathFinderComponentsTest {
 
-	private final static String	mappingUrl		= "src/test/resources/routeMapping.xml";
+	private final static String	MAPPING_URL				= "src/test/resources/routeMapping.xml";
+	private final static String	MAPPING_WITH_PORTS_URL	= "src/test/resources/routeMappingWithPorts.xml";
 
-	private final static String	SRC_IP			= "192.168.10.10";
-	private final static String	DST_IP			= "192.168.10.11";
-	private final static String	TOS				= "4";
+	private final static String	SRC_IP					= "192.168.10.10";
+	private final static String	DST_IP					= "192.168.10.11";
+	private final static String	TOS						= "4";
+	private final static String	SRC_PORT				= "portA";
+	private final static String	DST_PORT				= "portC";
 
-	private final static String	UNVALID_SRC_IP	= "10.10.10.11";
+	private final static String	UNVALID_SRC_IP			= "10.10.10.11";
 
 	@Test
 	public void RouteSelectionMapLoaderTest() throws FileNotFoundException, SerializationException {
 
-		RouteSelectionMap map = RouteSelectionMapLoader.getRouteSelectionMapFromXmlFile(mappingUrl);
+		RouteSelectionMap map = RouteSelectionMapLoader.getRouteSelectionMapFromXmlFile(MAPPING_URL);
 
 		Assert.assertNotNull("RouteSelectionMap should not be null.", map);
 		Assert.assertEquals("RouteSelectionMap should contain 4 mappings. ", 4, map.getRouteMapping().keySet().size());
@@ -62,7 +65,7 @@ public class PathFinderComponentsTest {
 		RouteSelectionLogic selectionLogic = new RouteSelectionLogic();
 		RouteSelectionInput input = new RouteSelectionInput(SRC_IP, DST_IP, TOS);
 
-		selectionLogic.setMappingUrl(mappingUrl);
+		selectionLogic.setMappingUrl(MAPPING_URL);
 		List<String> routes = selectionLogic.getPotentialRoutes(input);
 
 		Assert.assertNotNull("Potential routes should not be null.", routes);
@@ -77,7 +80,7 @@ public class PathFinderComponentsTest {
 		RouteSelectionLogic selectionLogic = new RouteSelectionLogic();
 		RouteSelectionInput input = new RouteSelectionInput(UNVALID_SRC_IP, DST_IP, TOS);
 
-		selectionLogic.setMappingUrl(mappingUrl);
+		selectionLogic.setMappingUrl(MAPPING_URL);
 		List<String> routes = selectionLogic.getPotentialRoutes(input);
 
 		Assert.assertNotNull("Potential routes should not be null.", routes);
@@ -93,6 +96,32 @@ public class PathFinderComponentsTest {
 
 		List<String> routes = selectionLogic.getPotentialRoutes(input);
 
+	}
+
+	@Test
+	public void RouteSelectionLogicWithLinkPorts() throws SerializationException, IOException {
+		RouteSelectionLogic selectionLogic = new RouteSelectionLogic();
+		RouteSelectionInput input = new RouteSelectionInput(SRC_IP, DST_IP, TOS, SRC_PORT, DST_PORT);
+
+		selectionLogic.setMappingUrl(MAPPING_WITH_PORTS_URL);
+		List<String> routes = selectionLogic.getPotentialRoutes(input);
+
+		Assert.assertNotNull("Potential routes should not be null.", routes);
+		Assert.assertEquals("Potential routes should consist only of one route.", 1, routes.size());
+		Assert.assertEquals("Potential routes should consist of route 3.", "3", routes.get(0));
+	}
+
+	@Test
+	public void RouteSelectionLogicWithLinkPortsOnlyInFile() throws SerializationException, IOException {
+		RouteSelectionLogic selectionLogic = new RouteSelectionLogic();
+		RouteSelectionInput input = new RouteSelectionInput(SRC_IP, DST_IP, TOS);
+
+		selectionLogic.setMappingUrl(MAPPING_WITH_PORTS_URL);
+		List<String> routes = selectionLogic.getPotentialRoutes(input);
+
+		Assert.assertNotNull("Potential routes should not be null.", routes);
+		Assert.assertEquals("Potential routes should consist only of one route.", 1, routes.size());
+		Assert.assertEquals("Potential routes should consist of route 3.", "3", routes.get(0));
 	}
 
 }

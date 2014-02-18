@@ -73,10 +73,40 @@ public class RouteSelectionLogic {
 
 		readMappingFile();
 
+		if (StringUtils.isEmpty(input.getSrcPort()) || StringUtils.isEmpty(input.getDstPort()))
+			return compareWithoutPorts(input);
+		else
+			return compareWithPorts(input);
+
+	}
+
+	/**
+	 * If ports are specified, there's a direct match, since the object contains all attributes from the keys.
+	 * 
+	 * @param input
+	 * @return
+	 */
+	private List<String> compareWithPorts(RouteSelectionInput input) {
 		if (!routeMap.getRouteMapping().containsKey(input))
 			return new ArrayList<String>(0);
 
 		return routeMap.getRouteMapping().get(input).getRouteIds();
+	}
+
+	/**
+	 * If ports are not specified, the containsKey would not work, since the object does not contain all attributes from the key.
+	 * 
+	 * @param input
+	 * @return
+	 */
+	private List<String> compareWithoutPorts(RouteSelectionInput input) {
+
+		for (RouteSelectionInput candidateInput : routeMap.getRouteMapping().keySet())
+			if (candidateInput.getSrcIP().equals(input.getSrcIP()) && candidateInput.getDstIP().equals(input.getDstIP()) && candidateInput.getTos()
+					.equals(input.getTos()))
+				return routeMap.getRouteMapping().get(candidateInput).getRouteIds();
+
+		return new ArrayList<String>(0);
 	}
 
 	private void readMappingFile() throws SerializationException, IOException {

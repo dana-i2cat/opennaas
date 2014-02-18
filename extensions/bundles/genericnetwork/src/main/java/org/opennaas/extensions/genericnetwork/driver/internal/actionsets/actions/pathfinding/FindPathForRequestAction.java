@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.action.Action;
@@ -190,10 +191,20 @@ public class FindPathForRequestAction extends Action {
 	}
 
 	private RouteSelectionInput createRouteSelectionInputFromRequest(PathRequest pathRequest) {
-		return new RouteSelectionInput(
-				pathRequest.getSource().getAddress(),
-				pathRequest.getDestination().getAddress(),
-				String.valueOf(pathRequest.getLabel()));
+
+		if (StringUtils.isEmpty(pathRequest.getSource().getLinkPort()) || StringUtils.isEmpty(pathRequest.getDestination().getLinkPort()))
+			return new RouteSelectionInput(
+					pathRequest.getSource().getAddress(),
+					pathRequest.getDestination().getAddress(),
+					String.valueOf(pathRequest.getLabel()));
+
+		else
+			return new RouteSelectionInput(
+					pathRequest.getSource().getAddress(),
+					pathRequest.getDestination().getAddress(),
+					String.valueOf(pathRequest.getLabel()),
+					pathRequest.getSource().getLinkPort(),
+					pathRequest.getDestination().getLinkPort());
 	}
 
 	private List<String> filterNotCongestedRoutes(List<String> routes) {
