@@ -66,9 +66,10 @@ public class PathFindingCapability extends AbstractCapability implements IPathFi
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(PathFindingParamsMapping.REQUEST_KEY, pathRequest);
-		params.put(PathFindingParamsMapping.ROUTES_FILE_KEY, this.getCapabilityDescriptor().getProperty(PathFindingParamsMapping.ROUTES_FILE_KEY));
+		params.put(PathFindingParamsMapping.ROUTES_FILE_KEY, this.getCapabilityDescriptor().getProperty(PathFindingParamsMapping.ROUTES_FILE_KEY)
+				.getValue());
 		params.put(PathFindingParamsMapping.ROUTES_MAPPING_KEY,
-				this.getCapabilityDescriptor().getProperty(PathFindingParamsMapping.ROUTES_MAPPING_KEY));
+				this.getCapabilityDescriptor().getProperty(PathFindingParamsMapping.ROUTES_MAPPING_KEY).getValue());
 
 		IAction action = createActionAndCheckParams(PathFindingActionSet.FIND_PATH_FOR_REQUEST, params);
 

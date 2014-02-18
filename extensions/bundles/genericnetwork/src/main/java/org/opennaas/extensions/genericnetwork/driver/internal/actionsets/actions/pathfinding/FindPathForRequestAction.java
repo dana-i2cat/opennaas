@@ -35,7 +35,9 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingActionSet;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingParamsMapping;
+import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteList;
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteSelectionInput;
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteSelectionLogic;
 import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
@@ -58,6 +60,7 @@ public class FindPathForRequestAction extends Action {
 
 	public FindPathForRequestAction() throws IOException, SerializationException {
 
+		this.actionID = PathFindingActionSet.FIND_PATH_FOR_REQUEST;
 		routes = new HashMap<String, Route>();
 		routeSelectionLogic = new RouteSelectionLogic();
 
@@ -171,9 +174,9 @@ public class FindPathForRequestAction extends Action {
 		Map<String, Route> finalPaths = new HashMap<String, Route>();
 		FileInputStream file = new FileInputStream((String) url);
 
-		List<Route> routes = ObjectSerializer.listFromXml(file, Route.class);
+		RouteList routes = ObjectSerializer.fromXml(file, RouteList.class);
 
-		for (Route route : routes) {
+		for (Route route : routes.getRoutes()) {
 			finalPaths.put(route.getId(), route);
 
 		}
