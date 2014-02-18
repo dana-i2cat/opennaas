@@ -36,8 +36,7 @@ public class OFProvisioningNetworkCapabilityFactory extends AbstractCapabilityFa
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
 		ICapability capability = this.create(resource.getResourceDescriptor()
-				.getCapabilityDescriptor(OFProvisioningNetworkCapability.CAPABILITY_TYPE),
-				resource.getResourceDescriptor().getId());
+				.getCapabilityDescriptor(OFProvisioningNetworkCapability.CAPABILITY_TYPE), resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
 	}
