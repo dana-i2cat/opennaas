@@ -39,7 +39,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 public class PathFindingCapability extends AbstractCapability implements IPathFindingCapability {
 
@@ -62,10 +62,10 @@ public class PathFindingCapability extends AbstractCapability implements IPathFi
 	 * 
 	 */
 	@Override
-	public Route findPathForRequest(PathRequest pathRequest) throws CapabilityException {
+	public Route findPathForRequest(CircuitRequest circuitRequest) throws CapabilityException {
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put(PathFindingParamsMapping.REQUEST_KEY, pathRequest);
+		params.put(PathFindingParamsMapping.REQUEST_KEY, circuitRequest);
 		params.put(PathFindingParamsMapping.ROUTES_FILE_KEY, this.getCapabilityDescriptor().getProperty(PathFindingParamsMapping.ROUTES_FILE_KEY)
 				.getValue());
 		params.put(PathFindingParamsMapping.ROUTES_MAPPING_KEY,

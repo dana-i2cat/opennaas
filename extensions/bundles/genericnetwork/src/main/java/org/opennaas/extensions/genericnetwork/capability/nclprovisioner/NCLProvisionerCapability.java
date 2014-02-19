@@ -28,7 +28,7 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public String allocateFlow(PathRequest pathRequest) throws CapabilityException {
+	public String allocateFlow(CircuitRequest circuitRequest) throws CapabilityException {
 		// TODO Auto-generated method stub
 		return null;
 	}

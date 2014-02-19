@@ -32,7 +32,7 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
  */
 public class GenericNetworkRepository extends ResourceRepository {
 
-	public static final String	OF_NETWORK_RESOURCE_TYPE	= "genericnetwork";
+	public static final String	GENERIC_NETWORK_RESOURCE_TYPE	= "genericnetwork";
 
 	Log							log							= LogFactory.getLog(GenericNetworkRepository.class);
 
