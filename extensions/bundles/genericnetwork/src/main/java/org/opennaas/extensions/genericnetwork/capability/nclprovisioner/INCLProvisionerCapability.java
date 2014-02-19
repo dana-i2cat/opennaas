@@ -27,6 +27,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
 
 /**
@@ -35,7 +36,7 @@ import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
  * 
  */
 @Path("/")
-public interface INCLProvisionerCapability {
+public interface INCLProvisionerCapability extends ICapability {
 
 	/**
 	 * Allocates a flow.
