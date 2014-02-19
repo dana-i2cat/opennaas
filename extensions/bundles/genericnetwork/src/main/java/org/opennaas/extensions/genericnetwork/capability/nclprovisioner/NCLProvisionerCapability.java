@@ -121,20 +121,6 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public void queueAction(IAction action) throws CapabilityException {
-		throw new UnsupportedOperationException("Not Implemented. This capability is not using the queue.");
-	}
-
-	@Override
-	public IActionSet getActionSet() throws CapabilityException {
-		throw new UnsupportedOperationException("This capability does not contain actionset.");
-	}
-
-	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
-		return this.resource.getCapabilityByInterface(clazz);
-	}
-
-	@Override
 	public void updateCircuit(String circuitId, PathRequest pathRequest) throws CapabilityException {
 
 		deallocateCircuit(circuitId);
@@ -159,6 +145,20 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		circuitCollection.setCircuits(getAllocatedCircuits());
 
 		return circuitCollection;
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		throw new UnsupportedOperationException("Not Implemented. This capability is not using the queue.");
+	}
+
+	@Override
+	public IActionSet getActionSet() throws CapabilityException {
+		throw new UnsupportedOperationException("This capability does not contain actionset.");
+	}
+
+	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
+		return this.resource.getCapabilityByInterface(clazz);
 	}
 
 }
