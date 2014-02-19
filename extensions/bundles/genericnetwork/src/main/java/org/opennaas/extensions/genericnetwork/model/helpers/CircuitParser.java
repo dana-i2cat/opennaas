@@ -104,7 +104,7 @@ public abstract class CircuitParser {
 		else
 			match.setDstIp(null);
 		if (!StringUtils.isEmpty(destination.getTransportPort()))
-			match.setDstPort(source.getTransportPort());
+			match.setDstPort(destination.getTransportPort());
 		else
 			match.setDstPort(null);
 		if (!StringUtils.isEmpty(request.getLabel()))
