@@ -1,6 +1,7 @@
 package org.opennaas.gui.nfvrouting.controllers;
 
 import java.util.Locale;
+import java.util.logging.Level;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.insertRoutes;
@@ -168,6 +169,30 @@ public class NFVRoutingController {
         }
         return response;
     }
+    
+    /**
+     * Remove all Routes without redirect
+     *
+     * @param type
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteAllRoutes")
+    public @ResponseBody
+    String deleteAllRoutes(ModelMap model) {
+        LOGGER.debug("Remove All Route ------------------> ");
+        String response = "";
+        
+        try {
+            response = nfvRoutingBO.deleteAllRoutes();
+            model.addAttribute("json", response);
+            model.addAttribute("infoMsg", "Route removed correctly.");
+        } catch (Exception e) {
+            model.addAttribute("errorMsg", e.getMessage());
+        }
+        return response;
+    }
 
     /**
      * Used in the Demo in order to show the Log
@@ -315,4 +340,41 @@ public class NFVRoutingController {
         }
         return response;
     }
+    
+        /**
+     * Redirect to Configure view. Get the Route table of the given IP type.
+     *
+     * @param type
+     * @param model
+     * @param locale
+     * @param session
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/routeAll")
+    public @ResponseBody String getRouteAll(@RequestParam("type") String type, ModelMap model, Locale locale, HttpSession session) {
+        LOGGER.error("Get Route Table ------------------> IPv" + type);
+        
+        if ((String) session.getAttribute("topologyName") != null) {
+                model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
+        
+        int typ;
+        if (type.equals("IPv4")) {
+            typ = 4;
+        } else if (type.equals("IPv6")) {
+            typ = 6;
+        } else {
+            model.addAttribute("errorMsg", "This type of table does not exist.");
+            return "configRoute";
+        }
+        String response = "";
+        try {
+            response = nfvRoutingBO.getRouteTable(typ);
+        } catch (RestServiceException ex) {
+            java.util.logging.Logger.getLogger(NFVRoutingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return response;
+    }
+
 }

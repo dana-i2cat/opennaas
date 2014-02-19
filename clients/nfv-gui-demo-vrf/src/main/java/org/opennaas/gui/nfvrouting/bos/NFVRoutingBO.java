@@ -44,6 +44,16 @@ public class NFVRoutingBO {
     public String deleteRoute(int id, int version) {
         return nfvRoutingService.deleteRoute(id, version);
     }
+    /**
+     * Remove route given the id
+     *
+     * @param id
+     * @param version
+     * @return status
+     */
+    public String deleteAllRoutes() {
+        return nfvRoutingService.deleteAllRoutes();
+    }
 
     /**
      * Request the status of specific controller

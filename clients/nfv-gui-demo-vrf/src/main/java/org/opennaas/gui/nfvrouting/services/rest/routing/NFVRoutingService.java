@@ -99,6 +99,30 @@ public class NFVRoutingService extends GenericRestService {
         }
         return response;
     }
+    
+    /**
+     * Remove Route given the id
+     *
+     * @param id
+     * @param version
+     * @return
+     */
+    public String deleteAllRoutes() {
+        String response = null;
+        try {
+            LOGGER.error("Remove all route");
+            String url = getURL("vrf/staticrouting/routes");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            webResource.accept(MediaType.TEXT_PLAIN).delete();
+            LOGGER.error("Removed route: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
 
     /**
      * Information about the switch.

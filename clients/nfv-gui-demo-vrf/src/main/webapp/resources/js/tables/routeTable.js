@@ -83,6 +83,14 @@ function removeAll(){
         table.deleteRow(i);
     }
     setTimeout( 'waiting(false)' ,2000);
+    console.log(type);
+    var jsonNewRoutes = getAllRoutes();
+    var listRoutes = getRouteList(jsonNewRoutes);
+    //getRoute
+    document.getElementById("listRoutes").innerHTML = "";
+    for ( var i = 0; i < listRoutes.length; i++){
+        document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
+    }
 }
 
 function del(id){
@@ -107,6 +115,33 @@ function del(id){
         }, 3000);
     }
     setTimeout( 'waiting(false)' ,2000);
+    return result;
+}
+
+function removeAllRoutes(){
+    waiting(true);
+    var result = "";
+    $.ajax({
+        type: 'POST',
+//        url : "deleteAllRoutes?type="+getURLParameter("type"),
+        url : "deleteAllRoutes",
+        async: false,
+        success : function (data) {
+            $("#dynamicContent").html(data);
+            result = data;                 
+        }
+    });
+    if(document.getElementById("removedOk") === null){
+        $("<div id='removedOk' class='success'>Removed correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
+        $('.success').next('br').remove();
+            setTimeout(function() {
+            //$('.success').remove();
+            $('.success').slideUp("slow", function() { $('.success').remove();});
+            //$('.success').fadeOut(300, function(){ $(this).remove();});
+        }, 3000);
+    }
+    setTimeout( 'waiting(false)' ,2000);
+    document.getElementById("innerTable").innerHTML = "";
     return result;
 }
 
@@ -162,6 +197,21 @@ console.log("Get specific route "+src+" "+dst);
     var json = eval("(" + result + ")");
 //console.log(result);
     var jsonHtmlTable = ConvertJsonToRouteTable(json, 'jsonTable'); 
+    document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
     document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
+    document.getElementById("innerTable").innerHTML += "</table><input style='margin-right: 11.5px' class='addRouteButton ui-button ui-widget ui-state-default ui-corner-all' onClick='removeAll()' type='button' value='Remove this route' name='Clean table'/>";
+}
 
+function getAllRoutes(){
+    var result = "";
+        $.ajax({
+            type: 'GET',
+            url : "routeAll?type=IPv4",
+            async: false,
+            success : function (data) {
+//                $("#dynamicContent").html(data);
+                result = data;
+            }
+        });
+    return eval("(" + result + ")");
 }
