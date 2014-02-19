@@ -107,6 +107,19 @@ public class PathFindingCapability extends AbstractCapability implements IPathFi
 
 	}
 
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				IPathFindingCapability.class.getName());
+		super.activate();
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		unregisterService();
+		super.deactivate();
+	}
+
 	private ActionResponse executeAction(IAction action) throws CapabilityException {
 
 		try {
