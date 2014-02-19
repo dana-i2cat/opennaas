@@ -20,6 +20,8 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  * #L%
  */
 
+import java.util.Collection;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,6 +36,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
 
 /**
@@ -83,10 +86,18 @@ public interface INCLProvisionerCapability extends ICapability {
 	 * @return Currently allocated circuits.
 	 * @throws ProvisionerException
 	 */
+	public Collection<Circuit> getAllocatedCircuits() throws CapabilityException;
+
+	/**
+	 * Returns currently allocated circuits
+	 * 
+	 * @return Currently allocated circuits.
+	 * @throws ProvisionerException
+	 */
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_XML)
-	public CircuitCollection getAllocatedCircuits() throws CapabilityException;
+	public CircuitCollection getAllocatedCircuitsAPI() throws CapabilityException;
 
 	@PUT
 	@Path("/{id}")
