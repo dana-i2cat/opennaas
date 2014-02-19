@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QoSPolicy {
 
-	private int	minLantency;
+	private int	minLatency;
 	private int	maxLatency;
 
 	private int	minJitter;
@@ -38,21 +38,21 @@ public class QoSPolicy {
 	private int	maxThroughput;
 
 	private int	minPacketLoss;
-	private int	maxPaquetLoss;
+	private int	maxPacketLoss;
 
 	/**
 	 * @return the minLantency
 	 */
-	public int getMinLantency() {
-		return minLantency;
+	public int getMinLatency() {
+		return minLatency;
 	}
 
 	/**
 	 * @param minLantency
 	 *            the minLantency to set
 	 */
-	public void setMinLantency(int minLantency) {
-		this.minLantency = minLantency;
+	public void setMinLatency(int minLantency) {
+		this.minLatency = minLantency;
 	}
 
 	/**
@@ -148,16 +148,16 @@ public class QoSPolicy {
 	/**
 	 * @return the maxPaquetLoss
 	 */
-	public int getMaxPaquetLoss() {
-		return maxPaquetLoss;
+	public int getMaxPacketLoss() {
+		return maxPacketLoss;
 	}
 
 	/**
 	 * @param maxPaquetLoss
 	 *            the maxPaquetLoss to set
 	 */
-	public void setMaxPaquetLoss(int maxPaquetLoss) {
-		this.maxPaquetLoss = maxPaquetLoss;
+	public void setMaxPacketLoss(int maxPacketLoss) {
+		this.maxPacketLoss = maxPacketLoss;
 	}
 
 	/*
@@ -171,10 +171,10 @@ public class QoSPolicy {
 		int result = 1;
 		result = prime * result + maxJitter;
 		result = prime * result + maxLatency;
-		result = prime * result + maxPaquetLoss;
+		result = prime * result + maxPacketLoss;
 		result = prime * result + maxThroughput;
 		result = prime * result + minJitter;
-		result = prime * result + minLantency;
+		result = prime * result + minLatency;
 		result = prime * result + minPacketLoss;
 		result = prime * result + minThroughput;
 		return result;
@@ -198,13 +198,13 @@ public class QoSPolicy {
 			return false;
 		if (maxLatency != other.maxLatency)
 			return false;
-		if (maxPaquetLoss != other.maxPaquetLoss)
+		if (maxPacketLoss != other.maxPacketLoss)
 			return false;
 		if (maxThroughput != other.maxThroughput)
 			return false;
 		if (minJitter != other.minJitter)
 			return false;
-		if (minLantency != other.minLantency)
+		if (minLatency != other.minLatency)
 			return false;
 		if (minPacketLoss != other.minPacketLoss)
 			return false;
