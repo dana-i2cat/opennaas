@@ -21,8 +21,10 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  */
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -50,5 +52,16 @@ public interface INCLProvisionerCapability extends ICapability {
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public String allocateCircuit(PathRequest pathRequest) throws CapabilityException;
+
+	/**
+	 * Deallocates an allocated circuit.
+	 * 
+	 * @param qosPolicyRequest
+	 * @return circuitId of allocated circuit
+	 * @throws CapabilityException
+	 */
+	@DELETE
+	@Path("/{id}")
+	public void deallocateCircuit(@PathParam("id") String circuitId) throws CapabilityException;
 
 }

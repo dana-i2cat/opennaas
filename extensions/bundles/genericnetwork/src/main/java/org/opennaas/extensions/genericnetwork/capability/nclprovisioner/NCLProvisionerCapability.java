@@ -84,6 +84,21 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
+	public void deallocateCircuit(String circuitId) throws CapabilityException {
+		// TODO add aggregation logic when capability is implemented.
+		ICircuitProvisioningCapability circuitProvCapability;
+		try {
+			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
+
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		circuitProvCapability.deallocate(circuitId);
+
+	}
+
+	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		throw new UnsupportedOperationException("Not Implemented. This capability is not using the queue.");
 	}
@@ -96,4 +111,5 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
 		return this.resource.getCapabilityByInterface(clazz);
 	}
+
 }
