@@ -1,4 +1,4 @@
-    function ConvertJsonToRouteTable(parsedJson, tableId) {
+function ConvertJsonToRouteTable(parsedJson, tableId) {
     waiting(true);
     //Patterns for links and NULL value
    
@@ -70,6 +70,9 @@
     return null;
 }
 
+/**
+ * Remove a route. In order to do this, this function remove the links that are represented in a table.
+ */
 function removeAll(){
     waiting(true);
     var table = document.getElementById("jsonTable");
@@ -83,16 +86,20 @@ function removeAll(){
         table.deleteRow(i);
     }
     setTimeout( 'waiting(false)' ,2000);
-    console.log(type);
-    var jsonNewRoutes = getAllRoutes();
+
+    //get the routes from OpenNaaS (updated list)
+    var jsonNewRoutes = getAllRoutes(type);
     var listRoutes = getRouteList(jsonNewRoutes);
-    //getRoute
+    
     document.getElementById("listRoutes").innerHTML = "";
     for ( var i = 0; i < listRoutes.length; i++){
         document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
     }
 }
 
+/**
+ * Remove a link given its id.
+ */
 function del(id){
     waiting(true);
     var result = "";
@@ -118,6 +125,9 @@ function del(id){
     return result;
 }
 
+/**
+ * Remove all the routes loaded in OpenNaaS. It doesn't matter if the routes are represented in a table.
+ */
 function removeAllRoutes(){
     waiting(true);
     var result = "";
@@ -144,15 +154,10 @@ function removeAllRoutes(){
     document.getElementById("innerTable").innerHTML = "";
     return result;
 }
-
-function waiting(status){
-    $body = $("body");
-    if(status)
-        $body.addClass("loading");
-    else
-        $body.removeClass("loading");
-}
-
+/**
+ * Create an array of possible routes given the routes created in OpenNaaS.
+ * Returns a list with the following format: [ipSrc1:ipDst1, ipSrc2:ipDst2]
+ */
 function getRouteList(jsonReceived){
     var possibleRoutes = [];
 //console.log(jsonReceived.routeTable);
@@ -182,6 +187,9 @@ function getRouteList(jsonReceived){
     }
     return possibleRoutes;
 }
+/**
+ * Request the list of links of specific route
+ */
 function getSpecificRoute(src, dst){
 console.log("Get specific route "+src+" "+dst);
         var result = "";
@@ -201,12 +209,14 @@ console.log("Get specific route "+src+" "+dst);
     document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
     document.getElementById("innerTable").innerHTML += "</table><input style='margin-right: 11.5px' class='addRouteButton ui-button ui-widget ui-state-default ui-corner-all' onClick='removeAll()' type='button' value='Remove this route' name='Clean table'/>";
 }
-
-function getAllRoutes(){
+/**
+ * Request to OpenNaaS in order to obtain the list of routes given the IP version in the following format (Ipv4/IPv6)
+ */
+function getAllRoutes(type){
     var result = "";
         $.ajax({
             type: 'GET',
-            url : "routeAll?type=IPv4",
+            url : "routeAll?type="+type,
             async: false,
             success : function (data) {
 //                $("#dynamicContent").html(data);
@@ -214,4 +224,12 @@ function getAllRoutes(){
             }
         });
     return eval("(" + result + ")");
+}
+
+function waiting(status){
+    $body = $("body");
+    if(status)
+        $body.addClass("loading");
+    else
+        $body.removeClass("loading");
 }

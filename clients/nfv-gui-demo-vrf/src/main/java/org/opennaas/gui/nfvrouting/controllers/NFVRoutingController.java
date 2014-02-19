@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -288,7 +287,7 @@ public class NFVRoutingController {
     }
     
      /**
-     * Get route paths
+     * Get route paths given ipSrc and IpDest
      *
      * @param ipSrc
      * @param ipDst
@@ -310,21 +309,13 @@ public class NFVRoutingController {
         return response;
     }
     
-    
-    @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/updateTopo")
-    public @ResponseBody String updateTopo(@RequestBody String json, ModelMap model) {
-        LOGGER.error("Update TOPO ");
-        String response = "";
-        try {
-            //store data to file.json
-            LOGGER.error(response);
-            model.addAttribute("json", response);
-            model.addAttribute("infoMsg", "Route removed correctly.");
-        } catch (Exception e) {
-            model.addAttribute("errorMsg", e.getMessage());
-        }
-        return response;
-    }
+    /**
+     * Return a json file that contains the Topology definiton
+     * @param ipSrc
+     * @param ipDst
+     * @param model
+     * @return 
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getTopo")
     public @ResponseBody String getTopo(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, ModelMap model) {
         LOGGER.error("Get ROUTE " + ipSrc+" "+ipDst);
@@ -341,22 +332,16 @@ public class NFVRoutingController {
         return response;
     }
     
-        /**
-     * Redirect to Configure view. Get the Route table of the given IP type.
+    /**
+     * Return a json file that contains the routes.
      *
      * @param type
      * @param model
-     * @param locale
-     * @param session
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/routeAll")
-    public @ResponseBody String getRouteAll(@RequestParam("type") String type, ModelMap model, Locale locale, HttpSession session) {
+    public @ResponseBody String getRouteAll(@RequestParam("type") String type, ModelMap model) {
         LOGGER.error("Get Route Table ------------------> IPv" + type);
-        
-        if ((String) session.getAttribute("topologyName") != null) {
-                model.put("topologyName", (String) session.getAttribute("topologyName"));
-        }
         
         int typ;
         if (type.equals("IPv4")) {
