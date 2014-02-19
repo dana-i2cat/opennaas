@@ -34,7 +34,7 @@ import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
  */
 public abstract class CircuitFactoryLogic {
 
-	public Circuit generateCircuit(PathRequest request, Route route) {
+	public static Circuit generateCircuit(PathRequest request, Route route) {
 
 		Circuit circuit = CircuitParser.pathRequestToCircuit(request);
 
@@ -45,7 +45,7 @@ public abstract class CircuitFactoryLogic {
 
 	}
 
-	private String generateRandomCircuitId() {
+	private static String generateRandomCircuitId() {
 		return UUID.randomUUID().toString();
 	}
 

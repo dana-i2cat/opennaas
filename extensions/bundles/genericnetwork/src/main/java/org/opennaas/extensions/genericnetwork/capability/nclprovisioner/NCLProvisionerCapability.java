@@ -22,11 +22,18 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICircuitProvisioningCapability;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
+import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
+import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
 
 /**
@@ -55,9 +62,25 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public String allocateFlow(PathRequest pathRequest) throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+	public String allocateCircuit(PathRequest pathRequest) throws CapabilityException {
+
+		IPathFindingCapability pathFindingCapab;
+		ICircuitProvisioningCapability circuitProvCapability;
+		try {
+			pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
+			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
+
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		Route route = pathFindingCapab.findPathForRequest(pathRequest);
+		Circuit circuit = CircuitFactoryLogic.generateCircuit(pathRequest, route);
+		// TODO add aggregation logic when capability is implemented.
+
+		circuitProvCapability.allocate(circuit);
+
+		return circuit.getCircuitId();
 	}
 
 	@Override
@@ -68,7 +91,9 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		throw new UnsupportedOperationException("This capability does not contain actionset.");
-
 	}
 
+	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
+		return this.resource.getCapabilityByInterface(clazz);
+	}
 }
