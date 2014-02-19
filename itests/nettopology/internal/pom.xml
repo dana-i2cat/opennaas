@@ -4,10 +4,10 @@
     <groupId>org.opennaas</groupId>
     <artifactId>org.opennaas.itests</artifactId>
     <version>0.27-SNAPSHOT</version>
+    <relativePath>../../</relativePath>
   </parent>
-  <groupId>org.opennaas.itests.genericnetwork</groupId>
-  <artifactId>org.opennaas.itests.genericnetwork</artifactId>
-  <name>OpenNaaS :: iTests :: Generic Network</name>
+  <artifactId>org.opennaas.itests.nettopology.internal</artifactId>
+  <name>OpenNaaS :: iTests :: NetTopology :: Internal</name>
   <packaging>jar</packaging>  
   
   <dependencies>

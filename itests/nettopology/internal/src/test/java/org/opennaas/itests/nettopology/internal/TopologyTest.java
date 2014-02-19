@@ -1,4 +1,4 @@
-package org.opennaas.itests.genericnetwork;
+package org.opennaas.itests.nettopology.internal;
 
 /*
  * #%L
