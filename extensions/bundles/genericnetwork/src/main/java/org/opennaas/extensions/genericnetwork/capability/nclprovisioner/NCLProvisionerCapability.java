@@ -20,6 +20,8 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  * #L%
  */
 
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ResourceException;
@@ -96,6 +98,19 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		circuitProvCapability.deallocate(circuitId);
 
+	}
+
+	@Override
+	public Collection<Circuit> getAllocatedCircuits() throws CapabilityException {
+		ICircuitProvisioningCapability circuitProvCapability;
+		try {
+			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
+
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		return circuitProvCapability.getCircuits();
 	}
 
 	@Override
