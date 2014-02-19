@@ -353,11 +353,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
-				<version>${project.version}</version>	    
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -424,8 +419,13 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 	 			<artifactId>org.opennaas.extensions.ofertie.ncl</artifactId>
-				<version>${project.version}</version>	 			
-			</dependency>			
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			
 			<!-- iTests -->
 			<dependency>

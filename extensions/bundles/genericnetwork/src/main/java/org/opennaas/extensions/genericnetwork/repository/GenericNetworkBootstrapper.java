@@ -26,6 +26,8 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.genericnetwork.capability.nettopology.INetTopologyCapability;
+import org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapability;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 
 /**
@@ -44,6 +46,10 @@ public class GenericNetworkBootstrapper implements IResourceBootstrapper {
 		log.info("Loading bootstrap to start resource...");
 		oldModel = resource.getModel();
 		resource.setModel(new GenericNetworkModel());
+
+		// FIXME coupling Bootstrapper with a Capability implementation!!!
+		NetTopologyCapability topologyCapability = (NetTopologyCapability) resource.getCapabilityByInterface(INetTopologyCapability.class);
+		topologyCapability.loadTopology();
 
 	}
 
