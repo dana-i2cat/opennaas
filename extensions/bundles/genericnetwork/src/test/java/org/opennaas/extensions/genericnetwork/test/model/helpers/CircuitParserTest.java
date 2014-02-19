@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.test.model.helper;
+package org.opennaas.extensions.genericnetwork.test.model.helpers;
 
 /*
  * #%L
