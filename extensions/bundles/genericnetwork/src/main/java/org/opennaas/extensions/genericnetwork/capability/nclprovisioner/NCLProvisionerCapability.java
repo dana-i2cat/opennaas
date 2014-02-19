@@ -27,6 +27,7 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
@@ -69,6 +70,19 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	public IActionSet getActionSet() throws CapabilityException {
 		throw new UnsupportedOperationException("This capability does not contain actionset.");
 
+	}
+
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				INCLProvisionerCapability.class.getName());
+		super.activate();
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		unregisterService();
+		super.deactivate();
 	}
 
 }
