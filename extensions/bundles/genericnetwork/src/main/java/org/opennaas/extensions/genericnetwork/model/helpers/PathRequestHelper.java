@@ -1,4 +1,12 @@
-package org.opennaas.extensions.genericnetwork.model.path;
+package org.opennaas.extensions.genericnetwork.model.helpers;
+
+import org.opennaas.extensions.genericnetwork.model.path.Destination;
+import org.opennaas.extensions.genericnetwork.model.path.Jitter;
+import org.opennaas.extensions.genericnetwork.model.path.Latency;
+import org.opennaas.extensions.genericnetwork.model.path.PacketLoss;
+import org.opennaas.extensions.genericnetwork.model.path.QosPolicy;
+import org.opennaas.extensions.genericnetwork.model.path.Source;
+import org.opennaas.extensions.genericnetwork.model.path.Throughput;
 
 /*
  * #%L
