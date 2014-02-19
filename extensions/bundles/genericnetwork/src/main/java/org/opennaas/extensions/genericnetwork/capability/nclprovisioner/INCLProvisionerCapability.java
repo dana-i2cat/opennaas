@@ -24,6 +24,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -76,5 +77,11 @@ public interface INCLProvisionerCapability extends ICapability {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_XML)
 	public CircuitCollection getAllocatedCircuits() throws CapabilityException;
+
+	@PUT
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	public void updateCircuit(@PathParam("{id}") String circuitId, PathRequest pathRequest) throws CapabilityException;
 
 }

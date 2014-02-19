@@ -131,4 +131,12 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		return this.resource.getCapabilityByInterface(clazz);
 	}
 
+	@Override
+	public void updateCircuit(String circuitId, PathRequest pathRequest) throws CapabilityException {
+
+		deallocateCircuit(circuitId);
+		allocateCircuit(pathRequest);
+
+	}
+
 }
