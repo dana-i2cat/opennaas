@@ -32,6 +32,6 @@ public abstract class PathFindingParamsMapping {
 
 	public final static String	ROUTES_FILE_KEY		= "routes";
 	public final static String	ROUTES_MAPPING_KEY	= "routeMapping";
-	public final static String	REQUEST_KEY			= "pathrequest";
+	public final static String	REQUEST_KEY			= "circuitRequest";
 
 }

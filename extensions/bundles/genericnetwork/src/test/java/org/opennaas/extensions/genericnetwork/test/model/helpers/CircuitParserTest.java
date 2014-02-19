@@ -25,16 +25,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.Destination;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.Source;
 import org.opennaas.extensions.genericnetwork.model.helpers.CircuitParser;
-import org.opennaas.extensions.genericnetwork.model.helpers.PathRequestHelper;
-import org.opennaas.extensions.genericnetwork.model.path.Destination;
-import org.opennaas.extensions.genericnetwork.model.path.Jitter;
-import org.opennaas.extensions.genericnetwork.model.path.Latency;
-import org.opennaas.extensions.genericnetwork.model.path.PacketLoss;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
-import org.opennaas.extensions.genericnetwork.model.path.QosPolicy;
-import org.opennaas.extensions.genericnetwork.model.path.Source;
-import org.opennaas.extensions.genericnetwork.model.path.Throughput;
+import org.opennaas.extensions.genericnetwork.model.helpers.CircuitRequestHelper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 public class CircuitParserTest {
@@ -49,23 +44,20 @@ public class CircuitParserTest {
 
 	private static final String	TOS					= "4";
 
-	private static final String	JITTER_MIN			= "0";
-	private static final String	JITTER_MAX			= "2";
-	private static final String	LATENCY_MIN			= "0";
-	private static final String	LATENCY_MAX			= "1";
-	private static final String	PACKET_LOSS_MIN		= "0";
-	private static final String	PACKET_LOSS_MAX		= "1";
-	private static final String	THROUGHPUT_MIN		= "0";
-	private static final String	THROUGHPUT_MAX		= "5";
-	private static final String	DELAY				= "10";
-	private static final String	TIMEOUT				= "60";
-	private static final String	PRIORITY			= "1";
+	private static final int	JITTER_MIN			= 0;
+	private static final int	JITTER_MAX			= 2;
+	private static final int	LATENCY_MIN			= 0;
+	private static final int	LATENCY_MAX			= 1;
+	private static final int	PACKET_LOSS_MIN		= 0;
+	private static final int	PACKET_LOSS_MAX		= 1;
+	private static final int	THROUGHPUT_MIN		= 0;
+	private static final int	THROUGHPUT_MAX		= 5;
 
 	@Test
-	public void pathRequestToCircuitTest() {
+	public void circuitRequestToCircuitTest() {
 
-		PathRequest request = generateSampleRequest();
-		Circuit circuit = CircuitParser.pathRequestToCircuit(request);
+		CircuitRequest request = generateSampleRequest();
+		Circuit circuit = CircuitParser.circuitRequestToCircuit(request);
 
 		Assert.assertNotNull(circuit);
 
@@ -83,47 +75,34 @@ public class CircuitParserTest {
 		Assert.assertTrue(Integer.valueOf(TOS) == Integer.valueOf(match.getTosBits()) * 4);
 
 		QoSPolicy qos = circuit.getQos();
-		Assert.assertEquals(JITTER_MIN, String.valueOf(qos.getMinJitter()));
-		Assert.assertEquals(JITTER_MAX, String.valueOf(qos.getMaxJitter()));
-		Assert.assertEquals(LATENCY_MIN, String.valueOf(qos.getMinLatency()));
-		Assert.assertEquals(LATENCY_MAX, String.valueOf(qos.getMaxLatency()));
-		Assert.assertEquals(THROUGHPUT_MIN, String.valueOf(qos.getMinThroughput()));
-		Assert.assertEquals(THROUGHPUT_MAX, String.valueOf(qos.getMaxThroughput()));
-		Assert.assertEquals(PACKET_LOSS_MIN, String.valueOf(qos.getMinPacketLoss()));
-		Assert.assertEquals(PACKET_LOSS_MAX, String.valueOf(qos.getMaxPacketLoss()));
+		Assert.assertEquals(JITTER_MIN, qos.getMinJitter());
+		Assert.assertEquals(JITTER_MAX, qos.getMaxJitter());
+		Assert.assertEquals(LATENCY_MIN, qos.getMinLatency());
+		Assert.assertEquals(LATENCY_MAX, qos.getMaxLatency());
+		Assert.assertEquals(THROUGHPUT_MIN, qos.getMinThroughput());
+		Assert.assertEquals(THROUGHPUT_MAX, qos.getMaxThroughput());
+		Assert.assertEquals(PACKET_LOSS_MIN, qos.getMinPacketLoss());
+		Assert.assertEquals(PACKET_LOSS_MAX, qos.getMaxPacketLoss());
 
 	}
 
-	private PathRequest generateSampleRequest() {
+	private CircuitRequest generateSampleRequest() {
 
-		PathRequest request = new PathRequest();
+		Source source = CircuitRequestHelper.generateSource(SRC_IP, SRC_LINK_PORT, SRC_TRANSPORT_PORT);
+		Destination destination = CircuitRequestHelper.generateDestination(DST_IP, DST_LINK_PORT, DST_TRANSPORT_PORT);
+		QoSPolicy policy = generateSamplePolicy();
 
-		Source source = PathRequestHelper.generateSource(SRC_IP, SRC_LINK_PORT, SRC_TRANSPORT_PORT);
-		Destination destination = PathRequestHelper.generateDestination(DST_IP, DST_LINK_PORT, DST_TRANSPORT_PORT);
-
-		request.setSource(source);
-		request.setDestination(destination);
-		request.setQosPolicy(generateSampleQosPolicy());
-		request.setLabel(TOS);
+		CircuitRequest request = CircuitRequestHelper.generateCircuitRequest(source, destination, TOS, policy, null);
 
 		return request;
 	}
 
-	private QosPolicy generateSampleQosPolicy() {
+	private QoSPolicy generateSamplePolicy() {
 
-		QosPolicy qos = new QosPolicy();
+		QoSPolicy policy = CircuitRequestHelper.generateQoSPolicy(JITTER_MIN, JITTER_MAX, LATENCY_MIN, LATENCY_MAX, THROUGHPUT_MIN, THROUGHPUT_MAX,
+				PACKET_LOSS_MIN, PACKET_LOSS_MAX);
 
-		Jitter jitter = PathRequestHelper.generateJitter(JITTER_MIN, JITTER_MAX, DELAY, TIMEOUT, PRIORITY);
-		Latency latency = PathRequestHelper.generateLatency(LATENCY_MIN, LATENCY_MAX, DELAY, TIMEOUT, PRIORITY);
-		PacketLoss packetLoss = PathRequestHelper.generatePacketLoss(PACKET_LOSS_MIN, PACKET_LOSS_MAX, DELAY, TIMEOUT, PRIORITY);
-		Throughput throughput = PathRequestHelper.generateThroughPut(THROUGHPUT_MIN, THROUGHPUT_MAX, DELAY, TIMEOUT, PRIORITY);
-
-		qos.setJitter(jitter);
-		qos.setLatency(latency);
-		qos.setPacketLoss(packetLoss);
-		qos.setThroughput(throughput);
-
-		return qos;
+		return policy;
 	}
 
 }

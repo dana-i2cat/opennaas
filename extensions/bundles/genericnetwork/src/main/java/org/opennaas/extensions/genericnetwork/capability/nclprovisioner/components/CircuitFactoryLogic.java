@@ -24,8 +24,8 @@ import java.util.UUID;
 
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.genericnetwork.model.helpers.CircuitParser;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
 
 /**
  * 
@@ -34,9 +34,9 @@ import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
  */
 public abstract class CircuitFactoryLogic {
 
-	public Circuit generateCircuit(PathRequest request, Route route) {
+	public Circuit generateCircuit(CircuitRequest request, Route route) {
 
-		Circuit circuit = CircuitParser.pathRequestToCircuit(request);
+		Circuit circuit = CircuitParser.circuitRequestToCircuit(request);
 
 		circuit.setCircuitId(generateRandomCircuitId());
 		circuit.setRoute(route);

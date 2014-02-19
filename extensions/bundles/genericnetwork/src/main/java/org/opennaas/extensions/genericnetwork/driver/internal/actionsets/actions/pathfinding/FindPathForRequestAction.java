@@ -43,7 +43,7 @@ import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteSelectionLogic;
 import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
  * 
@@ -88,12 +88,12 @@ public class FindPathForRequestAction extends Action {
 			throw new ActionException(
 					"Invalid params for action " + this.actionID + ". Excected param is a map with keys " + PathFindingParamsMapping.ROUTES_FILE_KEY + " and " + PathFindingParamsMapping.REQUEST_KEY);
 
-		// checks there's a valid PathRequest
+		// checks there's a valid CircuitRequest
 		Object request = mapParam.get(PathFindingParamsMapping.REQUEST_KEY);
 
-		if (!(request instanceof PathRequest))
+		if (!(request instanceof CircuitRequest))
 			throw new ActionException(
-					"Invalid params for action " + this.actionID + ". " + PathFindingParamsMapping.REQUEST_KEY + " should contain a " + PathRequest.class
+					"Invalid params for action " + this.actionID + ". " + PathFindingParamsMapping.REQUEST_KEY + " should contain a " + CircuitRequest.class
 							.getName() + " and not a " + request.getClass().getName());
 
 		// checks there's a valid URL for the file containing the routes
@@ -136,7 +136,7 @@ public class FindPathForRequestAction extends Action {
 
 		Map<String, Object> mapParam = (Map<String, Object>) this.params;
 
-		PathRequest request = (PathRequest) mapParam.get(PathFindingParamsMapping.REQUEST_KEY);
+		CircuitRequest request = (CircuitRequest) mapParam.get(PathFindingParamsMapping.REQUEST_KEY);
 		String routesURL = (String) mapParam.get(PathFindingParamsMapping.ROUTES_FILE_KEY);
 		String mappingURL = (String) mapParam.get(PathFindingParamsMapping.ROUTES_MAPPING_KEY);
 
@@ -190,21 +190,21 @@ public class FindPathForRequestAction extends Action {
 		return finalPaths;
 	}
 
-	private RouteSelectionInput createRouteSelectionInputFromRequest(PathRequest pathRequest) {
+	private RouteSelectionInput createRouteSelectionInputFromRequest(CircuitRequest circuitRequest) {
 
-		if (StringUtils.isEmpty(pathRequest.getSource().getLinkPort()) || StringUtils.isEmpty(pathRequest.getDestination().getLinkPort()))
+		if (StringUtils.isEmpty(circuitRequest.getSource().getLinkPort()) || StringUtils.isEmpty(circuitRequest.getDestination().getLinkPort()))
 			return new RouteSelectionInput(
-					pathRequest.getSource().getAddress(),
-					pathRequest.getDestination().getAddress(),
-					String.valueOf(pathRequest.getLabel()));
+					circuitRequest.getSource().getAddress(),
+					circuitRequest.getDestination().getAddress(),
+					String.valueOf(circuitRequest.getLabel()));
 
 		else
 			return new RouteSelectionInput(
-					pathRequest.getSource().getAddress(),
-					pathRequest.getDestination().getAddress(),
-					String.valueOf(pathRequest.getLabel()),
-					pathRequest.getSource().getLinkPort(),
-					pathRequest.getDestination().getLinkPort());
+					circuitRequest.getSource().getAddress(),
+					circuitRequest.getDestination().getAddress(),
+					String.valueOf(circuitRequest.getLabel()),
+					circuitRequest.getSource().getLinkPort(),
+					circuitRequest.getDestination().getLinkPort());
 	}
 
 	private List<String> filterNotCongestedRoutes(List<String> routes) {
