@@ -1,8 +1,7 @@
 Virtualized Routing Function
 ========
 
-This resource offers the Routing Function from OpenNaaS.
+This bundle offers a dyanmic Routing Function (Dijkstra).
 Is deployed as application on top of OpenNaaS and is accessible through WebServices.
-
-Contains a REST interface (/opennaas/vrf/routing/routes) that allows to acces to the model.
-Requires a json file that contains the static routes.
+The REST interface is avaialbe in /opennaas/vrf/dijkstrarouting/routes
+Requires a topology file in order to use the Disjkstra algorithm.

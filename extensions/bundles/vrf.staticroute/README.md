@@ -1,8 +1,6 @@
-Virtualized Routing Function
+Virtualized Routing Function - Static Routing
 ========
 
-This resource offers the Routing Function from OpenNaaS.
+This bundle offers a Static Routing Function.
 Is deployed as application on top of OpenNaaS and is accessible through WebServices.
-
-Contains a REST interface (/opennaas/vrf/routing/routes) that allows to acces to the model.
-Requires a json file that contains the static routes.
+The REST interface is available in this address /opennaas/vrf/staticrouting/routes

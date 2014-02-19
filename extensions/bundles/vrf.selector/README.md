@@ -1,8 +1,8 @@
-Virtualized Routing Function
+Virtualized Routing Function - Selector
 ========
 
-This resource offers the Routing Function from OpenNaaS.
+This bundle acts as a proxy in order to process all the routing requests. 
+Then, according to its configuration, this bundle uses the configured type of routing (static/dynamic).-
 Is deployed as application on top of OpenNaaS and is accessible through WebServices.
-
-Contains a REST interface (/opennaas/vrf/routing/routes) that allows to acces to the model.
-Requires a json file that contains the static routes.
+The REST interface is the following:
+		/opennaas/vrf/routing/routes
