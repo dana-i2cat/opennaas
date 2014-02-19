@@ -23,29 +23,25 @@ package org.opennaas.extensions.genericnetwork.model.helpers;
 import org.apache.commons.lang.StringUtils;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
-import org.opennaas.extensions.genericnetwork.model.path.Destination;
-import org.opennaas.extensions.genericnetwork.model.path.Jitter;
-import org.opennaas.extensions.genericnetwork.model.path.Latency;
-import org.opennaas.extensions.genericnetwork.model.path.PacketLoss;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
-import org.opennaas.extensions.genericnetwork.model.path.QosPolicy;
-import org.opennaas.extensions.genericnetwork.model.path.Source;
-import org.opennaas.extensions.genericnetwork.model.path.Throughput;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.Destination;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.Source;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Julio Carlos Barrera
  * 
  */
 public abstract class CircuitParser {
 
-	public static Circuit pathRequestToCircuit(PathRequest request) {
+	public static Circuit circuitRequestToCircuit(CircuitRequest request) {
 
 		Circuit circuit = new Circuit();
 
-		FloodlightOFMatch trafficFilter = pathRequestToFloodlightOFMatch(request);
-		QoSPolicy qos = qosPolicyRequestToQosPolicyModel(request.getQosPolicy());
+		FloodlightOFMatch trafficFilter = circuitRequestToFloodlightOFMatch(request);
+		QoSPolicy qos = request.getQosPolicy();
 
 		circuit.setQos(qos);
 		circuit.setTrafficFilter(trafficFilter);
@@ -53,36 +49,13 @@ public abstract class CircuitParser {
 		return circuit;
 	}
 
-	public static QoSPolicy qosPolicyRequestToQosPolicyModel(QosPolicy qosPolicy) {
-
-		QoSPolicy qosToReturn = new QoSPolicy();
-
-		Jitter jitter = qosPolicy.getJitter();
-		qosToReturn.setMinJitter(Integer.valueOf(jitter.getMin()));
-		qosToReturn.setMaxJitter(Integer.valueOf(jitter.getMax()));
-
-		Latency latency = qosPolicy.getLatency();
-		qosToReturn.setMinLatency(Integer.valueOf(latency.getMin()));
-		qosToReturn.setMaxLatency(Integer.valueOf(latency.getMax()));
-
-		PacketLoss packetLoss = qosPolicy.getPacketLoss();
-		qosToReturn.setMinPacketLoss(Integer.valueOf(packetLoss.getMin()));
-		qosToReturn.setMaxPacketLoss(Integer.valueOf(packetLoss.getMax()));
-
-		Throughput throughput = qosPolicy.getThroughput();
-		qosToReturn.setMinThroughput(Integer.valueOf(throughput.getMin()));
-		qosToReturn.setMaxThroughput(Integer.valueOf(throughput.getMax()));
-
-		return qosToReturn;
-	}
-
 	/**
-	 * Builds a {@link FloodlightOFMatch} object from the given {@link PathRequest}
+	 * Builds a {@link FloodlightOFMatch} object from the given {@link CircuitRequest}
 	 * 
 	 * @param request
 	 * @return
 	 */
-	public static FloodlightOFMatch pathRequestToFloodlightOFMatch(PathRequest request) {
+	public static FloodlightOFMatch circuitRequestToFloodlightOFMatch(CircuitRequest request) {
 		FloodlightOFMatch match = new FloodlightOFMatch();
 
 		Source source = request.getSource();
@@ -104,7 +77,7 @@ public abstract class CircuitParser {
 		else
 			match.setDstIp(null);
 		if (!StringUtils.isEmpty(destination.getTransportPort()))
-			match.setDstPort(source.getTransportPort());
+			match.setDstPort(destination.getTransportPort());
 		else
 			match.setDstPort(null);
 		if (!StringUtils.isEmpty(request.getLabel()))

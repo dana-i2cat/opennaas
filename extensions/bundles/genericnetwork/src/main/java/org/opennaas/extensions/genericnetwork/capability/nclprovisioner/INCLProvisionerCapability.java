@@ -27,7 +27,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
  * 
@@ -35,7 +36,7 @@ import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
  * 
  */
 @Path("/")
-public interface INCLProvisionerCapability {
+public interface INCLProvisionerCapability extends ICapability {
 
 	/**
 	 * Allocates a flow.
@@ -49,6 +50,6 @@ public interface INCLProvisionerCapability {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public String allocateFlow(PathRequest pathRequest) throws CapabilityException;
+	public String allocateFlow(CircuitRequest circuitRequest) throws CapabilityException;
 
 }

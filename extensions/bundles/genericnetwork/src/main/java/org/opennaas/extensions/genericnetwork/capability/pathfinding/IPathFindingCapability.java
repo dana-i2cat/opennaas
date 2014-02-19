@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
  * 
@@ -43,6 +43,6 @@ public interface IPathFindingCapability extends ICapability {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Route findPathForRequest(PathRequest pathRequest) throws CapabilityException;
+	public Route findPathForRequest(CircuitRequest circuitRequest) throws CapabilityException;
 
 }

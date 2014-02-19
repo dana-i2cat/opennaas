@@ -30,7 +30,7 @@ import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingParamsMapping;
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.FindPathForRequestAction;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
  * 
@@ -46,14 +46,14 @@ public class FindPathForRequestActionTest {
 	private Map<String, Object>			params;
 
 	/**
-	 * Assures that the checkParams does not fail with a pathRequest and two valids urls.
+	 * Assures that the checkParams does not fail with a circuitRequest and two valids urls.
 	 * 
 	 * @throws ActionException
 	 */
 	@Test
 	public void checkParamsTest() throws ActionException {
 
-		PathRequest request = new PathRequest();
+		CircuitRequest request = new CircuitRequest();
 
 		params.put(PathFindingParamsMapping.REQUEST_KEY, request);
 		params.put(PathFindingParamsMapping.ROUTES_FILE_KEY, ROUTE_URL);
@@ -110,7 +110,7 @@ public class FindPathForRequestActionTest {
 	@Test(expected = ActionException.class)
 	public void checkParamsWithoutRoutesFileTest() throws ActionException {
 
-		PathRequest request = new PathRequest();
+		CircuitRequest request = new CircuitRequest();
 
 		params.put(PathFindingParamsMapping.REQUEST_KEY, request);
 		params.put(PathFindingParamsMapping.ROUTES_MAPPING_KEY, MAPPING_URL);
@@ -127,7 +127,7 @@ public class FindPathForRequestActionTest {
 	@Test(expected = ActionException.class)
 	public void checkParamsWithoutMappingFileTest() throws ActionException {
 
-		PathRequest request = new PathRequest();
+		CircuitRequest request = new CircuitRequest();
 
 		params.put(PathFindingParamsMapping.REQUEST_KEY, request);
 		params.put(PathFindingParamsMapping.ROUTES_FILE_KEY, ROUTE_URL);
@@ -137,7 +137,7 @@ public class FindPathForRequestActionTest {
 	}
 
 	/**
-	 * Assures that the checkParams fails without PathRequest.
+	 * Assures that the checkParams fails without CircuitRequest.
 	 * 
 	 * @throws ActionException
 	 */
