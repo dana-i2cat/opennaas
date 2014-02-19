@@ -37,7 +37,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
  * 
@@ -54,7 +54,7 @@ public interface INCLProvisionerCapability extends ICapability {
 	 * @return circuitId of allocated circuit
 	 * @throws CapabilityException
 	 */
-	public String allocateCircuit(PathRequest pathRequest) throws CapabilityException;
+	public String allocateCircuit(CircuitRequest pathRequest) throws CapabilityException;
 
 	/**
 	 * Allocates a circuit.
@@ -67,7 +67,7 @@ public interface INCLProvisionerCapability extends ICapability {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public CircuitId allocateCircuitAPI(PathRequest pathRequest) throws CapabilityException;
+	public CircuitId allocateCircuitAPI(CircuitRequest pathRequest) throws CapabilityException;
 
 	/**
 	 * Deallocates an allocated circuit.
@@ -103,6 +103,6 @@ public interface INCLProvisionerCapability extends ICapability {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_XML)
-	public void updateCircuit(@PathParam("{id}") String circuitId, PathRequest pathRequest) throws CapabilityException;
+	public void updateCircuit(@PathParam("{id}") String circuitId, CircuitRequest pathRequest) throws CapabilityException;
 
 }

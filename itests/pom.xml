@@ -29,6 +29,7 @@
 		<module>ip/opener</module>
 		<module>sampleresource</module>
 		<module>vrrp/junos10</module>
+		<module>nettopology/internal</module>
 		<module>pathfinding/internal</module>
 	</modules>
 

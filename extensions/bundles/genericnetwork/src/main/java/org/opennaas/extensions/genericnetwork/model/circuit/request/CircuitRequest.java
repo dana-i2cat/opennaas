@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.model.path;
+package org.opennaas.extensions.genericnetwork.model.circuit.request;
 
 /*
  * #%L
@@ -29,6 +29,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
+
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
@@ -42,7 +44,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 		"qosPolicy"
 })
 @XmlRootElement(name = "qos_policy_request", namespace = "opennaas.api")
-public class PathRequest {
+public class CircuitRequest {
 
 	@XmlAttribute(name = "atomic")
 	@XmlJavaTypeAdapter(NormalizedStringAdapter.class)
@@ -54,7 +56,7 @@ public class PathRequest {
 	@XmlElement(required = true)
 	private String		label;
 	@XmlElement(name = "qos_policy")
-	private QosPolicy	qosPolicy;
+	private QoSPolicy	qosPolicy;
 
 	public String getAtomic() {
 		return atomic;
@@ -88,11 +90,11 @@ public class PathRequest {
 		this.label = label;
 	}
 
-	public QosPolicy getQosPolicy() {
+	public QoSPolicy getQosPolicy() {
 		return qosPolicy;
 	}
 
-	public void setQosPolicy(QosPolicy qosPolicy) {
+	public void setQosPolicy(QoSPolicy qosPolicy) {
 		this.qosPolicy = qosPolicy;
 	}
 
@@ -116,7 +118,7 @@ public class PathRequest {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PathRequest other = (PathRequest) obj;
+		CircuitRequest other = (CircuitRequest) obj;
 		if (atomic == null) {
 			if (other.atomic != null)
 				return false;

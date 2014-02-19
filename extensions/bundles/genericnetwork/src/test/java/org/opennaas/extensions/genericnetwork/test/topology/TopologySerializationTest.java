@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.tests;
+package org.opennaas.extensions.genericnetwork.test.topology;
 
 /*
  * #%L

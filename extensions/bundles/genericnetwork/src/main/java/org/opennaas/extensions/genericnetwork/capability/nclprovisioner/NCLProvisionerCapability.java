@@ -43,7 +43,7 @@ import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindin
 import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventConstants;
@@ -95,7 +95,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public String allocateCircuit(PathRequest pathRequest) throws CapabilityException {
+	public String allocateCircuit(CircuitRequest circuitRequest) throws CapabilityException {
 
 		IPathFindingCapability pathFindingCapab;
 		ICircuitProvisioningCapability circuitProvCapability;
@@ -107,8 +107,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			throw new CapabilityException(e);
 		}
 
-		Route route = pathFindingCapab.findPathForRequest(pathRequest);
-		Circuit circuit = CircuitFactoryLogic.generateCircuit(pathRequest, route);
+		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
+		Circuit circuit = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
 		// TODO add aggregation logic when capability is implemented.
 
 		circuitProvCapability.allocate(circuit);
@@ -149,7 +149,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public void updateCircuit(String circuitId, PathRequest pathRequest) throws CapabilityException {
+	public void updateCircuit(String circuitId, CircuitRequest pathRequest) throws CapabilityException {
 
 		deallocateCircuit(circuitId);
 		allocateCircuit(pathRequest);
@@ -157,9 +157,9 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public CircuitId allocateCircuitAPI(PathRequest pathRequest) throws CapabilityException {
+	public CircuitId allocateCircuitAPI(CircuitRequest circuitRequest) throws CapabilityException {
 
-		String id = allocateCircuit(pathRequest);
+		String id = allocateCircuit(circuitRequest);
 		CircuitId circuitId = new CircuitId(id);
 
 		return circuitId;
@@ -173,6 +173,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		circuitCollection.setCircuits(getAllocatedCircuits());
 
 		return circuitCollection;
+
 	}
 
 	@Override

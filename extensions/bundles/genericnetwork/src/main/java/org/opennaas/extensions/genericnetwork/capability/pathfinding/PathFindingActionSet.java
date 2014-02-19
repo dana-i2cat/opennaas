@@ -21,7 +21,7 @@ package org.opennaas.extensions.genericnetwork.capability.pathfinding;
  */
 
 import org.opennaas.core.resources.action.IActionSetDefinition;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
  * 
@@ -31,7 +31,7 @@ import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
 public class PathFindingActionSet implements IActionSetDefinition {
 
 	/**
-	 * An action that retrieves a route between the {@link Source} and the {@link Destination} of the {@link PathRequest}, according to the QoS
+	 * An action that retrieves a route between the {@link Source} and the {@link Destination} of the {@link CircuitRequest}, according to the QoS
 	 * parameters in it.
 	 */
 	public static final String	FIND_PATH_FOR_REQUEST	= "findPathForRequest";

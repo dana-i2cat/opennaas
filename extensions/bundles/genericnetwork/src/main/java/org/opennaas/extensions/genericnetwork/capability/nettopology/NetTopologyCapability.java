@@ -67,7 +67,9 @@ public class NetTopologyCapability extends AbstractCapability implements INetTop
 
 	@Override
 	public void activate() throws CapabilityException {
-		loadTopology();
+		// FIXME cannot access resource model in activate() method,
+		// resource model is initialized in the bootstrapper which is executed afterwards.
+		// loadTopology();
 		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), INetTopologyCapability.class.getName());
 		super.activate();
 	}
@@ -75,7 +77,9 @@ public class NetTopologyCapability extends AbstractCapability implements INetTop
 	@Override
 	public void deactivate() throws CapabilityException {
 		unregisterService();
-		clearTopology();
+		// FIXME cannot access resource model in deactivate() method,
+		// resource model is reseted in revert bootstrap which has been already executed.
+		// clearTopology();
 		super.deactivate();
 	}
 
@@ -101,7 +105,12 @@ public class NetTopologyCapability extends AbstractCapability implements INetTop
 		return ((GenericNetworkModel) resource.getModel()).getTopology();
 	}
 
-	private void loadTopology() throws CapabilityException {
+	/**
+	 * Load topology in the resource model.
+	 * 
+	 * @throws CapabilityException
+	 */
+	public void loadTopology() throws CapabilityException {
 
 		// FIXME coupling capability with action implementation (read from file).
 		// To fix that, configurable drivers are required :S
