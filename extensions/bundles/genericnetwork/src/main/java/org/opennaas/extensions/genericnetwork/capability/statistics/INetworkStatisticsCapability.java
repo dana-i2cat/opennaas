@@ -37,6 +37,12 @@ import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
 @Path("/")
 public interface INetworkStatisticsCapability extends ICapability {
 
+	/**
+	 * Retrieves PortStatistics for ALL ports in the network.
+	 * 
+	 * @return NetworkStatistics of the network having this capability.
+	 * @throws CapabilityException
+	 */
 	@GET
 	@Path("readNetworkStatistics")
 	@Produces(MediaType.APPLICATION_XML)
