@@ -20,8 +20,10 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  * #L%
  */
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,14 +34,20 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICircuitProvisioningCapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
+import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
 
 /**
  * 
@@ -47,12 +55,14 @@ import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
  * 
  */
 
-public class NCLProvisionerCapability extends AbstractCapability implements INCLProvisionerCapability {
+public class NCLProvisionerCapability extends AbstractCapability implements INCLProvisionerCapability, EventHandler {
 
 	public static final String	CAPABILITY_TYPE	= "nclprovisioner";
 
 	private Log					log				= LogFactory.getLog(NCLProvisionerCapability.class);
 	private String				resourceId		= "";
+
+	private ServiceRegistration	eventListenerRegistration;
 
 	public NCLProvisionerCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -64,6 +74,24 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
+	}
+
+	@Override
+	public void activate() {
+		try {
+			registerAsCongestionEventListener();
+		} catch (IOException e) {
+			log.warn("Could not registrate NCLProvisionerCapability as listener for PortCongestion events.", e);
+		}
+
+		setState(State.ACTIVE);
+	}
+
+	@Override
+	public void deactivate() {
+		unregisterListener();
+		setState(State.INACTIVE);
+
 	}
 
 	@Override
@@ -159,6 +187,33 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	private ICapability getCapability(Class<? extends ICapability> clazz) throws ResourceException {
 		return this.resource.getCapabilityByInterface(clazz);
+	}
+
+	public void unregisterListener() {
+
+		log.debug("Unregistering NCLProvisinerCapability as listener for PortCongestion events.");
+		eventListenerRegistration.unregister();
+		log.debug("NCLProvisinerCapability successfully unregistered.");
+
+	}
+
+	public void registerAsCongestionEventListener() throws IOException {
+
+		log.debug("Registering NCLProvisinerCapability as listener for PortCongestion events.");
+
+		Properties properties = new Properties();
+		properties.put(EventConstants.EVENT_TOPIC, PortCongestionEvent.TOPIC);
+
+		eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
+
+		log.debug("NCLProvisinerCapability successfully registered as listener for PortCongestion events.");
+
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
