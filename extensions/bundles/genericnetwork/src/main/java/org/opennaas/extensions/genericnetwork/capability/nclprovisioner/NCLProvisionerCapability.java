@@ -20,8 +20,6 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  * #L%
  */
 
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ResourceException;
@@ -32,6 +30,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICircuitProvisioningCapability;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
@@ -101,8 +100,11 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public Collection<Circuit> getAllocatedCircuits() throws CapabilityException {
+	public CircuitCollection getAllocatedCircuits() throws CapabilityException {
+
 		ICircuitProvisioningCapability circuitProvCapability;
+		CircuitCollection circuitCollection = new CircuitCollection();
+
 		try {
 			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
 
@@ -110,7 +112,9 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			throw new CapabilityException(e);
 		}
 
-		return circuitProvCapability.getCircuits();
+		circuitCollection.setCircuits(circuitProvCapability.getCircuits());
+
+		return circuitCollection;
 	}
 
 	@Override
