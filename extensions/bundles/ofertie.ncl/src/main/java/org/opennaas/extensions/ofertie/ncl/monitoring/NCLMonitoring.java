@@ -162,7 +162,7 @@ public class NCLMonitoring {
 							// calculate throughput and check threshold for each port
 							for (String switchName : currentNetworkStatistics.getSwitchStatistics().keySet()) {
 								log.debug("Analizing switch statistics for switch " + switchName);
-								for (Integer portId : currentNetworkStatistics.getSwitchStatistics().get(switchName).getStatistics().keySet()) {
+								for (String portId : currentNetworkStatistics.getSwitchStatistics().get(switchName).getStatistics().keySet()) {
 									try {
 										long currentBytes = getPortReceivedBytes(currentNetworkStatistics, switchName, portId);
 										long previousBytes = getPortReceivedBytes(previousNetworkStatistics, switchName, portId);
@@ -246,7 +246,7 @@ public class NCLMonitoring {
 		 * @throws Exception
 		 *             in case statistics contains no value matching given arguments
 		 */
-		private long getPortReceivedBytes(NetworkStatistics statistics, String switchName, Integer portId) throws Exception {
+		private long getPortReceivedBytes(NetworkStatistics statistics, String switchName, String portId) throws Exception {
 			if (statistics != null) {
 				SwitchPortStatistics switchPortStatistics = statistics.getSwitchPortStatistic(switchName);
 				if (switchPortStatistics != null) {
