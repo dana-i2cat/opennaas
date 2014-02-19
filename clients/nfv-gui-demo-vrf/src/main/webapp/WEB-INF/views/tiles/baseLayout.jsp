@@ -31,7 +31,7 @@
 	<script src="<c:url value="/resources/js/jquery.validate-1.10.0.js" />"></script>
 	<script src="<c:url value="/resources/js/script.js" />"></script>
         <!-- Table sorter and xml2json converter --> 
-        <script src="<c:url value="/resources/js/jquery.tablesorter.js" />"></script> 
+        <script src="<c:url value="/resources/js/jquery.tablesorter.js" />"></script>
         <script src="<c:url value="/resources/js/xml2json.js"/>"></script>
         
         <!-- Javascript Tables -->

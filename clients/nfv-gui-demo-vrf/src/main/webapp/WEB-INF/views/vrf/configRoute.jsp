@@ -17,7 +17,7 @@
         </div>
     </div>
     <script>
-        var text = "<input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAll()' type='button' value='Clean table' name='Clean table'/>";
+        var text = "<input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAll()' type='button' value='Remove all routes' name='Clean table'/>";
         var jsonRoutes = ${json};
         if( JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !==  '[]'){
             $('.outer').after(text);
@@ -38,20 +38,16 @@
 <script language="JavaScript" type="text/JavaScript">
     
     var type = getURLParameter("type");
-console.log(${json});
+//console.log(${json});
     var listRoutes = getRouteList(${json});
     //getRoute
     var initial = listRoutes[0];
-console.log(listRoutes);
-console.log(listRoutes[0]);
+//console.log(listRoutes);
+//console.log(listRoutes[0]);
     for ( var i = 0; i < listRoutes.length; i++){
         initial = listRoutes[i];
-        for ( var j = i; j < listRoutes.length; j++){
-            if( listRoutes[i] != listRoutes[j] ){
-                document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node+'\',\''+listRoutes[j].node+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[j].node+'/'+listRoutes[i].node+'</span></a><br/>';
-                initial = listRoutes[i+1];
-            }
-        }
+//        getSpecificRoute(listRoutes[i].node.split(":")[0],listRoutes[i].node.split(":")[1]);
+        document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
     }
 //    var jsonHtmlTable = ConvertJsonToRouteTable(${json}, 'jsonTable');
 //    document.getElementById("jsonTable").innerHTML = jsonHtmlTable;

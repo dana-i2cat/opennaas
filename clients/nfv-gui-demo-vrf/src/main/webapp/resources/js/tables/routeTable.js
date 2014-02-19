@@ -55,7 +55,7 @@
                     tbCon += tdRow.format(switchId);
 //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
                     tbCon += tdRowHide.format(parsedJson.routeTable[i]['switchInfo'].dpid);
-                    tbCon += tdRow.format("<input onclick='del(" + rowId + "); return false;' class='deleteButton' type='button' value='Delete'/>");
+                    tbCon += tdRow.format("<input onclick='del(" + rowId + "); return false;' class='deleteButton  ui-button ui-widget ui-state-default ui-corner-all ui-state-focus' type='button' value='Delete'/>");
                     trCon += tr.format(tbCon);
                     tbCon = '';
                 }
@@ -120,26 +120,26 @@ function waiting(status){
 
 function getRouteList(jsonReceived){
     var possibleRoutes = [];
-console.log(jsonReceived.routeTable);
+//console.log(jsonReceived.routeTable);
     var listRoutes = jsonReceived.routeTable;
     var listNodes = new Array();
 
     listRoutes.forEach(function(entry){
-        var found = jQuery.inArray(entry.destinationAddress, listNodes);
-        if (found == -1 && entry.destinationAddress.indexOf("/") == -1) {
-            listNodes.push(entry.destinationAddress);
+        var found = jQuery.inArray(entry.sourceAddress+":"+entry.destinationAddress, listNodes);
+        var found2 = jQuery.inArray(entry.destinationAddress+":"+entry.sourceAddress, listNodes);
+        if (found == -1 && found2 == -1 && entry.destinationAddress.indexOf("/") == -1) {
+            listNodes.push(entry.sourceAddress+":"+entry.destinationAddress);
         }
     });
 
-console.log(listNodes);
+//console.log(listNodes);
     var routeObject = new Object();
     var initial = listNodes[0];
-    console.log(listNodes.length);
+//console.log(listNodes.length);
     for ( var i = 0; i <= listNodes.length -1; i++){
-    //getRoute(initial, listNode[i+1]);
+        //getRoute(initial, listNode[i+1]);
         routeObject = new Object();
         routeObject.id = "id"+i;
-        console.log(initial);
         routeObject.node = initial;
         possibleRoutes.push(routeObject);
         initial = listNodes[i+1];
@@ -156,11 +156,12 @@ console.log("Get specific route "+src+" "+dst);
             async: false,
             success : function (data) {
 //                $("#dynamicContent").html(data);
-                result = data;                 
+                result = data;
             }
         });
     var json = eval("(" + result + ")");
 //console.log(result);
     var jsonHtmlTable = ConvertJsonToRouteTable(json, 'jsonTable'); 
     document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
+
 }

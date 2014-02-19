@@ -57,13 +57,14 @@ VRF - OpenNaaS Custom CSS
 }
 /* Insert Routes view */
 #insert_topology {
-    width:69%;
+    width:66%;
     min-height: 300px;
 }
 #insert_routeTable{
     width:100%;
     padding: 10px;
     margin-bottom: 55px;
+    margin-top: 5px;
 }
 #insert_info{
     width:28%;
@@ -71,6 +72,10 @@ VRF - OpenNaaS Custom CSS
 #insertRouteInfo{
     padding: 10px;
     width: 28%;
+    margin-left: 3px;
+}
+#changeMode{
+    margin-left: 3px;
 }
 /* Animation view */
 #animaton_topology{
@@ -81,6 +86,7 @@ VRF - OpenNaaS Custom CSS
     width:100%;
     position: relative;
     bottom: 20px;
+    margin-top: 30px;
 }
 #log{
     font-size: 20px;

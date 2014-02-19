@@ -101,7 +101,7 @@ $(function() {
         $("#defaultValues").button();
         $(".addRouteButton").button();
         $(".addCtrlInfoButton").button();
-        $(".deleteButton").button();        
+        $(".deleteButton").button();
         $(".submitButton").button();
 
 	$("#button1").button();
