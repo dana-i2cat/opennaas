@@ -31,6 +31,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICircuitProvisioningCapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
@@ -139,4 +140,12 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	}
 
+	@Override
+	public CircuitId allocateCircuitAPI(PathRequest pathRequest) throws CapabilityException {
+
+		String id = allocateCircuit(pathRequest);
+		CircuitId circuitId = new CircuitId(id);
+
+		return circuitId;
+	}
 }

@@ -33,6 +33,7 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
 import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
 
 /**
@@ -50,11 +51,20 @@ public interface INCLProvisionerCapability extends ICapability {
 	 * @return circuitId of allocated circuit
 	 * @throws CapabilityException
 	 */
+	public String allocateCircuit(PathRequest pathRequest) throws CapabilityException;
+
+	/**
+	 * Allocates a circuit.
+	 * 
+	 * @param qosPolicyRequest
+	 * @return circuitId of allocated circuit
+	 * @throws CapabilityException
+	 */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public String allocateCircuit(PathRequest pathRequest) throws CapabilityException;
+	public CircuitId allocateCircuitAPI(PathRequest pathRequest) throws CapabilityException;
 
 	/**
 	 * Deallocates an allocated circuit.
