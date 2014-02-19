@@ -86,7 +86,7 @@ public class MonitoringCapability extends AbstractCapability implements IMonitor
 		}
 
 		// assuming the action returns what it is meant to
-		Map<Integer, PortStatistics> portStatistics = (Map<Integer, PortStatistics>) responseObject;
+		Map<String, PortStatistics> portStatistics = (Map<String, PortStatistics>) responseObject;
 
 		SwitchPortStatistics statistics = new SwitchPortStatistics();
 		statistics.setStatistics(portStatistics);
