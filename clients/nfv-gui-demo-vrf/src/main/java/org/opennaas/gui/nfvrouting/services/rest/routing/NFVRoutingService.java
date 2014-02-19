@@ -177,6 +177,14 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
+    /**
+     * Get specific route.
+     * @param ipSrc
+     * @param ipDst
+     * @param dpid
+     * @param inPort
+     * @return 
+     */
     public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
         ClientResponse response;
         try {
@@ -227,6 +235,12 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
+    /**
+     * Get route taken into account only the IP addresses
+     * @param ipSrc
+     * @param ipDst
+     * @return 
+     */
     public String getRoute(String ipSrc, String ipDst) {
         LOGGER.error("SERVICE GET ROUTE");
         ClientResponse response;
