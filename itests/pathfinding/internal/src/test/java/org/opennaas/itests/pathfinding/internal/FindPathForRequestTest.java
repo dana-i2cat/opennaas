@@ -55,9 +55,9 @@ import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindin
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingCapability;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingParamsMapping;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
-import org.opennaas.extensions.genericnetwork.model.path.Destination;
-import org.opennaas.extensions.genericnetwork.model.path.PathRequest;
-import org.opennaas.extensions.genericnetwork.model.path.Source;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.Destination;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.Source;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -129,7 +129,7 @@ public class FindPathForRequestTest {
 	@Test
 	public void findPathForRequestTestWithoutPorts() throws ResourceException {
 
-		PathRequest request = generateSampleRequestWithoutPorts();
+		CircuitRequest request = generateSampleRequestWithoutPorts();
 
 		IPathFindingCapability pathFindingCapab = (IPathFindingCapability) genericNetwork.getCapabilityByInterface(IPathFindingCapability.class);
 		Route route = pathFindingCapab.findPathForRequest(request);
@@ -141,7 +141,7 @@ public class FindPathForRequestTest {
 	@Test
 	public void findPathForRequestTestWithPorts() throws ResourceException {
 
-		PathRequest request = generateSampleRequestWithPorts();
+		CircuitRequest request = generateSampleRequestWithPorts();
 
 		IPathFindingCapability pathFindingCapab = (IPathFindingCapability) genericNetwork.getCapabilityByInterface(IPathFindingCapability.class);
 		Route route = pathFindingCapab.findPathForRequest(request);
@@ -150,8 +150,8 @@ public class FindPathForRequestTest {
 		Assert.assertEquals("PathFinding capability should have selected route with id 3", "3", route.getId());
 	}
 
-	private PathRequest generateSampleRequestWithPorts() {
-		PathRequest request = new PathRequest();
+	private CircuitRequest generateSampleRequestWithPorts() {
+		CircuitRequest request = new CircuitRequest();
 
 		Source source = new Source();
 		source.setAddress(SRC_IP);
@@ -168,9 +168,9 @@ public class FindPathForRequestTest {
 		return request;
 	}
 
-	private PathRequest generateSampleRequestWithoutPorts() {
+	private CircuitRequest generateSampleRequestWithoutPorts() {
 
-		PathRequest request = new PathRequest();
+		CircuitRequest request = new CircuitRequest();
 
 		Source source = new Source();
 		source.setAddress(SRC_IP);
