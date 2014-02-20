@@ -35,6 +35,7 @@ import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
+import org.opennaas.extensions.genericnetwork.model.helpers.TopologyHelper;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
 import org.opennaas.extensions.genericnetwork.model.topology.Port;
 import org.opennaas.extensions.openflowswitch.capability.monitoring.IMonitoringCapability;
@@ -85,14 +86,9 @@ public class GetNetworkStatisticsAction extends Action {
 	private SwitchPortStatistics getSwitchPortStatisticsForNetworkElement(NetworkElement networkElement, GenericNetworkModel networkModel)
 			throws CapabilityException, Exception {
 
-		String resourceId = networkModel.getDeviceResourceMap().get(networkElement.getId());
-		if (resourceId == null) {
-			throw new Exception("Cannot find mapping resource for network element " + networkElement.getId());
-		}
-
 		IResource resource;
 		try {
-			resource = getResourceManager().getResourceById(resourceId);
+			resource = TopologyHelper.getResourceFromNetworkElementId(networkElement.getId(), getResourceManager());
 		} catch (Exception e) {
 			throw new Exception("Failed to obtain mapping resource for network element " + networkElement.getId(), e);
 		}
