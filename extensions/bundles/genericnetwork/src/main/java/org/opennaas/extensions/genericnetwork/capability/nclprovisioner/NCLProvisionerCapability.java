@@ -77,21 +77,23 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public void activate() {
+	public void activate() throws CapabilityException {
 		try {
 			registerAsCongestionEventListener();
 		} catch (IOException e) {
 			log.warn("Could not registrate NCLProvisionerCapability as listener for PortCongestion events.", e);
 		}
 
-		setState(State.ACTIVE);
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				INCLProvisionerCapability.class.getName());
+		super.activate();
 	}
 
 	@Override
-	public void deactivate() {
+	public void deactivate() throws CapabilityException {
 		unregisterListener();
-		setState(State.INACTIVE);
-
+		unregisterService();
+		super.deactivate();
 	}
 
 	@Override
