@@ -36,13 +36,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SwitchPortStatistics {
 
-	private Map<Integer, PortStatistics>	statisticsMap;
+	/**
+	 * Key: PortId, Value: PortStatistics for that port
+	 */
+	private Map<String, PortStatistics>	statisticsMap;
 
-	public Map<Integer, PortStatistics> getStatistics() {
+	public Map<String, PortStatistics> getStatistics() {
 		return statisticsMap;
 	}
 
-	public void setStatistics(Map<Integer, PortStatistics> statistics) {
+	public void setStatistics(Map<String, PortStatistics> statistics) {
 		this.statisticsMap = statistics;
 	}
 

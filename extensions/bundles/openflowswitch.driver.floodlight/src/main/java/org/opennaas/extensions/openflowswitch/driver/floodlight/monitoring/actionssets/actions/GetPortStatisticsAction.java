@@ -20,6 +20,7 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.monitoring.acti
  * #L%
  */
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.opennaas.core.resources.action.ActionException;
@@ -51,11 +52,15 @@ public class GetPortStatisticsAction extends FloodlightAction {
 			// transform objects
 			Map<String, Map<Integer, PortStatistics>> switchStatisticsMap = statistics.getSwitchStatisticsMap();
 			Map<Integer, PortStatistics> portStatistics = switchStatisticsMap.get(switchId);
+			Map<String, PortStatistics> realPortStatistics = new HashMap<String, PortStatistics>();
+			for (Integer i : portStatistics.keySet()) {
+				realPortStatistics.put(i.toString(), portStatistics.get(i));
+			}
 
 			// create action response with an object response
 			ActionResponse response = new ActionResponse();
 			response.setStatus(ActionResponse.STATUS.OK);
-			response.setResult(portStatistics);
+			response.setResult(realPortStatistics);
 
 			return response;
 		} catch (Exception e) {
