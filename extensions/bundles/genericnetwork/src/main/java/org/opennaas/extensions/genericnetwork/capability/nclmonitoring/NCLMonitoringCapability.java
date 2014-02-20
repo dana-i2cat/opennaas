@@ -45,6 +45,8 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 	private String				resourceId		= "";
 	private IEventManager		eventManager;
 
+	private NCLMonitoring		nclMonitoring;
+
 	public NCLMonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
@@ -63,12 +65,12 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("This capability does not contain actionset.");
 	}
 
 	@Override
 	public void activate() throws CapabilityException {
+		initNCLMonitoring();
 		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
 				INCLMonitoringCapability.class.getName());
 		super.activate();
@@ -77,6 +79,7 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 	@Override
 	public void deactivate() throws CapabilityException {
 		unregisterService();
+		stopNCLMonitoring();
 		super.deactivate();
 	}
 
@@ -86,6 +89,22 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
+	}
+
+	// ///////////////////////////////
+	// NCLMonitoring Implementation //
+	// ///////////////////////////////
+
+	private void initNCLMonitoring() {
+		nclMonitoring = new NCLMonitoring();
+		nclMonitoring.setEventManager(eventManager);
+		nclMonitoring.setResource(resource);
+		nclMonitoring.init();
+	}
+
+	private void stopNCLMonitoring() {
+		nclMonitoring.stop();
+		nclMonitoring = null;
 	}
 
 }
