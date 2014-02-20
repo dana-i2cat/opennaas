@@ -21,8 +21,10 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  */
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -33,6 +35,7 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICircuitProvisioningCapability;
@@ -41,9 +44,11 @@ import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.Circ
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.genericnetwork.model.helpers.GenericNetworkModelHelper;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventConstants;
@@ -63,6 +68,9 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	private String				resourceId		= "";
 
 	private ServiceRegistration	eventListenerRegistration;
+
+	private final static String	NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl";
+	private final static String	AUTOREROUTE_KEY	= "ncl.autoreroute";
 
 	public NCLProvisionerCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -179,6 +187,33 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
+	public void handleEvent(Event event) {
+		if (event instanceof PortCongestionEvent) {
+
+			PortCongestionEvent congestionEvent = (PortCongestionEvent) event;
+
+			String portId = (String) congestionEvent.getProperty(PortCongestionEvent.PORT_ID_KEY);
+
+			log.info("PortCongestionEvent alarm received for port" + portId);
+			boolean autoReroute = readAutorerouteOption();
+			if (autoReroute) {
+				log.debug("Auto-reroute is activated. Launching auto-reroute");
+				try {
+					launchRerouteMechanism(portId);
+				} catch (Exception e) {
+					log.error(e.getMessage());
+					// TODO can not throw exception, since EventHandler interface does not allow it.
+				}
+			} else {
+				log.debug("Auto-reroute is deactivated. Ignoring received LinkCongestion alarm. ");
+			}
+
+		}
+		else
+			log.debug("Ignoring non-LinkCongestion alarm.");
+	}
+
+	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		throw new UnsupportedOperationException("Not Implemented. This capability is not using the queue.");
 	}
@@ -192,7 +227,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		return this.resource.getCapabilityByInterface(clazz);
 	}
 
-	public void unregisterListener() {
+	private void unregisterListener() {
 
 		log.debug("Unregistering NCLProvisinerCapability as listener for PortCongestion events.");
 		eventListenerRegistration.unregister();
@@ -200,7 +235,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	}
 
-	public void registerAsCongestionEventListener() throws IOException {
+	private void registerAsCongestionEventListener() throws IOException {
 
 		log.debug("Registering NCLProvisinerCapability as listener for PortCongestion events.");
 
@@ -213,10 +248,108 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	}
 
-	@Override
-	public void handleEvent(Event event) {
-		// TODO Auto-generated method stub
+	private boolean readAutorerouteOption() {
+		boolean autoReroute = false;
+		try {
+			autoReroute = doReadAutorerouteOption();
+		} catch (IOException ioe) {
+			log.error("Failed to read auto-reroute option. ", ioe);
+			log.warn("Deactivating auto-reroute");
+			autoReroute = false;
+		}
+
+		return autoReroute;
+	}
+
+	private boolean doReadAutorerouteOption() throws IOException {
+
+		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
+		if (properties == null)
+			throw new IOException("Failed to determine auto-reroute option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
+
+		String value = properties.getProperty(AUTOREROUTE_KEY);
+		if (value == null) {
+			return false;
+		}
+		return Boolean.parseBoolean(value);
+	}
+
+	private void launchRerouteMechanism(String portId) throws Exception {
+		String circuitId = selectCircuitToReallocate(portId);
+
+		if (circuitId == null) {
+			log.info("No circuit allocated in this port. Ignoring alarm.");
+			return;
+		}
+		try {
+			rerouteCircuit(circuitId);
+		} catch (Exception e) {
+			throw new Exception("Could not reallocate circuit " + circuitId + ": " + e.getMessage(), e);
+		}
 
 	}
 
+	private void rerouteCircuit(String circuitId) throws CapabilityException {
+
+		log.debug("Start of rerouteCircuit call.");
+
+		IPathFindingCapability pathFindingCapab;
+		ICircuitProvisioningCapability circuitProvCapability;
+
+		try {
+			pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
+			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
+
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		GenericNetworkModel model = (GenericNetworkModel) this.resource.getModel();
+		Circuit circuit = model.getAllocatedCircuits().get(circuitId);
+
+		if (circuit == null)
+			throw new CapabilityException("Cann not reroute circuit: Circuit is not allocated.");
+
+		// FIXME call parser, don't create a new one!
+		CircuitRequest circuitRequest = new CircuitRequest();
+		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
+		circuit.setRoute(route);
+
+		// TODO once aggregation is implemented, call replace.
+		circuitProvCapability.deallocate(circuitId);
+		circuitProvCapability.allocate(circuit);
+
+		log.debug("End of rerouteCircuit call.");
+
+	}
+
+	private String selectCircuitToReallocate(String portId) {
+		List<String> circuitsInPort = getAllCircuitsInPort(portId);
+
+		if (circuitsInPort.isEmpty()) {
+			return null;
+		}
+		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
+		return circuitsInPort.get(0);
+
+	}
+
+	private List<String> getAllCircuitsInPort(String portId) {
+
+		List<String> circuitsIdsInPort = new ArrayList<String>();
+		// TODO Once aggregation is implemented, it should look here for NOT-AGGREGATED CIRCUITS.
+
+		GenericNetworkModel model = (GenericNetworkModel) this.resource.getModel();
+
+		Map<String, Circuit> allocatedCircuits = model.getAllocatedCircuits();
+
+		for (String circuitId : allocatedCircuits.keySet()) {
+			Circuit circuit = allocatedCircuits.get(circuitId);
+
+			if (GenericNetworkModelHelper.isPortInCircuit(portId, circuit))
+				circuitsIdsInPort.add(circuitId);
+		}
+
+		return circuitsIdsInPort;
+	}
 }
