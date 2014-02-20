@@ -51,6 +51,8 @@ import org.opennaas.core.resources.descriptor.CapabilityProperty;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.genericnetwork.capability.nettopology.INetTopologyCapability;
+import org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapability;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingCapability;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingParamsMapping;
@@ -78,25 +80,28 @@ public class FindPathForRequestTest {
 
 	protected IResource			genericNetwork;
 
-	private static final Log	log								= LogFactory.getLog(FindPathForRequestTest.class);
+	private static final Log	log							= LogFactory.getLog(FindPathForRequestTest.class);
 
-	private static final String	GENERICNET_RESOURCE_TYPE		= "genericnetwork";
-	private static final String	GENERICNET_RESOURCE_NAME		= "sampleGenericNetwork";
+	private static final String	GENERICNET_RESOURCE_TYPE	= "genericnetwork";
+	private static final String	GENERICNET_RESOURCE_NAME	= "sampleGenericNetwork";
 
-	private static final String	PATHFINDING_CAPABILITY_TYPE		= PathFindingCapability.CAPABILITY_TYPE;
-	private static final String	PATHFINDING_ACTIONSET_VERSION	= "1.0.0";
-	private static final String	PATHFINDING_ACTIONSET_NAME		= "internal";
+	private static final String	PATHFINDING_CAPABILITY_TYPE	= PathFindingCapability.CAPABILITY_TYPE;
+	private static final String	NETTOPOLOGY_CAPABILITY_TYPE	= NetTopologyCapability.CAPABILITY_TYPE;
 
-	private static final String	MOCK_URI						= "mock://user:pass@host.net:2212/mocksubsystem";
+	private static final String	CAPABILITY_VERSION			= "1.0.0";
+	private static final String	INTERNAL_ACTIONSET_NAME		= "internal";
 
-	private static final String	ROUTE_FILES_URI					= "/routes.xml";
-	private static final String	ROUTES_MAPPING_URI				= "/mapping.xml";
+	private static final String	MOCK_URI					= "mock://user:pass@host.net:2212/mocksubsystem";
 
-	private static final String	SRC_IP							= "192.168.10.10";
-	private static final String	DST_IP							= "192.168.10.11";
-	private static final String	SRC_PORT						= "portA";
-	private static final String	DST_PORT						= "portC";
-	private static final String	TOS								= "4";
+	private static final String	ROUTE_FILES_URI				= "/routes.xml";
+	private static final String	ROUTES_MAPPING_URI			= "/mapping.xml";
+	private static final String	TOPOLOGY_FILE_URI			= "/nettopology.xml";
+
+	private static final String	SRC_IP						= "192.168.10.10";
+	private static final String	DST_IP						= "192.168.10.11";
+	private static final String	SRC_PORT					= "portA";
+	private static final String	DST_PORT					= "portC";
+	private static final String	TOS							= "4";
 
 	@Configuration
 	public static Option[] configuration() {
@@ -121,8 +126,9 @@ public class FindPathForRequestTest {
 	@Test
 	public void isCapabilityAccessibleFromResource() throws ResourceException, ProtocolException {
 
-		Assert.assertEquals(1, genericNetwork.getCapabilities().size());
+		Assert.assertEquals(2, genericNetwork.getCapabilities().size());
 		Assert.assertTrue(genericNetwork.getCapabilities().get(0) instanceof IPathFindingCapability);
+		Assert.assertTrue(genericNetwork.getCapabilities().get(1) instanceof INetTopologyCapability);
 
 	}
 
@@ -194,8 +200,10 @@ public class FindPathForRequestTest {
 
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		CapabilityDescriptor pathFindingDescriptor = ResourceHelper.newCapabilityDescriptor(PATHFINDING_ACTIONSET_NAME,
-				PATHFINDING_ACTIONSET_VERSION, PATHFINDING_CAPABILITY_TYPE, MOCK_URI);
+		String topologyFileAbsolutePath = obtainTopologyAbsolutePath();
+
+		CapabilityDescriptor pathFindingDescriptor = ResourceHelper.newCapabilityDescriptor(INTERNAL_ACTIONSET_NAME,
+				CAPABILITY_VERSION, PATHFINDING_CAPABILITY_TYPE, MOCK_URI);
 
 		CapabilityProperty routeURIProperty = new CapabilityProperty();
 		routeURIProperty.setName(PathFindingParamsMapping.ROUTES_FILE_KEY);
@@ -210,6 +218,15 @@ public class FindPathForRequestTest {
 
 		lCapabilityDescriptors.add(pathFindingDescriptor);
 
+		CapabilityDescriptor topologyDescriptor = ResourceHelper.newCapabilityDescriptor(INTERNAL_ACTIONSET_NAME,
+				CAPABILITY_VERSION, NETTOPOLOGY_CAPABILITY_TYPE, MOCK_URI);
+
+		CapabilityProperty topologyFile = new CapabilityProperty();
+		topologyFile.setName(NetTopologyCapability.TOPOLOGY_FILE);
+		topologyFile.setValue(topologyFileAbsolutePath);
+
+		topologyDescriptor.getCapabilityProperties().add(topologyFile);
+		lCapabilityDescriptors.add(topologyDescriptor);
 		// Router Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, GENERICNET_RESOURCE_TYPE,
 				MOCK_URI, GENERICNET_RESOURCE_NAME);
@@ -238,6 +255,15 @@ public class FindPathForRequestTest {
 	private String readFile(String url) throws IOException {
 		InputStream input = this.getClass().getResourceAsStream(url);
 		File tmp = File.createTempFile(url, ".tmp.xml");
+		tmp.deleteOnExit();
+
+		IOUtils.copy(input, new FileOutputStream(tmp));
+		return tmp.getAbsolutePath();
+	}
+
+	private String obtainTopologyAbsolutePath() throws IOException {
+		InputStream input = this.getClass().getResourceAsStream(TOPOLOGY_FILE_URI);
+		File tmp = File.createTempFile("nettopology", ".tmp.xml");
 		tmp.deleteOnExit();
 
 		IOUtils.copy(input, new FileOutputStream(tmp));
