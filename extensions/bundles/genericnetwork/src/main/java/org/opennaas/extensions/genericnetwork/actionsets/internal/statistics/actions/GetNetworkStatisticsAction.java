@@ -109,11 +109,11 @@ public class GetNetworkStatisticsAction extends Action {
 	private SwitchPortStatistics portIdsToNetPortIds(NetworkElement networkElement, SwitchPortStatistics switchStatistics,
 			GenericNetworkModel networkModel) {
 		SwitchPortStatistics netSwitchStatistics = new SwitchPortStatistics();
-		netSwitchStatistics.setStatistics(new HashMap<Integer, PortStatistics>());
+		netSwitchStatistics.setStatistics(new HashMap<String, PortStatistics>());
 
 		String deviceId = networkModel.getDeviceResourceMap().get(networkElement.getId());
 
-		for (Integer portId : switchStatistics.getStatistics().keySet()) {
+		for (String portId : switchStatistics.getStatistics().keySet()) {
 
 			DevicePortId devicePortId = new DevicePortId();
 			devicePortId.setDeviceId(deviceId);
