@@ -48,6 +48,7 @@ import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.genericnetwork.model.helpers.Circuit2RequestHelper;
 import org.opennaas.extensions.genericnetwork.model.helpers.GenericNetworkModelHelper;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
@@ -311,7 +312,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			throw new CapabilityException("Cann not reroute circuit: Circuit is not allocated.");
 
 		// FIXME call parser, don't create a new one!
-		CircuitRequest circuitRequest = new CircuitRequest();
+		CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
 		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
 		circuit.setRoute(route);
 
