@@ -20,7 +20,7 @@ package org.opennaas.extensions.genericnetwork.actionsets.internal.statistics.ac
  * #L%
  */
 
-import java.util.List;
+import java.util.HashMap;
 
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -32,13 +32,19 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
+import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
+import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
+import org.opennaas.extensions.genericnetwork.model.topology.Port;
 import org.opennaas.extensions.openflowswitch.capability.monitoring.IMonitoringCapability;
+import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
 import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
 
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
 public class GetNetworkStatisticsAction extends Action {
@@ -46,45 +52,21 @@ public class GetNetworkStatisticsAction extends Action {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 
-		ActionResponse response = new ActionResponse();
+		GenericNetworkModel networkModel = (GenericNetworkModel) getModelToUpdate();
 
-		try {
-			List<IResource> resources = getNetworkSwitches();
-			NetworkStatistics netStats = getSwitchesStatistics(resources);
-			response.setResult(netStats);
-			response.setStatus(ActionResponse.STATUS.OK);
-
-		} catch (ActivatorException ae) {
-			throw new ActionException(ae);
-		}
-
-		return response;
-	}
-
-	private NetworkStatistics getSwitchesStatistics(List<IResource> resources) {
 		NetworkStatistics netStats = new NetworkStatistics();
-		for (IResource resource : resources) {
-			IMonitoringCapability monitorCapab = null;
+		for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
 			try {
-				monitorCapab = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
-			} catch (ResourceException e) {
-				log.debug("Switch with resource with name = '" + resource.getResourceDescriptor().getInformation().getName() + "' and ID = " + resource
-						.getResourceDescriptor().getId() + " has not Monitoring Capability. Skipping it.");
-				// continue with next switch
-				continue;
-			}
-			try {
-				SwitchPortStatistics switchStatistics = monitorCapab.getPortStatistics();
-				netStats.addPortSwitchStatistic(resource.getResourceDescriptor().getInformation().getName(), switchStatistics);
-			} catch (CapabilityException e) {
-				log.error(
-						"Error getting port statistics from switch with name = '" + resource.getResourceDescriptor().getInformation().getName() + "' and ID  = " + resource
-								.getResourceDescriptor().getId(), e);
+				SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
+				netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);
+			} catch (Exception e) {
+				log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
 			}
 		}
 
-		return netStats;
-
+		ActionResponse response = ActionResponse.okResponse(getActionID());
+		response.setResult(netStats);
+		return response;
 	}
 
 	@Override
@@ -96,18 +78,59 @@ public class GetNetworkStatisticsAction extends Action {
 		return true;
 	}
 
-	/**
-	 * TODO to be removed when network is aware of its topology
-	 * 
-	 * @return
-	 * @throws ActivatorException
-	 */
-	private List<IResource> getNetworkSwitches() throws ActivatorException {
-
-		IResourceManager rm = Activator.getResourceManagerService();
-		List<IResource> ofSwitches = rm.listResourcesByType("openflowswitch");
-
-		return ofSwitches;
+	private IResourceManager getResourceManager() throws ActivatorException {
+		return Activator.getResourceManagerService();
 	}
 
+	private SwitchPortStatistics getSwitchPortStatisticsForNetworkElement(NetworkElement networkElement, GenericNetworkModel networkModel)
+			throws CapabilityException, Exception {
+
+		String resourceId = networkModel.getDeviceResourceMap().get(networkElement.getId());
+		if (resourceId == null) {
+			throw new Exception("Cannot find mapping resource for network element " + networkElement.getId());
+		}
+
+		IResource resource;
+		try {
+			resource = getResourceManager().getResourceById(resourceId);
+		} catch (Exception e) {
+			throw new Exception("Failed to obtain mapping resource for network element " + networkElement.getId(), e);
+		}
+
+		IMonitoringCapability monitorCapab;
+		try {
+			monitorCapab = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
+		} catch (ResourceException e) {
+			throw new Exception("Failed to obtain IMonitorCapability of mapping resource for network element " + networkElement.getId(), e);
+		}
+
+		SwitchPortStatistics switchStatistics = monitorCapab.getPortStatistics();
+		SwitchPortStatistics netSwitchStatistics = portIdsToNetPortIds(networkElement, switchStatistics, networkModel);
+
+		return netSwitchStatistics;
+	}
+
+	private SwitchPortStatistics portIdsToNetPortIds(NetworkElement networkElement, SwitchPortStatistics switchStatistics,
+			GenericNetworkModel networkModel) {
+		SwitchPortStatistics netSwitchStatistics = new SwitchPortStatistics();
+		netSwitchStatistics.setStatistics(new HashMap<Integer, PortStatistics>());
+
+		String deviceId = networkModel.getDeviceResourceMap().get(networkElement.getId());
+
+		for (Integer portId : switchStatistics.getStatistics().keySet()) {
+
+			DevicePortId devicePortId = new DevicePortId();
+			devicePortId.setDeviceId(deviceId);
+			devicePortId.setDevicePortId(portId.toString());
+			Port netPort = networkModel.getNetworkDevicePortIdsMap().inverse().get(devicePortId);
+			if (netPort == null) {
+				log.warn("Cannot find mapping network port for device " + deviceId + " and port " + portId + ". Skipping it.");
+			} else {
+				String netPortId = netPort.getId();
+				netSwitchStatistics.getStatistics().put(netPortId, switchStatistics.getStatistics().get(portId));
+			}
+		}
+
+		return netSwitchStatistics;
+	}
 }

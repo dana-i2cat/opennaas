@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:topology xmlns:ns2="opennaas.api">
+    <networkElements>
+        <networkElement xsi:type="switch" id="ofswitch:s1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <state>
+                <congested>false</congested>
+            </state>
+            <ports>
+                <port id="2">
+                    <state>
+                        <congested>true</congested>
+                    </state>
+                </port>
+                <port id="1">
+                    <state>
+                        <congested>false</congested>
+                    </state>
+                </port>
+            </ports>
+        </networkElement>
+        <networkElement xsi:type="domain" id="genericnetwork:n1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <state>
+                <congested>false</congested>
+            </state>
+            <ports>
+                <port id="6">
+                    <state>
+                        <congested>false</congested>
+                    </state>
+                </port>
+                <port id="5">
+                    <state>
+                        <congested>false</congested>
+                    </state>
+                </port>
+            </ports>
+        </networkElement>
+        <networkElement xsi:type="switch" id="ofswitch:s2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <state>
+                <congested>false</congested>
+            </state>
+            <ports>
+                <port id="4">
+                    <state>
+                        <congested>false</congested>
+                    </state>
+                </port>
+                <port id="3">
+                    <state>
+                        <congested>false</congested>
+                    </state>
+                </port>
+            </ports>
+        </networkElement>
+    </networkElements>
+    <links>
+        <link>
+            <state>
+                <congested>false</congested>
+            </state>
+            <srcPort>6</srcPort>
+            <dstPort>1</dstPort>
+        </link>
+        <link>
+            <state>
+                <congested>false</congested>
+            </state>
+            <srcPort>4</srcPort>
+            <dstPort>5</dstPort>
+        </link>
+        <link>
+            <state>
+                <congested>false</congested>
+            </state>
+            <srcPort>2</srcPort>
+            <dstPort>3</dstPort>
+        </link>
+    </links>
+</ns2:topology>

@@ -38,6 +38,9 @@ import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortSt
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NetworkStatistics {
 
+	/**
+	 * Key: SwitchId, Value: SwitchPortStatistics for that switch
+	 */
 	private Map<String, SwitchPortStatistics>	switchStatistics;
 
 	public NetworkStatistics() {

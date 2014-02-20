@@ -162,15 +162,15 @@ public class MonitoringTest extends MockHTTPServerTest {
 
 		Assert.assertNotNull("Capability should return statistics.", portStats);
 
-		Map<Integer, PortStatistics> statsMap = portStats.getStatistics();
+		Map<String, PortStatistics> statsMap = portStats.getStatistics();
 		Assert.assertNotNull("SwitchPortStatistics should contain statistics", statsMap);
 		Assert.assertEquals("Switch returns statistics of 3 ports.", 3, statsMap.size());
 
-		Assert.assertTrue("Switch contains statistics for port 1.", statsMap.keySet().contains(Integer.valueOf(1)));
-		Assert.assertTrue("Switch contains statistics for port 2.", statsMap.keySet().contains(Integer.valueOf(2)));
-		Assert.assertTrue("Switch contains statistics for port 3.", statsMap.keySet().contains(Integer.valueOf(3)));
+		Assert.assertTrue("Switch contains statistics for port 1.", statsMap.keySet().contains("1"));
+		Assert.assertTrue("Switch contains statistics for port 2.", statsMap.keySet().contains("2"));
+		Assert.assertTrue("Switch contains statistics for port 3.", statsMap.keySet().contains("3"));
 
-		PortStatistics stats1 = statsMap.get(Integer.valueOf(1));
+		PortStatistics stats1 = statsMap.get("1");
 		Assert.assertNotNull("Statistics of port 1 should contain information.", stats1);
 		Assert.assertTrue("Statistics of port 1 should contain port 1.", stats1.getPort() == 1);
 		Assert.assertTrue("Port 1 should have received 8329 bytes.", stats1.getReceiveBytes() == 8329);
@@ -186,7 +186,7 @@ public class MonitoringTest extends MockHTTPServerTest {
 		Assert.assertTrue("Port 1 should have received 0 CRC errors packets.", stats1.getReceiveCRCErrors() == 0);
 		Assert.assertTrue("There should be no collisions in port 1.", stats1.getCollisions() == 0);
 
-		PortStatistics stats2 = statsMap.get(Integer.valueOf(2));
+		PortStatistics stats2 = statsMap.get("2");
 		Assert.assertNotNull("Statistics of port 2 should contain information.", stats2);
 		Assert.assertTrue("Statistics of port 2 should contain port 2.", stats2.getPort() == 2);
 		Assert.assertTrue("Port 2 should have received 8315 bytes.", stats2.getReceiveBytes() == 8315);
@@ -202,7 +202,7 @@ public class MonitoringTest extends MockHTTPServerTest {
 		Assert.assertTrue("Port 2 should have received 0 CRC errors packets.", stats2.getReceiveCRCErrors() == 0);
 		Assert.assertTrue("There should be no collisions in port 1.", stats2.getCollisions() == 0);
 
-		PortStatistics stats3 = statsMap.get(Integer.valueOf(3));
+		PortStatistics stats3 = statsMap.get("3");
 		Assert.assertNotNull("Statistics of port 3 should contain information.", stats3);
 		Assert.assertTrue("Statistics of port 3 should contain port 3.", stats3.getPort() == 3);
 		Assert.assertTrue("Port 3 should have received 8701 bytes.", stats3.getReceiveBytes() == 8701);
