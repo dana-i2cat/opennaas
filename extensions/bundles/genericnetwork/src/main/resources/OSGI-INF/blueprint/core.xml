@@ -181,8 +181,11 @@
 	     NCLMonitoring Capability 
 	     ########################################
 	 -->
+	 <reference id="eventManager" interface="org.opennaas.core.events.IEventManager" />
+	 
 	 <bean id="nclMonitoringCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.nclmonitoring.NCLMonitoringCapabilityFactory">
 		<property name="type" value="nclmonitoring"/>
+		<property name="eventManager" ref="eventManager"/>
 	</bean>	
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="nclMonitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">

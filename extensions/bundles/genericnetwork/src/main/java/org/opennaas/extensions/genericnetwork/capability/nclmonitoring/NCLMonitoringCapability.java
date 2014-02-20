@@ -20,11 +20,16 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
  * #L%
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
 
 /**
  * 
@@ -35,9 +40,15 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 
 	public static final String	CAPABILITY_TYPE	= "nclmonitoring";
 
-	public NCLMonitoringCapability(CapabilityDescriptor descriptor) {
+	private Log					log				= LogFactory.getLog(NCLProvisionerCapability.class);
+
+	private String				resourceId		= "";
+	private IEventManager		eventManager;
+
+	public NCLMonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
-		// TODO Auto-generated constructor stub
+		this.resourceId = resourceId;
+		log.debug("Built new NCLMonitoring Capability");
 	}
 
 	@Override
@@ -54,6 +65,27 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 	public IActionSet getActionSet() throws CapabilityException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				INCLMonitoringCapability.class.getName());
+		super.activate();
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		unregisterService();
+		super.deactivate();
+	}
+
+	public IEventManager getEventManager() {
+		return eventManager;
+	}
+
+	public void setEventManager(IEventManager eventManager) {
+		this.eventManager = eventManager;
 	}
 
 }

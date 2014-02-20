@@ -20,12 +20,12 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
  * #L%
  */
 
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
 
 /**
  * 
@@ -33,6 +33,11 @@ import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvi
  * 
  */
 public class NCLMonitoringCapabilityFactory extends AbstractCapabilityFactory {
+
+	/**
+	 * EventManager shared for all NCLMonitoringCapability(s) instantiated by this factory.
+	 */
+	private IEventManager	eventManager;
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
@@ -45,7 +50,17 @@ public class NCLMonitoringCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
-		return new NCLProvisionerCapability(capabilityDescriptor, resourceId);
+		NCLMonitoringCapability capability = new NCLMonitoringCapability(capabilityDescriptor, resourceId);
+		capability.setEventManager(eventManager);
+		return capability;
+	}
+
+	public IEventManager getEventManager() {
+		return eventManager;
+	}
+
+	public void setEventManager(IEventManager eventManager) {
+		this.eventManager = eventManager;
 	}
 
 }
