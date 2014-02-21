@@ -67,6 +67,8 @@ public class NCLProvisioner implements INCLProvisioner {
 	private INCLController			nclController;
 	private IRequestToFlowsLogic	requestToFlowsLogic;
 
+	private String					networkId;
+
 	private NCLModel				model;
 
 	private final Object			mutex;
@@ -201,11 +203,11 @@ public class NCLProvisioner implements INCLProvisioner {
 
 				String netId = getNetworkSelector().findNetworkForFlowId(flowId);
 
-				List<NetOFFlow> qosPolicyRequestFlows = getAllocatedFlows().get(flowId);
-				getNclController().deallocateFlows(qosPolicyRequestFlows, netId);
+				IResource networkResource = getResource(netId);
+				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
+						.getCapabilityByInterface(INCLProvisionerCapability.class);
 
-				getAllocatedQoSPolicyRequests().remove(flowId);
-				getAllocatedFlows().remove(flowId);
+				nclProvCapab.deallocateCircuit(flowId);
 
 			} catch (Exception e) {
 				throw new ProvisionerException(e);
