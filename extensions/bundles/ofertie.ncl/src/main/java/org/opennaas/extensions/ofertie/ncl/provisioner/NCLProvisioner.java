@@ -67,8 +67,6 @@ public class NCLProvisioner implements INCLProvisioner {
 	private INCLController			nclController;
 	private IRequestToFlowsLogic	requestToFlowsLogic;
 
-	private String					networkId;
-
 	private NCLModel				model;
 
 	private final Object			mutex;
