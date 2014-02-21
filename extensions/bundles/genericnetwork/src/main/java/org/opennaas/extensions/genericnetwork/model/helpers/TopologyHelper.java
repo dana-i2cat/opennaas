@@ -39,8 +39,20 @@ public class TopologyHelper {
 	 * @throws ResourceException
 	 */
 	public static IResource getResourceFromNetworkElementId(String id, IResourceManager resourceManager) throws ResourceException {
+		return resourceManager.getResourceById(getResourceIdFromNetworkElementId(id, resourceManager));
+	}
+
+	/**
+	 * Returns {@link IResource} ID associated with a {@link NetworkElement} ID given a {@link IResourceManager}
+	 * 
+	 * @param id
+	 * @param resourceManager
+	 * @return
+	 * @throws ResourceException
+	 */
+	public static String getResourceIdFromNetworkElementId(String id, IResourceManager resourceManager) throws ResourceException {
 		String[] typeAndName = getTypeAndNameFromNetworkElementId(id);
-		return resourceManager.getResourceById(resourceManager.getIdentifierFromResourceTypeName(typeAndName[0], typeAndName[1]));
+		return resourceManager.getIdentifierFromResourceTypeName(typeAndName[0], typeAndName[1]);
 	}
 
 	/**
