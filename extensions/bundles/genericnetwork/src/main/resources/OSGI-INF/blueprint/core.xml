@@ -105,6 +105,16 @@
 		</service-properties>
 	</service>
 	
+	<!--  Internal ActionSet  -->
+	<bean id="circuitprovisioningInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.circuitprovisioning.CircuitProvisioningActionsetImplementation" />
+	<service ref="circuitprovisioningInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="circuitprovisioning"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
 	<!-- ########################################
 	     NetTopology Capability 
 	     ########################################
