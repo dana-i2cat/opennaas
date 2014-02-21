@@ -20,14 +20,23 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  * #L%
  */
 
+import java.util.Collection;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 
 /**
@@ -39,17 +48,61 @@ import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitReque
 public interface INCLProvisionerCapability extends ICapability {
 
 	/**
-	 * Allocates a flow.
+	 * Allocates a circuit.
 	 * 
 	 * @param qosPolicyRequest
-	 * @return flowId of allocated flow
-	 * @throws AllocationException
-	 * @throws ProvisionerException
+	 * @return circuitId of allocated circuit
+	 * @throws CapabilityException
+	 */
+	public String allocateCircuit(CircuitRequest pathRequest) throws CapabilityException;
+
+	/**
+	 * Allocates a circuit.
+	 * 
+	 * @param qosPolicyRequest
+	 * @return circuitId of allocated circuit
+	 * @throws CapabilityException
 	 */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public String allocateFlow(CircuitRequest circuitRequest) throws CapabilityException;
+	public CircuitId allocateCircuitAPI(CircuitRequest pathRequest) throws CapabilityException;
+
+	/**
+	 * Deallocates an allocated circuit.
+	 * 
+	 * @param qosPolicyRequest
+	 * @return circuitId of allocated circuit
+	 * @throws CapabilityException
+	 */
+	@DELETE
+	@Path("/{id}")
+	public void deallocateCircuit(@PathParam("id") String circuitId) throws CapabilityException;
+
+	/**
+	 * Returns currently allocated circuits
+	 * 
+	 * @return Currently allocated circuits.
+	 * @throws ProvisionerException
+	 */
+	public Collection<Circuit> getAllocatedCircuits() throws CapabilityException;
+
+	/**
+	 * Returns currently allocated circuits
+	 * 
+	 * @return Currently allocated circuits.
+	 * @throws ProvisionerException
+	 */
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_XML)
+	public CircuitCollection getAllocatedCircuitsAPI() throws CapabilityException;
+
+	@PUT
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	public void updateCircuit(@PathParam("{id}") String circuitId, CircuitRequest pathRequest) throws CapabilityException;
 
 }

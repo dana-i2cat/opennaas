@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components;
+package org.opennaas.extensions.genericnetwork.model.helpers;
 
 /*
  * #%L
@@ -20,33 +20,20 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner.compone
  * #L%
  */
 
-import java.util.UUID;
-
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
-import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
-import org.opennaas.extensions.genericnetwork.model.helpers.CircuitParser;
 
-/**
- * 
- * @author Adrian Rosello Rey (i2CAT)
- * 
- */
-public abstract class CircuitFactoryLogic {
+public class GenericNetworkModelHelper {
 
-	public static Circuit generateCircuit(CircuitRequest request, Route route) {
+	public static boolean isPortInCircuit(String portId, Circuit circuit) {
+		Route route = circuit.getRoute();
 
-		Circuit circuit = CircuitParser.circuitRequestToCircuit(request);
+		for (NetworkConnection netConnection : route.getNetworkConnections()) {
+			if (netConnection.getSource().getId().equals(portId) || netConnection.getDestination().getId().equals(portId))
+				return true;
+		}
 
-		circuit.setCircuitId(generateRandomCircuitId());
-		circuit.setRoute(route);
-
-		return circuit;
-
+		return false;
 	}
-
-	private static String generateRandomCircuitId() {
-		return UUID.randomUUID().toString();
-	}
-
 }
