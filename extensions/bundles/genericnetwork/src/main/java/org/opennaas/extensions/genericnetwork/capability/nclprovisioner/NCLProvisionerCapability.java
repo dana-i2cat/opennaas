@@ -311,7 +311,6 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		if (circuit == null)
 			throw new CapabilityException("Cann not reroute circuit: Circuit is not allocated.");
 
-		// FIXME call parser, don't create a new one!
 		CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
 		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
 		circuit.setRoute(route);
