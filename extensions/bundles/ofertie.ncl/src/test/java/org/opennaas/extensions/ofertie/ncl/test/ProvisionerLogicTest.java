@@ -55,7 +55,7 @@ import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 public class ProvisionerLogicTest {
 
 	final String			userId	= "alice";
-	final String			netId	= "NET:1234";
+	final String			netId	= "genericnetwork:genericnet01";
 	final String			flowId	= "FLOW:1";
 
 	NCLProvisioner			provisioner;
@@ -98,7 +98,7 @@ public class ProvisionerLogicTest {
 	public void allocateFlowOkTest() throws Exception {
 		expect(qosPDP.shouldAcceptRequest(userId, qosPolicyRequest)).andReturn(true);
 		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest)).andReturn(sdnFlow);
-		expect(networkSelector.findNetworkForRequest(qosPolicyRequest)).andReturn(netId);
+		expect(networkSelector.getNetwork()).andReturn(netId);
 
 		nclController.allocateFlows(sdnFlow, netId);
 		expectLastCall().once();
@@ -138,7 +138,7 @@ public class ProvisionerLogicTest {
 	public void allocateFlowNetworkSelectorErrorTest() throws Exception {
 		expect(qosPDP.shouldAcceptRequest(userId, qosPolicyRequest)).andReturn(true);
 		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest)).andReturn(sdnFlow);
-		expect(networkSelector.findNetworkForRequest(qosPolicyRequest)).andThrow(new Exception());
+		expect(networkSelector.getNetwork()).andThrow(new Exception());
 
 		replay(qosPDP);
 		replay(networkSelector);
@@ -157,7 +157,7 @@ public class ProvisionerLogicTest {
 	public void allocateFlowNCLControllerErrorTest() throws Exception {
 		expect(qosPDP.shouldAcceptRequest(userId, qosPolicyRequest)).andReturn(true);
 		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest)).andReturn(sdnFlow);
-		expect(networkSelector.findNetworkForRequest(qosPolicyRequest)).andReturn(netId);
+		expect(networkSelector.getNetwork()).andReturn(netId);
 
 		nclController.allocateFlows(sdnFlow, netId);
 		expectLastCall().andThrow(new FlowAllocationException());

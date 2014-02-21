@@ -156,7 +156,7 @@ public class NCLProvisioner implements INCLProvisioner {
 					throw new FlowAllocationRejectedException("Rejected by policy");
 				}
 
-				String netId = getNetworkSelector().findNetworkForRequest(qosPolicyRequest);
+				String netId = getNetworkSelector().getNetwork();
 
 				IResource networkResource = getResource(netId);
 				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
@@ -180,7 +180,7 @@ public class NCLProvisioner implements INCLProvisioner {
 
 			try {
 
-				String netId = getNetworkSelector().findNetworkForRequest(updatedQosPolicyRequest);
+				String netId = getNetworkSelector().getNetwork();
 
 				IResource networkResource = getResource(netId);
 				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
@@ -204,7 +204,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			try {
 
-				String netId = getNetworkSelector().findNetworkForFlowId(flowId);
+				String netId = getNetworkSelector().getNetwork();
 
 				IResource networkResource = getResource(netId);
 				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource

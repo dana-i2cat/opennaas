@@ -27,10 +27,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 
 public class NetworkSelectorMockup implements INetworkSelector {
@@ -97,24 +95,9 @@ public class NetworkSelectorMockup implements INetworkSelector {
 	}
 
 	@Override
-	public String findNetworkForRequest(QosPolicyRequest qosPolicyRequest)
-			throws Exception {
-		return getConfiguredNetwork();
-	}
-
-	@Override
-	public String findNetworkForFlowId(String flowId) throws Exception {
-		return getConfiguredNetwork();
-	}
-
-	/**
-	 * Returns the id of the resource identified by the resourceType and resourceName set in the configuration file.
-	 * 
-	 * @return
-	 * @throws ResourceException
-	 */
-	private String getConfiguredNetwork() throws ResourceException {
+	public String getNetwork() throws Exception {
 		return resourceManager.getIdentifierFromResourceTypeName(resourceType, resourceName);
+
 	}
 
 }
