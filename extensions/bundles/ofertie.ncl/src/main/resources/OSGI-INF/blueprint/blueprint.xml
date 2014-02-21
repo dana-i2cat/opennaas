@@ -19,7 +19,7 @@
 		<property name="nclModel" ref="nclModel" />
 		<property name="routeSelectionLogic" ref="routeSelectionLogic"/>
 	</bean>
-	<bean id="networkSelector" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup">
+	<bean id="networkSelector" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup" init-method="init">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
 	<bean id="requestToFlowsLogic" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.RequestToFlowsLogic">
