@@ -141,17 +141,30 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
 			throw new ActionException(response.toString());
 		}
+
+		Map<String, Circuit> allocatedCircuitsMap = ((GenericNetworkModel) resource.getModel()).getAllocatedCircuits();
+		allocatedCircuitsMap.put(circuit.getCircuitId(), circuit);
 	}
 
 	@Override
 	public void deallocate(String circuitId) throws CapabilityException {
-		IAction action = createActionAndCheckParams(CircuitProvisioningActionSet.DEALLOCATE_CIRCUIT, circuitId);
+		Map<String, Circuit> allocatedCircuitsMap = ((GenericNetworkModel) resource.getModel()).getAllocatedCircuits();
+
+		if (!allocatedCircuitsMap.containsKey(circuitId)) {
+			throw new CapabilityException("There is no such circuit with ID = " + circuitId);
+		}
+
+		Circuit circuitToRemove = allocatedCircuitsMap.get(circuitId);
+
+		IAction action = createActionAndCheckParams(CircuitProvisioningActionSet.DEALLOCATE_CIRCUIT, circuitToRemove);
 
 		ActionResponse response = executeAction(action);
 
 		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
 			throw new ActionException(response.toString());
 		}
+
+		allocatedCircuitsMap.remove(circuitId);
 	}
 
 	@Override
