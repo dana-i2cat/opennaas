@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.events;
+package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
 
 /*
  * #%L
- * OpenNaaS :: OF Network
+ * OpenNaaS :: Generic Network
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -20,33 +20,13 @@ package org.opennaas.extensions.genericnetwork.events;
  * #L%
  */
 
-import java.util.Map;
-
-import org.osgi.service.event.Event;
+import org.opennaas.core.resources.capability.ICapability;
 
 /**
  * 
- * @author Adrian Rosello Rey (i2CAT)
+ * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class PortCongestionEvent extends Event {
-
-	public static final String	TOPIC			= "org/opennaas/extensions/ofnetwork/event/link/congestion";
-
-	/**
-	 * Network Id from which the port belongs to
-	 */
-	public static final String	NETWORK_ID_KEY	= "networkId";
-
-	/**
-	 * PortId from which statistics has been read.
-	 */
-	public static final String	PORT_ID_KEY		= "portId";
-
-	public PortCongestionEvent(Map<String, Object> properties) {
-
-		super(TOPIC, properties);
-
-	}
+public interface INCLMonitoringCapability extends ICapability {
 
 }
