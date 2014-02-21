@@ -31,12 +31,17 @@ import org.osgi.service.event.Event;
  */
 public class PortCongestionEvent extends Event {
 
-	public static final String	TOPIC		= "org/opennaas/extensions/ofnetwork/event/link/congestion";
+	public static final String	TOPIC			= "org/opennaas/extensions/ofnetwork/event/link/congestion";
+
+	/**
+	 * Network Id from which the port belongs to
+	 */
+	public static final String	NETWORK_ID_KEY	= "networkId";
 
 	/**
 	 * PortId from which statistics has been read.
 	 */
-	public static final String	PORT_ID_KEY	= "portId";
+	public static final String	PORT_ID_KEY		= "portId";
 
 	public PortCongestionEvent(Map<String, Object> properties) {
 

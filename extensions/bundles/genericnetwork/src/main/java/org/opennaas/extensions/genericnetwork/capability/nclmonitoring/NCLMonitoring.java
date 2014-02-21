@@ -139,6 +139,7 @@ public class NCLMonitoring {
 	private void notifyCongestion(Port port) {
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(PortCongestionEvent.PORT_ID_KEY, port.getId());
+		properties.put(PortCongestionEvent.NETWORK_ID_KEY, resource.getResourceIdentifier().getId());
 
 		PortCongestionEvent event = new PortCongestionEvent(properties);
 		eventManager.publishEvent(event);
