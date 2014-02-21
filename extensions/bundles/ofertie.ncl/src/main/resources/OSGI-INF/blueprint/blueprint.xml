@@ -33,7 +33,7 @@
 	</bean>
 	
 	<!-- Instantiate NCLProvisioner and publish it -->
-	<bean id="nclProvisioner" class="org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner" init-method="registerAsCongestionEventListener" destroy-method="unregisterListener">
+	<bean id="nclProvisioner" class="org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner">
 		<property name="qoSPDP" ref="qosPDP" />
 		<property name="networkSelector" ref="networkSelector" />
 		<property name="nclController" ref="nclController" />

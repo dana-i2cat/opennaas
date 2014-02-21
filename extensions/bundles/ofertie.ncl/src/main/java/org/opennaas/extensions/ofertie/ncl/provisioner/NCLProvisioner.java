@@ -26,6 +26,11 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
@@ -151,6 +156,8 @@ public class NCLProvisioner implements INCLProvisioner {
 				List<NetOFFlow> sdnFlows = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
 
 				String netId = getNetworkSelector().findNetworkForRequest(qosPolicyRequest);
+				IResource networkResource = getResource(netId);
+
 				getNclController().allocateFlows(sdnFlows, netId);
 
 				String qosPolicyRequestId = generateRandomQoSPolicyRequestId();
@@ -342,6 +349,14 @@ public class NCLProvisioner implements INCLProvisioner {
 			qosPolicyRequest.getQosPolicy().setPacketLoss(null);
 			updateFlow(flowId, qosPolicyRequest);
 		}
+	}
+
+	private IResource getResource(String networkId) throws ActivatorException, ResourceException {
+
+		IResourceManager resourceManager = Activator.getResourceManagerService();
+		IResource resource = resourceManager.getResourceById(networkId);
+
+		return resource;
 	}
 
 }

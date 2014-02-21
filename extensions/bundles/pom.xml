@@ -140,6 +140,5 @@
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
-		<module>ofertie.features</module>
 	</modules>
 </project>

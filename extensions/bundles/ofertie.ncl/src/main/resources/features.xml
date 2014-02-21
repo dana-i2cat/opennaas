@@ -3,12 +3,15 @@
 
 	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.ofnetwork.features/${opennaas.version}/xml/features</repository>
-	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.genericnetwork/${opennaas.version}/xml/features</repository>
+		
 	
 	<feature name="opennaas-ofertie-ncl" version="${project.version}">
 		<feature version="${project.version}">opennaas-ofnetwork</feature>
-		
+		<feature version="${project.version}">opennaas-genericnetwork</feature>
+				
 		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
+		
 		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${project.version}</bundle>
 		

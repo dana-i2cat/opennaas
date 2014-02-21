@@ -5,7 +5,7 @@
 	<repository>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.features/${opennaas.version}/xml/features</repository>	
 	<repository>mvn:org.opennaas/org.opennaas.extensions.macbridge.features/${opennaas.version}/xml/features</repository>	
 	<repository>mvn:org.opennaas/org.opennaas.extensions.network.features/${opennaas.version}/xml/features</repository> 
-	<repository>mvn:org.opennaas/org.opennaas.extensions.ofertie.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.ofnetwork.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.features/${opennaas.version}/xml/features</repository>
