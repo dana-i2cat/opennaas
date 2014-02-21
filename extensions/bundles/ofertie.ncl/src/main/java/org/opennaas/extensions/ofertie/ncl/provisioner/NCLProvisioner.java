@@ -179,20 +179,25 @@ public class NCLProvisioner implements INCLProvisioner {
 	public String updateFlow(String flowId, QosPolicyRequest updatedQosPolicyRequest) throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
 		synchronized (mutex) {
-			deallocateFlow(flowId);
-			String newFlowId = allocateFlow(updatedQosPolicyRequest);
 
-			// keep previous id for new QoSPolicyRequest.
-			QosPolicyRequest qosPolicyRequest = getAllocatedQoSPolicyRequests().get(newFlowId);
-			List<NetOFFlow> qosPolicyRequestFlows = getAllocatedFlows().get(newFlowId);
+			try {
 
-			getAllocatedQoSPolicyRequests().remove(newFlowId);
-			getAllocatedFlows().remove(newFlowId);
+				String netId = getNetworkSelector().findNetworkForRequest(updatedQosPolicyRequest);
 
-			getAllocatedQoSPolicyRequests().put(flowId, qosPolicyRequest);
-			getAllocatedFlows().put(flowId, qosPolicyRequestFlows);
+				IResource networkResource = getResource(netId);
+				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
+						.getCapabilityByInterface(INCLProvisionerCapability.class);
 
-			return flowId;
+				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(updatedQosPolicyRequest);
+
+				nclProvCapab.updateCircuit(flowId, circuitRequest);
+
+				return flowId;
+			} catch (Exception e) {
+				// FIXME we must identify when the problem is a FlowNotFoundExceptionCapability should launch another exception child of
+				// CapabilityException
+				throw new ProvisionerException(e);
+			}
 		}
 	}
 
