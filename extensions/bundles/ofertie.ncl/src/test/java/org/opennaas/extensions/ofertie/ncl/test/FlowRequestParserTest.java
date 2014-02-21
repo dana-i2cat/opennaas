@@ -26,7 +26,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestParser;
-import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequesttHelper;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestHelper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
@@ -43,8 +43,8 @@ public class FlowRequestParserTest {
 	@Test
 	public void parseFlowRequestTest() {
 
-		QosPolicyRequest qosPolicyRequest = QoSPolicyRequesttHelper.generateSampleFlowRequest();
-		Route route = QoSPolicyRequesttHelper.generateSampleRoute();
+		QosPolicyRequest qosPolicyRequest = QoSPolicyRequestHelper.generateSampleQosPolicyRequest();
+		Route route = QoSPolicyRequestHelper.generateSampleRoute();
 
 		List<NetOFFlow> sdnNetOFFlows = QoSPolicyRequestParser.parseFlowRequestIntoSDNFlow(qosPolicyRequest, route);
 

@@ -40,44 +40,61 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
  * @author Adrian Rosello (i2CAT)
  * 
  */
-public abstract class QoSPolicyRequesttHelper {
+public abstract class QoSPolicyRequestHelper {
 
-	public static QosPolicyRequest generateSampleFlowRequest() {
+	public static final String	SRC_IP			= "192.168.1.14";
+	public static final String	DST_IP			= "192.168.1.13";
+
+	public static final String	SRC_PORT		= "0";
+	public static final String	DST_PORT		= "1";
+
+	public static final String	TOS				= "16";
+
+	public static final String	LATENCY_MIN		= "5";
+	public static final String	LATENCY_MAX		= "12";
+	public static final String	JITTER_MIN		= "2";
+	public static final String	JITTER_MAX		= "5";
+	public static final String	THROUGHTPUT_MIN	= "10";
+	public static final String	THROUGHTPUT_MAX	= "100";
+	public static final String	PACKETLOSS_MIN	= "0";
+	public static final String	PACKETLOSS_MAX	= "100";
+
+	public static QosPolicyRequest generateSampleQosPolicyRequest() {
 
 		QosPolicyRequest req = new QosPolicyRequest();
 
 		Source source = new Source();
-		source.setAddress("192.168.1.14");
-		source.setPort("0");
+		source.setAddress(SRC_IP);
+		source.setPort(SRC_PORT);
 		req.setSource(source);
 
 		Destination destination = new Destination();
-		destination.setAddress("192.168.1.13");
-		destination.setPort("1");
+		destination.setAddress(DST_IP);
+		destination.setPort(DST_PORT);
 		req.setDestination(destination);
 
-		req.setLabel("16");
+		req.setLabel(TOS);
 
 		QosPolicy qosPolicy = new QosPolicy();
 
 		Latency latency = new Latency();
-		latency.setMin("5");
-		latency.setMax("12");
+		latency.setMin(LATENCY_MIN);
+		latency.setMax(LATENCY_MAX);
 		qosPolicy.setLatency(latency);
 
 		Jitter jitter = new Jitter();
-		jitter.setMin("2");
-		jitter.setMax("5");
+		jitter.setMin(JITTER_MIN);
+		jitter.setMax(JITTER_MAX);
 		qosPolicy.setJitter(jitter);
 
 		Throughput throughput = new Throughput();
-		throughput.setMin("10");
-		throughput.setMax("100");
+		throughput.setMin(THROUGHTPUT_MIN);
+		throughput.setMax(THROUGHTPUT_MAX);
 		qosPolicy.setThroughput(throughput);
 
 		PacketLoss packetLoss = new PacketLoss();
-		packetLoss.setMin("0");
-		packetLoss.setMax("100");
+		packetLoss.setMin(PACKETLOSS_MIN);
+		packetLoss.setMax(PACKETLOSS_MAX);
 		qosPolicy.setPacketLoss(packetLoss);
 
 		req.setQosPolicy(qosPolicy);
