@@ -242,6 +242,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		Properties properties = new Properties();
 		properties.put(EventConstants.EVENT_TOPIC, PortCongestionEvent.TOPIC);
+		properties.put(PortCongestionEvent.NETWORK_ID_KEY, resource.getResourceIdentifier().getId());
 
 		eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
 

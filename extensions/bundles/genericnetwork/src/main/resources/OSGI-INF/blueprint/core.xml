@@ -105,6 +105,16 @@
 		</service-properties>
 	</service>
 	
+	<!--  Internal ActionSet  -->
+	<bean id="circuitprovisioningInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.circuitprovisioning.CircuitProvisioningActionsetImplementation" />
+	<service ref="circuitprovisioningInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="circuitprovisioning"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
 	<!-- ########################################
 	     NetTopology Capability 
 	     ########################################
@@ -175,6 +185,25 @@
 			<entry key="capability.model" value="genericnetwork"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
-	</service>	
+	</service>
+	
+	<!-- ########################################
+	     NCLMonitoring Capability 
+	     ########################################
+	 -->
+	 <reference id="eventManager" interface="org.opennaas.core.events.IEventManager" />
+	 
+	 <bean id="nclMonitoringCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.nclmonitoring.NCLMonitoringCapabilityFactory">
+		<property name="type" value="nclmonitoring"/>
+		<property name="eventManager" ref="eventManager"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="nclMonitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="nclmonitoring"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
 	
 </blueprint>
