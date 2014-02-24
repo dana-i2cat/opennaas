@@ -44,6 +44,7 @@ import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.Circ
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
+import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
@@ -107,24 +108,27 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	@Override
 	public String allocateCircuit(CircuitRequest circuitRequest) throws CapabilityException {
-
-		IPathFindingCapability pathFindingCapab;
-		ICircuitProvisioningCapability circuitProvCapability;
 		try {
+
+			IPathFindingCapability pathFindingCapab;
+			ICircuitProvisioningCapability circuitProvCapability;
 			pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
 			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
 
+			Route route = pathFindingCapab.findPathForRequest(circuitRequest);
+			Circuit circuit = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
+			// TODO add aggregation logic when capability is implemented.
+
+			circuitProvCapability.allocate(circuit);
+
+			return circuit.getCircuitId();
+
 		} catch (ResourceException e) {
-			throw new CapabilityException(e);
+			throw new CircuitAllocationException(e);
+		} catch (Exception e) {
+			throw new CircuitAllocationException(e);
+
 		}
-
-		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
-		Circuit circuit = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
-		// TODO add aggregation logic when capability is implemented.
-
-		circuitProvCapability.allocate(circuit);
-
-		return circuit.getCircuitId();
 	}
 
 	@Override

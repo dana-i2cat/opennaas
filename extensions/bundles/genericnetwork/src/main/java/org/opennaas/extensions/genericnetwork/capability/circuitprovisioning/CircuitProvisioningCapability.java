@@ -42,6 +42,7 @@ import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.CircuitsList;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.OldAndNewCircuits;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api.helpers.CircuitProvisioningAPIHelper;
+import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 
@@ -151,7 +152,7 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 		Map<String, Circuit> allocatedCircuitsMap = ((GenericNetworkModel) resource.getModel()).getAllocatedCircuits();
 
 		if (!allocatedCircuitsMap.containsKey(circuitId)) {
-			throw new CapabilityException("There is no such circuit with ID = " + circuitId);
+			throw new NotExistingCircuitException("There is no such circuit with ID = " + circuitId);
 		}
 
 		Circuit circuitToRemove = allocatedCircuitsMap.get(circuitId);
