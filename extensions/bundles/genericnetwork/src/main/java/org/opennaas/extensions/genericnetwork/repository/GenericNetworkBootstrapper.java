@@ -48,8 +48,14 @@ public class GenericNetworkBootstrapper implements IResourceBootstrapper {
 		resource.setModel(new GenericNetworkModel());
 
 		// FIXME coupling Bootstrapper with a Capability implementation!!!
-		NetTopologyCapability topologyCapability = (NetTopologyCapability) resource.getCapabilityByInterface(INetTopologyCapability.class);
-		topologyCapability.loadTopology();
+		NetTopologyCapability topologyCapability = null;
+		try {
+			topologyCapability = (NetTopologyCapability) resource.getCapabilityByInterface(INetTopologyCapability.class);
+		} catch (ResourceException e) {
+			log.warn("Failed to load topology at bootstrap. Skipping topology load.", e);
+		}
+		if (topologyCapability != null)
+			topologyCapability.loadTopology();
 
 	}
 
