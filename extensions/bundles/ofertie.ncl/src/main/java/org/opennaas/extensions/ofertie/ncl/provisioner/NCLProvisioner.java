@@ -31,6 +31,8 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProvisionerCapability;
+import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
+import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
@@ -191,9 +193,13 @@ public class NCLProvisioner implements INCLProvisioner {
 				nclProvCapab.updateCircuit(flowId, circuitRequest);
 
 				return flowId;
+			} catch (CircuitAllocationException e) {
+				throw new FlowAllocationException(e);
+			} catch (NotExistingCircuitException e) {
+				throw new FlowNotFoundException(e);
+			} catch (ResourceException e) {
+				throw new ProvisionerException(e);
 			} catch (Exception e) {
-				// FIXME we must identify when the problem is a FlowNotFoundExceptionCapability should launch another exception child of
-				// CapabilityException
 				throw new ProvisionerException(e);
 			}
 		}
@@ -212,6 +218,10 @@ public class NCLProvisioner implements INCLProvisioner {
 
 				nclProvCapab.deallocateCircuit(flowId);
 
+			} catch (NotExistingCircuitException e) {
+				throw new FlowNotFoundException(e);
+			} catch (ResourceException e) {
+				throw new ProvisionerException(e);
 			} catch (Exception e) {
 				throw new ProvisionerException(e);
 			}
