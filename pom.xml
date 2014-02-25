@@ -50,7 +50,7 @@
 		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
 		<dom4j.version>1.6.1_5</dom4j.version>
 		<easymock.version>3.1</easymock.version>
-		<powermock.version>1.5.1</powermock.version>
+		<powermock.version>1.5.4</powermock.version>
 		<felix.eventadmin.version>1.2.14</felix.eventadmin.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>

@@ -31,6 +31,7 @@
 		<module>vrrp/junos10</module>
 		<module>nettopology/internal</module>
 		<module>pathfinding/internal</module>
+		<module>nclmonitoring</module>
 	</modules>
 
 	<dependencies>
