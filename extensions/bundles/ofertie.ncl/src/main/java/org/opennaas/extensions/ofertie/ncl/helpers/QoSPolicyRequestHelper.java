@@ -23,6 +23,10 @@ package org.opennaas.extensions.ofertie.ncl.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
+import org.opennaas.extensions.genericnetwork.model.circuit.Route;
+import org.opennaas.extensions.genericnetwork.model.topology.Port;
+import org.opennaas.extensions.genericnetwork.model.topology.TopologyElementState;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
@@ -31,9 +35,6 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
-import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
-import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
-import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
 /**
  * 
@@ -47,6 +48,11 @@ public abstract class QoSPolicyRequestHelper {
 
 	public static final String	SRC_PORT		= "0";
 	public static final String	DST_PORT		= "1";
+
+	private static final String	PORT_1_1_ID		= "port.1.1";
+	private static final String	PORT_1_2_ID		= "port.1.2";
+	private static final String	PORT_2_1_ID		= "port.2.1";
+	private static final String	PORT_2_2_ID		= "port.2.2";
 
 	public static final String	TOS				= "16";
 
@@ -109,9 +115,9 @@ public abstract class QoSPolicyRequestHelper {
 
 		List<NetworkConnection> networkConnections = new ArrayList<NetworkConnection>();
 
-		NetworkConnection netConnection01 = generateNetworkConnection("internal-connection-01", "device01", 0, "device01", 1);
-		NetworkConnection netConnection02 = generateNetworkConnection("external-connection-01", "device01", 1, "device02", 0);
-		NetworkConnection netConnection03 = generateNetworkConnection("internal-connection-02", "device02", 0, "device02", 1);
+		NetworkConnection netConnection01 = generateNetworkConnection("internal-connection-01", PORT_1_1_ID, false, PORT_1_2_ID, false);
+		NetworkConnection netConnection02 = generateNetworkConnection("external-connection-01", PORT_1_2_ID, false, PORT_2_1_ID, false);
+		NetworkConnection netConnection03 = generateNetworkConnection("internal-connection-02", PORT_2_1_ID, false, PORT_2_2_ID, true);
 
 		networkConnections.add(netConnection01);
 		networkConnections.add(netConnection02);
@@ -122,12 +128,12 @@ public abstract class QoSPolicyRequestHelper {
 		return route;
 	}
 
-	public static NetworkConnection generateNetworkConnection(String name, String srcDeviceId, int srcPortNumber, String dstDeviceId,
-			int dstPortNumber) {
+	public static NetworkConnection generateNetworkConnection(String name, String srcPortId, boolean srcPortState, String dstPortId,
+			boolean dstPortState) {
 		NetworkConnection connection = new NetworkConnection();
 
-		Port srcPort = generatePort(srcDeviceId, srcPortNumber);
-		Port dstPort = generatePort(dstDeviceId, dstPortNumber);
+		Port srcPort = generatePort(srcPortId, srcPortState);
+		Port dstPort = generatePort(dstPortId, dstPortState);
 
 		connection.setSource(srcPort);
 		connection.setDestination(dstPort);
@@ -136,12 +142,15 @@ public abstract class QoSPolicyRequestHelper {
 		return connection;
 	}
 
-	public static Port generatePort(String deviceId, int portNumber) {
+	public static Port generatePort(String portId, boolean isCongested) {
 
 		Port port = new Port();
 
-		port.setDeviceId(deviceId);
-		port.setPortNumber(String.valueOf(portNumber));
+		TopologyElementState state = new TopologyElementState();
+		state.setCongested(isCongested);
+
+		port.setId(portId);
+		port.setState(state);
 
 		return port;
 

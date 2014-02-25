@@ -38,7 +38,6 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.NetOFFlows;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 
 /**
@@ -103,19 +102,6 @@ public interface INCLProvisioner {
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public QoSPolicyRequestsWrapper readAllocatedFlows() throws ProvisionerException;
-
-	/**
-	 * Returns implementation of given flow
-	 * 
-	 * @param flowId
-	 *            id of flow to query for
-	 * @return Currently allocated NetOFFlow(s) that are the implementation of flow with given flowid
-	 * @throws ProvisionerException
-	 */
-	@Path("/{id}/implementation")
-	@GET
-	@Produces(MediaType.APPLICATION_XML)
-	public NetOFFlows getFlowImplementation(@PathParam("id") String flowId) throws ProvisionerException;
 
 	/**
 	 * Returns QoS network requirements for one flow
