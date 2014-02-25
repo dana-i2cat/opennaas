@@ -363,7 +363,9 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(toReroute.getQos(), toReroute.getTrafficFilter());
 		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
-		toReroute.setRoute(route);
+
+		Circuit withNewRoute = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
+		withNewRoute.setCircuitId(toReroute.getCircuitId());
 
 		// call aggregation logic with all requested circuits
 		// except the original one to be re-routed and with the one to be re-rerouted updated
@@ -372,7 +374,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			if (!circuit.getCircuitId().equals(circuitId))
 				toAggregate.add(circuit);
 		}
-		toAggregate.add(toReroute);
+		toAggregate.add(withNewRoute);
 		Set<Circuit> newAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
 
 		// replace currently aggregated by newAggregatedCircuits
@@ -384,7 +386,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		circuitProvCapability.replace(oldAggregated, newAggregated);
 
 		// update requested circuits in model
-		model.getRequestedCircuits().put(circuitId, toReroute);
+		model.getRequestedCircuits().put(circuitId, withNewRoute);
 
 		log.debug("End of rerouteCircuit call.");
 
