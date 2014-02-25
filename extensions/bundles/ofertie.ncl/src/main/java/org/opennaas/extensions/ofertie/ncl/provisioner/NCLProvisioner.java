@@ -51,7 +51,6 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.NetOFFlows;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
-import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
@@ -64,13 +63,12 @@ import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
  */
 public class NCLProvisioner implements INCLProvisioner {
 
-	private IQoSPDP					qoSPDP;
-	private INetworkSelector		networkSelector;
-	private IRequestToFlowsLogic	requestToFlowsLogic;
+	private IQoSPDP				qoSPDP;
+	private INetworkSelector	networkSelector;
 
-	private NCLModel				model;
+	private NCLModel			model;
 
-	private final Object			mutex;
+	private final Object		mutex;
 
 	public NCLProvisioner() {
 		mutex = new Object();
@@ -129,14 +127,6 @@ public class NCLProvisioner implements INCLProvisioner {
 	 */
 	public void setNetworkSelector(INetworkSelector networkSelector) {
 		this.networkSelector = networkSelector;
-	}
-
-	public IRequestToFlowsLogic getRequestToFlowsLogic() {
-		return requestToFlowsLogic;
-	}
-
-	public void setRequestToFlowsLogic(IRequestToFlowsLogic requestToFlowsLogic) {
-		this.requestToFlowsLogic = requestToFlowsLogic;
 	}
 
 	// ///////////////////////////
