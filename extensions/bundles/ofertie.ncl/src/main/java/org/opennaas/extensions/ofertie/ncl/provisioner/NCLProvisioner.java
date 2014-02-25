@@ -20,7 +20,6 @@ package org.opennaas.extensions.ofertie.ncl.provisioner;
  * #L%
  */
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,12 +46,10 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.NetOFFlows;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
-import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
 /**
  * 
@@ -84,19 +81,8 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	private Log	log	= LogFactory.getLog(NCLProvisioner.class);
 
-	public Map<String, QosPolicyRequest> getAllocatedQoSPolicyRequests() {
-		return model.getAllocatedQoSPolicyRequests();
-	}
-
 	public Map<String, CircuitRequest> getAllocatedRequests() {
 		return model.getAllocatedRequests();
-	}
-
-	/**
-	 * @return the allocatedFlows
-	 */
-	public Map<String, List<NetOFFlow>> getAllocatedFlows() {
-		return model.getAllocatedFlows();
 	}
 
 	/**
@@ -241,14 +227,6 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	private String generateRandomQoSPolicyRequestId() {
 		return UUID.randomUUID().toString();
-	}
-
-	@Override
-	public NetOFFlows getFlowImplementation(String flowId) throws ProvisionerException {
-		synchronized (mutex) {
-			String qosPolicyRequestId = flowId;
-			return new NetOFFlows(getAllocatedFlows().get(qosPolicyRequestId));
-		}
 	}
 
 	public QosPolicyRequest getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
