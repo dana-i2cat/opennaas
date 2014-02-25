@@ -35,7 +35,6 @@ import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationExcept
 import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.ofertie.ncl.Activator;
-import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestWrapperParser;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
@@ -67,7 +66,6 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	private IQoSPDP					qoSPDP;
 	private INetworkSelector		networkSelector;
-	private INCLController			nclController;
 	private IRequestToFlowsLogic	requestToFlowsLogic;
 
 	private NCLModel				model;
@@ -131,14 +129,6 @@ public class NCLProvisioner implements INCLProvisioner {
 	 */
 	public void setNetworkSelector(INetworkSelector networkSelector) {
 		this.networkSelector = networkSelector;
-	}
-
-	public INCLController getNclController() {
-		return nclController;
-	}
-
-	public void setNclController(INCLController nclController) {
-		this.nclController = nclController;
 	}
 
 	public IRequestToFlowsLogic getRequestToFlowsLogic() {

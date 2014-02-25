@@ -39,7 +39,6 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.ofertie.ncl.Activator;
-import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
 import org.opennaas.extensions.ofnetwork.capability.statistics.INetworkStatisticsCapability;
@@ -69,8 +68,6 @@ public class NCLMonitoring {
 	private static final double			linkCapacity				= 1.0;
 
 	private IEventManager				eventManager;
-
-	private INCLController				nclController;
 
 	private NCLModel					nclModel;
 
@@ -116,14 +113,6 @@ public class NCLMonitoring {
 
 		LinkCongestionEvent event = new LinkCongestionEvent(properties);
 		eventManager.publishEvent(event);
-	}
-
-	public INCLController getNclController() {
-		return nclController;
-	}
-
-	public void setNclController(INCLController nclController) {
-		this.nclController = nclController;
 	}
 
 	public NCLModel getNclModel() {

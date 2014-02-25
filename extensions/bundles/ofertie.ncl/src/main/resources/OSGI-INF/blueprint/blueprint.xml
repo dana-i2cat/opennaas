@@ -26,9 +26,7 @@
 		<property name="nclModel" ref="nclModel" />
 		<property name="pathFinder" ref="pathFinder" />
 	</bean>
-	<bean id="nclController" class="org.opennaas.extensions.ofertie.ncl.controller.NCLController"/>
 	<bean id="nclMonitoring" class="org.opennaas.extensions.ofertie.ncl.monitoring.NCLMonitoring" init-method="init">
-		<property name="nclController" ref="nclController" />
 		<property name="nclModel" ref="nclModel" />
 	</bean>
 	
@@ -36,7 +34,6 @@
 	<bean id="nclProvisioner" class="org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner">
 		<property name="qoSPDP" ref="qosPDP" />
 		<property name="networkSelector" ref="networkSelector" />
-		<property name="nclController" ref="nclController" />
 		<property name="requestToFlowsLogic" ref="requestToFlowsLogic" />
 		<property name="model" ref="nclModel" />
 	</bean>
