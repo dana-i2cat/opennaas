@@ -155,6 +155,17 @@ public class NCLMonitoringCapabilityTest implements EventHandler {
 			// fail if after 30 seconds an event has not been received
 			lock.wait(30 * 1000);
 			Assert.assertFalse(receivedPortCongestionEvents.isEmpty());
+			// check ports are marked as congested in model
+			for (PortCongestionEvent event : receivedPortCongestionEvents) {
+				for (NetworkElement ne : ((GenericNetworkModel) network.getModel()).getTopology().getNetworkElements()) {
+					for (Port port : ne.getPorts()) {
+						if (port.getId().equals(event.getProperty(PortCongestionEvent.PORT_ID_KEY))) {
+							Assert.assertTrue(port.getState().isCongested());
+						}
+					}
+				}
+
+			}
 		}
 
 	}
