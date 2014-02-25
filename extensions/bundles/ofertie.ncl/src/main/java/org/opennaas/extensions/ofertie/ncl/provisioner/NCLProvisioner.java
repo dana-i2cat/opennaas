@@ -29,11 +29,11 @@ import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProvisionerCapability;
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
 import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
-import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestWrapperParser;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
@@ -62,6 +62,7 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	private IQoSPDP				qoSPDP;
 	private INetworkSelector	networkSelector;
+	private IResourceManager	resourceManager;
 
 	private NCLModel			model;
 
@@ -115,13 +116,22 @@ public class NCLProvisioner implements INCLProvisioner {
 		this.networkSelector = networkSelector;
 	}
 
+	public IResourceManager getResourceManager() {
+		return resourceManager;
+	}
+
+	public void setResourceManager(IResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
+	}
+
 	// ///////////////////////////
 	// INCLProvisioner Methods //
 	// ///////////////////////////
 
 	@Override
-	public String allocateFlow(QosPolicyRequest qosPolicyRequest) throws ProvisionerException {
+	public String allocateFlow(QosPolicyRequest qosPolicyRequest) throws ProvisionerException, FlowAllocationException {
 		synchronized (mutex) {
+
 			try {
 
 				String userId = "alice";
@@ -141,7 +151,10 @@ public class NCLProvisioner implements INCLProvisioner {
 				getAllocatedRequests().put(circuitId, circuitRequest);
 
 				return circuitId;
-
+			} catch (FlowAllocationException fae) {
+				throw fae;
+			} catch (CapabilityException ce) {
+				throw new FlowAllocationException(ce);
 			} catch (Exception e) {
 				throw new ProvisionerException(e);
 			}
@@ -348,7 +361,6 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	private IResource getResource(String networkId) throws ActivatorException, ResourceException {
 
-		IResourceManager resourceManager = Activator.getResourceManagerService();
 		IResource resource = resourceManager.getResourceById(networkId);
 
 		return resource;

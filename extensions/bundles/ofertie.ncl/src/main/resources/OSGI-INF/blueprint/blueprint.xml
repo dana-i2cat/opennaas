@@ -29,6 +29,7 @@
 		<property name="qoSPDP" ref="qosPDP" />
 		<property name="networkSelector" ref="networkSelector" />
 		<property name="model" ref="nclModel" />
+		<property name="resourceManager" ref="resourceManager" />
 	</bean>
 	<service ref="nclProvisioner" interface="org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner">
 		<service-properties>

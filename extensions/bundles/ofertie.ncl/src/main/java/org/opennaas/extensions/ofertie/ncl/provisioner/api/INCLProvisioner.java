@@ -56,6 +56,7 @@ public interface INCLProvisioner {
 	 * @return flowId of allocated flow
 	 * @throws AllocationException
 	 * @throws ProvisionerException
+	 * @throws Exception
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
