@@ -20,19 +20,13 @@ package org.opennaas.extensions.ofertie.ncl.provisioner;
  * #L%
  */
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
-import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
-import org.opennaas.extensions.ofertie.ncl.helpers.NCLModelHelper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
@@ -49,12 +43,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelect
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
-import org.opennaas.extensions.ofnetwork.events.LinkCongestionEvent;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.event.Event;
-import org.osgi.service.event.EventConstants;
-import org.osgi.service.event.EventHandler;
 
 /**
  * 
@@ -63,17 +52,12 @@ import org.osgi.service.event.EventHandler;
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public class NCLProvisioner implements INCLProvisioner, EventHandler {
-
-	private final static String		NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl";
-	private final static String		AUTOREROUTE_KEY	= "ncl.autoreroute";
+public class NCLProvisioner implements INCLProvisioner {
 
 	private IQoSPDP					qoSPDP;
 	private INetworkSelector		networkSelector;
 	private INCLController			nclController;
 	private IRequestToFlowsLogic	requestToFlowsLogic;
-
-	private boolean					autoReroute;
 
 	private NCLModel				model;
 
@@ -91,9 +75,7 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 		this.model = model;
 	}
 
-	private ServiceRegistration	eventListenerRegistration;
-
-	private Log					log	= LogFactory.getLog(NCLProvisioner.class);
+	private Log	log	= LogFactory.getLog(NCLProvisioner.class);
 
 	public Map<String, QosPolicyRequest> getAllocatedQoSPolicyRequests() {
 		return model.getAllocatedQoSPolicyRequests();
@@ -360,157 +342,6 @@ public class NCLProvisioner implements INCLProvisioner, EventHandler {
 			qosPolicyRequest.getQosPolicy().setPacketLoss(null);
 			updateFlow(flowId, qosPolicyRequest);
 		}
-	}
-
-	// ////////////////////////
-	// EventListener Methods //
-	// ////////////////////////
-
-	@Override
-	public void handleEvent(Event event) {
-		if (event instanceof LinkCongestionEvent) {
-
-			LinkCongestionEvent congestionEvent = (LinkCongestionEvent) event;
-			String switchName = (String) congestionEvent.getProperty(LinkCongestionEvent.SWITCH_ID_KEY);
-			String portId = (String) congestionEvent.getProperty(LinkCongestionEvent.PORT_ID_KEY);
-
-			log.info("LinkCongestion alarm received for switch " + switchName + " and port " + portId);
-
-			boolean autoReroute = readAutorerouteOption();
-			if (autoReroute) {
-				log.debug("Auto-reroute is activated. Launching auto-reroute");
-				try {
-					launchRerouteMechanism(switchName, portId);
-				} catch (Exception e) {
-					log.error(e.getMessage());
-					// TODO can not throw exception, since EventHandler interface does not allow it.
-				}
-			} else {
-				log.debug("Auto-reroute is deactivated. Ignoring received LinkCongestion alarm. ");
-			}
-		}
-		else
-			log.debug("Ignoring non-LinkCongestion alarm.");
-
-	}
-
-	private void launchRerouteMechanism(String switchName, String portId) throws Exception {
-		synchronized (mutex) {
-			String qosPolicyRequestId = selectQoSPolicyRequestToReallocate(switchName, portId);
-
-			if (qosPolicyRequestId == null) {
-				log.info("No QoSPolicyRequests allocated for this port. Ignoring alarm.");
-				return;
-			}
-
-			try {
-				rerouteQoSPolicyRequest(qosPolicyRequestId);
-			} catch (Exception e) {
-				throw new Exception("Could not reallocate QoSPolicyRequest " + qosPolicyRequestId + ": " + e.getMessage(), e);
-			}
-		}
-	}
-
-	public void unregisterListener() {
-
-		log.debug("Unregistering NCLProvisiner as listener for LinkCongestion events.");
-		eventListenerRegistration.unregister();
-		log.debug("NCLProvisioner successfully unregistered.");
-
-	}
-
-	public void registerAsCongestionEventListener() throws IOException {
-
-		log.debug("Registering NCLProvisiner as listener for LinkCongestion events.");
-
-		Properties properties = new Properties();
-		properties.put(EventConstants.EVENT_TOPIC, LinkCongestionEvent.TOPIC);
-
-		eventListenerRegistration = Activator.getContext().registerService(EventHandler.class.getName(), this, properties);
-
-		log.debug("NCLProvisioner successfully registered as listener for LinkCongestion events.");
-
-	}
-
-	private void rerouteQoSPolicyRequest(String qosPolicyRequestId) throws Exception {
-
-		log.debug("Start of rerouteQoSPolicyRequest call.");
-
-		QosPolicyRequest qosPolicyRequest = getAllocatedQoSPolicyRequests().get(qosPolicyRequestId);
-
-		if (qosPolicyRequest == null)
-			throw new ProvisionerException("QosPolicyRequest is not allocated.");
-
-		List<NetOFFlow> sdnFlows = getRequestToFlowsLogic().getRequiredFlowsToSatisfyRequest(qosPolicyRequest);
-		List<NetOFFlow> oldFlows = getAllocatedFlows().get(qosPolicyRequestId);
-
-		String netId = getNetworkSelector().findNetworkForRequest(qosPolicyRequest);
-
-		getNclController().replaceFlows(oldFlows, sdnFlows, netId);
-
-		getAllocatedFlows().put(qosPolicyRequestId, sdnFlows);
-
-		log.debug("End of rerouteQoSPolicyRequest call.");
-
-	}
-
-	private String selectQoSPolicyRequestToReallocate(String switchName, String portId) {
-
-		List<String> qosPolicyRequestIdsInPort = getAllQoSPolicyRequestIdsInPort(switchName, portId);
-
-		if (qosPolicyRequestIdsInPort.isEmpty()) {
-			return null;
-		}
-		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
-		return qosPolicyRequestIdsInPort.get(0);
-	}
-
-	/**
-	 * Retrieves all QoSPolicyRequests allocated in a specific switch port.
-	 * 
-	 * @param switchName
-	 * @param portId
-	 * @return
-	 */
-	private List<String> getAllQoSPolicyRequestIdsInPort(String switchName, String portId) {
-
-		List<String> qosPolicyRequestIdsInPort = new ArrayList<String>();
-
-		for (String circuiId : getAllocatedQoSPolicyRequests().keySet()) {
-
-			List<NetOFFlow> flows = getAllocatedFlows().get(circuiId);
-			if (NCLModelHelper.flowsContainPort(switchName, portId, flows)) {
-				qosPolicyRequestIdsInPort.add(circuiId);
-			}
-		}
-
-		return qosPolicyRequestIdsInPort;
-	}
-
-	private boolean readAutorerouteOption() {
-		boolean autoReroute = false;
-		try {
-			autoReroute = doReadAutorerouteOption();
-		} catch (IOException ioe) {
-			log.error("Failed to read auto-reroute option. ", ioe);
-			log.warn("Deactivating auto-reroute");
-			autoReroute = false;
-		}
-
-		return autoReroute;
-	}
-
-	private boolean doReadAutorerouteOption() throws IOException {
-
-		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
-		if (properties == null)
-			throw new IOException("Failed to determine auto-reroute option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
-
-		String value = properties.getProperty(AUTOREROUTE_KEY);
-		if (value == null) {
-			return false;
-		}
-		return Boolean.parseBoolean(value);
 	}
 
 }
