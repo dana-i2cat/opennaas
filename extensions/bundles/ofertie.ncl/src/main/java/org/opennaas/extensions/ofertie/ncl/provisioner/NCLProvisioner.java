@@ -21,7 +21,6 @@ package org.opennaas.extensions.ofertie.ncl.provisioner;
  */
 
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -236,10 +235,6 @@ public class NCLProvisioner implements INCLProvisioner {
 			}
 		}
 
-	}
-
-	private String generateRandomQoSPolicyRequestId() {
-		return UUID.randomUUID().toString();
 	}
 
 	public QosPolicyRequest getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {

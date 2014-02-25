@@ -45,7 +45,7 @@ public abstract class GenericNetworkModelUtils {
 	public static final String	ETHER_TYPE				= "2048";
 	public static final String	TOS						= "4";
 	public static final String	SRC_PORT				= "22";
-	public static final String	DST_POR					= "22";
+	public static final String	DST_PORT				= "22";
 
 	public static final String	ROUTE_ID				= "route01";
 	public static final String	NET_CONNECTION_ID_1		= "1111-2222-3333-444";
@@ -92,7 +92,7 @@ public abstract class GenericNetworkModelUtils {
 		match.setEtherType(ETHER_TYPE);
 		match.setTosBits(TOS);
 		match.setSrcPort(SRC_PORT);
-		match.setDstPort(DST_POR);
+		match.setDstPort(DST_PORT);
 
 		return match;
 

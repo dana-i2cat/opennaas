@@ -91,7 +91,7 @@ public class QosPolicyRequestParserTest {
 		Destination destination = qosRequest.getDestination();
 		Assert.assertFalse(StringUtils.isEmpty(destination.getAddress()));
 		Assert.assertEquals(GenericNetworkModelUtils.DST_IP, destination.getAddress());
-		Assert.assertEquals(GenericNetworkModelUtils.DST_POR, destination.getPort());
+		Assert.assertEquals(GenericNetworkModelUtils.DST_PORT, destination.getPort());
 
 		String tos = qosRequest.getLabel();
 		Assert.assertFalse(StringUtils.isEmpty(tos));
