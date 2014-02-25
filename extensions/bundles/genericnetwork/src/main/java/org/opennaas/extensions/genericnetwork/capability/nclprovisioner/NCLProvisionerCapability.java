@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -62,6 +61,7 @@ import org.osgi.service.event.EventHandler;
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Isart Canyameres Gimenez (i2cat) - Use aggregation
  * 
  */
 
@@ -203,7 +203,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		return circuits;
 	}
 
-	public Collection<Circuit> getRequestedCircuits() throws CapabilityException {
+	public Collection<Circuit> getRequestedCircuits() {
 		return ((GenericNetworkModel) resource.getModel()).getRequestedCircuits().values();
 	}
 
@@ -345,28 +345,46 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		IPathFindingCapability pathFindingCapab;
 		ICircuitProvisioningCapability circuitProvCapability;
+		ICircuitAggregationCapability circuitAggregationCapability;
 
 		try {
 			pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
 			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
-
+			circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
 
 		GenericNetworkModel model = (GenericNetworkModel) this.resource.getModel();
-		Circuit circuit = model.getAllocatedCircuits().get(circuitId);
+		Circuit toReroute = model.getRequestedCircuits().get(circuitId);
 
-		if (circuit == null)
-			throw new CapabilityException("Cann not reroute circuit: Circuit is not allocated.");
+		if (toReroute == null)
+			throw new CapabilityException("Can not reroute circuit: Circuit is not allocated.");
 
-		CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
+		CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(toReroute.getQos(), toReroute.getTrafficFilter());
 		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
-		circuit.setRoute(route);
+		toReroute.setRoute(route);
 
-		// TODO once aggregation is implemented, call replace.
-		circuitProvCapability.deallocate(circuitId);
-		circuitProvCapability.allocate(circuit);
+		// call aggregation logic with all requested circuits
+		// except the original one to be re-routed and with the one to be re-rerouted updated
+		Set<Circuit> toAggregate = new HashSet<Circuit>();
+		for (Circuit circuit : getRequestedCircuits()) {
+			if (!circuit.getCircuitId().equals(circuitId))
+				toAggregate.add(circuit);
+		}
+		toAggregate.add(toReroute);
+		Set<Circuit> newAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
+
+		// replace currently aggregated by newAggregatedCircuits
+		List<Circuit> oldAggregated = new ArrayList<Circuit>();
+		oldAggregated.addAll(getAllocatedCircuits());
+		List<Circuit> newAggregated = new ArrayList<Circuit>(newAggregatedCircuits.size());
+		newAggregated.addAll(newAggregatedCircuits);
+
+		circuitProvCapability.replace(oldAggregated, newAggregated);
+
+		// update requested circuits in model
+		model.getRequestedCircuits().put(circuitId, toReroute);
 
 		log.debug("End of rerouteCircuit call.");
 
@@ -386,17 +404,11 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	private List<String> getAllCircuitsInPort(String portId) {
 
 		List<String> circuitsIdsInPort = new ArrayList<String>();
-		// TODO Once aggregation is implemented, it should look here for NOT-AGGREGATED CIRCUITS.
 
-		GenericNetworkModel model = (GenericNetworkModel) this.resource.getModel();
-
-		Map<String, Circuit> allocatedCircuits = model.getAllocatedCircuits();
-
-		for (String circuitId : allocatedCircuits.keySet()) {
-			Circuit circuit = allocatedCircuits.get(circuitId);
-
+		// look here for NOT-AGGREGATED CIRCUITS.
+		for (Circuit circuit : getRequestedCircuits()) {
 			if (GenericNetworkModelHelper.isPortInCircuit(portId, circuit))
-				circuitsIdsInPort.add(circuitId);
+				circuitsIdsInPort.add(circuit.getCircuitId());
 		}
 
 		return circuitsIdsInPort;
