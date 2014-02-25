@@ -20,8 +20,6 @@ package org.opennaas.extensions.ofertie.ncl.test;
  * #L%
  */
 
-import java.util.List;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -47,7 +45,6 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.QoSPDPMockup;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
-import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -74,7 +71,6 @@ public class ProvisionerLogicTest {
 	NCLModel					model;
 
 	QosPolicyRequest			qosRequest;
-	List<NetOFFlow>				sdnFlow;
 
 	@Before
 	public void initFlowRequest() {
