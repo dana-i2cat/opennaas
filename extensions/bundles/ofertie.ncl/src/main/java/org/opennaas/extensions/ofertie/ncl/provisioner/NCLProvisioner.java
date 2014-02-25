@@ -20,7 +20,6 @@ package org.opennaas.extensions.ofertie.ncl.provisioner;
  * #L%
  */
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -34,7 +33,6 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProvisionerCapability;
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
 import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
-import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
@@ -92,6 +90,10 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	public Map<String, QosPolicyRequest> getAllocatedQoSPolicyRequests() {
 		return model.getAllocatedQoSPolicyRequests();
+	}
+
+	public Map<String, CircuitRequest> getAllocatedRequests() {
+		return model.getAllocatedRequests();
 	}
 
 	/**
@@ -170,6 +172,8 @@ public class NCLProvisioner implements INCLProvisioner {
 				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosPolicyRequest);
 				String circuitId = nclProvCapab.allocateCircuit(circuitRequest);
 
+				getAllocatedRequests().put(circuitId, circuitRequest);
+
 				return circuitId;
 
 			} catch (Exception e) {
@@ -194,6 +198,8 @@ public class NCLProvisioner implements INCLProvisioner {
 				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(updatedQosPolicyRequest);
 
 				nclProvCapab.updateCircuit(flowId, circuitRequest);
+
+				getAllocatedRequests().put(flowId, circuitRequest);
 
 				return flowId;
 			} catch (CircuitAllocationException e) {
@@ -221,6 +227,8 @@ public class NCLProvisioner implements INCLProvisioner {
 
 				nclProvCapab.deallocateCircuit(flowId);
 
+				getAllocatedRequests().remove(flowId);
+
 			} catch (NotExistingCircuitException e) {
 				throw new FlowNotFoundException(e);
 			} catch (ResourceException e) {
@@ -238,15 +246,9 @@ public class NCLProvisioner implements INCLProvisioner {
 			try {
 				QoSPolicyRequestsWrapper wrapper;
 
-				String netId = getNetworkSelector().getNetwork();
+				Map<String, CircuitRequest> allocatedRequests = getAllocatedRequests();
 
-				IResource networkResource = getResource(netId);
-				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
-						.getCapabilityByInterface(INCLProvisionerCapability.class);
-
-				Collection<Circuit> circuits = nclProvCapab.getAllocatedCircuits();
-
-				wrapper = QoSPolicyRequestWrapperParser.fromCircuitCollection(circuits);
+				wrapper = QoSPolicyRequestWrapperParser.fromCircuitRequests(allocatedRequests);
 
 				return wrapper;
 
@@ -271,8 +273,8 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	public QosPolicyRequest getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
 		synchronized (mutex) {
-			if (getAllocatedQoSPolicyRequests().containsKey(flowId)) {
-				return getAllocatedQoSPolicyRequests().get(flowId);
+			if (getAllocatedRequests().containsKey(flowId)) {
+				return QosPolicyRequestParser.fromCircuitRequest(getAllocatedRequests().get(flowId));
 			}
 			throw new FlowNotFoundException();
 		}

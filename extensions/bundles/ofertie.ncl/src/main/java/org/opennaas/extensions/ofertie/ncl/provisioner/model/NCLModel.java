@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 
@@ -35,6 +36,8 @@ import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
  * 
  */
 public class NCLModel {
+
+	private Map<String, CircuitRequest>			allocatedRequests;
 
 	/**
 	 * Key: id, Value: QosPolicyRequest
@@ -55,6 +58,15 @@ public class NCLModel {
 		allocatedFlows = new HashMap<String, List<NetOFFlow>>();
 		congestedPorts = new HashSet<Port>();
 		circuitsPerPort = new HashMap<Port, Set<QosPolicyRequest>>();
+		allocatedRequests = new HashMap<String, CircuitRequest>();
+	}
+
+	public Map<String, CircuitRequest> getAllocatedRequests() {
+		return allocatedRequests;
+	}
+
+	public void setAllocatedRequests(Map<String, CircuitRequest> allocatedRequests) {
+		this.allocatedRequests = allocatedRequests;
 	}
 
 	/**

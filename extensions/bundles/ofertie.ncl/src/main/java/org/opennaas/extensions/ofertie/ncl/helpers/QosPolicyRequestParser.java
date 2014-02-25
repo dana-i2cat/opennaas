@@ -150,4 +150,42 @@ public class QosPolicyRequestParser {
 		return String.valueOf(trafficFilter.getTosBits());
 	}
 
+	public static QosPolicyRequest fromCircuitRequest(CircuitRequest circuitRequest) {
+
+		QosPolicyRequest qosRequest = new QosPolicyRequest();
+
+		qosRequest.setSource(fromCircuitRequestSource(circuitRequest.getSource()));
+		qosRequest.setDestination(fromCircuitRequestDestination(circuitRequest.getDestination()));
+		qosRequest.setLabel(fromCircuitRequestLabel(circuitRequest.getLabel()));
+		qosRequest.setQosPolicy(QoSPolicyParser.fromGenericNetworkQoS(circuitRequest.getQosPolicy()));
+
+		return qosRequest;
+	}
+
+	public static org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source fromCircuitRequestSource(Source circuitSource) {
+
+		org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source source = new org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source();
+
+		source.setAddress(circuitSource.getAddress());
+		source.setPort(circuitSource.getTransportPort());
+
+		return source;
+	}
+
+	public static org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination fromCircuitRequestDestination(Destination circuitDestination) {
+
+		org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination destination = new org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination();
+
+		destination.setAddress(circuitDestination.getAddress());
+		destination.setPort(circuitDestination.getTransportPort());
+
+		return destination;
+	}
+
+	public static String fromCircuitRequestLabel(String label) {
+
+		return label;
+
+	}
+
 }
