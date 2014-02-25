@@ -21,6 +21,7 @@ package org.opennaas.extensions.ofertie.ncl.helpers;
  */
 
 import org.apache.cxf.common.util.StringUtils;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.Destination;
@@ -28,6 +29,7 @@ import org.opennaas.extensions.genericnetwork.model.circuit.request.Source;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 /**
  * 
@@ -110,4 +112,42 @@ public class QosPolicyRequestParser {
 
 		return qosToReturn;
 	}
+
+	public static QosPolicyRequest fromCircuit(Circuit circuit) {
+
+		QosPolicyRequest qosReq = new QosPolicyRequest();
+
+		qosReq.setSource(parseSource(circuit.getTrafficFilter()));
+		qosReq.setDestination(parseDestination(circuit.getTrafficFilter()));
+		qosReq.setLabel(parseLabel(circuit.getTrafficFilter()));
+		qosReq.setQosPolicy(QoSPolicyParser.fromGenericNetworkQoS(circuit.getQos()));
+
+		return qosReq;
+	}
+
+	public static org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source parseSource(FloodlightOFMatch trafficFilter) {
+
+		org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source source = new org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source();
+
+		source.setAddress(trafficFilter.getSrcIp());
+		source.setPort(trafficFilter.getSrcPort());
+
+		return source;
+	}
+
+	public static org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination parseDestination(FloodlightOFMatch trafficFilter) {
+
+		org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination destination = new org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination();
+
+		destination.setAddress(trafficFilter.getDstIp());
+		destination.setPort(trafficFilter.getDstPort());
+
+		return destination;
+	}
+
+	public static String parseLabel(FloodlightOFMatch trafficFilter) {
+
+		return String.valueOf(trafficFilter.getTosBits());
+	}
+
 }

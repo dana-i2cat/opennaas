@@ -20,6 +20,7 @@ package org.opennaas.extensions.ofertie.ncl.provisioner;
  * #L%
  */
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,9 +34,11 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProvisionerCapability;
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
 import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestWrapperParser;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
@@ -230,9 +233,28 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	@Override
 	public QoSPolicyRequestsWrapper readAllocatedFlows() throws ProvisionerException {
+
 		synchronized (mutex) {
-			return new QoSPolicyRequestsWrapper(getAllocatedQoSPolicyRequests());
+			try {
+				QoSPolicyRequestsWrapper wrapper;
+
+				String netId = getNetworkSelector().getNetwork();
+
+				IResource networkResource = getResource(netId);
+				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
+						.getCapabilityByInterface(INCLProvisionerCapability.class);
+
+				Collection<Circuit> circuits = nclProvCapab.getAllocatedCircuits();
+
+				wrapper = QoSPolicyRequestWrapperParser.fromCircuitCollection(circuits);
+
+				return wrapper;
+
+			} catch (Exception e) {
+				throw new ProvisionerException(e);
+			}
 		}
+
 	}
 
 	private String generateRandomQoSPolicyRequestId() {
