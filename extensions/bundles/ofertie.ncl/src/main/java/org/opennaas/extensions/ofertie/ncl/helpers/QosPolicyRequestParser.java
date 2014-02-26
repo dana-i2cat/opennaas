@@ -20,7 +20,7 @@ package org.opennaas.extensions.ofertie.ncl.helpers;
  * #L%
  */
 
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
