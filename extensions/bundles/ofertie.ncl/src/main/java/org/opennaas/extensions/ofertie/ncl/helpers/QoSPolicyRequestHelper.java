@@ -23,6 +23,10 @@ package org.opennaas.extensions.ofertie.ncl.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
+import org.opennaas.extensions.genericnetwork.model.circuit.Route;
+import org.opennaas.extensions.genericnetwork.model.topology.Port;
+import org.opennaas.extensions.genericnetwork.model.topology.TopologyElementState;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
@@ -31,53 +35,72 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
-import org.opennaas.extensions.ofertie.ncl.provisioner.model.NetworkConnection;
-import org.opennaas.extensions.ofertie.ncl.provisioner.model.Port;
-import org.opennaas.extensions.ofertie.ncl.provisioner.model.Route;
 
 /**
  * 
  * @author Adrian Rosello (i2CAT)
  * 
  */
-public abstract class QoSPolicyRequesttHelper {
+public abstract class QoSPolicyRequestHelper {
 
-	public static QosPolicyRequest generateSampleFlowRequest() {
+	public static final String	SRC_IP			= "192.168.1.14";
+	public static final String	DST_IP			= "192.168.1.13";
+
+	public static final String	SRC_PORT		= "0";
+	public static final String	DST_PORT		= "1";
+
+	private static final String	PORT_1_1_ID		= "port.1.1";
+	private static final String	PORT_1_2_ID		= "port.1.2";
+	private static final String	PORT_2_1_ID		= "port.2.1";
+	private static final String	PORT_2_2_ID		= "port.2.2";
+
+	public static final String	TOS				= "16";
+
+	public static final String	LATENCY_MIN		= "5";
+	public static final String	LATENCY_MAX		= "12";
+	public static final String	JITTER_MIN		= "2";
+	public static final String	JITTER_MAX		= "5";
+	public static final String	THROUGHTPUT_MIN	= "10";
+	public static final String	THROUGHTPUT_MAX	= "100";
+	public static final String	PACKETLOSS_MIN	= "0";
+	public static final String	PACKETLOSS_MAX	= "100";
+
+	public static QosPolicyRequest generateSampleQosPolicyRequest() {
 
 		QosPolicyRequest req = new QosPolicyRequest();
 
 		Source source = new Source();
-		source.setAddress("192.168.1.14");
-		source.setPort("0");
+		source.setAddress(SRC_IP);
+		source.setPort(SRC_PORT);
 		req.setSource(source);
 
 		Destination destination = new Destination();
-		destination.setAddress("192.168.1.13");
-		destination.setPort("1");
+		destination.setAddress(DST_IP);
+		destination.setPort(DST_PORT);
 		req.setDestination(destination);
 
-		req.setLabel("16");
+		req.setLabel(TOS);
 
 		QosPolicy qosPolicy = new QosPolicy();
 
 		Latency latency = new Latency();
-		latency.setMin("5");
-		latency.setMax("12");
+		latency.setMin(LATENCY_MIN);
+		latency.setMax(LATENCY_MAX);
 		qosPolicy.setLatency(latency);
 
 		Jitter jitter = new Jitter();
-		jitter.setMin("2");
-		jitter.setMax("5");
+		jitter.setMin(JITTER_MIN);
+		jitter.setMax(JITTER_MAX);
 		qosPolicy.setJitter(jitter);
 
 		Throughput throughput = new Throughput();
-		throughput.setMin("10");
-		throughput.setMax("100");
+		throughput.setMin(THROUGHTPUT_MIN);
+		throughput.setMax(THROUGHTPUT_MAX);
 		qosPolicy.setThroughput(throughput);
 
 		PacketLoss packetLoss = new PacketLoss();
-		packetLoss.setMin("0");
-		packetLoss.setMax("100");
+		packetLoss.setMin(PACKETLOSS_MIN);
+		packetLoss.setMax(PACKETLOSS_MAX);
 		qosPolicy.setPacketLoss(packetLoss);
 
 		req.setQosPolicy(qosPolicy);
@@ -92,9 +115,9 @@ public abstract class QoSPolicyRequesttHelper {
 
 		List<NetworkConnection> networkConnections = new ArrayList<NetworkConnection>();
 
-		NetworkConnection netConnection01 = generateNetworkConnection("internal-connection-01", "device01", 0, "device01", 1);
-		NetworkConnection netConnection02 = generateNetworkConnection("external-connection-01", "device01", 1, "device02", 0);
-		NetworkConnection netConnection03 = generateNetworkConnection("internal-connection-02", "device02", 0, "device02", 1);
+		NetworkConnection netConnection01 = generateNetworkConnection("internal-connection-01", PORT_1_1_ID, false, PORT_1_2_ID, false);
+		NetworkConnection netConnection02 = generateNetworkConnection("external-connection-01", PORT_1_2_ID, false, PORT_2_1_ID, false);
+		NetworkConnection netConnection03 = generateNetworkConnection("internal-connection-02", PORT_2_1_ID, false, PORT_2_2_ID, true);
 
 		networkConnections.add(netConnection01);
 		networkConnections.add(netConnection02);
@@ -105,12 +128,12 @@ public abstract class QoSPolicyRequesttHelper {
 		return route;
 	}
 
-	public static NetworkConnection generateNetworkConnection(String name, String srcDeviceId, int srcPortNumber, String dstDeviceId,
-			int dstPortNumber) {
+	public static NetworkConnection generateNetworkConnection(String name, String srcPortId, boolean srcPortState, String dstPortId,
+			boolean dstPortState) {
 		NetworkConnection connection = new NetworkConnection();
 
-		Port srcPort = generatePort(srcDeviceId, srcPortNumber);
-		Port dstPort = generatePort(dstDeviceId, dstPortNumber);
+		Port srcPort = generatePort(srcPortId, srcPortState);
+		Port dstPort = generatePort(dstPortId, dstPortState);
 
 		connection.setSource(srcPort);
 		connection.setDestination(dstPort);
@@ -119,12 +142,15 @@ public abstract class QoSPolicyRequesttHelper {
 		return connection;
 	}
 
-	public static Port generatePort(String deviceId, int portNumber) {
+	public static Port generatePort(String portId, boolean isCongested) {
 
 		Port port = new Port();
 
-		port.setDeviceId(deviceId);
-		port.setPortNumber(String.valueOf(portNumber));
+		TopologyElementState state = new TopologyElementState();
+		state.setCongested(isCongested);
+
+		port.setId(portId);
+		port.setState(state);
 
 		return port;
 
