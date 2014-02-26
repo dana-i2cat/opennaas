@@ -22,7 +22,10 @@ package org.opennaas.extensions.genericnetwork.actionsets.internal.circuitaggreg
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
+import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.net.util.SubnetUtils;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -69,9 +72,60 @@ public class CalculateAggregatedCircuitsAction extends Action {
 	}
 
 	private Set<Circuit> calculateAggregatedCircuits(Set<Circuit> notAggregated) {
+		return doAggregationByIp24(notAggregated);
+	}
+
+	private Set<Circuit> doNoAggregation(Set<Circuit> notAggregated) {
 		Set<Circuit> aggregated = new HashSet<Circuit>();
 		aggregated.addAll(notAggregated);
 		return aggregated;
+	}
+
+	/**
+	 * Circuit aggregation by IP/24. <br/>
+	 * All circuits differing only in the last 8 bits of the source and destination IP address will be aggregated in one.
+	 * 
+	 * @param notAggregated
+	 * @return aggregated circuits
+	 */
+	private Set<Circuit> doAggregationByIp24(Set<Circuit> notAggregated) {
+
+		Set<Circuit> aggregatedCircuits = new HashSet<Circuit>();
+		for (Circuit candidate : notAggregated) {
+			Circuit aggregated = computeAggregatedByIp24(candidate);
+			// equal circuits will not be added
+			aggregatedCircuits.add(aggregated);
+		}
+
+		// Assign circuit ids
+		for (Circuit aggregated : aggregatedCircuits) {
+			aggregated.setCircuitId("circuit-aggr-" + generateRandomCircuitId());
+		}
+
+		return aggregatedCircuits;
+	}
+
+	private Circuit computeAggregatedByIp24(Circuit candidate) {
+
+		Circuit aggregated;
+		try {
+			aggregated = (Circuit) SerializationUtils.clone(candidate);
+			aggregated.setCircuitId("TO_BE_DEFINED");
+			aggregated.getTrafficFilter().setSrcIp(getIP24(candidate.getTrafficFilter().getSrcIp()));
+			aggregated.getTrafficFilter().setDstIp(getIP24(candidate.getTrafficFilter().getDstIp()));
+		} catch (Exception e) {
+			aggregated = candidate;
+		}
+		return aggregated;
+	}
+
+	private String getIP24(String ipAddress) {
+		SubnetUtils utils = new SubnetUtils(ipAddress, "255.255.255.0");
+		return utils.getInfo().getNetworkAddress();
+	}
+
+	private static String generateRandomCircuitId() {
+		return UUID.randomUUID().toString();
 	}
 
 }
