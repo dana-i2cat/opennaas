@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
+import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.topology.Domain;
 import org.opennaas.extensions.genericnetwork.model.topology.Link;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
@@ -38,6 +39,9 @@ import org.opennaas.extensions.genericnetwork.model.topology.Port;
 import org.opennaas.extensions.genericnetwork.model.topology.Switch;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.genericnetwork.model.topology.TopologyElementState;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class TopologySerializationTest {
 
@@ -173,11 +177,24 @@ public class TopologySerializationTest {
 		links.add(link2);
 		links.add(link3);
 
+		DevicePortId devicePortIdSwitch1 = new DevicePortId();
+		devicePortIdSwitch1.setDeviceId("ofswitch:s1");
+		devicePortIdSwitch1.setDevicePortId(p1.getId());
+
+		DevicePortId devicePortIdSwitch2 = new DevicePortId();
+		devicePortIdSwitch2.setDeviceId("ofswitch:s2");
+		devicePortIdSwitch2.setDevicePortId(p4.getId());
+
+		BiMap<String, DevicePortId> portMap = HashBiMap.create();
+		portMap.put(p5.getId(), devicePortIdSwitch1);
+		portMap.put(p6.getId(), devicePortIdSwitch2);
+
 		Topology topology = new Topology();
 		topology.setLinks(links);
 		topology.setNetworkElements(networkElements);
+		topology.setNetworkDevicePortIdsMap(portMap);
+
 		return topology;
 
 	}
-
 }
