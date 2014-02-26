@@ -20,6 +20,8 @@ package org.opennaas.extensions.genericnetwork.model.topology;
  * #L%
  */
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,9 +33,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TopologyElementState {
+public class TopologyElementState implements Serializable {
 
-	private boolean	congested	= false;
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long	serialVersionUID	= 2621654055475070579L;
+
+	private boolean				congested			= false;
 
 	/**
 	 * @return the congested
