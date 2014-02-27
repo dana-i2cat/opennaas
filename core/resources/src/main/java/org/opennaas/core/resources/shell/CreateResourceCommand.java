@@ -250,7 +250,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 				descriptors.add(getResourceDescriptor(url.toString()));
 
 			} catch (FileNotFoundException f) {
-				printError("File not found: " + url.toString() + f.getMessage());
+				printError("File not found: " + f.getMessage());
 			} catch (NullPointerException f) {
 				printError("Error parsing descriptor on " + url.toString());
 			} catch (JAXBException f) {
