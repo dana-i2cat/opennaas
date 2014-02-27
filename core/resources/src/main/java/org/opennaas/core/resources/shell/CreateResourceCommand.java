@@ -62,6 +62,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 	private List<String>	paths;
 	@Option(name = "--profile", aliases = { "-p" }, description = "Allows explicit declaration of profile to be used")
 	String					profileName;
+	@Option(name = "--name", aliases = { "-n" }, description = "Override resource name in given descriptor for given one", multiValued = true)
+	private List<String>	names;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -75,6 +77,12 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		for (ResourceDescriptor descriptor : descriptors) {
 			try {
 				totalFiles++;
+				// override name for the given one (if present)
+				String name = null;
+				if (names != null && counter < names.size()) {
+					name = names.get(counter);
+					descriptor.getInformation().setName(name);
+				}
 				createResource(manager, descriptor);
 				counter++;
 				// printSymbol(underLine);
@@ -175,9 +183,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			}
 		}
 
-		printInfo("Descriptor loaded for resource "
-				+ resourceDescriptor.getInformation().getType() + ":"
-				+ resourceDescriptor.getInformation().getName());
+		printInfo("Loaded descriptor at " + filename);
 		return resourceDescriptor;
 
 	}
