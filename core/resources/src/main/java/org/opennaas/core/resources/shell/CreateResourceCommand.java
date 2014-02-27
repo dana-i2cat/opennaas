@@ -72,20 +72,24 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 		IResourceManager manager = getResourceManager();
 
-		List<ResourceDescriptor> descriptors = getDescriptors(paths);
-		int counter = 0;
-		for (ResourceDescriptor descriptor : descriptors) {
+		int descriptorsCount = paths.size();
+
+		List<ResourceDescriptor> loadedDescriptors = getDescriptors(paths);
+		int createdResourcesCounter = 0;
+		for (int i = 0; i < loadedDescriptors.size(); i++) {
+			ResourceDescriptor descriptor = loadedDescriptors.get(i);
+
 			try {
-				totalFiles++;
 				// override name for the given one (if present)
 				String name = null;
-				if (names != null && counter < names.size()) {
-					name = names.get(counter);
+				if (names != null && i < names.size()) {
+					name = names.get(i);
 					descriptor.getInformation().setName(name);
 				}
-				createResource(manager, descriptor);
-				counter++;
-				// printSymbol(underLine);
+				int result = createResource(manager, descriptor);
+				if (result >= 0)
+					createdResourcesCounter++;
+
 			} catch (NullPointerException f) {
 				printError("Error creating Resource "
 						+ descriptor.getInformation().getType() + ":"
@@ -94,11 +98,16 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			}
 		}
 
-		if (counter == 0) {
-			printInfo("No resource has been created.");
+		if (createdResourcesCounter != descriptorsCount) {
+			printWarn("Created " + createdResourcesCounter + " resource/s of " + descriptorsCount);
 		} else {
-			printInfo("Created " + counter + " resource/s of " + totalFiles);
+			if (createdResourcesCounter == 0) {
+				printInfo("No resource has been created.");
+			} else {
+				printInfo("Created " + createdResourcesCounter + " resource/s of " + descriptorsCount);
+			}
 		}
+
 		printEndCommand();
 		return null;
 
