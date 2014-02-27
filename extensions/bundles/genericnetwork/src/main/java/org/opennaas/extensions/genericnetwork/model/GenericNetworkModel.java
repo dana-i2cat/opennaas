@@ -92,6 +92,7 @@ public class GenericNetworkModel implements IModel {
 		allocatedCircuits = new HashMap<String, Circuit>();
 		deviceResourceMap = new HashMap<String, String>();
 		networkDevicePortIdsMap = HashBiMap.create();
+		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
 	}
 
 	/**
