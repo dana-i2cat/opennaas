@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
+import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.topology.Port;
 import org.opennaas.extensions.genericnetwork.model.topology.TopologyElementState;
@@ -44,7 +45,7 @@ public abstract class GenericNetworkModelUtils {
 	public static final String	ETHER_TYPE				= "2048";
 	public static final String	TOS						= "4";
 	public static final String	SRC_PORT				= "22";
-	public static final String	DST_POR					= "22";
+	public static final String	DST_PORT				= "22";
 
 	public static final String	ROUTE_ID				= "route01";
 	public static final String	NET_CONNECTION_ID_1		= "1111-2222-3333-444";
@@ -57,15 +58,26 @@ public abstract class GenericNetworkModelUtils {
 	public static final String	PORT_ID_3				= "eth3";
 	public static final String	PORT_ID_4				= "eth4";
 
+	public static final int		JITTER_MAX				= 10;
+	public static final int		JITTER_MIN				= 1;
+	public static final int		LATENCY_MAX				= 100;
+	public static final int		LATENCY_MIN				= 0;
+	public static final int		THROUGHPUT_MAX			= 50;
+	public static final int		THROUGHPUT_MIN			= 20;
+	public static final int		PACKETLOSS_MAX			= 2;
+	public static final int		PACKETLOSS_MIN			= 0;
+
 	public static Circuit generateSampleCircuit() {
 
 		Circuit circuit = new Circuit();
 
 		FloodlightOFMatch trafficFilter = generateSampleFloodlightOFMatch();
 		Route route = generateSampleRoute();
+		QoSPolicy qos = generateSampleQoSPolicy();
 
 		circuit.setCircuitId(CIRCUIT_ID);
 		circuit.setTrafficFilter(trafficFilter);
+		circuit.setQos(qos);
 		circuit.setRoute(route);
 
 		return circuit;
@@ -80,7 +92,7 @@ public abstract class GenericNetworkModelUtils {
 		match.setEtherType(ETHER_TYPE);
 		match.setTosBits(TOS);
 		match.setSrcPort(SRC_PORT);
-		match.setDstPort(DST_POR);
+		match.setDstPort(DST_PORT);
 
 		return match;
 
@@ -140,5 +152,21 @@ public abstract class GenericNetworkModelUtils {
 		port.setState(elementState);
 
 		return port;
+	}
+
+	public static QoSPolicy generateSampleQoSPolicy() {
+
+		QoSPolicy qos = new QoSPolicy();
+
+		qos.setMaxJitter(JITTER_MAX);
+		qos.setMinJitter(JITTER_MIN);
+		qos.setMaxLatency(LATENCY_MAX);
+		qos.setMinLatency(LATENCY_MIN);
+		qos.setMaxThroughput(THROUGHPUT_MAX);
+		qos.setMinThroughput(THROUGHPUT_MIN);
+		qos.setMaxPacketLoss(PACKETLOSS_MAX);
+		qos.setMinPacketLoss(PACKETLOSS_MIN);
+
+		return qos;
 	}
 }

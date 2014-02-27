@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
@@ -38,7 +37,7 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingActionSet;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingParamsMapping;
-import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteList;
+import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.PathLoader;
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteSelectionInput;
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteSelectionLogic;
 import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
@@ -53,6 +52,7 @@ import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitReque
 public class FindPathForRequestAction extends Action {
 
 	private RouteSelectionLogic			routeSelectionLogic;
+	private PathLoader					pathLoader;
 
 	/**
 	 * Key: RouteId, Value: Route to apply
@@ -64,6 +64,7 @@ public class FindPathForRequestAction extends Action {
 		this.actionID = PathFindingActionSet.FIND_PATH_FOR_REQUEST;
 		routes = new HashMap<String, Route>();
 		routeSelectionLogic = new RouteSelectionLogic();
+		pathLoader = new PathLoader();
 
 	}
 
@@ -141,7 +142,7 @@ public class FindPathForRequestAction extends Action {
 		String mappingURL = (String) mapParam.get(PathFindingParamsMapping.ROUTES_MAPPING_KEY);
 
 		try {
-			routes = readRoutesFromFile(routesURL);
+			routes = pathLoader.readRoutesFromFile(routesURL);
 		} catch (FileNotFoundException e) {
 			throw new ActionException("Invalid url to load routes ", e);
 		} catch (SerializationException e) {
@@ -174,20 +175,6 @@ public class FindPathForRequestAction extends Action {
 
 		return response;
 
-	}
-
-	private Map<String, Route> readRoutesFromFile(String url) throws FileNotFoundException, SerializationException {
-
-		Map<String, Route> finalPaths = new HashMap<String, Route>();
-		FileInputStream file = new FileInputStream((String) url);
-
-		RouteList routes = ObjectSerializer.fromXml(file, RouteList.class);
-
-		for (Route route : routes.getRoutes()) {
-			finalPaths.put(route.getId(), route);
-
-		}
-		return finalPaths;
 	}
 
 	private RouteSelectionInput createRouteSelectionInputFromRequest(CircuitRequest circuitRequest) {

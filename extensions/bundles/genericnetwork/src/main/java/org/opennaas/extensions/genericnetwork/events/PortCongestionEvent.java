@@ -31,7 +31,7 @@ import org.osgi.service.event.Event;
  */
 public class PortCongestionEvent extends Event {
 
-	public static final String	TOPIC			= "org/opennaas/extensions/ofnetwork/event/link/congestion";
+	public static final String	TOPIC			= "org/opennaas/extensions/genericnetwork/event/link/congestion";
 
 	/**
 	 * Network Id from which the port belongs to

@@ -20,6 +20,7 @@ package org.opennaas.extensions.genericnetwork.model.topology;
  * #L%
  */
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,6 +28,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * 
@@ -39,11 +45,24 @@ public class Topology {
 
 	@XmlElementWrapper(name = "networkElements")
 	@XmlElement(name = "networkElement")
-	private Set<NetworkElement>	networkElements;
+	private Set<NetworkElement>			networkElements;
 
 	@XmlElementWrapper(name = "links")
 	@XmlElement(name = "link")
-	private Set<Link>			links;
+	private Set<Link>					links;
+
+	/**
+	 * Bidirectional Map storing the relation between network topology port IDs and per-device port IDs.<br>
+	 * Using Guava's {@link BiMap}, more info <a href="https://code.google.com/p/guava-libraries/wiki/NewCollectionTypesExplained#BiMap">here</a>.
+	 */
+
+	private BiMap<String, DevicePortId>	networkDevicePortIdsMap;
+
+	public Topology() {
+		networkDevicePortIdsMap = HashBiMap.create();
+		links = new HashSet<Link>();
+		networkElements = new HashSet<NetworkElement>();
+	}
 
 	/**
 	 * @return the networkElements
@@ -75,25 +94,24 @@ public class Topology {
 		this.links = links;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
+	public BiMap<String, DevicePortId> getNetworkDevicePortIdsMap() {
+		return networkDevicePortIdsMap;
+	}
+
+	public void setNetworkDevicePortIdsMap(BiMap<String, DevicePortId> networkDevicePortIdsMap) {
+		this.networkDevicePortIdsMap = networkDevicePortIdsMap;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((links == null) ? 0 : links.hashCode());
+		result = prime * result + ((networkDevicePortIdsMap == null) ? 0 : networkDevicePortIdsMap.hashCode());
 		result = prime * result + ((networkElements == null) ? 0 : networkElements.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -107,6 +125,11 @@ public class Topology {
 			if (other.links != null)
 				return false;
 		} else if (!links.equals(other.links))
+			return false;
+		if (networkDevicePortIdsMap == null) {
+			if (other.networkDevicePortIdsMap != null)
+				return false;
+		} else if (!networkDevicePortIdsMap.equals(other.networkDevicePortIdsMap))
 			return false;
 		if (networkElements == null) {
 			if (other.networkElements != null)
