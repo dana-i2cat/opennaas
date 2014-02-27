@@ -52,6 +52,7 @@ import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -123,6 +124,10 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 	private IResource					ofSwitchResource;
 	private WSEndpointListenerHandler	listenerHandler;
 
+	private static final String			WS_URI							= "http://localhost:8888/opennaas/" + RESOURCE_TYPE + "/" + RESOURCE_INFO_NAME + "/" + OpenflowForwardingCapability.CAPABILITY_TYPE;
+	private static final String			WS_USERNAME						= "admin";
+	private static final String			WS_PASSWORD						= "123456";
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
@@ -165,7 +170,7 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 	public void createRuleTest() throws Exception {
 
 		IOpenflowForwardingCapability forwardingCapab = (IOpenflowForwardingCapability) getCapability(IOpenflowForwardingCapability.class);
-		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "1", "1", "2");
+		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "32767", "1", "2");
 		forwardingCapab.createOpenflowForwardingRule(forwardingRule);
 
 		OpenflowSwitchModel model = (OpenflowSwitchModel) ofSwitchResource.getModel();
@@ -197,6 +202,34 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 	}
 
 	/**
+	 * Test createForwardingRule method through WS. Asserts that after sending a CreateForwardingRule request, the model of the switch contains the
+	 * expected forwarding rule.
+	 * 
+	 * @throws CapabilityException
+	 */
+	@Test
+	public void createRuleWithIPWS() throws CapabilityException {
+
+		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "32767", "1", "2");
+		forwardingRule.getMatch().setSrcIp("192.168.1.1");
+		forwardingRule.getMatch().setDstIp("192.168.1.2");
+		forwardingRule.setSwitchId(SWITCH_ID);
+
+		IOpenflowForwardingCapability forwardingClient = InitializerTestHelper.createRestClient(WS_URI, IOpenflowForwardingCapability.class, null,
+				WS_USERNAME, WS_PASSWORD);
+		forwardingClient.createOpenflowForwardingRule(forwardingRule);
+
+		List<FloodlightOFFlow> forwardingRules = forwardingClient.getOpenflowForwardingRules();
+		Assert.assertNotNull(forwardingRules);
+		Assert.assertEquals(1, forwardingRules.size());
+
+		FloodlightOFFlow readedForwardingRule = forwardingRules.get(0);
+		Assert.assertEquals(forwardingRule, readedForwardingRule);
+
+	}
+
+	/**
+	 * 
 	 * Floodlight driver needs to send a body message in the DELETE method because of the Floodlight API. Our Jetty server answers a HTTP 400 Bad
 	 * Request error if we include body in this method, so we can not test this functionality.
 	 * 
@@ -245,6 +278,13 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 		HTTPServerBehaviour behaviourDelFlows = new HTTPServerBehaviour(reqDelFlow, respDelFlow, true);
 		desiredBehaviours.add(behaviourDelFlows);
 
+		HTTPRequest reqCreateFlowIP = new HTTPRequest(ADD_FLOW_URL, HttpMethod.POST, MediaType.APPLICATION_JSON,
+				readSampleFile("/addFlowWithIP.json"), new ArrayList<String>());
+		HTTPResponse resqCreateFlowIP = new HTTPResponse(HttpStatus.CREATED_201, MediaType.APPLICATION_JSON, FLOODLIGHT_ADD_FLOW_RESPONSE, "");
+		HTTPServerBehaviour behaviourCreateFlowIP = new HTTPServerBehaviour(reqCreateFlowIP, resqCreateFlowIP, false);
+		desiredBehaviours.add(behaviourCreateFlowIP);
+
+		// TODO add behaviour for next getter
 	}
 
 	private String readSampleFile(String url) throws IOException {
