@@ -21,10 +21,8 @@ package org.opennaas.extensions.genericnetwork.actionsets.internal.circuitprovis
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.action.Action;
@@ -47,7 +45,6 @@ import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
 import org.opennaas.extensions.genericnetwork.model.topology.Switch;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 
 /**
@@ -57,8 +54,6 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
  * 
  */
 public class AllocateCircuitAction extends Action {
-
-	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
@@ -81,6 +76,7 @@ public class AllocateCircuitAction extends Action {
 			Map<NetworkElement, NetworkConnection> networkConnectionsMap = CircuitTopologyHelper.networkElementNetworkConnectionMap(route, topology);
 
 			for (NetworkElement networkElement : networkConnectionsMap.keySet()) {
+				NetworkConnection networkConnection = networkConnectionsMap.get(networkElement);
 				if (networkElement instanceof Domain) {
 					// domain Id must be the same than the Generic Network ID that represents
 					IResource domainResource = TopologyHelper.getResourceFromNetworkElementId(networkElement.getId(),
@@ -89,7 +85,8 @@ public class AllocateCircuitAction extends Action {
 							.getCapabilityByInterface(INCLProvisionerCapability.class);
 
 					// generate new CircuitRequest and allocate it
-					CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
+					CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter(),
+							topology.getNetworkDevicePortIdsMap(), networkConnection);
 					String driverId = nclProvisionerCapability.allocateCircuit(circuitRequest);
 
 					// store connection in the implementation list
@@ -104,21 +101,9 @@ public class AllocateCircuitAction extends Action {
 					IOpenflowForwardingCapability ofForwardingCapability = (IOpenflowForwardingCapability) switchResource
 							.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-					NetworkConnection networkConnection = networkConnectionsMap.get(networkElement);
-
 					// generate new FloodlightFlow and allocate it
-					FloodlightOFFlow flow = new FloodlightOFFlow();
-					flow.setName(generateRandomFlowId());
-					flow.setActive(true);
-					flow.setMatch(circuit.getTrafficFilter());
-					flow.setPriority(DEFAULT_FLOW_PRIORITY);
-					flow.getMatch().setIngressPort(networkConnection.getSource().getId());
-
-					FloodlightOFAction action = new FloodlightOFAction();
-					action.setType("output");
-					action.setValue(networkConnection.getDestination().getId());
-					flow.setActions(Arrays.asList(action));
-
+					FloodlightOFFlow flow = Circuit2RequestHelper.generateFloodlightOFFlow(circuit.getTrafficFilter(),
+							topology.getNetworkDevicePortIdsMap(), networkConnection);
 					ofForwardingCapability.createOpenflowForwardingRule(flow);
 
 					// store connection in the implementation list
@@ -140,10 +125,6 @@ public class AllocateCircuitAction extends Action {
 		}
 
 		return ActionResponse.okResponse(getActionID());
-	}
-
-	private static String generateRandomFlowId() {
-		return UUID.randomUUID().toString();
 	}
 
 	@Override

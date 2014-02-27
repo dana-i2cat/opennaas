@@ -69,6 +69,7 @@ import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
 import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.driver.NetworkConnectionImplementationId;
 import org.opennaas.extensions.genericnetwork.model.topology.Domain;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
@@ -90,6 +91,9 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * {@link CircuitProvisioningCapability} integration test
@@ -126,8 +130,12 @@ public class CircuitProvisioningTest {
 
 	private static final String	MOCK_URI						= "mock://user:pass@host.net:2212/mocksubsystem";
 
-	private static final String	SRC_PORT						= "p0In";
-	private static final String	DST_PORT						= "p0Out";
+	private static final String	SRC_PORT_EXTERNAL				= "p0In";
+	private static final String	DST_PORT_EXTERNAL				= "p0Out";
+
+	private static final String	SRC_PORT_INTERNAL				= "p0InInternal";
+	private static final String	DST_PORT_INTERNAL				= "p0OutInternal";
+
 	private static final String	TOS								= "4";
 	private static final String	TOS_BIS							= "16";
 
@@ -194,13 +202,14 @@ public class CircuitProvisioningTest {
 
 		Assert.assertEquals("Generated QoS Policy must be the same", generateQoSPolicy(), receivedCircuitRequest.getQosPolicy());
 
-		Assert.assertEquals("Generated Source IP Address must be the same", generateTrafficFilter(SRC_PORT).getSrcIp(), receivedCircuitRequest
-				.getSource().getAddress());
-		Assert.assertEquals("Generated Source Port must be the same", generateTrafficFilter(SRC_PORT).getSrcPort(), receivedCircuitRequest
-				.getSource().getTransportPort());
-		Assert.assertEquals("Generated Destination IP Address must be the same", generateTrafficFilter(SRC_PORT).getDstIp(), receivedCircuitRequest
+		FloodlightOFMatch expectedTrafficFilter = generateTrafficFilter(SRC_PORT_INTERNAL);
+		Assert.assertEquals("Generated Source IP Address must be the same", expectedTrafficFilter.getSrcIp(), receivedCircuitRequest.getSource()
+				.getAddress());
+		Assert.assertEquals("Generated Source Port must be the same", expectedTrafficFilter.getSrcPort(), receivedCircuitRequest.getSource()
+				.getTransportPort());
+		Assert.assertEquals("Generated Destination IP Address must be the same", expectedTrafficFilter.getDstIp(), receivedCircuitRequest
 				.getDestination().getAddress());
-		Assert.assertEquals("Generated Destination Port must be the same", generateTrafficFilter(SRC_PORT).getDstPort(), receivedCircuitRequest
+		Assert.assertEquals("Generated Destination Port must be the same", expectedTrafficFilter.getDstPort(), receivedCircuitRequest
 				.getDestination().getTransportPort());
 
 		// asserts of the model
@@ -249,13 +258,14 @@ public class CircuitProvisioningTest {
 
 		Assert.assertEquals("Generated QoS Policy must be the same", generateQoSPolicy(), receivedCircuitRequest.getQosPolicy());
 
-		Assert.assertEquals("Generated Source IP Address must be the same", generateTrafficFilter(SRC_PORT).getSrcIp(), receivedCircuitRequest
-				.getSource().getAddress());
-		Assert.assertEquals("Generated Source Port must be the same", generateTrafficFilter(SRC_PORT).getSrcPort(), receivedCircuitRequest
-				.getSource().getTransportPort());
-		Assert.assertEquals("Generated Destination IP Address must be the same", generateTrafficFilter(SRC_PORT).getDstIp(), receivedCircuitRequest
+		expectedTrafficFilter = generateTrafficFilter(SRC_PORT_INTERNAL);
+		Assert.assertEquals("Generated Source IP Address must be the same", expectedTrafficFilter.getSrcIp(), receivedCircuitRequest.getSource()
+				.getAddress());
+		Assert.assertEquals("Generated Source Port must be the same", expectedTrafficFilter.getSrcPort(), receivedCircuitRequest.getSource()
+				.getTransportPort());
+		Assert.assertEquals("Generated Destination IP Address must be the same", expectedTrafficFilter.getDstIp(), receivedCircuitRequest
 				.getDestination().getAddress());
-		Assert.assertEquals("Generated Destination Port must be the same", generateTrafficFilter(SRC_PORT).getDstPort(), receivedCircuitRequest
+		Assert.assertEquals("Generated Destination Port must be the same", expectedTrafficFilter.getDstPort(), receivedCircuitRequest
 				.getDestination().getTransportPort());
 
 		// asserts of the model
@@ -322,7 +332,8 @@ public class CircuitProvisioningTest {
 		FloodlightOFFlow receivedFloodlightOFFlow = capturedFloodlightOFFlow.getValue();
 		Assert.assertNotNull("FloodlightOFFlow must be set", receivedFloodlightOFFlow);
 
-		Assert.assertEquals("Generated FloodlightOFMatch must be the same", generateTrafficFilter(SRC_PORT), receivedFloodlightOFFlow.getMatch());
+		Assert.assertEquals("Generated FloodlightOFMatch must be the same", generateTrafficFilter(SRC_PORT_INTERNAL),
+				receivedFloodlightOFFlow.getMatch());
 
 		// asserts of the model
 		GenericNetworkModel model = ((GenericNetworkModel) genericNetwork.getModel());
@@ -367,7 +378,9 @@ public class CircuitProvisioningTest {
 		receivedFloodlightOFFlow = capturedFloodlightOFFlow.getValue();
 		Assert.assertNotNull("FloodlightOFFlow must be set", receivedFloodlightOFFlow);
 
-		Assert.assertEquals("Generated FloodlightOFMatch must be the same", TOS_BIS, receivedFloodlightOFFlow.getMatch().getTosBits());
+		FloodlightOFMatch expectedTrafficFilter = generateTrafficFilter(SRC_PORT_INTERNAL);
+		expectedTrafficFilter.setTosBits(TOS_BIS);
+		Assert.assertEquals("Generated FloodlightOFMatch must be the same", expectedTrafficFilter, receivedFloodlightOFFlow.getMatch());
 
 		// asserts of the model
 		model = ((GenericNetworkModel) genericNetwork.getModel());
@@ -419,7 +432,7 @@ public class CircuitProvisioningTest {
 	private static Circuit generateCircuit() {
 		Circuit circuit = new Circuit();
 
-		circuit.setTrafficFilter(generateTrafficFilter(SRC_PORT));
+		circuit.setTrafficFilter(generateTrafficFilter(SRC_PORT_EXTERNAL));
 
 		circuit.setCircuitId("C1");
 
@@ -433,8 +446,8 @@ public class CircuitProvisioningTest {
 		NetworkConnection networkConnection = new NetworkConnection();
 		networkConnection.setName("NC1");
 		networkConnection.setId("NC1");
-		networkConnection.setSource(generatePort(SRC_PORT));
-		networkConnection.setDestination(generatePort(DST_PORT));
+		networkConnection.setSource(generatePort(SRC_PORT_EXTERNAL));
+		networkConnection.setDestination(generatePort(DST_PORT_EXTERNAL));
 		networkConnections.add(networkConnection);
 
 		route.setNetworkConnections(networkConnections);
@@ -454,14 +467,29 @@ public class CircuitProvisioningTest {
 		// ports of domain d0
 		Set<Port> d0Ports = new HashSet<Port>();
 
-		d0Ports.add(generatePort(SRC_PORT));
-		d0Ports.add(generatePort(DST_PORT));
+		d0Ports.add(generatePort(SRC_PORT_EXTERNAL));
+		d0Ports.add(generatePort(DST_PORT_EXTERNAL));
 		d0.setPorts(d0Ports);
 
 		topology.setNetworkElements(new HashSet<NetworkElement>());
 		topology.getNetworkElements().add(d0);
 
+		// generate translation BiMap
+		BiMap<String, DevicePortId> biMap = HashBiMap.create();
+
+		biMap.put(SRC_PORT_EXTERNAL, generateDevicePortId(d0.getId(), SRC_PORT_INTERNAL));
+		biMap.put(DST_PORT_EXTERNAL, generateDevicePortId(d0.getId(), DST_PORT_INTERNAL));
+
+		topology.setNetworkDevicePortIdsMap(biMap);
+
 		return topology;
+	}
+
+	private static DevicePortId generateDevicePortId(String deviceId, String portId) {
+		DevicePortId devicePortId = new DevicePortId();
+		devicePortId.setDeviceId(deviceId);
+		devicePortId.setDevicePortId(portId);
+		return devicePortId;
 	}
 
 	private static Topology generateSwitchTopology() {
@@ -474,12 +502,20 @@ public class CircuitProvisioningTest {
 		// ports of domain s0
 		Set<Port> s0Ports = new HashSet<Port>();
 
-		s0Ports.add(generatePort(SRC_PORT));
-		s0Ports.add(generatePort(DST_PORT));
+		s0Ports.add(generatePort(SRC_PORT_EXTERNAL));
+		s0Ports.add(generatePort(DST_PORT_EXTERNAL));
 		s0.setPorts(s0Ports);
 
 		topology.setNetworkElements(new HashSet<NetworkElement>());
 		topology.getNetworkElements().add(s0);
+
+		// generate translation BiMap
+		BiMap<String, DevicePortId> biMap = HashBiMap.create();
+
+		biMap.put(SRC_PORT_EXTERNAL, generateDevicePortId(s0.getId(), SRC_PORT_INTERNAL));
+		biMap.put(DST_PORT_EXTERNAL, generateDevicePortId(s0.getId(), DST_PORT_INTERNAL));
+
+		topology.setNetworkDevicePortIdsMap(biMap);
 
 		return topology;
 	}
