@@ -80,6 +80,7 @@ public class GenericNetworkModel implements IModel {
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
 		allocatedCircuits = new HashMap<String, Circuit>();
 		deviceResourceMap = new HashMap<String, String>();
+		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
 	}
 
 	/**
