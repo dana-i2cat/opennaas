@@ -37,7 +37,6 @@ import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.helpers.TopologyHelper;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
-import org.opennaas.extensions.genericnetwork.model.topology.Port;
 import org.opennaas.extensions.openflowswitch.capability.monitoring.IMonitoringCapability;
 import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
 import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
@@ -56,12 +55,16 @@ public class GetNetworkStatisticsAction extends Action {
 		GenericNetworkModel networkModel = (GenericNetworkModel) getModelToUpdate();
 
 		NetworkStatistics netStats = new NetworkStatistics();
-		for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
-			try {
-				SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
-				netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);
-			} catch (Exception e) {
-				log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
+		if (networkModel.getTopology() == null) {
+			log.warn("Failed to obtain network statistics. Topology is not loaded yet.");
+		} else {
+			for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
+				try {
+					SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
+					netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);
+				} catch (Exception e) {
+					log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
+				}
 			}
 		}
 
@@ -118,11 +121,10 @@ public class GetNetworkStatisticsAction extends Action {
 			DevicePortId devicePortId = new DevicePortId();
 			devicePortId.setDeviceId(deviceId);
 			devicePortId.setDevicePortId(portId.toString());
-			Port netPort = networkModel.getNetworkDevicePortIdsMap().inverse().get(devicePortId);
-			if (netPort == null) {
+			String netPortId = networkModel.getTopology().getNetworkDevicePortIdsMap().inverse().get(devicePortId);
+			if (netPortId == null) {
 				log.warn("Cannot find mapping network port for device " + deviceId + " and port " + portId + ". Skipping it.");
 			} else {
-				String netPortId = netPort.getId();
 				netSwitchStatistics.getStatistics().put(netPortId, switchStatistics.getStatistics().get(portId));
 			}
 		}

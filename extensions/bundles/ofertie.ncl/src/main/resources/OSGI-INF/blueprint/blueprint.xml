@@ -14,31 +14,17 @@
 	<!-- Instantiate NCLProvisioner components -->
 	<bean id="nclModel" class="org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel"/>
 	<bean id="qosPDP" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.QoSPDPMockup"/>
-	<bean id="routeSelectionLogic" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.RouteSelectionLogic"/>
-	<bean id="pathFinder" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.routing.PathFinderMockup">
-		<property name="nclModel" ref="nclModel" />
-		<property name="routeSelectionLogic" ref="routeSelectionLogic"/>
-	</bean>
 	<bean id="networkSelector" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup" init-method="init">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-	<bean id="requestToFlowsLogic" class="org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.RequestToFlowsLogic">
-		<property name="nclModel" ref="nclModel" />
-		<property name="pathFinder" ref="pathFinder" />
-	</bean>
-	<bean id="nclController" class="org.opennaas.extensions.ofertie.ncl.controller.NCLController"/>
-	<bean id="nclMonitoring" class="org.opennaas.extensions.ofertie.ncl.monitoring.NCLMonitoring" init-method="init">
-		<property name="nclController" ref="nclController" />
-		<property name="nclModel" ref="nclModel" />
-	</bean>
-	
+
+
 	<!-- Instantiate NCLProvisioner and publish it -->
 	<bean id="nclProvisioner" class="org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner">
 		<property name="qoSPDP" ref="qosPDP" />
 		<property name="networkSelector" ref="networkSelector" />
-		<property name="nclController" ref="nclController" />
-		<property name="requestToFlowsLogic" ref="requestToFlowsLogic" />
 		<property name="model" ref="nclModel" />
+		<property name="resourceManager" ref="resourceManager" />
 	</bean>
 	<service ref="nclProvisioner" interface="org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner">
 		<service-properties>

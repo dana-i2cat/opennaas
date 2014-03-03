@@ -41,6 +41,11 @@ public class HTTPServerServlet extends HttpServlet {
 
 	private List<HTTPServerBehaviour>	desiredBehaviour;
 
+	private String						reqContentType;
+	private String						reqBody;
+	private String						reqURL;
+	private String						reqMethod;										;
+
 	public HTTPServerServlet(List<HTTPServerBehaviour> servletBehaviours) {
 		this.desiredBehaviour = servletBehaviours;
 	}
@@ -73,7 +78,13 @@ public class HTTPServerServlet extends HttpServlet {
 	}
 
 	private void createResponse(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		HTTPServerBehaviour behavior = getDesiredBehavior(request);
+
+		this.reqContentType = request.getContentType();
+		this.reqURL = request.getRequestURI();
+		this.reqMethod = request.getMethod();
+		this.reqBody = getBodyMessage(request);
+
+		HTTPServerBehaviour behavior = getDesiredBehavior();
 
 		if (behavior == null)
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -101,7 +112,7 @@ public class HTTPServerServlet extends HttpServlet {
 
 	}
 
-	private HTTPServerBehaviour getDesiredBehavior(HttpServletRequest request) throws IOException, ServletException
+	private HTTPServerBehaviour getDesiredBehavior() throws IOException, ServletException
 	{
 		try {
 			Iterator<HTTPServerBehaviour> iterator = desiredBehaviour.iterator();
@@ -109,7 +120,7 @@ public class HTTPServerServlet extends HttpServlet {
 				HTTPServerBehaviour behaviour = iterator.next();
 				HTTPRequest possibleReq = behaviour.getRequest();
 
-				if (requestMatches(request, possibleReq)) {
+				if (requestMatches(possibleReq)) {
 
 					return behaviour;
 
@@ -127,18 +138,16 @@ public class HTTPServerServlet extends HttpServlet {
 		}
 	}
 
-	private boolean requestMatches(HttpServletRequest request, HTTPRequest possibleReq) throws IOException, SAXException, TransformerException,
+	private boolean requestMatches(HTTPRequest possibleReq) throws IOException, SAXException, TransformerException,
 			ParserConfigurationException {
 
-		if (!possibleReq.getMethod().equals(request.getMethod()))
+		if (!possibleReq.getMethod().equals(this.reqMethod))
 			return false;
 
-		if (!possibleReq.getRequestURL().equals(request.getRequestURI()))
+		if (!possibleReq.getRequestURL().equals(this.reqURL))
 			return false;
 
-		String bodyMessage = getBodyMessage(request);
-
-		if (!bodyMatches(bodyMessage, request.getContentType(), possibleReq.getBodyMessage(), possibleReq.getContentType(),
+		if (!bodyMatches(possibleReq.getBodyMessage(), possibleReq.getContentType(),
 				possibleReq.getOmittedFields()))
 			return false;
 
@@ -146,25 +155,25 @@ public class HTTPServerServlet extends HttpServlet {
 
 	}
 
-	private boolean bodyMatches(String reqBody, String reqContentType, String possibleReqBody, String possibleReqContentType,
+	private boolean bodyMatches(String possibleReqBody, String possibleReqContentType,
 			List<String> ommitedFields)
 			throws JsonProcessingException, IOException, SAXException, TransformerException, ParserConfigurationException {
 
-		if (!StringUtils.equals(reqContentType, possibleReqContentType))
+		if (!StringUtils.equals(this.reqContentType, possibleReqContentType))
 			return false;
 
-		if (StringUtils.isBlank(reqBody) && StringUtils.isBlank(possibleReqBody))
+		if (StringUtils.isBlank(this.reqBody) && StringUtils.isBlank(possibleReqBody))
 			return true;
 
-		if ((StringUtils.isBlank(reqBody) && StringUtils.isNotBlank(possibleReqBody)) || ((StringUtils.isNotBlank(reqBody) && StringUtils
+		if ((StringUtils.isBlank(this.reqBody) && StringUtils.isNotBlank(possibleReqBody)) || ((StringUtils.isNotBlank(this.reqBody) && StringUtils
 				.isBlank(possibleReqBody))))
 			return false;
 
-		if (reqContentType.contains(MediaType.APPLICATION_XML) || reqContentType.contains(MediaType.TEXT_XML))
-			return compareXml(reqBody, possibleReqBody);
+		if (this.reqContentType.contains(MediaType.APPLICATION_XML) || this.reqContentType.contains(MediaType.TEXT_XML))
+			return compareXml(this.reqBody, possibleReqBody);
 
-		if (reqContentType.contains(MediaType.APPLICATION_JSON))
-			return compareJson(reqBody, possibleReqBody, ommitedFields);
+		if (this.reqContentType.contains(MediaType.APPLICATION_JSON))
+			return compareJson(this.reqBody, possibleReqBody, ommitedFields);
 
 		return true;
 

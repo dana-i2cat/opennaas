@@ -40,7 +40,7 @@ import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitReque
 public class FindPathForRequestActionTest {
 
 	private final static String			MAPPING_URL	= "src/test/resources/routeMapping.xml";
-	private final static String			ROUTE_URL	= "src/test/resources/path.xml";
+	private final static String			ROUTE_URL	= "src/test/resources/sampleXMLRoutes.xml";
 
 	private FindPathForRequestAction	action;
 	private Map<String, Object>			params;

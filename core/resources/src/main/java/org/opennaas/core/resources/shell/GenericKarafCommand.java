@@ -51,6 +51,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	protected int				totalFiles			= 0;
 	protected String[]			argsInterface		= null;
 	// Messages
+	protected String			warn				= "[WARN] ";
 	protected String			error				= "[ERROR] ";
 	protected String			info				= "[INFO] ";
 	// Symbols
@@ -109,6 +110,11 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	public void printEndCommand() {
 		// printSymbol(doubleLine);
 		log.debug("Command finished.");
+	}
+
+	public void printWarn(String message) {
+		out.println(warn + message);
+		log.warn(warn + message);
 	}
 
 	public void printError(String message) {

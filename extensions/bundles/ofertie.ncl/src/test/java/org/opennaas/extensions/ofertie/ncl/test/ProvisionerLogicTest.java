@@ -20,202 +20,167 @@ package org.opennaas.extensions.ofertie.ncl.test;
  * #L%
  */
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.Resource;
+import org.opennaas.core.resources.ResourceManager;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProvisionerCapability;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestHelper;
+import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
-import org.opennaas.extensions.ofertie.ncl.provisioner.components.IRequestToFlowsLogic;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.QoSPDPMockup;
 import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
-import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+/**
+ * @author Isart Canyameres (i2CAT)
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
+@RunWith(PowerMockRunner.class)
 public class ProvisionerLogicTest {
 
-	final String			userId	= "alice";
-	final String			netId	= "NET:1234";
-	final String			flowId	= "FLOW:1";
+	final String				userId	= "alice";
+	final String				netId	= "genericnetwork:genericnet01";
+	final String				flowId	= "FLOW:1";
 
-	NCLProvisioner			provisioner;
-	IQoSPDP					qosPDP;
-	INetworkSelector		networkSelector;
-	INCLController			nclController;
-	IRequestToFlowsLogic	requestToFlowsLogic;
+	NCLProvisioner				provisioner;
+	IQoSPDP						qosPDP;
+	INetworkSelector			networkSelector;
+	INCLProvisionerCapability	nclProvCapab;
+	IResourceManager			resourceManager;
+	Resource					resource;
+	NCLProvisionerCapability	provisionerCapab;
 
-	NCLModel				model;
+	NCLModel					model;
 
-	QosPolicyRequest		qosPolicyRequest;
-	List<NetOFFlow>			sdnFlow;
+	QosPolicyRequest			qosRequest;
 
 	@Before
 	public void initFlowRequest() {
-		qosPolicyRequest = generateSampleQosPolicyRequest();
-		sdnFlow = new ArrayList<NetOFFlow>();
+		qosRequest = QoSPolicyRequestHelper.generateSampleQosPolicyRequest();
 	}
 
 	@Before
-	public void initProvisioner() {
+	public void initProvisioner() throws Exception {
 
 		model = new NCLModel();
 
-		qosPDP = createMock(IQoSPDP.class);
-		networkSelector = createMock(INetworkSelector.class);
-		nclController = createMock(INCLController.class);
-		requestToFlowsLogic = createMock(IRequestToFlowsLogic.class);
+		qosPDP = mockQoSPDP();
+		networkSelector = mockNetworkSelector();
+		resource = createResource();
+		resourceManager = mockResourceManager();
 
 		provisioner = new NCLProvisioner();
 		provisioner.setModel(model);
 		provisioner.setQoSPDP(qosPDP);
 		provisioner.setNetworkSelector(networkSelector);
-		provisioner.setNclController(nclController);
-		provisioner.setRequestToFlowsLogic(requestToFlowsLogic);
-
+		provisioner.setResourceManager(resourceManager);
 	}
 
+	/**
+	 * Following test mocks the resourceManager to return a specific mocked resource which contain a mock NCLProvisionerCapability. The main goal of
+	 * this test is to check that, when a valid QoSPolicyRequest is allocated, the NCLProvisioner model contains the corresponding CircuitRequest, and
+	 * returns the same id to the user.
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	public void allocateFlowOkTest() throws Exception {
-		expect(qosPDP.shouldAcceptRequest(userId, qosPolicyRequest)).andReturn(true);
-		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest)).andReturn(sdnFlow);
-		expect(networkSelector.findNetworkForRequest(qosPolicyRequest)).andReturn(netId);
 
-		nclController.allocateFlows(sdnFlow, netId);
-		expectLastCall().once();
+		CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosRequest);
 
-		replay(qosPDP);
-		replay(networkSelector);
-		replay(requestToFlowsLogic);
-		replay(nclController);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(true);
+		PowerMockito.when(networkSelector.getNetwork()).thenReturn(netId);
+		PowerMockito.doReturn(resource).when(resourceManager).getResourceById(netId);
+		PowerMockito.doReturn(flowId).when(nclProvCapab).allocateCircuit(Mockito.any(CircuitRequest.class));
 
-		String result = provisioner.allocateFlow(qosPolicyRequest);
-		Assert.assertNotNull(result);
+		String generatedFlow = provisioner.allocateFlow(qosRequest);
 
-		verify(qosPDP);
-		verify(networkSelector);
-		verify(requestToFlowsLogic);
-		verify(nclController);
+		Assert.assertEquals("Flow returned by the mock NCLProvisionerCapability should be the one given to PowerMockito", flowId, generatedFlow);
+		Assert.assertNotNull("A CircuitRequest should have been added to NClProvisioner model.", model.getAllocatedRequests());
+		Assert.assertEquals("A CircuitRequest should have been added to NClProvisioner model.", 1, model.getAllocatedRequests().size());
+		Assert.assertTrue("NCLProvisioner model should contain CircuitRequest for flow " + flowId,
+				model.getAllocatedRequests().keySet().contains(flowId));
+
+		Assert.assertEquals("CircuitRequest stored at NCLProvisioner is not the expected.", circuitRequest, model.getAllocatedRequests().get(flowId));
+
 	}
 
 	@Test(expected = FlowAllocationRejectedException.class)
 	public void allocateFlowQoSDeniedTest() throws Exception {
-		expect(qosPDP.shouldAcceptRequest(userId, qosPolicyRequest)).andReturn(false);
 
-		replay(qosPDP);
-		replay(networkSelector);
-		replay(requestToFlowsLogic);
-		replay(nclController);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(false);
+		provisioner.allocateFlow(qosRequest);
 
-		provisioner.allocateFlow(qosPolicyRequest);
-
-		verify(qosPDP);
-		verify(networkSelector);
-		verify(requestToFlowsLogic);
-		verify(nclController);
 	}
 
 	@Test(expected = ProvisionerException.class)
 	public void allocateFlowNetworkSelectorErrorTest() throws Exception {
-		expect(qosPDP.shouldAcceptRequest(userId, qosPolicyRequest)).andReturn(true);
-		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest)).andReturn(sdnFlow);
-		expect(networkSelector.findNetworkForRequest(qosPolicyRequest)).andThrow(new Exception());
 
-		replay(qosPDP);
-		replay(networkSelector);
-		replay(requestToFlowsLogic);
-		replay(nclController);
+		CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosRequest);
 
-		provisioner.allocateFlow(qosPolicyRequest);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(true);
+		PowerMockito.when(networkSelector.getNetwork()).thenThrow(new Exception());
 
-		verify(qosPDP);
-		verify(networkSelector);
-		verify(requestToFlowsLogic);
-		verify(nclController);
+		provisioner.allocateFlow(qosRequest);
+
 	}
 
 	@Test(expected = FlowAllocationException.class)
 	public void allocateFlowNCLControllerErrorTest() throws Exception {
-		expect(qosPDP.shouldAcceptRequest(userId, qosPolicyRequest)).andReturn(true);
-		expect(requestToFlowsLogic.getRequiredFlowsToSatisfyRequest(qosPolicyRequest)).andReturn(sdnFlow);
-		expect(networkSelector.findNetworkForRequest(qosPolicyRequest)).andReturn(netId);
 
-		nclController.allocateFlows(sdnFlow, netId);
-		expectLastCall().andThrow(new FlowAllocationException());
+		CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosRequest);
 
-		replay(qosPDP);
-		replay(networkSelector);
-		replay(requestToFlowsLogic);
-		replay(nclController);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(true);
+		PowerMockito.when(networkSelector.getNetwork()).thenReturn(netId);
+		PowerMockito.doReturn(resource).when(resourceManager).getResourceById(netId);
+		PowerMockito.when(nclProvCapab.allocateCircuit(circuitRequest)).thenThrow(CapabilityException.class);
 
-		provisioner.allocateFlow(qosPolicyRequest);
+		provisioner.allocateFlow(qosRequest);
 
-		verify(qosPDP);
-		verify(networkSelector);
-		verify(requestToFlowsLogic);
-		verify(nclController);
 	}
 
-	private QosPolicyRequest generateSampleQosPolicyRequest() {
+	private Resource createResource() {
 
-		QosPolicyRequest req = new QosPolicyRequest();
+		nclProvCapab = PowerMockito.mock(NCLProvisionerCapability.class);
 
-		Source source = new Source();
-		source.setAddress("192.168.0.1");
-		source.setPort("8080");
-		req.setSource(source);
+		Resource resource = new Resource();
+		resource.addCapability(nclProvCapab);
 
-		Destination destination = new Destination();
-		destination.setAddress("192.168.0.2");
-		destination.setPort("8080");
-		req.setDestination(destination);
+		return resource;
+	}
 
-		req.setLabel("1");
+	private INetworkSelector mockNetworkSelector() throws Exception {
 
-		QosPolicy qosPolicy = new QosPolicy();
+		return PowerMockito.mock(NetworkSelectorMockup.class);
 
-		Latency latency = new Latency();
-		latency.setMin(null);
-		latency.setMax("10");
-		qosPolicy.setLatency(latency);
+	}
 
-		Jitter jitter = new Jitter();
-		jitter.setMin(null);
-		jitter.setMax("10");
-		qosPolicy.setJitter(jitter);
+	private IResourceManager mockResourceManager() {
 
-		Throughput throughput = new Throughput();
-		throughput.setMin(String.valueOf(100 * 1000 * 1000));
-		throughput.setMax(null);
-		qosPolicy.setThroughput(throughput);
+		return PowerMockito.mock(ResourceManager.class);
+	}
 
-		PacketLoss packetLoss = new PacketLoss();
-		packetLoss.setMin(null);
-		packetLoss.setMax("10");
-		qosPolicy.setPacketLoss(packetLoss);
+	private IQoSPDP mockQoSPDP() {
 
-		req.setQosPolicy(qosPolicy);
-
-		return req;
+		return PowerMockito.mock(QoSPDPMockup.class);
 	}
 
 }

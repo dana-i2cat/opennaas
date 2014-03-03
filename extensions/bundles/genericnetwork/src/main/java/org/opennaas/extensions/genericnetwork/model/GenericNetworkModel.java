@@ -33,13 +33,8 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
-import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.driver.NetworkConnectionImplementationId;
-import org.opennaas.extensions.genericnetwork.model.topology.Port;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
 /**
  * 
@@ -87,18 +82,12 @@ public class GenericNetworkModel implements IModel {
 	 */
 	private Map<String, String>										deviceResourceMap;
 
-	/**
-	 * Bidirectional Map storing the relation between network topology port IDs and per-device port IDs.<br>
-	 * Using Guava's {@link BiMap}, more info <a href="https://code.google.com/p/guava-libraries/wiki/NewCollectionTypesExplained#BiMap">here</a>.
-	 */
-	private BiMap<Port, DevicePortId>								networkDevicePortIdsMap;
-
 	public GenericNetworkModel() {
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
 		allocatedCircuits = new HashMap<String, Circuit>();
 		requestedCircuits = new HashMap<String, Circuit>();
 		deviceResourceMap = new HashMap<String, String>();
-		networkDevicePortIdsMap = HashBiMap.create();
+		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
 	}
 
 	/**
@@ -157,14 +146,6 @@ public class GenericNetworkModel implements IModel {
 
 	public void setCircuitImplementation(Map<String, List<NetworkConnectionImplementationId>> circuitImplementation) {
 		this.circuitImplementation = circuitImplementation;
-	}
-
-	public BiMap<Port, DevicePortId> getNetworkDevicePortIdsMap() {
-		return networkDevicePortIdsMap;
-	}
-
-	public void setNetworkDevicePortIdsMap(BiMap<Port, DevicePortId> networkDevicePortIdsMap) {
-		this.networkDevicePortIdsMap = networkDevicePortIdsMap;
 	}
 
 	@Override
