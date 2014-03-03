@@ -35,6 +35,7 @@ public abstract class FloodlightTestHelper {
 		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
 		forwardingRule.setName(name);
 		forwardingRule.setPriority(priority);
+		forwardingRule.setActive(true);
 
 		FloodlightOFMatch match = new FloodlightOFMatch();
 		match.setIngressPort(inputPort);
