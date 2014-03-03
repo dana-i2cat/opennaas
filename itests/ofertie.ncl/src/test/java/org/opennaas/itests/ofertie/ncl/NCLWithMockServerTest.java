@@ -80,7 +80,6 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.opennaas.itests.helpers.server.HTTPRequest;
 import org.opennaas.itests.helpers.server.HTTPResponse;
 import org.opennaas.itests.helpers.server.HTTPServerBehaviour;
@@ -199,7 +198,7 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 				includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-ofertie-ncl", "itests-helpers"),
 				noConsole(),
-				OpennaasExamOptions.openDebugSocket(),
+				// OpennaasExamOptions.openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
