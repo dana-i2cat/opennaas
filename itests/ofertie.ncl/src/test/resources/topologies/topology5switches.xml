@@ -9,7 +9,7 @@
 			<ports>
 				<port id="s1.1">
 					<state>
-						<congested>true</congested>
+						<congested>false</congested>
 					</state>
 				</port>
 				<port id="s1.2">
@@ -37,7 +37,7 @@
 			<ports>
 				<port id="s2.1">
 					<state>
-						<congested>true</congested>
+						<congested>false</congested>
 					</state>
 				</port>
 				<port id="s2.2">
@@ -60,7 +60,7 @@
 			<ports>
 				<port id="s3.1">
 					<state>
-						<congested>true</congested>
+						<congested>false</congested>
 					</state>
 				</port>
 				<port id="s3.2">
@@ -88,7 +88,7 @@
 			<ports>
 				<port id="s4.1">
 					<state>
-						<congested>true</congested>
+						<congested>false</congested>
 					</state>
 				</port>
 				<port id="s4.2">
@@ -116,7 +116,7 @@
 			<ports>
 				<port id="s5.1">
 					<state>
-						<congested>true</congested>
+						<congested>false</congested>
 					</state>
 				</port>
 				<port id="s5.2">
@@ -125,34 +125,6 @@
 					</state>
 				</port>
 				<port id="s5.3">
-					<state>
-						<congested>false</congested>
-					</state>
-				</port>
-			</ports>
-		</networkElement>
-		<networkElement xsi:type="domain" id="genericnetwork:n1"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-			<state>
-				<congested>false</congested>
-			</state>
-			<ports>
-				<port id="n1.7">
-					<state>
-						<congested>false</congested>
-					</state>
-				</port>
-				<port id="n1.6">
-					<state>
-						<congested>false</congested>
-					</state>
-				</port>
-				<port id="n1.9">
-					<state>
-						<congested>false</congested>
-					</state>
-				</port>
-				<port id="n1.8">
 					<state>
 						<congested>false</congested>
 					</state>
@@ -213,32 +185,130 @@
 	</links>
 	<networkDevicePortIdsMap>
 		<entry>
-			<key>n1.7</key>
-			<value>
-				<deviceId>s4</deviceId>
-				<devicePortId>s4.4</devicePortId>
-			</value>
-		</entry>
-		<entry>
-			<key>n1.6</key>
-			<value>
-				<deviceId>s5</deviceId>
-				<devicePortId>s5.3</devicePortId>
-			</value>
-		</entry>
-		<entry>
-			<key>n1.9</key>
+			<key>s1.1</key>
 			<value>
 				<deviceId>s1</deviceId>
-				<devicePortId>s1.4</devicePortId>
+				<devicePortId>1</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s1.2</key>
+			<value>
+				<deviceId>s1</deviceId>
+				<devicePortId>2</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s1.3</key>
+			<value>
+				<deviceId>s1</deviceId>
+				<devicePortId>3</devicePortId>
 			</value>
 		</entry>
 	    <entry>
-	        <key>n1.2</key>
+	        <key>s1.4</key>
 	        <value>
-	            <deviceId>s2</deviceId>
-	            <devicePortId>s2.3</devicePortId>
+	            <deviceId>s1</deviceId>
+	            <devicePortId>4</devicePortId>
 	        </value>
-	    </entry>		
+	    </entry>	
+		<entry>
+			<key>s2.1</key>
+			<value>
+				<deviceId>s2</deviceId>
+				<devicePortId>1</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s2.2</key>
+			<value>
+				<deviceId>s2</deviceId>
+				<devicePortId>2</devicePortId>
+			</value>
+		</entry>	
+		<entry>
+			<key>s2.3</key>
+			<value>
+				<deviceId>s2</deviceId>
+				<devicePortId>3</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s3.1</key>
+			<value>
+				<deviceId>s3</deviceId>
+				<devicePortId>1</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s3.2</key>
+			<value>
+				<deviceId>s3</deviceId>
+				<devicePortId>2</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s3.3</key>
+			<value>
+				<deviceId>s3</deviceId>
+				<devicePortId>3</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s3.4</key>
+			<value>
+				<deviceId>s3</deviceId>
+				<devicePortId>4</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s4.1</key>
+			<value>
+				<deviceId>s4</deviceId>
+				<devicePortId>1</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s4.2</key>
+			<value>
+				<deviceId>s4</deviceId>
+				<devicePortId>2</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s4.3</key>
+			<value>
+				<deviceId>s4</deviceId>
+				<devicePortId>3</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s4.4</key>
+			<value>
+				<deviceId>s4</deviceId>
+				<devicePortId>4</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s5.1</key>
+			<value>
+				<deviceId>s5</deviceId>
+				<devicePortId>1</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s5.2</key>
+			<value>
+				<deviceId>s5</deviceId>
+				<devicePortId>2</devicePortId>
+			</value>
+		</entry>
+		<entry>
+			<key>s5.3</key>
+			<value>
+				<deviceId>s5</deviceId>
+				<devicePortId>3</devicePortId>
+			</value>
+		</entry>										
 	</networkDevicePortIdsMap>
 </ns2:topology>

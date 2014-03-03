@@ -81,6 +81,7 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -222,6 +223,7 @@ public class NCLProvisionerTest {
 				opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-ofertie-ncl", "itests-helpers"),
+				OpennaasExamOptions.openDebugSocket(),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -289,6 +291,7 @@ public class NCLProvisionerTest {
 		Assert.assertEquals("Circuit should contain route with id 1.", "1", circuit.getRoute().getId());
 
 		// 3) check the circuit implementation in the network
+
 		Map<String, List<NetworkConnectionImplementationId>> sdnCircuitImplementation = sdnNetModel.getCircuitImplementation();
 		Assert.assertNotNull("Generic network should contain circuit implementation.", sdnCircuitImplementation);
 		Assert.assertEquals("Generic network should contain a circuit implementation.", 1, sdnCircuitImplementation.size());
@@ -297,79 +300,75 @@ public class NCLProvisionerTest {
 		Assert.assertNotNull("Circuit implementation should not be null.", generatedCircuitImplementation);
 		Assert.assertEquals("Circuit implentation should consists of 4 network connections.", 4, generatedCircuitImplementation.size());
 
-		NetworkConnectionImplementationId netConnImpl = generatedCircuitImplementation.get(0);
-		Assert.assertEquals("First network connection should belong to device " + SWITCH_5_NAME, SWITCH_5_NAME, netConnImpl.getDeviceId());
-		netConnImpl = generatedCircuitImplementation.get(1);
-		Assert.assertEquals("Second network connection should belong to device " + SWITCH_4_NAME, SWITCH_4_NAME, netConnImpl.getDeviceId());
-		netConnImpl = generatedCircuitImplementation.get(2);
-		Assert.assertEquals("Third network connection should belong to device " + SWITCH_1_NAME, SWITCH_1_NAME, netConnImpl.getDeviceId());
-		netConnImpl = generatedCircuitImplementation.get(3);
-		Assert.assertEquals("Last network connection should belong to device " + SWITCH_2_NAME, SWITCH_2_NAME, netConnImpl.getDeviceId());
+		List<String> netConnectionNames = new ArrayList<String>();
+		for (NetworkConnectionImplementationId netConnImpl : generatedCircuitImplementation)
+			netConnectionNames.add(netConnImpl.getDeviceId());
+
+		Assert.assertTrue("Circuit implementation should pass through switch s5",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_5_NAME));
+		Assert.assertTrue("Circuit implementation should pass through switch s4",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_4_NAME));
+		Assert.assertTrue("Circuit implementation should pass through switch s2",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_2_NAME));
+		Assert.assertTrue("Circuit implementation should pass through switch s1",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_1_NAME));
+		Assert.assertFalse("Circuit implementation should not pass through switch s3",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_3_NAME));
 
 		// 4) Check flows of switches
-		// Get flow in switches s5
-		IResource switchResource = getSwitchResourceFromName(generatedCircuitImplementation.get(0).getDeviceId());
-		IOpenflowForwardingCapability ofCapab =
-				(IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-		List<FloodlightOFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
-		Assert.assertNotNull("Switch s5 should contain forwarding rules.", switchFlows);
-		Assert.assertEquals("Switch s5 should contain a forwarding rule.", 1, switchFlows.size());
+		for (NetworkConnectionImplementationId netConnImpl : generatedCircuitImplementation)
+		{
+			IResource switchResource = getSwitchResourceFromName(netConnImpl.getDeviceId().split(":")[1]);
+			IOpenflowForwardingCapability ofCapab =
+					(IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+			List<FloodlightOFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
 
-		FloodlightOFFlow switchFlow = switchFlows.get(0);
-		Assert.assertEquals("Id of the Forwarding Rule should match the circuit implementation one.", generatedCircuitImplementation.get(0)
-				.getCircuitId(), switchFlow.getName());
-		Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
-		Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
-		Assert.assertEquals("2", switchFlow.getActions().get(0).getValue());
+			// Get flow in switches s5
+			if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_5_NAME)) {
+				Assert.assertNotNull("Switch s5 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s5 should contain a forwarding rule.", 1, switchFlows.size());
 
-		// Get flow in switches s4
-		switchResource = getSwitchResourceFromName(generatedCircuitImplementation.get(1).getDeviceId());
-		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-		switchFlows = ofCapab.getOpenflowForwardingRules();
-		Assert.assertNotNull("Switch s4 should contain forwarding rules.", switchFlows);
-		Assert.assertEquals("Switch s4 should contain a forwarding rule.", 1, switchFlows.size());
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("2", switchFlow.getActions().get(0).getValue());
+			}
+			// Get flow in switches s4
+			else if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_4_NAME)) {
+				Assert.assertNotNull("Switch s4 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s4 should contain a forwarding rule.", 1, switchFlows.size());
 
-		switchFlow = switchFlows.get(0);
-		Assert.assertEquals("Id of the Forwarding Rule should match the circuit implementation one.", generatedCircuitImplementation.get(1)
-				.getCircuitId(), switchFlow.getName());
-		Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
-		Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
-		Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
+			}
+			// Get flow in switches s1
+			else if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_1_NAME)) {
+				Assert.assertNotNull("Switch s1 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s1 should contain a forwarding rule.", 1, switchFlows.size());
 
-		// Get flow in switches s1
-		switchResource = getSwitchResourceFromName(generatedCircuitImplementation.get(2).getDeviceId());
-		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-		switchFlows = ofCapab.getOpenflowForwardingRules();
-		Assert.assertNotNull("Switch s1 should contain forwarding rules.", switchFlows);
-		Assert.assertEquals("Switch s1 should contain a forwarding rule.", 1, switchFlows.size());
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
 
-		switchFlow = switchFlows.get(0);
-		Assert.assertEquals("Id of the Forwarding Rule should match the circuit implementation one.", generatedCircuitImplementation.get(1)
-				.getCircuitId(), switchFlow.getName());
-		Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
-		Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
-		Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
+			}
+			// Get flow in switch s2
+			else if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_2_NAME)) {
+				Assert.assertNotNull("Switch s2 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s2 should contain a forwarding rule.", 1, switchFlows.size());
 
-		// Get flow in switche s4
-		switchResource = getSwitchResourceFromName(generatedCircuitImplementation.get(1).getDeviceId());
-		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-		switchFlows = ofCapab.getOpenflowForwardingRules();
-		Assert.assertNotNull("Switch s4 should contain forwarding rules.", switchFlows);
-		Assert.assertEquals("Switch s4 should contain a forwarding rule.", 1, switchFlows.size());
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("1", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("3", switchFlow.getActions().get(0).getValue());
+			}
+			// Get flow in switch s3
+			else
+				Assert.assertEquals("Switch s3 should not contain forwarding rules.", 0, switchFlows.size());
 
-		switchFlow = switchFlows.get(0);
-		Assert.assertEquals("Id of the Forwarding Rule should match the circuit implementation one.", generatedCircuitImplementation.get(1)
-				.getCircuitId(), switchFlow.getName());
-		Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
-		Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
-		Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
-
-		// Get flow in switch s3
-		switchResource = getSwitchResourceFromName(SWITCH_3_NAME);
-		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-		switchFlows = ofCapab.getOpenflowForwardingRules();
-		Assert.assertEquals("Switch s4 should not contain forwarding rules.", 0, switchFlows.size());
-
+		}
 		// 5) DEALLOCATE FLOW
 
 		provisioner.deallocateFlow(circuitId);
@@ -382,9 +381,10 @@ public class NCLProvisionerTest {
 		Assert.assertEquals("There should be not allocated circuits implementations in the network", 0, sdnNetModel.getCircuitImplementation().size());
 
 		// Get flow in switches
-		switchResource = getSwitchResourceFromName(SWITCH_5_NAME);
-		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-		switchFlows = ofCapab.getOpenflowForwardingRules();
+		IResource switchResource = getSwitchResourceFromName(SWITCH_5_NAME);
+		IOpenflowForwardingCapability ofCapab = (IOpenflowForwardingCapability) switchResource
+				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+		List<FloodlightOFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
 		Assert.assertEquals("Switch s5 should not contain forwarding rules.", 0, switchFlows.size());
 
 		switchResource = getSwitchResourceFromName(SWITCH_4_NAME);
