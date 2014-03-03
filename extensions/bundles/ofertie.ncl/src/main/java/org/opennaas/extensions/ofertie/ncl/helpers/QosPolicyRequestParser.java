@@ -76,6 +76,9 @@ public class QosPolicyRequestParser {
 
 		QoSPolicy qosToReturn = new QoSPolicy();
 
+		if (qosPolicy == null)
+			return null;
+
 		if (qosPolicy.getJitter() != null) {
 			if (StringUtils.isEmpty(qosPolicy.getJitter().getMax()) || StringUtils.isEmpty(qosPolicy.getJitter().getMin()))
 				throw new ProvisionerException("You didin't specify a valid Jitter value.");

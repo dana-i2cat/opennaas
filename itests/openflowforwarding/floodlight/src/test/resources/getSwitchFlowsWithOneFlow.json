@@ -23,15 +23,14 @@
             "dataLayerVirtualLan":-1,
             "dataLayerVirtualLanPriorityCodePoint":0,
             "inputPort":1,
-            "networkDestination":"0.0.0.0",
+            "networkDestination":"192.168.1.2",
             "networkDestinationMaskLen":0,
             "networkProtocol":0,
-            "networkSource":"0.0.0.0",
+            "networkSource":"192.168.1.1",
             "networkSourceMaskLen":0,
             "networkTypeOfService":0,
             "transportDestination":0,
-            "transportSource":0,
-            "wildcards":4194302
+            "transportSource":0
          },
          "command":0,
          "outPort":-1,

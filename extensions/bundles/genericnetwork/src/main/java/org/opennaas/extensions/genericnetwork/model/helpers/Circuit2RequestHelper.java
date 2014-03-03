@@ -111,7 +111,8 @@ public class Circuit2RequestHelper {
 		FloodlightOFFlow flow = new FloodlightOFFlow();
 		flow.setName(generateRandomFlowId());
 		flow.setActive(true);
-		flow.setMatch(match);
+		FloodlightOFMatch newMatch = new FloodlightOFMatch(match);
+		flow.setMatch(newMatch);
 		flow.setPriority(DEFAULT_FLOW_PRIORITY);
 		flow.getMatch().setIngressPort(internalSourcePortId);
 
