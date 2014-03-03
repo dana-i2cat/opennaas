@@ -46,15 +46,19 @@ import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
  */
 public class CircuitAggregationCapability extends AbstractCapability implements ICircuitAggregationCapability {
 
-	public static final String	CAPABILITY_TYPE	= "circuitaggregation";
+	public static final String	CAPABILITY_TYPE				= "circuitaggregation";
 
-	private Log					log				= LogFactory.getLog(CircuitAggregationCapability.class);
+	private Log					log							= LogFactory.getLog(CircuitAggregationCapability.class);
 
-	private String				resourceId		= "";
+	private String				resourceId					= "";
+
+	public static final String	USE_AGGREGATION_PROPERTY	= "enabled";
+	private final boolean		useAggregation;
 
 	public CircuitAggregationCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
+		this.useAggregation = Boolean.parseBoolean(this.getCapabilityDescriptor().getProperty(USE_AGGREGATION_PROPERTY).getValue());
 		log.debug("Built new Circuit Aggregation Capability");
 	}
 
@@ -87,23 +91,28 @@ public class CircuitAggregationCapability extends AbstractCapability implements 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Circuit> aggregateCircuits(Set<Circuit> notAggregated) throws CapabilityException {
+		// is Circuit Aggregation enabled?
+		if (useAggregation) {
+			IAction action = createActionAndCheckParams(CircuitAggregationActionSet.CALCULATE_AGGREGATED_CIRCUITS, notAggregated);
+			ActionResponse response = executeAction(action);
 
-		IAction action = createActionAndCheckParams(CircuitAggregationActionSet.CALCULATE_AGGREGATED_CIRCUITS, notAggregated);
-		ActionResponse response = executeAction(action);
+			if (!response.getStatus().equals(ActionResponse.STATUS.OK))
+				throw new ActionException(response.toString());
 
-		if (!response.getStatus().equals(ActionResponse.STATUS.OK))
-			throw new ActionException(response.toString());
-
-		if (!(response.getResult() instanceof Set<?>))
-			throw new ActionException("Invalid return type in action " + CircuitAggregationActionSet.CALCULATE_AGGREGATED_CIRCUITS);
-
-		for (Object obj : (Set<?>) response.getResult()) {
-			if (!(obj instanceof Circuit)) {
+			if (!(response.getResult() instanceof Set<?>))
 				throw new ActionException("Invalid return type in action " + CircuitAggregationActionSet.CALCULATE_AGGREGATED_CIRCUITS);
+
+			for (Object obj : (Set<?>) response.getResult()) {
+				if (!(obj instanceof Circuit)) {
+					throw new ActionException("Invalid return type in action " + CircuitAggregationActionSet.CALCULATE_AGGREGATED_CIRCUITS);
+				}
 			}
+
+			return (Set<Circuit>) response.getResult();
 		}
 
-		return (Set<Circuit>) response.getResult();
+		// return exactly same circuits if Circuit Aggregation is not enabled
+		return notAggregated;
 	}
 
 	private ActionResponse executeAction(IAction action) throws CapabilityException {
