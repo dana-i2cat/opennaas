@@ -55,12 +55,16 @@ public class GetNetworkStatisticsAction extends Action {
 		GenericNetworkModel networkModel = (GenericNetworkModel) getModelToUpdate();
 
 		NetworkStatistics netStats = new NetworkStatistics();
-		for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
-			try {
-				SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
-				netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);
-			} catch (Exception e) {
-				log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
+		if (networkModel.getTopology() == null) {
+			log.warn("Failed to obtain network statistics. Topology is not loaded yet.");
+		} else {
+			for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
+				try {
+					SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
+					netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);
+				} catch (Exception e) {
+					log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
+				}
 			}
 		}
 
