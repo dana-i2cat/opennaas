@@ -81,7 +81,6 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.itests.helpers.InitializerTestHelper;
-import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -223,7 +222,7 @@ public class NCLProvisionerTest {
 				opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-ofertie-ncl", "itests-helpers"),
-				OpennaasExamOptions.openDebugSocket(),
+				// OpennaasExamOptions.openDebugSocket(),
 				noConsole(),
 				keepRuntimeFolder());
 	}
