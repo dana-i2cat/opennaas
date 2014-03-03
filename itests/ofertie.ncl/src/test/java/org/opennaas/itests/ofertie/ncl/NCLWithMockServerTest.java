@@ -61,6 +61,7 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.genericnetwork.actionsets.internal.circuitprovisioning.CircuitProvisioningActionsetImplementation;
+import org.opennaas.extensions.genericnetwork.capability.circuitaggregation.CircuitAggregationCapability;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.CircuitProvisioningCapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
 import org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapability;
@@ -100,63 +101,65 @@ import org.osgi.framework.BundleContext;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class NCLWithMockServerTest extends MockHTTPServerTest {
 
-	private static final String			ROUTE_FILES_URI					= "/route5switches.xml";
-	private static final String			ROUTES_MAPPING_URI				= "/mapping5switches.xml";
-	private static final String			TOPOLOGY_FILE_URI				= "/topologies/topology5switches.xml";
+	private static final String			ROUTE_FILES_URI						= "/route5switches.xml";
+	private static final String			ROUTES_MAPPING_URI					= "/mapping5switches.xml";
+	private static final String			TOPOLOGY_FILE_URI					= "/topologies/topology5switches.xml";
 
 	// //// SWITCHES //// //
-	private static final String			SWITCH_1_ID						= "00:00:00:00:00:00:00:01";
-	private static final String			SWITCH_2_ID						= "00:00:00:00:00:00:00:02";
-	private static final String			SWITCH_3_ID						= "00:00:00:00:00:00:00:03";
-	private static final String			SWITCH_4_ID						= "00:00:00:00:00:00:00:04";
-	private static final String			SWITCH_5_ID						= "00:00:00:00:00:00:00:05";
-	private final static String			SWITCH_1_NAME					= "s1";
-	private final static String			SWITCH_2_NAME					= "s2";
-	private final static String			SWITCH_3_NAME					= "s3";
-	private final static String			SWITCH_4_NAME					= "s4";
-	private final static String			SWITCH_5_NAME					= "s5";
+	private static final String			SWITCH_1_ID							= "00:00:00:00:00:00:00:01";
+	private static final String			SWITCH_2_ID							= "00:00:00:00:00:00:00:02";
+	private static final String			SWITCH_3_ID							= "00:00:00:00:00:00:00:03";
+	private static final String			SWITCH_4_ID							= "00:00:00:00:00:00:00:04";
+	private static final String			SWITCH_5_ID							= "00:00:00:00:00:00:00:05";
+	private final static String			SWITCH_1_NAME						= "s1";
+	private final static String			SWITCH_2_NAME						= "s2";
+	private final static String			SWITCH_3_NAME						= "s3";
+	private final static String			SWITCH_4_NAME						= "s4";
+	private final static String			SWITCH_5_NAME						= "s5";
 	private IResource					switchResource1;
 	private IResource					switchResource2;
 	private IResource					switchResource3;
 	private IResource					switchResource4;
 	private IResource					switchResource5;
-	private static final String			SWITCH1_FORWARDING_CONTEXT		= "/opennaas/openflowswitch/s1/offorwarding";
-	private static final String			SWITCH2_FORWARDING_CONTEXT		= "/opennaas/openflowswitch/s2/offorwarding";
-	private static final String			SWITCH3_FORWARDING_CONTEXT		= "/opennaas/openflowswitch/s3/offorwarding";
-	private static final String			SWITCH4_FORWARDING_CONTEXT		= "/opennaas/openflowswitch/s4/offorwarding";
-	private static final String			SWITCH5_FORWARDING_CONTEXT		= "/opennaas/openflowswitch/s5/offorwarding";
-	private static final String			ACTIONSET_NAME					= "floodlight";
-	private static final String			ACTIONSET_VERSION				= "0.90";
-	private static final String			OFSWITCH_RESOURCE_TYPE			= "openflowswitch";
-	private static final String			SWITCH_ID_NAME					= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
-	private static final String			FLOODLIGHT_PROTOCOL				= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
+	private static final String			SWITCH1_FORWARDING_CONTEXT			= "/opennaas/openflowswitch/s1/offorwarding";
+	private static final String			SWITCH2_FORWARDING_CONTEXT			= "/opennaas/openflowswitch/s2/offorwarding";
+	private static final String			SWITCH3_FORWARDING_CONTEXT			= "/opennaas/openflowswitch/s3/offorwarding";
+	private static final String			SWITCH4_FORWARDING_CONTEXT			= "/opennaas/openflowswitch/s4/offorwarding";
+	private static final String			SWITCH5_FORWARDING_CONTEXT			= "/opennaas/openflowswitch/s5/offorwarding";
+	private static final String			ACTIONSET_NAME						= "floodlight";
+	private static final String			ACTIONSET_VERSION					= "0.90";
+	private static final String			OFSWITCH_RESOURCE_TYPE				= "openflowswitch";
+	private static final String			SWITCH_ID_NAME						= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
+	private static final String			FLOODLIGHT_PROTOCOL					= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
 
 	// //// SDN NETWORK //// //
 	private IResource					sdnNetResource;
-	private static final String			SDN_RESOURCE_NAME				= "sdnNetwork";
+	private static final String			SDN_RESOURCE_NAME					= "sdnNetwork";
 
-	private static final String			GENERICNET_RESOURCE_TYPE		= "genericnetwork";
+	private static final String			GENERICNET_RESOURCE_TYPE			= "genericnetwork";
 
-	private static final String			INTERNAL_ACTIONSET_NAME			= "internal";
-	private static final String			CAPABILITY_VERSION				= "1.0.0";
-	private static final String			PATHFINDING_CAPABILITY_TYPE		= PathFindingCapability.CAPABILITY_TYPE;
-	private static final String			NCLPROVISIONER_CAPABILITY_TYPE	= NCLProvisionerCapability.CAPABILITY_TYPE;
-	private static final String			NETTOPOLOGY_CAPABILITY_TYPE		= NetTopologyCapability.CAPABILITY_TYPE;
+	private static final String			INTERNAL_ACTIONSET_NAME				= "internal";
+	private static final String			CAPABILITY_VERSION					= "1.0.0";
+
+	private static final String			CIRCUIT_AGGREGATION_CAPABILITY_TYPE	= CircuitAggregationCapability.CAPABILITY_TYPE;
+	private static final String			PATHFINDING_CAPABILITY_TYPE			= PathFindingCapability.CAPABILITY_TYPE;
+	private static final String			NCLPROVISIONER_CAPABILITY_TYPE		= NCLProvisionerCapability.CAPABILITY_TYPE;
+	private static final String			NETTOPOLOGY_CAPABILITY_TYPE			= NetTopologyCapability.CAPABILITY_TYPE;
 
 	// //// SERVER INFO //// //
-	private final static String			SERVER_URL						= "http://localhost:8080";
-	private final static String			SERVLET_CONTEXT_URL				= "/wm/staticflowentrypusher";
-	private final static String			FLOODLIGHT_ADD_FLOW_URL			= SERVLET_CONTEXT_URL + "/json";
-	private final static String			GET_FLOWS_URL_SWITCH1			= SERVLET_CONTEXT_URL + "/list/" + SWITCH_1_ID + "/json";
-	private final static String			GET_FLOWS_URL_SWITCH2			= SERVLET_CONTEXT_URL + "/list/" + SWITCH_2_ID + "/json";
-	private final static String			GET_FLOWS_URL_SWITCH4			= SERVLET_CONTEXT_URL + "/list/" + SWITCH_4_ID + "/json";
-	private final static String			GET_FLOWS_URL_SWITCH5			= SERVLET_CONTEXT_URL + "/list/" + SWITCH_5_ID + "/json";
+	private final static String			SERVER_URL							= "http://localhost:8080";
+	private final static String			SERVLET_CONTEXT_URL					= "/wm/staticflowentrypusher";
+	private final static String			FLOODLIGHT_ADD_FLOW_URL				= SERVLET_CONTEXT_URL + "/json";
+	private final static String			GET_FLOWS_URL_SWITCH1				= SERVLET_CONTEXT_URL + "/list/" + SWITCH_1_ID + "/json";
+	private final static String			GET_FLOWS_URL_SWITCH2				= SERVLET_CONTEXT_URL + "/list/" + SWITCH_2_ID + "/json";
+	private final static String			GET_FLOWS_URL_SWITCH4				= SERVLET_CONTEXT_URL + "/list/" + SWITCH_4_ID + "/json";
+	private final static String			GET_FLOWS_URL_SWITCH5				= SERVLET_CONTEXT_URL + "/list/" + SWITCH_5_ID + "/json";
 
 	// /// LISTENERS CONTEXTS /// //
-	private static final String			PATHFINDING_CONTEXT				= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + PATHFINDING_CAPABILITY_TYPE;
-	private static final String			CIRCUIT_PROV_CONTEXT			= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + CircuitProvisioningCapability.CAPABILITY_TYPE;
-	private static final String			NCLPROV_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NCLPROVISIONER_CAPABILITY_TYPE;
-	private static final String			TOPOLOGY_CONTEXT				= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NETTOPOLOGY_CAPABILITY_TYPE;
+	private static final String			PATHFINDING_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + PATHFINDING_CAPABILITY_TYPE;
+	private static final String			CIRCUIT_PROV_CONTEXT				= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + CircuitProvisioningCapability.CAPABILITY_TYPE;
+	private static final String			NCLPROV_CONTEXT						= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NCLPROVISIONER_CAPABILITY_TYPE;
+	private static final String			TOPOLOGY_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NETTOPOLOGY_CAPABILITY_TYPE;
 
 	// /// ENDPOINT LISTENERS //// //
 	private WSEndpointListenerHandler	pathFinderListener;
@@ -170,16 +173,16 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 	private WSEndpointListenerHandler	ofswitch5Listener;
 
 	// //// LOG //// //
-	private final static Log			log								= LogFactory.getLog(NCLWithMockServerTest.class);
+	private final static Log			log									= LogFactory.getLog(NCLWithMockServerTest.class);
 
 	// /// OTHERS //// //
-	private static final String			MOCK_URI						= "mock://user:pass@host.net:2212/mocksubsystem";
-	private final static String			FLOODLIGHT_ADD_FLOW_RESPONSE	= "Entry pushed";
+	private static final String			MOCK_URI							= "mock://user:pass@host.net:2212/mocksubsystem";
+	private final static String			FLOODLIGHT_ADD_FLOW_RESPONSE		= "Entry pushed";
 
-	private static final String			DEFAULT_FLOW_PRIORITY			= "32000";
-	private static final String			IP_ETHER_TYPE					= "0x0800";
-	private static final String			SRC_IP							= "192.168.10.10";
-	private static final String			DST_IP							= "192.168.10.11";
+	private static final String			DEFAULT_FLOW_PRIORITY				= "32000";
+	private static final String			IP_ETHER_TYPE						= "0x0800";
+	private static final String			SRC_IP								= "192.168.10.10";
+	private static final String			DST_IP								= "192.168.10.11";
 	@Inject
 	private IResourceManager			resourceManager;
 
@@ -506,11 +509,13 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 	private void createSDNNetwork() throws ResourceException, InterruptedException, IOException {
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
+		CapabilityDescriptor circuitAggregationDescriptor = generateCircuitAggregationCapabilityDescriptor();
 		CapabilityDescriptor topologyDescriptor = generateTopologyCapabilityDescriptor();
 		CapabilityDescriptor pathFindingDescriptor = generatePathFindingCapabilityDescriptor();
 		CapabilityDescriptor circuitProvisioningDescriptor = generateCircuitProvisioningCapabilityDescriptor();
 		CapabilityDescriptor nclProvisioningDescriptor = generateNCLProvisioningCapabilityDescriptor();
 
+		lCapabilityDescriptors.add(circuitAggregationDescriptor);
 		lCapabilityDescriptors.add(pathFindingDescriptor);
 		lCapabilityDescriptors.add(topologyDescriptor);
 		lCapabilityDescriptors.add(circuitProvisioningDescriptor);
@@ -578,6 +583,21 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 		CapabilityDescriptor nclProvDescriptor = ResourceHelper.newCapabilityDescriptorWithoutActionset(NCLPROVISIONER_CAPABILITY_TYPE);
 
 		return nclProvDescriptor;
+	}
+
+	private CapabilityDescriptor generateCircuitAggregationCapabilityDescriptor() throws IOException {
+
+		CapabilityDescriptor topologyDescriptor = ResourceHelper.newCapabilityDescriptor(INTERNAL_ACTIONSET_NAME,
+				CAPABILITY_VERSION, CIRCUIT_AGGREGATION_CAPABILITY_TYPE, MOCK_URI);
+
+		CapabilityProperty useAggregation = new CapabilityProperty();
+
+		useAggregation.setName(CircuitAggregationCapability.USE_AGGREGATION_PROPERTY);
+		useAggregation.setValue("false");
+
+		topologyDescriptor.getCapabilityProperties().add(useAggregation);
+
+		return topologyDescriptor;
 	}
 
 	private CapabilityDescriptor generateTopologyCapabilityDescriptor() throws IOException {

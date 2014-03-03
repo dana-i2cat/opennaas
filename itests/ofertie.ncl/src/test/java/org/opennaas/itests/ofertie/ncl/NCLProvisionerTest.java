@@ -56,6 +56,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.genericnetwork.actionsets.internal.circuitprovisioning.CircuitProvisioningActionsetImplementation;
+import org.opennaas.extensions.genericnetwork.capability.circuitaggregation.CircuitAggregationCapability;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.CircuitProvisioningCapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
 import org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapability;
@@ -106,60 +107,62 @@ public class NCLProvisionerTest {
 
 	private Map<String, IResource>		switches;
 
-	private static final String			SWITCH_1_NAME					= "s1";
-	private static final String			SWITCH_2_NAME					= "s2";
-	private static final String			SWITCH_3_NAME					= "s3";
-	private static final String			SWITCH_4_NAME					= "s4";
-	private static final String			SWITCH_5_NAME					= "s5";
+	private static final String			SWITCH_1_NAME						= "s1";
+	private static final String			SWITCH_2_NAME						= "s2";
+	private static final String			SWITCH_3_NAME						= "s3";
+	private static final String			SWITCH_4_NAME						= "s4";
+	private static final String			SWITCH_5_NAME						= "s5";
 
-	private static final String			SWITCH_1_ID						= "00:00:00:00:00:00:00:01";
-	private static final String			SWITCH_2_ID						= "00:00:00:00:00:00:00:02";
-	private static final String			SWITCH_3_ID						= "00:00:00:00:00:00:00:03";
-	private static final String			SWITCH_4_ID						= "00:00:00:00:00:00:00:04";
-	private static final String			SWITCH_5_ID						= "00:00:00:00:00:00:00:05";
+	private static final String			SWITCH_1_ID							= "00:00:00:00:00:00:00:01";
+	private static final String			SWITCH_2_ID							= "00:00:00:00:00:00:00:02";
+	private static final String			SWITCH_3_ID							= "00:00:00:00:00:00:00:03";
+	private static final String			SWITCH_4_ID							= "00:00:00:00:00:00:00:04";
+	private static final String			SWITCH_5_ID							= "00:00:00:00:00:00:00:05";
 
-	private static final String			FLOODLIGHT_ACTIONSET_NAME		= "floodlight";
-	private static final String			FLOODLIGHT_ACTIONSET_VERSION	= "0.90";
-	private static final String			FLOODLIGHT_PROTOCOL				= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
+	private static final String			FLOODLIGHT_ACTIONSET_NAME			= "floodlight";
+	private static final String			FLOODLIGHT_ACTIONSET_VERSION		= "0.90";
+	private static final String			FLOODLIGHT_PROTOCOL					= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
 
-	private static final String			OFSWITCH_RESOURCE_TYPE			= "openflowswitch";
-	private static final String			SWITCH_ID_NAME					= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
+	private static final String			OFSWITCH_RESOURCE_TYPE				= "openflowswitch";
+	private static final String			SWITCH_ID_NAME						= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
 
-	private static final String			MOCK_URI						= "mock://user:pass@host.net:2212/mocksubsystem";
+	private static final String			MOCK_URI							= "mock://user:pass@host.net:2212/mocksubsystem";
 
-	private static final String			PROTOCOL_URI					= "http://dev.ofertie.i2cat.net:8080";
-	private static final String			PATHFINDING_CAPABILITY_TYPE		= PathFindingCapability.CAPABILITY_TYPE;
-	private static final String			NETTOPOLOGY_CAPABILITY_TYPE		= NetTopologyCapability.CAPABILITY_TYPE;
-	private static final String			NCLPROVISIONER_CAPABILITY_TYPE	= NCLProvisionerCapability.CAPABILITY_TYPE;
+	private static final String			PROTOCOL_URI						= "http://dev.ofertie.i2cat.net:8080";
 
-	private static final String			INTERNAL_ACTIONSET_NAME			= "internal";
-	private static final String			CAPABILITY_VERSION				= "1.0.0";
+	private static final String			CIRCUIT_AGGREGATION_CAPABILITY_TYPE	= CircuitAggregationCapability.CAPABILITY_TYPE;
+	private static final String			PATHFINDING_CAPABILITY_TYPE			= PathFindingCapability.CAPABILITY_TYPE;
+	private static final String			NETTOPOLOGY_CAPABILITY_TYPE			= NetTopologyCapability.CAPABILITY_TYPE;
+	private static final String			NCLPROVISIONER_CAPABILITY_TYPE		= NCLProvisionerCapability.CAPABILITY_TYPE;
 
-	private static final String			SDN_RESOURCE_NAME				= "sdnNetwork";
-	private static final String			GENERICNET_RESOURCE_TYPE		= "genericnetwork";
+	private static final String			INTERNAL_ACTIONSET_NAME				= "internal";
+	private static final String			CAPABILITY_VERSION					= "1.0.0";
+
+	private static final String			SDN_RESOURCE_NAME					= "sdnNetwork";
+	private static final String			GENERICNET_RESOURCE_TYPE			= "genericnetwork";
 
 	/* FLOW REQUEST PARAMS */
-	private static final String			SRC_IP_ADDRESS					= "192.168.10.10";
-	private static final String			DST_IP_ADDRESS					= "192.168.10.11";
-	private static final int			SRC_PORT						= 0;
-	private static final int			DST_PORT						= 1;
-	private static final int			TOS								= 0;
-	private static final int			QOS_MIN_LATENCY					= 5;
-	private static final int			QOS_MAX_LATENCY					= 10;
-	private static final int			QOS_MIN_JITTER					= 2;
-	private static final int			QOS_MAX_JITTER					= 4;
-	private static final int			QOS_MIN_THROUGHPUT				= 100;
-	private static final int			QOS_MAX_THROUGHPUT				= 1000;
-	private static final int			QOS_MIN_PACKET_LOSS				= 0;
-	private static final int			QOS_MAX_PACKET_LOSS				= 1;
+	private static final String			SRC_IP_ADDRESS						= "192.168.10.10";
+	private static final String			DST_IP_ADDRESS						= "192.168.10.11";
+	private static final int			SRC_PORT							= 0;
+	private static final int			DST_PORT							= 1;
+	private static final int			TOS									= 0;
+	private static final int			QOS_MIN_LATENCY						= 5;
+	private static final int			QOS_MAX_LATENCY						= 10;
+	private static final int			QOS_MIN_JITTER						= 2;
+	private static final int			QOS_MAX_JITTER						= 4;
+	private static final int			QOS_MIN_THROUGHPUT					= 100;
+	private static final int			QOS_MAX_THROUGHPUT					= 1000;
+	private static final int			QOS_MIN_PACKET_LOSS					= 0;
+	private static final int			QOS_MAX_PACKET_LOSS					= 1;
 
-	private static final String			ROUTE_FILES_URI					= "/route5switches.xml";
-	private static final String			ROUTES_MAPPING_URI				= "/mapping5switches.xml";
-	private static final String			TOPOLOGY_FILE_URI				= "/topologies/topology5switches.xml";
+	private static final String			ROUTE_FILES_URI						= "/route5switches.xml";
+	private static final String			ROUTES_MAPPING_URI					= "/mapping5switches.xml";
+	private static final String			TOPOLOGY_FILE_URI					= "/topologies/topology5switches.xml";
 
-	private static final String			WS_URI							= "http://localhost:8888/opennaas/ofertie/ncl";
-	private static final String			WS_USERNAME						= "admin";
-	private static final String			WS_PASSWORD						= "123456";
+	private static final String			WS_URI								= "http://localhost:8888/opennaas/ofertie/ncl";
+	private static final String			WS_USERNAME							= "admin";
+	private static final String			WS_PASSWORD							= "123456";
 
 	@Inject
 	protected BundleContext				context;
@@ -176,16 +179,16 @@ public class NCLProvisionerTest {
 	private WSEndpointListenerHandler	ofswitch4Listener;
 	private WSEndpointListenerHandler	ofswitch5Listener;
 
-	private static final String			PATHFINDING_CONTEXT				= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + PATHFINDING_CAPABILITY_TYPE;
-	private static final String			CIRCUIT_PROV_CONTEXT			= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + CircuitProvisioningCapability.CAPABILITY_TYPE;
-	private static final String			NCLPROV_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NCLPROVISIONER_CAPABILITY_TYPE;
-	private static final String			TOPOLOGY_CONTEXT				= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NETTOPOLOGY_CAPABILITY_TYPE;
+	private static final String			PATHFINDING_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + PATHFINDING_CAPABILITY_TYPE;
+	private static final String			CIRCUIT_PROV_CONTEXT				= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + CircuitProvisioningCapability.CAPABILITY_TYPE;
+	private static final String			NCLPROV_CONTEXT						= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NCLPROVISIONER_CAPABILITY_TYPE;
+	private static final String			TOPOLOGY_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NETTOPOLOGY_CAPABILITY_TYPE;
 
-	private static final String			SWITCH1_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_1_NAME + "/offorwarding";
-	private static final String			SWITCH2_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_2_NAME + "/offorwarding";
-	private static final String			SWITCH3_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_3_NAME + "/offorwarding";
-	private static final String			SWITCH4_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_4_NAME + "/offorwarding";
-	private static final String			SWITCH5_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_5_NAME + "/offorwarding";
+	private static final String			SWITCH1_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_1_NAME + "/offorwarding";
+	private static final String			SWITCH2_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_2_NAME + "/offorwarding";
+	private static final String			SWITCH3_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_3_NAME + "/offorwarding";
+	private static final String			SWITCH4_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_4_NAME + "/offorwarding";
+	private static final String			SWITCH5_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_5_NAME + "/offorwarding";
 
 	/**
 	 * Make sure blueprint for specified bundle has finished its initialization
@@ -493,11 +496,13 @@ public class NCLProvisionerTest {
 	private void createSDNNetwork() throws ResourceException, InterruptedException, IOException {
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
+		CapabilityDescriptor circuitAggregationDescriptor = generateCircuitAggregationCapabilityDescriptor();
 		CapabilityDescriptor topologyDescriptor = generateTopologyCapabilityDescriptor();
 		CapabilityDescriptor pathFindingDescriptor = generatePathFindingCapabilityDescriptor();
 		CapabilityDescriptor circuitProvisioningDescriptor = generateCircuitProvisioningCapabilityDescriptor();
 		CapabilityDescriptor nclProvisioningDescriptor = generateNCLProvisioningCapabilityDescriptor();
 
+		lCapabilityDescriptors.add(circuitAggregationDescriptor);
 		lCapabilityDescriptors.add(pathFindingDescriptor);
 		lCapabilityDescriptors.add(topologyDescriptor);
 		lCapabilityDescriptors.add(circuitProvisioningDescriptor);
@@ -531,6 +536,21 @@ public class NCLProvisionerTest {
 		CapabilityDescriptor nclProvDescriptor = ResourceHelper.newCapabilityDescriptorWithoutActionset(NCLPROVISIONER_CAPABILITY_TYPE);
 
 		return nclProvDescriptor;
+	}
+
+	private CapabilityDescriptor generateCircuitAggregationCapabilityDescriptor() throws IOException {
+
+		CapabilityDescriptor topologyDescriptor = ResourceHelper.newCapabilityDescriptor(INTERNAL_ACTIONSET_NAME,
+				CAPABILITY_VERSION, CIRCUIT_AGGREGATION_CAPABILITY_TYPE, MOCK_URI);
+
+		CapabilityProperty useAggregation = new CapabilityProperty();
+
+		useAggregation.setName(CircuitAggregationCapability.USE_AGGREGATION_PROPERTY);
+		useAggregation.setValue("false");
+
+		topologyDescriptor.getCapabilityProperties().add(useAggregation);
+
+		return topologyDescriptor;
 	}
 
 	private CapabilityDescriptor generateTopologyCapabilityDescriptor() throws IOException {
