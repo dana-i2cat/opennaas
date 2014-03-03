@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.driver.internal.actionsets.test;
+package org.opennaas.extensions.genericnetwork.test.driver.internal.actionsets;
 
 /*
  * #%L
