@@ -54,7 +54,10 @@ public class GetPortStatisticsAction extends FloodlightAction {
 			Map<Integer, PortStatistics> portStatistics = switchStatisticsMap.get(switchId);
 			Map<String, PortStatistics> realPortStatistics = new HashMap<String, PortStatistics>();
 			for (Integer i : portStatistics.keySet()) {
-				realPortStatistics.put(i.toString(), portStatistics.get(i));
+				// discard ports with negative id
+				// they have a special meaning in floodlight, but not in opennaas.
+				if (i >= 0)
+					realPortStatistics.put(i.toString(), portStatistics.get(i));
 			}
 
 			// create action response with an object response
