@@ -43,9 +43,9 @@ import org.opennaas.extensions.genericnetwork.model.helpers.GenericNetworkModelU
 public class CalculateAggregatedCircuitsActionTest {
 
 	public static final String	SRC_BASE_IP24_1	= "192.168.1.";
-	public static final String	DST_BASE_IP24_1	= "192.168.1.";
-	public static final String	SRC_BASE_IP24_2	= "192.168.2.";
-	public static final String	DST_BASE_IP24_2	= "192.168.2.";
+	public static final String	DST_BASE_IP24_1	= "192.168.2.";
+	public static final String	SRC_BASE_IP24_2	= "192.168.3.";
+	public static final String	DST_BASE_IP24_2	= "192.168.4.";
 	public static final String	TOS_1			= "4";
 	public static final String	TOS_2			= "8";
 
@@ -81,16 +81,16 @@ public class CalculateAggregatedCircuitsActionTest {
 		Circuit aggregatedWithIp2Tos1 = null;
 		Circuit aggregatedWithIp2Tos2 = null;
 		for (Circuit c : aggregated) {
-			if (c.getTrafficFilter().getSrcIp().equals(SRC_BASE_IP24_1 + "0")
-					&& c.getTrafficFilter().getSrcIp().equals(DST_BASE_IP24_1 + "0")
+			if (c.getTrafficFilter().getSrcIp().equals(SRC_BASE_IP24_1 + "0/24")
+					&& c.getTrafficFilter().getDstIp().equals(DST_BASE_IP24_1 + "0/24")
 					&& c.getTrafficFilter().getTosBits().equals(TOS_1)) {
 				aggregatedWithIp1Tos1 = c;
-			} else if (c.getTrafficFilter().getSrcIp().equals(SRC_BASE_IP24_2 + "0")
-					&& c.getTrafficFilter().getSrcIp().equals(DST_BASE_IP24_2 + "0")
+			} else if (c.getTrafficFilter().getSrcIp().equals(SRC_BASE_IP24_2 + "0/24")
+					&& c.getTrafficFilter().getDstIp().equals(DST_BASE_IP24_2 + "0/24")
 					&& c.getTrafficFilter().getTosBits().equals(TOS_1)) {
 				aggregatedWithIp2Tos1 = c;
-			} else if (c.getTrafficFilter().getSrcIp().equals(SRC_BASE_IP24_2 + "0")
-					&& c.getTrafficFilter().getSrcIp().equals(DST_BASE_IP24_2 + "0")
+			} else if (c.getTrafficFilter().getSrcIp().equals(SRC_BASE_IP24_2 + "0/24")
+					&& c.getTrafficFilter().getDstIp().equals(DST_BASE_IP24_2 + "0/24")
 					&& c.getTrafficFilter().getTosBits().equals(TOS_2)) {
 				aggregatedWithIp2Tos2 = c;
 			}
@@ -112,7 +112,7 @@ public class CalculateAggregatedCircuitsActionTest {
 		Circuit circuit = GenericNetworkModelUtils.generateSampleCircuit();
 		circuit.setCircuitId("ORIGINAL");
 		circuit.getTrafficFilter().setSrcIp(SRC_BASE_IP24_1 + String.valueOf(255));
-		circuit.getTrafficFilter().setSrcIp(DST_BASE_IP24_1 + String.valueOf(255));
+		circuit.getTrafficFilter().setDstIp(DST_BASE_IP24_1 + String.valueOf(255));
 		circuit.getTrafficFilter().setTosBits(TOS_1);
 
 		Circuit circuit1;
@@ -122,7 +122,7 @@ public class CalculateAggregatedCircuitsActionTest {
 			circuit1 = (Circuit) SerializationUtils.clone(circuit);
 			circuit1.setCircuitId(String.valueOf(i));
 			circuit1.getTrafficFilter().setSrcIp(SRC_BASE_IP24_1 + String.valueOf(i));
-			circuit1.getTrafficFilter().setSrcIp(DST_BASE_IP24_1 + String.valueOf(i + 100));
+			circuit1.getTrafficFilter().setDstIp(DST_BASE_IP24_1 + String.valueOf(i + 100));
 			circuits.add(circuit1);
 		}
 
@@ -131,7 +131,7 @@ public class CalculateAggregatedCircuitsActionTest {
 			circuit1 = (Circuit) SerializationUtils.clone(circuit);
 			circuit1.setCircuitId(String.valueOf(i));
 			circuit1.getTrafficFilter().setSrcIp(SRC_BASE_IP24_2 + String.valueOf(i));
-			circuit1.getTrafficFilter().setSrcIp(DST_BASE_IP24_2 + String.valueOf(i + 100));
+			circuit1.getTrafficFilter().setDstIp(DST_BASE_IP24_2 + String.valueOf(i + 100));
 			circuits.add(circuit1);
 		}
 
@@ -141,7 +141,7 @@ public class CalculateAggregatedCircuitsActionTest {
 			circuit1.setCircuitId(String.valueOf(i + 1000));
 			circuit.getTrafficFilter().setTosBits(TOS_2);
 			circuit1.getTrafficFilter().setSrcIp(SRC_BASE_IP24_2 + String.valueOf(i));
-			circuit1.getTrafficFilter().setSrcIp(DST_BASE_IP24_2 + String.valueOf(i + 100));
+			circuit1.getTrafficFilter().setDstIp(DST_BASE_IP24_2 + String.valueOf(i + 100));
 			circuits.add(circuit1);
 		}
 

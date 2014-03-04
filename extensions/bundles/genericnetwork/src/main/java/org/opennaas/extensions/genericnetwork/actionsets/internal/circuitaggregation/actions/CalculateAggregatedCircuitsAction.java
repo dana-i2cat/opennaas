@@ -111,17 +111,17 @@ public class CalculateAggregatedCircuitsAction extends Action {
 		try {
 			aggregated = (Circuit) SerializationUtils.clone(candidate);
 			aggregated.setCircuitId("TO_BE_DEFINED");
-			aggregated.getTrafficFilter().setSrcIp(getIP24(candidate.getTrafficFilter().getSrcIp()));
-			aggregated.getTrafficFilter().setDstIp(getIP24(candidate.getTrafficFilter().getDstIp()));
+			aggregated.getTrafficFilter().setSrcIp(getIP24WithShortMask(candidate.getTrafficFilter().getSrcIp()));
+			aggregated.getTrafficFilter().setDstIp(getIP24WithShortMask(candidate.getTrafficFilter().getDstIp()));
 		} catch (Exception e) {
 			aggregated = candidate;
 		}
 		return aggregated;
 	}
 
-	private String getIP24(String ipAddress) {
+	private String getIP24WithShortMask(String ipAddress) {
 		SubnetUtils utils = new SubnetUtils(ipAddress, "255.255.255.0");
-		return utils.getInfo().getNetworkAddress();
+		return utils.getInfo().getNetworkAddress() + "/24";
 	}
 
 	private static String generateRandomCircuitId() {
