@@ -131,12 +131,10 @@
 		<module>openflowswitch.driver.floodlight</module>
 		<module>openflowswitch.driver.features</module>	
 		
-		<!-- OFNetwork -->
-		<module>ofnetwork</module>
-		<module>ofnetwork.features</module>
+		<!-- GenericNetwork -->
+		<module>genericnetwork</module>
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
-		<module>ofertie.features</module>
 	</modules>
 </project>
