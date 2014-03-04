@@ -114,7 +114,9 @@ public class GetNetworkStatisticsAction extends Action {
 		SwitchPortStatistics netSwitchStatistics = new SwitchPortStatistics();
 		netSwitchStatistics.setStatistics(new HashMap<String, PortStatistics>());
 
-		String deviceId = networkModel.getDeviceResourceMap().get(networkElement.getId());
+		// Assuming networkElement.getId() is the device id.
+		// String deviceId = networkModel.getDeviceResourceMap().get(networkElement.getId());
+		String deviceId = networkElement.getId();
 
 		for (String portId : switchStatistics.getStatistics().keySet()) {
 
