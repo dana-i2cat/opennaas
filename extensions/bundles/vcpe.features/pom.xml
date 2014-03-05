@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
-		<version>0.27-SNAPSHOT</version>
+		<version>0.27</version>
 	</parent>
 	<artifactId>org.opennaas.extensions.vcpe.features</artifactId>
 	<packaging>bundle</packaging>
