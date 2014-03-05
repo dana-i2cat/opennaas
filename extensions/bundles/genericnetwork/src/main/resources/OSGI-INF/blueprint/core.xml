@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="bootstrapperFactory" class="org.opennaas.extensions.genericnetwork.repository.GenericNetworkBootstrapperFactory"/>
+	<!-- Workaround for  https://issues.apache.org/jira/browse/ARIES-796:
+	Resolve and inject entityManagerFactory and get the entityManager using code in ResourceDescriptorRepository. 
+	Obtained entityManager is not container managed, then. 
+	Given unit MUST already be registered as an OSGi service for this to work. -->
+	<reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=ResourceCore)"/>
+	<bean id="resourceDescriptorRepository"
+	class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+	init-method="initializeEntityManager" destroy-method="close">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="genericNetworkRepository" class="org.opennaas.extensions.genericnetwork.repository.GenericNetworkRepository"
+          init-method="init">
+		<argument value="genericnetwork"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
+		<property name="resourceBootstrapperFactory" ref="bootstrapperFactory"/>
+	</bean>
+	
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="genericNetworkRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+	
+	<service ref="genericNetworkRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="genericnetwork"/>
+			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     Openflow Provisioning Network Capability 
+	     ########################################
+	 -->
+	<bean id="openflowProvisioningNetworkCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.ofprovision.OFProvisioningNetworkCapabilityFactory">
+		<property name="type" value="gofprovisionnet"/>
+	</bean>
+	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="openflowProvisioningNetworkCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="gofprovisionnet"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!--  Internal ActionSet  -->
+	<bean id="ofFProvisioningInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.ofprovision.OFProvisioningInternalActionsetImplementation" />
+	<service ref="ofFProvisioningInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="gofprovisionnet"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+
+	<!-- ########################################
+	     Networks statistics Capability 
+	     ########################################
+	 -->
+	<bean id="networkStatisticsCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.statistics.NetworkStatisticsCapabilityFactory">
+		<property name="type" value="gnetstatistics"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="networkStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="gnetstatistics"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!--  Internal ActionSet  -->
+	<bean id="networkStatisticsInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.statistics.NetworkStatisticsInternalActionsetImplementation" />
+	<service ref="networkStatisticsInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="gnetstatistics"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     Circuit provisioning Capability 
+	     ########################################
+	 -->
+	<bean id="circuitprovisioningCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.CircuitProvisioningCapabilityFactory">
+		<property name="type" value="circuitprovisioning"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="circuitprovisioningCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="circuitprovisioning"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!--  Internal ActionSet  -->
+	<bean id="circuitprovisioningInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.circuitprovisioning.CircuitProvisioningActionsetImplementation" />
+	<service ref="circuitprovisioningInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="circuitprovisioning"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     NetTopology Capability 
+	     ########################################
+	 -->
+	<bean id="netTopologyCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapabilityFactory">
+ 		<property name="type" value="nettopology"/>
+ 	</bean>	
+ 	<!-- Register the Service as an OSGi Service -->
+ 	<service ref="netTopologyCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+ 		<service-properties>
+ 			<!--  TODO it is necessary to use two parameters to get capability -->
+ 			<entry key="capability" value="nettopology"/>
+ 			<entry key="capability.model" value="genericnetwork"/>
+ 			<entry key="capability.version" value="1.0.0"/>
+ 		</service-properties>
+ 	</service>
+ 	
+ 	<!--  Internal ActionSet  -->
+	<bean id="nettopologyInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.nettopology.NetTopologyInternalActionSetImplementation" />
+	<service ref="nettopologyInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="nettopology"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     PathFinding Capability 
+	     ########################################
+	 -->
+	<bean id="pathFindingCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingCapabilityFactory">
+		<property name="type" value="pathfinding"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="pathFindingCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="pathfinding"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>		
+
+	<!-- PathFinding Internal ActionSet  -->
+	<bean id="pathFindingInternalActionSet" class="org.opennaas.extensions.genericnetwork.driver.internal.actionsets.PathFindingInternalActionSetImplementation"/>
+	<service ref="pathFindingInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="pathfinding"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+		<!-- ########################################
+	     NCLProvisioner Capability 
+	     ########################################
+	 -->
+	<bean id="nclProvisionerCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapabilityFactory">
+		<property name="type" value="nclprovisioner"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="nclProvisionerCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="nclprovisioner"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     NCLMonitoring Capability 
+	     ########################################
+	 -->
+	 <reference id="eventManager" interface="org.opennaas.core.events.IEventManager" />
+	 
+	 <bean id="nclMonitoringCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.nclmonitoring.NCLMonitoringCapabilityFactory">
+		<property name="type" value="nclmonitoring"/>
+		<property name="eventManager" ref="eventManager"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="nclMonitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="nclmonitoring"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     CircuitAggregation Capability 
+	     ########################################
+	 -->
+	<bean id="circuitAggregationCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.circuitaggregation.CircuitAggregationCapabilityFactory">
+		<property name="type" value="circuitaggregation"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="circuitAggregationCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="circuitaggregation"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>		
+
+	<!-- circuitAggregation Internal ActionSet  -->
+	<bean id="circuitAggregationInternalActionSet" class="org.opennaas.extensions.genericnetwork.actionsets.internal.circuitaggregation.CircuitAggregationActionsetImplementation"/>
+	<service ref="circuitAggregationInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.capability" value="circuitaggregation"/>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+</blueprint>

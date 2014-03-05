@@ -2,7 +2,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.26</version>
+		<version>0.27</version>
 	</parent>
 	<artifactId>org.opennaas.extensions.ofertie.ncl</artifactId>
 	<!-- Maven configuration -->
@@ -22,13 +22,13 @@
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.ofnetwork</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -38,6 +38,16 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-bundle-jaxrs</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<scope>test</scope>
+		</dependency>		
 	</dependencies>
 	<build>
 		<plugins>
@@ -56,10 +66,10 @@
 						<Bundle-Activator>org.opennaas.extensions.ofertie.ncl.Activator</Bundle-Activator>
 						<Import-Package>
 							org.slf4j,
-							org.opennaas.extensions.ofnetwork.repository,
 							*
 						</Import-Package>
 						<Export-Package>
+						    org.opennaas.extensions.ofertie.ncl.helpers,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.model,
@@ -125,7 +135,49 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${basedir}/target/features.xml</file>
+									<type>xml</type>
+									<classifier>features</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>

@@ -20,61 +20,68 @@ package org.opennaas.extensions.openflowswitch.model;
  * #L%
  */
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FloodlightOFMatch {
+public class FloodlightOFMatch implements Serializable {
 
-	protected String	wildcards;
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long	serialVersionUID	= -3887645282263515698L;
+
+	protected String			wildcards;
 	/**
 	 * switch port on which the packet is received. <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	ingressPort;
+	protected String			ingressPort;
 	/**
 	 * <mac address> xx:xx:xx:xx:xx:xx
 	 */
-	protected String	srcMac;
+	protected String			srcMac;
 	/**
 	 * <mac address> xx:xx:xx:xx:xx:xx
 	 */
-	protected String	dstMac;
+	protected String			dstMac;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	vlanId;
+	protected String			vlanId;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	vlanPriority;
+	protected String			vlanPriority;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	etherType;
+	protected String			etherType;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	tosBits;
+	protected String			tosBits;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	protocol;
+	protected String			protocol;
 	/**
 	 * <ip address> xx.xx.xx.xx
 	 */
-	protected String	srcIp;
+	protected String			srcIp;
 	/**
 	 * <ip address> xx.xx.xx.xx
 	 */
-	protected String	dstIp;
+	protected String			dstIp;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	srcPort;
+	protected String			srcPort;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	dstPort;
+	protected String			dstPort;
 
 	/**
 	 * Default constructor

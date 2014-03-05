@@ -25,20 +25,21 @@ import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.inject.Inject;
 
-import junit.framework.Assert;
-
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,12 +48,24 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.CapabilityProperty;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.genericnetwork.actionsets.internal.circuitprovisioning.CircuitProvisioningActionsetImplementation;
+import org.opennaas.extensions.genericnetwork.capability.circuitaggregation.CircuitAggregationCapability;
+import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.CircuitProvisioningCapability;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
+import org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapability;
+import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingCapability;
+import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingParamsMapping;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
+import org.opennaas.extensions.genericnetwork.model.driver.NetworkConnectionImplementationId;
+import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
@@ -62,9 +75,6 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
-import org.opennaas.extensions.ofnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
-import org.opennaas.extensions.ofnetwork.capability.ofprovision.OFProvisioningNetworkCapability;
-import org.opennaas.extensions.ofnetwork.model.NetOFFlow;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
@@ -97,71 +107,88 @@ public class NCLProvisionerTest {
 
 	private Map<String, IResource>		switches;
 
-	private static final String			SWITCH_1_NAME					= "s1";
-	private static final String			SWITCH_2_NAME					= "s2";
-	private static final String			SWITCH_3_NAME					= "s3";
-	private static final String			SWITCH_4_NAME					= "s4";
-	private static final String			SWITCH_5_NAME					= "s5";
+	private static final String			SWITCH_1_NAME						= "s1";
+	private static final String			SWITCH_2_NAME						= "s2";
+	private static final String			SWITCH_3_NAME						= "s3";
+	private static final String			SWITCH_4_NAME						= "s4";
+	private static final String			SWITCH_5_NAME						= "s5";
 
-	private static final String			SWITCH_1_ID						= "00:00:00:00:00:00:00:01";
-	private static final String			SWITCH_2_ID						= "00:00:00:00:00:00:00:02";
-	private static final String			SWITCH_3_ID						= "00:00:00:00:00:00:00:03";
-	private static final String			SWITCH_4_ID						= "00:00:00:00:00:00:00:04";
-	private static final String			SWITCH_5_ID						= "00:00:00:00:00:00:00:05";
+	private static final String			SWITCH_1_ID							= "00:00:00:00:00:00:00:01";
+	private static final String			SWITCH_2_ID							= "00:00:00:00:00:00:00:02";
+	private static final String			SWITCH_3_ID							= "00:00:00:00:00:00:00:03";
+	private static final String			SWITCH_4_ID							= "00:00:00:00:00:00:00:04";
+	private static final String			SWITCH_5_ID							= "00:00:00:00:00:00:00:05";
 
-	private static final String			FLOODLIGHT_ACTIONSET_NAME		= "floodlight";
-	private static final String			FLOODLIGHT_ACTIONSET_VERSION	= "0.90";
-	private static final String			FLOODLIGHT_PROTOCOL				= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
+	private static final String			FLOODLIGHT_ACTIONSET_NAME			= "floodlight";
+	private static final String			FLOODLIGHT_ACTIONSET_VERSION		= "0.90";
+	private static final String			FLOODLIGHT_PROTOCOL					= FloodlightProtocolSession.FLOODLIGHT_PROTOCOL_TYPE;
 
-	private static final String			OFSWITCH_RESOURCE_TYPE			= "openflowswitch";
-	private static final String			SWITCH_ID_NAME					= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
+	private static final String			OFSWITCH_RESOURCE_TYPE				= "openflowswitch";
+	private static final String			SWITCH_ID_NAME						= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
 
-	private static final String			CAPABILITY_URI					= "mock://user:pass@host.net:2212/mocksubsystem";
-	private static final String			RESOURCE_URI					= "mock://user:pass@host.net:2212/mocksubsystem";
-	private static final String			PROTOCOL_URI					= "http://dev.ofertie.i2cat.net:8080";
+	private static final String			MOCK_URI							= "mock://user:pass@host.net:2212/mocksubsystem";
 
-	private static final String			SDN_ACTIONSET_NAME				= "internal";
-	private static final String			SDN_ACTIONSET_VERSION			= "1.0.0";
+	private static final String			PROTOCOL_URI						= "http://dev.ofertie.i2cat.net:8080";
 
-	private static final String			SDN_RESOURCE_NAME				= "sdnNetwork";
-	private static final String			OFNETWORK_RESOURCE_TYPE			= "ofnetwork";
+	private static final String			CIRCUIT_AGGREGATION_CAPABILITY_TYPE	= CircuitAggregationCapability.CAPABILITY_TYPE;
+	private static final String			PATHFINDING_CAPABILITY_TYPE			= PathFindingCapability.CAPABILITY_TYPE;
+	private static final String			NETTOPOLOGY_CAPABILITY_TYPE			= NetTopologyCapability.CAPABILITY_TYPE;
+	private static final String			NCLPROVISIONER_CAPABILITY_TYPE		= NCLProvisionerCapability.CAPABILITY_TYPE;
+
+	private static final String			INTERNAL_ACTIONSET_NAME				= "internal";
+	private static final String			CAPABILITY_VERSION					= "1.0.0";
+
+	private static final String			SDN_RESOURCE_NAME					= "sdnNetwork";
+	private static final String			GENERICNET_RESOURCE_TYPE			= "genericnetwork";
 
 	/* FLOW REQUEST PARAMS */
-	private static final String			SRC_IP_ADDRESS					= "192.168.10.10";
-	private static final String			DST_IP_ADDRESS					= "192.168.10.11";
-	private static final int			SRC_PORT						= 0;
-	private static final int			DST_PORT						= 1;
-	private static final int			TOS								= 0;
-	private static final int			QOS_MIN_LATENCY					= 5;
-	private static final int			QOS_MAX_LATENCY					= 10;
-	private static final int			QOS_MIN_JITTER					= 2;
-	private static final int			QOS_MAX_JITTER					= 4;
-	private static final int			QOS_MIN_THROUGHPUT				= 100;
-	private static final int			QOS_MAX_THROUGHPUT				= 1000;
-	private static final int			QOS_MIN_PACKET_LOSS				= 0;
-	private static final int			QOS_MAX_PACKET_LOSS				= 1;
+	private static final String			SRC_IP_ADDRESS						= "192.168.10.10";
+	private static final String			DST_IP_ADDRESS						= "192.168.10.11";
+	private static final int			SRC_PORT							= 0;
+	private static final int			DST_PORT							= 1;
+	private static final int			TOS									= 0;
+	private static final int			QOS_MIN_LATENCY						= 5;
+	private static final int			QOS_MAX_LATENCY						= 10;
+	private static final int			QOS_MIN_JITTER						= 2;
+	private static final int			QOS_MAX_JITTER						= 4;
+	private static final int			QOS_MIN_THROUGHPUT					= 100;
+	private static final int			QOS_MAX_THROUGHPUT					= 1000;
+	private static final int			QOS_MIN_PACKET_LOSS					= 0;
+	private static final int			QOS_MAX_PACKET_LOSS					= 1;
 
-	private static final String			WS_URI							= "http://localhost:8888/opennaas/ofertie/ncl";
-	private static final String			WS_USERNAME						= "admin";
-	private static final String			WS_PASSWORD						= "123456";
+	private static final String			ROUTE_FILES_URI						= "/route5switches.xml";
+	private static final String			ROUTES_MAPPING_URI					= "/mapping5switches.xml";
+	private static final String			TOPOLOGY_FILE_URI					= "/topologies/topology5switches.xml";
+
+	private static final String			WS_URI								= "http://localhost:8888/opennaas/ofertie/ncl";
+	private static final String			WS_USERNAME							= "admin";
+	private static final String			WS_PASSWORD							= "123456";
 
 	@Inject
 	protected BundleContext				context;
 
 	// /// ENDPOINT LISTENERS //// //
-	private WSEndpointListenerHandler	sdnListener;
+	private WSEndpointListenerHandler	pathFinderListener;
+	private WSEndpointListenerHandler	topologyListener;
+	private WSEndpointListenerHandler	nclProvListener;
+	private WSEndpointListenerHandler	circuitProvListener;
+
 	private WSEndpointListenerHandler	ofswitch1Listener;
 	private WSEndpointListenerHandler	ofswitch2Listener;
 	private WSEndpointListenerHandler	ofswitch3Listener;
 	private WSEndpointListenerHandler	ofswitch4Listener;
 	private WSEndpointListenerHandler	ofswitch5Listener;
 
-	private static final String			OFNET_PROVISION_CONTEXT			= "/opennaas/" + OFNETWORK_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/ofprovisionnet";
-	private static final String			SWITCH1_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_1_NAME + "/offorwarding";
-	private static final String			SWITCH2_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_2_NAME + "/offorwarding";
-	private static final String			SWITCH3_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_3_NAME + "/offorwarding";
-	private static final String			SWITCH4_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_4_NAME + "/offorwarding";
-	private static final String			SWITCH5_FORWARDING_CONTEXT		= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_5_NAME + "/offorwarding";
+	private static final String			PATHFINDING_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + PATHFINDING_CAPABILITY_TYPE;
+	private static final String			CIRCUIT_PROV_CONTEXT				= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + CircuitProvisioningCapability.CAPABILITY_TYPE;
+	private static final String			NCLPROV_CONTEXT						= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NCLPROVISIONER_CAPABILITY_TYPE;
+	private static final String			TOPOLOGY_CONTEXT					= "/opennaas/" + GENERICNET_RESOURCE_TYPE + "/" + SDN_RESOURCE_NAME + "/" + NETTOPOLOGY_CAPABILITY_TYPE;
+
+	private static final String			SWITCH1_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_1_NAME + "/offorwarding";
+	private static final String			SWITCH2_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_2_NAME + "/offorwarding";
+	private static final String			SWITCH3_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_3_NAME + "/offorwarding";
+	private static final String			SWITCH4_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_4_NAME + "/offorwarding";
+	private static final String			SWITCH5_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_5_NAME + "/offorwarding";
 
 	/**
 	 * Make sure blueprint for specified bundle has finished its initialization
@@ -176,8 +203,8 @@ public class NCLProvisionerTest {
 	private BlueprintContainer			floodlightDriverBundleContainer;
 	@SuppressWarnings("unused")
 	@Inject
-	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofnetwork)", timeout = 50000)
-	private BlueprintContainer			ofNetworkBlueprintContainer;
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.genericnetwork)", timeout = 50000)
+	private BlueprintContainer			genericNetworkBlueprintContainer;
 	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofertie.ncl)", timeout = 50000)
@@ -196,11 +223,10 @@ public class NCLProvisionerTest {
 	public static Option[] configuration() {
 		return options(
 				opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflowswitch", "opennaas-ofnetwork", "opennaas-openflowswitch-driver-floodlight",
+				includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-ofertie-ncl", "itests-helpers"),
-				systemTimeout(1000 * 60 * 10),
-				noConsole(),
 				// OpennaasExamOptions.openDebugSocket(),
+				noConsole(),
 				keepRuntimeFolder());
 	}
 
@@ -214,12 +240,17 @@ public class NCLProvisionerTest {
 	@After
 	public void deleteResources() throws Exception {
 		resourceManager.destroyAllResources();
-		sdnListener.waitForEndpointToBeUnpublished();
+
+		pathFinderListener.waitForEndpointToBeUnpublished();
+		nclProvListener.waitForEndpointToBeUnpublished();
+		circuitProvListener.waitForEndpointToBeUnpublished();
+		topologyListener.waitForEndpointToBeUnpublished();
 		ofswitch1Listener.waitForEndpointToBeUnpublished();
 		ofswitch2Listener.waitForEndpointToBeUnpublished();
 		ofswitch3Listener.waitForEndpointToBeUnpublished();
 		ofswitch4Listener.waitForEndpointToBeUnpublished();
 		ofswitch5Listener.waitForEndpointToBeUnpublished();
+
 	}
 
 	@Test
@@ -229,76 +260,154 @@ public class NCLProvisionerTest {
 
 	@Test
 	public void wsTest() throws Exception {
-		INCLProvisioner provisionerClient = InitializerTestHelper.createRestClient(WS_URI, INCLProvisioner.class, null, WS_USERNAME, WS_PASSWORD);
+		INCLProvisioner provisionerClient = InitializerTestHelper.createRestClient(WS_URI,
+				INCLProvisioner.class, null, WS_USERNAME, WS_PASSWORD);
 		testAllocateDeallocate(provisionerClient);
 	}
 
 	public void testAllocateDeallocate(INCLProvisioner provisioner) throws Exception {
 
-		String id = provisioner.allocateFlow(qosPolicyRequest);
+		// 0) ALLOCATE FLOW
+		String circuitId = provisioner.allocateFlow(qosPolicyRequest);
 
+		// 1) check the qosPolicyRequest has been stored in the NCLProvisioner model.
 		Map<String, QosPolicyRequest> flows = provisioner.readAllocatedFlows().getQoSPolicyRequests();
-		QosPolicyRequest allocatedFlow = null;
-		for (Entry<String, QosPolicyRequest> entry : flows.entrySet()) {
-			if (entry.getKey().equals(id)) {
-				allocatedFlow = entry.getValue();
-				break;
+		Assert.assertNotNull("NCLProvisioner must contain allocated flows", flows);
+		Assert.assertEquals("NCLProvisioner must contain an allocated flow.", 1, flows.size());
+		Assert.assertTrue("NCLProvisioner must contain an allocated flow with the id it returned.", flows.keySet().contains(circuitId));
+
+		QosPolicyRequest allocatedRequest = flows.get(circuitId);
+		Assert.assertEquals("NCLProvisioner must contain the requested qosPolicyRequest", qosPolicyRequest, allocatedRequest);
+
+		// 2) check the correct circuit has been created in the network.
+		GenericNetworkModel sdnNetModel = (GenericNetworkModel) sdnNetResource.getModel();
+		Map<String, Circuit> netAllocatedCircuits = sdnNetModel.getAllocatedCircuits();
+		Assert.assertNotNull("Generic network should contain allocated circuits.", netAllocatedCircuits);
+		Assert.assertEquals("Generic network should contain an allocated circuit.", 1, netAllocatedCircuits.size());
+		Assert.assertTrue("Generic network should contain an allocated circuit with the id it returned.",
+				netAllocatedCircuits.keySet().contains(circuitId));
+
+		Circuit circuit = netAllocatedCircuits.get(circuitId);
+		QosPolicyRequest parsedRequest = QosPolicyRequestParser.fromCircuit(circuit);
+		Assert.assertEquals("Circuit stored in the generic network should be a translation of the qosPolicyRequest.", qosPolicyRequest, parsedRequest);
+		Assert.assertEquals("Circuit should contain route with id 1.", "1", circuit.getRoute().getId());
+
+		// 3) check the circuit implementation in the network
+
+		Map<String, List<NetworkConnectionImplementationId>> sdnCircuitImplementation = sdnNetModel.getCircuitImplementation();
+		Assert.assertNotNull("Generic network should contain circuit implementation.", sdnCircuitImplementation);
+		Assert.assertEquals("Generic network should contain a circuit implementation.", 1, sdnCircuitImplementation.size());
+
+		List<NetworkConnectionImplementationId> generatedCircuitImplementation = sdnCircuitImplementation.get(circuitId);
+		Assert.assertNotNull("Circuit implementation should not be null.", generatedCircuitImplementation);
+		Assert.assertEquals("Circuit implentation should consists of 4 network connections.", 4, generatedCircuitImplementation.size());
+
+		List<String> netConnectionNames = new ArrayList<String>();
+		for (NetworkConnectionImplementationId netConnImpl : generatedCircuitImplementation)
+			netConnectionNames.add(netConnImpl.getDeviceId());
+
+		Assert.assertTrue("Circuit implementation should pass through switch s5",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_5_NAME));
+		Assert.assertTrue("Circuit implementation should pass through switch s4",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_4_NAME));
+		Assert.assertTrue("Circuit implementation should pass through switch s2",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_2_NAME));
+		Assert.assertTrue("Circuit implementation should pass through switch s1",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_1_NAME));
+		Assert.assertFalse("Circuit implementation should not pass through switch s3",
+				netConnectionNames.contains(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_3_NAME));
+
+		// 4) Check flows of switches
+		for (NetworkConnectionImplementationId netConnImpl : generatedCircuitImplementation)
+		{
+			IResource switchResource = getSwitchResourceFromName(netConnImpl.getDeviceId().split(":")[1]);
+			IOpenflowForwardingCapability ofCapab =
+					(IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+			List<FloodlightOFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
+
+			// Get flow in switches s5
+			if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_5_NAME)) {
+				Assert.assertNotNull("Switch s5 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s5 should contain a forwarding rule.", 1, switchFlows.size());
+
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("2", switchFlow.getActions().get(0).getValue());
 			}
-		}
-		Assert.assertNotNull("readAllocatedFlows() must contain allocated flow", allocatedFlow);
+			// Get flow in switches s4
+			else if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_4_NAME)) {
+				Assert.assertNotNull("Switch s4 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s4 should contain a forwarding rule.", 1, switchFlows.size());
 
-		List<NetOFFlow> netFlows = provisioner.getFlowImplementation(id).getList();
-		Assert.assertNotNull("implementation must not be null", netFlows);
-		Assert.assertFalse("implementation must not be empty", netFlows.isEmpty());
-
-		// Get flows in SDN network
-		IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource
-				.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-		Set<NetOFFlow> allocatedNetFlows = sdnCapab.getAllocatedFlows();
-
-		for (NetOFFlow expected : netFlows) {
-			Assert.assertTrue("expected flows are present in the network", allocatedNetFlows.contains(expected));
-
-			// Get flow in switches
-			IResource switchResource = getSwitchResourceFromName(expected.getResourceId());
-			IOpenflowForwardingCapability s3capab = (IOpenflowForwardingCapability) switchResource
-					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-			List<FloodlightOFFlow> switchFlows = s3capab.getOpenflowForwardingRules();
-			FloodlightOFFlow switchFlow = null;
-			for (FloodlightOFFlow flow : switchFlows) {
-				if (flow.getName().equals(expected.getName())) {
-					switchFlow = flow;
-					break;
-				}
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
 			}
-			Assert.assertNotNull("switch has flow with flowId equals to expected one", switchFlow);
-		}
+			// Get flow in switches s1
+			else if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_1_NAME)) {
+				Assert.assertNotNull("Switch s1 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s1 should contain a forwarding rule.", 1, switchFlows.size());
 
-		provisioner.deallocateFlow(id);
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
+
+			}
+			// Get flow in switch s2
+			else if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_2_NAME)) {
+				Assert.assertNotNull("Switch s2 should contain forwarding rules.", switchFlows);
+				Assert.assertEquals("Switch s2 should contain a forwarding rule.", 1, switchFlows.size());
+
+				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
+				Assert.assertEquals("1", switchFlow.getMatch().getIngressPort());
+				Assert.assertEquals("3", switchFlow.getActions().get(0).getValue());
+			}
+			// Get flow in switch s3
+			else
+				Assert.assertEquals("Switch s3 should not contain forwarding rules.", 0, switchFlows.size());
+
+		}
+		// 5) DEALLOCATE FLOW
+
+		provisioner.deallocateFlow(circuitId);
 		flows = provisioner.readAllocatedFlows().getQoSPolicyRequests();
-		Assert.assertTrue("There should not be allocated flows.", flows.isEmpty());
-		// Get flows in SDN network
-		allocatedNetFlows = sdnCapab.getAllocatedFlows();
+		Assert.assertTrue("There should not be allocated flows.", flows.isEmpty()); // Get flows in SDN network allocatedNetFlows =
+
 		// Get allocated flow in SDN network
-		Assert.assertEquals("There should be not allocated sdnFlow", 0, allocatedNetFlows.size());
+		netAllocatedCircuits = sdnNetModel.getAllocatedCircuits();
+		Assert.assertEquals("There should be not allocated circuits in the network", 0, sdnNetModel.getAllocatedCircuits().size());
+		Assert.assertEquals("There should be not allocated circuits implementations in the network", 0, sdnNetModel.getCircuitImplementation().size());
 
-		for (NetOFFlow past : netFlows) {
-			Assert.assertFalse("past flow is no longer present in the network", allocatedNetFlows.contains(past));
+		// Get flow in switches
+		IResource switchResource = getSwitchResourceFromName(SWITCH_5_NAME);
+		IOpenflowForwardingCapability ofCapab = (IOpenflowForwardingCapability) switchResource
+				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+		List<FloodlightOFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
+		Assert.assertEquals("Switch s5 should not contain forwarding rules.", 0, switchFlows.size());
 
-			// Get flow in switches
-			IResource switchResource = getSwitchResourceFromName(past.getResourceId());
-			IOpenflowForwardingCapability s3capab = (IOpenflowForwardingCapability) switchResource
-					.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-			List<FloodlightOFFlow> switchFlows = s3capab.getOpenflowForwardingRules();
-			FloodlightOFFlow switchFlow = null;
-			for (FloodlightOFFlow flow : switchFlows) {
-				if (flow.getName().equals(past.getName())) {
-					switchFlow = flow;
-					break;
-				}
-			}
-			Assert.assertNull("past flow is no longer present in the switch it was", switchFlow);
-		}
+		switchResource = getSwitchResourceFromName(SWITCH_4_NAME);
+		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+		switchFlows = ofCapab.getOpenflowForwardingRules();
+		Assert.assertEquals("Switch s4 should not contain forwarding rules.", 0, switchFlows.size());
+
+		switchResource = getSwitchResourceFromName(SWITCH_1_NAME);
+		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+		switchFlows = ofCapab.getOpenflowForwardingRules();
+		Assert.assertEquals("Switch s1 should not contain forwarding rules.", 0, switchFlows.size());
+
+		switchResource = getSwitchResourceFromName(SWITCH_3_NAME);
+		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+		switchFlows = ofCapab.getOpenflowForwardingRules();
+		Assert.assertEquals("Switch s3 should not contain forwarding rules.", 0, switchFlows.size());
+
+		switchResource = getSwitchResourceFromName(SWITCH_2_NAME);
+		ofCapab = (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+		switchFlows = ofCapab.getOpenflowForwardingRules();
+		Assert.assertEquals("Switch s2 should not contain forwarding rules.", 0, switchFlows.size());
 
 	}
 
@@ -377,36 +486,125 @@ public class NCLProvisionerTest {
 		ofswitch5Listener.waitForEndpointToBePublished();
 	}
 
-	private void createSDNNetwork() throws ResourceException, InterruptedException {
+	/**
+	 * Creates a GenericNetwork resource with NCLProvisionerCapability, PathFindingCapability and CircuitProvisioningCapability.
+	 * 
+	 * @throws ResourceException
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
+	private void createSDNNetwork() throws ResourceException, InterruptedException, IOException {
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		CapabilityDescriptor provisionCapab = ResourceHelper.newCapabilityDescriptor(SDN_ACTIONSET_NAME,
-				SDN_ACTIONSET_VERSION, OFProvisioningNetworkCapability.CAPABILITY_TYPE, CAPABILITY_URI);
+		CapabilityDescriptor circuitAggregationDescriptor = generateCircuitAggregationCapabilityDescriptor();
+		CapabilityDescriptor topologyDescriptor = generateTopologyCapabilityDescriptor();
+		CapabilityDescriptor pathFindingDescriptor = generatePathFindingCapabilityDescriptor();
+		CapabilityDescriptor circuitProvisioningDescriptor = generateCircuitProvisioningCapabilityDescriptor();
+		CapabilityDescriptor nclProvisioningDescriptor = generateNCLProvisioningCapabilityDescriptor();
 
-		lCapabilityDescriptors.add(provisionCapab);
+		lCapabilityDescriptors.add(circuitAggregationDescriptor);
+		lCapabilityDescriptors.add(pathFindingDescriptor);
+		lCapabilityDescriptors.add(topologyDescriptor);
+		lCapabilityDescriptors.add(circuitProvisioningDescriptor);
+		lCapabilityDescriptors.add(nclProvisioningDescriptor);
 
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, OFNETWORK_RESOURCE_TYPE,
-				RESOURCE_URI, SDN_RESOURCE_NAME);
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, GENERICNET_RESOURCE_TYPE,
+				MOCK_URI, SDN_RESOURCE_NAME);
 
 		sdnNetResource = resourceManager.createResource(resourceDescriptor);
 
 		// Start resource
-		sdnListener = new WSEndpointListenerHandler();
-		sdnListener.registerWSEndpointListener(OFNET_PROVISION_CONTEXT, context);
+		topologyListener = new WSEndpointListenerHandler();
+		nclProvListener = new WSEndpointListenerHandler();
+		circuitProvListener = new WSEndpointListenerHandler();
+		pathFinderListener = new WSEndpointListenerHandler();
+
+		topologyListener.registerWSEndpointListener(TOPOLOGY_CONTEXT, context);
+		nclProvListener.registerWSEndpointListener(NCLPROV_CONTEXT, context);
+		circuitProvListener.registerWSEndpointListener(CIRCUIT_PROV_CONTEXT, context);
+		pathFinderListener.registerWSEndpointListener(PATHFINDING_CONTEXT, context);
+
 		resourceManager.startResource(sdnNetResource.getResourceIdentifier());
-		sdnListener.waitForEndpointToBePublished();
+		topologyListener.waitForEndpointToBePublished();
+		nclProvListener.waitForEndpointToBePublished();
+		circuitProvListener.waitForEndpointToBePublished();
+		pathFinderListener.waitForEndpointToBePublished();
+
+	}
+
+	private CapabilityDescriptor generateNCLProvisioningCapabilityDescriptor() {
+		CapabilityDescriptor nclProvDescriptor = ResourceHelper.newCapabilityDescriptorWithoutActionset(NCLPROVISIONER_CAPABILITY_TYPE);
+
+		return nclProvDescriptor;
+	}
+
+	private CapabilityDescriptor generateCircuitAggregationCapabilityDescriptor() throws IOException {
+
+		CapabilityDescriptor topologyDescriptor = ResourceHelper.newCapabilityDescriptor(INTERNAL_ACTIONSET_NAME,
+				CAPABILITY_VERSION, CIRCUIT_AGGREGATION_CAPABILITY_TYPE, MOCK_URI);
+
+		CapabilityProperty useAggregation = new CapabilityProperty();
+
+		useAggregation.setName(CircuitAggregationCapability.USE_AGGREGATION_PROPERTY);
+		useAggregation.setValue("false");
+
+		topologyDescriptor.getCapabilityProperties().add(useAggregation);
+
+		return topologyDescriptor;
+	}
+
+	private CapabilityDescriptor generateTopologyCapabilityDescriptor() throws IOException {
+
+		CapabilityDescriptor topologyDescriptor = ResourceHelper.newCapabilityDescriptor(INTERNAL_ACTIONSET_NAME,
+				CAPABILITY_VERSION, NETTOPOLOGY_CAPABILITY_TYPE, MOCK_URI);
+
+		CapabilityProperty topologyFile = new CapabilityProperty();
+
+		String topologyFileAbsolutePath = obtainTopologyAbsolutePath();
+
+		topologyFile.setName(NetTopologyCapability.TOPOLOGY_FILE);
+		topologyFile.setValue(topologyFileAbsolutePath);
+
+		topologyDescriptor.getCapabilityProperties().add(topologyFile);
+
+		return topologyDescriptor;
+	}
+
+	private CapabilityDescriptor generatePathFindingCapabilityDescriptor() throws IOException {
+		CapabilityDescriptor pathFindingDescriptor = ResourceHelper.newCapabilityDescriptor(INTERNAL_ACTIONSET_NAME,
+				CAPABILITY_VERSION, PATHFINDING_CAPABILITY_TYPE, MOCK_URI);
+
+		CapabilityProperty routeURIProperty = new CapabilityProperty();
+		routeURIProperty.setName(PathFindingParamsMapping.ROUTES_FILE_KEY);
+		routeURIProperty.setValue(readFile(ROUTE_FILES_URI));
+
+		CapabilityProperty mapURImapURIProperty = new CapabilityProperty();
+		mapURImapURIProperty.setName(PathFindingParamsMapping.ROUTES_MAPPING_KEY);
+		mapURImapURIProperty.setValue(readFile(ROUTES_MAPPING_URI));
+
+		pathFindingDescriptor.getCapabilityProperties().add(routeURIProperty);
+		pathFindingDescriptor.getCapabilityProperties().add(mapURImapURIProperty);
+
+		return pathFindingDescriptor;
+	}
+
+	private CapabilityDescriptor generateCircuitProvisioningCapabilityDescriptor() {
+		CapabilityDescriptor circuitProvisioningDescriptor = ResourceHelper.newCapabilityDescriptor(
+				CircuitProvisioningActionsetImplementation.ACTIONSET_ID, CAPABILITY_VERSION, CircuitProvisioningCapability.CAPABILITY_TYPE, MOCK_URI);
+
+		return circuitProvisioningDescriptor;
 	}
 
 	private IResource createSwitch(String switchId, String switchName) throws ResourceException, ProtocolException {
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
 		CapabilityDescriptor ofForwardingDescriptor = ResourceHelper.newCapabilityDescriptor(FLOODLIGHT_ACTIONSET_NAME,
-				FLOODLIGHT_ACTIONSET_VERSION, OpenflowForwardingCapability.CAPABILITY_TYPE, CAPABILITY_URI);
+				FLOODLIGHT_ACTIONSET_VERSION, OpenflowForwardingCapability.CAPABILITY_TYPE, MOCK_URI);
 		lCapabilityDescriptors.add(ofForwardingDescriptor);
 
 		// OFSwitch Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, OFSWITCH_RESOURCE_TYPE,
-				RESOURCE_URI, switchName);
+				MOCK_URI, switchName);
 
 		IResource switchResource = resourceManager.createResource(resourceDescriptor);
 
@@ -446,4 +644,23 @@ public class NCLProvisionerTest {
 		session.setFloodlightClient(client);
 
 	}
+
+	private String readFile(String url) throws IOException {
+		InputStream input = this.getClass().getResourceAsStream(url);
+		File tmp = File.createTempFile(url, ".tmp.xml");
+		tmp.deleteOnExit();
+
+		IOUtils.copy(input, new FileOutputStream(tmp));
+		return tmp.getAbsolutePath();
+	}
+
+	private String obtainTopologyAbsolutePath() throws IOException {
+		InputStream input = this.getClass().getResourceAsStream(TOPOLOGY_FILE_URI);
+		File tmp = File.createTempFile("nettopology", ".tmp.xml");
+		tmp.deleteOnExit();
+
+		IOUtils.copy(input, new FileOutputStream(tmp));
+		return tmp.getAbsolutePath();
+	}
+
 }

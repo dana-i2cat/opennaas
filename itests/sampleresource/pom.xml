@@ -4,9 +4,10 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.itests</artifactId>
-		<version>0.26</version>
+		<version>0.27</version>
 	</parent>
 	<artifactId>org.opennaas.itests.sampleresource</artifactId>
+	<name>OpenNaaS :: iTests :: Sample Resource</name>
 
 	<dependencies>
 

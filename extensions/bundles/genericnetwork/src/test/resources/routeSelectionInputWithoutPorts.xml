@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<routeSelectionInput>
+    <srcIP>192.168.10.10</srcIP>
+    <dstIP>192.168.10.11</dstIP>
+    <tos>4</tos>
+</routeSelectionInput>

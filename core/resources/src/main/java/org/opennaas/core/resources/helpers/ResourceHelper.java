@@ -333,4 +333,16 @@ public class ResourceHelper {
 		return capabilityDescriptor;
 	}
 
+	public static CapabilityDescriptor newCapabilityDescriptorWithoutActionset(String type) {
+
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+
+		Information capabilityInformation = new Information();
+		capabilityInformation.setType(type);
+		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
+
+		return capabilityDescriptor;
+
+	}
+
 }

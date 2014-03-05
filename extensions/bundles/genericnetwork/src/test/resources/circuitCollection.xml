@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:circuits xmlns:ns2="opennaas.api">
+    <circuit>
+        <circuitId>1</circuitId>
+    </circuit>
+    <circuit>
+        <circuitId>2</circuitId>
+    </circuit>
+</ns2:circuits>
