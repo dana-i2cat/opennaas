@@ -206,4 +206,30 @@
 		</service-properties>
 	</service>
 	
+	<!-- ########################################
+	     CircuitAggregation Capability 
+	     ########################################
+	 -->
+	<bean id="circuitAggregationCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.circuitaggregation.CircuitAggregationCapabilityFactory">
+		<property name="type" value="circuitaggregation"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="circuitAggregationCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="circuitaggregation"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>		
+
+	<!-- circuitAggregation Internal ActionSet  -->
+	<bean id="circuitAggregationInternalActionSet" class="org.opennaas.extensions.genericnetwork.actionsets.internal.circuitaggregation.CircuitAggregationActionsetImplementation"/>
+	<service ref="circuitAggregationInternalActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.capability" value="circuitaggregation"/>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
 </blueprint>

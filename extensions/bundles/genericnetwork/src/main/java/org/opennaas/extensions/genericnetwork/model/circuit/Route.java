@@ -20,6 +20,7 @@ package org.opennaas.extensions.genericnetwork.model.circuit;
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Route {
+public class Route implements Serializable {
+
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long		serialVersionUID	= -1134197583502142944L;
 
 	private String					id;
 	private List<NetworkConnection>	networkConnections;

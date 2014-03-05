@@ -23,9 +23,10 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,6 +39,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.genericnetwork.capability.circuitaggregation.ICircuitAggregationCapability;
 import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICircuitProvisioningCapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
@@ -59,6 +61,7 @@ import org.osgi.service.event.EventHandler;
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Isart Canyameres Gimenez (i2cat) - Use aggregation
  * 
  */
 
@@ -112,16 +115,34 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 			IPathFindingCapability pathFindingCapab;
 			ICircuitProvisioningCapability circuitProvCapability;
+			ICircuitAggregationCapability circuitAggregationCapability;
+
 			pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
 			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
+			circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
 
 			Route route = pathFindingCapab.findPathForRequest(circuitRequest);
-			Circuit circuit = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
-			// TODO add aggregation logic when capability is implemented.
+			Circuit toAllocate = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
 
-			circuitProvCapability.allocate(circuit);
+			// call aggregation logic with all requested circuits and the one toAllocate
+			Set<Circuit> toAggregate = new HashSet<Circuit>();
+			toAggregate.addAll(getRequestedCircuits());
+			toAggregate.add(toAllocate);
+			Set<Circuit> allAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
 
-			return circuit.getCircuitId();
+			// replace currently allocated (already aggregated) with new aggregated circuits
+			List<Circuit> oldAggregated = new ArrayList<Circuit>();
+			oldAggregated.addAll(getAllocatedCircuits());
+			List<Circuit> newAggregated = new ArrayList<Circuit>(allAggregatedCircuits.size());
+			newAggregated.addAll(allAggregatedCircuits);
+
+			circuitProvCapability.replace(oldAggregated, newAggregated);
+
+			// update requested circuits in the model
+			// add allocated one (toAllocate)
+			((GenericNetworkModel) resource.getModel()).getRequestedCircuits().put(toAllocate.getCircuitId(), toAllocate);
+
+			return toAllocate.getCircuitId();
 
 		} catch (ResourceException e) {
 			throw new CircuitAllocationException(e);
@@ -133,16 +154,35 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	@Override
 	public void deallocateCircuit(String circuitId) throws CapabilityException {
-		// TODO add aggregation logic when capability is implemented.
+
 		ICircuitProvisioningCapability circuitProvCapability;
+		ICircuitAggregationCapability circuitAggregationCapability;
 		try {
 			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
-
+			circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
 
-		circuitProvCapability.deallocate(circuitId);
+		// call aggregation logic with all requested circuits except the one to be removed
+		Set<Circuit> toAggregate = new HashSet<Circuit>();
+		for (Circuit circuit : getRequestedCircuits()) {
+			if (!circuit.getCircuitId().equals(circuitId))
+				toAggregate.add(circuit);
+		}
+		Set<Circuit> newAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
+
+		// replace currently aggregated by newAggregatedCircuits
+		List<Circuit> oldAggregated = new ArrayList<Circuit>();
+		oldAggregated.addAll(getAllocatedCircuits());
+		List<Circuit> newAggregated = new ArrayList<Circuit>(newAggregatedCircuits.size());
+		newAggregated.addAll(newAggregatedCircuits);
+
+		circuitProvCapability.replace(oldAggregated, newAggregated);
+
+		// update requested circuits in the model
+		// remove deallocated one
+		((GenericNetworkModel) resource.getModel()).getRequestedCircuits().remove(circuitId);
 
 	}
 
@@ -161,6 +201,10 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		List<Circuit> circuits = circuitProvCapability.getCircuits();
 
 		return circuits;
+	}
+
+	public Collection<Circuit> getRequestedCircuits() {
+		return ((GenericNetworkModel) resource.getModel()).getRequestedCircuits().values();
 	}
 
 	@Override
@@ -301,28 +345,48 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		IPathFindingCapability pathFindingCapab;
 		ICircuitProvisioningCapability circuitProvCapability;
+		ICircuitAggregationCapability circuitAggregationCapability;
 
 		try {
 			pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
 			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
-
+			circuitAggregationCapability = (ICircuitAggregationCapability) getCapability(ICircuitAggregationCapability.class);
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
 
 		GenericNetworkModel model = (GenericNetworkModel) this.resource.getModel();
-		Circuit circuit = model.getAllocatedCircuits().get(circuitId);
+		Circuit toReroute = model.getRequestedCircuits().get(circuitId);
 
-		if (circuit == null)
-			throw new CapabilityException("Cann not reroute circuit: Circuit is not allocated.");
+		if (toReroute == null)
+			throw new CapabilityException("Can not reroute circuit: Circuit is not allocated.");
 
-		CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
+		CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(toReroute.getQos(), toReroute.getTrafficFilter());
 		Route route = pathFindingCapab.findPathForRequest(circuitRequest);
-		circuit.setRoute(route);
 
-		// TODO once aggregation is implemented, call replace.
-		circuitProvCapability.deallocate(circuitId);
-		circuitProvCapability.allocate(circuit);
+		Circuit withNewRoute = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
+		withNewRoute.setCircuitId(toReroute.getCircuitId());
+
+		// call aggregation logic with all requested circuits
+		// except the original one to be re-routed and with the one to be re-rerouted updated
+		Set<Circuit> toAggregate = new HashSet<Circuit>();
+		for (Circuit circuit : getRequestedCircuits()) {
+			if (!circuit.getCircuitId().equals(circuitId))
+				toAggregate.add(circuit);
+		}
+		toAggregate.add(withNewRoute);
+		Set<Circuit> newAggregatedCircuits = circuitAggregationCapability.aggregateCircuits(toAggregate);
+
+		// replace currently aggregated by newAggregatedCircuits
+		List<Circuit> oldAggregated = new ArrayList<Circuit>();
+		oldAggregated.addAll(getAllocatedCircuits());
+		List<Circuit> newAggregated = new ArrayList<Circuit>(newAggregatedCircuits.size());
+		newAggregated.addAll(newAggregatedCircuits);
+
+		circuitProvCapability.replace(oldAggregated, newAggregated);
+
+		// update requested circuits in model
+		model.getRequestedCircuits().put(circuitId, withNewRoute);
 
 		log.debug("End of rerouteCircuit call.");
 
@@ -342,17 +406,11 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	private List<String> getAllCircuitsInPort(String portId) {
 
 		List<String> circuitsIdsInPort = new ArrayList<String>();
-		// TODO Once aggregation is implemented, it should look here for NOT-AGGREGATED CIRCUITS.
 
-		GenericNetworkModel model = (GenericNetworkModel) this.resource.getModel();
-
-		Map<String, Circuit> allocatedCircuits = model.getAllocatedCircuits();
-
-		for (String circuitId : allocatedCircuits.keySet()) {
-			Circuit circuit = allocatedCircuits.get(circuitId);
-
+		// look here for NOT-AGGREGATED CIRCUITS.
+		for (Circuit circuit : getRequestedCircuits()) {
 			if (GenericNetworkModelHelper.isPortInCircuit(portId, circuit))
-				circuitsIdsInPort.add(circuitId);
+				circuitsIdsInPort.add(circuit.getCircuitId());
 		}
 
 		return circuitsIdsInPort;

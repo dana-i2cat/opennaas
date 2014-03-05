@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.capability.pathfinding.test;
+package org.opennaas.extensions.genericnetwork.test.capability.pathfinding;
 
 /*
  * #%L

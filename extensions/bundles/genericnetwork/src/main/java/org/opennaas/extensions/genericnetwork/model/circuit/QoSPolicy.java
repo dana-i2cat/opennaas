@@ -20,25 +20,32 @@ package org.opennaas.extensions.genericnetwork.model.circuit;
  * #L%
  */
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QoSPolicy {
+public class QoSPolicy implements Serializable {
 
-	private int	minLatency;
-	private int	maxLatency;
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long	serialVersionUID	= 7226728765828544543L;
 
-	private int	minJitter;
-	private int	maxJitter;
+	private int					minLatency;
+	private int					maxLatency;
 
-	private int	minThroughput;
-	private int	maxThroughput;
+	private int					minJitter;
+	private int					maxJitter;
 
-	private int	minPacketLoss;
-	private int	maxPacketLoss;
+	private int					minThroughput;
+	private int					maxThroughput;
+
+	private int					minPacketLoss;
+	private int					maxPacketLoss;
 
 	/**
 	 * @return the minLantency

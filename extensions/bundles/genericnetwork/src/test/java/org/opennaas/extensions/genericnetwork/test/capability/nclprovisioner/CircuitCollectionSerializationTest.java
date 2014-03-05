@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.capability.nclprovisioner.test;
+package org.opennaas.extensions.genericnetwork.test.capability.nclprovisioner;
 
 /*
  * #%L

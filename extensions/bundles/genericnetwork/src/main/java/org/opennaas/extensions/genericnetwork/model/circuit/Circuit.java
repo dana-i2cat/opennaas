@@ -20,6 +20,8 @@ package org.opennaas.extensions.genericnetwork.model.circuit;
  * #L%
  */
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,7 +30,12 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Circuit {
+public class Circuit implements Serializable {
+
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long	serialVersionUID	= -4888253800456186130L;
 
 	private String				circuitId;
 	private Route				route;

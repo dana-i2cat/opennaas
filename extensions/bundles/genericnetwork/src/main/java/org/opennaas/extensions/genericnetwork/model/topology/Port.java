@@ -20,6 +20,8 @@ package org.opennaas.extensions.genericnetwork.model.topology;
  * #L%
  */
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -33,7 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Port extends TopologyElement {
+public class Port extends TopologyElement implements Serializable {
+
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long	serialVersionUID	= 7917135411661450550L;
 
 	/**
 	 * A unique id identifying this port in the topology.
@@ -46,7 +53,7 @@ public class Port extends TopologyElement {
 	 */
 	@XmlAttribute(name = "id")
 	@XmlID
-	private String	id;
+	private String				id;
 
 	/**
 	 * Default constructor
