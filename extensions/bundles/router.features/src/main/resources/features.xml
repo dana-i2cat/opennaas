@@ -5,7 +5,7 @@
 	<feature name="opennaas-cim" version="${project.version}">
 		<feature version="${project.version}">opennaas-core</feature>
 		
-		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		<bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
 		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.model/${project.version}</bundle>
 		<!-- QueueManager should probably be part of org.opennaas.core,
