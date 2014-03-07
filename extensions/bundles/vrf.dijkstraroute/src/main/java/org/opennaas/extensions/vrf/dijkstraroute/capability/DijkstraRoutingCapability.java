@@ -2,17 +2,18 @@ package org.opennaas.extensions.vrf.dijkstraroute.capability;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.ext.form.Form;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -26,13 +27,13 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
-import org.opennaas.extensions.vrf.model.L2Forward;
-import org.opennaas.extensions.vrf.model.VRFRoute;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.DijkstraAlgorithm;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Edge;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Graph;
-import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Vertex;
+import org.opennaas.extensions.vrf.model.L2Forward;
+import org.opennaas.extensions.vrf.model.VRFRoute;
+import org.opennaas.extensions.vrf.utils.Utils;
 
 /**
  *
@@ -47,17 +48,14 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
     private List<Vertex> nodes = new ArrayList<Vertex>();
     private List<Edge> edges = new ArrayList<Edge>();
     private final int staticDijkstraCost = 1;
+    private final String username = "admin";
+    private final String password = "123456";
+    private String topologyFilename = "data/dynamicTopology.json";
 
-    /*    public RoutingCapability(){
-     vrfModel = new VRFModel();
-     }
-     */
-    /// /////////////////////////////
-    // DijkstraRoutingCapability Methods //
-    /// /////////////////////////////
-    
     @Override
     public Response getDynamicRoute(String source, String target) {
+        source = Utils.intIPv4toString(Integer.parseInt(source));
+            target = Utils.intIPv4toString(Integer.parseInt(target));
         log.error("Request route " + source + " dst: " + target);
 
         createAdjacencyMatrix();
@@ -69,9 +67,13 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         dijkstra.execute(src);//calculate the adjacent matrix from the requested source vertex
         LinkedList<Vertex> path = dijkstra.getPath(dst);
         log.error("Path: " + path);
-
-        List<VRFRoute> listRoutes = creatingRoutes(path, source, target);
-
+//if path nUll???
+        List<VRFRoute> listRoutes;
+if(path != null){
+        listRoutes = creatingRoutes(path, source, target);
+}else{
+	return Response.ok("Path null.").build();
+}
         StringBuilder listFlows = new StringBuilder();
         List<FloodlightOFFlow> listOF;
         Response response = proactiveRouting(listRoutes);
@@ -105,7 +107,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         //return path.toString();
 //        return response;
     }
-    
+
     private Response proactiveRouting(List<VRFRoute> listVRF) {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         List<VRFRoute> routeSubnetList = listVRF;
@@ -115,6 +117,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
+                insertRoutetoStaticBundle(r);
                 log.error("Route " + r.getSourceAddress() + " " + r.getDestinationAddress() + " " + r.getSwitchInfo().getDPID() + " " + r.getSwitchInfo().getInputPort() + " " + r.getSwitchInfo().getOutputPort());
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
 //                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
@@ -218,8 +221,6 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
     }
     //---------------------END DEMO FUNCTIONS
 
-    
-
     private List<VRFRoute> creatingRoutes(LinkedList<Vertex> path, String sourceIp, String targetIP) {
         List<VRFRoute> listRoutes = new ArrayList<VRFRoute>();
         Vertex source = path.get(0);
@@ -264,7 +265,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         for (int i = 0; i < edges.size(); i++) {
             //from the newVertex try to find the next hop
             if (edges.get(i).getSource().equals(source) && edges.get(i).getDestination().equals(actual)) {
-log.error("S" + i + " " + source + " to " + actual + " Src: " + edges.get(i).getSrcPort() + " Dst: " + edges.get(i).getDstPort());
+                log.error("S" + i + " " + source + " to " + actual + " Src: " + edges.get(i).getSrcPort() + " Dst: " + edges.get(i).getDstPort());
                 if (edges.get(i).getSrcPort() == 0) {
                     port = edges.get(i).getDstPort();
                 } else if (edges.get(i).getDstPort() == 0) {
@@ -279,7 +280,7 @@ log.error("S" + i + " " + source + " to " + actual + " Src: " + edges.get(i).get
                 break;
             }
         }
-log.error("Return Port: " + port);
+        log.error("Return Port: " + port);
         return port;
     }
 
@@ -303,7 +304,7 @@ log.error("Return Port: " + port);
 
         try {
             JsonFactory f = new MappingJsonFactory();
-            JsonParser jp = f.createJsonParser(new File("dynamicTopology.json"));
+            JsonParser jp = f.createJsonParser(new File(topologyFilename));
             JsonToken current = jp.nextToken();
             if (current != JsonToken.START_OBJECT) {
                 log.error("Error: root should be object: quiting.");
@@ -336,8 +337,8 @@ log.error("Return Port: " + port);
                             JsonNode link = jp.readValueAsTree();
                             String srcId = link.get("source").getValueAsText();
                             String dstId = link.get("target").getValueAsText();
-                            int srcPort = Integer.parseInt(link.get("srcPort").getValueAsText());
-                            int dstPort = Integer.parseInt(link.get("dstPort").getValueAsText());
+                            int srcPort = Integer.parseInt(link.get("srcP").getValueAsText());
+                            int dstPort = Integer.parseInt(link.get("dstP").getValueAsText());
                             Vertex srcV = null;
                             Vertex dstV = null;
                             for (Vertex v : nodes) {
@@ -362,5 +363,55 @@ log.error("Return Port: " + port);
         } catch (IOException ex) {
             Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Call a rest service to insert a Route
+     *
+     * @param route
+     * @return true if the environment has been created
+     */
+    public String insertRoutetoStaticBundle(VRFRoute route) {
+        log.error("Calling insert Route Table service");
+        String response;
+        String url = "http://localhost:8888/opennaas/vrf/staticrouting/route";
+
+        Form fm = new Form();
+        fm.set("ipSource", route.getSourceAddress());
+        fm.set("ipDest", route.getDestinationAddress());
+        fm.set("switchDPID", route.getSwitchInfo().getDPID());
+        fm.set("inputPort", route.getSwitchInfo().getInputPort());
+        fm.set("outputPort", route.getSwitchInfo().getOutputPort());
+
+        WebClient client = WebClient.create(url);
+        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
+        response = client.accept(MediaType.TEXT_PLAIN).put(fm, String.class);
+
+        log.error("Inser to other Bundle Response: " + response);
+        return response;
+    }
+    private String base64Encode(String stringToEncode) {
+        return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+    }
+
+    @Override
+    public Response getTopologyFilename() {
+        return Response.ok(topologyFilename).build();
+    }
+
+    @Override
+    public Response setTopologyFilename(String topologyFilename) {
+        this.topologyFilename = topologyFilename;
+        return Response.ok("FileName "+topologyFilename+"selected.").build();
+    }
+    
+    public Response uploadDynamicTopology(){
+        Response response = null;
+        /**
+         * NOT IMPLEMENTED YEET!!!!!!!!!!!!
+         * 
+         */
+        return response;
     }
 }

@@ -37,8 +37,8 @@
             <artifactId>org.opennaas.extensions.vrf.model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-bundle</artifactId>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-bundle</artifactId>
         </dependency>
     </dependencies>
     <build>

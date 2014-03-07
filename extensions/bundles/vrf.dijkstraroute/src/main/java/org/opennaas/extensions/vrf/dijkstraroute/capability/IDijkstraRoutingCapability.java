@@ -30,6 +30,25 @@ public interface IDijkstraRoutingCapability {
             @PathParam("source") String source, 
             @PathParam("target") String target);
     
+    /**
+     * Return the topology filename used and the directory
+     * @return 
+     */
+    @Path("/topologyName")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getTopologyFilename();
+    
+    /**
+     * Set the directory and name of the filename
+     * @param fileName
+     * @return 
+     */
+    @Path("/topologyName/{fileName}")
+    @GET
+    public Response setTopologyFilename(
+            @PathParam("fileName") String fileName);
+    
     /* ------------- DEMO ------------- */
     /**
      * Used in demonstrations. Request a log from OpenNaaS in order to see the route requests events.
