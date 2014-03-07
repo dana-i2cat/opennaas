@@ -58,6 +58,11 @@
                 <spring:message code="menu.animation" />
             </a>
         </li>
+        <li>
+            <a href="<c:url value="${url}/secure/noc/nfvRouting/settings" />">
+                <spring:message code="menu.settings" />
+            </a>
+        </li>
     </ul>
 </div>
 

@@ -1,0 +1,106 @@
+<%@page contentType="text/html;charset=UTF-8"%>
+<%@page pageEncoding="UTF-8"%>
+<%@ page session="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<script>
+    document.getElementById("ui-id-4").className += " ui-state-highlight";
+</script>
+<div id="settings" class="ui-widget-content ui-corner-all routTable padding">
+    <h3>Settings</h3>
+    <form:form action="/nfv-gui-demo-vrf/secure/noc/nfvRouting/settings" modelAttribute="settings" method="post" enctype="multipart/form-data">
+        <div class="row">
+
+            <form:label path="routingType">Select OpenNaaS routing mode: </form:label>
+            <form:radiobutton cssStyle="label" path="routingType" value="static"/>Static
+            <form:radiobutton cssStyle="label" path="routingType" value="dijkstra"/>Dijkstra
+
+            <!--    <input style="float:left; margin: 0 10px;" id="routingType" type="text" name="routingType" value="static" readonly>
+                
+                    <div id="radio">
+                        <input type="radio" id="static" name="routeMode" checked="checked"><label for="static">Static</label>
+                        <input type="radio" id="dynamic" name="routeMode"><label for="dynamic">Dynamic</label>
+                    </div>
+            -->
+            <br/>
+        </div>
+        <%--    <c:if test="${!empty settings.addShellMode}">
+                ${settings.addShellMode}
+            </c:if>--%>
+
+        <div class="row">
+            <form:label path="addShellMode">Open hosts shell in a: </form:label>
+            <form:radiobutton cssStyle="label" path="addShellMode" value="tab"/>Tab
+            <form:radiobutton cssStyle="label" path="addShellMode" value="window"/>Window
+        </div>
+        <%--                 <div class="row">
+                           <form:label path="password">Password:</form:label>
+                           <span class="formw">
+                               <form:password class="inputConfig" path="password"/>
+                           </span>
+                       </div>
+        --%>                
+
+        <div class="row">
+            <form:label path="addShellMode">Select link color: </form:label>
+                <select>
+                    <option value="green" disabled>Green</option>
+                    <option value="blue" disabled>Blue</option>
+                </select>
+                <br/></div>
+            <div class="row">
+                <span class="formw">
+                    <input id="button2" type="submit" value="Save" style="float: right;"/>
+                </span>
+            </div>
+    </form:form>
+</div>
+
+<script language="JavaScript" type="text/JavaScript">
+    /*
+    if(getONRouteMode() == "static"){
+        document.getElementById("static").checked = true;
+        document.getElementById("dynamic").checked = false;
+    }else{
+        document.getElementById("dynamic").checked = true;
+        document.getElementById("static").checked = false;
+    }
+    $( "input:disabled" ).val( "this is it" );
+     */
+    var type = getURLParameter("type");
+    
+    function getONRouteMode(){
+        var result;
+        $.ajax({
+            type: "GET",
+            url: "getONRouteMode",
+            success: function (data) {
+                $('#ajaxUpdate').html(data);
+                result = data;
+                document.getElementById("routingType").value = data;
+            }
+        });
+        return result;
+    }
+    function setONRouteMode(mode){
+        if( mode == "Static")
+            mode = "static";
+        else
+            mode = "dijkstra";
+        $.ajax({
+            type: "GET",
+            url: "setONRouteMode/" + mode,
+            success: function (data) {
+                $('#ajaxUpdate').html(data);
+            }
+        });
+        document.getElementById("routingType").value = mode;
+        //        getONRouteMode();
+    }
+</script>
+
+<div class="modal"></div>

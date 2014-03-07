@@ -88,6 +88,10 @@ VRF - OpenNaaS Custom CSS
     bottom: 20px;
     margin-top: 30px;
 }
+#settings{
+    width: 80%;
+    margin-left: 10%;
+}
 #log{
     font-size: 20px;
     background:black;

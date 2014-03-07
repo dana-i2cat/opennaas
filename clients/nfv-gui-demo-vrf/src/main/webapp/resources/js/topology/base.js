@@ -13,12 +13,18 @@ var auto = "Automatic";
 var man = "Manual";
 var ctrlKey = false;//ctrl key is pressed?
 
+
+/* Images size */
+var node_size_width = 50, node_size_height_sw = 50, node_size_height_h = 35;
+var node_size_width_big = node_size_width + 25, node_size_height_sw_big = node_size_height_sw+25, node_size_height_h_big = 35;
+
 var switchImage = urlVar+"/topology/switch2.png";//urlVar obtained in header!
 var hostImage = urlVar+"/topology/laptop.png";
 var controllerImage = urlVar+"/topology/controller2.png";
 var packetImage = urlVar+"/topology/movie_tape.gif";
 var linkImage = urlVar+"/topology/link_green.png";
 var helpImage = urlVar+"/topology/helpImage.png";
+var cloudONImage = urlVar+"/topology/opennaas_cloud.png";
 
 // set up SVG for D3
 var width = 700,
@@ -37,8 +43,8 @@ var svg = d3.select('#chart')
 
 // init D3 force layout
 var force = d3.layout.force()
-    .nodes(nodes, controllers)
-    .links(links, controllersLinks)
+    .nodes(nodes, controllers, cloud)
+    .links(links, controllersLinks, cloudLinks)
     .size([width, height])
     .linkDistance(350)
     .charge(-500)
@@ -54,6 +60,8 @@ var link = svg.append("svg:g").selectAll("link.sw");
 var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
 var node = svg.append("svg:g").selectAll(".node");
 var help = svg.append("svg:g").selectAll(".help");
+var cloudON = svg.append("svg:g").selectAll(".cloudON");
+var cloudLink = svg.append("svg:g").selectAll(".link.cloud");
 
 d3.json("", function (error, json) {
     force.start();
@@ -105,10 +113,10 @@ function update(){
 
     /* Drawing nodes (switchs and hosts) */
     var node_x = "-30", node_y = "-30";
-    var node_width = "75", node_height = "75";
-    var node_width_big = "100", node_height_big = node_height;
+    var node_width = 50, node_height = 50, node_height_h = 35;
+    var node_width_big = node_width + 25, node_height_big = node_height;
     var node_txt_x_sw = "-24", node_txt_y_sw = "9";
-    var node_txt_x_h = "-10", node_txt_y_h = "30";
+    var node_txt_x_h = "-10", node_txt_y_h = "25";
     node = node.data(nodes);
     node.enter().append("g")
         .attr("class", "node")
@@ -146,8 +154,8 @@ console.log("Dragstart");
         .attr('id', function (d) {return d.id;})
         .attr("x", node_x)
         .attr("y", node_y)
-        .attr("width", 75)
-        .attr('height', function (d) { return (d.type === "switch") ? "75" : "45";})
+        .attr("width", node_width)
+        .attr('height', function (d) { return (d.type === "switch") ? node_height : node_height_h;})
         .attr('xlink:href', function (d) { return (d.type === "switch") ? switchImage : hostImage;})
         .on('mouseup', function (d) {
 console.log("MOUSEUP");
@@ -160,7 +168,7 @@ console.log("MOUSEUP");
             if (d.type === "switch")
                 d3.select("#" + d.id + "_text").attr("x", -15).attr("y", 12); //move text when big
             else if (d.type === "host")
-                d3.select("#" + d.id + "_text").attr("x", -9).attr("y", 55); //move text when big
+                d3.select("#" + d.id + "_text").attr("x", -9).attr("y", 35); //move text when big
             if (!mousedown_node) return;
             if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
@@ -184,6 +192,28 @@ console.log("MOUSEUP");
     node.attr("transform", function (d) {
         return "translate(" + d.x + "," + d.y + ")";
     });
+    
+    /** OpenNaaS cloud **/
+    cloudLink = cloudLink.data(cloudLinks);
+    cloudLink.enter().append("svg:line")
+        .attr("class", "linkCtrl");
+    
+    cloudLink.attr("x1", function (d) {return d.source.x;})
+        .attr("y1", function (d) {return d.source.y;})
+        .attr("x2", function (d) {return d.target.x;})
+        .attr("y2", function (d) {return d.target.y;});
+
+    cloudON = svg.selectAll(".cloudON")
+        .data(cloud)
+        .enter().append("g")
+        .attr("class", "cloudON");
+
+    cloudON.append("image")
+        .attr("x", function (d) {return d.x-30;})
+        .attr("y", function (d) {return d.y-35;})
+        .attr("width", 80)
+        .attr('height', 80)
+        .attr('xlink:href', function (d) {return cloudONImage;});
     
     help = help.data([0]);
     help.enter().append("svg:image")

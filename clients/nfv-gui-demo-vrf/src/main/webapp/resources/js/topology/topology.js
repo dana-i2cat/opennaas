@@ -21,16 +21,13 @@ function readTextFile(url) {
 }
 
 var dataTopology = readTextFile("/nfv-gui-demo-vrf/resources/js/topology/topo.json");
-dataTopology = eval("(" +dataTopology+ ')');
+dataTopology = eval("(" +dataTopology+ ")");
 if( dataTopology ){
-    createTopology(dataTopology);
-}
-var nodes, links, controllers, controllersLinks;
-    
-function createTopology(dataTopology){
+    console.log("Create topology vars");
     createJSVars(dataTopology);
 }
-
+var nodes, links, controllers, controllersLinks, cloud, cloudLinks;
+    
 function createJSVars(dataTopology){
     nodes = dataTopology.nodes;
     //            console.log(dataTopology);
@@ -45,6 +42,12 @@ function createJSVars(dataTopology){
         dataTopology.controllersLinks[i].target = controllers[dataTopology.controllersLinks[i].target];
     }
     controllersLinks = dataTopology.controllersLinks;
+    cloud = dataTopology.cloud;
+    for (i= 0; i < dataTopology.cloudLinks.length; i++){
+        dataTopology.cloudLinks[i].source = cloud[dataTopology.cloudLinks[i].source];
+        dataTopology.cloudLinks[i].target = controllers[dataTopology.cloudLinks[i].target];
+    }
+    cloudLinks = dataTopology.cloudLinks;
 }
 var lastNodeId = 2,
     vertexNum = nodes.length;

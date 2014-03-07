@@ -21,7 +21,9 @@
         }
     </script>	
 
-<div id="home_info" class="ui-widget-content ui-corner-all padding">
+    <c:if test="${!empty topologyName}">
+        
+        <div id="home_info" class="ui-widget-content ui-corner-all padding">
     <h3>Switch Information:</h3>
     <ul>
         <li id="DPID"><b>DPID:</b></li>
@@ -32,11 +34,12 @@
     <table id="jsonFlowTable" class="tablesorter"></table>
     <div id="preloader" style="display:none;"><img src="<c:url value="/resources/images/ajax-loader.gif" />" /></div>
 </div>
-<div id="home_topology" class="topology ui-widget-content ui-corner-all">
-    <c:if test="${!empty topologyName}">
+       <div id="home_topology" class="topology ui-widget-content ui-corner-all">
         <p id="chart" ></p>
+         </div>
     </c:if>
     <c:if test="${empty topologyName}">
+        <div id="home_topology" class="topology ui-widget-content ui-corner-all" style="width: 100%;">
         <h3><spring:message code="topology.notdefined"/></h3>
         <div id="create">
             <form:form modelAttribute="uploadedFile" name="frm" method="post" enctype="multipart/form-data" onSubmit="return Validate();">
@@ -50,8 +53,13 @@
                 </fieldset>
             </form:form>
         </div>
+        <div id="otherTop">
+            <h2>Other used topologies:</h2>
+            <a href="home/demoTopo">Demo Topology (demo-topology.json)</a>
+        </div>
+        </div>
     </c:if>
-</div>
+
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
 <script src="<c:url value="/resources/js/topology/homeTopology.js" />"></script>
 

@@ -190,7 +190,21 @@ function getRouteList(jsonReceived){
 /**
  * Request the list of links of specific route
  */
+var showRoutes = false;
+var toggle;
 function getSpecificRoute(src, dst){
+    var newToggle = src+"-"+dst;
+	if(showRoutes){
+            console.log("Hide routes");
+            document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
+            showRoutes = false;
+	}
+        if(toggle != null){
+            if(toggle == newToggle){
+                return;
+            }
+        }
+        toggle = src+"-"+dst;
 console.log("Get specific route "+src+" "+dst);
         var result = "";
         $.ajax({
@@ -208,6 +222,7 @@ console.log("Get specific route "+src+" "+dst);
     document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
     document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
     document.getElementById("innerTable").innerHTML += "</table><input style='margin-right: 11.5px' class='addRouteButton ui-button ui-widget ui-state-default ui-corner-all' onClick='removeAll()' type='button' value='Remove this route' name='Clean table'/>";
+showRoutes = true;
 }
 /**
  * Request to OpenNaaS in order to obtain the list of routes given the IP version in the following format (Ipv4/IPv6)

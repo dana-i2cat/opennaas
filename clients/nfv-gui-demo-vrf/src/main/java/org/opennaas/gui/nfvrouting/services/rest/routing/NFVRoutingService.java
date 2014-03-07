@@ -291,4 +291,38 @@ public class NFVRoutingService extends GenericRestService {
         }
         return response;
     }
+
+    public String getONRouteMode() {
+        String response;
+        try {
+            LOGGER.info("Get stream info to OpenNaaS");
+            String url = getURL("vrf/routing/routeMode");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Stream....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response;
+    }
+    
+    public String setONRouteMode(String mode) {
+        String response;
+        try {
+            LOGGER.info("Get stream info to OpenNaaS");
+            String url = getURL("vrf/routing/routeMode/"+mode);
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Stream....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response;
+    }
 }

@@ -4,7 +4,7 @@
  */
 var file = "config";
 document.getElementById("ui-id-1").className += " ui-state-highlight";
-document.getElementById("ui-id-4").className += " ui-state-highlight";
+document.getElementById("ui-id-5").className += " ui-state-highlight";
 
 function runtime(node, links) {
     node
@@ -60,6 +60,10 @@ console.log("Source " + source.id + " to Dest " + target.id);
 console.log("Before: "+JSON.stringify(returnedRoutes));
 //            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
             returnedRoutes = sortReturnedRoutes(returnedRoutes);
+            if(returnedRoutes == null){
+                d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
+                return;
+            }
 console.log("After sort: "+JSON.stringify(returnedRoutes));
 cleanHighlight();
             if( typeof returnedRoutes !== 'undefined' ){
@@ -137,7 +141,10 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
             response = data;
         }
     });
-console.log(response);    
+console.log(response);
+if(response == null){
+    cleanDisplayedLink();
+}
     return response;
 }
 
@@ -175,11 +182,15 @@ console.log("Highlight "+ipSrc+" "+ipDst);
  */
 function cleanHighlight(){
 console.log("Clean highlight");
-    var table = document.getElementById('jsonTable');
-    var tbody = table.getElementsByTagName('tbody')[0];
-    var items = tbody.getElementsByTagName('tr');
-    for (var j = 0; j < items.length; j++) {
-        document.getElementById('jsonTable').getElementsByTagName('tr')[j+1].style.background = "transparent";
+    try{
+        var table = document.getElementById('jsonTable');
+        var tbody = table.getElementsByTagName('tbody')[0];
+        var items = tbody.getElementsByTagName('tr');
+        for (var j = 0; j < items.length; j++) {
+            document.getElementById('jsonTable').getElementsByTagName('tr')[j+1].style.background = "transparent";
+        }
+    }catch(err){
+        console.log("Table is not displayed. Err: "+err);
     }
 }
 /**

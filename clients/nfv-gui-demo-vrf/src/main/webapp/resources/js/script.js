@@ -86,6 +86,12 @@ $(document).ready(function() {
                 document.getElementById('fileName').value += name;
             }
         });
+        
+        $('#radio input:radio').click(function() {
+            var idVal = $('input[name=routeMode]:checked').attr("id");
+            var value = $("label[for='"+idVal+"']").text();
+//            setONRouteMode(value);
+        });
 });
 
 /**
@@ -103,6 +109,8 @@ $(function() {
         $(".addCtrlInfoButton").button();
         $(".deleteButton").button();
         $(".submitButton").button();
+        
+        $("#radio").buttonset();
 
 	$("#button1").button();
 	$("#button2").button();

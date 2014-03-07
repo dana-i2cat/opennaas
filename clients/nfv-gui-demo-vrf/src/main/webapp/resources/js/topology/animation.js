@@ -25,6 +25,17 @@ packet.enter().append('image')
 
 function runtime(node) {
 console.log("Runtime");
+
+    node.on('mousedown', function (d) {
+        console.log(shellMode);
+        if(d.type == "host"){
+            if(shellMode == "tab"){
+                addTab(d.id);
+            }else if(shellMode == "window"){
+                window.open(openHostShell(d.id));
+            }
+        }
+    });
     //update();
 }
 
@@ -61,4 +72,17 @@ function streamPacket(returnedRoutes){
             streamPacket(returnedRoutes);
         }
     }, 1000);  
+}
+
+/**
+* Uri format: //84.88.40.153:4200/h1
+*/
+function openHostShell(nameHost){
+	var url = "http://84.88.40.153:4200";
+	var uri = url + "/" + nameHost;
+return uri;
+//send uri to src of iframe
+
+//addTab...
+
 }

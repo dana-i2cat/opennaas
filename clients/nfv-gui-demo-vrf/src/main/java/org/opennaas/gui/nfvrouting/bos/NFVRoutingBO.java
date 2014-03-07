@@ -93,4 +93,12 @@ public class NFVRoutingBO {
     public String getRoute(String srcIP, String dstIP) {
         return nfvRoutingService.getRoute(srcIP, dstIP);
     }
+
+    public String getONRouteMode() {
+        return nfvRoutingService.getONRouteMode();
+    }
+    
+    public String setONRouteMode(String mode) {
+        return nfvRoutingService.setONRouteMode(mode);
+    }
 }

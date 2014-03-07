@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.UploadedFile;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
+import org.opennaas.gui.nfvrouting.entities.settings.Settings;
 import org.opennaas.gui.nfvrouting.validator.FileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -24,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  * @author Josep
  */
 @Controller
+@SessionAttributes("settings")
 public class HomeController {
 
     private static final Logger LOGGER = Logger.getLogger(HomeController.class);
@@ -65,6 +68,12 @@ public class HomeController {
         } catch (Exception e) {
             return "home";
         }
+        Settings settings = (Settings) session.getAttribute("settings");
+        if(settings == null){
+            settings = new Settings();
+            settings.setRoutingType(nfvRoutingBO.getONRouteMode());
+        }
+model.addAttribute("settings", settings);
         return "home";
     }
 
@@ -131,30 +140,28 @@ public class HomeController {
         MultipartFile file = uploadedFile.getFile();
         fileValidator.validate(uploadedFile, result);
 
-        String fileName = file.getOriginalFilename();
-
         if (result.hasErrors()) {
             model.addAttribute("errorMsg", "Some error with the uploaded file.");
             return "home";
         }
-File newFile = null;
+        File newFile = null;
         try {
             inputStream = file.getInputStream();
-            LOGGER.error("Path"+request.getRealPath(""));
-            File dir = new File(request.getRealPath("") + "/resources/files/");
-            dir.mkdir();
+            LOGGER.error("Path" + request.getRealPath(""));
+//            File dir = new File(request.getRealPath("") + "/resources/files/");
+//            dir.mkdir();
 
             // inputStream = file.getInputStream();
             if (file.getSize() > 100000) {
                 model.addAttribute("errorMsg", "The file is more bigger than 10 MB.");
-                return "uploadVI";
+                return "home";
             }
 
 //            newFile = new File(request.getRealPath("") + "/resources/files/" + fileName);
             newFile = new File(request.getRealPath("") + "/resources/js/topology/topo.json");
-            if (!newFile.exists()) {
-                newFile.createNewFile();
-            }
+//            if (!newFile.exists()) {
+            newFile.createNewFile();
+//            }
             outputStream = new FileOutputStream(newFile);
             int read = 0;
             byte[] bytes = new byte[1024];
@@ -167,8 +174,31 @@ File newFile = null;
             e.printStackTrace();
         }
         model.addAttribute("infoMsg", "Topology uploaded.");
-        
+
 //        nfvRoutingBO.uploadTopology(newFile.getAbsolutePath());
+        session.setAttribute("topologyName", newFile.getPath());
+        return "home";
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home/{topoName}")
+    public String home(@PathVariable("topoName") String topoName, ModelMap model, Locale locale, HttpServletRequest request, HttpSession session) {
+        LOGGER.debug("home");
+        model.addAttribute(new UploadedFile());
+        if ((String) session.getAttribute("topologyName") != null) {
+            model.put("topologyName", (String) session.getAttribute("topologyName"));
+        }
+
+        try {
+            String response = nfvRoutingBO.getRouteTable(4);
+            if (response.equals("OpenNaaS is not started")) {
+                model.addAttribute("errorMsg", response);
+            }
+//            String response = nfvRoutingBO.getInfoControllers();
+//            model.addAttribute("json", response);
+        } catch (Exception e) {
+            return "home";
+        }
+File newFile = new File(request.getRealPath("") + "/resources/js/topology/topo.json");
         session.setAttribute("topologyName", newFile.getPath());
         return "home";
     }
