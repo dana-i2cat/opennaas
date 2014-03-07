@@ -87,7 +87,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         streamInfo = "";
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        logMessage = dateFormat.format(date) + " -> Requested routed from: " + ipSource + ". Where is located " + ipDest + "? throught port " + inputPort + " of switch " + switchDPID;
+        logMessage = dateFormat.format(date) + " -> Requested route from: " + ipSource + " to " + ipDest + ". Input port: " + inputPort + "; switch:" + switchDPID;
         //---------------------END DEMO
 
         VRFModel model = getVRFModel();
@@ -148,7 +148,7 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
 
     @Override
     public Response insertRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort, int lifeTime) {
-        log.info("Insert route. Src: " + ipSource + " Dst: " + ipDest + " In: " + inputPort + " Out: " + outputPort);
+        log.error("Insert route. Src: " + ipSource + " Dst: " + ipDest + " In: " + inputPort + " Out: " + outputPort);
         VRFModel model = getVRFModel();
 
         int version = 0;
