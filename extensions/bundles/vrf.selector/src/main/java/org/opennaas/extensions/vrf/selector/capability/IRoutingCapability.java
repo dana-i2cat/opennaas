@@ -33,15 +33,27 @@ public interface IRoutingCapability {
             @PathParam("ipDest") String ipDest,
             @PathParam("switchDPID") String switchDPID,
             @PathParam("inputPort") int inputPort);
-    
+
     /**
      * Set the working mode of the selector (static or dijkstra)
      *
-     * @param mode 
+     * @param mode
      * @return output Port where the switch forward the packet
      */
     @Path("/routeMode/{mode}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response setSelectorMode(@PathParam("mode") String mode);
+
+   /**
+     * Set the working mode of the selector (static or dijkstra)
+     *
+     * @param mode
+     * @return output Port where the switch forward the packet
+     */
+    @Path("/routeMode")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getSelectorMode();
+
 }

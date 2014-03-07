@@ -16,18 +16,18 @@ public class RoutingCapability implements IRoutingCapability {
 
     Log log = LogFactory.getLog(RoutingCapability.class);
     private final IStaticRoutingCapability service;
-     
+
     private String mode = "static";
     private Boolean proactive = true;
-    
+
     public RoutingCapability(List<IStaticRoutingCapability> listStaticRoutingCapability) {
-        
+
         super();
 //        this.service = staticRoutingCapability;
 //        log.error("List: "+listStaticRoutingCapability.size());
         this.service = listStaticRoutingCapability.get(0);
     }
-    
+
     public String getMode() {
         return mode;
     }
@@ -47,6 +47,7 @@ public class RoutingCapability implements IRoutingCapability {
     @Override
     public Response getRoute(String ipSource, String ipDest, String switchDPID, int inputPort) {
         log.error("SELECTOR: GET ROUTE");
+        log.error(ipSource+" "+ipDest+" "+switchDPID+" "+inputPort);
         Response response = null;
         if( mode.equals("static") ){
             response = service.getRoute(ipSource, ipDest, switchDPID, inputPort, proactive);
@@ -68,5 +69,10 @@ public class RoutingCapability implements IRoutingCapability {
             return Response.serverError().entity("Incorrect mode. Possible modes: static, dijkstra. Remain active mode: "+mode).build();
         }
         return Response.ok().build();
+    }
+
+@Override
+    public Response getSelectorMode() {
+        return Response.ok(mode).build();
     }
 }
