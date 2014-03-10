@@ -14,8 +14,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.MappingJsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
@@ -480,4 +482,35 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
         return streamInfo;
     }
     //---------------------END DEMO FUNCTIONS
+    
+    @Override
+    public Response insertRoute(String json){
+        ObjectMapper mapper = new ObjectMapper();
+        VRFRoute route = new VRFRoute();
+        try {
+            route = mapper.readValue(json, VRFRoute.class);
+        } catch (IOException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
+        VRFModel model = getVRFModel();
+
+        int version = 0;
+        if (Utils.isIpAddress(route.getSourceAddress()) == 4 && Utils.isIpAddress(route.getDestinationAddress()) == 4) {
+            version = 4;
+        } else if (Utils.isIpAddress(route.getSourceAddress()) == 6 && Utils.isIpAddress(route.getDestinationAddress()) == 6) {
+            version = 6;
+        } else {
+            log.error("IP version error. The detected version is: " + version);
+            return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
+        }
+        if (model.getTable(version) == null) {
+            return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
+        }
+//        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
+
+            String response = model.getTable(version).addRoute(route);
+            return Response.status(201).entity(response).build();
+//        }
+    }
 }

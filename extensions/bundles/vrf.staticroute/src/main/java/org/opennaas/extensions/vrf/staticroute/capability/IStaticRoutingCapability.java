@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.opennaas.extensions.vrf.model.VRFRoute;
 
 /**
  *
@@ -173,4 +174,10 @@ public interface IStaticRoutingCapability {
     public String getStream();
    
     /* ------------- DEMO ------------- */
+    
+    @Path("/dynamic-route")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response insertRoute(String route);
 }

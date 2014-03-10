@@ -1,5 +1,8 @@
 package org.opennaas.extensions.vrf.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +11,9 @@ import java.util.List;
  * Forward packets in a Switch (layer2). Packet from input port to output port.
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
-public class L2Forward {
+@XmlRootElement(name="L2Forward")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+public class L2Forward{
 
     private int numberPorts;//not used
     private List<String> listPorts = new ArrayList<String>();//not used

@@ -1,5 +1,8 @@
 package org.opennaas.extensions.vrf.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.extensions.vrf.utils.Utils;
@@ -7,17 +10,26 @@ import org.opennaas.extensions.vrf.utils.Utils;
  *
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
-public class VRFRoute {
+@XmlRootElement(name="VRFRoute")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
+public class VRFRoute{
+    
     Log log = LogFactory.getLog(VRFRoute.class);
     private int id;
+    private String name;
     private String sourceAddress;
     private String destinationAddress;
     private L2Forward switchInfo;
+    private String type;
     private long lifeTime;
 
     public VRFRoute(){
         
     }
+    
+   public VRFRoute(String name){
+       this.name = name;
+   }
     
     public VRFRoute(String sourceIp, String destIp, L2Forward SwitchInfo) {
         this.sourceAddress = sourceIp;
@@ -77,6 +89,22 @@ public class VRFRoute {
         this.lifeTime = timeToLive;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

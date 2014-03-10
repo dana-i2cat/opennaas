@@ -19,6 +19,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.MappingJsonFactory;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
@@ -55,7 +56,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
     @Override
     public Response getDynamicRoute(String source, String target) {
         source = Utils.intIPv4toString(Integer.parseInt(source));
-            target = Utils.intIPv4toString(Integer.parseInt(target));
+        target = Utils.intIPv4toString(Integer.parseInt(target));
         log.error("Request route " + source + " dst: " + target);
 
         createAdjacencyMatrix();
@@ -108,16 +109,15 @@ if(path != null){
 //        return response;
     }
 
-    private Response proactiveRouting(List<VRFRoute> listVRF) {
+    private Response proactiveRouting(List<VRFRoute> routeSubnetList) {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
-        List<VRFRoute> routeSubnetList = listVRF;
 
         List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
 
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
-                insertRoutetoStaticBundle(r);
+                insertRoutetoStaticBundle2(r);
                 log.error("Route " + r.getSourceAddress() + " " + r.getDestinationAddress() + " " + r.getSwitchInfo().getDPID() + " " + r.getSwitchInfo().getInputPort() + " " + r.getSwitchInfo().getOutputPort());
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
 //                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
@@ -241,6 +241,7 @@ if(path != null){
                 newRoute.setSourceAddress(sourceIp);
                 newRoute.setDestinationAddress(targetIP);
                 newRoute.setSwitchInfo(sw);
+                newRoute.setType("dynamic");
 
                 listRoutes.add(newRoute);
                 source = path.get(j);
@@ -391,6 +392,39 @@ if(path != null){
         log.error("Inser to other Bundle Response: " + response);
         return response;
     }
+    
+    /**
+     * Call a rest service to insert a Route
+     *
+     * @param route
+     * @return true if the environment has been created
+     */
+    public String insertRoutetoStaticBundle2(VRFRoute route) {
+        log.error("Calling insert Route Table service");
+        String response = null;
+        String url = "http://localhost:8888/opennaas/vrf/staticrouting/dynamic-route";
+
+        Form fm = new Form();
+        fm.set("route", (VRFRoute) route);
+
+        WebClient client = WebClient.create(url);
+        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            response = mapper.writeValueAsString(route);
+
+        } catch (IOException ex) {
+		Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        response = client.accept(MediaType.TEXT_PLAIN).type(MediaType.APPLICATION_JSON).put(response, String.class);
+
+        log.error("Inser to other Bundle Response: " + response);
+        return response;
+    }
+
     private String base64Encode(String stringToEncode) {
         return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
     }
