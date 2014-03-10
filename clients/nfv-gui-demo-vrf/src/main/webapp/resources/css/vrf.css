@@ -81,6 +81,7 @@ VRF - OpenNaaS Custom CSS
 #animaton_topology{
     width:100%;
     text-align: center;
+    float: none;
 }
 #animation_log{
     width:100%;

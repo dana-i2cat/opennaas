@@ -16,6 +16,7 @@
     </c:if>
     <c:if test="${empty topologyName}">
         <h3><spring:message code="topology.notdefined"/></h3><br/>
+        
     </c:if>
 </div>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
@@ -45,11 +46,7 @@
 
     </div>
 </div>
-<!--
-<div id="animation_log" class="ui-widget-content ui-corner-all padding">
-    <h3>Log OpenNaaS</h3>
-    <div id="log" class="ui-corner-all" align="center"></div>
--->
+
 <script>
     //var tabContent = '<iframe src="//84.88.40.153/webconsole/webconsole.php" id="gadget{id}" name="gadget{id}" frameborder="1" width="100%" height="500"></iframe>',
     var tabContent = '<iframe src="//84.88.40.153:4200/{hostName}" id="gadget{id}" name="gadget{id}" frameborder="1" width="100%" height="500"></iframe>',

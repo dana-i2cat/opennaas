@@ -23,7 +23,7 @@
         <!-- Topology graph d3js CSS -->
         <link rel="stylesheet" href="<c:url value="/resources/css/topology/topology.css" />" type="text/css">
         <link rel="stylesheet" href="<c:url value="/resources/css/topology/tipsy.css" />" type="text/css">
-        
+        <link rel="stylesheet" href="http://laktek.github.io/really-simple-color-picker/colorPicker.css" type="text/css">
         <!-- Javascript -->
 	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui-1.10.0.custom.js" />"></script>
@@ -47,6 +47,9 @@
         <!-- Tipsy js -->
         <script src="<c:url value="/resources/js/topology/jquery.tipsy.js" />"></script>        
         <script src="<c:url value="/resources/js/topology/sessvars.js" />"></script>
+        
+        <!-- Javascript color picker used in Settings view -->
+        <script src="<c:url value="/resources/js/jquery.colorPicker.js" />"></script>
 </head>
 <body>
 	<div class="container">

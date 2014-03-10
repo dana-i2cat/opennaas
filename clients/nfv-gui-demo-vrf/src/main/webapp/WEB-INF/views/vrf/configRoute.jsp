@@ -7,7 +7,9 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
+<script>
+    var routeRowColor = "${settings.colorDynamicRoutes}";
+</script>
 <div id="config_routeTable" class="ui-widget-content ui-corner-all routTable padding">
     <h3>Configured routes</h3>
     <div id="listRoutes"></div>
@@ -22,7 +24,9 @@
         if( JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !==  '[]'){
             $('.outer').after(text);
         }
-    </script>
+
+        document.write('<font color="'+routeRowColor+'">Dynamic routes</font>');
+        </script>
 </div>
 <div id="config_topology" class="topology ui-widget-content ui-corner-all">
     <c:if test="${!empty topologyName}">

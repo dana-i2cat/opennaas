@@ -12,11 +12,12 @@ package org.opennaas.gui.nfvrouting.entities.settings;
  */
 public class Settings {
     
-    private String addShellMode = "tab"; //window
-    private String routingType = "static";
+    private String addShellMode = "window"; //window/tab
+    private String routingType = "static"; //static/dijkstra
+    private String colorDynamicRoutes = "#81DAF5";
 
     public Settings() {
-        this.addShellMode = "tab";
+        this.addShellMode = "window";
     }
 
     public String getAddShellMode() {
@@ -33,6 +34,14 @@ public class Settings {
 
     public void setRoutingType(String routingType) {
         this.routingType = routingType;
+    }
+
+    public String getColorDynamicRoutes() {
+        return colorDynamicRoutes;
+    }
+
+    public void setColorDynamicRoutes(String colorDynamicRoutes) {
+        this.colorDynamicRoutes = colorDynamicRoutes;
     }
     
 }

@@ -16,7 +16,7 @@ var packet = svg.selectAll('.packet').data([0]);
 packet.enter().append('image')
         .attr('class', 'packet')
         .attr('x', '0')
-        .attr('y', '110')
+        .attr('y', '145')
         .attr('width', '30')
         .attr('height', '30')
         .style("z-index", 999)
@@ -32,7 +32,8 @@ console.log("Runtime");
             if(shellMode == "tab"){
                 addTab(d.id);
             }else if(shellMode == "window"){
-                window.open(openHostShell(d.id));
+                var myWindow = window.open(openHostShell(d.id));
+                myWindow.document.write('<html><head><title>Host '+d.id+'</title></head><body height="100%" width="100%"><iframe src="' + openHostShell(d.id) + '" height="95%" width="100%" style="border: 0;"></iframe></body></html>');
             }
         }
     });

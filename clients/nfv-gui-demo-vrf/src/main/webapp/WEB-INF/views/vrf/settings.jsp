@@ -37,14 +37,21 @@
             <form:radiobutton cssStyle="label" path="addShellMode" value="tab"/>Tab
             <form:radiobutton cssStyle="label" path="addShellMode" value="window"/>Window
         </div>
-        <%--                 <div class="row">
-                           <form:label path="password">Password:</form:label>
-                           <span class="formw">
-                               <form:password class="inputConfig" path="password"/>
-                           </span>
-                       </div>
-        --%>                
-
+        <div class="row">
+            <form:label path="colorDynamicRoutes">Select dynamic route color: </form:label>
+<%--                <form:radiobutton cssStyle="label" path="colorDynamicRoutes" value="#81DAF5"/>Blue
+            <form:radiobutton cssStyle="label" path="colorDynamicRoutes" value="green"/>Green
+--%>            <form:input id="color1" class="color" name="color1" type="text" path="colorDynamicRoutes" value="${settings.colorDynamicRoutes}"/>
+        </div>
+         <STYLE type="text/css">
+             #color1{
+                float: left; display: inline; 
+             }
+             .colorPicker-picker{
+                 float: left; position: absolute;
+                 display: inline; margin-left: 3px;
+             }
+ </STYLE>
         <div class="row">
             <form:label path="addShellMode">Select link color: </form:label>
                 <select>

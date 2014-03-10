@@ -38,7 +38,7 @@ legendData = [{"label": "Static link"},
             {"label": "OpenFlow Switch"},
             {"label": "OpenFlow Controller"},
             {"label": "Host"}];
-var legend_x = 490,
+var legend_x = 470,
     legend_y = 270,
     legend_width = 150,
     legend_height = 120;
@@ -73,7 +73,7 @@ legend.append("image")
     });
 
 legend.append("text")
-    .attr("x", 24)
+    .attr("x", 40)
     .attr("y", 10)
     .attr("dy", ".35em")
     .text(function (d) { return d.label; });

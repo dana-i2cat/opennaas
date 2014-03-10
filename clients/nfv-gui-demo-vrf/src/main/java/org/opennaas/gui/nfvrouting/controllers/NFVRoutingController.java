@@ -45,8 +45,12 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRouteTable")
-    public String getRouteTable(@RequestParam("type") String type, ModelMap model, Locale locale, HttpSession session) {
+    public String getRouteTable(@ModelAttribute("settings") Settings settings, @RequestParam("type") String type, ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Route Table ------------------> IPv" + type);
+
+	if(settings == null)
+            settings = new Settings();
+        model.addAttribute("settings", settings);
 
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
@@ -72,6 +76,7 @@ public class NFVRoutingController {
             model.addAttribute("errorMsg", e.getMessage());
             return "configRoute";
         }
+
         return "configRoute";
     }
 

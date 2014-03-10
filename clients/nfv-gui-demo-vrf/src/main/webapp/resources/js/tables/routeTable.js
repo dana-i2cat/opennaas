@@ -45,15 +45,20 @@ function ConvertJsonToRouteTable(parsedJson, tableId) {
             if (headers) {
                 for (i = 0; i < parsedJson.routeTable.length; i++) {
                     var rowId = parsedJson.routeTable[i]['id'];
-                    tbCon += tdRow.format(parsedJson.routeTable[i]['id']);
+                    if(parsedJson.routeTable[i]['type'] == "dynamic")
+                        tbCon += tdRow.format("D"+parsedJson.routeTable[i]['id']);
+                    else
+                        tbCon += tdRow.format(parsedJson.routeTable[i]['id']);
                     tbCon += tdRow.format(parsedJson.routeTable[i]['sourceAddress']);
                     tbCon += tdRow.format(parsedJson.routeTable[i]['destinationAddress']);
-//                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].inputPort);
-//                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].dpid.substr(21));
+                    //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].inputPort);
+                    //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].dpid.substr(21));
                     var dpid = parsedJson.routeTable[i]['switchInfo'].dpid;
-                    var switchId = nodes.filter(function (d) {return (d.dpid === dpid ); })[0].id;
+                    var switchId = nodes.filter(function (d) {
+                        return (d.dpid === dpid );
+                    })[0].id;
                     tbCon += tdRow.format(switchId);
-//                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
+                    //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
                     tbCon += tdRowHide.format(parsedJson.routeTable[i]['switchInfo'].dpid);
                     tbCon += tdRow.format("<input onclick='del(" + rowId + "); return false;' class='deleteButton  ui-button ui-widget ui-state-default ui-corner-all ui-state-focus' type='button' value='Delete'/>");
                     trCon += tr.format(tbCon);
@@ -80,7 +85,7 @@ function removeAll(){
         row = table.rows[i];       
         col = row.cells[0];
         del(col.firstChild.nodeValue);
-        //alert(col.firstChild.nodeValue);
+    //alert(col.firstChild.nodeValue);
     }
     for(var i = table.rows.length - 1; i > 0; i--){
         table.deleteRow(i);
@@ -115,10 +120,12 @@ function del(id){
     if(document.getElementById("removedOk") === null){
         $("<div id='removedOk' class='success'>Removed correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
         $('.success').next('br').remove();
-            setTimeout(function() {
+        setTimeout(function() {
             //$('.success').remove();
-            $('.success').slideUp("slow", function() { $('.success').remove();});
-            //$('.success').fadeOut(300, function(){ $(this).remove();});
+            $('.success').slideUp("slow", function() {
+                $('.success').remove();
+            });
+        //$('.success').fadeOut(300, function(){ $(this).remove();});
         }, 3000);
     }
     setTimeout( 'waiting(false)' ,2000);
@@ -133,7 +140,7 @@ function removeAllRoutes(){
     var result = "";
     $.ajax({
         type: 'POST',
-//        url : "deleteAllRoutes?type="+getURLParameter("type"),
+        //        url : "deleteAllRoutes?type="+getURLParameter("type"),
         url : "deleteAllRoutes",
         async: false,
         success : function (data) {
@@ -144,10 +151,12 @@ function removeAllRoutes(){
     if(document.getElementById("removedOk") === null){
         $("<div id='removedOk' class='success'>Removed correctly.</div>" ).insertAfter( "#header_menu").before("<br>");
         $('.success').next('br').remove();
-            setTimeout(function() {
+        setTimeout(function() {
             //$('.success').remove();
-            $('.success').slideUp("slow", function() { $('.success').remove();});
-            //$('.success').fadeOut(300, function(){ $(this).remove();});
+            $('.success').slideUp("slow", function() {
+                $('.success').remove();
+            });
+        //$('.success').fadeOut(300, function(){ $(this).remove();});
         }, 3000);
     }
     setTimeout( 'waiting(false)' ,2000);
@@ -160,7 +169,7 @@ function removeAllRoutes(){
  */
 function getRouteList(jsonReceived){
     var possibleRoutes = [];
-//console.log(jsonReceived.routeTable);
+    //console.log(jsonReceived.routeTable);
     var listRoutes = jsonReceived.routeTable;
     var listNodes = new Array();
 
@@ -172,10 +181,10 @@ function getRouteList(jsonReceived){
         }
     });
 
-//console.log(listNodes);
+    //console.log(listNodes);
     var routeObject = new Object();
     var initial = listNodes[0];
-//console.log(listNodes.length);
+    //console.log(listNodes.length);
     for ( var i = 0; i <= listNodes.length -1; i++){
         //getRoute(initial, listNode[i+1]);
         routeObject = new Object();
@@ -194,50 +203,53 @@ var showRoutes = false;
 var toggle;
 function getSpecificRoute(src, dst){
     var newToggle = src+"-"+dst;
-	if(showRoutes){
-            console.log("Hide routes");
-            document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
-            showRoutes = false;
-	}
+    if(showRoutes){
+        console.log("Hide routes");
+        document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
+        showRoutes = false;
         if(toggle != null){
             if(toggle == newToggle){
                 return;
             }
         }
-        toggle = src+"-"+dst;
-console.log("Get specific route "+src+" "+dst);
-        var result = "";
-        $.ajax({
-            type: 'GET',
-            url : "route/"+src+"/"+dst,
-            async: false,
-            success : function (data) {
-//                $("#dynamicContent").html(data);
-                result = data;
-            }
-        });
+    }
+    
+    toggle = src+"-"+dst;
+    console.log("Get specific route "+src+" "+dst);
+    var result = "";
+    $.ajax({
+        type: 'GET',
+        url : "route/"+src+"/"+dst,
+        async: false,
+        success : function (data) {
+            //                $("#dynamicContent").html(data);
+            result = data;
+        }
+    });
     var json = eval("(" + result + ")");
-//console.log(result);
+    //console.log(result);
     var jsonHtmlTable = ConvertJsonToRouteTable(json, 'jsonTable'); 
     document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
     document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
     document.getElementById("innerTable").innerHTML += "</table><input style='margin-right: 11.5px' class='addRouteButton ui-button ui-widget ui-state-default ui-corner-all' onClick='removeAll()' type='button' value='Remove this route' name='Clean table'/>";
-showRoutes = true;
+    showRoutes = true;
+
+    highlightDynamicRoutes();
 }
 /**
  * Request to OpenNaaS in order to obtain the list of routes given the IP version in the following format (Ipv4/IPv6)
  */
 function getAllRoutes(type){
     var result = "";
-        $.ajax({
-            type: 'GET',
-            url : "routeAll?type="+type,
-            async: false,
-            success : function (data) {
-//                $("#dynamicContent").html(data);
-                result = data;
-            }
-        });
+    $.ajax({
+        type: 'GET',
+        url : "routeAll?type="+type,
+        async: false,
+        success : function (data) {
+            //                $("#dynamicContent").html(data);
+            result = data;
+        }
+    });
     return eval("(" + result + ")");
 }
 
@@ -247,4 +259,24 @@ function waiting(status){
         $body.addClass("loading");
     else
         $body.removeClass("loading");
+}
+
+function highlightDynamicRoutes(){
+    if(undefined == routeRowColor || routeRowColor == null)
+        routeRowColor = "#81DAF5";
+    var patt = new RegExp("D[0-9]")
+    var table = document.getElementById('jsonTable');
+    if ( table.getElementsByTagName('tr').length > 1 ){
+        var tbody = table.getElementsByTagName('tbody')[0];
+        var items = tbody.getElementsByTagName('tr');
+        var tds = null;
+
+        for (var j = 0; j < items.length; j++) {
+            tds = items[j].getElementsByTagName('td');
+            for (var i = 0; i < tds.length-1; i++) {
+                if( tds[i].innerHTML.match(patt))
+                    table.getElementsByTagName('tr')[j+1].style.background = routeRowColor;
+            }
+        }
+    }
 }

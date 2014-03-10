@@ -52,7 +52,7 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
         } else {
             if (headers) {
                 for (i = 0; i < arr_size; i++) {
-                    if(tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].actions.value) != -2){
+                    if(parsedJson.floodlightOFFlows.floodlightOFFlow[i].actions.value != -2){
     //                    tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].name);
                         tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.srcIp);
                         tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.dstIp);

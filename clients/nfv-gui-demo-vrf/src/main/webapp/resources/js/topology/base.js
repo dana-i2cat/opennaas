@@ -13,7 +13,6 @@ var auto = "Automatic";
 var man = "Manual";
 var ctrlKey = false;//ctrl key is pressed?
 
-
 /* Images size */
 var node_size_width = 50, node_size_height_sw = 50, node_size_height_h = 35;
 var node_size_width_big = node_size_width + 25, node_size_height_sw_big = node_size_height_sw+25, node_size_height_h_big = 35;
@@ -190,7 +189,13 @@ console.log("MOUSEUP");
         .text(function (d) { return d.id;});
 
     node.attr("transform", function (d) {
-        return "translate(" + d.x + "," + d.y + ")";
+        new_x = d.x;
+        new_y = d.y;
+        if(d.x < 30) new_x = 40 + Math.floor((Math.random()*15)+1);
+        else if(d.x > 620) new_x = 580 - Math.floor((Math.random()*15)+1);
+        if(d.y < 30) new_y = 40 + Math.floor((Math.random()*15)+1);
+        else if(d.y > 390) new_x = 390 - Math.floor((Math.random()*15)+1);
+        return "translate(" + new_x + "," + new_y + ")";
     });
     
     /** OpenNaaS cloud **/
