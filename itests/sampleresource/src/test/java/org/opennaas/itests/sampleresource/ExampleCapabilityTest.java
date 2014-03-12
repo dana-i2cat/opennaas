@@ -20,12 +20,6 @@ package org.opennaas.itests.sampleresource;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,18 +39,25 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.extensions.sampleresource.capability.example.IExampleCapability;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class ExampleCapabilityTest {
 
 	@Inject
 	protected IResourceManager	resourceManager;
+
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.sampleresource)", timeout = 50000)
+	private BlueprintContainer	sampleResourceBlueprintContainer;
 
 	private IResource			sampleResource;
 
@@ -67,16 +68,21 @@ public class ExampleCapabilityTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-core", "opennaas-sampleresource", "itests-helpers"),
-				noConsole(),
-				keepRuntimeFolder());
+
+		return new Option[] {
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-core", "opennaas-sampleresource", "itests-helpers"),
+				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder()
+		};
 	}
 
 	@Test
 	public void sampleTest() throws CapabilityException {
 		Assert.assertNotNull(sampleResource.getCapabilities());
-		Assert.assertEquals(1, sampleResource.getCapabilities().size());
+		Assert.assertEquals(1,
+				sampleResource.getCapabilities().size());
 
 		ICapability capab = sampleResource.getCapabilities().get(0);
 		Assert.assertTrue(capab instanceof IExampleCapability);
@@ -95,8 +101,8 @@ public class ExampleCapabilityTest {
 
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		CapabilityDescriptor exampleCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(CAPABILITY_IMPL_NAME,
-				CAPABILITY_IMPL_VERSION, SAMPLE_CAPABILITY_TYPE, "mock://user:pass@host.net:2212/mocksubsystem");
+		CapabilityDescriptor exampleCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(CAPABILITY_IMPL_NAME, CAPABILITY_IMPL_VERSION,
+				SAMPLE_CAPABILITY_TYPE, "mock://user:pass@host.net:2212/mocksubsystem");
 		lCapabilityDescriptors.add(exampleCapabilityDescriptor);
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE,
@@ -113,4 +119,5 @@ public class ExampleCapabilityTest {
 		resourceManager.removeResource(sampleResource.getResourceIdentifier());
 
 	}
+
 }
