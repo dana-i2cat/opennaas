@@ -105,7 +105,8 @@
 							org.slf4j,
 							org.osgi.framework,
 							org.apache.commons.lang;version="2.4",
-							!org.ops4j.pax.exam,
+							org.ops4j.pax.exam,
+							!org.ops4j.pax.exam.karaf.options,
 							*
 						</Import-Package>
 						<!-- | assume public classes are in the top package, and private classes 
