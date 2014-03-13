@@ -25,10 +25,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.IOException;
@@ -74,9 +70,12 @@ import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
 import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransport;
 import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransportException;
 import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
@@ -95,7 +94,8 @@ import uk.co.westhawk.snmp.stack.SnmpContextv2c;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
 
-@RunWith(JUnit4TestRunner.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class WonesysProtocolTest implements EventHandler, ITransportListener
 {
 	private static Log					log				= LogFactory.getLog(WonesysProtocolTest.class);
@@ -115,6 +115,7 @@ public class WonesysProtocolTest implements EventHandler, ITransportListener
 	String								receivedMessage;
 
 	// Required services
+	@SuppressWarnings("unused")
 	@Inject
 	private BundleContext				bundleContext;
 
@@ -136,10 +137,12 @@ public class WonesysProtocolTest implements EventHandler, ITransportListener
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus"),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus"),
+				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
