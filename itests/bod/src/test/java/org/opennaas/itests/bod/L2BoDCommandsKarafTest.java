@@ -61,11 +61,13 @@ import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.karaf.options.KarafDistributionOption;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 {
 	private static final String		ACTION_NAME				= "dummy";
@@ -87,6 +89,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 	@Filter("(type=bod)")
 	private IResourceRepository		repository;
 
+	@SuppressWarnings("unused")
 	@Inject
 	private IProtocolManager		protocolManager;
 
@@ -113,7 +116,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 				OpennaasExamOptions.includeFeatures("opennaas-bod", "opennaas-bod-driver-dummy", "itests-helpers"),
 				OpennaasExamOptions.noConsole(),
 				OpennaasExamOptions.keepLogConfiguration(),
-				KarafDistributionOption.keepRuntimeFolder());
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
