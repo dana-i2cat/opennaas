@@ -25,15 +25,13 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
@@ -42,12 +40,12 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.security.acl.IACLManager;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,8 +57,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author Julio Carlos Barrera
  * 
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class ACLManagerTest {
 
 	private final static Log	log	= LogFactory.getLog(ACLManagerTest.class);
@@ -73,11 +71,12 @@ public class ACLManagerTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return CoreOptions.options(OpennaasExamOptions.opennaasDistributionConfiguration(),
-
+		return CoreOptions.options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos", "opennaas-vcpe", "itests-helpers"),
 				OpennaasExamOptions.noConsole(),
-				KarafDistributionOption.keepRuntimeFolder());
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
