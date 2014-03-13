@@ -20,10 +20,6 @@ package org.opennaas.itests.vrrp.junos10;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.FileNotFoundException;
@@ -75,11 +71,12 @@ import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
@@ -88,8 +85,8 @@ import org.xml.sax.SAXException;
 /**
  * @author Julio Carlos Barrera
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class VRRPServicesTest {
 	private final static Log	log						= LogFactory.getLog(VRRPServicesTest.class);
 
@@ -110,6 +107,7 @@ public class VRRPServicesTest {
 
 	private Server				netconfServer;
 
+	@SuppressWarnings("unused")
 	@Inject
 	private BundleContext		bundleContext;
 
@@ -227,10 +225,11 @@ public class VRRPServicesTest {
 		return options(
 				/* debug socket */
 				// OpennaasExamOptions.openDebugSocket(),
-				opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
-				noConsole(),
-				keepRuntimeFolder());
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos", "itests-helpers", "ssh"),
+				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
