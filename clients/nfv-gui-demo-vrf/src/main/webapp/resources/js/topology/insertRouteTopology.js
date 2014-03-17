@@ -80,7 +80,7 @@ console.log("MouseUp on node " + d.id+" Source h " + source.id+" Dest h " + targ
             if ( typeof originLink === 'undefined' ) {
                 originLink = links.filter(function (l) {return (l.source === target && l.target === source); })[0];
             }
-
+var routeExists = false;
             //Adding new link in Manual Mode
             if ( mode === man ){
 console.log("New Link. Manual mode. ");
@@ -101,8 +101,12 @@ console.log("New Link. Manual mode. ");
                         } else if( manualType === "End-to-end" ){
                             insertIpDiv(newLink);
                         }
+                        routeExists = true;
                         break;
                     }
+                }
+                if(!routeExists){
+                    d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
                 }
             }
 
@@ -243,7 +247,7 @@ console.log("Insert Route request: "+ipSrc+" "+ipDst+" "+dpid+" "+inPort+" "+out
             //$('.success').remove();
             $('#insertRoute').slideUp("slow", function() { $('#insertRoute').remove();});
             //$('.success').fadeOut(300, function(){ $(this).remove();});
-        }, 3000);
+        }, 4000);
     }
     return response;
 }
@@ -324,23 +328,24 @@ console.log(lastLink);
 
 /**
  * Cahnge the insert routes mode. Automatic or manual (auto-man)
- * @param {type} ref
+ * @param {type} mode
  * @returns {undefined}
  */
-function change(ref) {
-     if(mode === auto){
+function change(mode) {
+    this.mode = mode;
+     if(this.mode === auto){
         mode = man;
-        clearPath();
-        document.getElementById('manualType').style.display = 'inline-block';
+        document.getElementById('manualType').style.display = 'none';
         if( getManualType() === "End-to-end" ){
             document.getElementById('insertRouteInfo').style.display = 'inline-block';
         }
      }else{
-        mode = auto;
-        document.getElementById('manualType').style.display = 'none';
+        mode = man;
+        clearPath();
+        document.getElementById('manualType').style.display = 'inline-block';
         document.getElementById('insertRouteInfo').style.display = 'none';
     }    
-    ref.value= mode;
+//    ref.value= mode;
     setActive(null);
 }
 

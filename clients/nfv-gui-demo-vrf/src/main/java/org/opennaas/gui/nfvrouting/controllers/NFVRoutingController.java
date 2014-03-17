@@ -1,3 +1,4 @@
+
 package org.opennaas.gui.nfvrouting.controllers;
 
 import java.util.Locale;
@@ -45,9 +46,16 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRouteTable")
-    public String getRouteTable(@ModelAttribute("settings") Settings settings, @RequestParam("type") String type, ModelMap model, Locale locale, HttpSession session) {
+    public String getRouteTable(@RequestParam("type") String type, ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Route Table ------------------> IPv" + type);
-
+Settings settings = null;
+	if ((Settings) session.getAttribute("settings") != null) {
+            model.put("settings", (Settings) session.getAttribute("settings"));
+		settings =  (Settings) session.getAttribute("settings");
+        }else{
+		model.addAttribute("errorMsg", "Session time out. Return to <a href='http://nfv.opennaas.i2cat.net/secure/nfvRouting/home'>Home</a>");
+//		return "home";
+	}
 	if(settings == null)
             settings = new Settings();
         model.addAttribute("settings", settings);
@@ -90,6 +98,12 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/insertRoute")
     public String insertRoute(ModelMap model, HttpSession session) {
+	if ((Settings) session.getAttribute("settings") != null) {
+            model.put("settings", (Settings) session.getAttribute("settings"));
+        }else{
+                model.addAttribute("errorMsg", "Session time out. Return to <a href='http://nfv.opennaas.i2cat.net/secure/nfvRouting/home'>Home</a>");
+//                return "home";
+        }
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }
@@ -135,9 +149,16 @@ public class NFVRoutingController {
      * @param session
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/animation")
-    public String animation(@ModelAttribute("settings") Settings settings, insertRoutes route, BindingResult result, ModelMap model, HttpSession session) {
-        LOGGER.info("Animation ------------------> " + route.getListRoutes());
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/demonstrator")
+    public String demonstrator(insertRoutes route, BindingResult result, ModelMap model, HttpSession session) {
+        LOGGER.info("Demonstator ------------------> " + route.getListRoutes());
+        Settings settings = null;
+        if ((Settings) session.getAttribute("settings") != null) {
+            model.put("settings", (Settings) session.getAttribute("settings"));
+        }else{
+                model.addAttribute("errorMsg", "Session time out. REturn to home");
+//                return "home";
+        }
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }
@@ -146,7 +167,7 @@ public class NFVRoutingController {
             settings = new Settings();
         model.addAttribute("settings", settings);
 
-        return "animation";
+        return "demonstrator";
     }
 
     

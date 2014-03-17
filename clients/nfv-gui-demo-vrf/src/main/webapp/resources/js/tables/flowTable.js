@@ -51,8 +51,10 @@ function ConvertJsonToFlowTable(parsedJson, tableId, tableClassName) {
             }
         } else {
             if (headers) {
+		var regex = new RegExp("192.168.[0-9].9[0-9]");
                 for (i = 0; i < arr_size; i++) {
-                    if(parsedJson.floodlightOFFlows.floodlightOFFlow[i].actions.value != -2){
+                    if(parsedJson.floodlightOFFlows.floodlightOFFlow[i].actions.value != -2 &&
+			!parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.srcIp.match(regex)){
     //                    tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].name);
                         tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.srcIp);
                         tbCon += tdRow.format(parsedJson.floodlightOFFlows.floodlightOFFlow[i].match.dstIp);

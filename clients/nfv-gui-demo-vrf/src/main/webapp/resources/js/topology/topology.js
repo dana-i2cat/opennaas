@@ -20,7 +20,7 @@ function readTextFile(url) {
     }                                             
 }
 
-var dataTopology = readTextFile("/nfv-gui-demo-vrf/resources/js/topology/topo.json");
+var dataTopology = readTextFile("/resources/js/topology/topo.json");
 dataTopology = eval("(" +dataTopology+ ")");
 if( dataTopology ){
     console.log("Create topology vars");

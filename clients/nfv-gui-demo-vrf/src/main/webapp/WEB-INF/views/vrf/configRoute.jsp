@@ -24,8 +24,8 @@
         if( JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !==  '[]'){
             $('.outer').after(text);
         }
-
-        document.write('<font color="'+routeRowColor+'">Dynamic routes</font>');
+        var oppositeColor = opposite(routeRowColor);
+        document.write('<font color="'+routeRowColor+'" style="background-color:'+oppositeColor+'; font-weight: bold;">Dynamic routes</font>');
         </script>
 </div>
 <div id="config_topology" class="topology ui-widget-content ui-corner-all">
@@ -43,7 +43,7 @@
     var type = getURLParameter("type");
 //console.log(${json});
     var listRoutes = getRouteList(${json});
-    //getRoute
+//getRoute
 //console.log(listRoutes);
 //console.log(listRoutes[0]);
     for ( var i = 0; i < listRoutes.length; i++){
@@ -58,6 +58,6 @@
 
 <script>
     if ( $(window).height() > 450 ){
-        $(".innera").height($(window).height() - 350);
+        $(".innera").height($(window).height() - 400);
     }
 </script>

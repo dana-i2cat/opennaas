@@ -59,10 +59,13 @@ console.log("Source " + source.id + " to Dest " + target.id);
             var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
 console.log("Before: "+JSON.stringify(returnedRoutes));
 //            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
-            returnedRoutes = sortReturnedRoutes(returnedRoutes);
-            if(returnedRoutes == null){
-                d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
-                return;
+            try{
+                returnedRoutes = sortReturnedRoutes(returnedRoutes);
+            }catch(e){
+                if(returnedRoutes == null || returnedRoutes != 'undefined'){
+                    d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
+                    return;
+                }
             }
 console.log("After sort: "+JSON.stringify(returnedRoutes));
 cleanHighlight();
@@ -225,4 +228,56 @@ function mouseOverImage(){
             return info;
         }
     });
+}
+
+
+function showGraphicRoute(sourceIp, targetIp, json){
+    var source, target, newSource, swNode;
+    source = nodes.filter(function (n) {return n.ip === sourceIp; })[0];
+    target = nodes.filter(function (n) {return n.ip === targetIp; })[0];
+    newSource = source;
+console.log("Source " + source.id + " to Dest " + target.id);
+    var link;
+//    link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
+    //request to OpenNaaS
+    swNode = nodes.filter(function (n) {return n.id === source.SW; });
+    var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
+    //returnedRoutes = json;
+console.log("Before: "+JSON.stringify(returnedRoutes));
+//            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
+    try{
+        returnedRoutes = sortReturnedRoutes(returnedRoutes);
+    }catch(e){
+        if(returnedRoutes == null || returnedRoutes != 'undefined'){
+            d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
+            return;
+        }
+    }
+console.log("After sort: "+JSON.stringify(returnedRoutes));
+//cleanHighlight();//show dynamic route color
+    if( typeof returnedRoutes !== 'undefined' ){
+        for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
+            var obj = returnedRoutes[i];
+             for(var key in obj){
+console.log("Json key: "+key+" Json value: "+obj[key]);
+                dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                if(key === "dpid"){
+                    dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                }else if (key === "ip"){
+                    dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
+                    //highlight( source.ip, target.ip );
+                }
+                link = {source: newSource, target: dest1, type: "new_link"};
+                links.push(link);
+                newSource = dest1;
+            }
+        }
+    }
+    cleanDisplayedLink();
+    d3.selectAll('.dragline').attr('d', 'M0,0L0,0'); //Remove the requested path
+
+    // select new link
+    selected_link = link;
+    selected_node = null;
+    updateLinks();
 }

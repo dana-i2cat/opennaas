@@ -36,28 +36,48 @@ public class SettingsController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/settings")
-    public String settings(@ModelAttribute("settings") Settings settings, ModelMap model, Locale locale, HttpSession session) {
+    public String settings(ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Settings view -----------------");
 
-        model.addAttribute(settings);
+        Settings settings = new Settings();
+	if ((Settings) session.getAttribute("settings") != null) {
+            model.put("settings", (Settings) session.getAttribute("settings"));
+            settings = (Settings) session.getAttribute("settings");
+        }else{
+		model.addAttribute("errorMsg", "Session time out. Return to <a href='http://nfv.opennaas.i2cat.net/secure/nfvRouting/home'>Home</a>");
+//		return "home";
+	}
+        
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }
 
-        String response = nfvRoutingBO.getONRouteMode();
-        if (response.equals("OpenNaaS is not started")) {
-            model.addAttribute("errorMsg", response);
+        try{
+            String response = nfvRoutingBO.getONRouteMode();
+            if (response.equals("OpenNaaS is not started")) {
+                model.addAttribute("errorMsg", response);
+            }
+            LOGGER.info("ON ROUTING MODE: " + response);
+            model.addAttribute("onRouteMode", response);
+            settings.setRoutingType(response);
+        }catch(Exception e){
+            model.addAttribute("errorMsg", "Session time out.");
         }
-        LOGGER.info("ON ROUTING MODE: " + response);
-        model.addAttribute("onRouteMode", response);
-
+        model.addAttribute(settings);
         return "settings";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/settings")
-    public String settings(@ModelAttribute("settings") Settings settings_ses, Settings settings, BindingResult result, ModelMap model, Locale locale, HttpSession session) {
+    public String settings(Settings settings, BindingResult result, ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Settings view -----------------");
 
+        Settings settings_ses = null;
+	if ((Settings) session.getAttribute("settings") != null) {
+            model.put("settings", (Settings) session.getAttribute("settings"));
+		settings_ses =  (Settings) session.getAttribute("settings");
+        }else{
+		model.addAttribute("errorMsg", "Session time out. Return to <a href='http://nfv.opennaas.i2cat.net/secure/nfvRouting/home'>Home</a>");
+	}
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }

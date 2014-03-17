@@ -161,6 +161,13 @@ function removeAllRoutes(){
     }
     setTimeout( 'waiting(false)' ,2000);
     document.getElementById("innerTable").innerHTML = "";
+    var jsonNewRoutes = getAllRoutes(type);
+    var listRoutes = getRouteList(jsonNewRoutes);
+    
+    document.getElementById("listRoutes").innerHTML = "";
+    for ( var i = 0; i < listRoutes.length; i++){
+        document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
+    }
     return result;
 }
 /**
@@ -235,7 +242,9 @@ function getSpecificRoute(src, dst){
     showRoutes = true;
 
     highlightDynamicRoutes();
+    showGraphicRoute(src, dst, json);
 }
+
 /**
  * Request to OpenNaaS in order to obtain the list of routes given the IP version in the following format (Ipv4/IPv6)
  */

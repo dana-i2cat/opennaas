@@ -14,7 +14,7 @@ public class Settings {
     
     private String addShellMode = "window"; //window/tab
     private String routingType = "static"; //static/dijkstra
-    private String colorDynamicRoutes = "#81DAF5";
+    private String colorDynamicRoutes = "#ccffff";//"#81DAF5"
 
     public Settings() {
         this.addShellMode = "window";

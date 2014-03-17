@@ -8,7 +8,10 @@ if(sessvars.nodes){
     controllersLinks = sessvars.controllersLinks;
 }
 var storedNodes = nodes;
-
+//if(undefined == linkColor || linkColor == null){
+//    linkColor = "black";
+//}
+var linkColor = "black";
 var auto = "Automatic";
 var man = "Manual";
 var ctrlKey = false;//ctrl key is pressed?
@@ -85,7 +88,7 @@ function update(){
     controllerLink = controllerLink.data(controllersLinks);
     controllerLink.enter().append("svg:line")
         .attr("class", "linkCtrl")
-        .attr("stroke", "green");
+        .attr("stroke", linkColor);
     
     link.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
@@ -114,7 +117,7 @@ function update(){
     var node_x = "-30", node_y = "-30";
     var node_width = 50, node_height = 50, node_height_h = 35;
     var node_width_big = node_width + 25, node_height_big = node_height;
-    var node_txt_x_sw = "-24", node_txt_y_sw = "9";
+    var node_txt_x_sw = "-24", node_txt_y_sw = "-35";//9
     var node_txt_x_h = "-10", node_txt_y_h = "25";
     node = node.data(nodes);
     node.enter().append("g")
@@ -165,7 +168,7 @@ console.log("MOUSEUP");
             d3.select(this).attr("width", node_width_big).attr("height", node_height_big); //image big
 
             if (d.type === "switch")
-                d3.select("#" + d.id + "_text").attr("x", -15).attr("y", 12); //move text when big
+                d3.select("#" + d.id + "_text").attr("x", -15).attr("y", -40); //move text when big  12
             else if (d.type === "host")
                 d3.select("#" + d.id + "_text").attr("x", -9).attr("y", 35); //move text when big
             if (!mousedown_node) return;
@@ -194,7 +197,7 @@ console.log("MOUSEUP");
         if(d.x < 30) new_x = 40 + Math.floor((Math.random()*15)+1);
         else if(d.x > 620) new_x = 580 - Math.floor((Math.random()*15)+1);
         if(d.y < 30) new_y = 40 + Math.floor((Math.random()*15)+1);
-        else if(d.y > 390) new_x = 390 - Math.floor((Math.random()*15)+1);
+        else if(d.y > 390) new_y = 390 - Math.floor((Math.random()*15)+1);
         return "translate(" + new_x + "," + new_y + ")";
     });
     
@@ -315,6 +318,7 @@ function keyup() {
 
 function mouseup() {
 console.log("MouseUp");
+d3.selectAll('.dragline').attr('d', 'M0,0L0,0'); //Remove the requested path
     if (mousedown_node) {
         drag_line
             .classed('hidden', true)

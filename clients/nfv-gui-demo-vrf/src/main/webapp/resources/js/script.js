@@ -22,15 +22,15 @@ $(function() {
  */
 $(document).ready(function() {
 
+    $("#jsonTable").tablesorter();
+    $("#mode").buttonset();
+    
     try{
         $('#color1').colorPicker({flat: true});
     }catch(e){
         console.log("ColorPicker is not defined. Only happens in login view because the js is not loaded.")
     }
-        
-
-    $("#jsonTable").tablesorter(); 
-
+    
     $(".deleteButton").live("click", function () {
         $(this).parent().parent().remove();
     });
@@ -304,3 +304,23 @@ $(document).ready(function() {
 
     }
 });
+/**
+ * Calculate the opposite color. input color in format #000000
+ */
+function opposite(c) {
+	c = c.toUpperCase();
+	var result='';
+	var ch='';
+	var list1='0123456789ABCDEF';
+	var list2='FEDCBA9876543210';
+	for(var i=0;i<c.length;i++) { 
+		ch=c.charAt(i); 
+		for(var n=0;n<list1.length;n++){ 
+			if(ch==list1.charAt(n)) 
+				result += list2.charAt(n);
+		}
+	}
+	if ( result.charAt(0) != "#")
+		result = "#"+result;
+	return result;
+}

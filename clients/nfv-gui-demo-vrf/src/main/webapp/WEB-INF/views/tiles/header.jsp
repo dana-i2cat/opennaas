@@ -27,7 +27,7 @@
 </div>	
 <div id="header_menu" class="ui-widget-content ui-corner-all">
     <div id="home">
-        <a href="/nfv-gui-demo-vrf/secure/nfvRouting/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
+        <a href="/secure/nfvRouting/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
     </div>
 
     <ul id="nav">
@@ -54,8 +54,8 @@
             </a>
         </li>
         <li>
-            <a href="<c:url value="${url}/secure/noc/nfvRouting/animation" />">
-                <spring:message code="menu.animation" />
+            <a href="<c:url value="${url}/secure/noc/nfvRouting/demonstrator" />">
+                <spring:message code="menu.demonstrator" />
             </a>
         </li>
         <li>

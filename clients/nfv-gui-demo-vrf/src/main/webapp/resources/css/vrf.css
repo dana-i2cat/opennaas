@@ -71,8 +71,11 @@ VRF - OpenNaaS Custom CSS
 }
 #insertRouteInfo{
     padding: 10px;
-    width: 28%;
+    width: 92%;
     margin-left: 3px;
+}
+#mode0 {
+    position: absolute !important;
 }
 #changeMode{
     margin-left: 3px;
@@ -149,6 +152,8 @@ body.loading .modal {
 
 #manualType{
     width: 120px;
+    margin-right: 0;
+    float: right;
 }
 
 /** Scrollable table */

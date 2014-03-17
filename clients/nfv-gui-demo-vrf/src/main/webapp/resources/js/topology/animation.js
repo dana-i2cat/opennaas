@@ -13,7 +13,7 @@ var drag_line = svg.append('svg:path')
 // handles to link and node element groups
 var packet = svg.selectAll('.packet').data([0]);
 
-packet.enter().append('image')
+/*packet.enter().append('image')
         .attr('class', 'packet')
         .attr('x', '0')
         .attr('y', '145')
@@ -22,7 +22,7 @@ packet.enter().append('image')
         .style("z-index", 999)
         .style('opacity', 0)
         .attr('xlink:href', packetImage);
-
+*/
 function runtime(node) {
 console.log("Runtime");
 

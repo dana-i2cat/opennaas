@@ -12,26 +12,16 @@
 </script>
 <div id="settings" class="ui-widget-content ui-corner-all routTable padding">
     <h3>Settings</h3>
-    <form:form action="/nfv-gui-demo-vrf/secure/noc/nfvRouting/settings" modelAttribute="settings" method="post" enctype="multipart/form-data">
+    <form:form action="/secure/noc/nfvRouting/settings" modelAttribute="settings" method="post" enctype="multipart/form-data">
         <div class="row">
-
             <form:label path="routingType">Select OpenNaaS routing mode: </form:label>
             <form:radiobutton cssStyle="label" path="routingType" value="static"/>Static
             <form:radiobutton cssStyle="label" path="routingType" value="dijkstra"/>Dijkstra
-
-            <!--    <input style="float:left; margin: 0 10px;" id="routingType" type="text" name="routingType" value="static" readonly>
-                
-                    <div id="radio">
-                        <input type="radio" id="static" name="routeMode" checked="checked"><label for="static">Static</label>
-                        <input type="radio" id="dynamic" name="routeMode"><label for="dynamic">Dynamic</label>
-                    </div>
-            -->
             <br/>
         </div>
         <%--    <c:if test="${!empty settings.addShellMode}">
                 ${settings.addShellMode}
             </c:if>--%>
-
         <div class="row">
             <form:label path="addShellMode">Open hosts shell in a: </form:label>
             <form:radiobutton cssStyle="label" path="addShellMode" value="tab"/>Tab
@@ -39,31 +29,34 @@
         </div>
         <div class="row">
             <form:label path="colorDynamicRoutes">Select dynamic route color: </form:label>
-<%--                <form:radiobutton cssStyle="label" path="colorDynamicRoutes" value="#81DAF5"/>Blue
-            <form:radiobutton cssStyle="label" path="colorDynamicRoutes" value="green"/>Green
---%>            <form:input id="color1" class="color" name="color1" type="text" path="colorDynamicRoutes" value="${settings.colorDynamicRoutes}"/>
+            <%--                <form:radiobutton cssStyle="label" path="colorDynamicRoutes" value="#81DAF5"/>Blue
+                        <form:radiobutton cssStyle="label" path="colorDynamicRoutes" value="green"/>Green
+            --%>            
+            <form:input id="color1" class="color" name="color1" type="text" path="colorDynamicRoutes" value="${settings.colorDynamicRoutes}"/>
         </div>
-         <STYLE type="text/css">
-             #color1{
+        <style type="text/css">
+            #color1{
                 float: left; display: inline; 
-             }
-             .colorPicker-picker{
-                 float: left; position: absolute;
-                 display: inline; margin-left: 3px;
-             }
- </STYLE>
+            }
+            .colorPicker-picker{
+                float: left; position: absolute;
+                display: inline; margin-left: 3px;
+            }
+        </style>
+        <%--
+               <div class="row">
+                   <form:label path="addShellMode">Select link color: </form:label>
+                       <select>
+                           <option value="green" disabled>Green</option>
+                           <option value="blue" disabled>Blue</option>
+                       </select>
+                       <br/></div>
+        --%>
         <div class="row">
-            <form:label path="addShellMode">Select link color: </form:label>
-                <select>
-                    <option value="green" disabled>Green</option>
-                    <option value="blue" disabled>Blue</option>
-                </select>
-                <br/></div>
-            <div class="row">
-                <span class="formw">
-                    <input id="button2" type="submit" value="Save" style="float: right;"/>
-                </span>
-            </div>
+            <span class="formw">
+                <input id="button2" type="submit" value="Save" style="float: right;"/>
+            </span>
+        </div>
     </form:form>
 </div>
 

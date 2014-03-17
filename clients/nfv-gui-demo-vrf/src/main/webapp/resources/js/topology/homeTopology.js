@@ -78,7 +78,7 @@ legend.append("text")
     .attr("dy", ".35em")
     .text(function (d) { return d.label; });
 
-var rectangleData = [{ "x": legend_x - 30, "y": legend_y - 20, 
+var rectangleData = [{ "x": legend_x - 20, "y": legend_y - 20, 
                         "rx": 20, "ry": 20, "height": 0, "width": legend_width + 30 }];
 var rectangles = svg.selectAll("rect")
     .data(rectangleData)

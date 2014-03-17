@@ -73,7 +73,7 @@ public class HomeController {
             settings = new Settings();
             settings.setRoutingType(nfvRoutingBO.getONRouteMode());
         }
-model.addAttribute("settings", settings);
+	model.addAttribute("settings", settings);
         return "home";
     }
 

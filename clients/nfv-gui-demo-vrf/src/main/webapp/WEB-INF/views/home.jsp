@@ -54,7 +54,7 @@
             </form:form>
         </div>
         <div id="otherTop">
-            <h2>Other used topologies:</h2>
+            <h3>Other used topologies:</h3>
             <a href="home/demoTopo">Demo Topology (demo-topology.json)</a>
         </div>
         </div>
