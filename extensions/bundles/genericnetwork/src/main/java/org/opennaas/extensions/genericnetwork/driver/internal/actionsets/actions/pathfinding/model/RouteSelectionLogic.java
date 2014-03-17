@@ -73,39 +73,11 @@ public class RouteSelectionLogic {
 
 		readMappingFile();
 
-		if (StringUtils.isEmpty(input.getSrcPort()) || StringUtils.isEmpty(input.getDstPort()))
-			return compareWithoutPorts(input);
-		else
-			return compareWithPorts(input);
-
-	}
-
-	/**
-	 * If ports are specified, there's a direct match, since the object contains all attributes from the keys.
-	 * 
-	 * @param input
-	 * @return
-	 */
-	private List<String> compareWithPorts(RouteSelectionInput input) {
-		if (!routeMap.getRouteMapping().containsKey(input))
-			return new ArrayList<String>(0);
-
-		return routeMap.getRouteMapping().get(input).getRouteIds();
-	}
-
-	/**
-	 * If ports are not specified, the containsKey would not work, since the object does not contain all attributes from the key.
-	 * 
-	 * @param input
-	 * @return
-	 */
-	private List<String> compareWithoutPorts(RouteSelectionInput input) {
-
-		for (RouteSelectionInput candidateInput : routeMap.getRouteMapping().keySet())
-			if (candidateInput.getSrcIP().equals(input.getSrcIP()) && candidateInput.getDstIP().equals(input.getDstIP()) && candidateInput.getTos()
-					.equals(input.getTos()))
+		for (RouteSelectionInput candidateInput : routeMap.getRouteMapping().keySet()) {
+			if (routeSelectionMatches(candidateInput, input)) {
 				return routeMap.getRouteMapping().get(candidateInput).getRouteIds();
-
+			}
+		}
 		return new ArrayList<String>(0);
 	}
 
@@ -113,4 +85,54 @@ public class RouteSelectionLogic {
 		routeMap = RouteSelectionMapLoader.getRouteSelectionMapFromXmlFile(mappingUrl);
 	}
 
+	/**
+	 * Determines whether a candidate RouteSelectionInput matches requested one. Candidates with unspecified values matches requests with specified
+	 * values, but not the other way around.
+	 * 
+	 * @param candidate
+	 * @param requested
+	 * @return
+	 */
+	private boolean routeSelectionMatches(RouteSelectionInput candidate, RouteSelectionInput requested) {
+
+		if (candidate.equals(requested))
+			return true;
+
+		boolean srcIPMatches;
+		if (StringUtils.isEmpty(candidate.getSrcIP())) {
+			srcIPMatches = true;
+		} else {
+			srcIPMatches = candidate.getSrcIP().equals(requested.getSrcIP());
+		}
+
+		boolean dstIPMatches;
+		if (StringUtils.isEmpty(candidate.getDstIP())) {
+			dstIPMatches = true;
+		} else {
+			dstIPMatches = candidate.getDstIP().equals(requested.getDstIP());
+		}
+
+		boolean tosMatches;
+		if (StringUtils.isEmpty(candidate.getTos())) {
+			tosMatches = true;
+		} else {
+			tosMatches = candidate.getTos().equals(requested.getTos());
+		}
+
+		boolean srcPortMatches;
+		if (StringUtils.isEmpty(candidate.getSrcPort())) {
+			srcPortMatches = true;
+		} else {
+			srcPortMatches = candidate.getSrcPort().equals(requested.getSrcPort());
+		}
+
+		boolean dstPortMatches;
+		if (StringUtils.isEmpty(candidate.getDstPort())) {
+			dstPortMatches = true;
+		} else {
+			dstPortMatches = candidate.getDstPort().equals(requested.getDstPort());
+		}
+
+		return srcIPMatches && dstIPMatches && tosMatches && srcPortMatches && dstPortMatches;
+	}
 }
