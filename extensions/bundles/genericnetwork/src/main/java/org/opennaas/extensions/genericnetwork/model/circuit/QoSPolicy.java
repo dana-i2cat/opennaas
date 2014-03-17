@@ -35,6 +35,8 @@ public class QoSPolicy implements Serializable {
 	 */
 	private static final long	serialVersionUID	= 7226728765828544543L;
 
+	public static final int		UNSPECIFIED_VALUE	= -1;
+
 	private int					minLatency;
 	private int					maxLatency;
 
@@ -47,7 +49,20 @@ public class QoSPolicy implements Serializable {
 	private int					minPacketLoss;
 	private int					maxPacketLoss;
 
+	public QoSPolicy() {
+		minLatency = UNSPECIFIED_VALUE;
+		maxLatency = UNSPECIFIED_VALUE;
+		minJitter = UNSPECIFIED_VALUE;
+		maxJitter = UNSPECIFIED_VALUE;
+		minThroughput = UNSPECIFIED_VALUE;
+		maxThroughput = UNSPECIFIED_VALUE;
+		minPacketLoss = UNSPECIFIED_VALUE;
+		maxPacketLoss = UNSPECIFIED_VALUE;
+	}
+
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the minLantency
 	 */
 	public int getMinLatency() {
@@ -63,6 +78,8 @@ public class QoSPolicy implements Serializable {
 	}
 
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the maxLatency
 	 */
 	public int getMaxLatency() {
@@ -78,6 +95,8 @@ public class QoSPolicy implements Serializable {
 	}
 
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the minJitter
 	 */
 	public int getMinJitter() {
@@ -93,6 +112,8 @@ public class QoSPolicy implements Serializable {
 	}
 
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the maxJitter
 	 */
 	public int getMaxJitter() {
@@ -108,6 +129,8 @@ public class QoSPolicy implements Serializable {
 	}
 
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the minThroughput
 	 */
 	public int getMinThroughput() {
@@ -123,6 +146,8 @@ public class QoSPolicy implements Serializable {
 	}
 
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the maxThroughput
 	 */
 	public int getMaxThroughput() {
@@ -138,6 +163,8 @@ public class QoSPolicy implements Serializable {
 	}
 
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the minPacketLoss
 	 */
 	public int getMinPacketLoss() {
@@ -153,6 +180,8 @@ public class QoSPolicy implements Serializable {
 	}
 
 	/**
+	 * -1 indicates UNSPECIFIED_VALUE
+	 * 
 	 * @return the maxPaquetLoss
 	 */
 	public int getMaxPacketLoss() {

@@ -106,23 +106,23 @@ public class QosPolicyRequestParserTest {
 
 		Assert.assertFalse(StringUtils.isEmpty(qos.getJitter().getMax()));
 		Assert.assertFalse(StringUtils.isEmpty(qos.getJitter().getMin()));
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.JITTER_MAX), qos.getJitter().getMax());
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.JITTER_MIN), qos.getJitter().getMin());
+		Assert.assertEquals("Max jitter should match", String.valueOf(GenericNetworkModelUtils.JITTER_MAX), qos.getJitter().getMax());
+		Assert.assertEquals("Min jitter should match", String.valueOf(GenericNetworkModelUtils.JITTER_MIN), qos.getJitter().getMin());
 
 		Assert.assertFalse(StringUtils.isEmpty(qos.getLatency().getMax()));
 		Assert.assertFalse(StringUtils.isEmpty(qos.getLatency().getMin()));
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.LATENCY_MAX), qos.getLatency().getMax());
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.LATENCY_MIN), qos.getLatency().getMin());
+		Assert.assertEquals("Max latency should match", String.valueOf(GenericNetworkModelUtils.LATENCY_MAX), qos.getLatency().getMax());
+		Assert.assertEquals("Min latency should match", String.valueOf(GenericNetworkModelUtils.LATENCY_MIN), qos.getLatency().getMin());
 
 		Assert.assertFalse(StringUtils.isEmpty(qos.getPacketLoss().getMax()));
 		Assert.assertFalse(StringUtils.isEmpty(qos.getPacketLoss().getMin()));
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.PACKETLOSS_MAX), qos.getPacketLoss().getMax());
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.PACKETLOSS_MIN), qos.getPacketLoss().getMin());
+		Assert.assertEquals("Max packetloss should match", String.valueOf(GenericNetworkModelUtils.PACKETLOSS_MAX), qos.getPacketLoss().getMax());
+		Assert.assertEquals("Min packetloss should match", String.valueOf(GenericNetworkModelUtils.PACKETLOSS_MIN), qos.getPacketLoss().getMin());
 
 		Assert.assertFalse(StringUtils.isEmpty(qos.getThroughput().getMax()));
 		Assert.assertFalse(StringUtils.isEmpty(qos.getThroughput().getMin()));
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.THROUGHPUT_MAX), qos.getThroughput().getMax());
-		Assert.assertEquals(String.valueOf(GenericNetworkModelUtils.THROUGHPUT_MIN), qos.getThroughput().getMin());
+		Assert.assertEquals("Max throughput should match", String.valueOf(GenericNetworkModelUtils.THROUGHPUT_MAX), qos.getThroughput().getMax());
+		Assert.assertEquals("Min throughput should match", String.valueOf(GenericNetworkModelUtils.THROUGHPUT_MIN), qos.getThroughput().getMin());
 
 	}
 }

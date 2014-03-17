@@ -80,37 +80,31 @@ public class QosPolicyRequestParser {
 			return null;
 
 		if (qosPolicy.getJitter() != null) {
-			if (StringUtils.isEmpty(qosPolicy.getJitter().getMax()) || StringUtils.isEmpty(qosPolicy.getJitter().getMin()))
-				throw new ProvisionerException("You didin't specify a valid Jitter value.");
-
-			qosToReturn.setMaxJitter(Integer.valueOf(qosPolicy.getJitter().getMax()));
-			qosToReturn.setMinJitter(Integer.valueOf(qosPolicy.getJitter().getMin()));
+			if (!StringUtils.isEmpty(qosPolicy.getJitter().getMax()))
+				qosToReturn.setMaxJitter(Integer.valueOf(qosPolicy.getJitter().getMax()));
+			if (!StringUtils.isEmpty(qosPolicy.getJitter().getMin()))
+				qosToReturn.setMinJitter(Integer.valueOf(qosPolicy.getJitter().getMin()));
 		}
 
 		if (qosPolicy.getLatency() != null) {
-			if (StringUtils.isEmpty(qosPolicy.getLatency().getMax()) || StringUtils.isEmpty(qosPolicy.getLatency().getMin()))
-				throw new ProvisionerException("You didin't specify a valid Latency value.");
-
-			qosToReturn.setMaxLatency(Integer.valueOf(qosPolicy.getLatency().getMax()));
-			qosToReturn.setMinLatency(Integer.valueOf(qosPolicy.getLatency().getMin()));
+			if (!StringUtils.isEmpty(qosPolicy.getLatency().getMax()))
+				qosToReturn.setMaxLatency(Integer.valueOf(qosPolicy.getLatency().getMax()));
+			if (!StringUtils.isEmpty(qosPolicy.getLatency().getMin()))
+				qosToReturn.setMinLatency(Integer.valueOf(qosPolicy.getLatency().getMin()));
 		}
 
 		if (qosPolicy.getPacketLoss() != null) {
-			if (StringUtils.isEmpty(qosPolicy.getPacketLoss().getMax()) || StringUtils.isEmpty(qosPolicy.getPacketLoss().getMin()))
-				throw new ProvisionerException("You didin't specify a valid PacketLoss value.");
-
-			qosToReturn.setMaxPacketLoss(Integer.valueOf(qosPolicy.getPacketLoss().getMax()));
-			qosToReturn.setMinPacketLoss(Integer.valueOf(qosPolicy.getPacketLoss().getMin()));
-
+			if (!StringUtils.isEmpty(qosPolicy.getPacketLoss().getMax()))
+				qosToReturn.setMaxPacketLoss(Integer.valueOf(qosPolicy.getPacketLoss().getMax()));
+			if (!StringUtils.isEmpty(qosPolicy.getPacketLoss().getMin()))
+				qosToReturn.setMinPacketLoss(Integer.valueOf(qosPolicy.getPacketLoss().getMin()));
 		}
 
 		if (qosPolicy.getThroughput() != null) {
-			if (StringUtils.isEmpty(qosPolicy.getThroughput().getMax()) || StringUtils.isEmpty(qosPolicy.getThroughput().getMin()))
-				throw new ProvisionerException("You didin't specify a valid Throughput value.");
-
-			qosToReturn.setMaxThroughput(Integer.valueOf(qosPolicy.getThroughput().getMax()));
-			qosToReturn.setMinThroughput(Integer.valueOf(qosPolicy.getThroughput().getMin()));
-
+			if (!StringUtils.isEmpty(qosPolicy.getThroughput().getMax()))
+				qosToReturn.setMaxThroughput(Integer.valueOf(qosPolicy.getThroughput().getMax()));
+			if (!StringUtils.isEmpty(qosPolicy.getThroughput().getMin()))
+				qosToReturn.setMinThroughput(Integer.valueOf(qosPolicy.getThroughput().getMin()));
 		}
 
 		return qosToReturn;
