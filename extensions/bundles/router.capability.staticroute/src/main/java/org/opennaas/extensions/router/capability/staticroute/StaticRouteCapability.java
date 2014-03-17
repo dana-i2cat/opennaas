@@ -20,6 +20,8 @@ package org.opennaas.extensions.router.capability.staticroute;
  * #L%
  */
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -30,10 +32,15 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.StaticRouteApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRouteCollection;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NextHopRoute;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
+ * @author Adrian Rosello Rey (i2CAT)
  */
 public class StaticRouteCapability extends AbstractCapability implements IStaticRouteCapability {
 
@@ -176,5 +183,18 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
+	}
+
+	@Override
+	public StaticRouteCollection getStaticRoutes() throws CapabilityException {
+
+		StaticRouteCollection src;
+
+		ComputerSystem model = (ComputerSystem) this.resource.getModel();
+		List<NextHopRoute> nextHops = model.getNextHopRoute();
+
+		src = StaticRouteApiHelper.buildStaticRouteCollection(nextHops);
+
+		return src;
 	}
 }
