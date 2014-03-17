@@ -7,7 +7,6 @@
     </staticRoute>
     <staticRoute>
         <netIdIpAdress>192.168.2.0/24</netIdIpAdress>
-        <nextHopIpAddress>10.10.10.12</nextHopIpAddress>
         <isDiscard>true</isDiscard>
     </staticRoute>
 </ns2:staticRoutes>

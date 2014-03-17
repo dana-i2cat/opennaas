@@ -1,5 +1,25 @@
 package org.opennaas.extensions.router.capabilities.api.test;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: Capabilities :: API
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,11 +47,8 @@ public class StaticRouteModelSerializationTest {
 
 	private String	NET_ID_1		= "192.168.1.0/24";
 	private String	NEXT_HOP_1		= "10.10.10.11";
-	private boolean	DISCARD_1		= false;
 
 	private String	NET_ID_2		= "192.168.2.0/24";
-	private String	NEXT_HOP_2		= "10.10.10.12";
-	private boolean	DISCARD_2		= true;
 
 	private String	SR_XML_PATH		= "/staticRoute.xml";
 	private String	SRC_XML_PATH	= "/staticRouteCollection.xml";
@@ -40,7 +57,7 @@ public class StaticRouteModelSerializationTest {
 	public void staticRouteSerializationTest() throws SerializationException, IOException, SAXException, TransformerException,
 			ParserConfigurationException {
 
-		StaticRoute staticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1, DISCARD_1);
+		StaticRoute staticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1);
 
 		String xml = ObjectSerializer.toXml(staticRoute);
 		String expectedXml = IOUtils.toString(this.getClass().getResourceAsStream(SR_XML_PATH));
@@ -52,7 +69,7 @@ public class StaticRouteModelSerializationTest {
 	@Test
 	public void staticRouteDeserializationTest() throws IOException, SerializationException {
 
-		StaticRoute expectedStaticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1, DISCARD_1);
+		StaticRoute expectedStaticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1);
 
 		String xml = IOUtils.toString(this.getClass().getResourceAsStream(SR_XML_PATH));
 		StaticRoute deserializedObject = (StaticRoute) ObjectSerializer.fromXml(xml, StaticRoute.class);
@@ -88,8 +105,8 @@ public class StaticRouteModelSerializationTest {
 	private StaticRouteCollection generateSRCollection() {
 		Collection<StaticRoute> staticRoutes = new ArrayList<StaticRoute>();
 
-		StaticRoute sr1 = generateSampleRoute(NET_ID_1, NEXT_HOP_1, DISCARD_1);
-		StaticRoute sr2 = generateSampleRoute(NET_ID_2, NEXT_HOP_2, DISCARD_2);
+		StaticRoute sr1 = generateSampleRoute(NET_ID_1, NEXT_HOP_1);
+		StaticRoute sr2 = generateSampleRoute(NET_ID_2);
 		staticRoutes.add(sr1);
 		staticRoutes.add(sr2);
 
@@ -99,10 +116,32 @@ public class StaticRouteModelSerializationTest {
 		return srCollection;
 	}
 
-	private StaticRoute generateSampleRoute(String netId, String nextHopId, boolean discard) {
+	/**
+	 * Sample Static route with only netId, which implies that the discard option gets activated.
+	 * 
+	 * @param netId
+	 * @return
+	 */
+	private StaticRoute generateSampleRoute(String netId) {
 		StaticRoute staticRoute = new StaticRoute();
 
-		staticRoute.setDiscard(discard);
+		staticRoute.setDiscard(true);
+		staticRoute.setNetIdIpAdress(netId);
+
+		return staticRoute;
+
+	}
+
+	/**
+	 * Sample Static route with netId and nextHopAddress, which implies that the discard option gets deactivated.
+	 * 
+	 * @param netId
+	 * @return
+	 */
+	private StaticRoute generateSampleRoute(String netId, String nextHopId) {
+		StaticRoute staticRoute = new StaticRoute();
+
+		staticRoute.setDiscard(false);
 		staticRoute.setNetIdIpAdress(netId);
 		staticRoute.setNextHopIpAddress(nextHopId);
 
