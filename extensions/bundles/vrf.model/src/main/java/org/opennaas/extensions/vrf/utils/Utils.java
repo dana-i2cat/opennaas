@@ -1,5 +1,11 @@
 package org.opennaas.extensions.vrf.utils;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +35,8 @@ import org.opennaas.extensions.vrf.model.VRFRoute;
  * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class Utils {
+
+static Log log = LogFactory.getLog(Utils.class);
 
     /**
      * Accepts an IPv4 address and returns of string of the form xxx.xxx.xxx.xxx
@@ -265,6 +273,7 @@ public class Utils {
      * @return
      */
     public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route, String etherType) {
+log.error("Convert VRFROute to Floodlight FLOW .................................................................");
         FloodlightOFFlow flow = new FloodlightOFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();
@@ -281,12 +290,19 @@ public class Utils {
         flow.setActions(listActions);
         flow.setActive(true);
         flow.setMatch(match);
-        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
+//        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
+        flow.setName(createFlowName(String.valueOf(route.getId()), etherType, route.getSourceAddress(), route.getDestinationAddress(), route.getSwitchInfo().getDPID()));
         flow.setSwitchId(route.getSwitchInfo().getDPID());
 
         return flow;
     }
 
+    public static String createFlowName(String id, String ethType, String source, String target, String dpid){
+log.error("SETNAME FLOW: 0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2));
+//        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
+                return "0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
+    }
+    
     /**
      * Copy InputStream to OutputStream (file).
      * @param is

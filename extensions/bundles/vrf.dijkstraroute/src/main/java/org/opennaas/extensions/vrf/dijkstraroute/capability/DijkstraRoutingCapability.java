@@ -75,6 +75,8 @@ if(path != null){
 }else{
 	return Response.ok("Path null.").build();
 }
+
+	int outPutPortSrcSw = getOutPortSrcSw(path);
         StringBuilder listFlows = new StringBuilder();
         List<FloodlightOFFlow> listOF;
         Response response = proactiveRouting(listRoutes);
@@ -102,7 +104,7 @@ if(path != null){
 
         }
         listFlows.append("{ip:'").append(target).append("'}]");//final destination
-        return Response.ok("route: " + listFlows).build();
+        return Response.ok(outPutPortSrcSw + ":" + listFlows).build();
 
         //path format ; [192.168.1.1, 00:00:00:00:00:00:00:01, 00:00:00:00:00:00:00:03, 192.168.2.51]
         //return path.toString();
@@ -120,7 +122,7 @@ if(path != null){
                 insertRoutetoStaticBundle2(r);
                 log.error("Route " + r.getSourceAddress() + " " + r.getDestinationAddress() + " " + r.getSwitchInfo().getDPID() + " " + r.getSwitchInfo().getInputPort() + " " + r.getSwitchInfo().getOutputPort());
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
-//                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
+                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
             }
         }
 
@@ -129,13 +131,13 @@ if(path != null){
             try {
 //log.error("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId());
                 FloodlightOFFlow flow = listFlow.get(i);
-                flow.getMatch().setEtherType("2048");
-                flow.setName(String.valueOf(flow.getName()) + "-2048-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp());
+//                flow.getMatch().setEtherType("2048");
+//                flow.setName(String.valueOf(flow.getName()) + "-2048-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp());
                 provisionLink(flow);
 
-                flow.getMatch().setEtherType("2054");
-                flow.setName(String.valueOf(flow.getName()) + "-2054-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp());
-                provisionLink(flow);
+//                flow.getMatch().setEtherType("2054");
+//                flow.setName(String.valueOf(flow.getName()) + "-2054-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp());
+//                provisionLink(flow);
             } catch (ResourceException e) {
 //                throw new ActionException("Error provisioning link : ", e);
             } catch (ActivatorException e) {
@@ -221,7 +223,11 @@ if(path != null){
     }
     //---------------------END DEMO FUNCTIONS
 
-    private List<VRFRoute> creatingRoutes(LinkedList<Vertex> path, String sourceIp, String targetIP) {
+	private int getOutPortSrcSw(LinkedList<Vertex> path){
+		return extractPort(path.get(1), path.get(2), 1);
+}
+
+    private List<VRFRoute> creatingRoutes(LinkedList<Vertex> path, String sourceIP, String targetIP) {
         List<VRFRoute> listRoutes = new ArrayList<VRFRoute>();
         Vertex source = path.get(0);
         String dpid;
@@ -238,12 +244,25 @@ if(path != null){
                 sw.setInputPort(inputPort);
                 sw.setOutputPort(outputPort);
                 VRFRoute newRoute = new VRFRoute();
-                newRoute.setSourceAddress(sourceIp);
+                newRoute.setSourceAddress(sourceIP);
                 newRoute.setDestinationAddress(targetIP);
                 newRoute.setSwitchInfo(sw);
                 newRoute.setType("dynamic");
 
                 listRoutes.add(newRoute);
+
+		sw = new L2Forward();
+                sw.setDPID(dpid);
+                sw.setInputPort(outputPort);
+                sw.setOutputPort(inputPort);
+                newRoute = new VRFRoute();
+                newRoute.setSourceAddress(targetIP);
+                newRoute.setDestinationAddress(sourceIP);
+                newRoute.setSwitchInfo(sw);
+                newRoute.setType("dynamic");
+
+		listRoutes.add(newRoute);
+
                 source = path.get(j);
             }
         }

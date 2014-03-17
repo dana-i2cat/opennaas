@@ -55,5 +55,8 @@ public interface IRoutingCapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getSelectorMode();
-
+    
+    @Path("/switchMapping")
+    @GET
+    public Response switchMapping();
 }

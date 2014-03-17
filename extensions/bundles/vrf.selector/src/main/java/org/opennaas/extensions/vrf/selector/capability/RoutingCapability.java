@@ -1,9 +1,16 @@
 package org.opennaas.extensions.vrf.selector.capability;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.dijkstraroute.capability.DijkstraRoutingCapability;
 import org.opennaas.extensions.vrf.staticroute.capability.IStaticRoutingCapability;
 
@@ -74,5 +81,46 @@ public class RoutingCapability implements IRoutingCapability {
 @Override
     public Response getSelectorMode() {
         return Response.ok(mode).build();
+    }
+@Override
+public Response switchMapping(){
+        IResourceManager resourceManager = null;
+        try {
+            resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
+        try {
+            log.info("ResourceManager " + resourceManager.getIdentifierFromResourceName("sdnnetwork", "sdn1").getId());
+        } catch (ResourceException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
+        try {
+            IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
+/*            String resourceSdnNetworkId = sdnCapab.getMapDeviceResource(resourceName);
+        if (resourceSdnNetworkId == null) {
+            log.error("This Switch ID is not mapped to any ofswitch resource.");
+            return null;
+        }
+*/
+        List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
+        for (IResource r : listResources) {
+            String name = r.getResourceDescriptor().getInformation().getName();
+            String DPID = "00:00:00:00:00:00:00:0"+name.substring(name.length() - 1);
+log.error(DPID);
+            String resourceId = r.getResourceIdentifier().getId();
+log.error(resourceId);
+            sdnCapab.mapDeviceResource(DPID, resourceId);
+/*            if (r.getResourceDescriptor().getId().equals(resourceSdnNetworkId)) {
+                resourceName = r.getResourceDescriptor().getInformation().getName();
+                log.debug("Switch name is: " + resourceName);
+            }
+*/        }
+        } catch (ResourceException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        } catch (ActivatorException ex) {
+            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+	return Response.ok().build();
     }
 }

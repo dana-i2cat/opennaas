@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,7 +70,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     /// /////////////////////////////
     @Override
     public Response getRoute(String ipSource, String ipDest, String switchDPID, int inputPort, boolean proactive) {
-        log.error("GET STATIC ROUTE");
         int outPortSrcSw;
         Response response;
         int version;//IP version
@@ -97,7 +97,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             return Response.status(404).type("text/plain").entity("IP Table does not exist.").build();
         }
 
-log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort + ". Proactive: " + proactive);
+log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort + ". Proactive: " + proactive);
         L2Forward switchInfo = new L2Forward(inputPort, switchDPID);
 
         VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
@@ -114,7 +114,6 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
         if (proactive) {
             response = proactiveRouting(switchInfo, route, version);
             listOF = ((List<FloodlightOFFlow>) response.getEntity());
-            log.error("Size ListFlows " + listOF.size());
             if (listOF.isEmpty()) {
                 return Response.status(404).type("text/plain").entity("Route Not found.").build();
             }
@@ -177,7 +176,7 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
 
     @Override
     public Response removeRoute(int id, int version) {
-        log.info("Removing route " + id + " from table IPv" + version);
+        log.error("Removing route " + id + " from table IPv" + version);
         VRFModel model = getVRFModel();
         VRFRoute route = model.getTable(version).getRouteId(id);
         streamInfo = "";
@@ -201,7 +200,7 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
 
     @Override
     public Response removeRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort) {
-        log.info("Removing route given all parameters");
+        log.error("Removing route given all parameters");
         VRFModel model = getVRFModel();
         int version;
         if (Utils.isIPv4Address(ipSource) && Utils.isIPv4Address(ipDest)) {
@@ -219,9 +218,17 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
 
     @Override
     public Response removeRoutes() {
+        log.error("REMOVE ALL ROUTES");
         VRFModel model = getVRFModel();
-        model.getIpv4().removeRoutes();
-        model.getIpv6().removeRoutes();
+        List<VRFRoute> listRoutes = model.getIpv4().getRouteTable();
+        List<Integer> listId = new ArrayList<Integer>();
+        for(VRFRoute route:listRoutes ){
+            listId.add(route.getId());
+        }
+        for ( int id : listId )
+            removeRoute(id, 4);
+//        model.getIpv4().removeRoutes();
+//        model.getIpv6().removeRoutes();
 
         //call OpenNaaS
         return Response.ok("Removed").build();
@@ -366,6 +373,7 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
             for (VRFRoute r : routeSubnetList) {
 //log.error(r.getSourceAddress()+" "+r.getDestinationAddress()+" "+r.getSwitchInfo().getDPID());
                 listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
+		listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
             }
         }
 
@@ -375,13 +383,16 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
                 log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getSwitchId() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
 //                response = provisionLink(listFlow.get(i));
                 FloodlightOFFlow flow = listFlow.get(i);
-                flow.getMatch().setEtherType("2048");
-                flow.setName(String.valueOf(route.getId()) + "-2048-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp() + "-" + listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
+//                flow.getMatch().setEtherType("2048");
+//                flow.setName(Utils.createFlowName(String.valueOf(route.getId()), "2048", listFlow.get(i).getMatch().getSrcIp(), listFlow.get(i).getMatch().getDstIp(), listFlow.get(i).getSwitchId()));
+        
+//                flow.setName(String.valueOf(route.getId()) + "-2048-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp() + "-" + listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
                 provisionLink(flow);
 
-                flow.getMatch().setEtherType("2054");
-                flow.setName(String.valueOf(route.getId()) + "-2054-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp() + "-" + listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
-                provisionLink(flow);
+//                flow.getMatch().setEtherType("2054");
+//                flow.setName(Utils.createFlowName(String.valueOf(route.getId()), "2054", listFlow.get(i).getMatch().getSrcIp(), listFlow.get(i).getMatch().getDstIp(), listFlow.get(i).getSwitchId()));
+//                flow.setName(String.valueOf(route.getId()) + "-2054-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp() + "-" + listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
+//                provisionLink(flow);
             } catch (ResourceException e) {
 //                throw new ActionException("Error provisioning link : ", e);
             } catch (ActivatorException e) {
@@ -404,7 +415,7 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
     }
 
     private Response removeLink(FloodlightOFFlow flow) throws ResourceException, ActivatorException {
-        log.info("Provision Flow Link Floodlight");
+        log.error("REMOVE Provision Flow Link Floodlight");
         String switchId = flow.getSwitchId();
         IResource resource = getResourceByName(switchId);
         if (resource == null) {
@@ -414,7 +425,7 @@ log.error("Requested route: " + ipSource + " > " + ipDest + " " + switchDPID + "
         try {
             forwardingCapability.removeOpenflowForwardingRule(flow.getName());
         } catch (Exception e) {
-            log.error("Controller does not contain information about this route... " + e.getMessage());
+            log.error("Error removing flow... " + e.getMessage());
         }
         return Response.ok().build();
     }

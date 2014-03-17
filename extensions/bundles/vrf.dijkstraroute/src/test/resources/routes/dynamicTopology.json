@@ -8,10 +8,14 @@
     {"id":5, "dpid":"00:00:00:00:00:00:00:06", "type":"sw"},
     {"id":6, "dpid":"00:00:00:00:00:00:00:07", "type":"sw"},
     {"id":7, "dpid":"00:00:00:00:00:00:00:08", "type":"sw"},
-    
+
     {"id":8, "dpid":"192.168.1.1", "type":"h"},
     {"id":9, "dpid":"192.168.2.51", "type":"h"},
-    {"id":10, "dpid":"192.168.3.3", "type":"h"}  
+    {"id":10, "dpid":"192.168.3.3", "type":"h"},
+    {"id":11, "dpid":"192.168.4.4", "type":"h"},
+    {"id":12, "dpid":"192.168.5.5", "type":"h"},
+    {"id":13, "dpid":"192.168.6.6", "type":"h"},
+    {"id":14, "dpid":"192.168.7.7", "type":"h"}
   ],
   "links": [
       {"id":0, "source":0, "target":1, "srcP":1, "dstP":1},
@@ -24,8 +28,13 @@
       {"id":7, "source":4, "target":5, "srcP":2, "dstP":2},
       {"id":8, "source":5, "target":6, "srcP":3, "dstP":1},
       {"id":9, "source":6, "target":7, "srcP":2, "dstP":1},
-     
+
       {"id":10, "source":9, "target":7, "srcP":0, "dstP":2},
-      {"id":11, "source":4, "target":10, "srcP":3, "dstP":0}
+      {"id":11, "source":0, "target":10, "srcP":4, "dstP":0},
+      {"id":12, "source":3, "target":11, "srcP":4, "dstP":0},
+      {"id":13, "source":4, "target":12, "srcP":3, "dstP":0},
+      {"id":14, "source":4, "target":13, "srcP":4, "dstP":0},
+      {"id":15, "source":6, "target":14, "srcP":3, "dstP":0}
       ]
 }
+
