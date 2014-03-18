@@ -30,7 +30,7 @@ import org.opennaas.extensions.quantum.model.HasTenant;
 /**
  * Represents a floating IP, which may or many not be allocated to a tenant, and may or may not be associated with an internal port/ip address/router.
  * 
- * @author logoff
+ * @author Julio Carlos Barrera
  * 
  */
 @XmlRootElement(name = "floating_ip")
