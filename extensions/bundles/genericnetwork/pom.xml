@@ -22,8 +22,8 @@
 		</dependency>
 		<!-- Google Guava library -->
 		<dependency>
-			<groupId>com.googlecode.guava-osgi</groupId>
-			<artifactId>guava-osgi</artifactId>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-net</groupId>

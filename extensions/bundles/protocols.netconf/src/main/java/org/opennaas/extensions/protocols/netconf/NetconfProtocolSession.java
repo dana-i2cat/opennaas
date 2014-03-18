@@ -29,7 +29,7 @@ import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.errors.NetconfProtocolException;
 import net.i2cat.netconf.errors.TransportException;
-import net.i2cat.netconf.errors.TransportNotImplementedException;
+import net.i2cat.netconf.errors.TransportNotRegisteredException;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.RPCElement;
 
@@ -123,7 +123,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 		} catch (URISyntaxException e) {
 			log.error("Error with the syntaxis");
 			throw new ProtocolException("Error with the syntaxis" + e.getMessage(), e);
-		} catch (TransportNotImplementedException e) {
+		} catch (TransportNotRegisteredException e) {
 			log.error("Error with the transport initialization");
 			throw new ProtocolException("Error with the transport initialization" + e.getMessage(), e);
 		} catch (ConfigurationException e) {
@@ -193,12 +193,10 @@ public class NetconfProtocolSession implements IProtocolSession {
 					"Cannot disconnect because the session is already disconnected. Current state: "
 							+ status);
 		}
-		try {
-			netconfSession.disconnect();
-			status = Status.DISCONNECTED_BY_USER;
-		} catch (TransportException e) {
-			throw new ProtocolException(e);
-		}
+
+		netconfSession.disconnect();
+		status = Status.DISCONNECTED_BY_USER;
+
 		log.info("Protocol session stopped");
 	}
 
