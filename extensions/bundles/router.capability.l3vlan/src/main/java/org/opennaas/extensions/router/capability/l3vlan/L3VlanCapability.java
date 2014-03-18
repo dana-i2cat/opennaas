@@ -28,6 +28,7 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class L3VlanCapability extends AbstractCapability implements IL3VlanCapability {
@@ -52,8 +53,13 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
+		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
+		try {
+			return Activator.getL3VlanActionSetService(name, version);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
 	}
 
 	@Override
@@ -74,5 +80,17 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
+	}
+
+	@Override
+	public void addIpAddressToBridgedDomain(String domainName, String ipAddress) throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeIpAddressfromBridgedDomain(String domainName, String ipAddress) throws CapabilityException {
+		// TODO Auto-generated method stub
+
 	}
 }

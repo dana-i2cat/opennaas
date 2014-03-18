@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.osgi.framework.BundleActivator;
@@ -45,7 +46,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	static Log						log	= LogFactory.getLog(Activator.class);
 
 	/**
-	 * Get the Bunble Context
+	 * Get the Bundle Context
 	 * 
 	 * @return BundleContext
 	 */
@@ -103,4 +104,41 @@ public class Activator extends AbstractActivator implements BundleActivator {
 				properties);
 	}
 
+	/**
+	 * Get the connections action set service
+	 * 
+	 * @param name
+	 * @param version
+	 * @return IActionSet
+	 * @throws ActivatorException
+	 */
+	public static IActionSet getL3VlanActionSetService(String name, String version)
+			throws ActivatorException {
+		try {
+			log.debug("Calling L3VlanActionSetService");
+			return (IActionSet) getServiceFromRegistry(context,
+					createFilterL3VlanActionSet(name, version));
+		} catch (InvalidSyntaxException e) {
+			throw new ActivatorException(e);
+		}
+	}
+
+	/**
+	 * Necessary to get some capability type
+	 * 
+	 * @param name
+	 * @param version
+	 * @return Filter
+	 * @throws InvalidSyntaxException
+	 */
+	private static Filter createFilterL3VlanActionSet(String name, String version)
+			throws InvalidSyntaxException {
+		Properties properties = new Properties();
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY,
+				"l3vlan");
+		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION,
+				version);
+		return createServiceFilter(IActionSet.class.getName(), properties);
+	}
 }
