@@ -20,6 +20,9 @@ package org.opennaas.extensions.router.capability.l3vlan;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -113,7 +116,16 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 
 	@Override
 	public BridgeDomains getL3Vlans() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		// FIXME replace by real implementation
+
+		BridgeDomains domains = new BridgeDomains();
+
+		List<String> domainNames = new ArrayList<String>();
+		domainNames.add("fe-0/1/0.0");
+		domainNames.add("fe-0/2/1.3");
+
+		domains.setDomainNames(domainNames);
+
+		return domains;
 	}
 }
