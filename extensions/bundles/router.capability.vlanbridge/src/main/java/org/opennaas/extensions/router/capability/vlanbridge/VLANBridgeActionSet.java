@@ -20,6 +20,7 @@ package org.opennaas.extensions.router.capability.vlanbridge;
  * #L%
  */
 
+
 import org.opennaas.core.resources.action.IActionSetDefinition;
 
 /**
@@ -29,4 +30,42 @@ import org.opennaas.core.resources.action.IActionSetDefinition;
  */
 public class VLANBridgeActionSet implements IActionSetDefinition {
 
+	/**
+	 * If executed, configures given BridgeDomain in the resource in whose queue is executed.
+	 * 
+	 * @param bridgeDomain
+	 * @throws ActionException
+	 *             if failed to configure given BridgeDomain.
+	 */
+	public static final String	CREATE_VLAN_BRIDGE_DOMAIN_ACTION	= "createVlanBridgeDomainAction";
+
+	/**
+	 * If executed, updates the BridgeDomain with given domainName with the configuration in given BridgeDomain object.
+	 * 
+	 * @param domainName
+	 * @param bridgeDomain
+	 * @throws ActionException
+	 *             if failed to configure given BridgeDomain.
+	 */
+	public static final String	UPDATE_VLAN_BRIDGE_DOMAIN_ACTION	= "updateVlanBridgeDomainAction";
+
+	/**
+	 * If executed, deletes the BridgeDomain with given domainName.
+	 * 
+	 * @param domainName
+	 * @throws ActionException
+	 *             if failed to delete given BridgeDomain.
+	 */
+	public static final String	DELETE_VLAN_BRIDGE_DOMAIN_ACTION	= "deleteVlanBridgeDomainAction";
+
+	/**
+	 * If executed, sets given InterfaceVLANOptions for interface with given ifaceName.
+	 * 
+	 * @param interfaceName
+	 * @param InterfaceVLANOptions
+	 *            to set
+	 * @throws ActionException
+	 *             if failed to configure given InterfaceVLANOptions
+	 */
+	public static final String	SET_INTERFACE_VLAN_OPTIONS_ACTION	= "setInterfaceVlanOptionsAction";
 }
