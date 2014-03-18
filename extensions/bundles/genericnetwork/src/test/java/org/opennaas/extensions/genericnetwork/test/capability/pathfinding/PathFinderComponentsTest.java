@@ -111,6 +111,12 @@ public class PathFinderComponentsTest {
 		Assert.assertEquals("Potential routes should consist of route 3.", "3", routes.get(0));
 	}
 
+	/**
+	 * When Candidates are more specific than requests, there will be no matching route.
+	 * 
+	 * @throws SerializationException
+	 * @throws IOException
+	 */
 	@Test
 	public void RouteSelectionLogicWithLinkPortsOnlyInFile() throws SerializationException, IOException {
 		RouteSelectionLogic selectionLogic = new RouteSelectionLogic();
@@ -120,8 +126,7 @@ public class PathFinderComponentsTest {
 		List<String> routes = selectionLogic.getPotentialRoutes(input);
 
 		Assert.assertNotNull("Potential routes should not be null.", routes);
-		Assert.assertEquals("Potential routes should consist only of one route.", 1, routes.size());
-		Assert.assertEquals("Potential routes should consist of route 3.", "3", routes.get(0));
+		Assert.assertTrue("Potential routes should consist of no route.", routes.isEmpty());
 	}
 
 }
