@@ -37,6 +37,7 @@
 		<module>router.capability.staticroute</module>
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>
+		<module>router.capability.l3vlan</module>		
 		<module>router.capabilities.api</module>		
 		<module>router.model</module>
 		<module>router.features</module>
@@ -136,5 +137,6 @@
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
+
 	</modules>
 </project>
