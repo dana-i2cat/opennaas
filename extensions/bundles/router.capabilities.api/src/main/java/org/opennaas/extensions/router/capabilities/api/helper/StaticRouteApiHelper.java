@@ -39,6 +39,8 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
  */
 public abstract class StaticRouteApiHelper {
 
+	private static final int	DEFAULT_PREFERENCE_VALUE	= -1;
+
 	/**
 	 * Creates a {@link StaticRouteCollection} instance from a {@link Collection} of {@link NextHopRoute}.
 	 * 
@@ -79,6 +81,9 @@ public abstract class StaticRouteApiHelper {
 		String destMask = nextHopRoute.getDestinationMask();
 		String destNet = IPUtilsHelper.ipAddressAndMaskToComposedIPAddress(destAddr, destMask);
 		sr.setNetIdIpAdress(destNet);
+
+		if (nextHopRoute.getRouteMetric() != DEFAULT_PREFERENCE_VALUE)
+			sr.setPreference(String.valueOf(nextHopRoute.getRouteMetric()));
 
 		sr.setDiscard(nextHopRoute.getProtocolEndpoint() == null);
 

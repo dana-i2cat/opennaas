@@ -4,6 +4,7 @@
         <netIdIpAdress>192.168.1.0/24</netIdIpAdress>
         <nextHopIpAddress>10.10.10.11</nextHopIpAddress>
         <isDiscard>false</isDiscard>
+        <preference>12</preference>
     </staticRoute>
     <staticRoute>
         <netIdIpAdress>192.168.2.0/24</netIdIpAdress>

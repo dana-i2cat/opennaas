@@ -45,6 +45,7 @@ public class StaticRoute implements Serializable {
 	private String				nextHopIpAddress;
 	@XmlElement(name = "isDiscard")
 	private boolean				discard;
+	private String				preference;
 
 	public String getNetIdIpAdress() {
 		return netIdIpAdress;
@@ -70,6 +71,14 @@ public class StaticRoute implements Serializable {
 		this.discard = discard;
 	}
 
+	public String getPreference() {
+		return preference;
+	}
+
+	public void setPreference(String preference) {
+		this.preference = preference;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -77,6 +86,7 @@ public class StaticRoute implements Serializable {
 		result = prime * result + (discard ? 1231 : 1237);
 		result = prime * result + ((netIdIpAdress == null) ? 0 : netIdIpAdress.hashCode());
 		result = prime * result + ((nextHopIpAddress == null) ? 0 : nextHopIpAddress.hashCode());
+		result = prime * result + ((preference == null) ? 0 : preference.hashCode());
 		return result;
 	}
 
@@ -101,12 +111,17 @@ public class StaticRoute implements Serializable {
 				return false;
 		} else if (!nextHopIpAddress.equals(other.nextHopIpAddress))
 			return false;
+		if (preference == null) {
+			if (other.preference != null)
+				return false;
+		} else if (!preference.equals(other.preference))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "StaticRoute [netIdIpAdress=" + netIdIpAdress + ", nextHopIpAddress=" + nextHopIpAddress + ", discard=" + discard + "]";
+		return "StaticRoute [netIdIpAdress=" + netIdIpAdress + ", nextHopIpAddress=" + nextHopIpAddress + ", discard=" + discard + ", preference=" + preference + "]";
 	}
 
 }

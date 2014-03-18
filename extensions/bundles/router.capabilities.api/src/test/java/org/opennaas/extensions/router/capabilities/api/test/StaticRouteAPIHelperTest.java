@@ -45,13 +45,16 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
  */
 public class StaticRouteAPIHelperTest {
 
-	private String	DST_NET_ADDRESS_1	= "192.168.1.0";
-	private String	DST_NET_ADDRESS_2	= "192.168.2.0";
-	private String	DST_NET_MASK		= "24";
+	private static final int	PREFERENCE			= 12;
+	private static final int	DEFAULT_PREFERENCE	= -1;
 
-	private String	NEXT_HOP_ADDRESS_1	= "10.10.10.11";
+	private static final String	DST_NET_ADDRESS_1	= "192.168.1.0";
+	private static final String	DST_NET_ADDRESS_2	= "192.168.2.0";
+	private static final String	DST_NET_MASK		= "24";
 
-	private String	SRC_XML_PATH		= "/staticRouteCollection.xml";
+	private static final String	NEXT_HOP_ADDRESS_1	= "10.10.10.11";
+
+	private static final String	SRC_XML_PATH		= "/staticRouteCollection.xml";
 
 	@Test
 	public void buildStaticRouteCollectionTest() throws IOException, SerializationException {
@@ -71,8 +74,8 @@ public class StaticRouteAPIHelperTest {
 
 		Collection<NextHopRoute> nhrCollection = new ArrayList<NextHopRoute>();
 
-		NextHopIPRoute nhr1 = generateSampleNextHopIPRoute(DST_NET_ADDRESS_1, DST_NET_MASK, NEXT_HOP_ADDRESS_1);
-		NextHopIPRoute nhr2 = generateSampleNextHopIPRoute(DST_NET_ADDRESS_2, DST_NET_MASK);
+		NextHopIPRoute nhr1 = generateSampleNextHopIPRoute(DST_NET_ADDRESS_1, DST_NET_MASK, NEXT_HOP_ADDRESS_1, PREFERENCE);
+		NextHopIPRoute nhr2 = generateSampleNextHopIPRoute(DST_NET_ADDRESS_2, DST_NET_MASK, DEFAULT_PREFERENCE);
 
 		nhrCollection.add(nhr1);
 		nhrCollection.add(nhr2);
@@ -89,12 +92,14 @@ public class StaticRouteAPIHelperTest {
 	 * @param nextHopAddress
 	 * @return
 	 */
-	private NextHopIPRoute generateSampleNextHopIPRoute(String dstAdress, String dstMask) {
+	private NextHopIPRoute generateSampleNextHopIPRoute(String dstAdress, String dstMask, int preference) {
 
 		NextHopIPRoute nhRoute = new NextHopIPRoute();
 
 		nhRoute.setDestinationAddress(dstAdress);
 		nhRoute.setIsStatic(true);
+		nhRoute.setRouteMetric(preference);
+
 		nhRoute.setDestinationMask(IPUtilsHelper.parseShortToLongIpv4NetMask(dstMask));
 
 		return nhRoute;
@@ -109,13 +114,14 @@ public class StaticRouteAPIHelperTest {
 	 * @param nextHopAddress
 	 * @return
 	 */
-	private NextHopIPRoute generateSampleNextHopIPRoute(String dstAdress, String dstMask, String nextHopAddress) {
+	private NextHopIPRoute generateSampleNextHopIPRoute(String dstAdress, String dstMask, String nextHopAddress, int preference) {
 
 		NextHopIPRoute nhRoute = new NextHopIPRoute();
 
 		nhRoute.setDestinationAddress(dstAdress);
 		nhRoute.setDestinationMask(IPUtilsHelper.parseShortToLongIpv4NetMask(dstMask));
 		nhRoute.setIsStatic(true);
+		nhRoute.setRouteMetric(preference);
 
 		IPProtocolEndpoint ipEndpoint = new IPProtocolEndpoint();
 		ipEndpoint.setProtocolIFType(ProtocolIFType.IPV4);

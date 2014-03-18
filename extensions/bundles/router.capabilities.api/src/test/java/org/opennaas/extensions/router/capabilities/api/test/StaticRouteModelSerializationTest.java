@@ -45,19 +45,20 @@ import org.xml.sax.SAXException;
  */
 public class StaticRouteModelSerializationTest {
 
-	private String	NET_ID_1		= "192.168.1.0/24";
-	private String	NEXT_HOP_1		= "10.10.10.11";
+	private static final String	NET_ID_1		= "192.168.1.0/24";
+	private static final String	NEXT_HOP_1		= "10.10.10.11";
+	private static final String	PREFERENCE		= "12";
 
-	private String	NET_ID_2		= "192.168.2.0/24";
+	private static final String	NET_ID_2		= "192.168.2.0/24";
 
-	private String	SR_XML_PATH		= "/staticRoute.xml";
-	private String	SRC_XML_PATH	= "/staticRouteCollection.xml";
+	private static final String	SR_XML_PATH		= "/staticRoute.xml";
+	private static final String	SRC_XML_PATH	= "/staticRouteCollection.xml";
 
 	@Test
 	public void staticRouteSerializationTest() throws SerializationException, IOException, SAXException, TransformerException,
 			ParserConfigurationException {
 
-		StaticRoute staticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1);
+		StaticRoute staticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1, PREFERENCE);
 
 		String xml = ObjectSerializer.toXml(staticRoute);
 		String expectedXml = IOUtils.toString(this.getClass().getResourceAsStream(SR_XML_PATH));
@@ -69,7 +70,7 @@ public class StaticRouteModelSerializationTest {
 	@Test
 	public void staticRouteDeserializationTest() throws IOException, SerializationException {
 
-		StaticRoute expectedStaticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1);
+		StaticRoute expectedStaticRoute = generateSampleRoute(NET_ID_1, NEXT_HOP_1, PREFERENCE);
 
 		String xml = IOUtils.toString(this.getClass().getResourceAsStream(SR_XML_PATH));
 		StaticRoute deserializedObject = (StaticRoute) ObjectSerializer.fromXml(xml, StaticRoute.class);
@@ -105,7 +106,7 @@ public class StaticRouteModelSerializationTest {
 	private StaticRouteCollection generateSRCollection() {
 		Collection<StaticRoute> staticRoutes = new ArrayList<StaticRoute>();
 
-		StaticRoute sr1 = generateSampleRoute(NET_ID_1, NEXT_HOP_1);
+		StaticRoute sr1 = generateSampleRoute(NET_ID_1, NEXT_HOP_1, PREFERENCE);
 		StaticRoute sr2 = generateSampleRoute(NET_ID_2);
 		staticRoutes.add(sr1);
 		staticRoutes.add(sr2);
@@ -120,13 +121,14 @@ public class StaticRouteModelSerializationTest {
 	 * Sample Static route with only netId, which implies that the discard option gets activated.
 	 * 
 	 * @param netId
+	 * @param preference
 	 * @return
 	 */
 	private StaticRoute generateSampleRoute(String netId) {
 		StaticRoute staticRoute = new StaticRoute();
 
-		staticRoute.setDiscard(true);
 		staticRoute.setNetIdIpAdress(netId);
+		staticRoute.setDiscard(true);
 
 		return staticRoute;
 
@@ -138,12 +140,13 @@ public class StaticRouteModelSerializationTest {
 	 * @param netId
 	 * @return
 	 */
-	private StaticRoute generateSampleRoute(String netId, String nextHopId) {
+	private StaticRoute generateSampleRoute(String netId, String nextHopId, String preference) {
 		StaticRoute staticRoute = new StaticRoute();
 
 		staticRoute.setDiscard(false);
 		staticRoute.setNetIdIpAdress(netId);
 		staticRoute.setNextHopIpAddress(nextHopId);
+		staticRoute.setPreference(preference);
 
 		return staticRoute;
 	}
