@@ -95,6 +95,7 @@
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
+		<rabbitmq.version>3.2.4</rabbitmq.version>
 		<servicemix.version>4.5.2</servicemix.version>
 		<servicemix.specs.version>2.2.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
@@ -772,6 +773,12 @@
 				<artifactId>activemq-console</artifactId>
 				<version>${activemq.version}</version>
 			</dependency>
+			<!-- RabbitMQ -->
+			<dependency>
+				<groupId>com.rabbitmq</groupId>
+				<artifactId>amqp-client</artifactId>
+				<version>${rabbitmq.version}</version>
+			</dependency>			
 			<!-- Servlet -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
