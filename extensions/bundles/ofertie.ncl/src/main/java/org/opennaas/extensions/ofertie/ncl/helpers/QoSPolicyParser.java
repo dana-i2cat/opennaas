@@ -56,8 +56,18 @@ public abstract class QoSPolicyParser {
 
 		Latency latency = new Latency();
 
-		latency.setMax(String.valueOf(genericNetQos.getMaxLatency()));
-		latency.setMin(String.valueOf(genericNetQos.getMinLatency()));
+		if (genericNetQos.getMaxLatency() == QoSPolicy.UNSPECIFIED_VALUE)
+			latency.setMax(null);
+		else
+			latency.setMax(String.valueOf(genericNetQos.getMaxLatency()));
+
+		if (genericNetQos.getMinLatency() == QoSPolicy.UNSPECIFIED_VALUE)
+			latency.setMin(null);
+		else
+			latency.setMin(String.valueOf(genericNetQos.getMinLatency()));
+
+		if (latency.getMax() == null && latency.getMin() == null)
+			latency = null;
 
 		return latency;
 	}
@@ -66,8 +76,18 @@ public abstract class QoSPolicyParser {
 
 		PacketLoss packetLoss = new PacketLoss();
 
-		packetLoss.setMax(String.valueOf(genericNetQos.getMaxPacketLoss()));
-		packetLoss.setMin(String.valueOf(genericNetQos.getMinPacketLoss()));
+		if (genericNetQos.getMaxPacketLoss() == QoSPolicy.UNSPECIFIED_VALUE)
+			packetLoss.setMax(null);
+		else
+			packetLoss.setMax(String.valueOf(genericNetQos.getMaxPacketLoss()));
+
+		if (genericNetQos.getMinPacketLoss() == QoSPolicy.UNSPECIFIED_VALUE)
+			packetLoss.setMin(null);
+		else
+			packetLoss.setMin(String.valueOf(genericNetQos.getMinPacketLoss()));
+
+		if (packetLoss.getMax() == null && packetLoss.getMin() == null)
+			packetLoss = null;
 
 		return packetLoss;
 	}
@@ -76,8 +96,18 @@ public abstract class QoSPolicyParser {
 
 		Throughput throughput = new Throughput();
 
-		throughput.setMax(String.valueOf(genericNetQos.getMaxThroughput()));
-		throughput.setMin(String.valueOf(genericNetQos.getMinThroughput()));
+		if (genericNetQos.getMaxThroughput() == QoSPolicy.UNSPECIFIED_VALUE)
+			throughput.setMax(null);
+		else
+			throughput.setMax(String.valueOf(genericNetQos.getMaxThroughput()));
+
+		if (genericNetQos.getMinThroughput() == QoSPolicy.UNSPECIFIED_VALUE)
+			throughput.setMin(null);
+		else
+			throughput.setMin(String.valueOf(genericNetQos.getMinThroughput()));
+
+		if (throughput.getMax() == null && throughput.getMin() == null)
+			throughput = null;
 
 		return throughput;
 	}
@@ -86,8 +116,18 @@ public abstract class QoSPolicyParser {
 
 		Jitter jitter = new Jitter();
 
-		jitter.setMax(String.valueOf(genericNetQos.getMaxJitter()));
-		jitter.setMin(String.valueOf(genericNetQos.getMinJitter()));
+		if (genericNetQos.getMaxJitter() == QoSPolicy.UNSPECIFIED_VALUE)
+			jitter.setMax(null);
+		else
+			jitter.setMax(String.valueOf(genericNetQos.getMaxJitter()));
+
+		if (genericNetQos.getMinJitter() == QoSPolicy.UNSPECIFIED_VALUE)
+			jitter.setMin(null);
+		else
+			jitter.setMin(String.valueOf(genericNetQos.getMinJitter()));
+
+		if (jitter.getMax() == null && jitter.getMin() == null)
+			jitter = null;
 
 		return jitter;
 	}
