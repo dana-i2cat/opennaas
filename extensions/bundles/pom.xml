@@ -37,6 +37,8 @@
 		<module>router.capability.staticroute</module>
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>
+		<module>router.capability.linkaggregation</module>
+		<module>router.capability.vlanbridge</module>
 		<module>router.capabilities.api</module>		
 		<module>router.model</module>
 		<module>router.features</module>

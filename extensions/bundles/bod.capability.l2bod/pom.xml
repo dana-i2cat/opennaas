@@ -26,8 +26,8 @@
 			<artifactId>org.opennaas.extensions.network.model</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.guava-osgi</groupId>
-			<artifactId>guava-osgi</artifactId>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>

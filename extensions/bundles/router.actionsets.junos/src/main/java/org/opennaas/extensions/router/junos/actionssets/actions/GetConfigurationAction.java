@@ -195,6 +195,7 @@ public class GetConfigurationAction extends JunosAction {
 	private System parseRoutingOptions(org.opennaas.extensions.router.model.System routerModel, String message)
 			throws IOException, SAXException {
 
+		// FIXME static routes have to be removed first!
 		RoutingOptionsParser routingOptionsParser = new RoutingOptionsParser(routerModel);
 		routingOptionsParser.init();
 		routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));

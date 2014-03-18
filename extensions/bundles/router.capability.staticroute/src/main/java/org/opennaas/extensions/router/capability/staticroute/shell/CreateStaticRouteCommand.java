@@ -26,6 +26,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.staticroute.IStaticRouteCapability;
+import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 
 //
 /**
@@ -42,21 +43,26 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			false)
 	private String	netIdIpAdress;
 
-	@Argument(index = 2, name = "nextHopIpAddress", description = "The next hop ip address", required = true, multiValued =
+	@Argument(index = 2, name = "nextHopIpAddress", description = "The next hop ip address", required = false, multiValued =
 			false)
 	private String	nextHopIpAddress;
 
-	@Argument(index = 3, name = "isRejected", description = "Choose if is discard", required = true, multiValued = false)
+	@Argument(index = 3, name = "isRejected", description = "Choose if is discard", required = false, multiValued = false)
 	private String	isDiscard;
+
+	@Argument(index = 4, name = "preference", description = "Routing option preference.", required = false, multiValued = false)
+	private int		preference	= StaticRouteCapability.PREFERENCE_DEFAULT_VALUE;
 
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Create Static Route");
+
+		// FIXME check either nextHopIpAddress or isRejected are set
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 
 			IStaticRouteCapability staticRouteCapability = (IStaticRouteCapability) router.getCapabilityByInterface(IStaticRouteCapability.class);
-			staticRouteCapability.createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard);
+			staticRouteCapability.createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard, preference);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -72,4 +78,5 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 		return null;
 
 	}
+
 }

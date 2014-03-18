@@ -151,10 +151,12 @@ public class RoutingOptionsParser extends DigesterEngine {
 		}
 	}
 
+	// FIXME next-hops are specified via ip, not interface name! Additionally, it can be an array of ips.
 	public void addInterface(String nextHop) {
 		NextHopIPRoute nextHopIPRoute = (NextHopIPRoute) peek(0);
 
 		boolean isGRE = false;
+
 		for (Service service : model.getHostedService()) {
 			if (service instanceof GRETunnelService) {
 				GRETunnelService greService = (GRETunnelService) service;
