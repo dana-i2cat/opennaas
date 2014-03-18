@@ -83,6 +83,22 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 	}
 
 	@Override
+	public void activate() throws CapabilityException {
+
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IL3VlanCapability.class.getName());
+		super.activate();
+
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+
+		registration.unregister();
+		super.deactivate();
+
+	}
+
+	@Override
 	public void addIpAddressToBridgedDomain(String domainName, String ipAddress) throws CapabilityException {
 		// TODO Auto-generated method stub
 
