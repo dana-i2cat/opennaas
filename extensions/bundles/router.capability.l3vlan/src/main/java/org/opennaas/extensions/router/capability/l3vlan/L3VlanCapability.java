@@ -30,6 +30,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 
 public class L3VlanCapability extends AbstractCapability implements IL3VlanCapability {
 
@@ -108,5 +109,11 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 	public void removeIpAddressfromBridgedDomain(String domainName, String ipAddress) throws CapabilityException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public BridgeDomains getL3Vlans() throws CapabilityException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
