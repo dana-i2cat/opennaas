@@ -39,7 +39,7 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 /**
  * Floodlight special client mixing CXF and Java clients allowing sending HTTP DELETE with body
  * 
- * @author logoff
+ * @author Julio Carlos Barrera
  * 
  */
 public class FloodlightStaticFlowPusherClient implements IFloodlightStaticFlowPusherClient {

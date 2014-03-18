@@ -10,7 +10,7 @@
 		<feature version="${project.version}">opennaas-network-model-indl</feature>
 
 		<bundle dependency="true">mvn:joda-time/joda-time/${jodatime.version}</bundle>
-		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+		<bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
