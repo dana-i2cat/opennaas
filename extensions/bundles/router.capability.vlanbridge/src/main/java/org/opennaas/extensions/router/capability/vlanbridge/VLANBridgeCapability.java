@@ -23,6 +23,7 @@ package org.opennaas.extensions.router.capability.vlanbridge;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.ModelElementNotFoundException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -30,6 +31,9 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomain;
+import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomains;
+import org.opennaas.extensions.router.capability.vlanbridge.api.model.InterfaceVLANOptions;
 
 /**
  * 
@@ -109,4 +113,48 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
 	}
+
+	@Override
+	public BridgeDomains getBridgeDomains() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BridgeDomain getBridgeDomain(String domainName) throws ModelElementNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void createBridgeDomain(BridgeDomain bridgeDomain) throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateBridgeDomain(String domainName, BridgeDomain bridgeDomain) throws ModelElementNotFoundException, CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public InterfaceVLANOptions getInterfaceVLANOptions(String ifaceName) throws ModelElementNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setInterfaceVLANOptions(String ifaceName, InterfaceVLANOptions vlanOptions) throws ModelElementNotFoundException,
+			CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
 }
