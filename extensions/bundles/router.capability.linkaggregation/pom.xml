@@ -7,42 +7,24 @@
 		<version>0.28-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
+	<artifactId>org.opennaas.extensions.router.capability.linkaggregation</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>OpenNaaS :: MAC Bridge :: IOS Resource </name>
-	<description>MACBridge IOS Implementation</description>
+	<name>OpenNaaS :: Router :: Link Aggregation Capability</name>
+	<description>Routers Link Aggregation Capability Implementation</description>
 	<dependencies>
-		<!-- Internal Mantychore dependencies -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.model</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.macbridge.model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.protocols.cli</artifactId>
-		</dependency>
-		<!-- Implemented capabilities -->
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
+			<artifactId>org.opennaas.extensions.router.capabilities.api</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -61,15 +43,18 @@
 				-->
 				<configuration>
 					<instructions>
-						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
-						<Import-Package>
-							javax.persistence,
+						<Bundle-Activator>org.opennaas.extensions.router.capability.linkaggregation.Activator</Bundle-Activator>
+						<!--
+							| assume public classes are in the top package, and private
+							classes are under ".internal"
+						-->
+						<Import-Package>!org.opennaas.extensions.router.capability.linkaggregation.*,
+  							org.slf4j,
+							org.apache.felix.service.command,
 							*
 						</Import-Package>
 						<Export-Package>
-							   org.opennaas.extensions.macbridge.ios.resource.commandsets.*;version="${project.version}",
-             				   org.opennaas.extensions.macbridge.ios.resource.actionssets.*;version="${project.version}",
-             				   org.opennaas.extensions.macbridge.ios.resource.repository.*;version="${project.version}"
+							org.opennaas.extensions.router.capability.linkaggregation;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>
