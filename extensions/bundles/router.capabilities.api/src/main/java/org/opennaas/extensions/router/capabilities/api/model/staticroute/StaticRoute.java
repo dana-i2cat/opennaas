@@ -20,6 +20,8 @@ package org.opennaas.extensions.router.capabilities.api.model.staticroute;
  * #L%
  */
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -32,12 +34,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StaticRoute {
+public class StaticRoute implements Serializable {
 
-	private String	netIdIpAdress;
-	private String	nextHopIpAddress;
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 7327859252040702917L;
+
+	private String				netIdIpAdress;
+	private String				nextHopIpAddress;
 	@XmlElement(name = "isDiscard")
-	private boolean	discard;
+	private boolean				discard;
 
 	public String getNetIdIpAdress() {
 		return netIdIpAdress;
