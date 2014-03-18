@@ -29,9 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomain;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomains;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.InterfaceVLANOptions;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
 
 public class VLANBridgeAPISerializationTest {
 
