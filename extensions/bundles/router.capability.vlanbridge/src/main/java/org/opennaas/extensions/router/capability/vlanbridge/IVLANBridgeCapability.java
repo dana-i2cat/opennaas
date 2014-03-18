@@ -33,9 +33,9 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.core.resources.ModelElementNotFoundException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomain;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomains;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.InterfaceVLANOptions;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
 
 /**
  * This capability offers VLAN bridging by defining VLAN BridgeDomains. These domains represent a switching domain in accordance with 802.1Q standard.

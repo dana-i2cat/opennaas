@@ -31,9 +31,9 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomain;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.BridgeDomains;
-import org.opennaas.extensions.router.capability.vlanbridge.api.model.InterfaceVLANOptions;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions; 
 
 /**
  * 

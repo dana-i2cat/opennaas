@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.vlanbridge.api.model;
+package org.opennaas.extensions.router.capabilities.api.model.vlanbridge;
 
 /*
  * #%L
