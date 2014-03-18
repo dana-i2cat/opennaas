@@ -44,11 +44,12 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
  */
 public class StaticRouteCapability extends AbstractCapability implements IStaticRouteCapability {
 
-	public static String	CAPABILITY_TYPE	= "staticroute";
+	public static String	CAPABILITY_TYPE				= "staticroute";
+	public final static int	PREFERENCE_DEFAULT_VALUE	= -1;
 
-	Log						log				= LogFactory.getLog(StaticRouteCapability.class);
+	Log						log							= LogFactory.getLog(StaticRouteCapability.class);
 
-	private String			resourceId		= "";
+	private String			resourceId					= "";
 
 	/**
 	 * StaticRouteCapability constructor
@@ -123,12 +124,14 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 */
 
 	@Override
-	public void createStaticRoute(String netIdIpAdress, String nextHopIpAddress, String isDiscard) throws CapabilityException {
+	public void createStaticRoute(String netIdIpAdress, String nextHopIpAddress, String isDiscard, int preference) throws CapabilityException {
 		log.info("Start of createStaticRoute call");
 		String[] aParams = new String[3];
 		aParams[0] = netIdIpAdress;
 		aParams[1] = nextHopIpAddress;
 		aParams[2] = isDiscard;
+
+		// TODO add preference if it does not contain its default value
 
 		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
 		queueAction(action);
@@ -143,7 +146,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 			netIdIpAdress = netIdIpAdress + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(maskIpAdress);
 		else
 			netIdIpAdress = netIdIpAdress + "/" + maskIpAdress;
-		createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard);
+		createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard, PREFERENCE_DEFAULT_VALUE);
 
 	}
 

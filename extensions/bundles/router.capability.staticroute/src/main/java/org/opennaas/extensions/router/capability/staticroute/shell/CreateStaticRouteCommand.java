@@ -26,6 +26,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.staticroute.IStaticRouteCapability;
+import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 
 //
 /**
@@ -49,6 +50,9 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 	@Argument(index = 3, name = "isRejected", description = "Choose if is discard", required = true, multiValued = false)
 	private String	isDiscard;
 
+	@Argument(index = 3, name = "preference", description = "Routing option preference.", required = false, multiValued = false)
+	private String	preference;
+
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Create Static Route");
@@ -56,7 +60,7 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			IResource router = getResourceFromFriendlyName(resourceId);
 
 			IStaticRouteCapability staticRouteCapability = (IStaticRouteCapability) router.getCapabilityByInterface(IStaticRouteCapability.class);
-			staticRouteCapability.createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard);
+			staticRouteCapability.createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard, StaticRouteCapability.PREFERENCE_DEFAULT_VALUE);
 
 		} catch (ResourceException e) {
 			printError(e);

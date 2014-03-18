@@ -62,7 +62,8 @@ public interface IStaticRouteCapability extends ICapability {
 	@POST
 	@Path("/")
 	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress,
-			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard) throws CapabilityException;
+			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard,
+			@QueryParam("preference") int preference) throws CapabilityException;
 
 	/**
 	 * Deletes a static route in the router
