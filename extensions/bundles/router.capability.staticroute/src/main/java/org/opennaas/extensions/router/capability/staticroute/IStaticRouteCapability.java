@@ -20,15 +20,21 @@ package org.opennaas.extensions.router.capability.staticroute;
  * #L%
  */
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRouteCollection;
 
 /**
  * @author Jordi Puig
+ * @author Adrian Rosello Rey (i2CAT)
  */
 @Path("/")
 public interface IStaticRouteCapability extends ICapability {
@@ -41,8 +47,6 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @param nextHopIpAddress
 	 * @throws CapabilityException
 	 */
-	@GET
-	@Path("/createStaticRoute")
 	@Deprecated
 	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("maskIpAdress") String maskIpAdress,
 			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard) throws CapabilityException;
@@ -55,10 +59,11 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @param nextHopIpAddress
 	 * @throws CapabilityException
 	 */
-	@GET
-	@Path("/createStaticRouteComposedIP")
+	@POST
+	@Path("/")
 	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress,
-			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard) throws CapabilityException;
+			@QueryParam("nextHopIpAddress") String nextHopIpAddress, @QueryParam("isDiscard") String isDiscard,
+			@QueryParam("preference") int preference) throws CapabilityException;
 
 	/**
 	 * Deletes a static route in the router
@@ -69,8 +74,6 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @throws CapabilityException
 	 */
 	@Deprecated
-	@GET
-	@Path("/deleteStaticRoute")
 	public void deleteStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("maskIpAdress") String maskIpAdress,
 			@QueryParam("nextHopIpAddress") String nextHopIpAddress) throws CapabilityException;
 
@@ -82,9 +85,19 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @param nextHopIpAddress
 	 * @throws CapabilityException
 	 */
-	@GET
-	@Path("/deleteStaticRouteComposedIP")
+	@DELETE
+	@Path("/")
 	public void deleteStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("nextHopIpAddress") String nextHopIpAddress)
 			throws CapabilityException;
 
+	/**
+	 * Returns the list of static routes stored in the model.
+	 * 
+	 * @return
+	 * @throws CapabilityException
+	 */
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_XML)
+	public StaticRouteCollection getStaticRoutes() throws CapabilityException;
 }
