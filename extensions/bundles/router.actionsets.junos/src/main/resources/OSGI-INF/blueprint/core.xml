@@ -109,4 +109,15 @@
 		</service-properties>
 	</service>
 	
+	<bean id="vlanBridgeActionSet" class="org.opennaas.extensions.router.junos.actionssets.VLANBridgeActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="vlanBridgeActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="vlanbridge"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+	
 </blueprint>
