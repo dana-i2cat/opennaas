@@ -322,8 +322,11 @@ function clearPath() {
 function removeLastLink(){
     var lastLink = links.pop();
 console.log(lastLink);
-    var element = document.getElementById(lastLink.id);
-    element.parentNode.removeChild(element);
+	try{
+	    var element = document.getElementById(lastLink.id);
+	    element.parentNode.removeChild(element);
+	}catch(e){
+	}
 }
 
 /**

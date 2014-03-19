@@ -107,6 +107,9 @@ function removeAll(){
  */
 function del(id){
     waiting(true);
+    if(id.charAt(0) == "D"){
+	id = id.substr(1, id.length);
+    }
     var result = "";
     $.ajax({
         type: 'POST',
