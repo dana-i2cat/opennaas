@@ -20,6 +20,11 @@ package org.opennaas.extensions.router.capability.vlanbridge;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -33,7 +38,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
-import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions; 
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
 
 /**
  * 
@@ -116,44 +121,77 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public BridgeDomains getBridgeDomains() {
-		// TODO Auto-generated method stub
-		return null;
+		// FIXME call action
+		BridgeDomains domains = new BridgeDomains();
+
+		List<String> domainNames = new ArrayList<String>();
+
+		domainNames.add("vlan.2");
+		domainNames.add("vlan.3");
+
+		domains.setDomainNames(domainNames);
+
+		return domains;
 	}
 
 	@Override
-	public BridgeDomain getBridgeDomain(String domainName) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	public BridgeDomain getBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
+		// FIXME call action
+
+		if (!domainName.contains("."))
+			throw new CapabilityException("Invalid domain name.");
+
+		List<String> interfacesNames = new ArrayList<String>();
+		interfacesNames.add("fe-0/2/1.3");
+		interfacesNames.add("fe-0/2/1.2");
+
+		BridgeDomain brDomain = new BridgeDomain();
+		brDomain.setDescription("Sample bridge domain");
+		brDomain.setInterfacesNames(interfacesNames);
+		brDomain.setVlanid(Integer.valueOf(domainName.split("\\.")[1]));
+
+		brDomain.setDomainName(domainName);
+
+		return brDomain;
 	}
 
 	@Override
 	public void createBridgeDomain(BridgeDomain bridgeDomain) throws CapabilityException {
-		// TODO Auto-generated method stub
+		// TODO call action
 
 	}
 
 	@Override
 	public void updateBridgeDomain(String domainName, BridgeDomain bridgeDomain) throws ModelElementNotFoundException, CapabilityException {
-		// TODO Auto-generated method stub
+		// TODO call action
 
 	}
 
 	@Override
 	public void deleteBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
-		// TODO Auto-generated method stub
+		// TODO call action
 
 	}
 
 	@Override
 	public InterfaceVLANOptions getInterfaceVLANOptions(String ifaceName) throws ModelElementNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		// FIXME call action
+		InterfaceVLANOptions ivlanOpt = new InterfaceVLANOptions();
+
+		Map<String, String> vlanOptions = new HashMap<String, String>();
+
+		vlanOptions.put("port-mode", "trunk");
+		vlanOptions.put("native-vlan-id", "102");
+
+		ivlanOpt.setVlanOptions(vlanOptions);
+
+		return ivlanOpt;
 	}
 
 	@Override
 	public void setInterfaceVLANOptions(String ifaceName, InterfaceVLANOptions vlanOptions) throws ModelElementNotFoundException,
 			CapabilityException {
-		// TODO Auto-generated method stub
+		// TODO call action
 
 	}
 

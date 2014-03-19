@@ -28,6 +28,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.ModelElementNotFoundException;
@@ -65,11 +66,12 @@ public interface IVLANBridgeCapability extends ICapability {
 	 * @return BridgeDomain with given domainName
 	 * @throws ModelElementNotFoundException
 	 *             if there is no BridgeDomain with given domainName in the system.
+	 * @throws CapabilityException
 	 */
 	@Path("/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public BridgeDomain getBridgeDomain(@PathParam("id") String domainName) throws ModelElementNotFoundException;
+	public BridgeDomain getBridgeDomain(@PathParam("id") String domainName) throws ModelElementNotFoundException, CapabilityException;
 
 	/**
 	 * Prepares and queues an Action that, if executed, configures given BridgeDomain in the resource having this Capability.
@@ -122,10 +124,10 @@ public interface IVLANBridgeCapability extends ICapability {
 	 * @throws ModelElementNotFoundException
 	 *             if there is no interface with given ifaceName in the system.
 	 */
-	@Path("/vlanoptions/{iface}")
+	@Path("/vlanoptions")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public InterfaceVLANOptions getInterfaceVLANOptions(@PathParam("iface") String ifaceName)
+	public InterfaceVLANOptions getInterfaceVLANOptions(@QueryParam("iface") String ifaceName)
 			throws ModelElementNotFoundException;
 
 	/**
@@ -140,10 +142,10 @@ public interface IVLANBridgeCapability extends ICapability {
 	 * @throws CapabilityException
 	 *             if failed to prepare action for setting given InterfaceVLANOptions in desired interface.
 	 */
-	@Path("/vlanoptions/{iface}")
+	@Path("/vlanoptions")
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
-	public void setInterfaceVLANOptions(@PathParam("iface") String ifaceName, InterfaceVLANOptions vlanOptions)
+	public void setInterfaceVLANOptions(@QueryParam("iface") String ifaceName, InterfaceVLANOptions vlanOptions)
 			throws ModelElementNotFoundException, CapabilityException;
 
 }
