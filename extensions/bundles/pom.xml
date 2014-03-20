@@ -82,6 +82,7 @@
 		<module>ofertie.ncl</module>
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
+		<module>openflowswitch.driver.opendaylight</module>
 		<module>sdnnetwork</module>
 
 		<module>vrf.model</module>

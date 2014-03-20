@@ -6,14 +6,15 @@ import java.util.List;
 
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 public abstract class OpenflowSwitchModelHelper {
 
-	public static List<FloodlightOFFlow> getSwitchForwardingRules(OpenflowSwitchModel model) {
+	public static List<OFFlow> getSwitchForwardingRules(OpenflowSwitchModel model) {
 
-		List<FloodlightOFFlow> forwardingRules = new ArrayList<FloodlightOFFlow>();
+		List<OFFlow> forwardingRules = new ArrayList<OFFlow>();
 
 		Iterator<OFFlowTable> iterator = model.getOfTables().iterator();
 		while (iterator.hasNext())
@@ -25,7 +26,7 @@ public abstract class OpenflowSwitchModelHelper {
 	public static OpenflowSwitchModel generateSampleModel() {
 
 		OpenflowSwitchModel model = new OpenflowSwitchModel();
-		List<FloodlightOFFlow> forwardingRules = generateSampleOFForwardingRules();
+		List<OFFlow> forwardingRules = generateSampleOFForwardingRules();
 
 		OFFlowTable table = new OFFlowTable();
 		table.setTableId("table1");
@@ -36,11 +37,11 @@ public abstract class OpenflowSwitchModelHelper {
 		return model;
 	}
 
-	public static List<FloodlightOFFlow> generateSampleOFForwardingRules() {
-		List<FloodlightOFFlow> rules = new ArrayList<FloodlightOFFlow>();
+	public static List<OFFlow> generateSampleOFForwardingRules() {
+		List<OFFlow> rules = new ArrayList<OFFlow>();
 
-		FloodlightOFFlow rule1 = generateSampleOFForwardingRule("1", "1", "1");
-		FloodlightOFFlow rule2 = generateSampleOFForwardingRule("2", "2", "2");
+		OFFlow rule1 = generateSampleOFForwardingRule("1", "1", "1");
+		OFFlow rule2 = generateSampleOFForwardingRule("2", "2", "2");
 		rules.add(rule1);
 		rules.add(rule2);
 
@@ -48,8 +49,8 @@ public abstract class OpenflowSwitchModelHelper {
 
 	}
 
-	public static FloodlightOFFlow generateSampleOFForwardingRule(String flowId, String dstPort, String priority) {
-		FloodlightOFFlow rule = new FloodlightOFFlow();
+	public static OFFlow generateSampleOFForwardingRule(String flowId, String dstPort, String priority) {
+		OFFlow rule = new OFFlow();
 
 		FloodlightOFMatch match = new FloodlightOFMatch();
 		match.setDstPort(dstPort);
@@ -62,3 +63,4 @@ public abstract class OpenflowSwitchModelHelper {
 	}
 
 }
+

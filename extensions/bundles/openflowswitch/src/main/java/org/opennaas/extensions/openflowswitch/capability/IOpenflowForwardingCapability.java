@@ -14,6 +14,8 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
  * 
@@ -36,6 +38,10 @@ public interface IOpenflowForwardingCapability extends ICapability {
 	@GET
 	@Path("/getOFForwardingRules")
 	@Produces(MediaType.APPLICATION_XML)
-	public List<FloodlightOFFlow> getOpenflowForwardingRules() throws CapabilityException;
+	public List<OFFlow> getOpenflowForwardingRules() throws CapabilityException;
 
+	@POST
+	@Path("/createOFFForwardingRule")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void createOpenflowForwardingRule(OpenDaylightOFFlow forwardingRule) throws CapabilityException;
 }

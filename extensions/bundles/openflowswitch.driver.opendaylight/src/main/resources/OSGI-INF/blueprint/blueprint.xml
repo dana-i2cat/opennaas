@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!--  	Protocol Session Factory  -->
+	<bean id="opendaylightProtocolSessionFactory" class="org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.OpenDayLightProtocolSessionFactory"/>
+	<service ref="opendaylightProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="opendaylight"/>
+			<entry key="protocol.version" value="1.0"/>
+		</service-properties>
+	</service>
+	
+	
+	<!--  	ofForwardingActionSet  -->
+	<bean id="ofForwardingActionset" class="org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.OFForwardingActionsetImplementation"/>
+	<service ref="ofForwardingActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="opendaylight"/>
+			<entry key="actionset.capability" value="offorwarding"/>
+			<entry key="actionset.version" value="1.0"/>
+		</service-properties>
+	</service>	
+	
+	
+</blueprint>

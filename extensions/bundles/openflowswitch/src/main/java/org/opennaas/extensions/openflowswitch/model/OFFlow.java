@@ -29,6 +29,8 @@ public class OFFlow {
 	protected List<FloodlightOFAction>	actions;
 	protected FloodlightOFMatch			match;
 
+//	protected String switchId;
+
 	/**
 	 * Default constructor
 	 */
@@ -129,6 +131,14 @@ public class OFFlow {
 		this.match = match;
 	}
 
+/*	public String getSwitchId() {
+        return switchId;
+    }
+
+    public void setSwitchId(String switchId) {
+        this.switchId = switchId;
+    }
+*/
 	/*
 	 * (non-Javadoc)
 	 * 
