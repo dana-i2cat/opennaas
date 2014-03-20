@@ -131,13 +131,7 @@ if(path != null){
             try {
 //log.error("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId());
                 FloodlightOFFlow flow = listFlow.get(i);
-//                flow.getMatch().setEtherType("2048");
-//                flow.setName(String.valueOf(flow.getName()) + "-2048-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp());
                 provisionLink(flow);
-
-//                flow.getMatch().setEtherType("2054");
-//                flow.setName(String.valueOf(flow.getName()) + "-2054-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp());
-//                provisionLink(flow);
             } catch (ResourceException e) {
 //                throw new ActionException("Error provisioning link : ", e);
             } catch (ActivatorException e) {

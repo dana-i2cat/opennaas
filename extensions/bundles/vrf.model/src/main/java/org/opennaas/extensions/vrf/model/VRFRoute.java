@@ -115,12 +115,20 @@ public class VRFRoute{
         }
         final VRFRoute other = (VRFRoute) obj;
 
+        String thisSrc = this.getSourceAddress();
+        String otherSrc = other.getSourceAddress();
+
+        log.debug("Equal source ip, This: "+thisSrc+" =? "+otherSrc);
+        if(!Utils.netMatch(thisSrc, otherSrc)){
+            return false;
+        }
+        
         String thisDst = this.getDestinationAddress();
         String otherDst = other.getDestinationAddress();
 
-        log.debug("Equal ip, This: "+thisDst+" =? "+otherDst);
+        log.debug("Equal destination ip, This: "+thisDst+" =? "+otherDst);
         if(!Utils.netMatch(thisDst, otherDst)){
-                return false;
+            return false;
         }
         if (this.switchInfo.getDPID() != other.switchInfo.getDPID() && (this.switchInfo.getDPID() == null || !this.switchInfo.getDPID().equals(other.switchInfo.getDPID()))) {
             return false;

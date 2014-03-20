@@ -2,11 +2,14 @@ package org.opennaas.extensions.vrf.staticroute.capability;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,10 +18,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.MappingJsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
@@ -184,11 +185,21 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         FloodlightOFFlow flowArp = Utils.VRFRouteToFloodlightFlow(route, "2054");
         FloodlightOFFlow flowIp = Utils.VRFRouteToFloodlightFlow(route, "2048");
 
-        model.getTable(version).removeRoute(id);
         //Conversion List of VRFRoute to List of FloodlightFlow
+        Response response1;
+        Response response2;
         try {
-            removeLink(flowArp);
-            removeLink(flowIp);
+            response1 = removeLink(flowArp);
+            response2 = removeLink(flowIp);
+            /**If the flow is no removed (aRP orIP) OpenNaaS always will show the route
+		removeLink should return: ok, not exist or error
+		*/
+            if(response1.getStatus() == 200 && response2.getStatus() == 200){
+                model.getTable(version).removeRoute(id);
+            }else{
+                model.getTable(version).removeRoute(id);
+//                return Response.notModified("Route not removed.").build();
+            }
         } catch (ResourceException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ActivatorException ex) {
@@ -231,6 +242,7 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
 //        model.getIpv6().removeRoutes();
 
         //call OpenNaaS
+        clearAllFlows();//DEMOOO
         return Response.ok("Removed").build();
     }
 
@@ -383,16 +395,7 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
                 log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getSwitchId() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
 //                response = provisionLink(listFlow.get(i));
                 FloodlightOFFlow flow = listFlow.get(i);
-//                flow.getMatch().setEtherType("2048");
-//                flow.setName(Utils.createFlowName(String.valueOf(route.getId()), "2048", listFlow.get(i).getMatch().getSrcIp(), listFlow.get(i).getMatch().getDstIp(), listFlow.get(i).getSwitchId()));
-        
-//                flow.setName(String.valueOf(route.getId()) + "-2048-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp() + "-" + listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
                 provisionLink(flow);
-
-//                flow.getMatch().setEtherType("2054");
-//                flow.setName(Utils.createFlowName(String.valueOf(route.getId()), "2054", listFlow.get(i).getMatch().getSrcIp(), listFlow.get(i).getMatch().getDstIp(), listFlow.get(i).getSwitchId()));
-//                flow.setName(String.valueOf(route.getId()) + "-2054-" + listFlow.get(i).getMatch().getSrcIp() + "-" + listFlow.get(i).getMatch().getDstIp() + "-" + listFlow.get(i).getSwitchId().substring(listFlow.get(i).getSwitchId().length() - 2));
-//                provisionLink(flow);
             } catch (ResourceException e) {
 //                throw new ActionException("Error provisioning link : ", e);
             } catch (ActivatorException e) {
@@ -424,8 +427,18 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
         try {
             forwardingCapability.removeOpenflowForwardingRule(flow.getName());
+            /*
+             * DEMO. New Size should be less than 2. In all switches
+             */
+            int size = forwardingCapability.getOpenflowForwardingRules().size();
+            if( size > 2){
+//                return Response.status(Response.Status.NOT_FOUND).build();
+                log.error("More than 2 FLOWS IN SWITCH. DO NoT DELETE ROUTE.");
+            }
+            log.error("New Size "+size);
         } catch (Exception e) {
             log.error("Error removing flow... " + e.getMessage());
+//            return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok().build();
     }
@@ -524,4 +537,67 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
             return Response.status(201).entity(response).build();
 //        }
     }
+    
+    public void clearAllFlows(){
+        deleteHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:01");
+        deleteHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:02");
+        deleteHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:03");
+        deleteHttpRequest("http://controllersVM:8192", "00:00:00:00:00:00:00:04");
+        deleteHttpRequest("http://controllersVM:8192", "00:00:00:00:00:00:00:05");
+        deleteHttpRequest("http://controllersVM:8192", "00:00:00:00:00:00:00:06");
+        deleteHttpRequest("http://controllersVM2:8193", "00:00:00:00:00:00:00:07");
+        deleteHttpRequest("http://controllersVM2:8193", "00:00:00:00:00:00:00:08");
+        
+        String json[] = new String[6];
+        String controllerInfo[] = new String[6];
+        controllerInfo[1] = controllerInfo[0] ="controllersVM:8191";
+        controllerInfo[2] = controllerInfo[3] ="controllersVM:8192";
+        controllerInfo[4] = controllerInfo[5] ="controllersVM2:8193";
+        json[0] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-11\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.1.1\", \"src-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=3\"}";
+        json[1] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-12\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.1.1\", \"dst-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=65534\"}";
+        json[2] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-41\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.4.4\", \"src-ip\":\"192.168.4.94\",\"active\":\"true\", \"actions\":\"output=4\"}";
+        json[3] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-42\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.4.4\", \"dst-ip\":\"192.168.4.94\",\"active\":\"true\", \"actions\":\"output=65534\"}";
+        json[4] = "{\"switch\": \"00:00:00:00:00:00:00:08\", \"name\":\"flow-mod-81\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.2.51\", \"src-ip\":\"192.168.2.98\",\"active\":\"true\", \"actions\":\"output=2\"}";
+        json[5] = "{\"switch\": \"00:00:00:00:00:00:00:08\", \"name\":\"flow-mod-82\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.2.51\", \"dst-ip\":\"192.168.2.98\",\"active\":\"true\", \"actions\":\"output=65534\"}";
+        
+        for (int i = 0; i < json.length; i++) {
+            httpRequest("http://" + controllerInfo[i] + "/wm/staticflowentrypusher/json", json[i]);
+        }
+        //insert hosts tunnel routes
+    }
+    private String deleteHttpRequest(String uri, String dpid){
+        String response ="";
+        try {
+            OutputStreamWriter wr = null;
+            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/"+dpid+"/json");
+            log.error(url);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+InputStream is = connection.getInputStream();
+            //response = connection.getResponseMessage();
+            return response;
+        } catch (IOException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return response;
+    }
+    private void httpRequest(String Url, String json) {
+        try {
+            log.error("Request to: " + Url);
+            URL url = new URL(Url);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+            wr.write(json);
+            wr.flush();
+            wr.close();
+            conn.connect();
+            conn.getResponseCode();
+        } catch (UnknownHostException e) {
+            log.error("Url is null. Maybe the controllers are not registred.");
+        } catch (Exception ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
