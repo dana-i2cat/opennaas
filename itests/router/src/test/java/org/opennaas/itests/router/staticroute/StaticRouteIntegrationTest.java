@@ -129,7 +129,7 @@ public class StaticRouteIntegrationTest {
 
 		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE));
-		staticRouteCapability.createStaticRoute("0.0.0.0/0", "192.168.1.1", "false", StaticRouteCapability.PREFERENCE_DEFAULT_VALUE);
+		staticRouteCapability.createStaticRoute("0.0.0.0/0", "192.168.1.1", false, StaticRouteCapability.PREFERENCE_DEFAULT_VALUE);
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
@@ -143,7 +143,7 @@ public class StaticRouteIntegrationTest {
 		queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
-		staticRouteCapability.createStaticRoute("45:34fa:12::4e/64", "45:34fa:12::4e:12", "false", StaticRouteCapability.PREFERENCE_DEFAULT_VALUE);
+		staticRouteCapability.createStaticRoute("45:34fa:12::4e/64", "45:34fa:12::4e:12", false, StaticRouteCapability.PREFERENCE_DEFAULT_VALUE);
 
 		queueCapability = (IQueueManagerCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
