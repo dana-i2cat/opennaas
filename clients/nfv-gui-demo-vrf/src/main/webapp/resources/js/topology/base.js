@@ -1,14 +1,32 @@
 /**
  *  Base file of d3js
  */
+if(sessvars.nodes){
+    nodes = sessvars.nodes;
+    links = sessvars.links;
+    controllers = sessvars.controllers;
+    controllersLinks = sessvars.controllersLinks;
+}
+var storedNodes = nodes;
+//if(undefined == linkColor || linkColor == null){
+//    linkColor = "black";
+//}
+var linkColor = "black";
 var auto = "Automatic";
 var man = "Manual";
+var ctrlKey = false;//ctrl key is pressed?
+
+/* Images size */
+var node_size_width = 50, node_size_height_sw = 50, node_size_height_h = 35;
+var node_size_width_big = node_size_width + 25, node_size_height_sw_big = node_size_height_sw+25, node_size_height_h_big = 35;
 
 var switchImage = urlVar+"/topology/switch2.png";//urlVar obtained in header!
 var hostImage = urlVar+"/topology/laptop.png";
 var controllerImage = urlVar+"/topology/controller2.png";
 var packetImage = urlVar+"/topology/movie_tape.gif";
 var linkImage = urlVar+"/topology/link_green.png";
+var helpImage = urlVar+"/topology/helpImage.png";
+var cloudONImage = urlVar+"/topology/opennaas_cloud.png";
 
 // set up SVG for D3
 var width = 700,
@@ -27,8 +45,8 @@ var svg = d3.select('#chart')
 
 // init D3 force layout
 var force = d3.layout.force()
-    .nodes(nodes, controllers)
-    .links(links, controllersLinks)
+    .nodes(nodes, controllers, cloud)
+    .links(links, controllersLinks, cloudLinks)
     .size([width, height])
     .linkDistance(350)
     .charge(-500)
@@ -38,11 +56,14 @@ var force = d3.layout.force()
  * Drawing topology (nodes, links, controllers)
  */
 var drag_line = svg.append('svg:path')
-    .attr('class', 'link2 dragline hidden')
+    .attr('class', 'dragline hidden')
     .attr('d', 'M0,0L0,0');
 var link = svg.append("svg:g").selectAll("link.sw");
 var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
 var node = svg.append("svg:g").selectAll(".node");
+var help = svg.append("svg:g").selectAll(".help");
+var cloudON = svg.append("svg:g").selectAll(".cloudON");
+var cloudLink = svg.append("svg:g").selectAll(".link.cloud");
 
 d3.json("", function (error, json) {
     force.start();
@@ -60,12 +81,14 @@ function update(){
         .attr('id', function (d) {return d.id;})
         .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
         .classed('selected', function (d) {return d === selected_link;});
-
+    //remove selected/drawed links
+    d3.selectAll(".link2").remove();
+    
     /* Links between switchs and controllers */
     controllerLink = controllerLink.data(controllersLinks);
     controllerLink.enter().append("svg:line")
         .attr("class", "linkCtrl")
-        .attr("stroke", "green");
+        .attr("stroke", linkColor);
     
     link.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
@@ -92,24 +115,52 @@ function update(){
 
     /* Drawing nodes (switchs and hosts) */
     var node_x = "-30", node_y = "-30";
-    var node_width = "75", node_height = "75";
-    var node_width_big = "100", node_height_big = node_height;
-    var node_txt_x_sw = "-24", node_txt_y_sw = "9";
-    var node_txt_x_h = "-10", node_txt_y_h = "30";
+    var node_width = 50, node_height = 50, node_height_h = 35;
+    var node_width_big = node_width + 25, node_height_big = node_height;
+    var node_txt_x_sw = "-24", node_txt_y_sw = "-35";//9
+    var node_txt_x_h = "-10", node_txt_y_h = "25";
     node = node.data(nodes);
     node.enter().append("g")
         .attr("class", "node")
-        .style("cursor", "pointer");
+        .style("cursor", "pointer")
+        .call(d3.behavior.drag()
+            .on("dragstart", function(d){
+console.log("Dragstart");                
+                d3.event.sourceEvent.stopPropagation();
+                d3.select(this).classed("dragging", true);
+            })
+            .on("drag", function(d) {
+                if(ctrlKey){
+                    d.x = d3.event.x, d.y = d3.event.y;
+                    var t = d;
+                    nodes[d.id_num].x = d.x;
+                    nodes[d.id_num].px = d.x;
+                    nodes[d.id_num].py = d.y;
+                    node.filter(function(d) { return d.id === t.id; }).attr("transform", transform);
+//      	        d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", function(d) { return "translate(" + d.x + ", "+d.y+")"; });
+                    link.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
+                    link.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
+                    controllerLink.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
+                    controllerLink.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
+                    
+                }
+            })
+            .on("dragend", function(d){ 
+                updateTopology(storedNodes);
+                d3.select(this).classed("dragging", false);
+            })
+	);
 
     node.append("image")
         .attr('class', function (d) {return d.type;})
         .attr('id', function (d) {return d.id;})
         .attr("x", node_x)
         .attr("y", node_y)
-        .attr("width", 75)
-        .attr('height', function (d) { return (d.type === "switch") ? "75" : "45";})
+        .attr("width", node_width)
+        .attr('height', function (d) { return (d.type === "switch") ? node_height : node_height_h;})
         .attr('xlink:href', function (d) { return (d.type === "switch") ? switchImage : hostImage;})
         .on('mouseup', function (d) {
+console.log("MOUSEUP");
             d3.selectAll(".switch").attr("width", node_width); //image normal
             d3.selectAll(".host").attr("width", node_width).attr("height", 45); //image normal
             d3.selectAll(".id_txt_sw").attr("x", node_txt_x_sw).attr("y", node_txt_y_sw);
@@ -117,9 +168,9 @@ function update(){
             d3.select(this).attr("width", node_width_big).attr("height", node_height_big); //image big
 
             if (d.type === "switch")
-                d3.select("#" + d.id + "_text").attr("x", -15).attr("y", 12); //move text when big
+                d3.select("#" + d.id + "_text").attr("x", -15).attr("y", -40); //move text when big  12
             else if (d.type === "host")
-                d3.select("#" + d.id + "_text").attr("x", -9).attr("y", 55); //move text when big
+                d3.select("#" + d.id + "_text").attr("x", -9).attr("y", 35); //move text when big
             if (!mousedown_node) return;
             if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
@@ -141,11 +192,49 @@ function update(){
         .text(function (d) { return d.id;});
 
     node.attr("transform", function (d) {
-        return "translate(" + d.x + "," + d.y + ")";
+        new_x = d.x;
+        new_y = d.y;
+        if(d.x < 30) new_x = 40 + Math.floor((Math.random()*15)+1);
+        else if(d.x > 620) new_x = 580 - Math.floor((Math.random()*15)+1);
+        if(d.y < 30) new_y = 40 + Math.floor((Math.random()*15)+1);
+        else if(d.y > 390) new_y = 390 - Math.floor((Math.random()*15)+1);
+        return "translate(" + new_x + "," + new_y + ")";
     });
     
+    /** OpenNaaS cloud **/
+    cloudLink = cloudLink.data(cloudLinks);
+    cloudLink.enter().append("svg:line")
+        .attr("class", "linkCtrl");
+    
+    cloudLink.attr("x1", function (d) {return d.source.x;})
+        .attr("y1", function (d) {return d.source.y;})
+        .attr("x2", function (d) {return d.target.x;})
+        .attr("y2", function (d) {return d.target.y;});
+
+    cloudON = svg.selectAll(".cloudON")
+        .data(cloud)
+        .enter().append("g")
+        .attr("class", "cloudON");
+
+    cloudON.append("image")
+        .attr("x", function (d) {return d.x-30;})
+        .attr("y", function (d) {return d.y-35;})
+        .attr("width", 80)
+        .attr('height', 80)
+        .attr('xlink:href', function (d) {return cloudONImage;});
+    
+    help = help.data([0]);
+    help.enter().append("svg:image")
+        .attr('x', 20)
+        .attr('y', height - 50)
+        .attr("id", "helpImage")
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr('xlink:href', helpImage)
+        .on('mouseover', mouseoverhelp);
+    
     force.on("tick", function () {
-        runtime(node, links);
+        runtime(node, links, controller);
     });
 }
 
@@ -178,6 +267,21 @@ console.log("tinck");
 
 }
 
+function keydown() {
+    if(!selected_node)return;
+    d3.event.preventDefault();
+
+    // ctrl
+    if (d3.event.keyCode === 17) {
+console.log(selected_node);
+d3.select(selected_node).attr("x", d3.event.x);
+//        dragmove(selected_node);
+    }
+}
+
+d3.select(window)
+    .on('keydown', keydown);
+
 // mouse event vars
 var selected_node = null,
     selected_link = null,
@@ -191,6 +295,10 @@ function resetMouseVars() {
     mousedown_link = null;
 }
 
+d3.select(window)
+    .on('keydown', keydown)
+    .on('keyup', keyup)
+
 function spliceLinksForNode(node) {
     var toSplice = links.filter(function (l) {
         return (l.source === node || l.target === node);
@@ -200,8 +308,17 @@ function spliceLinksForNode(node) {
     });
 }
 
+function keydown() {
+  ctrlKey = d3.event.ctrlKey || d3.event.metaKey;
+}
+
+function keyup() {
+  ctrlKey = false;
+}
+
 function mouseup() {
 console.log("MouseUp");
+d3.selectAll('.dragline').attr('d', 'M0,0L0,0'); //Remove the requested path
     if (mousedown_node) {
         drag_line
             .classed('hidden', true)
@@ -213,7 +330,6 @@ console.log("MouseUp");
     // clear mouse event vars
     resetMouseVars();
 }
-
 
 /* Remove the drag line used when we create links.. THis function is enabled when we click in any place of the div(<p>)*/
 function cleanDrag() {
@@ -257,3 +373,97 @@ function ValidateIPaddress(ipaddress){
     }
     return false;
 }  
+
+/**
+ * Sort returned Routes according to the topology drawed using d3js
+ *
+ * @param {type} routes
+ * @returns {Array|sortReturnedRoutes.newRoute}
+ */
+function sortReturnedRoutes(routes){
+    var newRoute = [];
+    var node = {};
+    var set = true;
+    newRoute.push({ip: routes[0]['ip']});
+
+    var nodeSrc = nodes.filter(function (n) {return n.ip === routes[0]['ip']; })[0];
+    var nodeDst;
+    var type;
+
+    for (var j = 1; j < routes.length; ++j) {//each node where the packet goes through
+        if ( routes[j]['dpid'] ){
+            nodeDst = nodes.filter(function (n) {return n.dpid === routes[j]['dpid'];})[0];
+            type = "dpid";
+        }else{
+            nodeDst = nodes.filter(function (n) {return n.ip === routes[j]['ip'];})[0];
+            type = "ip";
+        }
+        for ( var i = 0; i < links.length; i++){//find the dest node given a source node. Initial node is the source host
+            if( links[i].source == nodeSrc && links[i].target == nodeDst || 
+              links[i].target == nodeSrc && links[i].source == nodeDst ){//try to match with a link defined in the GUI
+                nodeSrc = nodeDst;
+                node = {};
+                node[type] = routes[j][type];
+                newRoute.push(node);
+                set = false;
+                break;
+            }else{//if not exists a match, move the dpid to the final of the array in order to analyze later
+                set = true;
+            }
+        }
+        //The follow defined node is not connected with the source node. Moving this node to the next position (j+1)
+        if ( set ) {
+            routes = arraymove(routes, j, routes.length);
+            set = false;
+            j--;
+        }
+    }
+//console.log(newRoute);
+    return newRoute;
+}
+
+/**
+ * Move element of array from src to dst.
+ * @param {type} arr
+ * @param {type} fromIndex
+ * @param {type} toIndex
+ * @returns {Array|arraymove.arr}
+ */
+function arraymove(arr, fromIndex, toIndex) {
+    var element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, element);
+    return arr;
+}
+
+function dragmove(d) {
+    console.log(d);
+    d3.select(d)
+        .attr("x", d.x = d3.event.x)
+        .attr("y", d.y = d3.event.y);
+}
+
+function transform(d) {
+    return "translate(" + d.x + "," + d.y + ")";
+}
+
+function mouseoverhelp(){
+    $('#helpImage').tipsy({
+        live: true,
+        fade: true,
+        html: true, 
+        gravity: 'w', 
+        title: function() {
+            var d = this.__data__;
+            var info = "Press <b>control key</b> while you drag the nodes.";
+            return info;
+        }
+    });
+}
+
+function updateTopology(storedNodes){
+    	sessvars.nodes = storedNodes;
+        sessvars.links = links;                
+        sessvars.controllers = controllers;
+        sessvars.controllersLinks = controllersLinks;
+}

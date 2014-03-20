@@ -1,5 +1,5 @@
 svg {
-    background-color: #FFF;
+/*    background-color: #FFF;*/
     cursor: default;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -23,7 +23,7 @@ svg:not(.active):not(.ctrl) path.link {
 }
 /* Color node text*/
 .id_txt_sw{
-    fill: #000000;
+    fill: #ff0000;
 }
 .id_txt_host{
     fill: #ff0000;
@@ -40,7 +40,8 @@ svg:not(.active):not(.ctrl) path.link {
 
 .link {
     fill: none;
-    stroke: #009E26;
+/*    stroke: #009E26;*/
+    stroke: black;
     stroke-width: 4px;
     cursor: default;
 }
@@ -52,7 +53,12 @@ svg:not(.active):not(.ctrl) path.link {
 
 .link2 {
     fill: none;
-    stroke: #000;
+    stroke: #009E26;
+    stroke-width: 4px;
+    cursor: default;
+}
+.dragline{
+    stroke: #f00;
     stroke-width: 4px;
     cursor: default;
 }

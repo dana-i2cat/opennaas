@@ -8,31 +8,40 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<div id="insert_topology" class="topology">
-    <p onmousedown="cleanDrag()" id="chart" ></p>
+<div id="insert_topology" class="topology ui-widget-content ui-corner-all">
+    <c:if test="${!empty topologyName}">
+         <p onmousedown="cleanDrag()" id="chart" ></p>
+    </c:if>
+    <c:if test="${empty topologyName}">
+        <br/><h3><spring:message code="topology.notdefined"/></h3><br/>
+    </c:if>
 </div>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
 <script src="<c:url value="/resources/js/topology/insertRouteTopology.js" />"></script>
-<input id="changeMode" type="submit" class="button" value="Automatic" onClick="javascript:change(this);"/>
-<input id="manualType" type="submit" class="button" style="display:none" value="Point-to-point" onClick="javascript:toggleManualType(this);"/>
-<br/><br/><br/>
-<div id="insertRouteInfo" class="ui-widget-content ui-corner-all" style="display:none">
-    <h3>Route information:</h3>
-    <form>
-        <fieldset>
-            <label for="name" class="ipLabel">Source IP:</label>
-            <input type="text" name="ipSrc" id="ipSrc" class="ipInput text ui-widget-content ui-corner-all" value=""/>
-            <br/><br/>
-            <label for="name" class="ipLabel">Destination IP:</label>
-            <input type="text" name="ipDest" id="ipDest" class="ipInput text ui-widget-content ui-corner-all" value=""/>
-        </fieldset>
-        <input style="margin-right: 11.5px" class="addRouteButton" onClick="insertPath()" type="button" value="Insert Routes" name="addDefaultValues"/>
-    </form>
+<div style="margin-left: 3px; float: left; width: 31%;">
+    <span id="mode" style="float: right; margin-right: 0px;">
+        <input style="position:absolute;" type="radio" id="mode0" name="repeat" checked="checked" onClick="javascript:change('Automatic');"><label for="mode0">Automatic</label>
+        <input style="position:absolute;" type="radio" id="mode1" name="repeat"><label for="mode1" onClick="javascript:change('Manual');">Manual</label>
+    </span>
+    <br/><br/>
+    <input id="manualType" type="submit" class="button" style="display:none" value="Point-to-point" onClick="javascript:toggleManualType(this);"/>
+    <br/><br/><br/>
+    <div id="insertRouteInfo" class="ui-widget-content ui-corner-all" style="display:none">
+        <h3>Route information:</h3>
+        <form>
+            <fieldset>
+                <label for="name" class="ipLabel">Source IP:</label>
+                <input type="text" name="ipSrc" id="ipSrc" class="ipInput text ui-widget-content ui-corner-all" value=""/>
+                <br/><br/>
+                <label for="name" class="ipLabel">Destination IP:</label>
+                <input type="text" name="ipDest" id="ipDest" class="ipInput text ui-widget-content ui-corner-all" value=""/>
+            </fieldset>
+            <input style="margin-right: 11.5px" class="addRouteButton" onClick="insertPath()" type="button" value="Insert Routes" name="addDefaultValues"/>
+        </form>
+    </div>
 </div>
-
 <div id="insert_routeTable" class="routeTable ui-widget-content ui-corner-all">
     <h3>Insert routes into table manually:</h3>
-
 
     <form:form modelAttribute="insertRoutes" name="frm" method="post" onSubmit="return Validate();"> 
         <div class="config4">
@@ -133,7 +142,8 @@ console.log(ipDest);
     
     function insertIpDialog(newLink, originLink){
 var ipDest = $( "#dialogIpDest" ).val();
-console.log(ipDest);        
+console.log(ipDest);
+var name = "";
         allFields = $( [] ).add( name );
         tips = $( ".validateTips" );
 //Obtain the source Ip of the graph. Only in the case that one of the selected nodes is a host. If not (is a switch), doesn't save anything...
@@ -171,8 +181,7 @@ console.log("Create Route "+ipSrc+ " to "+ipDest);
 //                      allFields.removeClass( "ui-state-error" );
                     srcValid = checkIp(ipSrc);
                     dstValid = checkIp(ipDest);
-console.log(srcValid);
-console.log(dstValid);
+
                     if ( srcValid && dstValid ) {//the source IP or destination IP is defined by the drawed node
                         ipSrcDialog = ipSrc;
                         ipDestDialog = ipDest;
@@ -182,7 +191,6 @@ console.log(dstValid);
                         insertManualLink(newLink, originLink, ipSrcDialog, ipDestDialog);
                         $( this ).dialog( "close" );
                     }
-console.log("End")                    ;
                 },
                 Cancel: function() {             
                     removeLastLink();//remove last link inserted (push) and remove the dragged line
@@ -196,6 +204,7 @@ console.log("End")                    ;
     }
     
     function insertIpDiv(newLink){
+        var name = "";
         allFields = $( [] ).add( name );
         tips = $( ".validateTips" );
 //Obtain the source Ip of the graph. Only in the case that one of the selected nodes is a host. If not (is a switch), doesn't save anything...
@@ -226,7 +235,8 @@ console.log(ipDest);
             document.getElementById('ipDest').value = ipDest;
             defer.resolve(ipDestDialog);//response is not required
         }
-
+sourceIp = ipSrc;
+destinationIp = ipDest;
         $( "#ipDest" ).val(ipDest);
     }
 

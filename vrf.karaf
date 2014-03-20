@@ -4,15 +4,14 @@ shell:echo Script to insert the information of each controller and the default r
 
 exec cp /opt/opennaas-routing-nfv/curlInsertRoutes.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
 exec cp /opt/opennaas-routing-nfv/mapSwDevices.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
+exec cp /opt/opennaas-routing-nfv/autoMapSwDevices.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
 
-#insert routes from json file
-#routing:insertfileroute vrf:VRF-1 vrf.json
 exec sh curlInsertRoutes.sh
 
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/sdn1.descriptor
 resource:start sdnnetwork:sdn1
 
-#Reactive routing
+#Create openflowswitches
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s1.descriptor
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s2.descriptor
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s3.descriptor
@@ -22,6 +21,7 @@ resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s6.descript
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s7.descriptor
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s8.descriptor
 
+#Set protocol context for each switch
 protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:01 openflowswitch:s1 floodlight noauth http://controllersVM:8191
 resource:start openflowswitch:s1
 
@@ -46,4 +46,5 @@ resource:start openflowswitch:s7
 protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:08 openflowswitch:s8 floodlight noauth http://controllersVM2:8193
 resource:start openflowswitch:s8
 
-
+#Auto Map resourceId and DPID
+exec sh autoMapSwDevices.sh

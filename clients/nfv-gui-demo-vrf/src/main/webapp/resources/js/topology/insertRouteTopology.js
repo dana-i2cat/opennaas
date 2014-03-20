@@ -56,7 +56,7 @@ function runtime(node) {
                     .classed('hidden', false)
                     .attr('d', 'M' + mousedown_node.x + ',' + mousedown_node.y + 'L' + mousedown_node.x + ',' + mousedown_node.y);
             }
-            updateLinks();
+            //updateLinks();
         })
         .on('mouseup', function (d) {    
             if ( d.id_num === activeNode) return;
@@ -68,10 +68,7 @@ function runtime(node) {
             // check for drag-to-self
             mouseup_node = d;
 
-            // add link to graph (update if exists)
-            // NB: links are strictly source < target; arrows separately specified by booleans
             var source, target, dest1;
-//            if (mousedown_node.id < mouseup_node.id) {
             source = mousedown_node;
             target = mouseup_node;
          
@@ -80,15 +77,15 @@ console.log("MouseUp on node " + d.id+" Source h " + source.id+" Dest h " + targ
             var newLink;//New defined link (this should includes CSS changes)
 
             originLink = links.filter(function (l) {return (l.source === source && l.target === target); })[0];
-            if ( typeof originLink === 'undefined') {
+            if ( typeof originLink === 'undefined' ) {
                 originLink = links.filter(function (l) {return (l.source === target && l.target === source); })[0];
             }
-
+var routeExists = false;
             //Adding new link in Manual Mode
             if ( mode === man ){
 console.log("New Link. Manual mode. ");
                 dest1 = nodes.filter(function(n) {return n.id === target.id; })[0];
-                newLink = {id: links.length, source: source, target: dest1, left: false, right: false, type: "new_link"};
+                newLink = {id: links.length, source: source, target: dest1, type: "new_link"};
                                 
                 //this link exists? It is possible to make this connection?
                 for (var i = 0; i < links.length; ++i) {
@@ -97,7 +94,6 @@ console.log("New Link. Manual mode. ");
 
                         manualPath.push(newLink.target.id_num);
                         links.push(newLink);
-console.log(link);
                         if ( manualType === "Point-to-point" ){
                             insertIpDialog(newLink, originLink).done(function (answer) {
 //console.log("Destination IP " + answer);//TRUE
@@ -105,8 +101,12 @@ console.log(link);
                         } else if( manualType === "End-to-end" ){
                             insertIpDiv(newLink);
                         }
+                        routeExists = true;
                         break;
                     }
+                }
+                if(!routeExists){
+                    d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
                 }
             }
 
@@ -157,19 +157,19 @@ function showPath(to) {
  */
 function setPath(to) {
 console.log("SetPath");
-    var orgLink;
+    var orgLink, nextLink;
     if (activeNode !== to) {
         var path = constructPath(shortestPathInfo, to);
 console.log(path);
         var prev = activeNode;
         var ipSrc = sourceIp;
         var ipDst = destinationIp;
+        var sourceNode = nodes.filter(function (nodes) {return (nodes.ip === sourceIp);})[0];
+        var targetNode;
         for (var i = 0; i < path.length -1; i++) {
             var id, nextId;
             id = (document.getElementById("path" + path[i] + prev) !== null) ? "path" + path[i] + prev : "path" + prev + path[i];
             nextId = (document.getElementById("path" + path[i+1] + path[i]) !== null) ? "path" + path[i+1] + path[i] : "path" + path[i] +path[i+1];
-//            var l = document.getElementById(id);
-//            var l2 = document.getElementById(nextId);
 
             prev = path[i];
 console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
@@ -177,16 +177,38 @@ console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
             nextLink = links.filter(function (link) {return (link.id === nextId);})[0];
             source1 = orgLink.source;
             dest1 = orgLink.target;
-            link = {source: source1, target: dest1, left: false, right: false, type:"new_link"};
+            link = {source: source1, target: dest1, type:"new_link"};
             links.push(link);
 console.log(orgLink);
-//            if(orgLink.target.type == "switch"){//i si està al revés?????????? la definició del link...
-                   
 console.log(nextLink);
-console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.dstPort);
-            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.dstPort);
-            //contrary direction
-            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.dstPort, orgLink.dstPort);
+console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);
+
+/*search the source dpid -> the dpid common in path and nextPath */
+            srcPort = orgLink.dstPort
+            dstPort = nextLink.srcPort;
+            if ( orgLink.source === sourceNode ){
+                targetNode = orgLink.target;
+                srcPort = orgLink.dstPort;
+                if( nextLink.source === orgLink.target ){
+                    dstPort = nextLink.srcPort;
+                }else{
+                    dstPort = nextLink.dstPort;
+                }
+            } else if ( orgLink.target === sourceNode ){
+                targetNode = orgLink.source;
+                srcPort = orgLink.srcPort;
+                if( nextLink.source === orgLink.target ){
+                    dstPort = nextLink.srcPort;
+                }else{
+                    dstPort = nextLink.dstPort;
+                }
+            }
+console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+targetNode.dpid+" "+srcPort+" "+dstPort);
+            insertRoute(ipSrc, ipDst, targetNode.dpid, srcPort, dstPort);
+            //opposite direction
+            insertRoute(ipDst, ipSrc, targetNode.dpid, dstPort, srcPort);
+            
+            sourceNode = targetNode;
         }
     }
 console.log("...................:Send to OpenNaaS:.........................");
@@ -225,7 +247,7 @@ console.log("Insert Route request: "+ipSrc+" "+ipDst+" "+dpid+" "+inPort+" "+out
             //$('.success').remove();
             $('#insertRoute').slideUp("slow", function() { $('#insertRoute').remove();});
             //$('.success').fadeOut(300, function(){ $(this).remove();});
-        }, 3000);
+        }, 4000);
     }
     return response;
 }
@@ -252,13 +274,13 @@ console.log("Prev"+prev+" Id: "+id+" NextId: "+nextId);
 
             source1 = orgLink.source;
             dest1 = orgLink.target;
-            link = {source: source1, target: dest1, left: false, right: false, type:"new_link"};
+            link = {source: source1, target: dest1, type:"new_link"};
             links.push(link);
 
-console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.dstPort);
-            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.dstPort);
+console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);
+            insertRoute(ipSrc, ipDst, orgLink.target.dpid, orgLink.dstPort, nextLink.srcPort);
             //contrary direction
-            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.dstPort, orgLink.dstPort);
+            insertRoute(ipDst, ipSrc, orgLink.target.dpid, nextLink.srcPort, orgLink.dstPort);
         }
     }
     originNode = null;
@@ -300,29 +322,33 @@ function clearPath() {
 function removeLastLink(){
     var lastLink = links.pop();
 console.log(lastLink);
-    var element = document.getElementById(lastLink.id);
-    element.parentNode.removeChild(element);
+	try{
+	    var element = document.getElementById(lastLink.id);
+	    element.parentNode.removeChild(element);
+	}catch(e){
+	}
 }
 
 /**
  * Cahnge the insert routes mode. Automatic or manual (auto-man)
- * @param {type} ref
+ * @param {type} mode
  * @returns {undefined}
  */
-function change(ref) {
-     if(mode === auto){
+function change(mode) {
+    this.mode = mode;
+     if(this.mode === auto){
         mode = man;
-        clearPath();
-        document.getElementById('manualType').style.display = 'inline-block';
+        document.getElementById('manualType').style.display = 'none';
         if( getManualType() === "End-to-end" ){
             document.getElementById('insertRouteInfo').style.display = 'inline-block';
         }
      }else{
-        mode = auto;
-        document.getElementById('manualType').style.display = 'none';
+        mode = man;
+        clearPath();
+        document.getElementById('manualType').style.display = 'inline-block';
         document.getElementById('insertRouteInfo').style.display = 'none';
     }    
-    ref.value= mode;
+//    ref.value= mode;
     setActive(null);
 }
 

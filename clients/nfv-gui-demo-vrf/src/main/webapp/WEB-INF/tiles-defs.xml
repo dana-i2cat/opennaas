@@ -38,14 +38,19 @@
 		<put-attribute name="body" value="/WEB-INF/views/vrf/insertRoute.jsp" />
 	</definition>
         
-         <definition name="animation" extends="base.definition">
-		<put-attribute name="title" value="Animated topology" />
-		<put-attribute name="body" value="/WEB-INF/views/vrf/animation.jsp" />
+        <definition name="demonstrator" extends="base.definition">
+		<put-attribute name="title" value="Demonstrator" />
+		<put-attribute name="body" value="/WEB-INF/views/vrf/demonstrator.jsp" />
 	</definition>
         
         <definition name="infoTopology" extends="base.definition">
 		<put-attribute name="title" value="Information about the topology" />
 		<put-attribute name="body" value="/WEB-INF/views/vrf/home.jsp" />
+	</definition>
+        
+        <definition name="settings" extends="base.definition">
+		<put-attribute name="title" value="VRF settings" />
+		<put-attribute name="body" value="/WEB-INF/views/vrf/settings.jsp" />
 	</definition>
 
 </tiles-definitions>

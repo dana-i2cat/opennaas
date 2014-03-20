@@ -7,11 +7,11 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.representation.Form;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
+import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.opennaas.gui.nfvrouting.services.rest.GenericRestService;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.opennaas.gui.nfvrouting.utils.Constants;
-import org.opennaas.extensions.vrf.utils.Utils;
 
 /**
  * @author Josep Batallé (josep.batalle@i2cat.net)
@@ -33,7 +33,7 @@ public class NFVRoutingService extends GenericRestService {
 
         try {
             LOGGER.info("Calling get Route Table service");
-            String url = getURL("vrf/routing/routes/" + type);
+            String url = getURL("vrf/staticrouting/routes/" + type);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -57,7 +57,7 @@ public class NFVRoutingService extends GenericRestService {
         String response = null;
         try {
             LOGGER.info("Calling insert Route Table service");
-            String url = getURL("vrf/routing/route");
+            String url = getURL("vrf/staticrouting/route");
             Form fm = new Form();
             fm.add("ipSource", route.getSourceAddress());
             fm.add("ipDest", route.getDestinationAddress());
@@ -87,11 +87,35 @@ public class NFVRoutingService extends GenericRestService {
         String response = null;
         try {
             LOGGER.error("Remove route "+id+". Version IPv"+version+" "+Integer.toString(id));
-            String url = getURL("vrf/routing/route");
+            String url = getURL("vrf/staticrouting/route");
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
             webResource.queryParam("id", Integer.toString(id)).queryParam("version", Integer.toString(version)).delete();
+            LOGGER.error("Removed route: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return response;
+    }
+    
+    /**
+     * Remove Route given the id
+     *
+     * @param id
+     * @param version
+     * @return
+     */
+    public String deleteAllRoutes() {
+        String response = null;
+        try {
+            LOGGER.error("Remove all route");
+            String url = getURL("vrf/staticrouting/routes");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            webResource.accept(MediaType.TEXT_PLAIN).delete();
             LOGGER.error("Removed route: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
@@ -153,32 +177,19 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
-    /*    public String getControllerStatus(String ip) {
-     String response = null;
-     String resourceName = "";
-     try {
-     LOGGER.info("Calling get Controller Status");
-     String url = getURL("openflowswitch/" + resourceName + "/offorwarding/getOFForwardingRules");
-     Client client = Client.create();
-     addHTTPBasicAuthentication(client);
-     WebResource webResource = client.resource(url);
-     response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
-     LOGGER.info("Controller status: " + response);
-     } catch (ClientHandlerException e) {
-     LOGGER.error(e.getMessage());
-     throw e;
-     }
-     return response;
-
-     }
+    /**
+     * Get specific route.
+     * @param ipSrc
+     * @param ipDst
+     * @param dpid
+     * @param inPort
+     * @return 
      */
-    
-
     public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
         ClientResponse response;
         try {
             LOGGER.info("Get Route to OpenNaaS");
-            String url = getURL("vrf/routing/route/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst) + "/" + dpid + "/" + inPort + "/true");
+            String url = getURL("vrf/routing/route/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst) + "/" + dpid + "/" + inPort);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -193,6 +204,7 @@ public class NFVRoutingService extends GenericRestService {
 
     /**
      * Insert Route from javascript
+     * 
      * @param ipSrc
      * @param ipDst
      * @param dpid
@@ -204,7 +216,7 @@ public class NFVRoutingService extends GenericRestService {
         String response = null;
         try {
             LOGGER.info("Calling insert Route Table service");
-            String url = getURL("vrf/routing/route");
+            String url = getURL("vrf/staticrouting/route");
             Form fm = new Form();
             fm.add("ipSource", ipSrc);
             fm.add("ipDest", ipDst);
@@ -223,12 +235,35 @@ public class NFVRoutingService extends GenericRestService {
         return response;
     }
 
+    /**
+     * Get route taken into account only the IP addresses
+     * @param ipSrc
+     * @param ipDst
+     * @return 
+     */
+    public String getRoute(String ipSrc, String ipDst) {
+        LOGGER.error("SERVICE GET ROUTE");
+        ClientResponse response;
+        try {
+            String url = getURL("vrf/staticrouting/routes/4/" + Utils.StringIPv4toInt(ipSrc) + "/" + Utils.StringIPv4toInt(ipDst));
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
+            LOGGER.error("Log....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response.getEntity(String.class);
+    }
+    
     //---------------------DEMO
     public String getLog() {
         String response;
         try {
             LOGGER.info("Get log of OpenNaaS");
-            String url = getURL("vrf/routing/log");
+            String url = getURL("vrf/staticrouting/log");
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -244,7 +279,41 @@ public class NFVRoutingService extends GenericRestService {
         String response;
         try {
             LOGGER.info("Get stream info to OpenNaaS");
-            String url = getURL("vrf/routing/stream");
+            String url = getURL("vrf/staticrouting/stream");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Stream....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response;
+    }
+
+    public String getONRouteMode() {
+        String response;
+        try {
+            LOGGER.info("Get stream info to OpenNaaS");
+            String url = getURL("vrf/routing/routeMode");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Stream....: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            return "OpenNaaS not started";
+        }
+        return response;
+    }
+    
+    public String setONRouteMode(String mode) {
+        String response;
+        try {
+            LOGGER.info("Get stream info to OpenNaaS");
+            String url = getURL("vrf/routing/routeMode/"+mode);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);

@@ -4,7 +4,7 @@
  */
 var file = "config";
 document.getElementById("ui-id-1").className += " ui-state-highlight";
-document.getElementById("ui-id-4").className += " ui-state-highlight";
+document.getElementById("ui-id-5").className += " ui-state-highlight";
 
 function runtime(node, links) {
     node
@@ -46,10 +46,10 @@ function runtime(node, links) {
             }
             // add link to graph (update if exists)
             // NB: links are strictly source < target; arrows separately specified by booleans
-            var source, target;
+            var source, target, newSource;
             source = mousedown_node;
             target = mouseup_node;
-
+            newSource = source;
 console.log("Source " + source.id + " to Dest " + target.id);
             var link;
             link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
@@ -57,7 +57,18 @@ console.log("Source " + source.id + " to Dest " + target.id);
             //request to OpenNaaS
             swNode = nodes.filter(function (n) {return n.id === source.SW; });
             var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
-//             returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
+console.log("Before: "+JSON.stringify(returnedRoutes));
+//            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
+            try{
+                returnedRoutes = sortReturnedRoutes(returnedRoutes);
+            }catch(e){
+                if(returnedRoutes == null || returnedRoutes != 'undefined'){
+                    d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
+                    return;
+                }
+            }
+console.log("After sort: "+JSON.stringify(returnedRoutes));
+cleanHighlight();
             if( typeof returnedRoutes !== 'undefined' ){
                 for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
                     var obj = returnedRoutes[i];
@@ -68,15 +79,16 @@ console.log("Json key: "+key+" Json value: "+obj[key]);
                             dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
                         }else if (key === "ip"){
                             dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
-                            highlight(dest1.ip);
+                            highlight( source.ip, target.ip );
                         }
-                        link = {source: source, target: dest1, left: false, right: false, type: "new_link"};
+                        link = {source: newSource, target: dest1, type: "new_link"};
                         links.push(link);
-                        source = dest1;
+                        newSource = dest1;
                     }
                 }
-        }
-            d3.selectAll('.link2').attr('d', 'M0,0L0,0'); //Remove the requested path
+            }
+            cleanDisplayedLink();
+            d3.selectAll('.dragline').attr('d', 'M0,0L0,0'); //Remove the requested path
 
             // select new link
             selected_link = link;
@@ -122,6 +134,7 @@ function getRouteTable(dpid) {
  * @returns {data}
  */
 function getRoute(ipSrc, ipDst, dpid, inPort) {
+    console.log("getRoute/" + ipSrc+"/"+ipDst+"/"+dpid+"/"+inPort);
     var response;
     $.ajax({
         type: "GET",
@@ -131,50 +144,140 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
             response = data;
         }
     });
+console.log(response);
+if(response == null){
+    cleanDisplayedLink();
+}
     return response;
 }
 
 /**
  * Highlight the rows according to the requested route
- * @param {type} word to search in the route table
+ * @param {type} ipSrc to search in the route table
+ * @param {type} ipDst to search in the route table
  * @returns {undefined}
  */
-function highlight(word){
+function highlight(ipSrc, ipDst){
     var table = document.getElementById('jsonTable');
     if ( table.getElementsByTagName('tr').length > 1 ){
+console.log("Highlight "+ipSrc+" "+ipDst);
         var tbody = table.getElementsByTagName('tbody')[0];
         var items = tbody.getElementsByTagName('tr');
         var tds = null;
-
         for (var j = 0; j < items.length; j++) {
             tds = items[j].getElementsByTagName('td');
-            for (var i = 0; i < tds.length-1; i++) {
-                if(tds[i].innerHTML === word){
+            if(tds[1].innerHTML === ipSrc){
+                if( tds[2].innerHTML === ipDst || inSubNet(ipDst, tds[2].innerHTML) ){
                     table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
-                }else if(inSubNet(word, tds[i].innerHTML)){
+                }
+            } else if(tds[1].innerHTML === ipDst){
+                if(tds[2].innerHTML === ipSrc || inSubNet(ipSrc, tds[2].innerHTML)){
                     table.getElementsByTagName('tr')[j+1].style.background = 'yellow';
                 }
             }
         }
+        console.log("End");
     }
 }
-
+/**
+ * Remove the highlight of the routes obtained before
+ * @returns {undefined}
+ */
+function cleanHighlight(){
+console.log("Clean highlight");
+    try{
+        var table = document.getElementById('jsonTable');
+        var tbody = table.getElementsByTagName('tbody')[0];
+        var items = tbody.getElementsByTagName('tr');
+        for (var j = 0; j < items.length; j++) {
+            document.getElementById('jsonTable').getElementsByTagName('tr')[j+1].style.background = "transparent";
+        }
+    }catch(err){
+        console.log("Table is not displayed. Err: "+err);
+    }
+}
+/**
+ * Remove the displayed links of other obtained routes.
+ * @returns {undefined}
+ */
+function cleanDisplayedLink(){
+    console.log("Clean displayed route links. Using link2 class.");
+    $( ".link2" ).remove();
+}
+/**
+ * Show the tipsy dialog
+ * @returns {undefined}
+ */
 function mouseOverImage(){
-    $('svg image').tipsy({
+    $('.node').tipsy({
         fade: false,
         html: true, 
-        gravity: 'w', 
+        gravity: $.fn.tipsy.autoNS, //north(n)/west(w)/dynamic
         title: function() {
             var d = this.__data__;
             var info ="<b>Id:</b> "+d.id+"<br>";
-            if(d.type !== "host"){
+            if(d.type === "switch"){
                 info +="<b>DPID:</b> "+d.dpid+"<br>";
                 info +="<b>Controller:</b> "+d.controller+"<br>";
-            } else {
+            } else if( d.type === "controller" ){
+                 info +="<b>IP:</b> "+d.controller+"<br>";
+            }else if(d.type === "host"){
                 info +="<b>IP:</b> "+d.ip+"<br>";
                 info +="<b>Connected with:</b> "+d.SW+"<br>";
             }
             return info;
         }
     });
+}
+
+
+function showGraphicRoute(sourceIp, targetIp, json){
+    var source, target, newSource, swNode;
+    source = nodes.filter(function (n) {return n.ip === sourceIp; })[0];
+    target = nodes.filter(function (n) {return n.ip === targetIp; })[0];
+    newSource = source;
+console.log("Source " + source.id + " to Dest " + target.id);
+    var link;
+//    link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
+    //request to OpenNaaS
+    swNode = nodes.filter(function (n) {return n.id === source.SW; });
+    var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
+    //returnedRoutes = json;
+console.log("Before: "+JSON.stringify(returnedRoutes));
+//            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
+    try{
+        returnedRoutes = sortReturnedRoutes(returnedRoutes);
+    }catch(e){
+        if(returnedRoutes == null || returnedRoutes != 'undefined'){
+            d3.selectAll('.dragline').attr('d', 'M0,0L0,0');
+            return;
+        }
+    }
+console.log("After sort: "+JSON.stringify(returnedRoutes));
+//cleanHighlight();//show dynamic route color
+    if( typeof returnedRoutes !== 'undefined' ){
+        for(var i=0;i<returnedRoutes.length;i++){//i=1 because the first position is the source
+            var obj = returnedRoutes[i];
+             for(var key in obj){
+console.log("Json key: "+key+" Json value: "+obj[key]);
+                dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                if(key === "dpid"){
+                    dest1 = nodes.filter(function (n) {return n.dpid === obj[key];})[0];
+                }else if (key === "ip"){
+                    dest1 = nodes.filter(function (n) {return n.ip === obj[key];})[0];
+                    //highlight( source.ip, target.ip );
+                }
+                link = {source: newSource, target: dest1, type: "new_link"};
+                links.push(link);
+                newSource = dest1;
+            }
+        }
+    }
+    cleanDisplayedLink();
+    d3.selectAll('.dragline').attr('d', 'M0,0L0,0'); //Remove the requested path
+
+    // select new link
+    selected_link = link;
+    selected_node = null;
+    updateLinks();
 }

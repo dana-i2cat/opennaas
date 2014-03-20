@@ -4,13 +4,13 @@
  */
 var file = "home";
 
-function runtime(node) {
+function runtime(node, links, controller) {
     node
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
             if (d.type === "switch"){
-                getFlowTable(d.dpid);
-                updateSwInfoTxt(d.dpid, getControllerInfo(d.controller));
+//                getFlowTable(d.dpid);
+                switchSelected(d.dpid, getControllerInfo(d.controller));
             }
             // select node
             mousedown_node = d;
@@ -22,6 +22,15 @@ function runtime(node) {
             }); //disable drag in Firefox 3.0 and later
             //restart();
         });
+        
+    controller
+            .on('mousedown', function (d){
+                //list of switches connected with this controller
+                var ctrlId = d.id;
+                var listSw = new Array();
+                listSw = nodes.filter(function (d) { return (d.controller === ctrlId)});
+                updateCtrlInfo(listSw, controllers);
+            });
 }
 
 /** Show Legend **/
@@ -29,7 +38,7 @@ legendData = [{"label": "Static link"},
             {"label": "OpenFlow Switch"},
             {"label": "OpenFlow Controller"},
             {"label": "Host"}];
-var legend_x = 500,
+var legend_x = 470,
     legend_y = 270,
     legend_width = 150,
     legend_height = 120;
@@ -64,7 +73,7 @@ legend.append("image")
     });
 
 legend.append("text")
-    .attr("x", 34)
+    .attr("x", 40)
     .attr("y", 10)
     .attr("dy", ".35em")
     .text(function (d) { return d.label; });
@@ -90,7 +99,7 @@ legendLink = svg.append("foreignObject")
     .attr("width", 100)
     .attr("height", 60)
     .append("xhtml:body")
-    .html("<a id='legend-link' href='javascript:toggleHideLegend()'>Legend</a>");
+    .html("<a id='legend-link' href='javascript:toggleHideLegend()' height='50px'>Legend</a>");
     
 function toggleHideLegend(){
     if ( hidden ) {

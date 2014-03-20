@@ -4,6 +4,7 @@ VRF - OpenNaaS Custom CSS
 
 .topology{/*class*/
     float:left;
+    padding: 10px;
 }
 .routeTable{
     float:left;
@@ -18,8 +19,8 @@ VRF - OpenNaaS Custom CSS
 }
 #home_topology{
     min-height: 300px;
-    width:65%;
-    margin-left: 5px;/*remove when we show the topology*/
+    width:63%;
+    margin-left: 3px;/*remove when we show the topology*/
 }
 
 .flowTable {
@@ -29,7 +30,6 @@ VRF - OpenNaaS Custom CSS
     text-decoration: none;
     color: gray;
 }
-
 .legendRect{
     fill:blue;
     stroke: black;
@@ -45,38 +45,56 @@ VRF - OpenNaaS Custom CSS
 
 /* Config Routes view */
 #config_topology {
-    width:62%;
+    width:60%;
+    margin-left: 3px;/*remove when we show the topology*/
 }
 #config_routeTable{
     width:35%;
     margin-bottom: 55px;
 }
+#innerTextRoute{
+    text-decoration: underline;
+}
 /* Insert Routes view */
 #insert_topology {
-    width:69%;
+    width:66%;
     min-height: 300px;
 }
 #insert_routeTable{
     width:100%;
     padding: 10px;
     margin-bottom: 55px;
+    margin-top: 5px;
 }
 #insert_info{
     width:28%;
 }
 #insertRouteInfo{
     padding: 10px;
-    width: 28%;
+    width: 92%;
+    margin-left: 3px;
+}
+#mode0 {
+    position: absolute !important;
+}
+#changeMode{
+    margin-left: 3px;
 }
 /* Animation view */
 #animaton_topology{
     width:100%;
     text-align: center;
+    float: none;
 }
 #animation_log{
     width:100%;
     position: relative;
     bottom: 20px;
+    margin-top: 30px;
+}
+#settings{
+    width: 80%;
+    margin-left: 10%;
 }
 #log{
     font-size: 20px;
@@ -134,6 +152,8 @@ body.loading .modal {
 
 #manualType{
     width: 120px;
+    margin-right: 0;
+    float: right;
 }
 
 /** Scrollable table */
