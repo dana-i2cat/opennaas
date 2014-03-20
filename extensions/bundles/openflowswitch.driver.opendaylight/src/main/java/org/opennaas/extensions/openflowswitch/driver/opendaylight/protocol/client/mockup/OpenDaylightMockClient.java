@@ -12,89 +12,91 @@ import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.clien
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
- * 
+ *
  * @author Adrian Rosello (i2CAT)
- * 
+ *
  */
 public class OpenDaylightMockClient implements IOpenDaylightStaticFlowPusherClient {
 
-	private Map<String, List<OpenDaylightOFFlow>>	flows;
+    private Map<String, List<OpenDaylightOFFlow>> flows;
 
-	public OpenDaylightMockClient() {
-		this.flows = new HashMap<String, List<OpenDaylightOFFlow>>();
-	}
+    public OpenDaylightMockClient() {
+        this.flows = new HashMap<String, List<OpenDaylightOFFlow>>();
+    }
 
-	@Override
-	public void addFlow(OpenDaylightOFFlow flow, String DPID, String name) {
+    @Override
+    public void addFlow(OpenDaylightOFFlow flow, String DPID, String name) {
 
-		String switchId = flow.getSwitchId();
+        String switchId = flow.getSwitchId();
 
-		if (switchId != null) {
-			List<OpenDaylightOFFlow> switchFlows = flows.get(switchId);
+        if (switchId != null) {
+            List<OpenDaylightOFFlow> switchFlows = flows.get(switchId);
 
-			if (switchFlows == null) {
-				switchFlows = new ArrayList<OpenDaylightOFFlow>();
-				switchFlows.add(flow);
-				flows.put(switchId, switchFlows);
-			}
-			else
-				switchFlows.add(flow);
+            if (switchFlows == null) {
+                switchFlows = new ArrayList<OpenDaylightOFFlow>();
+                switchFlows.add(flow);
+                flows.put(switchId, switchFlows);
+            } else {
+                switchFlows.add(flow);
+            }
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public void deleteFlow(OpenDaylightOFFlow flow, String DPID, String name) {
+    @Override
+    public void deleteFlow(OpenDaylightOFFlow flow, String DPID, String name) {
 
-		for (String switchId : flows.keySet()) {
+        for (String switchId : flows.keySet()) {
 
-			List<OpenDaylightOFFlow> switchFlows = flows.get(switchId);
-			List<OpenDaylightOFFlow> flowsToRemove = new ArrayList<OpenDaylightOFFlow>();
+            List<OpenDaylightOFFlow> switchFlows = flows.get(switchId);
+            List<OpenDaylightOFFlow> flowsToRemove = new ArrayList<OpenDaylightOFFlow>();
 
-			for (OpenDaylightOFFlow existingFlow : switchFlows)
-				if (existingFlow.getName().equals(flow.getName()))
-					flowsToRemove.add(flow);
+            for (OpenDaylightOFFlow existingFlow : switchFlows) {
+                if (existingFlow.getName().equals(flow.getName())) {
+                    flowsToRemove.add(flow);
+                }
+            }
 
-			switchFlows.removeAll(flowsToRemove);
+            switchFlows.removeAll(flowsToRemove);
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public void deleteFlowsForSwitch(@PathParam("switchId") String dpid) {
+    @Override
+    public void deleteFlowsForSwitch(@PathParam("switchId") String dpid) {
 
-		flows.get(dpid).clear();
+        flows.get(dpid).clear();
 
-	}
+    }
 
-	@Override
-	public void deleteAllFlows() {
+    @Override
+    public void deleteAllFlows() {
 
-		for (String switchId : flows.keySet()) {
+        for (String switchId : flows.keySet()) {
 
-			List<OpenDaylightOFFlow> switchFlows = flows.get(switchId);
-			switchFlows.clear();
+            List<OpenDaylightOFFlow> switchFlows = flows.get(switchId);
+            switchFlows.clear();
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public Map<String, List<OpenDaylightOFFlow>> getFlows() {
+    @Override
+    public Map<String, List<OpenDaylightOFFlow>> getFlows() {
 
-		return flows;
+        return flows;
 
-	}
+    }
 
-	@Override
-	public OpenDaylightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid) {
-		OpenDaylightOFFlowsWrapper flowsWrapper = new OpenDaylightOFFlowsWrapper();
-		if (flows.get(String.valueOf(dpid)) != null)
-			flowsWrapper.addAll(flows.get(String.valueOf(dpid)));
+    @Override
+    public OpenDaylightOFFlowsWrapper getFlows(@PathParam("switchId") String dpid) {
+        OpenDaylightOFFlowsWrapper flowsWrapper = new OpenDaylightOFFlowsWrapper();
+        if (flows.get(String.valueOf(dpid)) != null) {
+            flowsWrapper.addAll(flows.get(String.valueOf(dpid)));
+        }
 
-		return flowsWrapper;
-	}
+        return flowsWrapper;
+    }
 
 }
-

@@ -59,11 +59,11 @@ public class RemoveOFForwardingAction extends OpenDaylightAction {
      */
     private OpenDaylightOFFlow getFlowFromSwitchByName(String flowName, String switchId, IOpenDaylightStaticFlowPusherClient client)
             throws ProtocolException, ActionException, Exception {
-        for (OpenDaylightOFFlow flow : client.getFlows(switchId)) {
+/*        for (OpenDaylightOFFlow flow : client.getFlows(switchId)) {
             if (flow.getName().equals(flowName)) {
                 return flow;
             }
         }
-        throw new ActionException("Given flow does not exist: " + flowName);
+*/        throw new ActionException("Given flow does not exist: " + flowName);
     }
 }

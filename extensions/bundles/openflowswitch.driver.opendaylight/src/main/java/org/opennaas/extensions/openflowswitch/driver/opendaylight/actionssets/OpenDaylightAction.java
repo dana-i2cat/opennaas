@@ -8,14 +8,13 @@ import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.OpenD
 
 public abstract class OpenDaylightAction extends Action {
 
-	protected OpenDaylightProtocolSession getOpenDaylightProtocolSession(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
-		return (OpenDaylightProtocolSession) protocolSessionManager.obtainSessionByProtocol(
-				OpenDaylightProtocolSession.OPENDAYLIGHT_PROTOCOL_TYPE, false);
-	}
+    protected OpenDaylightProtocolSession getOpenDaylightProtocolSession(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
+        return (OpenDaylightProtocolSession) protocolSessionManager.obtainSessionByProtocol(OpenDaylightProtocolSession.OPENDAYLIGHT_PROTOCOL_TYPE, false);
+    }
 
-	protected String getSwitchIdFromSession(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
-		ProtocolSessionContext sessionContext = getOpenDaylightProtocolSession(protocolSessionManager).getSessionContext();
-		return (String) sessionContext.getSessionParameters().get(OpenDaylightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME);
-	}
+    protected String getSwitchIdFromSession(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
+        ProtocolSessionContext sessionContext = getOpenDaylightProtocolSession(protocolSessionManager).getSessionContext();
+        return (String) sessionContext.getSessionParameters().get(OpenDaylightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME);
+    }
 
 }

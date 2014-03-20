@@ -2,11 +2,9 @@ package org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.clie
 
 import java.util.List;
 import java.util.Map;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -49,6 +47,7 @@ public interface IOpenDaylightStaticFlowPusherClient {
 
     /**
      * Gets a list of flows by switch
+     *
      * @param dpid
      * @return
      * @throws org.opennaas.core.resources.protocol.ProtocolException
@@ -80,6 +79,4 @@ public interface IOpenDaylightStaticFlowPusherClient {
      */
     @Path("clear/all/json")
     public void deleteAllFlows() throws ProtocolException, Exception;
-
 }
-

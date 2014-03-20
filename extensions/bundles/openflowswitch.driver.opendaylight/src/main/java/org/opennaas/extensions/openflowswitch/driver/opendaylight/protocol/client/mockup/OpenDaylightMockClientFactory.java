@@ -19,4 +19,3 @@ public class OpenDaylightMockClientFactory extends OpenDaylightClientFactory {
 	}
 
 }
-
