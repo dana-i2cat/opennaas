@@ -14,10 +14,7 @@
 
 	<modules>
         <module>opennaas-gui-vcpe</module>
-<<<<<<< HEAD
-	<module>opennaas-gui-routing-nfv</module>
-=======
+<!--	<module>opennaas-gui-routing-nfv</module>-->
 	<module>nfv-gui-demo-vrf</module>
->>>>>>> develop
  	</modules>
 </project>
