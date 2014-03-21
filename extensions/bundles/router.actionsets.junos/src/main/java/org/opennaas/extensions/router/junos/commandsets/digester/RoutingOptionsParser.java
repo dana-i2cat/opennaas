@@ -25,9 +25,13 @@ import java.util.HashMap;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
+import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NextHopIPRoute;
 import org.opennaas.extensions.router.model.NextHopRoute;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.RouteCalculationService;
 import org.opennaas.extensions.router.model.Service;
@@ -134,6 +138,9 @@ public class RoutingOptionsParser extends DigesterEngine {
 	public void setNextHop(String nextHop) {
 
 		NextHopIPRoute nextHopIPRoute = (NextHopIPRoute) peek(0);
+		// ***************************
+		// Next hop is an IP address *
+		// ***************************
 		// creating IpEndPoint that will be the next hop
 		IPProtocolEndpoint ipNextHop = new IPProtocolEndpoint();
 		if (InetAddresses.isInetAddress(nextHop)) {
@@ -145,7 +152,8 @@ public class RoutingOptionsParser extends DigesterEngine {
 				ipNextHop.setIPv6Address(nextHop);
 			}
 		} else {
-			log.error("Not valid IP address in next hop tag: " + nextHop);
+			// not an IP address, it must be an interface.unit
+			addInterface(nextHop);
 			return;
 		}
 		try {
@@ -154,6 +162,50 @@ public class RoutingOptionsParser extends DigesterEngine {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
+	}
+
+	public void addInterface(String nextHop) {
+		NextHopIPRoute nextHopIPRoute = (NextHopIPRoute) peek(0);
+
+		boolean isGRE = false;
+
+		for (Service service : model.getHostedService()) {
+			if (service instanceof GRETunnelService) {
+				GRETunnelService greService = (GRETunnelService) service;
+				String name = service.getName() + ".0";
+				if (name.equals(nextHop)) {
+					for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+						if (pE instanceof GRETunnelEndpoint) {
+							GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
+							nextHopIPRoute.setProtocolEndpoint(gE);
+							isGRE = true;
+
+						}
+
+					}
+				}
+			}
+		}
+		if (!isGRE) {
+			for (LogicalDevice device : model.getLogicalDevices()) {
+				if (device instanceof NetworkPort) {
+
+					NetworkPort port = (NetworkPort) device;
+					String ifacename = port.getName() + "." + String.valueOf(port.getPortNumber());
+
+					if (ifacename.equals(nextHop)) {
+						for (ProtocolEndpoint pE : port.getProtocolEndpoint()) {
+							if (pE instanceof IPProtocolEndpoint) {
+								IPProtocolEndpoint iE = (IPProtocolEndpoint) pE;
+								nextHopIPRoute.setProtocolEndpoint(iE);
+							}
+						}
+
+					}
+				}
+			}
+		}
+
 	}
 
 	/**
