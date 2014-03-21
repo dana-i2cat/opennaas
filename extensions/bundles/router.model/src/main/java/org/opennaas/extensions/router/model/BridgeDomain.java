@@ -7,7 +7,7 @@ import java.util.Set;
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public class BridgeDomain extends ManagedElement {
+public class BridgeDomain extends SystemSpecificCollection {
 
 	private static final long	serialVersionUID	= 4383689381036117461L;
 

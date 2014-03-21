@@ -36,6 +36,8 @@ import java.io.Serializable;
  */
 public class Collection extends ManagedElement implements Serializable {
 
+	private static final long	serialVersionUID	= -1089333565816275245L;
+
 	/**
 	 * This constructor creates a CollectionBeanImpl Class which implements the CollectionBean Interface, and encapsulates the CIM class Collection in
 	 * a Java Bean. The CIM class Collection is described as follows:
@@ -45,4 +47,5 @@ public class Collection extends ManagedElement implements Serializable {
 	 */
 	protected Collection() {
 	};
+
 } // Class Collection

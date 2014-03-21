@@ -88,6 +88,39 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Adds a {@link HostedCollection} dependency between {@link SystemSpecificCollection} and this {@link System}
+	 * 
+	 * @param collection
+	 * @return
+	 */
+	public boolean addHostedCollection(SystemSpecificCollection collection) {
+		if (collection == null)
+			return false;
+
+		return (HostedCollection.link(this, collection) != null);
+	}
+
+	/**
+	 * Removes {@link HostedCollection} dependency between {@link SystemSpecificCollection} and this {@link System}
+	 * 
+	 * @param collection
+	 * @return true if association ha s been removed. False otherwise (including the association was not present)
+	 */
+	public boolean removeHostedCollection(SystemSpecificCollection collection) {
+		if (collection == null)
+			return false;
+
+		Association a = this.getFirstToAssociationByTypeAndElement(HostedCollection.class, collection);
+
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
+
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T extends Service> List<T> getAllHostedServicesByType(T instance) {
 		List<Service> list = getHostedService();
