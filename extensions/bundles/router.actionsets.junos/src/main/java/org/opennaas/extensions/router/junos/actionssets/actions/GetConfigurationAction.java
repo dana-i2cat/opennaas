@@ -22,6 +22,7 @@ package org.opennaas.extensions.router.junos.actionssets.actions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import net.i2cat.netconf.rpc.Reply;
 
@@ -38,6 +39,7 @@ import org.opennaas.extensions.router.junos.commandsets.digester.DigesterEngine;
 import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.RoutingOptionsParser;
+import org.opennaas.extensions.router.junos.commandsets.digester.VLANParser;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelService;
@@ -111,6 +113,8 @@ public class GetConfigurationAction extends JunosAction {
 				// Protocol parser creates classes in the model that require being updated by routing-options parser.
 				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
 				routerModel = parseRoutingOptions(routerModel, message);
+
+				routerModel = parseVlans(routerModel, message);
 			}
 		} catch (Exception e) {
 			throw new ActionException(e);
@@ -202,6 +206,18 @@ public class GetConfigurationAction extends JunosAction {
 
 		routerModel = routingOptionsParser.getModel();
 		return routerModel;
+	}
+
+	private System parseVlans(System routerModel, String message) throws UnsupportedEncodingException, IOException, SAXException {
+		VLANParser vlanParser = new VLANParser(routerModel);
+
+		vlanParser.init();
+		vlanParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
+
+		routerModel = vlanParser.getModel();
+
+		return routerModel;
+
 	}
 
 	@Override

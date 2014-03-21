@@ -89,6 +89,15 @@ public class System extends EnabledLogicalElement implements Serializable {
 	}
 
 	/**
+	 * 
+	 * @return List of {@link SystemSpecificCollection} associated to this {@link System} through {@link HostedCollection} dependency.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SystemSpecificCollection> getHostedCollection() {
+		return (List<SystemSpecificCollection>) this.getToAssociatedElementsByType(HostedCollection.class);
+	}
+
+	/**
 	 * Adds a {@link HostedCollection} dependency between {@link SystemSpecificCollection} and this {@link System}
 	 * 
 	 * @param collection

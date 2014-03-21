@@ -1,5 +1,26 @@
 package org.opennaas.extensions.router.model;
 
+/*
+ * #%L
+ * OpenNaaS :: CIM Model
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,7 +33,11 @@ public class BridgeDomain extends SystemSpecificCollection {
 	private static final long	serialVersionUID	= 4383689381036117461L;
 
 	private int					vlanId;
-	private Set<NetworkPort>	networkPorts;
+	private Set<String>			networkPorts;
+
+	public BridgeDomain() {
+		networkPorts = new HashSet<String>();
+	}
 
 	public int getVlanId() {
 		return vlanId;
@@ -22,12 +47,20 @@ public class BridgeDomain extends SystemSpecificCollection {
 		this.vlanId = vlanId;
 	}
 
-	public Set<NetworkPort> getNetworkPorts() {
+	public Set<String> getNetworkPorts() {
 		return networkPorts;
 	}
 
-	public void setNetworkPorts(Set<NetworkPort> networkPorts) {
+	public void setNetworkPorts(Set<String> networkPorts) {
 		this.networkPorts = networkPorts;
+	}
+
+	public void addNetworkPort(String netPort) {
+		this.networkPorts.add(netPort);
+	}
+
+	public void removeNetworkPort(String netPort) {
+		this.networkPorts.remove(netPort);
 	}
 
 	@Override
