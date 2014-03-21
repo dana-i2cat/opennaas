@@ -54,6 +54,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 * 
 	 * @return List of Services associated to this System through HostedService dependency.
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Service> getHostedService() {
 		return (List<Service>) this.getToAssociatedElementsByType(HostedService.class);
 	}
@@ -146,8 +147,28 @@ public class System extends EnabledLogicalElement implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<NextHopRoute> getNextHopRoute() {
 		return (List<NextHopRoute>) this.getToAssociatedElementsByType(HostedRoute.class);
+	}
+
+	/**
+	 * Remove all NexthopRoute elements
+	 * 
+	 * @return
+	 */
+	public boolean removeAllNextHopRoutes() {
+		List<NextHopRoute> list = getNextHopRoute();
+
+		boolean oneRemoved = false;
+
+		for (NextHopRoute nhr : list) {
+			if (removeNextHopRoute(nhr)) {
+				oneRemoved = true;
+			}
+		}
+
+		return oneRemoved;
 	}
 
 	/* LOGICAL DEVICES */
@@ -157,18 +178,21 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return (SystemDevice.link(this, logicalDevice) != null);
 	}
 
-	// TODO control the return value
 	public boolean removeAllLogicalDeviceByType(Class<? extends ManagedElement> clazz) {
 		List<LogicalDevice> list = getLogicalDevices();
+
+		boolean oneRemoved = false;
 
 		for (LogicalDevice ld : list) {
 
 			if (clazz.isInstance(ld)) {
-				removeLogicalDevice(ld);
+				if (removeLogicalDevice(ld)) {
+					oneRemoved = true;
+				}
 			}
 		}
 
-		return true;
+		return oneRemoved;
 	}
 
 	public boolean removeLogicalDevice(LogicalDevice logicalDevice) {
@@ -184,6 +208,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<LogicalDevice> getLogicalDevices() {
 		return (List<LogicalDevice>) this.getToAssociatedElementsByType(SystemDevice.class);
 	}
