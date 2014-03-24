@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
@@ -267,6 +268,22 @@ public class ModelHelper {
 		for (VRRPGroup candidate : vrrpGroupsList)
 			if (candidate.getVrrpName() == groupId)
 				return candidate;
+
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param bridgeDomainList
+	 * @param name
+	 * @return The {@link BridgeDomain} of the list which {@link BridgeDomain#getElementName()} matches the specified name. Null if there's no
+	 *         {@link BridgeDomain) in the list which {@link BridgeDomain#getElementName()} matches the specified name.
+	 */
+	public static BridgeDomain getBridgeDomainByName(List<BridgeDomain> bridgeDomainList, String name) {
+
+		for (BridgeDomain brDomain : bridgeDomainList)
+			if (brDomain.getElementName().equals(name))
+				return brDomain;
 
 		return null;
 	}

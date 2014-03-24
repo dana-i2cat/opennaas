@@ -23,8 +23,9 @@ package org.opennaas.extensions.router.capabilities.api.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
-import org.opennaas.extensions.router.model.BridgeDomain;
 
 /**
  * 
@@ -33,18 +34,35 @@ import org.opennaas.extensions.router.model.BridgeDomain;
  */
 public abstract class BridgeDomainApiHelper {
 
-	public static BridgeDomains buildApiBridgeDomains(List<BridgeDomain> modelBridgeDomains) {
+	public static BridgeDomains buildApiBridgeDomains(List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains) {
 
 		BridgeDomains apiBridgeDomains = new BridgeDomains();
 		List<String> domainNames = new ArrayList<String>();
 
-		for (BridgeDomain bridgeDomain : modelBridgeDomains)
+		for (org.opennaas.extensions.router.model.BridgeDomain bridgeDomain : modelBridgeDomains)
 			domainNames.add(bridgeDomain.getElementName());
 
 		apiBridgeDomains.setDomainNames(domainNames);
 
 		return apiBridgeDomains;
 
+	}
+
+	public static BridgeDomain buildApiBridgeDomain(
+			org.opennaas.extensions.router.model.BridgeDomain modelBrDomain) {
+
+		BridgeDomain brDomain = new BridgeDomain();
+
+		brDomain.setDomainName(modelBrDomain.getElementName());
+		brDomain.setVlanid(modelBrDomain.getVlanId());
+
+		if (!StringUtils.isEmpty(modelBrDomain.getDescription()))
+			brDomain.setDescription(modelBrDomain.getDescription());
+
+		for (String iface : modelBrDomain.getNetworkPorts())
+			brDomain.getInterfacesNames().add(iface);
+
+		return brDomain;
 	}
 
 }

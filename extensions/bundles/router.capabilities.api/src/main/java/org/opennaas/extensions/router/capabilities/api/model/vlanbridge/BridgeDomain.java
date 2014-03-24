@@ -20,6 +20,7 @@ package org.opennaas.extensions.router.capabilities.api.model.vlanbridge;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -44,6 +45,10 @@ public class BridgeDomain {
 	@XmlElement(name = "interfaceName")
 	private List<String>	interfacesNames;
 	private String			description;
+
+	public BridgeDomain() {
+		interfacesNames = new ArrayList<String>();
+	}
 
 	/**
 	 * @return the domainName
