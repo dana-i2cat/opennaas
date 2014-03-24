@@ -88,6 +88,34 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T extends Service> List<T> getAllHostedServicesByType(T instance) {
+		List<Service> list = getHostedService();
+
+		ArrayList<T> desiredServices = new ArrayList<T>();
+		for (Service service : list) {
+			if (instance.getClass().isInstance(service)) {
+				desiredServices.add((T) service);
+			}
+		}
+		return desiredServices;
+	}
+
+	public boolean removeAllHostedServicesByType(Class<? extends Service> clazz) {
+		List<Service> list = getHostedService();
+
+		boolean somethingIsRemoved = false;
+		for (Service service : list) {
+			if (clazz.isInstance(service)) {
+				removeHostedService(service);
+				somethingIsRemoved = true;
+			}
+		}
+		return somethingIsRemoved;
+	}
+
+	// HOSTED COLLECTION
+
 	/**
 	 * 
 	 * @return List of {@link SystemSpecificCollection} associated to this {@link System} through {@link HostedCollection} dependency.
@@ -114,7 +142,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 * Removes {@link HostedCollection} dependency between {@link SystemSpecificCollection} and this {@link System}
 	 * 
 	 * @param collection
-	 * @return true if association ha s been removed. False otherwise (including the association was not present)
+	 * @return true if association has been removed. False otherwise (including the association was not present)
 	 */
 	public boolean removeHostedCollection(SystemSpecificCollection collection) {
 		if (collection == null)
@@ -130,30 +158,45 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends Service> List<T> getAllHostedServicesByType(T instance) {
-		List<Service> list = getHostedService();
-
-		ArrayList<T> desiredServices = new ArrayList<T>();
-		for (Service service : list) {
-			if (instance.getClass().isInstance(service)) {
-				desiredServices.add((T) service);
-			}
-		}
-		return desiredServices;
-	}
-
-	public boolean removeAllHostedServicesByType(Class<? extends Service> clazz) {
-		List<Service> list = getHostedService();
+	/**
+	 * Removes all {@link HostedCollection} dependencies between {@link SystemSpecificCollection} and this {@link System}
+	 * 
+	 * @param clazz
+	 * @return true if some association has been removed. False otherwise.
+	 */
+	public boolean removeAllHostedCollectionByType(Class<BridgeDomain> clazz) {
+		List<SystemSpecificCollection> list = getHostedCollection();
 
 		boolean somethingIsRemoved = false;
-		for (Service service : list) {
-			if (clazz.isInstance(service)) {
-				removeHostedService(service);
+		for (SystemSpecificCollection hc : list) {
+			if (clazz.isInstance(hc)) {
+				removeHostedCollection(hc);
 				somethingIsRemoved = true;
 			}
 		}
 		return somethingIsRemoved;
+
+	}
+
+	/**
+	 * Returns the list of {@link HostedCollection} dependencies of a specific type with this {@link System}
+	 * 
+	 * @param model
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends SystemSpecificCollection> List<T> getHostedCollectionByType(T clazz) {
+
+		List<SystemSpecificCollection> list = getHostedCollection();
+		List<T> listToReturn = new ArrayList<T>();
+
+		for (SystemSpecificCollection hc : list)
+			if (clazz.getClass().isInstance(hc))
+				listToReturn.add((T) hc);
+
+		return listToReturn;
+
 	}
 
 	/* NEXT HOP ROUTES */

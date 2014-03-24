@@ -36,13 +36,16 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.BridgeDomainApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Adrian Rosello Rey (i2CAT)
  * 
  */
 public class VLANBridgeCapability extends AbstractCapability implements IVLANBridgeCapability {
@@ -121,15 +124,13 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public BridgeDomains getBridgeDomains() {
-		// FIXME call action
-		BridgeDomains domains = new BridgeDomains();
 
-		List<String> domainNames = new ArrayList<String>();
+		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 
-		domainNames.add("vlan.2");
-		domainNames.add("vlan.3");
+		List<org.opennaas.extensions.router.model.BridgeDomain> bridgeDomains = system.getHostedCollectionByType(
+				new org.opennaas.extensions.router.model.BridgeDomain());
 
-		domains.setDomainNames(domainNames);
+		BridgeDomains domains = BridgeDomainApiHelper.buildApiBridgeDomains(bridgeDomains);
 
 		return domains;
 	}
