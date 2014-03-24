@@ -40,6 +40,7 @@ import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfacePars
 import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.RoutingOptionsParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.VLANParser;
+import org.opennaas.extensions.router.model.AggregatedLogicalPort;
 import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
@@ -177,6 +178,7 @@ public class GetConfigurationAction extends JunosAction {
 		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
 		routerModel.removeAllHostedServicesByType(GREService.class);
 		routerModel.removeAllHostedServicesByType(VRRPGroup.class);
+		routerModel.removeAllLogicalDeviceByType(AggregatedLogicalPort.class);
 
 		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
 		ipInterfaceParser.init();
