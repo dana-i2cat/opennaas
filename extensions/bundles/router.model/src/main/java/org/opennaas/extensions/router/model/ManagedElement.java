@@ -430,6 +430,49 @@ public class ManagedElement implements IModel, Serializable {
 		return false;
 	}
 
+	// Setting Data
+	/**
+	 * @return List of {@link SettingData} associated to this {@link ManagedElement} through {@link ElementSettingData} dependency.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SettingData> getElementsSettingData() {
+		return (List<SettingData>) this.getToAssociatedElementsByType(ElementSettingData.class);
+	}
+
+	/**
+	 * Associates {@link SettingData} to this {@link ManagedElement} through {@link ElementSettingData} dependency. *
+	 * 
+	 * @param settingData
+	 * @return
+	 */
+
+	public boolean addElementSettingData(SettingData settingData) {
+		if (settingData == null)
+			return false;
+		return (ElementSettingData.link(this, settingData) != null);
+
+	}
+
+	/**
+	 * Removes {@link ElementSettingData} dependency between {@link SettingData} and this {@link ManagedElement}.
+	 * 
+	 * @param settingData
+	 * @return true if association has been removed. False otherwise (including the association was not present)
+	 */
+	public boolean removeElementSettingData(SettingData settingData) {
+
+		if (settingData == null)
+			return false;
+
+		Association a = this.getFirstToAssociationByTypeAndElement(ElementSettingData.class, settingData);
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
+	}
+
 	/**
 	 * This constructor creates a ManagedElementBeanImpl Class which implements the ManagedElementBean Interface, and encapsulates the CIM class
 	 * ManagedElement in a Java Bean. The CIM class ManagedElement is described as follows:

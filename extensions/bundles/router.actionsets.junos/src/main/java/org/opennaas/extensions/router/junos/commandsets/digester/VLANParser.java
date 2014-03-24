@@ -51,7 +51,7 @@ public class VLANParser extends DigesterEngine {
 			// routers
 
 			addObjectCreate("*/vlans/vlan", BridgeDomain.class);
-			addCallMethod("*/vlans/vlan/vlan-name", "setElementName", 0);
+			addCallMethod("*/vlans/vlan/name", "setElementName", 0);
 			addCallMethod("*/vlans/vlan/vlan-id", "setVlanId", 0, new Class[] { Integer.TYPE });
 			addCallMethod("*/vlans/vlan/description", "setDescription", 0);
 			addCallMethod("*/vlans/vlan/interface", "addNetworkPort", 0);
