@@ -35,7 +35,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
-import org.opennaas.extensions.router.capabilities.api.helper.BridgeDomainApiHelper;
+import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
@@ -130,7 +130,7 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 		List<org.opennaas.extensions.router.model.BridgeDomain> bridgeDomains = system.getHostedCollectionByType(
 				new org.opennaas.extensions.router.model.BridgeDomain());
 
-		BridgeDomains domains = BridgeDomainApiHelper.buildApiBridgeDomains(bridgeDomains);
+		BridgeDomains domains = VLANBridgeApiHelper.buildApiBridgeDomains(bridgeDomains);
 
 		return domains;
 	}
@@ -149,7 +149,7 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 		if (modelBrDomain == null)
 			throw new ModelElementNotFoundException("No such BridgeDomain in model with name " + domainName);
 
-		BridgeDomain apiBrDomain = BridgeDomainApiHelper.buildApiBridgeDomain(modelBrDomain);
+		BridgeDomain apiBrDomain = VLANBridgeApiHelper.buildApiBridgeDomain(modelBrDomain);
 
 		return apiBrDomain;
 	}

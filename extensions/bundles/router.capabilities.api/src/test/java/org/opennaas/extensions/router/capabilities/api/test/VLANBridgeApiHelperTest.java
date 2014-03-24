@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opennaas.extensions.router.capabilities.api.helper.BridgeDomainApiHelper;
+import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 
 public class VLANBridgeApiHelperTest {
@@ -18,7 +18,7 @@ public class VLANBridgeApiHelperTest {
 
 		List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains = generateSampleModelBridgeDomains();
 
-		BridgeDomains apiBridgeDomains = BridgeDomainApiHelper.buildApiBridgeDomains(modelBridgeDomains);
+		BridgeDomains apiBridgeDomains = VLANBridgeApiHelper.buildApiBridgeDomains(modelBridgeDomains);
 
 		Assert.assertNotNull("Parsed Bridge Domains should not be null", apiBridgeDomains);
 		Assert.assertNotNull("Parsed Bridge Domains should not be null", apiBridgeDomains.getDomainNames());

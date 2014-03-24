@@ -32,7 +32,7 @@ import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDo
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public abstract class BridgeDomainApiHelper {
+public abstract class VLANBridgeApiHelper {
 
 	public static BridgeDomains buildApiBridgeDomains(List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains) {
 
