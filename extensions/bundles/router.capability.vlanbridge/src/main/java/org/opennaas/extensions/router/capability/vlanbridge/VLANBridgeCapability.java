@@ -156,8 +156,12 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public void createBridgeDomain(BridgeDomain bridgeDomain) throws CapabilityException {
-		// TODO call action
+		log.info("Start of createBridgeDomain call");
 
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION, bridgeDomain);
+		queueAction(action);
+
+		log.info("End of createBridgeDomain call");
 	}
 
 	@Override
