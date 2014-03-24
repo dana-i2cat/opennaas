@@ -20,6 +20,7 @@ package org.opennaas.extensions.router.model;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,7 +39,7 @@ public class AggregatedLogicalPort extends LogicalPort {
 	 */
 	private static final long	serialVersionUID	= -3675664143218134609L;
 
-	private List<String>		interfaces;
+	private List<String>		interfaces			= new ArrayList<String>();
 
 	private AggregatedOptions	aggregatedOptions;
 

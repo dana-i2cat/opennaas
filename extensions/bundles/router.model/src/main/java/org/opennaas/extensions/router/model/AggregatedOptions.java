@@ -21,7 +21,6 @@ package org.opennaas.extensions.router.model;
  */
 
 import java.io.Serializable;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -38,21 +37,53 @@ public class AggregatedOptions implements Serializable {
 	 */
 	private static final long	serialVersionUID	= -8960039625776709380L;
 
-	private Map<String, String>	aggregationOptions;
+	private String				minimumLinks		= "";
+	private String				linkSpeed			= "";
+	private boolean				lacpActive			= false;
 
 	/**
-	 * @return the aggregationOptions
+	 * @return the minimumLinks
 	 */
-	public Map<String, String> getAggregationOptions() {
-		return aggregationOptions;
+	public String getMinimumLinks() {
+		return minimumLinks;
 	}
 
 	/**
-	 * @param aggregationOptions
-	 *            the aggregationOptions to set
+	 * @param minimumLinks
+	 *            the minimumLinks to set
 	 */
-	public void setAggregationOptions(Map<String, String> aggregationOptions) {
-		this.aggregationOptions = aggregationOptions;
+	public void setMinimumLinks(String minimumLinks) {
+		this.minimumLinks = minimumLinks;
+	}
+
+	/**
+	 * @return the linkSpeed
+	 */
+	public String getLinkSpeed() {
+		return linkSpeed;
+	}
+
+	/**
+	 * @param linkSpeed
+	 *            the linkSpeed to set
+	 */
+	public void setLinkSpeed(String linkSpeed) {
+		this.linkSpeed = linkSpeed;
+	}
+
+	/**
+	 * @return the lacpActive
+	 */
+	public boolean isLacpActive() {
+		return lacpActive;
+	}
+
+	/**
+	 * @param lacpActive
+	 *            the lacpActive to set
+	 */
+	public void setLacpActive(boolean lacpActive) {
+		this.lacpActive = lacpActive;
 	}
 
 	/*
@@ -64,7 +95,9 @@ public class AggregatedOptions implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((aggregationOptions == null) ? 0 : aggregationOptions.hashCode());
+		result = prime * result + (lacpActive ? 1231 : 1237);
+		result = prime * result + ((linkSpeed == null) ? 0 : linkSpeed.hashCode());
+		result = prime * result + ((minimumLinks == null) ? 0 : minimumLinks.hashCode());
 		return result;
 	}
 
@@ -82,10 +115,17 @@ public class AggregatedOptions implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		AggregatedOptions other = (AggregatedOptions) obj;
-		if (aggregationOptions == null) {
-			if (other.aggregationOptions != null)
+		if (lacpActive != other.lacpActive)
+			return false;
+		if (linkSpeed == null) {
+			if (other.linkSpeed != null)
 				return false;
-		} else if (!aggregationOptions.equals(other.aggregationOptions))
+		} else if (!linkSpeed.equals(other.linkSpeed))
+			return false;
+		if (minimumLinks == null) {
+			if (other.minimumLinks != null)
+				return false;
+		} else if (!minimumLinks.equals(other.minimumLinks))
 			return false;
 		return true;
 	}
@@ -97,7 +137,6 @@ public class AggregatedOptions implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "AggregatedOptions [aggregationOptions=" + aggregationOptions + "]";
+		return "AggregatedOptions [minimumLinks=" + minimumLinks + ", linkSpeed=" + linkSpeed + ", lacpActive=" + lacpActive + "]";
 	}
-
 }
