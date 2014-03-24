@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.router.model.AggregatedLogicalPort;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
@@ -269,5 +270,21 @@ public class ModelHelper {
 				return candidate;
 
 		return null;
+	}
+
+	/**
+	 * Retrieves the list of AggregatedLogicalPort's in given System
+	 * 
+	 * @param system
+	 * @return a list containing AggregatedLogicalPort's in given System. Will be empty when given systems does not contain any AggregatedLogicalPort.
+	 */
+	public static List<AggregatedLogicalPort> getAggregatedLogicalPorts(System system) {
+		List<AggregatedLogicalPort> aggregators = new ArrayList<AggregatedLogicalPort>();
+		for (LogicalDevice dev : system.getLogicalDevices()) {
+			if (dev instanceof AggregatedLogicalPort) {
+				aggregators.add((AggregatedLogicalPort) dev);
+			}
+		}
+		return aggregators;
 	}
 }
