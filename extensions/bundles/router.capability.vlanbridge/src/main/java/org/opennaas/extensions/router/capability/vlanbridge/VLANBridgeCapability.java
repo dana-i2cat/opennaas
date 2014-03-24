@@ -172,7 +172,12 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public void deleteBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
-		// TODO call action
+		log.info("Start of deleteBridgeDomain call");
+
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.DELETE_VLAN_BRIDGE_DOMAIN_ACTION, domainName);
+		queueAction(action);
+
+		log.info("End of deleteBridgeDomain call");
 
 	}
 
