@@ -125,6 +125,8 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 	@Override
 	public BridgeDomains getBridgeDomains() {
 
+		log.info("Start of getBridgeDomains call");
+
 		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 
 		List<org.opennaas.extensions.router.model.BridgeDomain> bridgeDomains = system.getHostedCollectionByType(
@@ -132,11 +134,15 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 		BridgeDomains domains = VLANBridgeApiHelper.buildApiBridgeDomains(bridgeDomains);
 
+		log.info("End of getBridgeDomains call");
+
 		return domains;
 	}
 
 	@Override
 	public BridgeDomain getBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
+
+		log.info("Start of getBridgeDomain call");
 
 		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 
@@ -150,6 +156,8 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 			throw new ModelElementNotFoundException("No such BridgeDomain in model with name " + domainName);
 
 		BridgeDomain apiBrDomain = VLANBridgeApiHelper.buildApiBridgeDomain(modelBrDomain);
+
+		log.info("End of getBridgeDomain call");
 
 		return apiBrDomain;
 	}
@@ -199,7 +207,6 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 	@Override
 	public void setInterfaceVLANOptions(String ifaceName, InterfaceVLANOptions vlanOptions) throws ModelElementNotFoundException,
 			CapabilityException {
-		// TODO call action
 
 	}
 
