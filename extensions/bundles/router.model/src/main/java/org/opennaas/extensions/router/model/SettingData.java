@@ -25,8 +25,8 @@ package org.opennaas.extensions.router.model;
  * #L%
  */
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class SettingData as well as methods comparable to the
@@ -48,6 +48,50 @@ import java.lang.Exception;
  * associations.
  */
 public class SettingData extends ManagedElement implements Serializable {
+
+	private static final long	serialVersionUID	= 6648295463635021321L;
+
+	// Setting Data
+	/**
+	 * @return List of {@link ManagedElement} associated to this {@link SettingData} through {@link ElementSettingData} dependency.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ManagedElement> getManagedElement() {
+		return (List<ManagedElement>) this.getFromAssociatedElementsByType(ElementSettingData.class);
+	}
+
+	/**
+	 * Associates {@link ManagedElement} to this {@link SettingData} through {@link ElementSettingData} dependency. *
+	 * 
+	 * @param managedElement
+	 * @return
+	 */
+
+	public boolean addManagedElement(ManagedElement managedElement) {
+		if (managedElement == null)
+			return false;
+		return (ElementSettingData.link(managedElement, this) != null);
+	}
+
+	/**
+	 * Removes {@link ElementSettingData} dependency between {@link SettingData} and this {@link ManagedElement}.
+	 * 
+	 * @param settingData
+	 * @return true if association has been removed. False otherwise (including the association was not present)
+	 */
+	public boolean removeManagedElement(ManagedElement managedElement) {
+
+		if (managedElement == null)
+			return false;
+
+		Association a = this.getFirstFromAssociationByTypeAndElement(ElementSettingData.class, managedElement);
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
+	}
 
 	/**
 	 * This constructor creates a SettingDataBeanImpl Class which implements the SettingDataBean Interface, and encapsulates the CIM class SettingData

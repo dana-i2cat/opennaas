@@ -37,6 +37,7 @@ import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.System;
@@ -137,6 +138,12 @@ public class IPInterfaceParser extends DigesterEngine {
 					"setVRRPGroupVirtualLinkLocalAddress", 0);
 			addSetNext("*/interfaces/interface/unit/family/inet6/address/vrrp-inet6-group", "bindServiceAccessPoint");
 
+			// VLANBridge
+			addObjectCreate("*/interfaces/interface/unit/family/ethernet-switching", NetworkPortVLANSettingData.class);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/port-mode", "setPortMode", 0);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/native-vlan-id", "setNativeVlanId", 0, new Class[] { Integer.TYPE });
+			addSetNext("*/interfaces/interface/unit/family/ethernet-switching", "addElementSettingData");
+
 		}
 	}
 
@@ -189,7 +196,6 @@ public class IPInterfaceParser extends DigesterEngine {
 		String location = ethernetPort.getName() + Integer.toString(ethernetPort.getPortNumber());
 
 		if (ethernetPort.getName().startsWith("gr-")) {
-
 			GREService greService = new GREService();
 			List<GREService> greServiceList = model.getAllHostedServicesByType(new GREService());
 			if (greServiceList.isEmpty()) {

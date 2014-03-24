@@ -65,13 +65,11 @@ public class VLANParser extends DigesterEngine {
 		@Override
 		public void addRuleInstances(Digester digester) {
 
-			// FIXME the path pattern can't be global , must distinguish between routers
+			// FIXME the path pattern can't be global , must distinguish between
+			// routers
 
-			// ***************
-			// * parse VLANS *
-			// ***************
 			addObjectCreate("*/vlans/vlan", BridgeDomain.class);
-			addMyRule("*/vlans/vlan/name", "setVLANName", 0);
+			addCallMethod("*/vlans/vlan/name", "setElementName", 0);
 			addCallMethod("*/vlans/vlan/vlan-id", "setVlanId", 0, new Class[] { Integer.TYPE });
 			addCallMethod("*/vlans/vlan/description", "setDescription", 0);
 			addCallMethod("*/vlans/vlan/interface", "addNetworkPort", 0);

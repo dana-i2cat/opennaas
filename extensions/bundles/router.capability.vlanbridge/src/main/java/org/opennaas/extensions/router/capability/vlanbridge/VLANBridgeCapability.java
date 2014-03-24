@@ -20,7 +20,6 @@ package org.opennaas.extensions.router.capability.vlanbridge;
  * #L%
  */
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,13 +35,17 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Adrian Rosello Rey (i2CAT)
  * 
  */
 public class VLANBridgeCapability extends AbstractCapability implements IVLANBridgeCapability {
@@ -121,38 +124,34 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public BridgeDomains getBridgeDomains() {
-		// FIXME call action
-		BridgeDomains domains = new BridgeDomains();
 
-		List<String> domainNames = new ArrayList<String>();
+		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 
-		domainNames.add("vlan.2");
-		domainNames.add("vlan.3");
+		List<org.opennaas.extensions.router.model.BridgeDomain> bridgeDomains = system.getHostedCollectionByType(
+				new org.opennaas.extensions.router.model.BridgeDomain());
 
-		domains.setDomainNames(domainNames);
+		BridgeDomains domains = VLANBridgeApiHelper.buildApiBridgeDomains(bridgeDomains);
 
 		return domains;
 	}
 
 	@Override
 	public BridgeDomain getBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
-		// FIXME call action
 
-		if (!domainName.contains("."))
-			throw new CapabilityException("Invalid domain name.");
+		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 
-		List<String> interfacesNames = new ArrayList<String>();
-		interfacesNames.add("fe-0/2/1.3");
-		interfacesNames.add("fe-0/2/1.2");
+		List<org.opennaas.extensions.router.model.BridgeDomain> bridgeDomains = system.getHostedCollectionByType(
+				new org.opennaas.extensions.router.model.BridgeDomain());
 
-		BridgeDomain brDomain = new BridgeDomain();
-		brDomain.setDescription("Sample bridge domain");
-		brDomain.setInterfacesNames(interfacesNames);
-		brDomain.setVlanid(Integer.valueOf(domainName.split("\\.")[1]));
+		org.opennaas.extensions.router.model.BridgeDomain modelBrDomain = ModelHelper.getBridgeDomainByName(bridgeDomains,
+				domainName);
 
-		brDomain.setDomainName(domainName);
+		if (modelBrDomain == null)
+			throw new ModelElementNotFoundException("No such BridgeDomain in model with name " + domainName);
 
-		return brDomain;
+		BridgeDomain apiBrDomain = VLANBridgeApiHelper.buildApiBridgeDomain(modelBrDomain);
+
+		return apiBrDomain;
 	}
 
 	@Override
