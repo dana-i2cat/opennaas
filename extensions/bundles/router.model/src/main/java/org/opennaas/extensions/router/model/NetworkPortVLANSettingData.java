@@ -31,31 +31,31 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 
 	private static final long	serialVersionUID	= -9054007445043019035L;
 
-	private String				nativeId;
-	private String				porMode;
+	private int					nativeVlanId;
+	private String				portMode;
 
-	public String getNativeId() {
-		return nativeId;
+	public int getNativeVlanId() {
+		return nativeVlanId;
 	}
 
-	public void setNativeId(String nativeId) {
-		this.nativeId = nativeId;
+	public void setNativeVlanId(int nativeId) {
+		this.nativeVlanId = nativeId;
 	}
 
-	public String getPorMode() {
-		return porMode;
+	public String getPortMode() {
+		return portMode;
 	}
 
-	public void setPorMode(String porMode) {
-		this.porMode = porMode;
+	public void setPortMode(String portMode) {
+		this.portMode = portMode;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nativeId == null) ? 0 : nativeId.hashCode());
-		result = prime * result + ((porMode == null) ? 0 : porMode.hashCode());
+		result = prime * result + nativeVlanId;
+		result = prime * result + ((portMode == null) ? 0 : portMode.hashCode());
 		return result;
 	}
 
@@ -68,22 +68,19 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 		if (getClass() != obj.getClass())
 			return false;
 		NetworkPortVLANSettingData other = (NetworkPortVLANSettingData) obj;
-		if (nativeId == null) {
-			if (other.nativeId != null)
-				return false;
-		} else if (!nativeId.equals(other.nativeId))
+		if (nativeVlanId != other.nativeVlanId)
 			return false;
-		if (porMode == null) {
-			if (other.porMode != null)
+		if (portMode == null) {
+			if (other.portMode != null)
 				return false;
-		} else if (!porMode.equals(other.porMode))
+		} else if (!portMode.equals(other.portMode))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "NetworkPortVLANSettingData [nativeId=" + nativeId + ", porMode=" + porMode + "]";
+		return "NetworkPortVLANSettingData [nativeVlanId=" + nativeVlanId + ", portMode=" + portMode + "]";
 	}
 
 }
