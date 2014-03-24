@@ -40,6 +40,7 @@ import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfacePars
 import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.RoutingOptionsParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.VLANParser;
+import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelService;
@@ -209,6 +210,9 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	private System parseVlans(System routerModel, String message) throws UnsupportedEncodingException, IOException, SAXException {
+
+		routerModel.removeAllHostedCollectionByType(BridgeDomain.class);
+
 		VLANParser vlanParser = new VLANParser(routerModel);
 
 		vlanParser.init();
