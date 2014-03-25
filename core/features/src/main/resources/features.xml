@@ -271,7 +271,6 @@
 
                 <bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch.driver.opendaylight/${project.version}</bundle>
         </feature>
-
 	
 	<feature name="opennaas-sdn-network" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-openflow-switch</feature>
