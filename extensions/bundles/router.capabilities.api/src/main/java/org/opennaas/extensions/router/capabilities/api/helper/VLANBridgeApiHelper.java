@@ -76,6 +76,24 @@ public abstract class VLANBridgeApiHelper {
 		return brDomain;
 	}
 
+	public static org.opennaas.extensions.router.model.BridgeDomain buildModelBridgeDomain(BridgeDomain apiBridgeDomain) {
+
+		org.opennaas.extensions.router.model.BridgeDomain modelBrDomain = new org.opennaas.extensions.router.model.BridgeDomain();
+
+		if (!StringUtils.isEmpty(apiBridgeDomain.getDomainName()))
+			modelBrDomain.setElementName(apiBridgeDomain.getDomainName());
+
+		if (!StringUtils.isEmpty(apiBridgeDomain.getDescription()))
+			modelBrDomain.setDescription(apiBridgeDomain.getDescription());
+
+		modelBrDomain.setVlanId(modelBrDomain.getVlanId());
+
+		for (String iface : apiBridgeDomain.getInterfacesNames())
+			modelBrDomain.addNetworkPort(iface);
+
+		return modelBrDomain;
+	}
+
 	public static InterfaceVLANOptions buildApiIfaceVlanOptions(NetworkPortVLANSettingData networkPortVLANSettingData) {
 
 		InterfaceVLANOptions vlanOpts = new InterfaceVLANOptions();

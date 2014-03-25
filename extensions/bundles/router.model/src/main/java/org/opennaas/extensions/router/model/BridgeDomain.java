@@ -30,13 +30,17 @@ import java.util.Set;
  */
 public class BridgeDomain extends SystemSpecificCollection {
 
-	private static final long	serialVersionUID	= 4383689381036117461L;
+	// FIXME this value is used to distinguish between the int default value (0) and the vlanId 0.
+	public static final int		VLAN_ID_DEFAULT_VALUE	= -1;
+
+	private static final long	serialVersionUID		= 4383689381036117461L;
 
 	private int					vlanId;
 	private Set<String>			networkPorts;
 
 	public BridgeDomain() {
 		networkPorts = new HashSet<String>();
+		vlanId = VLAN_ID_DEFAULT_VALUE;
 	}
 
 	public int getVlanId() {

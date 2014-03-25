@@ -190,6 +190,27 @@ public class VLANBridgeApiHelperTest {
 
 	}
 
+	public void buildModelBridgeDomainTest() {
+
+		BridgeDomain apiBrDomain = generateSampleAPIBridgeDomain();
+
+		org.opennaas.extensions.router.model.BridgeDomain modelBrDomain = VLANBridgeApiHelper.buildModelBridgeDomain(apiBrDomain);
+
+		Assert.assertNotNull("Generated Model BridgeDomain should not be null.", modelBrDomain);
+		Assert.assertFalse("Generated Model BridgeDomain should contain an ElementName", StringUtils.isEmpty(modelBrDomain.getElementName()));
+		Assert.assertEquals("Generated Model BridgeDomain should contain \"" + BD_NAME_100 + "\" as ElementName.", BD_NAME_100,
+				modelBrDomain.getElementName());
+		Assert.assertFalse("Generated Model BridgeDomain should contain a Description.", StringUtils.isEmpty(modelBrDomain.getDescription()));
+		Assert.assertEquals("Generated Model BridgeDomain should contain following description : " + BD_DSC_100, BD_DSC_100,
+				modelBrDomain.getDescription());
+		Assert.assertTrue("Generated Model BridgeDomain should contain vlanid " + BD_VLAN_100, modelBrDomain.getVlanId() == BD_VLAN_100);
+
+		Assert.assertEquals("Generated Model BridgeDomain should contain two Networkports.", 2, modelBrDomain.getNetworkPorts().size());
+		Assert.assertTrue("Generated Model BridgeDomain should contain Networkport " + IFACE_1, modelBrDomain.getNetworkPorts().contains(IFACE_1));
+		Assert.assertTrue("Generated Model BridgeDomain should contain Networkport " + IFACE_2, modelBrDomain.getNetworkPorts().contains(IFACE_2));
+
+	}
+
 	private List<org.opennaas.extensions.router.model.BridgeDomain> generateSampleModelBridgeDomains() {
 
 		List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains = new ArrayList<org.opennaas.extensions.router.model.BridgeDomain>();
@@ -211,6 +232,22 @@ public class VLANBridgeApiHelperTest {
 		modelBrDomain.setNetworkPorts(ifaces);
 
 		return modelBrDomain;
+	}
+
+	private BridgeDomain generateSampleAPIBridgeDomain() {
+		BridgeDomain apiBrDomain = new BridgeDomain();
+
+		apiBrDomain.setDescription(BD_NAME_100);
+		apiBrDomain.setVlanid(BD_VLAN_100);
+		apiBrDomain.setDescription(BD_DSC_100);
+
+		List<String> interfacesNames = new ArrayList<String>();
+		interfacesNames.add(IFACE_1);
+		interfacesNames.add(IFACE_2);
+
+		apiBrDomain.setInterfacesNames(interfacesNames);
+
+		return apiBrDomain;
 	}
 
 }
