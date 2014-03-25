@@ -80,7 +80,7 @@ public abstract class VLANBridgeApiHelper {
 		if (!StringUtils.isEmpty(networkPortVLANSettingData.getPortMode()))
 			vlanOptions.put(PORT_MODE_KEY, networkPortVLANSettingData.getPortMode());
 
-		if (networkPortVLANSettingData.getNativeVlanId() != NetworkPortVLANSettingData.PORTMODE_DEFAULT_VALUE)
+		if (networkPortVLANSettingData.getNativeVlanId() != NetworkPortVLANSettingData.NATIVE_VLAN_DEFAULT_VALUE)
 			vlanOptions.put(NATIVE_VLAN_KEY, String.valueOf(networkPortVLANSettingData.getNativeVlanId()));
 
 		vlanOpts.setVlanOptions(vlanOptions);

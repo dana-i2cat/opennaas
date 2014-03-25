@@ -29,7 +29,7 @@ import java.io.Serializable;
  */
 public class NetworkPortVLANSettingData extends SettingData implements Serializable {
 
-	public static final int		PORTMODE_DEFAULT_VALUE	= -1;
+	public static final int		NATIVE_VLAN_DEFAULT_VALUE	= -1;
 
 	private static final long	serialVersionUID		= -9054007445043019035L;
 
@@ -39,7 +39,7 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 	public NetworkPortVLANSettingData() {
 		// FIXME if the NetworkPortVLANSettingData is created and the setNativeVlanId is never called, there's no way to distinguish
 		// betweeen the default value of the int (0) and the vlanId 0.
-		nativeVlanId = PORTMODE_DEFAULT_VALUE;
+		nativeVlanId = NATIVE_VLAN_DEFAULT_VALUE;
 	}
 
 	public int getNativeVlanId() {
