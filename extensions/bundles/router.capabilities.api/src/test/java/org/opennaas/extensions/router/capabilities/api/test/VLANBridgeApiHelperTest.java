@@ -30,6 +30,8 @@ import org.junit.Test;
 import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
+import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
 
 /**
  * 
@@ -38,14 +40,16 @@ import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDo
  */
 public class VLANBridgeApiHelperTest {
 
-	private final static String	BD_NAME_100	= "vlan.100";
-	private static final String	BD_DSC_100	= "VLAN Bridge with vlan 100";
-	private static final int	BD_VLAN_100	= 100;
+	private final static String	BD_NAME_100		= "vlan.100";
+	private static final String	BD_DSC_100		= "VLAN Bridge with vlan 100";
+	private static final int	BD_VLAN_100		= 100;
 
-	private final static String	BD_NAME_200	= "vlan.200";
+	private final static String	BD_NAME_200		= "vlan.200";
 
-	private static final String	IFACE_1		= "fe-0/1/1.1";
-	private static final String	IFACE_2		= "fe-0/3/2.2";					;
+	private static final String	IFACE_1			= "fe-0/1/1.1";
+	private static final String	IFACE_2			= "fe-0/3/2.2";
+
+	private static final String	PORT_MODE_TRUNK	= "trunk";
 
 	@Test
 	public void buildApiBridgeDomainsTest() {
@@ -90,6 +94,59 @@ public class VLANBridgeApiHelperTest {
 
 	}
 
+	/**
+	 * This test and the buildApiIfaceVlanOptionsWithNativeVlanIdTest one are used to distinguish between the default value of the native-vlan-id and
+	 * the one set to 0.
+	 */
+	@Test
+	public void buildApiIfaceVlanOptionsWithoutInfoTest() {
+
+		NetworkPortVLANSettingData settingData = new NetworkPortVLANSettingData();
+		InterfaceVLANOptions apiVlanOpts = VLANBridgeApiHelper.buildApiIfaceVlanOptions(settingData);
+
+		Assert.assertNotNull("Generated InterfaceVlanOpts should not be null", apiVlanOpts);
+		Assert.assertNotNull("Generated InterfaceVlanOpts should not be null", apiVlanOpts.getVlanOptions());
+		Assert.assertTrue("Generated InterfaceVlanOpts should not have vlan options", apiVlanOpts.getVlanOptions().isEmpty());
+
+	}
+
+	@Test
+	public void buildApiIfaceVlanOptionsWithNativeVlanIdTest() {
+
+		NetworkPortVLANSettingData settingData = new NetworkPortVLANSettingData();
+		settingData.setNativeVlanId(0);
+
+		InterfaceVLANOptions apiVlanOpts = VLANBridgeApiHelper.buildApiIfaceVlanOptions(settingData);
+
+		Assert.assertNotNull("Generated InterfaceVlanOpts should not be null", apiVlanOpts);
+		Assert.assertNotNull("Generated InterfaceVlanOpts should not be null", apiVlanOpts.getVlanOptions());
+		Assert.assertEquals("Generated InterfaceVlanOpts should contain one vlan option", 1, apiVlanOpts.getVlanOptions().size());
+
+		Assert.assertEquals("Generated InterfaceVlanOpts should contain natiVlanId=0 as vlan option", String.valueOf("0"), apiVlanOpts
+				.getVlanOptions().get(VLANBridgeApiHelper.NATIVE_VLAN_KEY));
+
+	}
+
+	@Test
+	public void buildApiIfaceVlanOptionsTest() {
+
+		NetworkPortVLANSettingData settingData = new NetworkPortVLANSettingData();
+		settingData.setNativeVlanId(BD_VLAN_100);
+		settingData.setPortMode(PORT_MODE_TRUNK);
+
+		InterfaceVLANOptions apiVlanOpts = VLANBridgeApiHelper.buildApiIfaceVlanOptions(settingData);
+
+		Assert.assertNotNull("Generated InterfaceVlanOpts should not be null", apiVlanOpts);
+		Assert.assertNotNull("Generated InterfaceVlanOpts should not be null", apiVlanOpts.getVlanOptions());
+		Assert.assertEquals("Generated InterfaceVlanOpts should contain two vlan options", 2, apiVlanOpts.getVlanOptions().size());
+
+		Assert.assertEquals("Generated InterfaceVlanOpts should contain natiVlanId=100 as vlan option", String.valueOf(BD_VLAN_100), apiVlanOpts
+				.getVlanOptions().get(VLANBridgeApiHelper.NATIVE_VLAN_KEY));
+		Assert.assertEquals("Generated InterfaceVlanOpts should contain port-mode=\"trunk\" as vlan option", PORT_MODE_TRUNK, apiVlanOpts
+				.getVlanOptions().get(VLANBridgeApiHelper.PORT_MODE_KEY));
+
+	}
+
 	private List<org.opennaas.extensions.router.model.BridgeDomain> generateSampleModelBridgeDomains() {
 
 		List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains = new ArrayList<org.opennaas.extensions.router.model.BridgeDomain>();
@@ -112,4 +169,5 @@ public class VLANBridgeApiHelperTest {
 
 		return modelBrDomain;
 	}
+
 }

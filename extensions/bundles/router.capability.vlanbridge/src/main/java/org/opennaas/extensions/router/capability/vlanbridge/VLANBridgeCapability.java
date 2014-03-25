@@ -20,9 +20,7 @@ package org.opennaas.extensions.router.capability.vlanbridge;
  * #L%
  */
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +38,8 @@ import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDo
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
@@ -125,6 +125,8 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 	@Override
 	public BridgeDomains getBridgeDomains() {
 
+		log.info("Start of getBridgeDomains call");
+
 		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 
 		List<org.opennaas.extensions.router.model.BridgeDomain> bridgeDomains = system.getHostedCollectionByType(
@@ -132,11 +134,15 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 		BridgeDomains domains = VLANBridgeApiHelper.buildApiBridgeDomains(bridgeDomains);
 
+		log.info("End of getBridgeDomains call");
+
 		return domains;
 	}
 
 	@Override
 	public BridgeDomain getBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
+
+		log.info("Start of getBridgeDomain call");
 
 		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 
@@ -151,13 +157,19 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 		BridgeDomain apiBrDomain = VLANBridgeApiHelper.buildApiBridgeDomain(modelBrDomain);
 
+		log.info("End of getBridgeDomain call");
+
 		return apiBrDomain;
 	}
 
 	@Override
 	public void createBridgeDomain(BridgeDomain bridgeDomain) throws CapabilityException {
-		// TODO call action
+		log.info("Start of createBridgeDomain call");
 
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION, bridgeDomain);
+		queueAction(action);
+
+		log.info("End of createBridgeDomain call");
 	}
 
 	@Override
@@ -168,21 +180,33 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public void deleteBridgeDomain(String domainName) throws ModelElementNotFoundException, CapabilityException {
-		// TODO call action
+		log.info("Start of deleteBridgeDomain call");
+
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.DELETE_VLAN_BRIDGE_DOMAIN_ACTION, domainName);
+		queueAction(action);
+
+		log.info("End of deleteBridgeDomain call");
 
 	}
 
 	@Override
 	public InterfaceVLANOptions getInterfaceVLANOptions(String ifaceName) throws ModelElementNotFoundException {
-		// FIXME call action
+
+		log.info("Start of getInterfaceVLANOptions call");
+
 		InterfaceVLANOptions ivlanOpt = new InterfaceVLANOptions();
 
-		Map<String, String> vlanOptions = new HashMap<String, String>();
+		ComputerSystem system = (ComputerSystem) this.resource.getModel();
+		NetworkPort netPort = ModelHelper.getNetworkPortFromName(ifaceName, system);
 
-		vlanOptions.put("port-mode", "trunk");
-		vlanOptions.put("native-vlan-id", "102");
+		List<NetworkPortVLANSettingData> modelVlanOpts = netPort.getAllElementSettingDataByType(NetworkPortVLANSettingData.class);
 
-		ivlanOpt.setVlanOptions(vlanOptions);
+		// Even though the relation between ManagedElement and SettingData is n-n, in JunOS we have a 1-0..1 relation between the NetworkPort and the
+		// InterfaceVlanOpt.
+		if (modelVlanOpts.size() != 0)
+			ivlanOpt = VLANBridgeApiHelper.buildApiIfaceVlanOptions(modelVlanOpts.get(0));
+
+		log.info("End of getInterfaceVLANOptions call");
 
 		return ivlanOpt;
 	}
@@ -190,7 +214,6 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 	@Override
 	public void setInterfaceVLANOptions(String ifaceName, InterfaceVLANOptions vlanOptions) throws ModelElementNotFoundException,
 			CapabilityException {
-		// TODO call action
 
 	}
 
