@@ -27,6 +27,7 @@ import org.opennaas.extensions.router.capability.ip.IPActionSet;
 import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
 import org.opennaas.extensions.router.capability.ospfv3.OSPFv3ActionSet;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteActionSet;
+import org.opennaas.extensions.router.capability.vlanbridge.VLANBridgeActionSet;
 import org.opennaas.extensions.router.capability.vrrp.VRRPActionSet;
 
 public class ActionConstants {
@@ -115,4 +116,7 @@ public class ActionConstants {
 	public static final String	VRRP_UPDATE_PRIORITY				= VRRPActionSet.VRRP_UPDATE_PRIORITY;
 	public static final String	VRRP_UPDATE_VIRTUAL_LINK_ADDRESS	= VRRPActionSet.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS;
 
+	// VLAN BRIDGE actionset
+
+	public static final String	VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN	= VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION;
 }
