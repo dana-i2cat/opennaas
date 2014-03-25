@@ -21,10 +21,13 @@ package org.opennaas.extensions.router.capabilities.api.test;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
@@ -144,6 +147,46 @@ public class VLANBridgeApiHelperTest {
 				.getVlanOptions().get(VLANBridgeApiHelper.NATIVE_VLAN_KEY));
 		Assert.assertEquals("Generated InterfaceVlanOpts should contain port-mode=\"trunk\" as vlan option", PORT_MODE_TRUNK, apiVlanOpts
 				.getVlanOptions().get(VLANBridgeApiHelper.PORT_MODE_KEY));
+
+	}
+
+	@Test
+	public void buildModelIfaceVlanOptionsTest() {
+
+		InterfaceVLANOptions apiVlanOpts = new InterfaceVLANOptions();
+		Map<String, String> vlanOptions = new HashMap<String, String>();
+
+		vlanOptions.put(VLANBridgeApiHelper.PORT_MODE_KEY, PORT_MODE_TRUNK);
+		vlanOptions.put(VLANBridgeApiHelper.NATIVE_VLAN_KEY, String.valueOf(BD_VLAN_100));
+		apiVlanOpts.setVlanOptions(vlanOptions);
+
+		NetworkPortVLANSettingData settingData = VLANBridgeApiHelper.buildModelIfaceVlanOptions(apiVlanOpts);
+
+		Assert.assertNotNull("Generated NetworkPortVLANSettingData should not be null.", settingData);
+		Assert.assertFalse("Generated NetworkPortVLANSettingData should contain portMode", StringUtils.isEmpty(settingData.getPortMode()));
+		Assert.assertEquals("Generated NetworkPortVLANSettingData should contain portMode \"" + PORT_MODE_TRUNK + "\"", PORT_MODE_TRUNK,
+				settingData.getPortMode());
+
+		Assert.assertTrue("Generated NetworkPortVLANSettingData should contain natiVelanId \"" + BD_VLAN_100 + "\"",
+				settingData.getNativeVlanId() == BD_VLAN_100);
+
+	}
+
+	@Test
+	public void buildModelIfaceVlanOptionsWithoutInfoTest() {
+
+		InterfaceVLANOptions apiVlanOpts = new InterfaceVLANOptions();
+		Map<String, String> vlanOptions = new HashMap<String, String>();
+
+		apiVlanOpts.setVlanOptions(vlanOptions);
+
+		NetworkPortVLANSettingData settingData = VLANBridgeApiHelper.buildModelIfaceVlanOptions(apiVlanOpts);
+
+		Assert.assertNotNull("Generated NetworkPortVLANSettingData should not be null.", settingData);
+		Assert.assertTrue("Generated NetworkPortVLANSettingData should contain portMode", StringUtils.isEmpty(settingData.getPortMode()));
+		Assert.assertTrue(
+				"Generated NetworkPortVLANSettingData should contain natiVelanId \"" + NetworkPortVLANSettingData.NATIVE_VLAN_DEFAULT_VALUE + "\"",
+				settingData.getNativeVlanId() == NetworkPortVLANSettingData.NATIVE_VLAN_DEFAULT_VALUE);
 
 	}
 
