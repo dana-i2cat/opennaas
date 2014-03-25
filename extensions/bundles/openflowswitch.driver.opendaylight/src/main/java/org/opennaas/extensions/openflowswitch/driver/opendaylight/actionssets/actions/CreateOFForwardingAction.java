@@ -45,6 +45,7 @@ public class CreateOFForwardingAction extends OpenDaylightAction {
             client.addFlow(flow, DPID, name);
 
         } catch (Exception e) {
+            //probably the flow is not defined correctly
             throw new ActionException(e);
         }
 

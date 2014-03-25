@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import javax.ws.rs.core.Response;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
@@ -35,6 +36,16 @@ import org.opennaas.extensions.vrf.model.VRFRoute;
 public class Utils {
 
     static Log log = LogFactory.getLog(Utils.class);
+    
+    public static int detectIPVersion(String ip){
+        if (Utils.isIPv4Address(ip)){
+            return 4;
+        } else if (Utils.isIpAddress(ip) == 6 ) {
+            return 6;
+        } else {
+            return 0;
+        }
+    }
 
     /**
      * Accepts an IPv4 address and returns of string of the form xxx.xxx.xxx.xxx
@@ -381,6 +392,15 @@ public class Utils {
         flow.setDPID(route.getSwitchInfo().getDPID());
 
         return flow;
+    }
+
+    public static String intIPToString(String ip, int detectIPVersion) {
+        if(detectIPVersion == 4)
+            return Utils.intIPv4toString(Integer.parseInt(ip));
+        else if(detectIPVersion == 6){
+            return Utils.tryToCompressIPv6(ip);
+        }
+        return null;
     }
     
 }

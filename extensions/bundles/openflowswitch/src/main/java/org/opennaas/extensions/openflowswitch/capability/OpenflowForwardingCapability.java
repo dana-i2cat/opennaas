@@ -114,25 +114,10 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         log.info("Start of getOpenflowForwardingRules call");
 
         List<OFFlow> forwardingRules;
-
         refreshModelFlows();
 
         log.debug("Reading forwarding rules from model.");
-        try {
-            log.error(getResourceModel().toXml());
-        } catch (SerializationException ex) {
-            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(getResourceModel());
-        try {
-            log.error(getResourceModel().toXml());
-        } catch (SerializationException ex) {
-            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        log.error(forwardingRules.get(0).getName());
-        log.error(getResourceModel().getOfTables().get(0).getTableId());
-        log.error(getResourceModel().getOfTables().get(0).getOfForwardingRules().get(0).getName());
 
         log.info("End of getOpenflowForwardingRules call");
         return forwardingRules;
@@ -228,10 +213,10 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         try {
             IProtocolManager protocolManager = Activator.getProtocolManagerService();
             log.error("Resource ID: " + this.resourceId);
-            log.error("Resource ID: " + protocolManager.getAllSupportedProtocols().toString());
-            log.error("Resource ID: " + protocolManager.getAllResourceIds().toString());
+            log.error("Supported Protocols: " + protocolManager.getAllSupportedProtocols().toString());
+            log.error("Resource IDs: " + protocolManager.getAllResourceIds().toString());
             IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
-            log.error(protocolSessionManager.getResourceID());
+//            log.error(protocolSessionManager.getResourceID());
             log.error("Action ID: " + action.getActionID());
             response = action.execute(protocolSessionManager);
 
@@ -279,7 +264,8 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         log.error(getResourceModel().getOfTables().size());
         log.error(getResourceModel().getOfTables().get(0).getTableId());
         log.error(getResourceModel().getOfTables().get(0).getOfForwardingRules().get(0).getName());
-        //        refreshModelFlows();
+        
+        refreshModelFlows();
         try {
             log.error(getResourceModel().toXml());
         } catch (SerializationException ex) {

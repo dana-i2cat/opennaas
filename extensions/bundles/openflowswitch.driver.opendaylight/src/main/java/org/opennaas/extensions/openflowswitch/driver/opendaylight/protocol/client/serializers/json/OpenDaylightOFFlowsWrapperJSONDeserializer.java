@@ -36,12 +36,14 @@ public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer
                 List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>(0);
                 while (jp.nextToken() != JsonToken.END_OBJECT) {
                     String n = jp.getCurrentName();
-                    jp.nextToken();
+//                    jp.nextToken();
                     if (n.equals("name")) {
                         flow.setName(jp.getText());
                     } else if (n == "node") {
+                        jp.nextToken();
                         while (jp.nextToken() != JsonToken.END_OBJECT) {
-                            if (n == "id") {
+                            jp.nextToken();
+                            if (jp.getCurrentName() == "id") {
                                 flow.setSwitchId(jp.getText());
                             }
                         }
@@ -83,7 +85,6 @@ public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer
                 }
                 flow.setMatch(match);
                 flow.setActions(actions);
-
                 flow.setActive(true);
                 // add flow
                 wrapper.add(flow);
@@ -93,7 +94,6 @@ public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer
     }
 
     private List<FloodlightOFAction> parseActions(String actionstr) {
-        //log.error("Parse Actions: "+actionstr);
         List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
         FloodlightOFAction currentAction;
         String type;

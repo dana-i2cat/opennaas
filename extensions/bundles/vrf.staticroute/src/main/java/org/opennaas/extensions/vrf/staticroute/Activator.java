@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vrf.staticroute.capability;
+package org.opennaas.extensions.vrf.staticroute;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

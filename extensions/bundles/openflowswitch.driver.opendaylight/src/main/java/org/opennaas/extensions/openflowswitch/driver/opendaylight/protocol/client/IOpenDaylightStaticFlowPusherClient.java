@@ -30,12 +30,12 @@ public interface IOpenDaylightStaticFlowPusherClient {
     @Path("/node/OF/{DPID}/staticFlow/{name}")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)//content-type
+    @Produces(MediaType.APPLICATION_JSON)
     public void addFlow(OpenDaylightOFFlow flow, @PathParam("DPID") String DPID, @PathParam("name") String name) throws ProtocolException, Exception;
 
     /**
      * Deletes a static flow
      *
-     * @param flow
      * @param DPID
      * @param name
      * @throws org.opennaas.core.resources.protocol.ProtocolException
