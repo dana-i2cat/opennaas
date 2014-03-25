@@ -104,14 +104,26 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 
 	@Override
 	public void addIpAddressToBridgedDomain(String domainName, String ipAddress) throws CapabilityException {
-		// TODO Auto-generated method stub
+		log.info("Start of addIpAddressToBridgedDomain call");
+		String[] params = new String[2];
+		params[0] = domainName;
+		params[1] = ipAddress;
 
+		IAction action = createActionAndCheckParams(L3VlanActionset.L3VLAN_ADD_IP_TO_DOMAIN, params);
+		queueAction(action);
+		log.info("End of addIpAddressToBridgedDomain call");
 	}
 
 	@Override
 	public void removeIpAddressfromBridgedDomain(String domainName, String ipAddress) throws CapabilityException {
-		// TODO Auto-generated method stub
+		log.info("Start of removeIpAddressfromBridgedDomain call");
+		String[] params = new String[2];
+		params[0] = domainName;
+		params[1] = ipAddress;
 
+		IAction action = createActionAndCheckParams(L3VlanActionset.L3VLAN_REMOVE_IP_FROM_DOMAIN, params);
+		queueAction(action);
+		log.info("End of removeIpAddressfromBridgedDomain call");
 	}
 
 	@Override
