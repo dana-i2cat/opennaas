@@ -69,10 +69,10 @@ public class VLANParser extends DigesterEngine {
 			// routers
 
 			addObjectCreate("*/vlans/vlan", BridgeDomain.class);
-			addCallMethod("*/vlans/vlan/name", "setElementName", 0);
+			addMyRule("*/vlans/vlan/name", "setVLANName", 0);
 			addCallMethod("*/vlans/vlan/vlan-id", "setVlanId", 0, new Class[] { Integer.TYPE });
 			addCallMethod("*/vlans/vlan/description", "setDescription", 0);
-			addCallMethod("*/vlans/vlan/interface", "addNetworkPort", 0);
+			addCallMethod("*/vlans/vlan/interface/name", "addNetworkPort", 0);
 
 			// L3 Bridge Domains have interface.unit
 			addMyRule("*/vlans/vlan/l3-interface", "setL3Interface", 0);
@@ -85,12 +85,12 @@ public class VLANParser extends DigesterEngine {
 			// *************************
 			addMyRule("*/interfaces/interface/name", "setInterfaceName", 0);
 			// unit
-			addMyRule("*/interfaces/interface/unit", "setUnit", 0);
+			addMyRule("*/interfaces/interface/unit/name", "setUnit", 0);
 			// IPv4 or IPv6
 			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPAddress", 0);
 			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPAddress", 0);
 
-			addSetNext("/", "setVLANIPAddresses");
+			addMyRule("configuration", "setVLANIPAddresses", -1);
 
 		}
 	}
@@ -124,7 +124,7 @@ public class VLANParser extends DigesterEngine {
 		BridgeDomain bridgeDomain = (BridgeDomain) peek(0);
 		bridgeDomain.setElementName(vlanName);
 
-		// story vlanName in the temporary var
+		// store vlanName in the temporary var
 		this.vlanName = vlanName;
 	}
 
@@ -134,14 +134,15 @@ public class VLANParser extends DigesterEngine {
 
 	private void updateL3VlanInterfaceMap() {
 		if (vlanName == null || l3Interface == null) {
-			log.error("There must be valid 'vlanName' and 'l3Interface' values");
+			log.info("There must be valid 'vlanName' and 'l3Interface' values to consider adding this BridgeDomain as L3.");
 			return;
 		}
 		// store the relation between the vlanName and the associated interface
 		l3VlanInterfaceMap.put(vlanName, l3Interface);
 
-		// unset temporary var
+		// unset temporary vars
 		vlanName = null;
+		l3Interface = null;
 	}
 
 	public void setInterfaceName(String interfaceName) {
@@ -177,7 +178,7 @@ public class VLANParser extends DigesterEngine {
 
 	public void setVLANIPAddresses() {
 		// validate collected data
-		if (l3VlanInterfaceMap.size() != vlanUnitIPAddressMap.size()) {
+		if (l3VlanInterfaceMap.size() < vlanUnitIPAddressMap.size()) {
 			log.error("Invalid L3 VLANs data collected.");
 			return;
 		}
@@ -188,13 +189,14 @@ public class VLANParser extends DigesterEngine {
 			String ipAddress = vlanUnitIPAddressMap.get(interfaceName);
 
 			// store IP address into its BridgeDomain
+			log.info("Setting IP address " + ipAddress + " to VLAN Bridge " + l3Vlan);
 			setBridgeDomainIPAddress(l3Vlan, ipAddress);
 		}
 	}
 
 	private void setBridgeDomainIPAddress(String bridgeDomainName, String ipAddress) {
 		for (BridgeDomain bridgeDomain : model.getAllHostedCollectionsByType(BridgeDomain.class)) {
-			if (bridgeDomainName.equals(bridgeDomainName)) {
+			if (bridgeDomainName.equals(bridgeDomain.getElementName())) {
 				bridgeDomain.setIpAddress(ipAddress);
 				return;
 			}
