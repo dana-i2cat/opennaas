@@ -34,6 +34,7 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.ManagedSystemElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
@@ -303,6 +304,24 @@ public class ModelHelper {
 			}
 		}
 		return aggregators;
+	}
+
+	/**
+	 * 
+	 * @param elements
+	 * @param elementName
+	 * @return First managedElement in elements witn given elementName. null if there is no such ManagedElement.
+	 */
+	public static ManagedElement getManagedElementByElementName(List<? extends ManagedElement> elements, String elementName) {
+		if (elementName == null)
+			return null;
+
+		for (ManagedElement el : elements) {
+			if (elementName.equals(el.getElementName()))
+				return el;
+		}
+
+		return null;
 	}
 
 }
