@@ -27,6 +27,8 @@ import java.util.Map;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
+import org.opennaas.extensions.router.model.AggregatedLogicalPort;
+import org.opennaas.extensions.router.model.AggregatedOptions;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
@@ -45,6 +47,10 @@ import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * 
@@ -56,25 +62,30 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
  */
 public class IPInterfaceParser extends DigesterEngine {
 
-	private System					model;
+	private System						model;
 
-	String							portNumber				= "";
+	String								portNumber				= "";
 
-	String							location				= "";
+	String								location				= "";
 
-	VLANEndpoint					vlanEndpoint			= null;
-	boolean							flagLT					= false;
+	VLANEndpoint						vlanEndpoint			= null;
+	boolean								flagLT					= false;
 
-	GRETunnelConfiguration			gretunnelConfiguration	= null;
-	boolean							flagGT					= false;
+	GRETunnelConfiguration				gretunnelConfiguration	= null;
+	boolean								flagGT					= false;
 
-	long							peerUnit				= 0;
+	long								peerUnit				= 0;
 
-	private ArrayList<String>		disableInterface		= new ArrayList<String>();
+	private ArrayList<String>			disableInterface		= new ArrayList<String>();
 
-	private static String			GRE_PATTERN				= "gr-(\\d{1}/\\d{1}/\\d{1})";
+	private static String				GRE_PATTERN				= "gr-(\\d{1}/\\d{1}/\\d{1})";
 
-	private Map<String, VRRPGroup>	vrrpGroups				= new HashMap<String, VRRPGroup>(0);
+	private Map<String, VRRPGroup>		vrrpGroups				= new HashMap<String, VRRPGroup>(0);
+
+	/**
+	 * Key: aggregatedInterfaceName, Values: interfaces composing the aggregation
+	 */
+	private Multimap<String, String>	aggregationMap			= ArrayListMultimap.create();
 
 	/** vlan info **/
 
@@ -94,6 +105,23 @@ public class IPInterfaceParser extends DigesterEngine {
 			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
 			addMyRule("*/interfaces/interface/", "setOperationalStatus", 0);
 			addMyRule("*/interfaces/interface/name", "setLocation", 0);
+
+			/* Aggregation ether options */
+			addMyRule("*/interfaces/interface/ether-options/ieee-802.3ad/bundle", "updateAggregationMap", 0);
+			/* Aggregated ether options */
+			addObjectCreate("*/interfaces/interface/aggregated-ether-options/", AggregatedLogicalPort.class);
+
+			/* call our method addAggregatedLogicalPortToModel!! */
+			// ComputerSystem.addLogicalDevice(aggregatedLogicalPort)
+			// aggregatedLogicalPort.setElementName(location)
+			addSetNext("*/interfaces/interface/aggregated-ether-options/", "addAggregatedLogicalPortToModel");
+
+			addObjectCreate("*/interfaces/interface/aggregated-ether-options/", AggregatedOptions.class);
+			// AggregatedLogicalPort.setAggregatedOptions(AggregatedOptions)
+			addSetNext("*/interfaces/interface/aggregated-ether-options/", "setAggregatedOptions");
+			addCallMethod("*/interfaces/interface/aggregated-ether-options/minimum-links", "setMinimumLinks", 0);
+			addCallMethod("*/interfaces/interface/aggregated-ether-options/link-speed", "setLinkSpeed", 0);
+			addMyRule("*/interfaces/interface/aggregated-ether-options/lacp/active", "setLacpActiveTrueInAggregatedOptions", -1);
 
 			/* IP Configuration */
 			addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
@@ -144,6 +172,8 @@ public class IPInterfaceParser extends DigesterEngine {
 			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/native-vlan-id", "setNativeVlanId", 0, new Class[] { Integer.TYPE });
 			addSetNext("*/interfaces/interface/unit/family/ethernet-switching", "addElementSettingData");
 
+			// process aggregation map when "*/interfaces" is closed
+			addMyRule("*/interfaces", "processAggregationMap", -1);
 		}
 	}
 
@@ -418,6 +448,41 @@ public class IPInterfaceParser extends DigesterEngine {
 		assert (vE.getService() instanceof VRRPGroup);
 		((VRRPGroup) vE.getService()).setVirtualLinkAddress(address);
 
+	}
+
+	public void addAggregatedLogicalPortToModel(AggregatedLogicalPort aggregatedPort) {
+		aggregatedPort.setElementName(location);
+		model.addLogicalDevice(aggregatedPort);
+	}
+
+	public void setLacpActiveTrueInAggregatedOptions() {
+		Object obj = peek(0);
+		assert (obj instanceof AggregatedOptions);
+		AggregatedOptions aggrOpt = (AggregatedOptions) obj;
+
+		aggrOpt.setLacpActive(true);
+	}
+
+	/**
+	 * Puts given aggregatedInterfaceName (as key) and location (as value) in aggregationMap
+	 * 
+	 * location is assumed to hold the name of the physical interface to be aggregated.
+	 * 
+	 * @param aggregatedInterfaceName
+	 */
+	public void updateAggregationMap(String aggregatedInterfaceName) {
+		aggregationMap.put(aggregatedInterfaceName, location);
+	}
+
+	/**
+	 * Updates each AggregatedLogicalPort in the model by setting its interfaces according to the content of aggregationMap
+	 */
+	public void processAggregationMap() {
+		for (AggregatedLogicalPort aggregator : ModelHelper.getAggregatedLogicalPorts(model)) {
+			if (aggregationMap.containsKey(aggregator.getElementName())) {
+				aggregator.getInterfaces().addAll(aggregationMap.get(aggregator.getElementName()));
+			}
+		}
 	}
 
 	@Deprecated
