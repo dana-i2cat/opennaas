@@ -27,127 +27,95 @@ public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer
     public OpenDaylightOFFlowsWrapper deserialize(JsonParser jp, DeserializationContext ctx) throws IOException, JsonProcessingException {
         // initialize object wrapper
         OpenDaylightOFFlowsWrapper wrapper = new OpenDaylightOFFlowsWrapper();
-
-        // switch IDs loop
-        while ((jp.nextToken()) != JsonToken.END_OBJECT) {
-            if ((jp.getCurrentToken()) != JsonToken.FIELD_NAME) {
-                throw new IOException("Expected FIELD_NAME and it was " + jp.getCurrentToken());
-            }
-
-            // get switch ID
-            String switchId = jp.getCurrentName();
-
-            // expect switch start object
-            JsonToken token = jp.nextToken();
-            if (token == JsonToken.VALUE_NULL) {
-                // no object inside, stop deserializing
-                break;
-            } else if (token != JsonToken.START_OBJECT) {
-                throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
-            }
-
-            // flow IDs loop
-            while ((jp.nextToken()) != JsonToken.END_OBJECT) {
-                if ((jp.getCurrentToken()) != JsonToken.FIELD_NAME) {
-                    throw new IOException("Expected FIELD_NAME and it was " + jp.getCurrentToken());
-                }
-
-                // get flow name and go to next token
-                String flowName = jp.getCurrentName();
+        while (jp.nextToken() != JsonToken.END_OBJECT) {
+            String flowType = jp.getCurrentName();
+            while (jp.nextToken() != JsonToken.END_ARRAY) {//flows
                 jp.nextToken();
-
-                // initialize the new flow
                 OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
-                flow.setName(flowName);
-                flow.setSwitchId(switchId);
-
                 FloodlightOFMatch match = new FloodlightOFMatch();
                 List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>(0);
-
-                if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
-                    throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
-                }
-                // flow fields loop
-                while ((jp.nextToken()) != JsonToken.END_OBJECT) {
-                    if ((jp.getCurrentToken()) != JsonToken.FIELD_NAME) {
-                        throw new IOException("Expected FIELD_NAME and it was " + jp.getCurrentToken());
-                    }
-
-                    // get token name and go to the next token
-                    String nodeName = jp.getCurrentName();
+                while (jp.nextToken() != JsonToken.END_OBJECT) {
+                    String n = jp.getCurrentName();
                     jp.nextToken();
-
-                    if (jp.getText().equals("")) {
-                        continue;
-                    }
-
-                    if (nodeName == "actions") {
-                        actions = parseActions(jp);
-                    } else if (nodeName == "priority") {
+                    if (n.equals("name")) {
+                        flow.setName(jp.getText());
+                    } else if (n == "node") {
+                        while (jp.nextToken() != JsonToken.END_OBJECT) {
+                            if (n == "id") {
+                                flow.setSwitchId(jp.getText());
+                            }
+                        }
+                    } else if (n == "actions") {
+                        while (jp.nextToken() != JsonToken.END_ARRAY) {
+                            actions = parseActions(jp.getText());
+                        }
+                    } else if (n == "priority") {
                         flow.setPriority(jp.getText());
-                    } else if (nodeName == "match") {
-                        match = parseMatch(jp);
+                    } else if (n == "active") {
+                        flow.setActive(Boolean.parseBoolean(jp.getText()));
+                    } else if (n == "wildcards") {
+                        match.setWildcards(jp.getText());
+                    } else if (n == "ingressPort") {
+                        match.setIngressPort(jp.getText());
+                    } else if (n == "src-mac") {
+                        match.setSrcMac(jp.getText());
+                    } else if (n == "dst-mac") {
+                        match.setDstMac(jp.getText());
+                    } else if (n == "vlan-id") {
+                        match.setVlanId(jp.getText());
+                    } else if (n == "vlan-priority") {
+                        match.setVlanPriority(jp.getText());
+                    } else if (n == "ether-type") {
+                        match.setEtherType(jp.getText());
+                    } else if (n == "tos-bits") {
+                        match.setTosBits(jp.getText());
+                    } else if (n == "protocol") {
+                        match.setProtocol(jp.getText());
+                    } else if (n == "nwSrc") {
+                        match.setSrcIp(jp.getText());
+                    } else if ("nwDst".equals(n)) {
+                        match.setDstIp(jp.getText());
+                    } else if (n == "src-port") {
+                        match.setSrcPort(jp.getText());
+                    } else if (n == "dst-port") {
+                        match.setDstPort(jp.getText());
                     }
                 }
-
-                // set flows and match
                 flow.setMatch(match);
                 flow.setActions(actions);
-                // set active true, it is never sent by Floodlight, if the flow is returned it is active
+
                 flow.setActive(true);
                 // add flow
                 wrapper.add(flow);
             }
-
         }
-
         return wrapper;
     }
 
-    private List<FloodlightOFAction> parseActions(JsonParser jp) throws JsonParseException, IOException {
-        // initialize action list
+    private List<FloodlightOFAction> parseActions(String actionstr) {
+        //log.error("Parse Actions: "+actionstr);
         List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFAction currentAction;
+        String type;
+        String value;
 
-        // expect start array
-        if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
-            throw new IOException("Expected START_ARRAY and it was " + jp.getCurrentToken());
-        }
+        if (actionstr != null) {
+            actionstr = actionstr.toLowerCase();
+            for (String subaction : actionstr.split(",")) {
 
-        // action array loop
-        while (jp.nextToken() != JsonToken.END_ARRAY) {
-            // expect action start object
-            if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
-                throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
-            }
-
-            Map<String, String> actionMap = new HashMap<String, String>();
-            // action fields loop
-            while (jp.nextToken() != JsonToken.END_OBJECT) {
-                if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
-                    throw new IOException("Expected FIELD_NAME and it was " + jp.getCurrentToken());
+                type = subaction.split("[=:]")[0];
+                if (subaction.split("[=:]").length > 1) {
+                    value = subaction.split("[=:]")[1];
+                } else {
+                    value = null;
                 }
-                // get field name and go to next token
-                String fieldName = jp.getCurrentName();
-                jp.nextToken();
 
-                actionMap.put(fieldName.toLowerCase(), jp.getText());
+                currentAction = new FloodlightOFAction();
+                currentAction.setType(type);
+                currentAction.setValue(value);
+
+                actions.add(currentAction);
             }
-
-            // fill action list following some rules, by now only OUTPUT actions are parsed
-            if (actionMap.get("type").equalsIgnoreCase(FloodlightOFAction.TYPE_OUTPUT.toLowerCase())) {
-                // fill action
-                FloodlightOFAction action = new FloodlightOFAction();
-
-                // set type and value
-                action.setType(FloodlightOFAction.TYPE_OUTPUT.toLowerCase());
-                action.setValue(actionMap.get("port"));
-
-                actions.add(action);
-            } else {
-                // no more types known
-                log.info("Property type unknown: " + actionMap.get("type"));
-            }
-
         }
         return actions;
     }

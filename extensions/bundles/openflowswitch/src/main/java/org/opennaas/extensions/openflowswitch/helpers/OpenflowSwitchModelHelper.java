@@ -3,6 +3,9 @@ package org.opennaas.extensions.openflowswitch.helpers;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingCapability;
 
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
@@ -11,14 +14,20 @@ import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 public abstract class OpenflowSwitchModelHelper {
+    
+    static Log log = LogFactory.getLog(OpenflowSwitchModelHelper.class);
 
 	public static List<OFFlow> getSwitchForwardingRules(OpenflowSwitchModel model) {
-
+log.error("GETSIWTCH FORWARDING RULES");
 		List<OFFlow> forwardingRules = new ArrayList<OFFlow>();
 
 		Iterator<OFFlowTable> iterator = model.getOfTables().iterator();
-		while (iterator.hasNext())
-			forwardingRules.addAll(iterator.next().getOfForwardingRules());
+		while (iterator.hasNext()){
+                    OFFlowTable it = iterator.next();
+                    log.error("Helper ..."+it.getTableId());
+                    log.error("Helper ..."+it.getOfForwardingRules().get(0).getName());
+			forwardingRules.addAll(it.getOfForwardingRules());
+                }
 
 		return forwardingRules;
 	}

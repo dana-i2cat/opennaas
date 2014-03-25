@@ -1,6 +1,8 @@
 package org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions;
 
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -10,39 +12,44 @@ import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.clien
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
- * 
- * @author Julio Carlos Barrera
- * 
+ *
+ * @author Josep Batallé Oronich
+ *
  */
-public class GetOFForwardingAction extends OpenDaylightAction {
+public class GetOFFlowForwardingAction extends OpenDaylightAction {
 
-	@Override
-	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
-		List<OpenDaylightOFFlow> flows;
+    Log log = LogFactory.getLog(GetOFFlowForwardingAction.class);
 
-		try {
-			// obtain the switch ID from the protocol session
-			String switchId = getSwitchIdFromSession(protocolSessionManager);
-			IOpenDaylightStaticFlowPusherClient client = getOpenDaylightProtocolSession(protocolSessionManager).getOpenDaylightClientForUse();
-			flows = client.getFlows(switchId);
+    @Override
+    public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
+        OpenDaylightOFFlow flow;
+        try {
+            // obtain the switch ID from the protocol session
+            String switchId = getSwitchIdFromSession(protocolSessionManager);
+            String[] receivedParams = (String[]) params;
+            String DPID = receivedParams[0];
+            String name = receivedParams[1];
 
-		} catch (Exception e) {
-			throw new ActionException(e);
-		}
+            IOpenDaylightStaticFlowPusherClient client = getOpenDaylightProtocolSession(protocolSessionManager).getOpenDaylightClientForUse();
+            flow = client.getFlow(DPID, name);
 
-		ActionResponse response = new ActionResponse();
-		response.setStatus(ActionResponse.STATUS.OK);
-		response.setResult(flows);
+        } catch (Exception e) {
+            throw new ActionException(e);
+        }
+        ActionResponse response = new ActionResponse();
+        response.setStatus(ActionResponse.STATUS.OK);
+        response.setResult(flow);
 
-		return response;
-	}
+        return response;
+    }
 
-	@Override
-	public boolean checkParams(Object params) throws ActionException {
-		if (params != null)
-			throw new ActionException("Invalid parameters for action " + this.actionID);
+    @Override
+    public boolean checkParams(Object params) throws ActionException {
+        if (params != null) {
+            throw new ActionException("Invalid parameters for action " + this.actionID);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
 }

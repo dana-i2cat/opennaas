@@ -26,6 +26,8 @@ public class OpenDaylightClientFactory {
 
 		JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
 		bean.setAddress(uri);
+                bean.setUsername("admin");
+                bean.setPassword("admin");
 		bean.setProvider(new CustomJSONProvider());
 		bean.setResourceClass(IOpenDaylightStaticFlowPusherClient.class);
 		bean.setClassLoader(classLoader);

@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.IOpenDaylightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.wrappers.OpenDaylightOFFlowsWrapper;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
@@ -44,7 +45,7 @@ public class OpenDaylightMockClient implements IOpenDaylightStaticFlowPusherClie
     }
 
     @Override
-    public void deleteFlow(OpenDaylightOFFlow flow, String DPID, String name) {
+    public void deleteFlow(String DPID, String name) {
 
         for (String switchId : flows.keySet()) {
 
@@ -52,8 +53,8 @@ public class OpenDaylightMockClient implements IOpenDaylightStaticFlowPusherClie
             List<OpenDaylightOFFlow> flowsToRemove = new ArrayList<OpenDaylightOFFlow>();
 
             for (OpenDaylightOFFlow existingFlow : switchFlows) {
-                if (existingFlow.getName().equals(flow.getName())) {
-                    flowsToRemove.add(flow);
+                if (existingFlow.getName().equals(name)) {
+                    flowsToRemove.add(existingFlow);
                 }
             }
 
@@ -99,4 +100,17 @@ public class OpenDaylightMockClient implements IOpenDaylightStaticFlowPusherClie
         return flowsWrapper;
     }
 
+    @Override
+    public OpenDaylightOFFlow getFlow(@PathParam("switchId") String dpid, @PathParam("name") String name) {
+        OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
+        for (String switchId : flows.keySet()) {
+            List<OpenDaylightOFFlow> switchFlows = flows.get(switchId);
+            for (OpenDaylightOFFlow existingFlow : switchFlows) {
+                if (existingFlow.getName().equals(name)) {
+                    return existingFlow;
+                }
+            }
+        }
+        return flow;
+    }
 }

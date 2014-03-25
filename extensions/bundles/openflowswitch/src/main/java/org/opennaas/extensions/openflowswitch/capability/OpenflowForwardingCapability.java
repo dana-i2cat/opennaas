@@ -1,10 +1,15 @@
 package org.opennaas.extensions.openflowswitch.capability;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -23,6 +28,7 @@ import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
+import org.opennaas.extensions.openflowswitch.utils.Utils;
 
 /**
  *
@@ -87,12 +93,14 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
     }
 
     @Override
-    public void removeOpenflowForwardingRule(String flowId) throws CapabilityException {
+    public void removeOpenflowForwardingRule(String DPID, String name) throws CapabilityException {
 
         log.info("Start of removeOpenflowForwardingRule call");
-        log.info("Removing forwarding rule " + flowId + " in resource " + resource.getResourceIdentifier().getId());
-
-        IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, flowId);
+        log.info("Removing forwarding rule " + name + " in resource " + resource.getResourceIdentifier().getId());
+        String[] aParams = new String[2];
+        aParams[0] = DPID;
+        aParams[1] = name;
+        IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, aParams);
 
         ActionResponse response = executeAction(action);
 
@@ -110,7 +118,21 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         refreshModelFlows();
 
         log.debug("Reading forwarding rules from model.");
+        try {
+            log.error(getResourceModel().toXml());
+        } catch (SerializationException ex) {
+            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(getResourceModel());
+        try {
+            log.error(getResourceModel().toXml());
+        } catch (SerializationException ex) {
+            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        log.error(forwardingRules.get(0).getName());
+        log.error(getResourceModel().getOfTables().get(0).getTableId());
+        log.error(getResourceModel().getOfTables().get(0).getOfForwardingRules().get(0).getName());
 
         log.info("End of getOpenflowForwardingRules call");
         return forwardingRules;
@@ -144,7 +166,11 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
      */
     private List<OFFlow> refreshModelFlows() throws CapabilityException {
         log.info("Start of refreshModelFlows call");
-
+        try {
+            log.error(getResourceModel().toXml());
+        } catch (SerializationException ex) {
+            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
         IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.GETFLOWS, null);
 
         ActionResponse response = executeAction(action);
@@ -152,14 +178,42 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         // assuming the action returns what it is meant to
         List<OFFlow> currentFlows = (List<OFFlow>) response.getResult();
 
-		// assuming only one table may exist in switch model
+        // assuming only one table may exist in switch model
         // thats true with OpenFlow version 1.0
         if (getResourceModel().getOfTables().isEmpty()) {
             getResourceModel().getOfTables().add(new OFFlowTable());
         }
 
-        getResourceModel().getOfTables().get(0).setOfForwardingRules(currentFlows);
+        try {
+            log.error("Name1 " + currentFlows.get(0).getName());
+            log.error(currentFlows.get(0).getMatch().getEtherType());
+        } catch (Exception e) {
+            log.error("Except");
+        }
+        try {
+            log.error(getResourceModel().toXml());
+        } catch (SerializationException ex) {
+            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+        getResourceModel().getOfTables().get(0).setOfForwardingRules(currentFlows);
+        try {
+            log.error("Name " + getResourceModel().getOfTables().get(0).getOfForwardingRules().get(0).getName());
+        } catch (Exception e) {
+            log.error("Except");
+        }
+        log.error(getResourceModel().getOfTables().get(0).getTableId());
+//        log.error(getResourceModel().getOfTables().get(0).getOfForwardingRules().size());
+/*        Iterator<OFFlow> iterator = getResourceModel().getOfTables().get(0).getOfForwardingRules().iterator();
+         while (iterator.hasNext()){
+         log.error(iterator.next().getName());
+         }
+         */
+        try {
+            log.error(getResourceModel().toXml());
+        } catch (SerializationException ex) {
+            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
         log.info("End of refreshModelFlows call");
 
         return currentFlows;
@@ -173,12 +227,12 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         ActionResponse response;
         try {
             IProtocolManager protocolManager = Activator.getProtocolManagerService();
-log.error("Resource ID: "+this.resourceId);
-log.error("Resource ID: "+protocolManager.getAllSupportedProtocols().toString());
-log.error("Resource ID: "+protocolManager.getAllResourceIds().toString());
+            log.error("Resource ID: " + this.resourceId);
+            log.error("Resource ID: " + protocolManager.getAllSupportedProtocols().toString());
+            log.error("Resource ID: " + protocolManager.getAllResourceIds().toString());
             IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
-log.error(protocolSessionManager.getResourceID());
-log.error("Action ID: "+action.getActionID());
+            log.error(protocolSessionManager.getResourceID());
+            log.error("Action ID: " + action.getActionID());
             response = action.execute(protocolSessionManager);
 
         } catch (ProtocolException pe) {
@@ -205,15 +259,50 @@ log.error("Action ID: "+action.getActionID());
     public void createOpenflowForwardingRule(OpenDaylightOFFlow forwardingRule) throws CapabilityException {
         log.error("Create OPENDAYLIGHT FORWARDING RULE");
         log.info("Start of createOpenflowForwardingRule call");
-        log.info("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
+        log.error("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
 
         IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
         ActionResponse response = executeAction(action);
+        List<OFFlow> forwardingRules = new ArrayList<OFFlow>();
+        forwardingRules.add(Utils.ODLFlowToOFFlow(forwardingRule));
+        log.error(forwardingRules.size());
+        log.error(forwardingRules.get(0).getName());
 
-//        refreshModelFlows();
-
+        OFFlowTable table = new OFFlowTable();
+        table.setTableId("table1");
+        table.setOfForwardingRules(forwardingRules);
+        log.error(table.getOfForwardingRules().get(0).getName());
+        log.error(table.getOfForwardingRules().get(0).getPriority());
+        List<OFFlowTable> listOFTable = new ArrayList<OFFlowTable>();
+        listOFTable.add(table);
+        getResourceModel().setOfTables(listOFTable);
+        log.error(getResourceModel().getOfTables().size());
+        log.error(getResourceModel().getOfTables().get(0).getTableId());
+        log.error(getResourceModel().getOfTables().get(0).getOfForwardingRules().get(0).getName());
+        //        refreshModelFlows();
+        try {
+            log.error(getResourceModel().toXml());
+        } catch (SerializationException ex) {
+            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
         log.info("End of createOpenflowForwardingRule call");
     }
 
+    @Override
+    public OpenDaylightOFFlow getOpenflowForwardingRule(String DPID, String name) throws CapabilityException {
+        OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
+        String[] aParams = new String[2];
+        aParams[0] = DPID;
+        aParams[1] = name;
+        IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.GETOFFORWARDINGRULE, aParams);
+        ActionResponse response = executeAction(action);
+        
+        flow = (OpenDaylightOFFlow) response.getResult();
+        
+        log.error(flow.getName());
+        log.info("End of createOpenflowForwardingRule call");
+        
+        return flow;
+    }
+    
 }
-

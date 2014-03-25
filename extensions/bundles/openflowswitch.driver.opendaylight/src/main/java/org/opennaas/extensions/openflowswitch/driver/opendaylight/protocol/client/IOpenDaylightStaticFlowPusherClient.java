@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.wrappers.OpenDaylightOFFlowsWrapper;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 @Path("/controller/nb/v2/flowprogrammer/default")
@@ -42,8 +43,8 @@ public interface IOpenDaylightStaticFlowPusherClient {
      */
     @Path("/node/OF/{DPID}/staticFlow/{name}")
     @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteFlow(OpenDaylightOFFlow flow, @PathParam("DPID") String DPID, @PathParam("name") String name) throws ProtocolException, Exception;
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public void deleteFlow(@PathParam("DPID") String DPID, @PathParam("name") String name) throws ProtocolException, Exception;
 
     /**
      * Gets a list of flows by switch
@@ -57,6 +58,20 @@ public interface IOpenDaylightStaticFlowPusherClient {
     @Produces(MediaType.APPLICATION_JSON)
     public OpenDaylightOFFlowsWrapper getFlows(@PathParam("DPID") String dpid) throws ProtocolException, Exception;
 
+    /**
+     * Get static flow.
+     *
+     * @param DPID
+     * @param name
+     * @return 
+     * @throws org.opennaas.core.resources.protocol.ProtocolException
+     */
+    @Path("/node/OF/{DPID}/staticFlow/{name}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public OpenDaylightOFFlow getFlow(@PathParam("DPID") String DPID, @PathParam("name") String name) throws ProtocolException, Exception;
+    
+    
     /**
      * Gets all list of all flows
      */

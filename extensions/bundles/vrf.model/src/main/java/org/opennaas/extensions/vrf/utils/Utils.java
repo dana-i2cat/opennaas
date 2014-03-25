@@ -1,11 +1,7 @@
 package org.opennaas.extensions.vrf.utils;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +22,8 @@ import java.util.regex.PatternSyntaxException;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.Port;
 import org.opennaas.extensions.vrf.model.VRFRoute;
@@ -36,7 +34,7 @@ import org.opennaas.extensions.vrf.model.VRFRoute;
  */
 public class Utils {
 
-static Log log = LogFactory.getLog(Utils.class);
+    static Log log = LogFactory.getLog(Utils.class);
 
     /**
      * Accepts an IPv4 address and returns of string of the form xxx.xxx.xxx.xxx
@@ -273,7 +271,7 @@ static Log log = LogFactory.getLog(Utils.class);
      * @return
      */
     public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route, String etherType) {
-log.error("Convert VRFROute to Floodlight FLOW .................................................................");
+        log.error("Convert VRFROute to Floodlight FLOW .................................................................");
         FloodlightOFFlow flow = new FloodlightOFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();
@@ -297,17 +295,18 @@ log.error("Convert VRFROute to Floodlight FLOW .................................
         return flow;
     }
 
-    public static String createFlowName(String id, String ethType, String source, String target, String dpid){
-log.error("SETNAME FLOW: 0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2));
+    public static String createFlowName(String id, String ethType, String source, String target, String dpid) {
+        log.error("SETNAME FLOW: 0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2));
 //        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
-                return "0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
+        return "0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2);
     }
-    
+
     /**
      * Copy InputStream to OutputStream (file).
+     *
      * @param is
      * @param os
-     * @throws IOException 
+     * @throws IOException
      */
     public static void copyStream(InputStream is, OutputStream os) throws IOException {
         int BUFFER_SIZE = 16384;
@@ -326,6 +325,7 @@ log.error("SETNAME FLOW: 0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(
      * buffer) method. We iterate until the Reader return -1 which means there's
      * no more data to read. We use the StringWriter class to produce the
      * string.
+     *
      * @param is
      * @return The string that contains the value of the inputstream
      * @throws IOException
@@ -350,4 +350,37 @@ log.error("SETNAME FLOW: 0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(
             return "";
         }
     }
+
+    /**
+     * Mapping VRFRoute to Floodlight Flow used by SDN-OF module of OpenNaaS
+     * Layer3 to layer2
+     *
+     * @param route
+     * @return
+     */
+    public static OFFlow VRFRouteToOFFlow(VRFRoute route, String etherType) {
+        log.error("Convert VRFROute to Floodlight FLOW .................................................................");
+        OFFlow flow = new OFFlow();
+
+        FloodlightOFMatch match = new FloodlightOFMatch();
+        List<FloodlightOFAction> listActions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFAction action = new FloodlightOFAction();
+        match.setSrcIp(route.getSourceAddress());
+        match.setDstIp(route.getDestinationAddress());
+        match.setEtherType(etherType);
+//        match.setIngressPort(String.valueOf(route.getSwitchInfo().getInputPort()));
+
+        action.setType(FloodlightOFAction.TYPE_OUTPUT);
+        action.setValue(String.valueOf(route.getSwitchInfo().getOutputPort()));
+        listActions.add(action);
+        flow.setActions(listActions);
+        flow.setActive(true);
+        flow.setMatch(match);
+//        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
+        flow.setName(createFlowName(String.valueOf(route.getId()), etherType, route.getSourceAddress(), route.getDestinationAddress(), route.getSwitchInfo().getDPID()));
+        flow.setDPID(route.getSwitchInfo().getDPID());
+
+        return flow;
+    }
+    
 }

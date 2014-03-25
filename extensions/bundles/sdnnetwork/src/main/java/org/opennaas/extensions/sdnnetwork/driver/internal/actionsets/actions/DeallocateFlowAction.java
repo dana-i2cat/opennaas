@@ -70,17 +70,19 @@ public class DeallocateFlowAction extends Action {
 
 		if (networkConnection.getSource().getDeviceId().equals(networkConnection.getDestination().getDeviceId())) {
 			/* link inside same device, use device internal capability to deallocate it */
-			deallocateConnectionInsideDevice(networkConnection);
+			deallocateConnectionInsideDevice(networkConnection.getSource().getDeviceId(), networkConnection);
 		} else {
 			/* link between different devices, assume it is statically allocated/deallocated */
 		}
 	}
 
-	private void deallocateConnectionInsideDevice(NetworkConnection networkConnection) throws ActionException {
+	private void deallocateConnectionInsideDevice(String DPID, NetworkConnection networkConnection) throws ActionException {
 		// use device IOpenflowForwardingCapability capability to deallocate networkConnection
 		try {
 			IOpenflowForwardingCapability forwardingCapability = getForwardingCapabilityOfDevice(networkConnection.getSource().getDeviceId());
-			forwardingCapability.removeOpenflowForwardingRule(networkConnection.getId());
+                        
+                        //DPID and flowId???
+			forwardingCapability.removeOpenflowForwardingRule(DPID, networkConnection.getId());
 		} catch (ResourceException e) {
 			throw new ActionException("Failed to deallocate networkConnection " + networkConnection.getId(), e);
 		}

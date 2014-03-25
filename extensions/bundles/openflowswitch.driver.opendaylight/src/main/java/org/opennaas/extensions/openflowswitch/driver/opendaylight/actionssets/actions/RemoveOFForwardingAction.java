@@ -11,6 +11,7 @@ import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
  *
+ * @author Josep Batallé Oronich
  * @author Isart Canyameres Gimenez (i2cat)
  *
  */
@@ -19,7 +20,7 @@ public class RemoveOFForwardingAction extends OpenDaylightAction {
     @Override
     public boolean checkParams(Object params) throws ActionException {
 
-        if (params == null || !(params instanceof String)) {
+        if (params == null || !(params instanceof String[])) {
             throw new ActionException("Invalid parameters for action " + OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE);
         }
 
@@ -29,17 +30,17 @@ public class RemoveOFForwardingAction extends OpenDaylightAction {
     @Override
     public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 
-        String flowId = (String) params;
-        String DPID = (String) params;
-        String name = (String) params;
+        String[] receivedParams = (String[]) params;
+        String DPID = receivedParams[0];
+        String name = receivedParams[1];
         IOpenDaylightStaticFlowPusherClient client;
         String switchId;
 
         try {
             client = getOpenDaylightProtocolSession(protocolSessionManager).getOpenDaylightClientForUse();
             switchId = getSwitchIdFromSession(protocolSessionManager);
-            OpenDaylightOFFlow flow = getFlowFromSwitchByName(flowId, switchId, client);
-            client.deleteFlow(flow, DPID, name);
+            OpenDaylightOFFlow flow = getFlowFromSwitchByName(name, switchId, client);
+            client.deleteFlow(DPID, name);
         } catch (Exception e) {
             throw new ActionException(e);
         }
@@ -59,11 +60,11 @@ public class RemoveOFForwardingAction extends OpenDaylightAction {
      */
     private OpenDaylightOFFlow getFlowFromSwitchByName(String flowName, String switchId, IOpenDaylightStaticFlowPusherClient client)
             throws ProtocolException, ActionException, Exception {
-/*        for (OpenDaylightOFFlow flow : client.getFlows(switchId)) {
+        for (OpenDaylightOFFlow flow : client.getFlows(switchId)) {
             if (flow.getName().equals(flowName)) {
                 return flow;
             }
         }
-*/        throw new ActionException("Given flow does not exist: " + flowName);
+        throw new ActionException("Given flow does not exist: " + flowName);
     }
 }
