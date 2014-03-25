@@ -28,11 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.router.model.AggregatedLogicalPort;
 import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.ManagedSystemElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
@@ -284,6 +286,40 @@ public class ModelHelper {
 		for (BridgeDomain brDomain : bridgeDomainList)
 			if (brDomain.getElementName().equals(name))
 				return brDomain;
+
+		return null;
+	}
+
+	/**
+	 * Retrieves the list of AggregatedLogicalPort's in given System
+	 * 
+	 * @param system
+	 * @return a list containing AggregatedLogicalPort's in given System. Will be empty when given systems does not contain any AggregatedLogicalPort.
+	 */
+	public static List<AggregatedLogicalPort> getAggregatedLogicalPorts(System system) {
+		List<AggregatedLogicalPort> aggregators = new ArrayList<AggregatedLogicalPort>();
+		for (LogicalDevice dev : system.getLogicalDevices()) {
+			if (dev instanceof AggregatedLogicalPort) {
+				aggregators.add((AggregatedLogicalPort) dev);
+			}
+		}
+		return aggregators;
+	}
+
+	/**
+	 * 
+	 * @param elements
+	 * @param elementName
+	 * @return First managedElement in elements witn given elementName. null if there is no such ManagedElement.
+	 */
+	public static ManagedElement getManagedElementByElementName(List<? extends ManagedElement> elements, String elementName) {
+		if (elementName == null)
+			return null;
+
+		for (ManagedElement el : elements) {
+			if (elementName.equals(el.getElementName()))
+				return el;
+		}
 
 		return null;
 	}
