@@ -46,6 +46,8 @@ public class BridgeDomain {
 	private List<String>	interfacesNames;
 	private String			description;
 
+	private String			ipAddress;
+
 	public BridgeDomain() {
 		interfacesNames = new ArrayList<String>();
 	}
@@ -110,11 +112,14 @@ public class BridgeDomain {
 		this.description = description;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -122,15 +127,11 @@ public class BridgeDomain {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((domainName == null) ? 0 : domainName.hashCode());
 		result = prime * result + ((interfacesNames == null) ? 0 : interfacesNames.hashCode());
+		result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
 		result = prime * result + vlanid;
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -155,20 +156,19 @@ public class BridgeDomain {
 				return false;
 		} else if (!interfacesNames.equals(other.interfacesNames))
 			return false;
+		if (ipAddress == null) {
+			if (other.ipAddress != null)
+				return false;
+		} else if (!ipAddress.equals(other.ipAddress))
+			return false;
 		if (vlanid != other.vlanid)
 			return false;
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "BridgeDomain [domainName=" + domainName + ", vlanid=" + vlanid +
-				", interfacesNames=" + interfacesNames + ", description=" + description + "]";
+		return "BridgeDomain [domainName=" + domainName + ", vlanid=" + vlanid + ", interfacesNames=" + interfacesNames + ", description=" + description + ", ipAddress=" + ipAddress + "]";
 	}
 
 }
