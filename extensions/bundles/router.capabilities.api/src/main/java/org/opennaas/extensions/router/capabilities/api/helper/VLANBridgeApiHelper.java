@@ -30,6 +30,7 @@ import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDo
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Julio Carlos Barrera
  * 
  */
 public abstract class VLANBridgeApiHelper {
@@ -61,6 +62,8 @@ public abstract class VLANBridgeApiHelper {
 
 		for (String iface : modelBrDomain.getNetworkPorts())
 			brDomain.getInterfacesNames().add(iface);
+
+		brDomain.setIpAddress(modelBrDomain.getIpAddress());
 
 		return brDomain;
 	}
