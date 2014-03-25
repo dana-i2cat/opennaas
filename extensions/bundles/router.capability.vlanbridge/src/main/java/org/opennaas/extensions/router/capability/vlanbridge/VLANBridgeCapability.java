@@ -167,7 +167,9 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 	public void createBridgeDomain(BridgeDomain bridgeDomain) throws CapabilityException {
 		log.info("Start of createBridgeDomain call");
 
-		IAction action = createActionAndCheckParams(VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION, bridgeDomain);
+		org.opennaas.extensions.router.model.BridgeDomain modelBrDomain = VLANBridgeApiHelper.buildModelBridgeDomain(bridgeDomain);
+
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION, modelBrDomain);
 		queueAction(action);
 
 		log.info("End of createBridgeDomain call");
