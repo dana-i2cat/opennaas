@@ -199,7 +199,7 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 		NetworkPort netPort = ModelHelper.getNetworkPortFromName(ifaceName, system);
 
-		List<NetworkPortVLANSettingData> modelVlanOpts = netPort.getAllElementSettingDataByType(new NetworkPortVLANSettingData());
+		List<NetworkPortVLANSettingData> modelVlanOpts = netPort.getAllElementSettingDataByType(NetworkPortVLANSettingData.class);
 
 		// Even though the relation between ManagedElement and SettingData is n-n, in JunOS we have a 1-0..1 relation between the NetworkPort and the
 		// InterfaceVlanOpt.
