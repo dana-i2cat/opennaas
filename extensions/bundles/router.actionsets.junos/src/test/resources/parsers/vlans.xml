@@ -4,13 +4,13 @@
 		junos:changed-localtime="2011-07-13 07:26:18 UTC">
 		<vlans>
 			<vlan>
-				<vlan-name>vlan12</vlan-name>
+				<name>vlan12</name>
 				<vlan-id>12</vlan-id>
 				<description>VLANBridge with VLAN 12</description>
 				<interface>fe-0/4/1.0</interface>
 			</vlan>
 			<vlan>
-				<vlan-name>vlan20</vlan-name>
+				<name>vlan20</name>
 				<vlan-id>20</vlan-id>
 				<description>VLANBridge with VLAN 20</description>
 				<interface>ge-1/1/1.0</interface>
