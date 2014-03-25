@@ -132,7 +132,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 		ArrayList<T> desiredServices = new ArrayList<T>();
 		for (SystemSpecificCollection hostedCollection : list) {
-			if (clazz.getClass().isInstance(hostedCollection)) {
+			if (clazz.isInstance(hostedCollection)) {
 				desiredServices.add((T) hostedCollection);
 			}
 		}
