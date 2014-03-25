@@ -28,13 +28,18 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.RoutingTable;
 import org.opennaas.extensions.vrf.model.VRFModel;
 import org.opennaas.extensions.vrf.model.VRFRoute;
 import org.opennaas.extensions.vrf.utils.Utils;
+//import org.opennaas.extensions.openflowswitch.utils.Utils;
 
 /**
  *
@@ -62,10 +67,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         this.vrfModel = VRFModel;
     }
 
-    /*    public RoutingCapability(){
-     vrfModel = new VRFModel();
-     }
-     */
     /// /////////////////////////////
     // IRoutingCapability Methods //
     /// /////////////////////////////
@@ -98,7 +99,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             return Response.status(404).type("text/plain").entity("IP Table does not exist.").build();
         }
 
-log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort + ". Proactive: " + proactive);
+        log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchDPID + ", inPort: " + inputPort + ". Proactive: " + proactive);
         L2Forward switchInfo = new L2Forward(inputPort, switchDPID);
 
         VRFRoute route = new VRFRoute(ipSource, ipDest, switchInfo);
@@ -182,28 +183,23 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         VRFRoute route = model.getTable(version).getRouteId(id);
         streamInfo = "";
         //call OpenNaaS provisioner
-        FloodlightOFFlow flowArp = Utils.VRFRouteToFloodlightFlow(route, "2054");
-        FloodlightOFFlow flowIp = Utils.VRFRouteToFloodlightFlow(route, "2048");
+        OFFlow flowArp = Utils.VRFRouteToOFFlow(route, "2054");
+        OFFlow flowIp = Utils.VRFRouteToOFFlow(route, "2048");
 
         //Conversion List of VRFRoute to List of FloodlightFlow
         Response response1;
         Response response2;
-        try {
-            response1 = removeLink(flowArp);
-            response2 = removeLink(flowIp);
-            /**If the flow is no removed (aRP orIP) OpenNaaS always will show the route
-		removeLink should return: ok, not exist or error
-		*/
-            if(response1.getStatus() == 200 && response2.getStatus() == 200){
-                model.getTable(version).removeRoute(id);
-            }else{
-                model.getTable(version).removeRoute(id);
+        response1 = removeFlow(flowArp);
+        response2 = removeFlow(flowIp);
+        /**
+         * If the flow is no removed (aRP orIP) OpenNaaS always will show the
+         * route removeLink should return: ok, not exist or error
+         */
+        if (response1.getStatus() == 200 && response2.getStatus() == 200) {
+            model.getTable(version).removeRoute(id);
+        } else {
+            model.getTable(version).removeRoute(id);
 //                return Response.notModified("Route not removed.").build();
-            }
-        } catch (ResourceException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ActivatorException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return Response.ok("Removed").build();
@@ -233,11 +229,12 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         VRFModel model = getVRFModel();
         List<VRFRoute> listRoutes = model.getIpv4().getRouteTable();
         List<Integer> listId = new ArrayList<Integer>();
-        for(VRFRoute route:listRoutes ){
+        for (VRFRoute route : listRoutes) {
             listId.add(route.getId());
         }
-        for ( int id : listId )
+        for (int id : listId) {
             removeRoute(id, 4);
+        }
 //        model.getIpv4().removeRoutes();
 //        model.getIpv6().removeRoutes();
 
@@ -378,29 +375,29 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         VRFModel model = getVRFModel();
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, srcSwInfo, srcSwInfo);
 
-        List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
+//        List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
+        List<OFFlow> listFlow = new ArrayList<OFFlow>();
 
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
 //log.error(r.getSourceAddress()+" "+r.getDestinationAddress()+" "+r.getSwitchInfo().getDPID());
-                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
-		listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
+//                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
+//                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
+                listFlow.add(Utils.VRFRouteToOFFlow(r, "2048"));
+                listFlow.add(Utils.VRFRouteToOFFlow(r, "2054"));
             }
         }
 
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
-            try {
-                log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getSwitchId() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
+
+            log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
 //                response = provisionLink(listFlow.get(i));
-                FloodlightOFFlow flow = listFlow.get(i);
-                provisionLink(flow);
-            } catch (ResourceException e) {
-//                throw new ActionException("Error provisioning link : ", e);
-            } catch (ActivatorException e) {
-//                throw new ActionException("Error provisioning link : ", e);
-            }
+            OFFlow flow = listFlow.get(i);
+//                provisionLink(flow);
+            insertFlow(flow);
+
         }
         return Response.ok(listFlow).build();
     }
@@ -426,16 +423,16 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         }
         IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
         try {
-            forwardingCapability.removeOpenflowForwardingRule(flow.getName());
+            //forwardingCapability.removeOpenflowForwardingRule(flow.getName());
             /*
              * DEMO. New Size should be less than 2. In all switches
              */
             int size = forwardingCapability.getOpenflowForwardingRules().size();
-            if( size > 2){
+            if (size > 2) {
 //                return Response.status(Response.Status.NOT_FOUND).build();
                 log.error("More than 2 FLOWS IN SWITCH. DO NoT DELETE ROUTE.");
             }
-            log.error("New Size "+size);
+            log.error("New Size " + size);
         } catch (Exception e) {
             log.error("Error removing flow... " + e.getMessage());
 //            return Response.status(Response.Status.NOT_FOUND).build();
@@ -506,16 +503,16 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         return streamInfo;
     }
     //---------------------END DEMO FUNCTIONS
-    
+
     @Override
-    public Response insertRoute(String json){
+    public Response insertRoute(String json) {
         ObjectMapper mapper = new ObjectMapper();
         VRFRoute route = new VRFRoute();
         try {
             route = mapper.readValue(json, VRFRoute.class);
         } catch (IOException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
         VRFModel model = getVRFModel();
 
@@ -533,12 +530,12 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         }
 //        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
 
-            String response = model.getTable(version).addRoute(route);
-            return Response.status(201).entity(response).build();
+        String response = model.getTable(version).addRoute(route);
+        return Response.status(201).entity(response).build();
 //        }
     }
-    
-    public void clearAllFlows(){
+
+    public void clearAllFlows() {
         deleteHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:01");
         deleteHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:02");
         deleteHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:03");
@@ -547,32 +544,33 @@ log.error("Requested STATIC route: " + ipSource + " > " + ipDest + " " + switchD
         deleteHttpRequest("http://controllersVM:8192", "00:00:00:00:00:00:00:06");
         deleteHttpRequest("http://controllersVM2:8193", "00:00:00:00:00:00:00:07");
         deleteHttpRequest("http://controllersVM2:8193", "00:00:00:00:00:00:00:08");
-        
+
         String json[] = new String[6];
         String controllerInfo[] = new String[6];
-        controllerInfo[1] = controllerInfo[0] ="controllersVM:8191";
-        controllerInfo[2] = controllerInfo[3] ="controllersVM:8192";
-        controllerInfo[4] = controllerInfo[5] ="controllersVM2:8193";
+        controllerInfo[1] = controllerInfo[0] = "controllersVM:8191";
+        controllerInfo[2] = controllerInfo[3] = "controllersVM:8192";
+        controllerInfo[4] = controllerInfo[5] = "controllersVM2:8193";
         json[0] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-11\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.1.1\", \"src-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=3\"}";
         json[1] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-12\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.1.1\", \"dst-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=65534\"}";
         json[2] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-41\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.4.4\", \"src-ip\":\"192.168.4.94\",\"active\":\"true\", \"actions\":\"output=4\"}";
         json[3] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-42\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.4.4\", \"dst-ip\":\"192.168.4.94\",\"active\":\"true\", \"actions\":\"output=65534\"}";
         json[4] = "{\"switch\": \"00:00:00:00:00:00:00:08\", \"name\":\"flow-mod-81\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.2.51\", \"src-ip\":\"192.168.2.98\",\"active\":\"true\", \"actions\":\"output=2\"}";
         json[5] = "{\"switch\": \"00:00:00:00:00:00:00:08\", \"name\":\"flow-mod-82\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.2.51\", \"dst-ip\":\"192.168.2.98\",\"active\":\"true\", \"actions\":\"output=65534\"}";
-        
+
         for (int i = 0; i < json.length; i++) {
             httpRequest("http://" + controllerInfo[i] + "/wm/staticflowentrypusher/json", json[i]);
         }
         //insert hosts tunnel routes
     }
-    private String deleteHttpRequest(String uri, String dpid){
-        String response ="";
+
+    private String deleteHttpRequest(String uri, String dpid) {
+        String response = "";
         try {
             OutputStreamWriter wr = null;
-            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/"+dpid+"/json");
+            URL url = new URL(uri + "/wm/staticflowentrypusher/clear/" + dpid + "/json");
             log.error(url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-InputStream is = connection.getInputStream();
+            InputStream is = connection.getInputStream();
             //response = connection.getResponseMessage();
             return response;
         } catch (IOException ex) {
@@ -580,6 +578,7 @@ InputStream is = connection.getInputStream();
         }
         return response;
     }
+
     private void httpRequest(String Url, String json) {
         try {
             log.error("Request to: " + Url);
@@ -598,6 +597,296 @@ InputStream is = connection.getInputStream();
         } catch (Exception ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * ****
+     */
+    private Response insertFlow(OFFlow flow) {
+        Response response = null;
+        String protocol;
+        try {
+            protocol = getProtocolType(flow.getDPID());
+            response = provisionLink(flow, protocol);
+        } catch (ActivatorException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return response;
+    }
+
+    private Response removeFlow(OFFlow flow) {
+        Response response = null;
+        log.info("Provision Flow Link Floodlight");
+
+        String protocol = null;
+        IResource resource = null;
+        try {
+            protocol = getProtocolType(flow.getDPID());
+            resource = getResourceByName(flow.getDPID());
+        } catch (ActivatorException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (resource == null) {
+            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
+        }
+        IOpenflowForwardingCapability forwardingCapability;
+        try {
+            forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+            if (protocol.equals("opendaylight")) {
+                forwardingCapability.removeOpenflowForwardingRule(flow.getDPID(), flow.getName());
+            } else if (protocol.equals("floodlight")) {
+                forwardingCapability.removeOpenflowForwardingRule(flow.getDPID(), flow.getName());
+            }
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.ok().build();
+    }
+
+    @Override
+    public String insertodl() {
+
+        Response response = null;
+
+        log.error("TEST ODL ...................");
+
+        List<OpenDaylightOFFlow> list = createODLFlows();
+
+        log.error("Flow defined");
+        try {
+            for (OpenDaylightOFFlow flow : list) {
+                String protocol = getProtocolType(flow.getSwitchId());
+                provisionLink(flow, protocol);
+            }
+            //provisionODLLink(flow);
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ActivatorException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "Response ODL";
+    }
+
+    @Override
+    public String removeodl() {
+
+        Response response = null;
+
+        log.error("TEST ODL REMOVE ...................");
+
+        OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
+        FloodlightOFMatch match = new FloodlightOFMatch();
+        List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFAction action = new FloodlightOFAction();
+        match.setDstIp("192.168.2.2");
+        match.setSrcIp("192.168.2.2");
+        match.setEtherType("2058");
+        match.setIngressPort("1");
+        action.setType("output");
+        action.setValue("1");
+        actions.add(action);
+
+        flow.setSwitchId("00:00:00:00:00:00:00:09");
+        flow.setActions(actions);
+        flow.setMatch(match);
+        flow.setName("TESTODL");
+        log.error("Flow defined");
+        String flowId = "TESTODL";
+        try {
+            String protocol = getProtocolType(flow.getSwitchId());
+            removeLink(flowId, protocol, flow.getSwitchId());
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ActivatorException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "Response ODL";
+    }
+
+    public String getodlFlow() {
+        Response response = null;
+
+        log.error("TEST ODL GET FLOW ...................");
+        String DPID = "00:00:00:00:00:00:00:09";
+        String name = "TESTODL";
+        log.error("Flow defined");
+        try {
+            String protocol = getProtocolType(DPID);
+            getLink(name, DPID, protocol);
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ActivatorException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "Response ODL";
+    }
+
+    /**
+     * Get list of flows given DPID
+     *
+     * @return
+     */
+    @Override
+    public String getodl() {
+
+        Response response = null;
+
+        log.error("TEST ODL GET ...................");
+        String DPID = "00:00:00:00:00:00:00:09";
+        log.error("Flow defined");
+        try {
+            String protocol = getProtocolType(DPID);
+            response = getLinks(protocol, DPID);
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ActivatorException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return Integer.toString(response.getStatus());
+    }
+
+    private Response provisionLink(OFFlow flow, String protocol) throws ResourceException, ActivatorException {
+        log.info("Provision Flow Link Floodlight");
+
+        String switchId = flow.getDPID();
+        IResource resource = getResourceByName(switchId);
+        if (resource == null) {
+            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
+        }
+        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+        if (protocol.equals("opendaylight")) {
+            OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
+            forwardingCapability.createOpenflowForwardingRule(odlFlow);
+        } else if (protocol.equals("floodlight")) {
+            FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
+            forwardingCapability.createOpenflowForwardingRule(fldFlow);
+        }
+
+        return Response.ok().build();
+    }
+
+    private Response removeLink(String flowId, String protocol, String DPID) throws ResourceException, ActivatorException {
+        log.info("Provision Flow Link Floodlight");
+
+        String switchId = DPID;
+        IResource resource = getResourceByName(switchId);
+        if (resource == null) {
+            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
+        }
+        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+        if (protocol.equals("opendaylight")) {
+            forwardingCapability.removeOpenflowForwardingRule(DPID, flowId);
+        } else if (protocol.equals("floodlight")) {
+            forwardingCapability.removeOpenflowForwardingRule(DPID, flowId);
+        }
+
+        return Response.ok().build();
+    }
+
+    private Response getLinks(String protocol, String DPID) throws ResourceException, ActivatorException {
+        log.info("Provision Flow Link Floodlight");
+        List<OFFlow> response = new ArrayList<OFFlow>();
+        IResource resource = getResourceByName(DPID);
+        if (resource == null) {
+            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
+        }
+        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+        if (protocol.equals("opendaylight")) {
+            response = forwardingCapability.getOpenflowForwardingRules();
+        } else if (protocol.equals("floodlight")) {
+            response = forwardingCapability.getOpenflowForwardingRules();
+        }
+
+        return Response.ok(response).build();
+    }
+
+    private Response getLink(String name, String DPID, String protocol) throws ResourceException, ActivatorException {
+        log.info("Provision Flow Link Floodlight");
+
+        IResource resource = getResourceByName(DPID);
+        if (resource == null) {
+            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
+        }
+        OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
+        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+        if (protocol.equals("opendaylight")) {
+            flow = (OpenDaylightOFFlow) forwardingCapability.getOpenflowForwardingRule(DPID, name);
+        } else if (protocol.equals("floodlight")) {
+            forwardingCapability.getOpenflowForwardingRule(DPID, name);
+        }
+        log.error(flow.getName());
+        log.error(flow.getMatch().getSrcIp());
+
+        return Response.ok().build();
+    }
+
+    private String getProtocolType(String resourceName) throws ActivatorException, ResourceException {
+        String protocol = null;
+        IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
+
+        IResource resource = getResourceByName(resourceName);//switchId
+
+        log.error("Resource Id of the switch is: " + resource.getResourceIdentifier().getId());
+
+        resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:02 --> s2
+        IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
+        IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
+
+        protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
+
+        log.error("Protocol of switch is: " + protocol);
+        return protocol;
+    }
+
+    private List<OpenDaylightOFFlow> createODLFlows() {
+        List<OpenDaylightOFFlow> list = new ArrayList<OpenDaylightOFFlow>();
+
+        OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
+        FloodlightOFMatch match = new FloodlightOFMatch();
+        List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFAction action = new FloodlightOFAction();
+        match.setDstIp("192.168.1.1");
+        match.setSrcIp("192.168.9.99");
+        match.setEtherType("2058");
+        match.setIngressPort("1");
+        action.setType("output");
+        action.setValue("1");
+        actions.add(action);
+
+        flow.setSwitchId("00:00:00:00:00:00:00:09");
+        flow.setActions(actions);
+        flow.setMatch(match);
+        flow.setName("TESTODL");
+        list.add(flow);
+
+        flow = new OpenDaylightOFFlow();
+        match = new FloodlightOFMatch();
+        actions = new ArrayList<FloodlightOFAction>();
+        action = new FloodlightOFAction();
+        match.setDstIp("192.168.2.2");
+        match.setSrcIp("192.168.8.97");
+        match.setEtherType("2058");
+        match.setIngressPort("3");
+        action.setType("output");
+        action.setValue("1");
+        actions.add(action);
+
+        flow.setSwitchId("00:00:00:00:00:00:00:09");
+        flow.setActions(actions);
+        flow.setMatch(match);
+        flow.setName("TESTODL2");
+        list.add(flow);
+
+        return list;
     }
 
 }

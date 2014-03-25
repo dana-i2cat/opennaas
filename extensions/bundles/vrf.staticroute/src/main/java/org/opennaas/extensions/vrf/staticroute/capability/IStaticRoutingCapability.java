@@ -180,4 +180,35 @@ public interface IStaticRoutingCapability {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRoute(String route);
+    
+    
+    
+    
+    /**
+     * Test ODL, insert flows
+     * @return 
+     */
+    @Path("/insertodl")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String insertodl();
+    
+    /**
+     * Test ODL, insert flows
+     * @return 
+     */
+    @Path("/removeodl")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String removeodl();
+    
+    /**
+     * Test ODL, insert flows
+     * @return 
+     */
+    @Path("/getodl")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getodl();
+
 }
