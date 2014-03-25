@@ -20,9 +20,7 @@ package org.opennaas.extensions.router.capability.vlanbridge;
  * #L%
  */
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +38,8 @@ import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDo
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
@@ -191,15 +191,22 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public InterfaceVLANOptions getInterfaceVLANOptions(String ifaceName) throws ModelElementNotFoundException {
-		// FIXME call action
+
+		log.info("Start of getInterfaceVLANOptions call");
+
 		InterfaceVLANOptions ivlanOpt = new InterfaceVLANOptions();
 
-		Map<String, String> vlanOptions = new HashMap<String, String>();
+		ComputerSystem system = (ComputerSystem) this.resource.getModel();
+		NetworkPort netPort = ModelHelper.getNetworkPortFromName(ifaceName, system);
 
-		vlanOptions.put("port-mode", "trunk");
-		vlanOptions.put("native-vlan-id", "102");
+		List<NetworkPortVLANSettingData> modelVlanOpts = netPort.getAllElementSettingDataByType(new NetworkPortVLANSettingData());
 
-		ivlanOpt.setVlanOptions(vlanOptions);
+		// Even though the relation between ManagedElement and SettingData is n-n, in JunOS we have a 1-0..1 relation between the NetworkPort and the
+		// InterfaceVlanOpt.
+		if (modelVlanOpts.size() != 0)
+			ivlanOpt = VLANBridgeApiHelper.buildApiIfaceVlanOptions(modelVlanOpts.get(0));
+
+		log.info("End of getInterfaceVLANOptions call");
 
 		return ivlanOpt;
 	}

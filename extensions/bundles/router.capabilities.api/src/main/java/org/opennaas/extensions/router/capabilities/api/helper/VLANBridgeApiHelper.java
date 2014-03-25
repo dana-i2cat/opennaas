@@ -21,11 +21,15 @@ package org.opennaas.extensions.router.capabilities.api.helper;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
+import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
+import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
 
 /**
  * 
@@ -33,6 +37,9 @@ import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDo
  * 
  */
 public abstract class VLANBridgeApiHelper {
+
+	public static final String	PORT_MODE_KEY	= "port-mode";
+	public static final String	NATIVE_VLAN_KEY	= "native-vlan-id";
 
 	public static BridgeDomains buildApiBridgeDomains(List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains) {
 
@@ -65,4 +72,19 @@ public abstract class VLANBridgeApiHelper {
 		return brDomain;
 	}
 
+	public static InterfaceVLANOptions buildApiIfaceVlanOptions(NetworkPortVLANSettingData networkPortVLANSettingData) {
+
+		InterfaceVLANOptions vlanOpts = new InterfaceVLANOptions();
+		Map<String, String> vlanOptions = new HashMap<String, String>();
+
+		if (!StringUtils.isEmpty(networkPortVLANSettingData.getPortMode()))
+			vlanOptions.put(PORT_MODE_KEY, networkPortVLANSettingData.getPortMode());
+
+		if (networkPortVLANSettingData.getNativeVlanId() != NetworkPortVLANSettingData.PORTMODE_DEFAULT_VALUE)
+			vlanOptions.put(NATIVE_VLAN_KEY, String.valueOf(networkPortVLANSettingData.getNativeVlanId()));
+
+		vlanOpts.setVlanOptions(vlanOptions);
+
+		return vlanOpts;
+	}
 }
