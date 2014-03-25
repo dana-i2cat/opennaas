@@ -291,6 +291,34 @@ public class ModelHelper {
 	}
 
 	/**
+	 * Retrieves {@link BridgeDomain}'s present in the given model
+	 * 
+	 * @param model
+	 * @return
+	 */
+	public static List<BridgeDomain> getBridgeDomains(System model) {
+		return model.getAllHostedCollectionsByType(BridgeDomain.class);
+	}
+
+	/**
+	 * Retrieves Layer 3 {@link BridgeDomain}'s present in the given model. Retrieves only the ones with set ipAddress field.
+	 * 
+	 * @param model
+	 * @return
+	 */
+	public static List<BridgeDomain> getL3BridgeDomains(System model) {
+		List<BridgeDomain> l3BridgeDomains = new ArrayList<BridgeDomain>(0);
+
+		for (BridgeDomain bridgeDomain : model.getAllHostedCollectionsByType(BridgeDomain.class)) {
+			if (bridgeDomain.getIpAddress() != null && !bridgeDomain.getIpAddress().isEmpty()) {
+				l3BridgeDomains.add(bridgeDomain);
+			}
+		}
+
+		return l3BridgeDomains;
+	}
+
+	/**
 	 * Retrieves the list of AggregatedLogicalPort's in given System
 	 * 
 	 * @param system
