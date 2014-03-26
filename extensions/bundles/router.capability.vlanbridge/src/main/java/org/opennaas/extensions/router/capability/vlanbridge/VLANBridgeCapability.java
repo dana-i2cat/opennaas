@@ -22,6 +22,7 @@ package org.opennaas.extensions.router.capability.vlanbridge;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -166,7 +167,9 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 	public void createBridgeDomain(BridgeDomain bridgeDomain) throws CapabilityException {
 		log.info("Start of createBridgeDomain call");
 
-		IAction action = createActionAndCheckParams(VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION, bridgeDomain);
+		org.opennaas.extensions.router.model.BridgeDomain modelBrDomain = VLANBridgeApiHelper.buildModelBridgeDomain(bridgeDomain);
+
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION, modelBrDomain);
 		queueAction(action);
 
 		log.info("End of createBridgeDomain call");
@@ -215,6 +218,21 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 	public void setInterfaceVLANOptions(String ifaceName, InterfaceVLANOptions vlanOptions) throws ModelElementNotFoundException,
 			CapabilityException {
 
-	}
+		log.info("Start of setInterfaceVLANOptions call");
 
+		if (StringUtils.isEmpty(ifaceName))
+			throw new CapabilityException("Interface name can't be empty.");
+
+		NetworkPortVLANSettingData modelVlanOpts = VLANBridgeApiHelper.buildModelIfaceVlanOptions(vlanOptions);
+
+		NetworkPort netPort = new NetworkPort();
+		netPort.setName(ifaceName);
+		netPort.addElementSettingData(modelVlanOpts);
+
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.SET_INTERFACE_VLAN_OPTIONS_ACTION, netPort);
+		queueAction(action);
+
+		log.info("End of setInterfaceVLANOptions call");
+
+	}
 }

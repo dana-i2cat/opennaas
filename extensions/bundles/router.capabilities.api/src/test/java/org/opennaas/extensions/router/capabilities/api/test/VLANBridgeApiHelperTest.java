@@ -21,10 +21,13 @@ package org.opennaas.extensions.router.capabilities.api.test;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
@@ -147,6 +150,67 @@ public class VLANBridgeApiHelperTest {
 
 	}
 
+	@Test
+	public void buildModelIfaceVlanOptionsTest() {
+
+		InterfaceVLANOptions apiVlanOpts = new InterfaceVLANOptions();
+		Map<String, String> vlanOptions = new HashMap<String, String>();
+
+		vlanOptions.put(VLANBridgeApiHelper.PORT_MODE_KEY, PORT_MODE_TRUNK);
+		vlanOptions.put(VLANBridgeApiHelper.NATIVE_VLAN_KEY, String.valueOf(BD_VLAN_100));
+		apiVlanOpts.setVlanOptions(vlanOptions);
+
+		NetworkPortVLANSettingData settingData = VLANBridgeApiHelper.buildModelIfaceVlanOptions(apiVlanOpts);
+
+		Assert.assertNotNull("Generated NetworkPortVLANSettingData should not be null.", settingData);
+		Assert.assertFalse("Generated NetworkPortVLANSettingData should contain portMode", StringUtils.isEmpty(settingData.getPortMode()));
+		Assert.assertEquals("Generated NetworkPortVLANSettingData should contain portMode \"" + PORT_MODE_TRUNK + "\"", PORT_MODE_TRUNK,
+				settingData.getPortMode());
+
+		Assert.assertTrue("Generated NetworkPortVLANSettingData should contain natiVelanId \"" + BD_VLAN_100 + "\"",
+				settingData.getNativeVlanId() == BD_VLAN_100);
+
+	}
+
+	@Test
+	public void buildModelIfaceVlanOptionsWithoutInfoTest() {
+
+		InterfaceVLANOptions apiVlanOpts = new InterfaceVLANOptions();
+		Map<String, String> vlanOptions = new HashMap<String, String>();
+
+		apiVlanOpts.setVlanOptions(vlanOptions);
+
+		NetworkPortVLANSettingData settingData = VLANBridgeApiHelper.buildModelIfaceVlanOptions(apiVlanOpts);
+
+		Assert.assertNotNull("Generated NetworkPortVLANSettingData should not be null.", settingData);
+		Assert.assertTrue("Generated NetworkPortVLANSettingData should contain portMode", StringUtils.isEmpty(settingData.getPortMode()));
+		Assert.assertTrue(
+				"Generated NetworkPortVLANSettingData should contain natiVelanId \"" + NetworkPortVLANSettingData.NATIVE_VLAN_DEFAULT_VALUE + "\"",
+				settingData.getNativeVlanId() == NetworkPortVLANSettingData.NATIVE_VLAN_DEFAULT_VALUE);
+
+	}
+
+	public void buildModelBridgeDomainTest() {
+
+		BridgeDomain apiBrDomain = generateSampleAPIBridgeDomain();
+
+		org.opennaas.extensions.router.model.BridgeDomain modelBrDomain = VLANBridgeApiHelper.buildModelBridgeDomain(apiBrDomain);
+
+		Assert.assertNotNull("Generated Model BridgeDomain should not be null.", modelBrDomain);
+		Assert.assertFalse("Generated Model BridgeDomain should contain an ElementName", StringUtils.isEmpty(modelBrDomain.getElementName()));
+		Assert.assertEquals("Generated Model BridgeDomain should contain \"" + BD_NAME_100 + "\" as ElementName.", BD_NAME_100,
+				modelBrDomain.getElementName());
+		Assert.assertFalse("Generated Model BridgeDomain should contain a Description.", StringUtils.isEmpty(modelBrDomain.getDescription()));
+		Assert.assertEquals("Generated Model BridgeDomain should contain following description : " + BD_DSC_100, BD_DSC_100,
+				modelBrDomain.getDescription());
+		Assert.assertTrue("Generated Model BridgeDomain should contain vlanid " + BD_VLAN_100, modelBrDomain.getVlanId() == BD_VLAN_100);
+
+		Assert.assertEquals("Generated Model BridgeDomain should contain two Networkports.", 2, modelBrDomain.getNetworkPorts().size());
+		Assert.assertTrue("Generated Model BridgeDomain should contain Networkport " + IFACE_1, modelBrDomain.getNetworkPorts().contains(IFACE_1));
+		Assert.assertTrue("Generated Model BridgeDomain should contain Networkport " + IFACE_2, modelBrDomain.getNetworkPorts().contains(IFACE_2));
+
+	}
+
 	private List<org.opennaas.extensions.router.model.BridgeDomain> generateSampleModelBridgeDomains() {
 
 		List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains = new ArrayList<org.opennaas.extensions.router.model.BridgeDomain>();
@@ -168,6 +232,22 @@ public class VLANBridgeApiHelperTest {
 		modelBrDomain.setNetworkPorts(ifaces);
 
 		return modelBrDomain;
+	}
+
+	private BridgeDomain generateSampleAPIBridgeDomain() {
+		BridgeDomain apiBrDomain = new BridgeDomain();
+
+		apiBrDomain.setDescription(BD_NAME_100);
+		apiBrDomain.setVlanid(BD_VLAN_100);
+		apiBrDomain.setDescription(BD_DSC_100);
+
+		List<String> interfacesNames = new ArrayList<String>();
+		interfacesNames.add(IFACE_1);
+		interfacesNames.add(IFACE_2);
+
+		apiBrDomain.setInterfacesNames(interfacesNames);
+
+		return apiBrDomain;
 	}
 
 }

@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.InterfaceVLANOptions;
@@ -38,6 +40,8 @@ import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
  * 
  */
 public abstract class VLANBridgeApiHelper {
+
+	static Log					log				= LogFactory.getLog(VLANBridgeApiHelper.class);
 
 	public static final String	PORT_MODE_KEY	= "port-mode";
 	public static final String	NATIVE_VLAN_KEY	= "native-vlan-id";
@@ -75,6 +79,24 @@ public abstract class VLANBridgeApiHelper {
 		return brDomain;
 	}
 
+	public static org.opennaas.extensions.router.model.BridgeDomain buildModelBridgeDomain(BridgeDomain apiBridgeDomain) {
+
+		org.opennaas.extensions.router.model.BridgeDomain modelBrDomain = new org.opennaas.extensions.router.model.BridgeDomain();
+
+		if (!StringUtils.isEmpty(apiBridgeDomain.getDomainName()))
+			modelBrDomain.setElementName(apiBridgeDomain.getDomainName());
+
+		if (!StringUtils.isEmpty(apiBridgeDomain.getDescription()))
+			modelBrDomain.setDescription(apiBridgeDomain.getDescription());
+
+		modelBrDomain.setVlanId(modelBrDomain.getVlanId());
+
+		for (String iface : apiBridgeDomain.getInterfacesNames())
+			modelBrDomain.addNetworkPort(iface);
+
+		return modelBrDomain;
+	}
+
 	public static InterfaceVLANOptions buildApiIfaceVlanOptions(NetworkPortVLANSettingData networkPortVLANSettingData) {
 
 		InterfaceVLANOptions vlanOpts = new InterfaceVLANOptions();
@@ -89,5 +111,30 @@ public abstract class VLANBridgeApiHelper {
 		vlanOpts.setVlanOptions(vlanOptions);
 
 		return vlanOpts;
+	}
+
+	public static NetworkPortVLANSettingData buildModelIfaceVlanOptions(InterfaceVLANOptions vlanOptions) {
+		NetworkPortVLANSettingData modelVlanOpts = new NetworkPortVLANSettingData();
+
+		if (vlanOptions.getVlanOptions() != null) {
+
+			if (vlanOptions.getVlanOptions().containsKey(PORT_MODE_KEY)) {
+				modelVlanOpts.setPortMode(vlanOptions.getVlanOptions().get(PORT_MODE_KEY));
+				vlanOptions.getVlanOptions().remove(PORT_MODE_KEY);
+			}
+
+			if (vlanOptions.getVlanOptions().containsKey(NATIVE_VLAN_KEY)) {
+				modelVlanOpts.setNativeVlanId((Integer.valueOf(vlanOptions.getVlanOptions().get(NATIVE_VLAN_KEY))));
+				vlanOptions.getVlanOptions().remove(NATIVE_VLAN_KEY);
+			}
+
+			if ((!vlanOptions.getVlanOptions().containsKey(NATIVE_VLAN_KEY)) && (!vlanOptions.getVlanOptions().containsKey(PORT_MODE_KEY)) && (!vlanOptions
+					.getVlanOptions().isEmpty()))
+
+				log.warn("Ignoring unknown interfaceVlanOptions values : " + vlanOptions.getVlanOptions().keySet());
+		}
+
+		return modelVlanOpts;
+
 	}
 }
