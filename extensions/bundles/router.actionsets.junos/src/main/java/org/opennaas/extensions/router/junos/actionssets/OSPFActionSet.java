@@ -20,6 +20,9 @@ package org.opennaas.extensions.router.junos.actionssets;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.AddOSPFInterfaceInAreaAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ClearOSPFAction;
@@ -31,6 +34,11 @@ import org.opennaas.extensions.router.junos.actionssets.actions.ospf.GetOSPFConf
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.RemoveOSPFAreaAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.RemoveOSPFInterfaceInAreaAction;
 
+/**
+ * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
 public class OSPFActionSet extends ActionSet {
 
 	public OSPFActionSet() {
@@ -50,5 +58,24 @@ public class OSPFActionSet extends ActionSet {
 
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.OSPF_GET_CONFIGURATION);
+	}
+
+	@Override
+	public List<String> getActionNames() {
+		List<String> actionNames = new ArrayList<String>();
+
+		actionNames.add(ActionConstants.OSPF_GET_CONFIGURATION);
+		actionNames.add(ActionConstants.OSPF_CONFIGURE);
+		actionNames.add(ActionConstants.OSPF_CLEAR);
+		actionNames.add(ActionConstants.OSPF_ACTIVATE);
+		actionNames.add(ActionConstants.OSPF_DEACTIVATE);
+		actionNames.add(ActionConstants.OSPF_ENABLE_INTERFACE);
+		actionNames.add(ActionConstants.OSPF_DISABLE_INTERFACE);
+		actionNames.add(ActionConstants.OSPF_CONFIGURE_AREA);
+		actionNames.add(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA);
+		actionNames.add(ActionConstants.OSPF_REMOVE_AREA);
+		actionNames.add(ActionConstants.OSPF_REMOVE_INTERFACE_IN_AREA);
+
+		return actionNames;
 	}
 }
