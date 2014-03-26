@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<interfaces>
+		<interface>
+			<name>fe-3/3/1</name>
+			<unit>
+				<name>100</name>
+				<ethernet-switching operation="merge">
+				    <port-mode>trunk</port-mode>
+				    <native-vlan-id>100</native-vlan-id>
+				</ethernet-switching>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>

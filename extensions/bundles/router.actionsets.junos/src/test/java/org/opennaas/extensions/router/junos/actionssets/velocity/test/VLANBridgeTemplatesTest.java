@@ -32,6 +32,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.router.model.BridgeDomain;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
 import org.xml.sax.SAXException;
 
 /**
@@ -45,7 +47,11 @@ public class VLANBridgeTemplatesTest extends VelocityTemplatesTest {
 	private final static String	VLAN_BRIDGE_DESC	= "VLAN 100";
 	private final static int	VLAN_BRIDGE_VLAN_ID	= 100;
 
-	private final static String	IFACE				= "fe-3/3/1.100";
+	private final static String	IFACE_NAME			= "fe-3/3/1";
+	private final static int	IFACE_PORT			= 100;
+
+	private final static String	IFACE				= IFACE_NAME + "." + IFACE_PORT;
+	private static final String	POR_MODE_TRUNK		= "trunk";
 
 	@Test
 	public void createBridgeDomainTest() throws IOException, SAXException, TransformerException, ParserConfigurationException {
@@ -98,6 +104,56 @@ public class VLANBridgeTemplatesTest extends VelocityTemplatesTest {
 
 		String expectedXML = IOUtils.toString(this.getClass().getResourceAsStream("/actions/vlanBridge/bridgeDomainDelete.xml"));
 		String message = callVelocity(template, VLAN_BRIDGE_NAME, extraParams);
+
+		Assert.assertTrue("Generated template does not match expected XML.", XmlHelper.compareXMLStrings(expectedXML, message));
+
+	}
+
+	@Test
+	public void setInterfaceVlanOptionsTest() throws IOException, SAXException, TransformerException, ParserConfigurationException {
+
+		template = "/VM_files/vlanBridge/ifaceVlanOptsSet.vm";
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", "");
+
+		NetworkPort netPort = new NetworkPort();
+		netPort.setName(IFACE_NAME);
+		netPort.setPortNumber(IFACE_PORT);
+
+		NetworkPortVLANSettingData ifaceOpts = new NetworkPortVLANSettingData();
+		ifaceOpts.setPortMode(POR_MODE_TRUNK);
+		ifaceOpts.setNativeVlanId(VLAN_BRIDGE_VLAN_ID);
+		netPort.addElementSettingData(ifaceOpts);
+
+		String expectedXML = IOUtils.toString(this.getClass().getResourceAsStream("/actions/vlanBridge/ifaceVlanOptsSet.xml"));
+		String message = callVelocity(template, netPort, extraParams);
+
+		log.info(XmlHelper.formatXML(message));
+
+		Assert.assertTrue("Generated template does not match expected XML.", XmlHelper.compareXMLStrings(expectedXML, message));
+
+	}
+
+	@Test
+	public void setEmptyInterfaceVlanOptionsTest() throws IOException, SAXException, TransformerException, ParserConfigurationException {
+
+		template = "/VM_files/vlanBridge/ifaceVlanOptsSet.vm";
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", "");
+
+		NetworkPort netPort = new NetworkPort();
+		netPort.setName(IFACE_NAME);
+		netPort.setPortNumber(IFACE_PORT);
+
+		NetworkPortVLANSettingData ifaceOpts = new NetworkPortVLANSettingData();
+		netPort.addElementSettingData(ifaceOpts);
+
+		String expectedXML = IOUtils.toString(this.getClass().getResourceAsStream("/actions/vlanBridge/ifaceVlanOptsSetEmpty.xml"));
+		String message = callVelocity(template, netPort, extraParams);
+
+		log.info(XmlHelper.formatXML(message));
 
 		Assert.assertTrue("Generated template does not match expected XML.", XmlHelper.compareXMLStrings(expectedXML, message));
 

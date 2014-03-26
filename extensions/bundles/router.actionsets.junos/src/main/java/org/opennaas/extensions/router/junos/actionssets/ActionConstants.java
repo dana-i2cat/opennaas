@@ -120,5 +120,6 @@ public class ActionConstants {
 
 	public static final String	VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN	= VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION;
 	public static final String	VLAN_BRIDGE_REMOVE_BRIDGE_DOMAIN	= VLANBridgeActionSet.DELETE_VLAN_BRIDGE_DOMAIN_ACTION;
+	public static final String	VLAN_BRIDGE_SET_IFACE_VLAN_OPTIONS	= VLANBridgeActionSet.SET_INTERFACE_VLAN_OPTIONS_ACTION;
 
 }

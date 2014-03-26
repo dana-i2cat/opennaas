@@ -34,6 +34,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
 import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
@@ -226,7 +227,9 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 		NetworkPortVLANSettingData modelVlanOpts = VLANBridgeApiHelper.buildModelIfaceVlanOptions(vlanOptions);
 
 		NetworkPort netPort = new NetworkPort();
-		netPort.setName(ifaceName);
+		netPort.setName(ChassisAPIHelper.getInterfaceName(ifaceName));
+		netPort.setPortNumber(ChassisAPIHelper.getInterfacePortNumber(ifaceName));
+
 		netPort.addElementSettingData(modelVlanOpts);
 
 		IAction action = createActionAndCheckParams(VLANBridgeActionSet.SET_INTERFACE_VLAN_OPTIONS_ACTION, netPort);
