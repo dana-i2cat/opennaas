@@ -5,8 +5,10 @@
 			<name>fe-3/3/1</name>
 			<unit>
 				<name>100</name>
-				<ethernet-switching operation="merge">
-				</ethernet-switching>
+				<family>
+					<ethernet-switching operation="merge">
+					</ethernet-switching>
+				</family>
 			</unit>
 		</interface>
 	</interfaces>
