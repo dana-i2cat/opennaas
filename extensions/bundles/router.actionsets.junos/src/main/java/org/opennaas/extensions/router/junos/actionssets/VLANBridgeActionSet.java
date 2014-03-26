@@ -60,6 +60,8 @@ public class VLANBridgeActionSet extends ActionSet {
 		actionNames.add(ActionConstants.GETCONFIG);
 		actionNames.add(ActionConstants.VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN);
 		actionNames.add(ActionConstants.VLAN_BRIDGE_REMOVE_BRIDGE_DOMAIN);
+		actionNames.add(ActionConstants.VLAN_BRIDGE_SET_IFACE_VLAN_OPTIONS);
+		actionNames.add(ActionConstants.VLAN_BRIDGE_UNSET_IFACE_VLAN_OPTIONS);
 
 		return actionNames;
 	}
