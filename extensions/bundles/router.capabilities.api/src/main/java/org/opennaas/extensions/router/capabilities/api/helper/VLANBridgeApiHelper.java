@@ -89,7 +89,7 @@ public abstract class VLANBridgeApiHelper {
 		if (!StringUtils.isEmpty(apiBridgeDomain.getDescription()))
 			modelBrDomain.setDescription(apiBridgeDomain.getDescription());
 
-		modelBrDomain.setVlanId(modelBrDomain.getVlanId());
+		modelBrDomain.setVlanId(apiBridgeDomain.getVlanid());
 
 		for (String iface : apiBridgeDomain.getInterfacesNames())
 			modelBrDomain.addNetworkPort(iface);
