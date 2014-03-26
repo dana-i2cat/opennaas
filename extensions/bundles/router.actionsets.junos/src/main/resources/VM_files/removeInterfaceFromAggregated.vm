@@ -1,0 +1,25 @@
+#** 
+@param param: a String with the name of the interface to de-aggregate
+@param isLR: a boolean telling whether AggregatedLogicalPort should be created in a logical router is a logical router or not
+@param lrName: a String with the logical router name (only set if isLR is true)
+@param aggregatedIfaceName: a String with the name of the aggregated interface (ae)
+*#
+<configuration>
+	#if($isLR)
+		<logical-systems>
+			<name>$lrName</name>
+	#end
+	<interfaces>
+		<interface>
+			<name>$param</name>
+			<ether-options>
+				<ieee-802.3ad operation="delete">
+					<bundle>$aggregatedIfaceName</bundle>
+				</ieee-802.3ad>
+			</ether-options>
+		</interface>
+	</interfaces>
+	#if($isLR)
+		</logical-systems>
+	#end
+</configuration>

@@ -25,12 +25,18 @@ import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.linkaggregation.CreateAggregatedInterfaceAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.linkaggregation.RemoveAggregatedInterfaceAction;
 
 public class LinkAggregationActionSet extends ActionSet {
+
 	public LinkAggregationActionSet() {
-		super.setActionSetId("ipActionSet");
+		super.setActionSetId("linkAggregationActionSet");
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
-		// TODO add link aggregation actions
+		this.putAction(org.opennaas.extensions.router.capability.linkaggregation.LinkAggregationActionSet.CREATE_AGGREGATED_INTERFACE,
+				CreateAggregatedInterfaceAction.class);
+		this.putAction(org.opennaas.extensions.router.capability.linkaggregation.LinkAggregationActionSet.REMOVE_AGGREGATED_INTERFACE,
+				RemoveAggregatedInterfaceAction.class);
 
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.GETCONFIG);
@@ -40,7 +46,8 @@ public class LinkAggregationActionSet extends ActionSet {
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
 		actionNames.add(ActionConstants.GETCONFIG);
-		// TODO add link aggregation actions
+		actionNames.add(org.opennaas.extensions.router.capability.linkaggregation.LinkAggregationActionSet.CREATE_AGGREGATED_INTERFACE);
+		actionNames.add(org.opennaas.extensions.router.capability.linkaggregation.LinkAggregationActionSet.REMOVE_AGGREGATED_INTERFACE);
 
 		return actionNames;
 	}

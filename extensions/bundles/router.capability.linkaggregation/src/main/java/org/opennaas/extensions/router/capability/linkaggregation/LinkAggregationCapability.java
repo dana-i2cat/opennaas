@@ -121,19 +121,16 @@ public class LinkAggregationCapability extends AbstractCapability implements ILi
 
 		AggregatedLogicalPort aggregator = LinkAggregationAPIAdapter.api2Model(aggregatedInterface);
 
-		// FIXME use correct actionid
-		// IAction action = createActionAndCheckParams("", aggregator);
-		// queueAction(action);
+		IAction action = createActionAndCheckParams(LinkAggregationActionSet.CREATE_AGGREGATED_INTERFACE, aggregator);
+		queueAction(action);
 
 	}
 
 	@Override
 	public void removeAggregatedInterface(String aggregatedInterfaceId) throws CapabilityException {
-		// FIXME skeleton method with a dummy implementation
 
-		// FIXME use correct actionid
-		// IAction action = createActionAndCheckParams("", aggregatedInterfaceId);
-		// queueAction(action);
+		IAction action = createActionAndCheckParams(LinkAggregationActionSet.REMOVE_AGGREGATED_INTERFACE, aggregatedInterfaceId);
+		queueAction(action);
 
 	}
 
