@@ -480,12 +480,12 @@ public class ManagedElement implements IModel, Serializable {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends SettingData> List<T> getAllElementSettingDataByType(T instance) {
+	public <T extends SettingData> List<T> getAllElementSettingDataByType(Class<T> clazz) {
 		List<SettingData> list = getElementsSettingData();
 
 		ArrayList<T> toReturn = new ArrayList<T>();
 		for (SettingData settingData : list) {
-			if (instance.getClass().isInstance(settingData)) {
+			if (clazz.getClass().isInstance(settingData)) {
 				toReturn.add((T) settingData);
 			}
 		}

@@ -20,9 +20,6 @@ package org.opennaas.extensions.router.capability.l3vlan;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -33,7 +30,10 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
+import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class L3VlanCapability extends AbstractCapability implements IL3VlanCapability {
 
@@ -116,16 +116,6 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 
 	@Override
 	public BridgeDomains getL3Vlans() throws CapabilityException {
-		// FIXME replace by real implementation
-
-		BridgeDomains domains = new BridgeDomains();
-
-		List<String> domainNames = new ArrayList<String>();
-		domainNames.add("fe-0/1/0.0");
-		domainNames.add("fe-0/2/1.3");
-
-		domains.setDomainNames(domainNames);
-
-		return domains;
+		return VLANBridgeApiHelper.buildApiBridgeDomains(ModelHelper.getL3BridgeDomains((System) resource.getModel()));
 	}
 }

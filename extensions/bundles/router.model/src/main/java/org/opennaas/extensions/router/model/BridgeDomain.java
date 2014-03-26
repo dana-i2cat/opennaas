@@ -26,6 +26,7 @@ import java.util.Set;
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Julio Carlos Barrera
  * 
  */
 public class BridgeDomain extends SystemSpecificCollection {
@@ -37,6 +38,8 @@ public class BridgeDomain extends SystemSpecificCollection {
 
 	private int					vlanId;
 	private Set<String>			networkPorts;
+
+	private String				ipAddress;
 
 	public BridgeDomain() {
 		networkPorts = new HashSet<String>();
@@ -67,10 +70,19 @@ public class BridgeDomain extends SystemSpecificCollection {
 		this.networkPorts.remove(netPort);
 	}
 
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
 		result = prime * result + ((networkPorts == null) ? 0 : networkPorts.hashCode());
 		result = prime * result + ((getElementName() == null) ? 0 : getElementName().hashCode());
 		result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
@@ -87,6 +99,11 @@ public class BridgeDomain extends SystemSpecificCollection {
 		if (getClass() != obj.getClass())
 			return false;
 		BridgeDomain other = (BridgeDomain) obj;
+		if (ipAddress == null) {
+			if (other.ipAddress != null)
+				return false;
+		} else if (!ipAddress.equals(other.ipAddress))
+			return false;
 		if (networkPorts == null) {
 			if (other.networkPorts != null)
 				return false;
@@ -102,7 +119,6 @@ public class BridgeDomain extends SystemSpecificCollection {
 				return false;
 		} else if (!getDescription().equals(other.getDescription()))
 			return false;
-
 		if (vlanId != other.vlanId)
 			return false;
 		return true;
@@ -110,6 +126,7 @@ public class BridgeDomain extends SystemSpecificCollection {
 
 	@Override
 	public String toString() {
-		return "BridgeDomain [elementName=" + getElementName() + ", vlanId=" + vlanId + ", networkPorts=" + networkPorts + ", description=" + getDescription() + "]";
+		return "BridgeDomain [elementName=" + getElementName() + ", vlanId=" + vlanId + ", networkPorts=" + networkPorts + ", ipAddress=" + ipAddress + ", description=" + getDescription() + "]";
 	}
+
 }
