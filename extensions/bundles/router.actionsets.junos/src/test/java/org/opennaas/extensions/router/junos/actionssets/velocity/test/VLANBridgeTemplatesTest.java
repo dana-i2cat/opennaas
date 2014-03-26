@@ -158,4 +158,25 @@ public class VLANBridgeTemplatesTest extends VelocityTemplatesTest {
 		Assert.assertTrue("Generated template does not match expected XML.", XmlHelper.compareXMLStrings(expectedXML, message));
 
 	}
+
+	@Test
+	public void unsetInterfaceVlanOptionsTest() throws IOException, SAXException, TransformerException, ParserConfigurationException {
+
+		template = "/VM_files/vlanBridge/ifaceVlanOptsUnset.vm";
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", "");
+
+		NetworkPort netPort = new NetworkPort();
+		netPort.setName(IFACE_NAME);
+		netPort.setPortNumber(IFACE_PORT);
+
+		String expectedXML = IOUtils.toString(this.getClass().getResourceAsStream("/actions/vlanBridge/ifaceVlanOptsUnset.xml"));
+		String message = callVelocity(template, netPort, extraParams);
+
+		log.info(XmlHelper.formatXML(message));
+
+		Assert.assertTrue("Generated template does not match expected XML.", XmlHelper.compareXMLStrings(expectedXML, message));
+
+	}
 }
