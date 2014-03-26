@@ -1,0 +1,19 @@
+#** 
+@param param: the name of the AggregatedLogicalPort to be deleted 
+@param isLR: a boolean telling whether AggregatedLogicalPort should be created in a logical router is a logical router or not
+@param lrName: a String with the logical router name (only set if isLR is true)
+*#
+<configuration>
+	#if($isLR)
+		<logical-systems>
+			<name>$lrName</name>
+	#end
+	<interfaces>
+		<interface operation="delete" >
+			<name>$param</name>
+		</interface>
+	</interfaces>
+	#if($isLR)
+		</logical-systems>
+	#end
+</configuration>
