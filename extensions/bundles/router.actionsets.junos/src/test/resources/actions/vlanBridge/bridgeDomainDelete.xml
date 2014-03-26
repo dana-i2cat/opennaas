@@ -1,0 +1,7 @@
+<configuration>
+	<vlans>
+		<vlan operation="delete">
+			<name>vlan100</name>
+		</vlan>
+	</vlans>
+</configuration>
