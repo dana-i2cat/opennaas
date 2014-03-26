@@ -119,7 +119,8 @@ public class ActionConstants {
 
 	// VLAN BRIDGE actionset
 	public static final String	VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN	= VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION;
-
+	public static final String	VLAN_BRIDGE_REMOVE_BRIDGE_DOMAIN	= VLANBridgeActionSet.DELETE_VLAN_BRIDGE_DOMAIN_ACTION;
+	
 	// L3 VLAN actionset
 	public static final String	L3VLAN_ADD_IP_TO_DOMAIN				= L3VlanActionset.L3VLAN_ADD_IP_TO_DOMAIN;
 	public static final String	L3VLAN_REMOVE_IP_FROM_DOMAIN		= L3VlanActionset.L3VLAN_REMOVE_IP_FROM_DOMAIN;

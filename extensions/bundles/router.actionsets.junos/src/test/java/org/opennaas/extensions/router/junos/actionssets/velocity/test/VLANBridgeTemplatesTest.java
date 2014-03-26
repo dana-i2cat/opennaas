@@ -87,4 +87,19 @@ public class VLANBridgeTemplatesTest extends VelocityTemplatesTest {
 		Assert.assertTrue("Generated template does not match expected XML.", XmlHelper.compareXMLStrings(expectedXML, message));
 
 	}
+
+	@Test
+	public void deleteBridgeDomainTest() throws IOException, SAXException, TransformerException, ParserConfigurationException {
+
+		template = "/VM_files/vlanBridge/bridgeDomainDelete.vm";
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", "");
+
+		String expectedXML = IOUtils.toString(this.getClass().getResourceAsStream("/actions/vlanBridge/bridgeDomainDelete.xml"));
+		String message = callVelocity(template, VLAN_BRIDGE_NAME, extraParams);
+
+		Assert.assertTrue("Generated template does not match expected XML.", XmlHelper.compareXMLStrings(expectedXML, message));
+
+	}
 }

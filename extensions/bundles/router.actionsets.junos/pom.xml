@@ -70,6 +70,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.linkaggregation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.vlanbridge</artifactId>
 		</dependency>
 		<dependency>
