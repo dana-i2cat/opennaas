@@ -23,6 +23,7 @@ package org.opennaas.extensions.router.junos.actionssets;
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.CreateBridgeDomainAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.DeleteBridgeDomainAction;
 
 /**
  * 
@@ -38,6 +39,8 @@ public class VLANBridgeActionSet extends ActionSet {
 		super.setActionSetId(ACTIONSET_ID);
 
 		this.putAction(ActionConstants.VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN, CreateBridgeDomainAction.class);
+		this.putAction(ActionConstants.VLAN_BRIDGE_REMOVE_BRIDGE_DOMAIN, DeleteBridgeDomainAction.class);
+
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
 
 		/* add refresh actions */

@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
@@ -34,11 +33,15 @@ import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.Creat
 import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
-public class CreateBridgeDomainTest {
-	Log										log	= LogFactory.getLog(CreateBridgeDomainTest.class);
+/**
+ * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
+public class CreateBridgeDomainActionTest {
+	Log										log	= LogFactory.getLog(CreateBridgeDomainActionTest.class);
 	private static CreateBridgeDomainAction	action;
 	static ActionTestHelper					helper;
-	static ProtocolSessionManager			protocolsessionmanager;
 
 	@BeforeClass
 	public static void init() {
@@ -46,7 +49,6 @@ public class CreateBridgeDomainTest {
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 		action.setParams(helper.newParamsInterfaceEthernet());
-		protocolsessionmanager = helper.getProtocolSessionManager();
 	}
 
 	@Test

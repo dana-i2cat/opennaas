@@ -1,0 +1,19 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$elementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	
+    <vlans>
+    	<vlan operation="delete">
+    	    <name>$param</name>
+    	</vlan>
+    </vlans>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
