@@ -238,4 +238,23 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 		log.info("End of setInterfaceVLANOptions call");
 
 	}
+
+	@Override
+	public void unsetInterfaceVLANOptions(String ifaceName) throws ModelElementNotFoundException, CapabilityException {
+
+		log.info("Start of setInterfaceVLANOptions call");
+
+		if (StringUtils.isEmpty(ifaceName))
+			throw new CapabilityException("Interface name can't be empty.");
+
+		NetworkPort netPort = new NetworkPort();
+		netPort.setName(ChassisAPIHelper.getInterfaceName(ifaceName));
+		netPort.setPortNumber(ChassisAPIHelper.getInterfacePortNumber(ifaceName));
+
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.UNSET_INTERFACE_VLAN_OPTIONS_ACTION, netPort);
+		queueAction(action);
+
+		log.info("End of setInterfaceVLANOptions call");
+
+	}
 }
