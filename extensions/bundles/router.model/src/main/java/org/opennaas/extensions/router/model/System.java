@@ -126,6 +126,19 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return (List<SystemSpecificCollection>) this.getToAssociatedElementsByType(HostedCollection.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T extends SystemSpecificCollection> List<T> getAllHostedCollectionsByType(Class<T> clazz) {
+		List<SystemSpecificCollection> list = getHostedCollection();
+
+		ArrayList<T> desiredServices = new ArrayList<T>();
+		for (SystemSpecificCollection hostedCollection : list) {
+			if (clazz.isInstance(hostedCollection)) {
+				desiredServices.add((T) hostedCollection);
+			}
+		}
+		return desiredServices;
+	}
+
 	/**
 	 * Adds a {@link HostedCollection} dependency between {@link SystemSpecificCollection} and this {@link System}
 	 * 

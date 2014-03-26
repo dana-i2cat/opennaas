@@ -26,6 +26,7 @@ package org.opennaas.extensions.router.model;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -471,6 +472,24 @@ public class ManagedElement implements IModel, Serializable {
 
 		a.unlink();
 		return true;
+	}
+
+	/**
+	 * @return List of {@link SettingData} associated to this {@link ManagedElement} through {@link ElementSettingData} dependency, filtered by a
+	 *         specific type.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends SettingData> List<T> getAllElementSettingDataByType(Class<T> clazz) {
+		List<SettingData> list = getElementsSettingData();
+
+		ArrayList<T> toReturn = new ArrayList<T>();
+		for (SettingData settingData : list) {
+			if (clazz.getClass().isInstance(settingData)) {
+				toReturn.add((T) settingData);
+			}
+		}
+		return toReturn;
 	}
 
 	/**
