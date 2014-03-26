@@ -24,6 +24,7 @@ import org.opennaas.extensions.router.capability.bgp.BGPActionSet;
 import org.opennaas.extensions.router.capability.chassis.ChassisActionSet;
 import org.opennaas.extensions.router.capability.gretunnel.GRETunnelActionSet;
 import org.opennaas.extensions.router.capability.ip.IPActionSet;
+import org.opennaas.extensions.router.capability.l3vlan.L3VlanActionset;
 import org.opennaas.extensions.router.capability.ospf.OSPFActionSet;
 import org.opennaas.extensions.router.capability.ospfv3.OSPFv3ActionSet;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteActionSet;
@@ -117,6 +118,9 @@ public class ActionConstants {
 	public static final String	VRRP_UPDATE_VIRTUAL_LINK_ADDRESS	= VRRPActionSet.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS;
 
 	// VLAN BRIDGE actionset
-
 	public static final String	VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN	= VLANBridgeActionSet.CREATE_VLAN_BRIDGE_DOMAIN_ACTION;
+
+	// L3 VLAN actionset
+	public static final String	L3VLAN_ADD_IP_TO_DOMAIN				= L3VlanActionset.L3VLAN_ADD_IP_TO_DOMAIN;
+	public static final String	L3VLAN_REMOVE_IP_FROM_DOMAIN		= L3VlanActionset.L3VLAN_REMOVE_IP_FROM_DOMAIN;
 }
