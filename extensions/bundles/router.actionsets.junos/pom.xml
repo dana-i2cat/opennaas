@@ -71,7 +71,12 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.vlanbridge</artifactId>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.l3vlan</artifactId>
+		</dependency>
+		
 		<!--
 			specify the last version from xerces-impl to work with the digester
 			parser
