@@ -40,6 +40,10 @@ import org.opennaas.extensions.router.model.ComputerSystem;
  * 
  * Configures a new aggregated interface specified by given AggregatedLogicalPort.
  * 
+ * NOTICE: This action will fail if any interface in AggregatedLogicalPort.getInterfaces() contains subinterfaces (units). The router will launch
+ * following error: "logical unit is not allowed on aggregated links : unit XX". The user is forced to manually delete these subinterfaces in order to
+ * be able to put an interface as part of an aggregated.
+ * 
  * @author Isart Canyameres Gimenez (i2cat)
  */
 public class CreateAggregatedInterfaceAction extends JunosAction {
