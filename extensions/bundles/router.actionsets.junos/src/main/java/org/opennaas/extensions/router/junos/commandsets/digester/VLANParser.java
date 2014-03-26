@@ -172,7 +172,6 @@ public class VLANParser extends DigesterEngine {
 		}
 
 		// unset temporary vars
-		this.interfaceName = null;
 		this.unit = null;
 	}
 
