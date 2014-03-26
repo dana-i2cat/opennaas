@@ -178,7 +178,12 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public void updateBridgeDomain(String domainName, BridgeDomain bridgeDomain) throws ModelElementNotFoundException, CapabilityException {
-		// TODO call action
+		log.info("Start of updateBridgeDomain call");
+
+		deleteBridgeDomain(domainName);
+		createBridgeDomain(bridgeDomain);
+
+		log.info("End of updateBridgeDomain call");
 
 	}
 
