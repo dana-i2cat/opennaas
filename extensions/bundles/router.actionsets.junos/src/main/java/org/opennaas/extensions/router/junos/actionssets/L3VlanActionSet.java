@@ -25,13 +25,16 @@ import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.l3vlan.AddIPAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.l3vlan.RemoveIPAction;
 
 public class L3VlanActionSet extends ActionSet {
 
 	public L3VlanActionSet() {
 		super.setActionSetId("l3vlanActionSet");
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
-		// TODO add link aggregation actions
+		this.putAction(ActionConstants.L3VLAN_ADD_IP_TO_DOMAIN, AddIPAction.class);
+		this.putAction(ActionConstants.L3VLAN_REMOVE_IP_FROM_DOMAIN, RemoveIPAction.class);
 
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.GETCONFIG);
@@ -41,7 +44,8 @@ public class L3VlanActionSet extends ActionSet {
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
 		actionNames.add(ActionConstants.GETCONFIG);
-		// TODO add link aggregation actions
+		actionNames.add(ActionConstants.L3VLAN_ADD_IP_TO_DOMAIN);
+		actionNames.add(ActionConstants.L3VLAN_REMOVE_IP_FROM_DOMAIN);
 
 		return actionNames;
 	}
