@@ -80,7 +80,6 @@ public class UnsetInterfaceVlanOptionsAction extends JunosAction {
 
 	@Override
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
-		// TODO Auto-generated method stub
 
 	}
 
