@@ -19,8 +19,7 @@ package org.opennaas.extensions.router.capability.vlanbridge;
  * limitations under the License.
  * #L%
  */
-
-
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.IActionSetDefinition;
 
 /**
@@ -68,4 +67,15 @@ public class VLANBridgeActionSet implements IActionSetDefinition {
 	 *             if failed to configure given InterfaceVLANOptions
 	 */
 	public static final String	SET_INTERFACE_VLAN_OPTIONS_ACTION	= "setInterfaceVlanOptionsAction";
+
+	/**
+	 * If executed, unsets all InterfaceVLANOptions for interface with given ifaceName.
+	 * 
+	 * @param interfaceName
+	 * @param InterfaceVLANOptions
+	 *            to set
+	 * @throws ActionException
+	 *             if failed to configure given InterfaceVLANOptions
+	 */
+	public static final String	UNSET_INTERFACE_VLAN_OPTIONS_ACTION	= "unsetInterfaceVlanOptionsAction";
 }

@@ -34,6 +34,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
 import org.opennaas.extensions.router.capabilities.api.helper.VLANBridgeApiHelper;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomain;
 import org.opennaas.extensions.router.capabilities.api.model.vlanbridge.BridgeDomains;
@@ -177,7 +178,12 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 	@Override
 	public void updateBridgeDomain(String domainName, BridgeDomain bridgeDomain) throws ModelElementNotFoundException, CapabilityException {
-		// TODO call action
+		log.info("Start of updateBridgeDomain call");
+
+		deleteBridgeDomain(domainName);
+		createBridgeDomain(bridgeDomain);
+
+		log.info("End of updateBridgeDomain call");
 
 	}
 
@@ -226,10 +232,31 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 		NetworkPortVLANSettingData modelVlanOpts = VLANBridgeApiHelper.buildModelIfaceVlanOptions(vlanOptions);
 
 		NetworkPort netPort = new NetworkPort();
-		netPort.setName(ifaceName);
+		netPort.setName(ChassisAPIHelper.getInterfaceName(ifaceName));
+		netPort.setPortNumber(ChassisAPIHelper.getInterfacePortNumber(ifaceName));
+
 		netPort.addElementSettingData(modelVlanOpts);
 
 		IAction action = createActionAndCheckParams(VLANBridgeActionSet.SET_INTERFACE_VLAN_OPTIONS_ACTION, netPort);
+		queueAction(action);
+
+		log.info("End of setInterfaceVLANOptions call");
+
+	}
+
+	@Override
+	public void unsetInterfaceVLANOptions(String ifaceName) throws ModelElementNotFoundException, CapabilityException {
+
+		log.info("Start of setInterfaceVLANOptions call");
+
+		if (StringUtils.isEmpty(ifaceName))
+			throw new CapabilityException("Interface name can't be empty.");
+
+		NetworkPort netPort = new NetworkPort();
+		netPort.setName(ChassisAPIHelper.getInterfaceName(ifaceName));
+		netPort.setPortNumber(ChassisAPIHelper.getInterfacePortNumber(ifaceName));
+
+		IAction action = createActionAndCheckParams(VLANBridgeActionSet.UNSET_INTERFACE_VLAN_OPTIONS_ACTION, netPort);
 		queueAction(action);
 
 		log.info("End of setInterfaceVLANOptions call");

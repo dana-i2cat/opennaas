@@ -27,6 +27,8 @@ import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.CreateBridgeDomainAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.DeleteBridgeDomainAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.SetInterfaceVlanOptionsAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.UnsetInterfaceVlanOptionsAction;
 
 /**
  * 
@@ -43,6 +45,8 @@ public class VLANBridgeActionSet extends ActionSet {
 
 		this.putAction(ActionConstants.VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN, CreateBridgeDomainAction.class);
 		this.putAction(ActionConstants.VLAN_BRIDGE_REMOVE_BRIDGE_DOMAIN, DeleteBridgeDomainAction.class);
+		this.putAction(ActionConstants.VLAN_BRIDGE_SET_IFACE_VLAN_OPTIONS, SetInterfaceVlanOptionsAction.class);
+		this.putAction(ActionConstants.VLAN_BRIDGE_UNSET_IFACE_VLAN_OPTIONS, UnsetInterfaceVlanOptionsAction.class);
 
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
 
@@ -56,6 +60,8 @@ public class VLANBridgeActionSet extends ActionSet {
 		actionNames.add(ActionConstants.GETCONFIG);
 		actionNames.add(ActionConstants.VLAN_BRIDGE_CREATE_BRIDGE_DOMAIN);
 		actionNames.add(ActionConstants.VLAN_BRIDGE_REMOVE_BRIDGE_DOMAIN);
+		actionNames.add(ActionConstants.VLAN_BRIDGE_SET_IFACE_VLAN_OPTIONS);
+		actionNames.add(ActionConstants.VLAN_BRIDGE_UNSET_IFACE_VLAN_OPTIONS);
 
 		return actionNames;
 	}

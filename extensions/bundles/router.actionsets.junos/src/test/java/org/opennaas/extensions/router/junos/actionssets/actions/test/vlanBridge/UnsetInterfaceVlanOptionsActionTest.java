@@ -29,64 +29,61 @@ import org.junit.Test;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
-import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.DeleteBridgeDomainAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.vlanbridge.UnsetInterfaceVlanOptionsAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NetworkPort;
 
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-public class DeleteBridgeDomainActionTest {
-	Log										log	= LogFactory.getLog(DeleteBridgeDomainActionTest.class);
-	private static DeleteBridgeDomainAction	action;
-	static ActionTestHelper					helper;
+public class UnsetInterfaceVlanOptionsActionTest {
+
+	Log												log	= LogFactory.getLog(UnsetInterfaceVlanOptionsActionTest.class);
+	private static UnsetInterfaceVlanOptionsAction	action;
+	static ActionTestHelper							helper;
 
 	@BeforeClass
 	public static void init() {
-		action = new DeleteBridgeDomainAction();
+		action = new UnsetInterfaceVlanOptionsAction();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 	}
 
 	@Test
 	public void actionIDTest() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.VLAN_BRIDGE_REMOVE_BRIDGE_DOMAIN,
+		Assert.assertEquals("Wrong ActionID", ActionConstants.VLAN_BRIDGE_UNSET_IFACE_VLAN_OPTIONS,
 				action.getActionID());
 	}
 
 	@Test
 	public void templateIDTest() {
-		Assert.assertEquals("Wrong template", "/VM_files/vlanBridge/bridgeDomainDelete.vm",
+		Assert.assertEquals("Wrong template", "/VM_files/vlanBridge/ifaceVlanOptsUnset.vm",
 				action.getTemplate());
 	}
 
 	@Test
 	public void checkValidParamTest() throws ActionException {
 
-		action.checkParams("fe-0.1.2/2");
+		NetworkPort netPort = new NetworkPort();
+		netPort.setName("fe-0/1/1");
+		netPort.setPortNumber(2);
 
+		action.checkParams(netPort);
+	}
+
+	@Test(expected = ActionException.class)
+	public void checkEmptyParamTest() throws ActionException {
+
+		NetworkPort netPort = new NetworkPort();
+
+		action.checkParams(netPort);
 	}
 
 	@Test(expected = ActionException.class)
 	public void checkNullParamTest() throws ActionException {
 
 		action.checkParams(null);
-
-	}
-
-	@Test(expected = ActionException.class)
-	public void checkEmptyParamTest() throws ActionException {
-
-		action.checkParams("");
-
-	}
-
-	@Test(expected = ActionException.class)
-	public void checkUnvalidParamTypeTest() throws ActionException {
-
-		int ifaceName = 2;
-		action.checkParams(ifaceName);
-
 	}
 }
