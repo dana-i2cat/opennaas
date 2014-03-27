@@ -31,6 +31,7 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
+import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
@@ -107,8 +108,12 @@ public class AddIPAction extends JunosAction {
 			}
 
 			// assume BridgeDomain is in the model and obtain the vlan-id to be used as vlan interface unit
-			int unit = ModelHelper.getBridgeDomainByName(ModelHelper.getBridgeDomains((ComputerSystem) modelToUpdate), ((String[]) params)[0])
-					.getVlanId();
+			BridgeDomain bridgeDomain = ModelHelper.getBridgeDomainByName(ModelHelper.getBridgeDomains((ComputerSystem) modelToUpdate),
+					((String[]) params)[0]);
+			if (bridgeDomain == null) {
+				throw new ActionException("BridgeDomain " + ((String[]) params)[0] + " does not exist in the model, try to create it first.");
+			}
+			int unit = bridgeDomain.getVlanId();
 
 			// craft extraParams
 			Map<String, Object> extraParams = new HashMap<String, Object>();
