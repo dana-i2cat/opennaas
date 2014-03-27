@@ -48,7 +48,6 @@ public class CreateBridgeDomainActionTest {
 		action = new CreateBridgeDomainAction();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
-		action.setParams(helper.newParamsInterfaceEthernet());
 	}
 
 	@Test

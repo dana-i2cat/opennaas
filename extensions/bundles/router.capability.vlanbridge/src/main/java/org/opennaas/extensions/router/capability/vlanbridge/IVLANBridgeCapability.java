@@ -148,4 +148,19 @@ public interface IVLANBridgeCapability extends ICapability {
 	public void setInterfaceVLANOptions(@QueryParam("iface") String ifaceName, InterfaceVLANOptions vlanOptions)
 			throws ModelElementNotFoundException, CapabilityException;
 
+	/**
+	 * Prepares and queues an Action that, if executed, unsets all InterfaceVLANOptions for interface with given ifaceName.
+	 * 
+	 * @param ifaceName
+	 *            of the interface to look for
+	 * @throws ModelElementNotFoundException
+	 *             if there is no interface with given ifaceName in the system.
+	 * @throws CapabilityException
+	 *             if failed to prepare action for unsetting all InterfaceVLANOptions from desired interface.
+	 */
+	@Path("/vlanoptions")
+	@DELETE
+	@Consumes(MediaType.APPLICATION_XML)
+	public void unsetInterfaceVLANOptions(@QueryParam("iface") String ifaceName) throws ModelElementNotFoundException, CapabilityException;
+
 }
