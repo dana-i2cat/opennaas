@@ -116,14 +116,23 @@ public class L3VlanCapability extends AbstractCapability implements IL3VlanCapab
 
 	@Override
 	public void removeIpAddressfromBridgedDomain(String domainName, String ipAddress) throws CapabilityException {
-		log.info("Start of removeIpAddressfromBridgedDomain call");
-		String[] params = new String[2];
-		params[0] = domainName;
-		params[1] = ipAddress;
+		// FIXME pending to resolve or workaround Junos bug:
+		// http://forums.juniper.net/t5/Junos/quot-syntax-error-expecting-lt-rpc-gt-or-lt-rpc-gt-quot-trying/m-p/235936
 
-		IAction action = createActionAndCheckParams(L3VlanActionset.L3VLAN_REMOVE_IP_FROM_DOMAIN, params);
-		queueAction(action);
-		log.info("End of removeIpAddressfromBridgedDomain call");
+		throw new CapabilityException(new UnsupportedOperationException("Not implemented due to bug in Junos"));
+
+		// FIXME org.opennaas.extensions.router.junos.actionssets.actions.l3vlan.RemoveIPAction from
+		// org.opennaas.extensions.router.actionsets.junos bundle producing error above
+		// uncomment when solved
+
+		// log.info("Start of removeIpAddressfromBridgedDomain call");
+		// String[] params = new String[2];
+		// params[0] = domainName;
+		// params[1] = ipAddress;
+		//
+		// IAction action = createActionAndCheckParams(L3VlanActionset.L3VLAN_REMOVE_IP_FROM_DOMAIN, params);
+		// queueAction(action);
+		// log.info("End of removeIpAddressfromBridgedDomain call");
 	}
 
 	@Override
