@@ -13,18 +13,18 @@ import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 public class GetFlowsActionMockup extends Action {
 
-	@Override
-	public boolean checkParams(Object arg0) throws ActionException {
-		return true;
-	}
+    @Override
+    public boolean checkParams(Object arg0) throws ActionException {
+        return true;
+    }
 
-	@Override
-	public ActionResponse execute(IProtocolSessionManager arg0) throws ActionException {
-		// return flows from model
-		List<OFFlow> flows = OpenflowSwitchModelHelper.getSwitchForwardingRules((OpenflowSwitchModel) getModelToUpdate());
-		ActionResponse response = ActionResponse.okResponse(OpenflowForwardingActionSet.GETFLOWS);
-		response.setResult(flows);
-		return response;
-	}
+    @Override
+    public ActionResponse execute(IProtocolSessionManager arg0) throws ActionException {
+        // return flows from model
+        List<OFFlow> flows = OpenflowSwitchModelHelper.getSwitchForwardingRules((OpenflowSwitchModel) getModelToUpdate());
+        ActionResponse response = ActionResponse.okResponse(OpenflowForwardingActionSet.GETFLOWS);
+        response.setResult(flows);
+        return response;
+    }
 
 }

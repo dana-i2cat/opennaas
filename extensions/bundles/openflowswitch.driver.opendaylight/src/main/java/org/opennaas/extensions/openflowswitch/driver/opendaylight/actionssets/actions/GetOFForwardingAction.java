@@ -14,7 +14,6 @@ import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 /**
  *
  * @author Josep Batallé Oronich
- * @author Julio Carlos Barrera
  *
  */
 public class GetOFForwardingAction extends OpenDaylightAction {

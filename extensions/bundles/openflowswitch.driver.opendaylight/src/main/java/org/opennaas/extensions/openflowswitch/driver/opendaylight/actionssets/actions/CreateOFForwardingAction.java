@@ -38,8 +38,8 @@ public class CreateOFForwardingAction extends OpenDaylightAction {
 
             String DPID = getSwitchIdInModel();
             String name = flow.getName();
-            
-log.error("Flow: "+name+" Switch ID: "+DPID);
+
+            log.error("Flow: " + name + " Switch ID: " + DPID);
             flow = updateFlowWithControllerRequiredValues(flow);
             IOpenDaylightStaticFlowPusherClient client = getOpenDaylightProtocolSession(protocolSessionManager).getOpenDaylightClientForUse();
             client.addFlow(flow, DPID, name);

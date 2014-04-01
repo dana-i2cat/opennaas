@@ -93,8 +93,9 @@ public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer
                 flow.setActions(actions);
                 flow.setActive(true);
                 // add flow
-                if(flow.getName()!=null)
+                if (flow.getName() != null) {
                     wrapper.add(flow);
+                }
             }
         }
         return wrapper;

@@ -90,7 +90,6 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         for (int i = 0; i < listOF.size(); i++) {
             if (i == 0) {
                 listFlows.append("{dpid:'");
-log.error("DIJKSTRA DPID: "+listOF.get(i).getDPID());
                 listFlows.append(listOF.get(i).getDPID());
                 listFlows.append("'},");//others switch ids
             }
@@ -149,7 +148,7 @@ log.error("DIJKSTRA DPID: "+listOF.get(i).getDPID());
         IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
-log.error("Dijkstra "+protocol);            
+log.error("Insert flows into "+protocol+" switchs.");
             resource = getResourceByName(flow.getDPID());
             if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
@@ -196,7 +195,6 @@ log.error("Dijkstra "+protocol);
         resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:02 --> s2
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
 
-        log.info("IResource id:" + resourceId);
         if (resourceId == null) {
             log.error("IResource id is null.");
             return null;
@@ -373,7 +371,7 @@ log.error("Dijkstra "+protocol);
      * @return true if the environment has been created
      */
     public String insertRoutetoStaticBundle(VRFRoute route) {
-        log.error("Calling insert Route Table service");
+        log.info("Calling insert Route Table service");
         String response = null;
         String url = "http://localhost:8888/opennaas/vrf/staticrouting/dynamic-route";
 
@@ -426,17 +424,13 @@ log.error("Dijkstra "+protocol);
         String protocol;
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
 
-        IResource resource = getResourceByName(resourceName);//switchId
-
-        log.error("Resource Id of the switch is: " + resource.getResourceIdentifier().getId());
-
         resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:00:00:00:02 --> s2
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
         IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
 
         protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
 
-        log.error("Protocol of switch is: " + protocol);
+        log.info("Protocol of switch is: " + protocol);
         return protocol;
     }
 }

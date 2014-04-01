@@ -433,8 +433,8 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private Response insertFlow(OFFlow flow) {
         log.info("Provision OpenFlow Flow Link");
         Response response = null;
-        String protocol = null;
-        IResource resource = null;
+        String protocol;
+        IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
             resource = getResourceByName(flow.getDPID());
@@ -462,8 +462,8 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private Response removeFlow(OFFlow flow) {
         log.info("Remove Flow Link");
         Response response = null;
-        String protocol = null;
-        IResource resource = null;
+        String protocol;
+        IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
             resource = getResourceByName(flow.getDPID());
@@ -555,10 +555,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
      */
     @Override
     public Response getodl(String DPID) {
-
         Response response = null;
 
-        log.error("TEST ODL GET ................... " + DPID);
+        log.error("ODL GET list of Flows of switch " + DPID);
         try {
             String protocol = getProtocolType(DPID);
             response = getLinks(protocol, DPID);
@@ -635,7 +634,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 
     private List<OFFlow> getLinks(String DPID) throws ResourceException, ActivatorException {
         log.info("Provision Flow Link Floodlight");
-        List<OFFlow> list = new ArrayList<OFFlow>();
+        List<OFFlow> list;
         IResource resource = getResourceByName(DPID);
 
         IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
@@ -665,9 +664,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     }
 
     private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
-        log.error("Get Resource By switch ID: " + resourceName);
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
-        log.info("ResourceManager " + resourceManager.getIdentifierFromResourceName("sdnnetwork", "sdn1").getId());
         IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
         IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
 
@@ -688,7 +685,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:02 --> s2
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
 
-        log.info("IResource id:" + resourceId);
         if (resourceId == null) {
             log.error("IResource id is null.");
             return null;
@@ -697,12 +693,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     }
 
     private String getProtocolType(String resourceName) throws ActivatorException, ResourceException {
-        String protocol = null;
+        String protocol;
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
 
         IResource resource = getResourceByName(resourceName);//switchId
-
-        log.error("Resource Id of the switch is: " + resource.getResourceIdentifier().getId());
 
         resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:00:00:00:02 --> s2
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);

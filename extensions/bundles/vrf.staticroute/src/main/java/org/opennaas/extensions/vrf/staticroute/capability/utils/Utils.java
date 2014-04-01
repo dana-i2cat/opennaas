@@ -47,7 +47,7 @@ public class Utils {
             conn.getResponseCode();
         } catch (UnknownHostException e) {
             log.error("Url is null. Maybe the controllers are not registred.");
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -1,6 +1,5 @@
 package org.opennaas.extensions.vrf.staticroute.capability;
 
-import org.opennaas.extensions.vrf.staticroute.capability.StaticRoutingCapability;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;

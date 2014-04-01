@@ -74,6 +74,8 @@ public interface IOpenDaylightStaticFlowPusherClient {
     
     /**
      * Gets all list of all flows
+     * @return 
+     * @throws org.opennaas.core.resources.protocol.ProtocolException
      */
     @Path("/")
     @GET
@@ -91,6 +93,7 @@ public interface IOpenDaylightStaticFlowPusherClient {
 
     /**
      * Deletes all flows.
+     * @throws org.opennaas.core.resources.protocol.ProtocolException
      */
     @Path("clear/all/json")
     public void deleteAllFlows() throws ProtocolException, Exception;

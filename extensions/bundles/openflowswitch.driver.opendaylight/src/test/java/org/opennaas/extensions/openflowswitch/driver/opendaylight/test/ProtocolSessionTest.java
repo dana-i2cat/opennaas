@@ -16,7 +16,7 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 public class ProtocolSessionTest {
 
-    private static final String FLOODLIGHT_URI = "http://dev.ofertie.i2cat.net:8080";
+    private static final String FLOODLIGHT_URI = "http://localhost:8080";
     private static final String SWITCH_ID = "00:00:00:00:00:00:00:03";
     private static final String SESSION_ID = "0001";
     private static final String name = "flowTest1";

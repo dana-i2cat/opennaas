@@ -5,17 +5,17 @@ import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.clien
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.IOpenDaylightStaticFlowPusherClient;
 
 /**
- * 
+ *
  * @author Adrian Rosello (i2CAT)
- * 
+ *
  */
 public class OpenDaylightMockClientFactory extends OpenDaylightClientFactory {
 
-	@Override
-	public IOpenDaylightStaticFlowPusherClient createClient(ProtocolSessionContext sessionContext) {
+    @Override
+    public IOpenDaylightStaticFlowPusherClient createClient(ProtocolSessionContext sessionContext) {
 
-		return new OpenDaylightMockClient();
+        return new OpenDaylightMockClient();
 
-	}
+    }
 
 }

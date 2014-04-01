@@ -1,28 +1,19 @@
 package org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.serializers.json.CustomJSONProvider;
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.wrappers.OpenDaylightOFFlowsWrapper;
-import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
  * OpenDaylight special client mixing CXF and Java clients allowing sending HTTP
  * DELETE with body
  *
- * @author logoff
+ * @author Josep Batallé
  *
  */
 public class OpenDaylightStaticFlowPusherClient implements IOpenDaylightStaticFlowPusherClient {
@@ -55,8 +46,6 @@ public class OpenDaylightStaticFlowPusherClient implements IOpenDaylightStaticFl
     public OpenDaylightOFFlow getFlow(String dpid, String name) throws ProtocolException, Exception {
         return cxfClient.getFlow(dpid, name);
     }
-    
-    
     
     @Override
     public Map<String, List<OpenDaylightOFFlow>> getFlows() throws ProtocolException, Exception {

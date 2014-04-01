@@ -11,35 +11,35 @@ import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.ac
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions.RemoveOFForwardingAction;
 
 /**
- * 
+ *
  * @author Josep Batallé Oronich
  * @author Isart Canyameres Gimenez (i2cat)
  * @author Julio Carlos Barrera
- * 
+ *
  */
 public class OFForwardingActionsetImplementation extends ActionSet {
 
-	public static final String	ACTIONSET_ID	= "ofForwardingActionSetOpenDaylight";
+    public static final String ACTIONSET_ID = "ofForwardingActionSetOpenDaylight";
 
-	public OFForwardingActionsetImplementation() {
-		super.setActionSetId(ACTIONSET_ID);
-		this.putAction(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, CreateOFForwardingAction.class);
-		this.putAction(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, RemoveOFForwardingAction.class);
-                this.putAction(OpenflowForwardingActionSet.GETOFFORWARDINGRULE, GetOFFlowForwardingAction.class);
-		this.putAction(OpenflowForwardingActionSet.GETFLOWS, GetOFForwardingAction.class);
+    public OFForwardingActionsetImplementation() {
+        super.setActionSetId(ACTIONSET_ID);
+        this.putAction(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, CreateOFForwardingAction.class);
+        this.putAction(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, RemoveOFForwardingAction.class);
+        this.putAction(OpenflowForwardingActionSet.GETOFFORWARDINGRULE, GetOFFlowForwardingAction.class);
+        this.putAction(OpenflowForwardingActionSet.GETFLOWS, GetOFForwardingAction.class);
 
-	}
+    }
 
-	@Override
-	public List<String> getActionNames() {
-		List<String> actionNames = new ArrayList<String>();
+    @Override
+    public List<String> getActionNames() {
+        List<String> actionNames = new ArrayList<String>();
 
-		actionNames.add(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE);
-		actionNames.add(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE);
-                actionNames.add(OpenflowForwardingActionSet.GETOFFORWARDINGRULE);
-		actionNames.add(OpenflowForwardingActionSet.GETFLOWS);
+        actionNames.add(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE);
+        actionNames.add(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE);
+        actionNames.add(OpenflowForwardingActionSet.GETOFFORWARDINGRULE);
+        actionNames.add(OpenflowForwardingActionSet.GETFLOWS);
 
-		return actionNames;
-	}
+        return actionNames;
+    }
 
 }

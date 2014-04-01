@@ -41,7 +41,7 @@ public class RemoveOFForwardingAction extends OpenDaylightAction {
             OpenDaylightOFFlow flow = getFlowFromSwitchByName(name, switchId, client);
             client.deleteFlow(DPID, name);
         } catch (Exception e) {
-            log.error("Remove Error flow. DPID: "+DPID+" Name: "+name);
+            log.error("Remove Error flow. DPID: " + DPID + " Name: " + name);
             throw new ActionException(e);
         }
 
