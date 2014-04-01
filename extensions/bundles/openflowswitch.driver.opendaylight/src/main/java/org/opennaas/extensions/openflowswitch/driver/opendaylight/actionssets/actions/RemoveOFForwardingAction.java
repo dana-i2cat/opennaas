@@ -29,7 +29,6 @@ public class RemoveOFForwardingAction extends OpenDaylightAction {
 
     @Override
     public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
-
         String[] receivedParams = (String[]) params;
         String DPID = receivedParams[0];
         String name = receivedParams[1];
@@ -42,6 +41,7 @@ public class RemoveOFForwardingAction extends OpenDaylightAction {
             OpenDaylightOFFlow flow = getFlowFromSwitchByName(name, switchId, client);
             client.deleteFlow(DPID, name);
         } catch (Exception e) {
+            log.error("Remove Error flow. DPID: "+DPID+" Name: "+name);
             throw new ActionException(e);
         }
 

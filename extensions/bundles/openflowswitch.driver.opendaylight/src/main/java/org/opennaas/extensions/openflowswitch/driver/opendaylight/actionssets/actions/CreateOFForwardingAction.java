@@ -16,12 +16,12 @@ import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
  *
- * @author Adrian Rosello (i2CAT)
+ * @author Josep Batallé (i2CAT)
  *
  */
 public class CreateOFForwardingAction extends OpenDaylightAction {
 
-    private static final String FORWARDING_ACTION = "output";
+    private static final String FORWARDING_ACTION = "OUTPUT";//OpenDaylight requires capital letters
 
     Log log = LogFactory.getLog(CreateOFForwardingAction.class);
 
@@ -39,7 +39,7 @@ public class CreateOFForwardingAction extends OpenDaylightAction {
             String DPID = getSwitchIdInModel();
             String name = flow.getName();
             
-            log.error("FLOW "+flow.getName()+" "+flow.getSwitchId());
+log.error("Flow: "+name+" Switch ID: "+DPID);
             flow = updateFlowWithControllerRequiredValues(flow);
             IOpenDaylightStaticFlowPusherClient client = getOpenDaylightProtocolSession(protocolSessionManager).getOpenDaylightClientForUse();
             client.addFlow(flow, DPID, name);

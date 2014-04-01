@@ -55,7 +55,7 @@ public interface IOpenDaylightStaticFlowPusherClient {
      */
     @Path("/node/OF/{DPID}")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public OpenDaylightOFFlowsWrapper getFlows(@PathParam("DPID") String dpid) throws ProtocolException, Exception;
 
     /**

@@ -183,11 +183,12 @@ public interface IStaticRoutingCapability {
     
     /**
      * Test ODL, insert flows
+     * @param DPID
      * @return 
      */
-    @Path("/getodl")
+    @Path("/getodl/{DPID}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getodl();
+    public Response getodl(@PathParam("DPID") String DPID);
 
 }

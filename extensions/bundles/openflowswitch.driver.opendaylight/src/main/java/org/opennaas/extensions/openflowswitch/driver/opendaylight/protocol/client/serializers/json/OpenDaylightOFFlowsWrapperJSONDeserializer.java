@@ -2,10 +2,7 @@ package org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.clie
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParseException;
@@ -21,22 +18,31 @@ import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer<OpenDaylightOFFlowsWrapper> {
 
-    private Log log = LogFactory.getLog(OpenDaylightOFFlowsWrapperJSONDeserializer.class);
+    Log log = LogFactory.getLog(OpenDaylightOFFlowsWrapperJSONDeserializer.class);
 
     @Override
     public OpenDaylightOFFlowsWrapper deserialize(JsonParser jp, DeserializationContext ctx) throws IOException, JsonProcessingException {
         // initialize object wrapper
         OpenDaylightOFFlowsWrapper wrapper = new OpenDaylightOFFlowsWrapper();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
-            String flowType = jp.getCurrentName();
+            String flowType = jp.getCurrentName();//flowConfig
+            if (jp.getCurrentName() == null) {
+                break;
+            }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//flows
                 jp.nextToken();
+                if (jp.getCurrentName() == null) {
+                    break;
+                }
                 OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
                 FloodlightOFMatch match = new FloodlightOFMatch();
                 List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>(0);
                 while (jp.nextToken() != JsonToken.END_OBJECT) {
                     String n = jp.getCurrentName();
-//                    jp.nextToken();
+                    if (n == null) {
+                        break;
+                    }
+
                     if (n.equals("name")) {
                         flow.setName(jp.getText());
                     } else if (n == "node") {
@@ -59,15 +65,15 @@ public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer
                         match.setWildcards(jp.getText());
                     } else if (n == "ingressPort") {
                         match.setIngressPort(jp.getText());
-                    } else if (n == "src-mac") {
+                    } else if (n == "dlSrc") {
                         match.setSrcMac(jp.getText());
-                    } else if (n == "dst-mac") {
+                    } else if (n == "dlDst") {
                         match.setDstMac(jp.getText());
                     } else if (n == "vlan-id") {
                         match.setVlanId(jp.getText());
                     } else if (n == "vlan-priority") {
                         match.setVlanPriority(jp.getText());
-                    } else if (n == "ether-type") {
+                    } else if (n == "etherType") {
                         match.setEtherType(jp.getText());
                     } else if (n == "tos-bits") {
                         match.setTosBits(jp.getText());
@@ -87,7 +93,8 @@ public class OpenDaylightOFFlowsWrapperJSONDeserializer extends JsonDeserializer
                 flow.setActions(actions);
                 flow.setActive(true);
                 // add flow
-                wrapper.add(flow);
+                if(flow.getName()!=null)
+                    wrapper.add(flow);
             }
         }
         return wrapper;

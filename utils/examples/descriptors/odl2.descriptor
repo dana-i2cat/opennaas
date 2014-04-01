@@ -1,0 +1,16 @@
+<resourceDescriptor>
+    <!--  Basic capability information. It specifies device model and version. IT IS OBLIGATORY -->
+    <capabilityDescriptors>
+        <capabilityProperty name="actionset.name" value="opendaylight" />
+        <capabilityProperty name="actionset.version" value="1.0" />
+        <information><type>offorwarding</type></information>
+    </capabilityDescriptors>
+
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>openflowswitch</type>
+        <name>s2</name>
+	<description>opendaylight</description>
+    </information>
+    <properties/>
+</resourceDescriptor>

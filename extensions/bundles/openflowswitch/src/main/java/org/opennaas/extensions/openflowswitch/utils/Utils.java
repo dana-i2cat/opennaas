@@ -47,11 +47,16 @@ public class Utils {
     public static OpenDaylightOFFlow OFFlowToODL(OFFlow OFFlow) {
         log.error("OFFLOW TO ODL -----------------------------------");
         OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
-        FloodlightOFMatch match = new FloodlightOFMatch();
-        List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFMatch match;
+        List<FloodlightOFAction> actions;
         FloodlightOFAction action = new FloodlightOFAction();
         match = OFFlow.getMatch();
         actions = OFFlow.getActions();
+        for(int i=0; i<actions.size(); i++){
+            if(actions.get(i).getType().equals("output")){
+                actions.get(i).setType("OUTPUT");
+            }
+        }
         /*        match.setSrcIp(OFFlow.getMatch().getSrcIp());
          match.setDstIp(OFFlow.getMatch().getDstIp());
          match.setSrcMac(OFFlow.getMatch().getSrcMac());
@@ -66,9 +71,10 @@ public class Utils {
          actions.add(act);
          }
          */
-        log.error("NAME: " + OFFlow.getName());
+log.error("NAME: " + OFFlow.getName());
         flow.setName(OFFlow.getName());
         flow.setMatch(match);
+log.error("Ethertype: " + OFFlow.getMatch().getEtherType());
         flow.setActions(actions);
         return flow;
     }
@@ -80,8 +86,8 @@ public class Utils {
      */
     public static FloodlightOFFlow OFFlowToFLD(OFFlow OFFlow) {
         FloodlightOFFlow flow = new FloodlightOFFlow();
-        FloodlightOFMatch match = new FloodlightOFMatch();
-        List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFMatch match;
+        List<FloodlightOFAction> actions;
         FloodlightOFAction action = new FloodlightOFAction();
         match = OFFlow.getMatch();
         actions = OFFlow.getActions();

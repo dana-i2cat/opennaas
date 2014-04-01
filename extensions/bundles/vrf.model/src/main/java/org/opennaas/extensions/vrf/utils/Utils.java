@@ -19,12 +19,10 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import javax.ws.rs.core.Response;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
-import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.Port;
 import org.opennaas.extensions.vrf.model.VRFRoute;
@@ -367,10 +365,11 @@ public class Utils {
      * Layer3 to layer2
      *
      * @param route
+     * @param etherType
      * @return
      */
     public static OFFlow VRFRouteToOFFlow(VRFRoute route, String etherType) {
-        log.error("Convert VRFROute to Floodlight FLOW .................................................................");
+        log.error("Convert VRFROute to OpenFlow FLOW .................................................................");
         OFFlow flow = new OFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();
@@ -390,7 +389,6 @@ public class Utils {
 //        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
         flow.setName(createFlowName(String.valueOf(route.getId()), etherType, route.getSourceAddress(), route.getDestinationAddress(), route.getSwitchInfo().getDPID()));
         flow.setDPID(route.getSwitchInfo().getDPID());
-
         return flow;
     }
 

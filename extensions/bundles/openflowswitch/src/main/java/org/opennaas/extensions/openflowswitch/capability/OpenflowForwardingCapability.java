@@ -171,7 +171,6 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
         try {
             log.error("Name1 " + currentFlows.get(0).getName());
-            log.error(currentFlows.get(0).getMatch().getEtherType());
         } catch (Exception e) {
             log.error("Except");
         }
@@ -212,12 +211,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         ActionResponse response;
         try {
             IProtocolManager protocolManager = Activator.getProtocolManagerService();
-            log.error("Resource ID: " + this.resourceId);
-            log.error("Supported Protocols: " + protocolManager.getAllSupportedProtocols().toString());
-            log.error("Resource IDs: " + protocolManager.getAllResourceIds().toString());
             IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
-//            log.error(protocolSessionManager.getResourceID());
-            log.error("Action ID: " + action.getActionID());
             response = action.execute(protocolSessionManager);
 
         } catch (ProtocolException pe) {
@@ -242,28 +236,11 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
     @Override
     public void createOpenflowForwardingRule(OpenDaylightOFFlow forwardingRule) throws CapabilityException {
-        log.error("Create OPENDAYLIGHT FORWARDING RULE");
         log.info("Start of createOpenflowForwardingRule call");
         log.error("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
 
         IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
         ActionResponse response = executeAction(action);
-        List<OFFlow> forwardingRules = new ArrayList<OFFlow>();
-        forwardingRules.add(Utils.ODLFlowToOFFlow(forwardingRule));
-        log.error(forwardingRules.size());
-        log.error(forwardingRules.get(0).getName());
-
-        OFFlowTable table = new OFFlowTable();
-        table.setTableId("table1");
-        table.setOfForwardingRules(forwardingRules);
-        log.error(table.getOfForwardingRules().get(0).getName());
-        log.error(table.getOfForwardingRules().get(0).getPriority());
-        List<OFFlowTable> listOFTable = new ArrayList<OFFlowTable>();
-        listOFTable.add(table);
-        getResourceModel().setOfTables(listOFTable);
-        log.error(getResourceModel().getOfTables().size());
-        log.error(getResourceModel().getOfTables().get(0).getTableId());
-        log.error(getResourceModel().getOfTables().get(0).getOfForwardingRules().get(0).getName());
         
         refreshModelFlows();
         try {

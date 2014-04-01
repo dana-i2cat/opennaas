@@ -18,14 +18,13 @@ public abstract class OpenflowSwitchModelHelper {
     static Log log = LogFactory.getLog(OpenflowSwitchModelHelper.class);
 
 	public static List<OFFlow> getSwitchForwardingRules(OpenflowSwitchModel model) {
-log.error("GETSIWTCH FORWARDING RULES");
 		List<OFFlow> forwardingRules = new ArrayList<OFFlow>();
 
 		Iterator<OFFlowTable> iterator = model.getOfTables().iterator();
 		while (iterator.hasNext()){
                     OFFlowTable it = iterator.next();
-                    log.error("Helper ..."+it.getTableId());
-                    log.error("Helper ..."+it.getOfForwardingRules().get(0).getName());
+                    log.error("Helper1 ..."+it.getTableId());
+//                    log.error("Helper ..."+it.getOfForwardingRules().get(0).getName());
 			forwardingRules.addAll(it.getOfForwardingRules());
                 }
 

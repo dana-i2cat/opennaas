@@ -27,6 +27,8 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.DijkstraAlgorithm;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Edge;
@@ -44,8 +46,6 @@ import org.opennaas.extensions.vrf.utils.Utils;
 public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
 
     Log log = LogFactory.getLog(DijkstraRoutingCapability.class);
-    private String logMessage = "Communication failure";
-    private String streamInfo;
     private List<Vertex> nodes = new ArrayList<Vertex>();
     private List<Edge> edges = new ArrayList<Edge>();
     private final int staticDijkstraCost = 1;
@@ -68,36 +68,36 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         dijkstra.execute(src);//calculate the adjacent matrix from the requested source vertex
         LinkedList<Vertex> path = dijkstra.getPath(dst);
         log.error("Path: " + path);
-//if path nUll???
-        List<VRFRoute> listRoutes;
-if(path != null){
-        listRoutes = creatingRoutes(path, source, target);
-}else{
-	return Response.ok("Path null.").build();
-}
 
-	int outPutPortSrcSw = getOutPortSrcSw(path);
+        List<VRFRoute> listRoutes;
+        if (path != null) {//if path null???
+            listRoutes = creatingRoutes(path, source, target);
+        } else {
+            return Response.ok("Path null.").build();
+        }
+
+        int outPutPortSrcSw = getOutPortSrcSw(path);
         StringBuilder listFlows = new StringBuilder();
-        List<FloodlightOFFlow> listOF;
+        List<OFFlow> listOF;
         Response response = proactiveRouting(listRoutes);
-        listOF = ((List<FloodlightOFFlow>) response.getEntity());
+        listOF = ((List<OFFlow>) response.getEntity());
         if (listOF.isEmpty()) {
             return Response.status(404).type("text/plain").entity("Route Not found.").build();
         }
         listFlows.append("[");
-        listFlows.append("{ip:'").append(source).append("'},")//source IP
-                ;//first switch id
+        listFlows.append("{ip:'").append(source).append("'},");//source IP
 
         for (int i = 0; i < listOF.size(); i++) {
             if (i == 0) {
                 listFlows.append("{dpid:'");
-                listFlows.append(listOF.get(i).getSwitchId());
+log.error("DIJKSTRA DPID: "+listOF.get(i).getDPID());
+                listFlows.append(listOF.get(i).getDPID());
                 listFlows.append("'},");//others switch ids
             }
             for (int j = 0; j < i; j++) {
-                if (!listFlows.toString().contains(listOF.get(i).getSwitchId())) {
+                if (!listFlows.toString().contains(listOF.get(i).getDPID())) {
                     listFlows.append("{dpid:'");
-                    listFlows.append(listOF.get(i).getSwitchId());
+                    listFlows.append(listOF.get(i).getDPID());
                     listFlows.append("'},");//others switch ids
                 }
             }
@@ -114,45 +114,64 @@ if(path != null){
     private Response proactiveRouting(List<VRFRoute> routeSubnetList) {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
 
-        List<FloodlightOFFlow> listFlow = new ArrayList<FloodlightOFFlow>();
+        List<OFFlow> listFlow = new ArrayList<OFFlow>();
 
         //Conversion List of VRFRoute to List of FloodlightFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
-                insertRoutetoStaticBundle2(r);
+                insertRoutetoStaticBundle(r);
                 log.error("Route " + r.getSourceAddress() + " " + r.getDestinationAddress() + " " + r.getSwitchInfo().getDPID() + " " + r.getSwitchInfo().getInputPort() + " " + r.getSwitchInfo().getOutputPort());
-                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2048"));
-                listFlow.add(Utils.VRFRouteToFloodlightFlow(r, "2054"));
+                listFlow.add(Utils.VRFRouteToOFFlow(r, "2048"));
+                listFlow.add(Utils.VRFRouteToOFFlow(r, "2054"));
+//                listFlow.add(Utils.VRFRouteToOFFlow(r, "0x0800"));
+//                listFlow.add(Utils.VRFRouteToOFFlow(r, "0x0806"));
+
             }
         }
 
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
-            try {
-//log.error("Flow "+listFlow.get(i).getMatch().getSrcIp()+" "+listFlow.get(i).getMatch().getDstIp()+" "+listFlow.get(i).getSwitchId());
-                FloodlightOFFlow flow = listFlow.get(i);
-                provisionLink(flow);
-            } catch (ResourceException e) {
-//                throw new ActionException("Error provisioning link : ", e);
-            } catch (ActivatorException e) {
-//                throw new ActionException("Error provisioning link : ", e);
-            }
+            log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
+            insertFlow(listFlow.get(i));
         }
         return Response.ok(listFlow).build();
     }
 
-    private Response provisionLink(FloodlightOFFlow flow/*, NetworkConnection connection, SDNNetworkOFFlow sdnNetworkOFFlow, boolean isLastLinkInRoute*/) throws ResourceException, ActivatorException {
-        log.info("Provision Flow Link Floodlight");
-        String switchId = flow.getSwitchId();
-        IResource resource = getResourceByName(switchId);
-        if (resource == null) {
-            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
+    /**
+     * Insert OFFlow to OpenFlow Switch
+     *
+     * @param flow
+     * @return
+     */
+    private Response insertFlow(OFFlow flow) {
+        log.info("Dynamic Provision OpenFlow Flow Link");
+        String protocol;
+        IResource resource;
+        try {
+            protocol = getProtocolType(flow.getDPID());
+log.error("Dijkstra "+protocol);            
+            resource = getResourceByName(flow.getDPID());
+            if (resource == null) {
+                return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
+            }
+            IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+            if (protocol.equals("opendaylight")) {
+                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")){
+                    OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
+                    forwardingCapability.createOpenflowForwardingRule(odlFlow);
+                }
+            } else if (protocol.equals("floodlight")) {
+                FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
+                forwardingCapability.createOpenflowForwardingRule(fldFlow);
+            }
+        } catch (ActivatorException ex) {
+            Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ResourceException ex) {
+            Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-        forwardingCapability.createOpenflowForwardingRule(flow);
         return Response.ok().build();
     }
-
+    
     private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
         log.info("Get Resource By switch ID: " + resourceName);
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
@@ -185,41 +204,9 @@ if(path != null){
         return resourceManager.getResource(resourceId);
     }
 
-    //---------------------START DEMO FUNCTIONS & CLASSES
-    @Override
-    public String getLog() {
-        return logMessage;
+    private int getOutPortSrcSw(LinkedList<Vertex> path) {
+        return extractPort(path.get(1), path.get(2), 1);
     }
-
-    public void removeLog() {
-        logMessage = "";
-    }
-
-    public class updateLog extends Thread {
-
-        public updateLog() {
-        }
-
-        @Override
-        public void run() {
-            try {
-                updateLog.sleep(5000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            removeLog();
-        }
-    }
-
-    @Override
-    public String getStream() {
-        return streamInfo;
-    }
-    //---------------------END DEMO FUNCTIONS
-
-	private int getOutPortSrcSw(LinkedList<Vertex> path){
-		return extractPort(path.get(1), path.get(2), 1);
-}
 
     private List<VRFRoute> creatingRoutes(LinkedList<Vertex> path, String sourceIP, String targetIP) {
         List<VRFRoute> listRoutes = new ArrayList<VRFRoute>();
@@ -245,7 +232,7 @@ if(path != null){
 
                 listRoutes.add(newRoute);
 
-		sw = new L2Forward();
+                sw = new L2Forward();
                 sw.setDPID(dpid);
                 sw.setInputPort(outputPort);
                 sw.setOutputPort(inputPort);
@@ -255,7 +242,7 @@ if(path != null){
                 newRoute.setSwitchInfo(sw);
                 newRoute.setType("dynamic");
 
-		listRoutes.add(newRoute);
+                listRoutes.add(newRoute);
 
                 source = path.get(j);
             }
@@ -380,39 +367,12 @@ if(path != null){
     }
 
     /**
-     * Call a rest service to insert a Route
+     * Call a rest service to insert a StaticRoute
      *
      * @param route
      * @return true if the environment has been created
      */
     public String insertRoutetoStaticBundle(VRFRoute route) {
-        log.error("Calling insert Route Table service");
-        String response;
-        String url = "http://localhost:8888/opennaas/vrf/staticrouting/route";
-
-        Form fm = new Form();
-        fm.set("ipSource", route.getSourceAddress());
-        fm.set("ipDest", route.getDestinationAddress());
-        fm.set("switchDPID", route.getSwitchInfo().getDPID());
-        fm.set("inputPort", route.getSwitchInfo().getInputPort());
-        fm.set("outputPort", route.getSwitchInfo().getOutputPort());
-
-        WebClient client = WebClient.create(url);
-        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
-        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
-        response = client.accept(MediaType.TEXT_PLAIN).put(fm, String.class);
-
-        log.error("Inser to other Bundle Response: " + response);
-        return response;
-    }
-    
-    /**
-     * Call a rest service to insert a Route
-     *
-     * @param route
-     * @return true if the environment has been created
-     */
-    public String insertRoutetoStaticBundle2(VRFRoute route) {
         log.error("Calling insert Route Table service");
         String response = null;
         String url = "http://localhost:8888/opennaas/vrf/staticrouting/dynamic-route";
@@ -429,7 +389,7 @@ if(path != null){
             response = mapper.writeValueAsString(route);
 
         } catch (IOException ex) {
-		Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         response = client.accept(MediaType.TEXT_PLAIN).type(MediaType.APPLICATION_JSON).put(response, String.class);
@@ -450,15 +410,33 @@ if(path != null){
     @Override
     public Response setTopologyFilename(String topologyFilename) {
         this.topologyFilename = topologyFilename;
-        return Response.ok("FileName "+topologyFilename+"selected.").build();
+        return Response.ok("FileName " + topologyFilename + "selected.").build();
     }
-    
-    public Response uploadDynamicTopology(){
+
+    public Response uploadDynamicTopology() {
         Response response = null;
         /**
          * NOT IMPLEMENTED YEET!!!!!!!!!!!!
-         * 
+         *
          */
         return response;
+    }
+
+    private String getProtocolType(String resourceName) throws ActivatorException, ResourceException {
+        String protocol;
+        IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
+
+        IResource resource = getResourceByName(resourceName);//switchId
+
+        log.error("Resource Id of the switch is: " + resource.getResourceIdentifier().getId());
+
+        resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:00:00:00:02 --> s2
+        IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
+        IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
+
+        protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
+
+        log.error("Protocol of switch is: " + protocol);
+        return protocol;
     }
 }

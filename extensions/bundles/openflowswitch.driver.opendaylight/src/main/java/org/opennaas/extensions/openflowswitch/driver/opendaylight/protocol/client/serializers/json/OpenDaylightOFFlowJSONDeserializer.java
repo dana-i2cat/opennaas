@@ -60,15 +60,15 @@ public class OpenDaylightOFFlowJSONDeserializer extends
                 match.setWildcards(jp.getText());
             } else if (n == "ingressPort") {
                 match.setIngressPort(jp.getText());
-            } else if (n == "src-mac") {
+            } else if (n == "dlSrc") {
                 match.setSrcMac(jp.getText());
-            } else if (n == "dst-mac") {
+            } else if (n == "dlDst") {
                 match.setDstMac(jp.getText());
             } else if (n == "vlan-id") {
                 match.setVlanId(jp.getText());
             } else if (n == "vlan-priority") {
                 match.setVlanPriority(jp.getText());
-            } else if (n == "ether-type") {
+            } else if (n == "etherType") {
                 match.setEtherType(jp.getText());
             } else if (n == "tos-bits") {
                 match.setTosBits(jp.getText());

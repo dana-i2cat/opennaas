@@ -359,6 +359,12 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return Response.ok(listFlow).build();
     }
 
+    /**
+     * Insert routes from dynamic bundle
+     *
+     * @param json
+     * @return
+     */
     @Override
     public Response insertRoute(String json) {
         ObjectMapper mapper = new ObjectMapper();
@@ -437,8 +443,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             }
             IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
             if (protocol.equals("opendaylight")) {
-                OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
-                forwardingCapability.createOpenflowForwardingRule(odlFlow);
+                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")) {
+                    OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
+                    forwardingCapability.createOpenflowForwardingRule(odlFlow);
+                }
             } else if (protocol.equals("floodlight")) {
                 FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
                 forwardingCapability.createOpenflowForwardingRule(fldFlow);
@@ -452,7 +460,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     }
 
     private Response removeFlow(OFFlow flow) {
-        log.info("Remove Flow Link Floodlight");
+        log.info("Remove Flow Link");
         Response response = null;
         String protocol = null;
         IResource resource = null;
@@ -499,12 +507,18 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 
     @Override
     public String removeodl() {
-        Response response = null;
         log.error("REMOVE ODL ...................");
-        String flowId = "TESTODL";
+        String id = "00:00:00:00:00:00:00:0";
+
         try {
-            String protocol = getProtocolType("00:00:00:00:00:00:00:09");
-            removeLink(flowId, protocol, "00:00:00:00:00:00:00:09");
+            for (int i = 1; i < 9; i++) {
+                String id2 = id + i;
+                List<OFFlow> response2 = getLinks(id2);
+                for (OFFlow flow : (List<OFFlow>) response2) {
+                    String protocol = getProtocolType(id2);
+                    removeLink(flow.getName(), protocol, id2);
+                }
+            }
         } catch (ResourceException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ActivatorException ex) {
@@ -518,7 +532,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         Response response = null;
 
         log.error("TEST ODL GET FLOW ...................");
-        String DPID = "00:00:00:00:00:00:00:09";
+        String DPID = "00:00:00:00:00:00:00:01";
         String name = "TESTODL";
         log.error("Flow defined");
         try {
@@ -536,15 +550,15 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     /**
      * Get list of flows given DPID
      *
+     * @param DPID
      * @return
      */
     @Override
-    public Response getodl() {
+    public Response getodl(String DPID) {
 
         Response response = null;
 
-        log.error("TEST ODL GET ...................");
-        String DPID = "00:00:00:00:00:00:00:09";
+        log.error("TEST ODL GET ................... " + DPID);
         try {
             String protocol = getProtocolType(DPID);
             response = getLinks(protocol, DPID);
@@ -617,6 +631,17 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         }
 
         return Response.ok(response).build();
+    }
+
+    private List<OFFlow> getLinks(String DPID) throws ResourceException, ActivatorException {
+        log.info("Provision Flow Link Floodlight");
+        List<OFFlow> list = new ArrayList<OFFlow>();
+        IResource resource = getResourceByName(DPID);
+
+        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+        list = forwardingCapability.getOpenflowForwardingRules();
+
+        return list;
     }
 
     private Response getLink(String name, String DPID, String protocol) throws ResourceException, ActivatorException {
@@ -696,35 +721,143 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         FloodlightOFMatch match = new FloodlightOFMatch();
         List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
         FloodlightOFAction action = new FloodlightOFAction();
-        match.setDstIp("192.168.1.1");
-        match.setSrcIp("192.168.9.99");
-        match.setEtherType("2058");
+        match.setSrcIp("192.168.1.1");
+        match.setDstIp("192.168.4.4");
+//        match.setSrcMac("00:05:b9:7c:81:5f");
+//        match.setDstMac("01:05:b9:7c:81:51");
+        match.setEtherType("2048");
         match.setIngressPort("1");
-        action.setType("output");
-        action.setValue("1");
+        action.setType("OUTPUT");
+        action.setValue("3");
         actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:09");
+        flow.setDPID("00:00:00:00:00:00:00:03");
         flow.setActions(actions);
         flow.setMatch(match);
-        flow.setName("TEST-ODL1");
+        flow.setName("TEST-ODL2");
+        flow.setPriority("32767");
         list.add(flow);
 
         flow = new OpenDaylightOFFlow();
         match = new FloodlightOFMatch();
         actions = new ArrayList<FloodlightOFAction>();
         action = new FloodlightOFAction();
-        match.setDstIp("192.168.2.2");
-        match.setSrcIp("192.168.8.97");
-        match.setEtherType("2058");
+        match.setSrcIp("192.168.1.1");
+        match.setDstIp("192.168.4.4");
+//        match.setSrcMac("00:05:b9:7c:81:5f");
+//        match.setDstMac("01:05:b9:7c:81:51");
+        match.setEtherType("2048");
         match.setIngressPort("1");
-        action.setType("output");
-        action.setValue("1");
+        action.setType("OUTPUT");
+        action.setValue("4");
         actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:09");
+        flow.setDPID("00:00:00:00:00:00:00:04");
         flow.setActions(actions);
         flow.setMatch(match);
-        flow.setName("TEST-ODL2");
+        flow.setName("TEST-ODL3");
+        flow.setPriority("32767");
         list.add(flow);
+
+        flow = new OpenDaylightOFFlow();
+        match = new FloodlightOFMatch();
+        actions = new ArrayList<FloodlightOFAction>();
+        action = new FloodlightOFAction();
+        match.setSrcIp("192.168.1.1");
+        match.setDstIp("192.168.4.4");
+//        match.setSrcMac("00:05:b9:7c:81:5f");
+//        match.setDstMac("01:05:b9:7c:81:51");
+        match.setEtherType("2048");
+        match.setIngressPort("3");
+        action.setType("OUTPUT");
+        action.setValue("2");
+        actions.add(action);
+        flow.setDPID("00:00:00:00:00:00:00:01");
+        flow.setActions(actions);
+        flow.setMatch(match);
+        flow.setName("TEST-ODL1");
+        flow.setPriority("32767");
+        list.add(flow);
+
+        flow = new OpenDaylightOFFlow();
+        match = new FloodlightOFMatch();
+        actions = new ArrayList<FloodlightOFAction>();
+        action = new FloodlightOFAction();
+        match.setDstIp("192.168.1.1");
+        match.setSrcIp("192.168.4.4");
+//        match.setSrcMac("00:05:b9:7c:81:5f");
+//        match.setDstMac("01:05:b9:7c:81:51");
+        match.setEtherType("2048");
+        match.setIngressPort("3");
+        action.setType("OUTPUT");
+        action.setValue("1");
+        actions.add(action);
+        flow.setDPID("00:00:00:00:00:00:00:03");
+        flow.setActions(actions);
+        flow.setMatch(match);
+        flow.setName("TEST-ODL5");
+        flow.setPriority("32767");
+        list.add(flow);
+
+        flow = new OpenDaylightOFFlow();
+        match = new FloodlightOFMatch();
+        actions = new ArrayList<FloodlightOFAction>();
+        action = new FloodlightOFAction();
+        match.setDstIp("192.168.1.1");
+        match.setSrcIp("192.168.4.4");
+//        match.setSrcMac("00:05:b9:7c:81:5f");
+//        match.setDstMac("01:05:b9:7c:81:51");
+        match.setEtherType("2048");
+        match.setIngressPort("4");
+        action.setType("OUTPUT");
+        action.setValue("1");
+        actions.add(action);
+        flow.setDPID("00:00:00:00:00:00:00:04");
+        flow.setActions(actions);
+        flow.setMatch(match);
+        flow.setName("TEST-ODL6");
+        flow.setPriority("32767");
+        list.add(flow);
+
+        flow = new OpenDaylightOFFlow();
+        match = new FloodlightOFMatch();
+        actions = new ArrayList<FloodlightOFAction>();
+        action = new FloodlightOFAction();
+        match.setDstIp("192.168.1.1");
+        match.setSrcIp("192.168.4.4");
+//        match.setSrcMac("00:05:b9:7c:81:5f");
+//        match.setDstMac("01:05:b9:7c:81:51");
+        match.setEtherType("2048");
+        match.setIngressPort("2");
+        action.setType("OUTPUT");
+        action.setValue("3");
+        actions.add(action);
+        flow.setDPID("00:00:00:00:00:00:00:01");
+        flow.setActions(actions);
+        flow.setMatch(match);
+        flow.setName("TEST-ODL4");
+        flow.setPriority("32767");
+        list.add(flow);
+
+        /* 
+         flow = new OpenDaylightOFFlow();
+         match = new FloodlightOFMatch();
+         actions = new ArrayList<FloodlightOFAction>();
+         action = new FloodlightOFAction();
+         match.setDstIp("192.168.2.2");
+         match.setSrcIp("192.168.8.97");
+         match.setEtherType("2048");
+         match.setIngressPort("1");
+         action.setType("output");
+         action.setValue("2");
+         actions.add(action);
+         flow.setDPID("00:00:00:00:00:00:00:01");
+         flow.setActions(actions);
+         flow.setMatch(match);
+         flow.setName("TEST-ODL2");
+         list.add(flow);
+               
+         */
         return list;
+
     }
+
 }

@@ -2,6 +2,8 @@ package org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.clie
 
 import java.io.IOException;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
@@ -12,7 +14,7 @@ import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 public class OpenDaylightOFFlowJSONSerializer extends
 		JsonSerializer<OpenDaylightOFFlow> {
-
+    
 	@Override
 	public void serialize(OpenDaylightOFFlow flow, JsonGenerator jGen,
 			SerializerProvider serializer) throws IOException,
@@ -42,7 +44,6 @@ public class OpenDaylightOFFlowJSONSerializer extends
 			serializeActions(flow.getActions(), jGen, serializer);
                 jGen.writeEndArray();
 		jGen.writeEndObject();
-
 	}
 
 	/**
@@ -68,10 +69,10 @@ public class OpenDaylightOFFlowJSONSerializer extends
 			jGen.writeStringField("ingressPort", match.getIngressPort());
 
 		if (match.getSrcMac() != null && !match.getSrcMac().isEmpty())
-			jGen.writeStringField("src-mac", match.getSrcMac());
+			jGen.writeStringField("dlSrc", match.getSrcMac());
 
 		if (match.getDstMac() != null && !match.getDstMac().isEmpty())
-			jGen.writeStringField("dst-mac", match.getDstMac());
+			jGen.writeStringField("dlDst", match.getDstMac());
 
 		if (match.getVlanId() != null && !match.getVlanId().isEmpty())
 			jGen.writeStringField("vlan-id", match.getVlanId());
@@ -127,9 +128,7 @@ public class OpenDaylightOFFlowJSONSerializer extends
 			}
 		}
 		sb.deleteCharAt(0); // delete first comma
-
 		jGen.writeString(sb.toString());
-
 	}
 
 	@Override

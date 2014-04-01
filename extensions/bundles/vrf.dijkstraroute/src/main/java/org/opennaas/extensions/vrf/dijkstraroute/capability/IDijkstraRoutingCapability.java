@@ -48,26 +48,5 @@ public interface IDijkstraRoutingCapability {
     @GET
     public Response setTopologyFilename(
             @PathParam("fileName") String fileName);
-    
-    /* ------------- DEMO ------------- */
-    /**
-     * Used in demonstrations. Request a log from OpenNaaS in order to see the route requests events.
-     * @return 
-     */
-    @Path("/log")
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getLog();
-    
-    /**
-     * Send the path
-     * @return 
-     */
-    @Path("/stream")
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getStream();
-   
-    /* ------------- DEMO ------------- */
-    
+
 }
