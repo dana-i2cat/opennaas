@@ -20,6 +20,9 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
  * #L%
  */
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.IEventManager;
@@ -30,6 +33,8 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * 
@@ -89,6 +94,22 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
+	}
+
+	/**
+	 * Register the capability like an OSGi service but NOT as a web service through DOSGi.
+	 * 
+	 * The fact this capability has no methods to export as WS in INCLMonitoringCapability causes an error if registered with DOSGi.
+	 * 
+	 * @param name
+	 * @param resourceId
+	 * @return
+	 * @throws CapabilityException
+	 */
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
+			String ifaceName) throws CapabilityException {
+		Dictionary<String, String> props = new Hashtable<String, String>();
+		return registration = bundleContext.registerService(ifaceName, this, props);
 	}
 
 	// ///////////////////////////////
