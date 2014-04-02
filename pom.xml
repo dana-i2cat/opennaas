@@ -90,7 +90,7 @@
 		<opensaml.version>2.4.1_1</opensaml.version>
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam2.version>2.3.0</pax.exam2.version>
+		<pax.exam2.version>2.3.1</pax.exam2.version>
 		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
