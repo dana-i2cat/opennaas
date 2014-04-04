@@ -7,7 +7,11 @@
  						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
 						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 	
-    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload">
+  		<cm:default-properties>
+            <cm:property name="ws.rest.url" value="/opennaas"/>
+        </cm:default-properties> 
+   	</cm:property-placeholder>
 	
 	<!--
 	    Register VCPENetworkManager as OSGi Service
