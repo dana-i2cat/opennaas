@@ -46,6 +46,7 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.CapabilityProperty;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -132,16 +133,19 @@ public class FindPathForRequestTest {
 
 	}
 
-	@Test
+	/*
+	 * When Candidates are more specific than requests, there will be no matching route. An ActionException is expected requesting a route without
+	 * ports when mapping file declares ports.
+	 */
+	@Test(expected = ActionException.class)
 	public void findPathForRequestTestWithoutPorts() throws ResourceException {
 
 		CircuitRequest request = generateSampleRequestWithoutPorts();
 
 		IPathFindingCapability pathFindingCapab = (IPathFindingCapability) genericNetwork.getCapabilityByInterface(IPathFindingCapability.class);
-		Route route = pathFindingCapab.findPathForRequest(request);
 
-		Assert.assertNotNull(route);
-		Assert.assertEquals("PathFinding capability should have selected route with id 3", "3", route.getId());
+		// no possible route, no matching
+		pathFindingCapab.findPathForRequest(request);
 	}
 
 	@Test
