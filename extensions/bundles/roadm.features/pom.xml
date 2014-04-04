@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.opennaas</groupId>
     <artifactId>org.opennaas.extensions.bundles</artifactId>
-    <version>0.28-SNAPSHOT</version>
+    <version>0.28</version>
   </parent>
   <artifactId>org.opennaas.extensions.roadm.features</artifactId>
 	<packaging>bundle</packaging>
