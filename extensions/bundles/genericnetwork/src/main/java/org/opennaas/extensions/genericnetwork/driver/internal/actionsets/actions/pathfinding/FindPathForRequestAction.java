@@ -161,10 +161,13 @@ public class FindPathForRequestAction extends Action {
 			throw new ActionException("Invalid file for mapping");
 		}
 
+		if (possibleRouteIds.isEmpty())
+			throw new ActionException("Unable to find any route for given request");
+
 		possibleRouteIds = filterNotCongestedRoutes(possibleRouteIds);
 
 		if (possibleRouteIds.isEmpty())
-			throw new ActionException("Unable to find uncongested route for given request");
+			throw new ActionException("Unable to find any uncongested route for given request");
 
 		Route route = routes.get(possibleRouteIds.get(0));
 
