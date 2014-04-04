@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.27</version>
+		<version>0.28</version>
 	</parent>
 
 	<packaging>pom</packaging>
@@ -57,6 +57,20 @@
 		
 
 	</dependencies>
+
+	<pluginRepositories>
+		<!-- Codehause Snapshots - NSIS plugin requirement -->
+		<pluginRepository>
+			<id>Codehaus Snapshots</id>
+			<url>http://nexus.codehaus.org/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<plugins>
@@ -151,4 +165,34 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>win-installer</id>
+			<build>
+				<plugins>
+					<!-- NSIS plugin for producing Windows installer -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>nsis-maven-plugin</artifactId>
+						<version>1.0-alpha-1</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>generate-headerfile</goal>
+									<goal>make</goal>
+								</goals>
+								<configuration>
+									<scriptFile>src/nsis/opennaas.nsi</scriptFile>
+									<outputFile>opennaas-${project.version}-installer.exe</outputFile>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

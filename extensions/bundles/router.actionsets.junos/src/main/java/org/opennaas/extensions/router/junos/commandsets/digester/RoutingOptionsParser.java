@@ -32,10 +32,13 @@ import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NextHopIPRoute;
 import org.opennaas.extensions.router.model.NextHopRoute;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.RouteCalculationService;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
+
+import com.google.common.net.InetAddresses;
 
 public class RoutingOptionsParser extends DigesterEngine {
 
@@ -54,18 +57,31 @@ public class RoutingOptionsParser extends DigesterEngine {
 
 		@Override
 		public void addRuleInstances(Digester arg0) {
-			// FIXME the path pattern can't be global , must distinguish between
-			// routers
+			// FIXME the path pattern can't be global, must distinguish between routers
 			addMyRule("*/routing-options/router-id", "setRouterIdInServices", 0);
+
+			// ********************
+			// IPv4 static routes *
+			// ********************
 			addObjectCreate("*/routing-options/static/route", NextHopIPRoute.class);
 			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 0);
-			// addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
-			/* Add NextHopIPRoute to mapElements */
-			/* AddRouteUsesEndpoint */
-			addMyRule("*/routing-options/static/route/next-hop", "addInterface", 0);
+			addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
+			addCallMethod("*/routing-options/static/route/preference/metric-value", "setRouteMetric", 0, new Class[] { Integer.TYPE });
 
 			/* Add NextHopIpRoute to the parent */
 			addSetNext("*/routing-options/static/route/", "addNextHopRoute");
+
+			// ********************
+			// IPv6 static routes *
+			// ********************
+			addObjectCreate("*/routing-options/rib/static/route", NextHopIPRoute.class);
+			addMyRule("*/routing-options/rib/static/route/name", "setDestinationAddress", 0);
+			addMyRule("*/routing-options/rib/static/route/next-hop", "setNextHop", 0);
+			addCallMethod("*/routing-options/rib/static/route/preference/metric-value", "setRouteMetric", 0, new Class[] { Integer.TYPE });
+			addCallMethod("*/routing-options/rib/static/route/discard", "setRouteMetric", 0, new Class[] { Integer.TYPE });
+
+			/* Add NextHopIpRoute to the parent */
+			addSetNext("*/routing-options/rib/static/route/", "addNextHopRoute");
 		}
 	}
 
@@ -90,8 +106,9 @@ public class RoutingOptionsParser extends DigesterEngine {
 	/*
 	 * public void addInterface(String nextHop) { NextHopIPRoute ipRoute = (NextHopIPRoute) peek(0);
 	 * 
-	 * String location = ipRoute.getDestinationAddress(); // TODO implements the case where is needed merge the classes, if it is. // also, add merge
-	 * method into the class mapElements.put(location, ipRoute);
+	 * String location = ipRoute.getDestinationAddress();
+	 * 
+	 * TODO implements the case where is needed merge the classes, if it is. also, add merge method into the class mapElements.put(location, ipRoute);
 	 * 
 	 * }
 	 */
@@ -121,9 +138,24 @@ public class RoutingOptionsParser extends DigesterEngine {
 	public void setNextHop(String nextHop) {
 
 		NextHopIPRoute nextHopIPRoute = (NextHopIPRoute) peek(0);
+		// ***************************
+		// Next hop is an IP address *
+		// ***************************
 		// creating IpEndPoint that will be the next hop
 		IPProtocolEndpoint ipNextHop = new IPProtocolEndpoint();
-		ipNextHop.setIPv4Address(nextHop);
+		if (InetAddresses.isInetAddress(nextHop)) {
+			if (IPUtilsHelper.validateIpAddressPattern(nextHop)) {
+				ipNextHop.setProtocolIFType(ProtocolIFType.IPV4);
+				ipNextHop.setIPv4Address(nextHop);
+			} else {
+				ipNextHop.setProtocolIFType(ProtocolIFType.IPV6);
+				ipNextHop.setIPv6Address(nextHop);
+			}
+		} else {
+			// not an IP address, it must be an interface.unit
+			addInterface(nextHop);
+			return;
+		}
 		try {
 			// adding association to IPProtocolEndpoint
 			nextHopIPRoute.setProtocolEndpoint(ipNextHop);
@@ -132,29 +164,11 @@ public class RoutingOptionsParser extends DigesterEngine {
 		}
 	}
 
-	/**
-	 * Look for RouteCalculationServices in the model and set RouterId in them.
-	 * 
-	 * Assumes a System is in the top of the stack.
-	 * 
-	 * @param routerId
-	 */
-	public void setRouterIdInServices(String routerId) {
-		Object obj = peek(0);
-		assert (obj instanceof System);
-		System routerModel = (System) obj;
-
-		for (Service service : routerModel.getHostedService()) {
-			if (service instanceof RouteCalculationService) {
-				((RouteCalculationService) service).setRouterID(routerId);
-			}
-		}
-	}
-
 	public void addInterface(String nextHop) {
 		NextHopIPRoute nextHopIPRoute = (NextHopIPRoute) peek(0);
 
 		boolean isGRE = false;
+
 		for (Service service : model.getHostedService()) {
 			if (service instanceof GRETunnelService) {
 				GRETunnelService greService = (GRETunnelService) service;
@@ -163,7 +177,7 @@ public class RoutingOptionsParser extends DigesterEngine {
 					for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
 						if (pE instanceof GRETunnelEndpoint) {
 							GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
-							nextHopIPRoute.setProtocolEndpoint(pE);
+							nextHopIPRoute.setProtocolEndpoint(gE);
 							isGRE = true;
 
 						}
@@ -194,39 +208,43 @@ public class RoutingOptionsParser extends DigesterEngine {
 
 	}
 
-	public String toPrint(System model) {
-		String str = "";
-		str += model.getNextHopRoute().size();
-		for (NextHopRoute nextHop : model.getNextHopRoute()) {
-			NextHopIPRoute port = (NextHopIPRoute) nextHop;
-			str += "- Routing options " + '\n';
+	/**
+	 * Look for RouteCalculationServices in the model and set RouterId in them.
+	 * 
+	 * Assumes a System is in the top of the stack.
+	 * 
+	 * @param routerId
+	 */
+	public void setRouterIdInServices(String routerId) {
+		Object obj = peek(0);
+		assert (obj instanceof System);
+		System routerModel = (System) obj;
 
-			str += "IP adress " + port.getDestinationAddress() + '\n';
-			str += "Mask " + port.getDestinationMask() + '\n';
-			str += "is Static " + String.valueOf(port.isIsStatic()) + '\n';
-			if (port.getProtocolEndpoint() instanceof GRETunnelEndpoint)
-				str += "Next hop " + (((GRETunnelEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n';
-			else if (port.getProtocolEndpoint() instanceof IPProtocolEndpoint)
-				str += "Next hop " + (((IPProtocolEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n';
+		for (Service service : routerModel.getHostedService()) {
+			if (service instanceof RouteCalculationService) {
+				((RouteCalculationService) service).setRouterID(routerId);
+			}
 		}
-
-		return str;
-
 	}
 
-	@Deprecated
-	public String toPrint() {
+	public String toPrint(System model) {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(model.getNextHopRoute().size());
+		for (NextHopRoute nextHop : model.getNextHopRoute()) {
+			NextHopIPRoute port = (NextHopIPRoute) nextHop;
+			strBuilder.append("- Routing options\n");
 
-		String str = "" + '\n';
-		for (String key : mapElements.keySet()) {
-			NextHopIPRoute port = (NextHopIPRoute) mapElements.get(key);
-			str += "- Routing options " + '\n';
-			str += "IP adress " + port.getDestinationAddress() + '\n';
-			str += "Mask " + port.getDestinationMask() + '\n';
-			str += "is Static " + String.valueOf(port.isIsStatic()) + '\n';
-			str += "Next hop " + (((IPProtocolEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n';
+			strBuilder.append("IP adress " + port.getDestinationAddress() + '\n');
+			strBuilder.append("Mask " + port.getDestinationMask() + '\n');
+			strBuilder.append("is Static " + String.valueOf(port.isIsStatic()) + '\n');
+			if (port.getProtocolEndpoint() instanceof GRETunnelEndpoint)
+				strBuilder.append("Next hop " + (((GRETunnelEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n');
+			else if (port.getProtocolEndpoint() instanceof IPProtocolEndpoint)
+				strBuilder.append("Next hop " + (((IPProtocolEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n');
 		}
-		return str;
+
+		return strBuilder.toString();
+
 	}
 
 	public System getModel() {

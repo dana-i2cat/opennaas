@@ -10,12 +10,17 @@
 	<routing-options>
 		<static>
 			<route>
-				<name>$param[0]</name>
-				#if(!$param[1].equals(""))
-				<next-hop>$param[1]</next-hop>
+				<name>$param.getNetIdIpAdress()</name>
+				#if($nextHopSet)
+				<next-hop>$param.getNextHopIpAddress()</next-hop>
 				#end
-				#if($param[2].equals("true"))
+				#if($discardSet)
 				<discard/>
+				#end
+				#if($preferenceSet)
+				<preference>
+					<metric-value>$param.getPreference()</metric-value>
+				</preference>
 				#end
 			</route>
 		</static>

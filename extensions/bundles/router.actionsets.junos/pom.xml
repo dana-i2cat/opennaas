@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.27</version>
+		<version>0.28</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
@@ -68,6 +68,19 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.vrrp</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.linkaggregation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.vlanbridge</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.l3vlan</artifactId>
+		</dependency>
+		
 		<!--
 			specify the last version from xerces-impl to work with the digester
 			parser
@@ -97,8 +110,8 @@
 			<artifactId>commons-configuration</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.guava-osgi</groupId>
-			<artifactId>guava-osgi</artifactId>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

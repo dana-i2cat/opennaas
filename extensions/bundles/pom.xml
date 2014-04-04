@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.27</version>
+		<version>0.28</version>
 	</parent>
 	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
@@ -37,6 +37,9 @@
 		<module>router.capability.staticroute</module>
 		<module>router.capability.bgp</module>
 		<module>router.capability.vrrp</module>
+		<module>router.capability.l3vlan</module>		
+		<module>router.capability.linkaggregation</module>
+		<module>router.capability.vlanbridge</module>
 		<module>router.capabilities.api</module>		
 		<module>router.model</module>
 		<module>router.features</module>
@@ -136,5 +139,6 @@
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
+
 	</modules>
 </project>

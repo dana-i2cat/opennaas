@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.27</version>
+		<version>0.28</version>
 	</parent>
 	<!-- POM id -->
 	<artifactId>org.opennaas.extensions.quantum</artifactId>
@@ -33,8 +33,8 @@
 		</dependency>	
 		<!-- Guava -->
 		<dependency>
-			<groupId>com.googlecode.guava-osgi</groupId>
-			<artifactId>guava-osgi</artifactId>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
 			http://cxf.547215.n5.nabble.com/Using-Jackson-as-JSON-body-reader-writer-with-DOSGi-td5729257.html)-->

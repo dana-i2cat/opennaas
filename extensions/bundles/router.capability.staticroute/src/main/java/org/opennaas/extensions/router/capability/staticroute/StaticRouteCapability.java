@@ -20,6 +20,8 @@ package org.opennaas.extensions.router.capability.staticroute;
  * #L%
  */
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -30,18 +32,25 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.StaticRouteApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRoute;
+import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRouteCollection;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NextHopRoute;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
+ * @author Adrian Rosello Rey (i2CAT)
  */
 public class StaticRouteCapability extends AbstractCapability implements IStaticRouteCapability {
 
-	public static String	CAPABILITY_TYPE	= "staticroute";
+	public static String	CAPABILITY_TYPE				= "staticroute";
+	public final static int	PREFERENCE_DEFAULT_VALUE	= -1;
 
-	Log						log				= LogFactory.getLog(StaticRouteCapability.class);
+	Log						log							= LogFactory.getLog(StaticRouteCapability.class);
 
-	private String			resourceId		= "";
+	private String			resourceId					= "";
 
 	/**
 	 * StaticRouteCapability constructor
@@ -115,17 +124,25 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 * IStaticRoute Implementation
 	 */
 
-	@Override
-	public void createStaticRoute(String netIdIpAdress, String nextHopIpAddress, String isDiscard) throws CapabilityException {
+	public void createStaticRoute(StaticRoute staticRoute) throws CapabilityException {
 		log.info("Start of createStaticRoute call");
-		String[] aParams = new String[3];
-		aParams[0] = netIdIpAdress;
-		aParams[1] = nextHopIpAddress;
-		aParams[2] = isDiscard;
 
-		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
+		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, staticRoute);
 		queueAction(action);
+
 		log.info("End of createStaticRoute call");
+	}
+
+	@Override
+	public void createStaticRoute(String netIdIpAdress, String nextHopIpAddress, boolean isDiscard, int preference) throws CapabilityException {
+
+		StaticRoute staticRoute = new StaticRoute();
+		staticRoute.setNetIdIpAdress(netIdIpAdress);
+		staticRoute.setNextHopIpAddress(nextHopIpAddress);
+		staticRoute.setDiscard(isDiscard);
+		staticRoute.setPreference(preference);
+
+		createStaticRoute(staticRoute);
 	}
 
 	@Override
@@ -136,7 +153,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 			netIdIpAdress = netIdIpAdress + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(maskIpAdress);
 		else
 			netIdIpAdress = netIdIpAdress + "/" + maskIpAdress;
-		createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard);
+		createStaticRoute(netIdIpAdress, nextHopIpAddress, Boolean.parseBoolean(isDiscard), PREFERENCE_DEFAULT_VALUE);
 
 	}
 
@@ -176,5 +193,18 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
+	}
+
+	@Override
+	public StaticRouteCollection getStaticRoutes() throws CapabilityException {
+
+		StaticRouteCollection src;
+
+		ComputerSystem model = (ComputerSystem) this.resource.getModel();
+		List<NextHopRoute> nextHops = model.getNextHopRoute();
+
+		src = StaticRouteApiHelper.buildStaticRouteCollection(nextHops);
+
+		return src;
 	}
 }

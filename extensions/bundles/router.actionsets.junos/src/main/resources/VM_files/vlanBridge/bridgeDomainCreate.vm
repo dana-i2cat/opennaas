@@ -1,0 +1,32 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$elementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	
+    <vlans>
+    	<vlan>
+    	    <name>$param.getElementName()</name>
+    	    #if ($param.getDescription())
+    	    	#if (!$param.getDescription.equals(""))
+    	    		<description>$param.getDescription()</description>
+    	    	#end
+    	    #end
+    	    #if ($param.getVlanId() >= 0)
+    	    	<vlan-id>$param.getVlanId()</vlan-id>
+    	    #end
+			#foreach($iface in $param.getNetworkPorts())
+				<interface operation="create">
+					<name>$iface</name>
+				</interface>
+			#end				
+    	</vlan>
+    </vlans>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

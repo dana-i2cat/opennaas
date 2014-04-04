@@ -1,0 +1,30 @@
+###############################################################################
+#########           Remove IP address from a Bridge Domain            #########
+###############################################################################
+
+<configuration>
+	#if(!$elementName.equals(""))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	
+	<vlans>
+		<vlan>
+			<name>$param[0]</name>
+			<l3-interface operation="delete">vlan.$unit</l3-interface>
+		</vlan>
+	</vlans>
+    
+	<interfaces>
+		<interface>
+			<name>vlan</name>
+			<unit operation="delete">
+				<name>$unit</name>
+			</unit>
+		</interface>
+	</interfaces>
+	
+	#if(!$elementName.equals(""))
+		</logical-systems>
+	#end
+</configuration>
