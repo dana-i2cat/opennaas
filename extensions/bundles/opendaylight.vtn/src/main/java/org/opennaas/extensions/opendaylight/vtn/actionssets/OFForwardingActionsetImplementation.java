@@ -1,0 +1,45 @@
+package org.opennaas.extensions.opendaylight.vtn.actionssets;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingActionSet;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.CreateVTNAction;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.GetOFFlowForwardingAction;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.GetOFForwardingAction;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.RemoveOFForwardingAction;
+
+/**
+ *
+ * @author Josep Batallé <josep.batalle@i2cat.net>
+ * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
+ *
+ */
+public class OFForwardingActionsetImplementation extends ActionSet {
+
+    public static final String ACTIONSET_ID = "ofForwardingActionSetOpenDaylight";
+
+    public OFForwardingActionsetImplementation() {
+        super.setActionSetId(ACTIONSET_ID);
+        this.putAction(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, CreateVTNAction.class);
+        this.putAction(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, RemoveOFForwardingAction.class);
+        this.putAction(OpenflowForwardingActionSet.GETOFFORWARDINGRULE, GetOFFlowForwardingAction.class);
+        this.putAction(OpenflowForwardingActionSet.GETFLOWS, GetOFForwardingAction.class);
+
+    }
+
+    @Override
+    public List<String> getActionNames() {
+        List<String> actionNames = new ArrayList<String>();
+
+        actionNames.add(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE);
+        actionNames.add(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE);
+        actionNames.add(OpenflowForwardingActionSet.GETOFFORWARDINGRULE);
+        actionNames.add(OpenflowForwardingActionSet.GETFLOWS);
+
+        return actionNames;
+    }
+
+}
