@@ -355,7 +355,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         }
         String srcDPID = listFlow.get(0).getDPID();
         String inPort = Integer.toString(srcSwInfo.getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
-        String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();;
+        String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
         Response response = callVTN(srcDPID, inPort, dstDPID, outPort);
         // provision each link and mark the last one
