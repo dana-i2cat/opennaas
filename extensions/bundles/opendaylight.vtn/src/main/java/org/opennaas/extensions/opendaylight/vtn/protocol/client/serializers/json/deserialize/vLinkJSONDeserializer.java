@@ -1,8 +1,6 @@
 package org.opennaas.extensions.opendaylight.vtn.protocol.client.serializers.json.deserialize;
 
 import java.io.IOException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
@@ -16,8 +14,7 @@ public class vLinkJSONDeserializer extends JsonDeserializer<vLink> {
     @Override
     public vLink deserialize(JsonParser jp, DeserializationContext dc) throws IOException, JsonProcessingException {
         vLink vlink = new vLink();
-        JsonToken current;
-        current = jp.nextToken();
+        JsonToken current = jp.nextToken();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String fieldName = jp.getCurrentName();
             if (fieldName.equals("vlink")) {

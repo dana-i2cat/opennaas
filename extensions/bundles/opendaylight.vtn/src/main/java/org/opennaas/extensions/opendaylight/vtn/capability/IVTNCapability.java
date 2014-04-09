@@ -1,6 +1,5 @@
 package org.opennaas.extensions.opendaylight.vtn.capability;
 
-import java.util.List;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,7 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.opennaas.extensions.opendaylight.vtn.model.Boundary;
-import org.opennaas.extensions.opendaylight.vtn.model.LogicalPort;
 import org.opennaas.extensions.opendaylight.vtn.model.OpenDaylightvBridge;
 import org.opennaas.extensions.opendaylight.vtn.model.PortMap;
 import org.opennaas.extensions.opendaylight.vtn.model.vLink;
@@ -151,15 +149,8 @@ public interface IVTNCapability {
     @GET
     public Response coordinatorAddress(@PathParam("address") String address, @PathParam("port") String port);
 
-    @Path("/test")
-    @GET
-    public Response test();
-
     @Path("/ipreq/{sDPID}/{inPort}/{dDPID}/{putPort}")
     @GET
     public Response ipreq(@PathParam("sDPID") String sDPID, @PathParam("inPort") String inPort, @PathParam("dDPID") String dDPID, @PathParam("putPort") String putPort);
-    
-    @Path("/callstatic")
-    @GET
-    public Response callStatic();
+
 }

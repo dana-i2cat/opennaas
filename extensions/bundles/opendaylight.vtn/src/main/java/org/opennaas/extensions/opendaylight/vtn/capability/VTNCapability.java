@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.opendaylight.vtn.model.Boundary;
@@ -70,7 +67,7 @@ public class VTNCapability implements IVTNCapability {
         context.addParameter(ProtocolSessionContext.AUTH_TYPE, "noauth");
         return context;
     }
-    
+
     private void initConfig() {
         vtn = new VTN();
         vtn.setVtn_name("vtn1");
@@ -133,31 +130,23 @@ public class VTNCapability implements IVTNCapability {
         log.error("List of vbr (" + vtn.getvBridges().size() + ")");
         for (OpenDaylightvBridge vbr : vtn.getvBridges()) {
             log.error("In vBridge " + vbr.getVbr_name() + ". List of ifaces (" + vbr.getIface().size() + ")");
-            for (vBridgeInterfaces iface : vbr.getIface()) {
-//                log.error("Iface: "+iface.getIf_name());
-            }
         }
         log.error("Number of boundaries: " + boundaries.size());
         if (boundaries.size() > 0) {
-            log.error("Bound: " + boundaries.get(0).getBoundary_id());
-            log.error("Bound: " + boundaries.get(0).getLink().getController1_id());
-            log.error("Bound: " + boundaries.get(0).getLink().getController2_id());
+            log.error("Bound: " + boundaries.get(0).getBoundary_id() + " " + boundaries.get(0).getLink().getController1_id() + " " + boundaries.get(0).getLink().getController2_id());
         }
         log.error("Number of vLinks: " + vtn.getVlink().size());
         if (vtn.getVlink().size() > 0) {
-            log.error("vLink: " + vtn.getVlink().get(0).getVlk_name());
-            log.error("vLink: " + vtn.getVlink().get(0).getVnode1_name());
-            log.error("vLink: " + vtn.getVlink().get(0).getVnode2_name());
-            log.error("vLink: " + vtn.getVlink().get(0).getBoundaryMap().getBoundary_id());
+            log.error("vLink: " + vtn.getVlink().get(0).getVlk_name() + " " + vtn.getVlink().get(0).getVnode1_name());
+            log.error("vLinkCont.: " + vtn.getVlink().get(0).getVnode2_name() +"  " + vtn.getVlink().get(0).getBoundaryMap().getBoundary_id());
         }
         log.error("Assign each iface to a physical port...");
-       checkPortMap();
+        checkPortMap();
     }
 
     @Override
     public Response createVTN(String name) {
-        log.error("Create VTN " + name);
-
+        log.info("Create VTN " + name);
         vtn = new VTN();
         vtn.setVtn_name(name);
         Response response = client.createVTN(vtn);
@@ -178,7 +167,7 @@ public class VTNCapability implements IVTNCapability {
 
     @Override
     public Response createController(String name, String ipaddr, String type) {
-        log.error("Creating controller...");
+        log.error("Defining controller...");
         OpenDaylightController ctrl = new OpenDaylightController();
         ctrl.setController_id(name);
         ctrl.setIpaddr(ipaddr);
@@ -274,58 +263,9 @@ public class VTNCapability implements IVTNCapability {
     }
 
     @Override
-    public Response test() {
-        log.error("Start test");
-        String vBridge1 = "vbr1";
-        String vBridge2 = "vbr2";
-        String iface1 = "if1";
-        String iface2 = "if2";
-        VTN vtn = new VTN();
-        vtn.setVtn_name("vtnTest");
-        Response response = client.createVTN(vtn);
-        log.error("VTN " + response.getStatus());
-
-        response = createController("ctrl1", "192.168.254.156", "odc");
-        log.error("Controller - " + response.getStatus());
-        response = createController("ctrl2", "192.168.254.221", "odc");
-        log.error("Controller2 - " + response.getStatus());
-
-        response = createvBridge(vtn.getVtn_name(), vBridge1, "ctrl1", "DEFAULT");
-        log.error("Bridge1 " + response.getStatus());
-        response = createvBridge(vtn.getVtn_name(), vBridge2, "ctrl2", "DEFAULT");
-        log.error("Bridg2 " + response.getStatus());
-
-        response = createInterfaces(vtn.getVtn_name(), vBridge1, "if1");
-        log.error("Interf " + response.getStatus());
-        response = createInterfaces(vtn.getVtn_name(), vBridge1, "if2");
-        log.error("Interf2 " + response.getStatus());
-        response = createInterfaces(vtn.getVtn_name(), vBridge2, "if1");
-        log.error("Interf3 " + response.getStatus());
-        response = createInterfaces(vtn.getVtn_name(), vBridge2, "if2");
-        log.error("Interf4 " + response.getStatus());
-
-        String port1 = "PP-OF:00:00:00:00:00:00:00:01-s1-eth3";
-        String port2 = "PP-OF:00:00:00:00:00:00:00:04-s4-eth3";
-        response = createBoundary("b1", "ctrl1", "DEFAULT", port1, "ctrl2", "DEFAULT", port2);
-        log.error("Boundary " + response.getStatus());
-
-        response = createvLink(vtn.getVtn_name(), "vlink1", "vbr1", "if2", "vbr2", "if2", "b1", "50");
-        log.error("vLink " + response.getStatus());
-
-        String port = "PP-OF:00:00:00:00:00:00:00:02-s2-eth2";
-        response = mapPort(vtn.getVtn_name(), vBridge1, iface1, port);
-        log.error("portMap " + response.getStatus());
-        port = "PP-OF:00:00:00:00:00:00:00:05-s5-eth2";
-        response = mapPort(vtn.getVtn_name(), vBridge2, iface1, port);
-        log.error("portMap2 " + response.getStatus());
-
-        return response;
-    }
-
-    @Override
     public Response ipreq(String srcDPID, String inPort, String dstDPID, String dstPort) {
-        log.error("IP REQUEST FROM VRF");
-        log.error(srcDPID + " " + inPort + " " + dstDPID + " " + dstPort);
+        log.error("Requested route in VRF. Trying to map the ODL ports.");
+        log.error("Req. information: "+srcDPID + " " + inPort + " " + dstDPID + " " + dstPort);
         Response response;
 
         if (vtn == null) {
@@ -336,19 +276,19 @@ public class VTNCapability implements IVTNCapability {
         }
 
         //configure map-ports
-        String Sw_num = "s" + srcDPID.substring(srcDPID.length() - 1);
-        String port = "PP-OF:" + srcDPID + "-s" + Sw_num + "-eth" + inPort;
+//        String Sw_num = "s" + srcDPID.substring(srcDPID.length() - 1);
+//        String port = "PP-OF:" + srcDPID + "-s" + Sw_num + "-eth" + inPort;
 //        response = mapPort(vtn.getVtn_name(), "vbr1", "if1", port);
 //        log.error("portMap " + response.getStatus());
         String dstSw_num = "s" + dstDPID.substring(dstDPID.length() - 1);
-        port = "PP-OF:" + dstDPID + "-" + dstSw_num + "-eth" + dstPort;
-        log.error("Port: " + port);
+        String outPort = "PP-OF:" + dstDPID + "-" + dstSw_num + "-eth" + dstPort;
+        log.error("Port: " + outPort);
 //        port = "PP-OF:00:00:00:00:00:00:00:05-s5-eth2";
         String iface = "if2";
         for (vBridgeInterfaces inf : vtn.getvBridges().get(1).getIface()) {
             for (PortMap pm : inf.getPortMaps()) {
                 if (pm.getLogical_port_id() != null) {
-                    if (pm.getLogical_port_id().equals(port)) {
+                    if (pm.getLogical_port_id().equals(outPort)) {
                         iface = inf.getIf_name();
                         log.error("Set Iface: " + iface);
                         break;
@@ -356,8 +296,8 @@ public class VTNCapability implements IVTNCapability {
                 }
             }
         }
-        log.error("iface: " + iface + " Port: " + port);
-        response = mapPort(vtn.getVtn_name(), "vbr2", iface, port);
+        log.error("iface: " + iface + " Port: " + outPort);
+        response = mapPort(vtn.getVtn_name(), "vbr2", iface, outPort);
         log.error("Req to ODL VTN - portMap: " + response.getStatus());
 
         return response;
@@ -370,12 +310,8 @@ public class VTNCapability implements IVTNCapability {
 
     @Override
     public LogicalPortsOFFlowsWrapper getLogicalPorts(String ctrl, String domain) {
+        log.error("Get Logical Ports of ctrl "+ctrl+ "and domain "+domain);
         LogicalPortsOFFlowsWrapper lp = client.getLogicalPorts(ctrl, "(" + domain + ")");
-        if (lp.size() > 0) {
-            log.error(lp.get(0).getLogical_port_id());
-            log.error(lp.get(0).getSwitch_id());
-            log.error("Number of logical ports: " + lp.size());
-        }
         return lp;
     }
 
@@ -400,7 +336,6 @@ public class VTNCapability implements IVTNCapability {
     @Override
     public OpenDaylightvBridge getvBridge(String vtnName, String vBridge) {
         OpenDaylightvBridge vbr = client.getvBridge(vtnName, vBridge);
-        log.error("VRB: " + vbr.getVbr_name() + ",  " + vbr.getController_id());
         return vbr;
     }
 
@@ -435,46 +370,9 @@ public class VTNCapability implements IVTNCapability {
     public vLinksWrapper getvLinks(String vtnName) {
         return client.getvLinks(vtnName);
     }
-    /*
-     private List<vBridgeInterfaces> getPossibleInts(String vbr_name, String controller_id) {
-     LogicalPortsOFFlowsWrapper resp = getLogicalPorts(controller_id, "DEFAULT");
-     for (OpenDaylightvBridge vbr : vtn.getvBridges()) {
-     if (vbr_name.equals(vbr.getVbr_name())) {
-     for (LogicalPort lp : resp) {
-     lp.
-     }
-     }
-     }
-
-     }
-     */
 
     private int getNumInts(String controller_id) {
         LogicalPortsOFFlowsWrapper resp = getLogicalPorts(controller_id, "DEFAULT");
         return resp.size();
     }
-
-    @Override
-    public Response callStatic() {
-        log.error("Call static");
-        String url = "http://localhost:8888/opennaas/vrf/routing/routeMode";
-        Response response;
-        String username = "admin";
-        String password = "123456";
-        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
-
-        WebClient client = WebClient.create(url);
-        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
-        client.accept(MediaType.TEXT_PLAIN);
-        response = client.get();
-        log.error(response.getStatus());
-        log.error(response.getMetadata());
-
-        return response;
-    }
-
-    private static String base64Encode(String stringToEncode) {
-        return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
-    }
-
 }

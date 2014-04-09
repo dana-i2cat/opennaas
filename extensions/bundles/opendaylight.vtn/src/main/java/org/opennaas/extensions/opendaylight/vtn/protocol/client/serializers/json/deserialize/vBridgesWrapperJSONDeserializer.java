@@ -1,8 +1,6 @@
 package org.opennaas.extensions.opendaylight.vtn.protocol.client.serializers.json.deserialize;
 
 import java.io.IOException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
@@ -17,8 +15,6 @@ import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridge
  */
 public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWrapper> {
 
-    Log log = LogFactory.getLog(vBridgesWrapperJSONDeserializer.class);
-    
     public vBridgesWrapperJSONDeserializer() {
     }
 
@@ -32,10 +28,7 @@ public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWr
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//ports
                 jp.nextToken();
-/*                if (jp.getCurrentName() == null) {
-                    break;
-                }
-*/                OpenDaylightvBridge vbrs = new OpenDaylightvBridge();
+                OpenDaylightvBridge vbrs = new OpenDaylightvBridge();
                 while (jp.nextToken() != JsonToken.END_OBJECT) {
                     String n = jp.getCurrentName();
                     if (n == null) {
@@ -43,7 +36,7 @@ public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWr
                     }
                     if (n.equals("vbr_name")) {
                         vbrs.setVbr_name(jp.getText());
-                    } 
+                    }
                 }
 
                 // add flow

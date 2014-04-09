@@ -1,8 +1,6 @@
 package org.opennaas.extensions.opendaylight.vtn.protocol.client.serializers.json.deserialize;
 
 import java.io.IOException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
@@ -16,8 +14,6 @@ import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridge
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 public class vBridgeInterfacesWrapperJSONDeserializer extends JsonDeserializer<vBridgeInterfacesWrapper> {
-
-    Log log = LogFactory.getLog(vBridgeInterfacesWrapperJSONDeserializer.class);
     
     public vBridgeInterfacesWrapperJSONDeserializer() {
     }

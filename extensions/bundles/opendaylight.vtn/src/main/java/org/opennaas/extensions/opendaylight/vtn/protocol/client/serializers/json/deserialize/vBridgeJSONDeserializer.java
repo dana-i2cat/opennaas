@@ -1,8 +1,6 @@
 package org.opennaas.extensions.opendaylight.vtn.protocol.client.serializers.json.deserialize;
 
 import java.io.IOException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
@@ -11,8 +9,6 @@ import org.codehaus.jackson.map.JsonDeserializer;
 import org.opennaas.extensions.opendaylight.vtn.model.OpenDaylightvBridge;
 
 public class vBridgeJSONDeserializer extends JsonDeserializer<OpenDaylightvBridge> {
-
-    Log log = LogFactory.getLog(vBridgeJSONDeserializer.class);
     /*
      {"vbridges":[{"vbr_name":"vbr1"},{"vbr_name":"vbr2"}]}
      */

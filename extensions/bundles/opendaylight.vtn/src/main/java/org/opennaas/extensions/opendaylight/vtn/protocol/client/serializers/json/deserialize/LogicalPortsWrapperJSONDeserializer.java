@@ -23,7 +23,7 @@ public class LogicalPortsWrapperJSONDeserializer extends JsonDeserializer<Logica
         LogicalPortsOFFlowsWrapper wrapper = new LogicalPortsOFFlowsWrapper();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String flowType = jp.getCurrentName();//logical_ports
-            if (jp.getCurrentName() == null) {
+            if (jp.getCurrentName() == null && flowType.equals("logical_ports")) {
                 break;
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//[
@@ -52,7 +52,7 @@ public class LogicalPortsWrapperJSONDeserializer extends JsonDeserializer<Logica
                     }
                 }
 
-                // add flow
+                // add logical port
                 if (lport.getPort_name() != null) {
                     wrapper.add(lport);
                 }
