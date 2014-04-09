@@ -1,5 +1,8 @@
 package org.opennaas.extensions.opendaylight.vtn.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Josep Batallé <josep.batalle@i2cat.net>
@@ -8,6 +11,8 @@ public class VTN {
 
     private String vtn_name;
     private String description;
+    private List<OpenDaylightvBridge> vBridges = new ArrayList<OpenDaylightvBridge>();
+    private List<vLink> vlink = new ArrayList<vLink>();
 
     public String getVtn_name() {
         return vtn_name;
@@ -23,6 +28,22 @@ public class VTN {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<OpenDaylightvBridge> getvBridges() {
+        return vBridges;
+    }
+
+    public void setvBridges(List<OpenDaylightvBridge> vBridges) {
+        this.vBridges = vBridges;
+    }
+
+    public List<vLink> getVlink() {
+        return vlink;
+    }
+
+    public void setVlink(List<vLink> vlink) {
+        this.vlink = vlink;
     }
 
     @Override

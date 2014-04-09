@@ -60,4 +60,41 @@ public class vLink {
     public void setBoundaryMap(BoundaryMap boundaryMap) {
         this.boundaryMap = boundaryMap;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final vLink other = (vLink) obj;
+        if ((this.vlk_name == null) ? (other.vlk_name != null) : !this.vlk_name.equals(other.vlk_name)) {
+            return false;
+        }
+        if ((this.vnode1_name == null) ? (other.vnode1_name != null) : !this.vnode1_name.equals(other.vnode1_name)) {
+            return false;
+        }
+        if ((this.if1_name == null) ? (other.if1_name != null) : !this.if1_name.equals(other.if1_name)) {
+            return false;
+        }
+        if ((this.vnode2_name == null) ? (other.vnode2_name != null) : !this.vnode2_name.equals(other.vnode2_name)) {
+            return false;
+        }
+        if ((this.if2_name == null) ? (other.if2_name != null) : !this.if2_name.equals(other.if2_name)) {
+            return false;
+        }
+        if (this.boundaryMap != other.boundaryMap && (this.boundaryMap == null || !this.boundaryMap.equals(other.boundaryMap))) {
+            return false;
+        }
+        return true;
+    }
+
 }

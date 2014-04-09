@@ -11,6 +11,11 @@ import org.opennaas.extensions.opendaylight.vtn.model.PortMap;
 import org.opennaas.extensions.opendaylight.vtn.model.VTN;
 import org.opennaas.extensions.opendaylight.vtn.model.vBridgeInterfaces;
 import org.opennaas.extensions.opendaylight.vtn.model.vLink;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.BoundaryWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.LogicalPortsOFFlowsWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgeInterfacesWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgesWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vLinksWrapper;
 
 /**
  * OpenDaylight special client mixing CXF and Java clients allowing sending HTTP
@@ -69,5 +74,49 @@ public class OpenDaylightvtnAPIClient implements IOpenDaylightvtnAPIClient {
     public Response configPortMap(String vtn_name, String vbr_name, String if_name, PortMap portMap) {
         return cxfClient.configPortMap(vtn_name, vbr_name, if_name, portMap);
     }
-    
+
+    @Override
+    public PortMap configPortMap(String vtn_name, String vbr_name, String if_name) {
+        return cxfClient.configPortMap(vtn_name, vbr_name, if_name);
+    }
+
+    @Override
+    public LogicalPortsOFFlowsWrapper getLogicalPorts(String ctrl, String domain) {
+        return cxfClient.getLogicalPorts(ctrl, domain);
+    }
+
+    @Override
+    public OpenDaylightvBridge getvBridge(String vtn, String vbr) {
+        return cxfClient.getvBridge(vtn, vbr);
+    }
+
+    @Override
+    public vBridgesWrapper getvBridges(String vtn) {
+        return cxfClient.getvBridges(vtn);
+    }
+
+    @Override
+    public vBridgeInterfacesWrapper getInterfaces(String vtn, String vbr_name) {
+        return cxfClient.getInterfaces(vtn, vbr_name);
+    }
+
+    @Override
+    public Boundary getBoundary(String bound) {
+        return cxfClient.getBoundary(bound);
+    }
+
+    @Override
+    public BoundaryWrapper getBoundaries() {
+        return cxfClient.getBoundaries();
+    }
+
+    @Override
+    public vLink getvLink(String vtn, String vlink) {
+        return cxfClient.getvLink(vtn, vlink);
+    }
+
+    @Override
+    public vLinksWrapper getvLinks(String vtnName) {
+        return cxfClient.getvLinks(vtnName);
+    }
 }
