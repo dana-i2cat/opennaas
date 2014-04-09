@@ -277,6 +277,7 @@ public class Utils {
      * Layer3 to layer2
      *
      * @param route
+     * @param etherType
      * @return
      */
     public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route, String etherType) {
@@ -307,6 +308,8 @@ public class Utils {
     public static String createFlowName(String id, String ethType, String source, String target, String dpid) {
         log.error("SETNAME FLOW: 0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2));
 //        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
+        source = source.replace("/", "-");
+        target = target.replace("/", "-");
         return "0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2);
     }
 

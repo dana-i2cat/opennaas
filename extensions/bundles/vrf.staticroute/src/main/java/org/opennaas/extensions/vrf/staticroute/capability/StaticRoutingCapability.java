@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.cxf.jaxrs.client.WebClient;
+import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonFactory;
@@ -314,7 +317,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         StringBuilder listFlows = new StringBuilder();
         if (proactive) {
             response = proactiveRouting(switchInfo, route, version);
-            List<FloodlightOFFlow> listOF = ((List<FloodlightOFFlow>) response.getEntity());
+            List<OFFlow> listOF = ((List<OFFlow>) response.getEntity());
             if (listOF.isEmpty()) {
                 return Response.status(404).type("text/plain").entity("Route Not found.").build();
             }
@@ -324,11 +327,11 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 
             for (int i = 0; i < listOF.size(); i++) {
                 if (i == 0) {
-                    listFlows.append("{dpid:'").append(listOF.get(i).getSwitchId()).append("'},");//others switch ids
+                    listFlows.append("{dpid:'").append(listOF.get(i).getDPID()).append("'},");//others switch ids
                 }
                 for (int j = 0; j < i; j++) {
-                    if (!listFlows.toString().contains(listOF.get(i).getSwitchId())) {
-                        listFlows.append("{dpid:'").append(listOF.get(i).getSwitchId()).append("'},");//others switch ids
+                    if (!listFlows.toString().contains(listOF.get(i).getDPID())) {
+                        listFlows.append("{dpid:'").append(listOF.get(i).getDPID()).append("'},");//others switch ids
                     }
                 }
             }
@@ -350,51 +353,60 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                 listFlow.add(Utils.VRFRouteToOFFlow(r, "2054"));
             }
         }
-
+        String srcDPID = listFlow.get(0).getDPID();
+        String inPort = Integer.toString(srcSwInfo.getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
+        String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();;
+        String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
+        Response response = callVTN(srcDPID, inPort, dstDPID, outPort);
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
-            insertFlow(listFlow.get(i));
+//            insertFlow(listFlow.get(i));
         }
         return Response.ok(listFlow).build();
-    }
+        }
 
-    /**
-     * Insert routes from dynamic bundle
-     *
-     * @param json
-     * @return
-     */
-    @Override
-    public Response insertRoute(String json) {
+        /**
+         * Insert routes from dynamic bundle
+         *
+         * @param json
+         * @return
+         */
+        @Override
+        public Response insertRoute
+        (String json
+        
+            ) {
         ObjectMapper mapper = new ObjectMapper();
-        VRFRoute route = new VRFRoute();
-        try {
-            route = mapper.readValue(json, VRFRoute.class);
-        } catch (IOException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
-        VRFModel model = getVRFModel();
+            VRFRoute route = new VRFRoute();
+            try {
+                route = mapper.readValue(json, VRFRoute.class);
+            } catch (IOException ex) {
+                Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
+            VRFModel model = getVRFModel();
 
-        int version = 0;
-        if (Utils.isIpAddress(route.getSourceAddress()) == 4 && Utils.isIpAddress(route.getDestinationAddress()) == 4) {
-            version = 4;
-        } else if (Utils.isIpAddress(route.getSourceAddress()) == 6 && Utils.isIpAddress(route.getDestinationAddress()) == 6) {
-            version = 6;
-        } else {
-            log.error("IP version error. The detected version is: " + version);
-            return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
-        }
-        if (model.getTable(version) == null) {
-            return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
-        }
+            int version = 0;
+            if (Utils.isIpAddress(route.getSourceAddress()) == 4 && Utils.isIpAddress(route.getDestinationAddress()) == 4) {
+                version = 4;
+            } else if (Utils.isIpAddress(route.getSourceAddress()) == 6 && Utils.isIpAddress(route.getDestinationAddress()) == 6) {
+                version = 6;
+            } else {
+                log.error("IP version error. The detected version is: " + version);
+                return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
+            }
+            if (model.getTable(version) == null) {
+                return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
+            }
 //        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
 
-        String response = model.getTable(version).addRoute(route);
-        return Response.status(201).entity(response).build();
+            String response = model.getTable(version).addRoute(route);
+            return Response.status(201).entity(response).build();
 //        }
-    }
+        }
+
+    
 
     public void clearAllFlows() {
         org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:01");
@@ -854,4 +866,23 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 
     }
 
+    public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
+        log.error("Call VTN from Static Routing.");
+        String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
+        Response response;
+        String username = "admin";
+        String password = "123456";
+        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+
+        WebClient client = WebClient.create(url);
+        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
+        client.accept(MediaType.TEXT_PLAIN);
+        response = client.get();
+        log.error("VTN Manager response: "+response.getStatus());
+        return response;
+    }
+
+    private static String base64Encode(String stringToEncode) {
+        return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+    }
 }
