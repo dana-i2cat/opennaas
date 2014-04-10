@@ -24,11 +24,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
@@ -41,12 +40,12 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 public class AddIPv4ActionTest {
 
 	Log								log	= LogFactory.getLog(AddIPv4ActionTest.class);
-	private static AddIPv4Action	action;
+	private AddIPv4Action			action;
 	static ActionTestHelper			helper;
 	static ProtocolSessionManager	protocolsessionmanager;
 
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
 
 		action = new AddIPv4Action();
 		action.setModelToUpdate(new ComputerSystem());
