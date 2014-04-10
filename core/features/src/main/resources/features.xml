@@ -44,7 +44,10 @@
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
 		<bundle dependency="true">mvn:commons-pool/commons-pool/${commons.pool.version}</bundle>
 		<bundle dependency="true">mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
-		<bundle dependency="true">mvn:org.apache.openjpa/openjpa/${openjpa.version}</bundle>
+				
+		<!-- work around for issue https://issues.apache.org/jira/browse/ARIES-1018 -->
+		<!-- provided by following issue https://issues.apache.org/jira/browse/KARAF-2188 -->
+		<bundle start-level="29" dependency="true">mvn:org.apache.openjpa/openjpa/${openjpa.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.core.hsqldb/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.core.persistence/${project.version}</bundle>
