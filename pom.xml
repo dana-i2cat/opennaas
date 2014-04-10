@@ -90,7 +90,7 @@
 		<opensaml.version>2.4.1_1</opensaml.version>
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam2.version>2.3.1</pax.exam2.version>
+		<pax.exam3.version>3.4.0</pax.exam3.version>
 		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
@@ -1051,23 +1051,35 @@
 			</dependency>
 			<!-- Integration tests -->
 			<dependency>
-				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-				<artifactId>paxexam-karaf-container</artifactId>
-				<version>${paxexam-karaf-container.version}</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam-container-karaf</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-junit4</artifactId>
-				<version>${pax.exam2.version}</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam-junit4</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.ops4j.pax.swissbox</groupId>
-				<artifactId>pax-swissbox-framework</artifactId>
-				<version>1.5.0</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
+			<dependency>
+			    <groupId>org.ops4j.pax.url</groupId>
+			    <artifactId>pax-url-aether</artifactId>
+			    <version>1.6.0</version>
+			    <scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>javax.inject</groupId>
+			    <artifactId>javax.inject</artifactId>
+			    <version>1</version>
+			    <scope>test</scope>
+			</dependency>			
 			<!-- Features -->
 			<!--  -->
 			<dependency>

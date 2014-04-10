@@ -1,43 +1,35 @@
 package org.opennaas.itests.helpers;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.configureConsole;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.compendiumProfile;
 import static org.ops4j.pax.exam.CoreOptions.composite;
-import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 
 import java.io.File;
 
-import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurationOption;
+import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.options.extra.VMOption;
+import org.ops4j.pax.exam.karaf.options.KarafDistributionBaseConfigurationOption;
+import org.ops4j.pax.exam.karaf.options.KarafDistributionOption;
+import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
 
 import com.google.common.base.Joiner;
 
 public abstract class OpennaasExamOptions
 {
-	public final static KarafDistributionBaseConfigurationOption opennaasDistributionConfiguration()
-	{
-		return karafDistributionConfiguration()
-				.frameworkUrl(maven()
-						.groupId("org.opennaas")
-						.artifactId("platform")
-						.type("zip")
-						.versionAsInProject())
-				.karafVersion("2.3.4")
-				.name("opennaas")
-				.unpackDirectory(new File("target/paxexam"));
-	}
 
-	public final static Option includeTestHelper()
-	{
-		return composite(mavenBundle()
-				.groupId("org.opennaas.itests")
-				.artifactId("org.opennaas.itests.helpers")
-				.versionAsInProject(),
-				compendiumProfile());
+	public final static KarafDistributionBaseConfigurationOption opennaasDistributionConfiguration() {
+
+		MavenArtifactUrlReference platformUrl = CoreOptions.maven()
+				.groupId("org.opennaas")
+				.artifactId("platform")
+				.versionAsInProject()
+				.type("zip");
+
+		return KarafDistributionOption.karafDistributionConfiguration()
+				.frameworkUrl(platformUrl)
+				.unpackDirectory(new File("target/paxexam"))
+				.name("opennaas")
+				.karafVersion("2.3.4");
+
 	}
 
 	public final static Option includeTestMockProfile()
@@ -62,18 +54,26 @@ public abstract class OpennaasExamOptions
 
 	public final static Option includeFeatures(String... features)
 	{
-		return editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+		return KarafDistributionOption.editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
 				"featuresBoot",
 				Joiner.on(",").join(features));
 	}
 
 	public final static Option noConsole()
 	{
-		return configureConsole().ignoreLocalConsole().ignoreRemoteShell();
+		return KarafDistributionOption.configureConsole().ignoreLocalConsole().ignoreRemoteShell();
+	}
+
+	public final static Option keepLogConfiguration() {
+		return KarafDistributionOption.doNotModifyLogConfiguration();
 	}
 
 	public final static Option openDebugSocket()
 	{
-		return new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005");
+		return KarafDistributionOption.debugConfiguration();
+	}
+
+	public final static Option keepRuntimeFolder() {
+		return KarafDistributionOption.keepRuntimeFolder();
 	}
 }
