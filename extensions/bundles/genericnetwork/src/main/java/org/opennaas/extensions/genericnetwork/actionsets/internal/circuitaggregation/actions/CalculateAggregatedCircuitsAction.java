@@ -24,8 +24,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang.SerializationException;
-import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang3.SerializationException;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
