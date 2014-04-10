@@ -33,6 +33,7 @@
 		<module>pathfinding/internal</module>
 		<module>nclmonitoring</module>
 		<module>circuitprovisioning/internal</module>
+		<module>circuitaggregation/internal</module>
 	</modules>
 
 	<dependencies>
