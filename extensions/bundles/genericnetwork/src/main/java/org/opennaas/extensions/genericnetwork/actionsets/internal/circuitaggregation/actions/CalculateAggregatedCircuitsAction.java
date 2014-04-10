@@ -49,7 +49,7 @@ public class CalculateAggregatedCircuitsAction extends Action {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 
-		if (!(params instanceof Set<?>))
+		if (!(params instanceof Set))
 			throw new ActionException("Invalid parameters in action " + actionID + ". Expected: Set<Circuit>");
 
 		for (Object obj : (Set<?>) params) {
@@ -64,6 +64,9 @@ public class CalculateAggregatedCircuitsAction extends Action {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 
+		checkParams(params);
+		// Checked in checkParams that params is Set<? extends Circuit>
+		@SuppressWarnings("unchecked")
 		Set<Circuit> notAggregated = (Set<Circuit>) params;
 		Set<Circuit> aggregated = calculateAggregatedCircuits(notAggregated);
 
