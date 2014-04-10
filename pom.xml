@@ -79,7 +79,7 @@
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<junit.version>4.10</junit.version>
-		<karaf.version>2.2.11</karaf.version>
+		<karaf.version>2.3.4</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
@@ -95,7 +95,7 @@
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.5.2</servicemix.version>
+		<servicemix.version>5.0.0</servicemix.version>
 		<servicemix.specs.version>2.2.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
@@ -1074,7 +1074,7 @@
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
 				<version>${servicemix.version}</version>
-				<type>tar.gz</type>
+				<type>zip</type>
 			</dependency>
 			<!-- Misc -->
 			<dependency>

@@ -26,7 +26,7 @@ public abstract class OpennaasExamOptions
 						.artifactId("platform")
 						.type("zip")
 						.versionAsInProject())
-				.karafVersion("2.2.11")
+				.karafVersion("2.3.4")
 				.name("opennaas")
 				.unpackDirectory(new File("target/paxexam"));
 	}
