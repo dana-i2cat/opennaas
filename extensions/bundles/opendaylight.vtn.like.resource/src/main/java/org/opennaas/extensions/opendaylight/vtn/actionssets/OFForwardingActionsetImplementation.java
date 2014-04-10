@@ -1,14 +1,14 @@
-package org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets;
+package org.opennaas.extensions.opendaylight.vtn.actionssets;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.openflowswitch.capability.OpenflowForwardingActionSet;
-import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions.CreateOFForwardingAction;
-import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions.GetOFFlowForwardingAction;
-import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions.GetOFForwardingAction;
-import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions.RemoveOFForwardingAction;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.CreateVTNAction;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.GetOFFlowForwardingAction;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.GetOFForwardingAction;
+import org.opennaas.extensions.opendaylight.vtn.actionssets.actions.RemoveOFForwardingAction;
 
 /**
  *
@@ -23,7 +23,7 @@ public class OFForwardingActionsetImplementation extends ActionSet {
 
     public OFForwardingActionsetImplementation() {
         super.setActionSetId(ACTIONSET_ID);
-        this.putAction(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, CreateOFForwardingAction.class);
+        this.putAction(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, CreateVTNAction.class);
         this.putAction(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, RemoveOFForwardingAction.class);
         this.putAction(OpenflowForwardingActionSet.GETOFFORWARDINGRULE, GetOFFlowForwardingAction.class);
         this.putAction(OpenflowForwardingActionSet.GETFLOWS, GetOFForwardingAction.class);

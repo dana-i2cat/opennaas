@@ -23,11 +23,14 @@ public class vLinksWrapperJSONDeserializer extends JsonDeserializer<vLinksWrappe
         vLinksWrapper wrapper = new vLinksWrapper();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String flowType = jp.getCurrentName();//vbridges
-            if (jp.getCurrentName() == null && flowType.equals("vlinks")) {
+            if (jp.getCurrentName() == null || !flowType.equals("vlinks")) {
                 break;
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//ports
                 jp.nextToken();
+                if (jp.getCurrentName() == null) {
+                    break;
+                }
                 vLink vlink = new vLink();
                 while (jp.nextToken() != JsonToken.END_OBJECT) {
                     String n = jp.getCurrentName();

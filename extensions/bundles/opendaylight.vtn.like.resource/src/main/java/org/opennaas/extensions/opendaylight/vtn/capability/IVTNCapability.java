@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vrf.staticroute.capability;
+package org.opennaas.extensions.opendaylight.vtn.capability;
 
 import java.io.InputStream;
 import javax.ws.rs.Consumes;
@@ -19,15 +19,47 @@ import javax.ws.rs.core.Response;
  * @author Josep Batallé (josep.batalle@i2cat.net)
  *
  */
-@Path("/")
-public interface IStaticRoutingCapability {
+@Path("/vtn")
+public interface IVTNCapability {
+    
+    @Path("/test/{vtn-name}")
+    @GET
+    public Response test(@PathParam("vtn-name") String name);
+    
+    /**
+     * ODL Code values:
+     * (https://wiki.opendaylight.org/view/OpenDaylight_Virtual_Tenant_Network_(VTN):VTN_Coordinator:RestApi)
+     */
+    /**
+     * Create a new VTN
+     *
+     * @param name
+     * @return will be one of the HTML Code values defined in ODL
+     */
+    @Path("/vtns/{vtn-name}")
+    @GET
+    public Response createVTN(@PathParam("vtn-name") String name);
+    
+    /**
+     * Remove a VTN
+     * 
+     * @param name
+     * @return will be one of the HTML Code values defined in ODL
+     */
+    @Path("/vtns/{vtn-name}")
+    @DELETE
+    public Response removeVTN(@PathParam("vtn-name") String name);
+    
+    
 
     /**
-     * Get Route given Destination IP, DPID of the switch and the input
-     * port where the packet entry in the switch
+     * Get Route given Destination IP, DPID of the switch and the input port
+     * where the packet entry in the switch
      *
-     * @param ipSource Source IP Address in integer format (received from Floodlight)
-     * @param ipDest Destination IP Address in integer format (received from Floodlight)
+     * @param ipSource Source IP Address in integer format (received from
+     * Floodlight)
+     * @param ipDest Destination IP Address in integer format (received from
+     * Floodlight)
      * @param switchDPID DPID of the switch
      * @param inputPort Input port
      * @param proactive Type of request (reactive/proactive)
@@ -125,7 +157,7 @@ public interface IStaticRoutingCapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getRoutes(@PathParam("version") int version);
-    
+
     /**
      * Get the Route Table of specific IP version
      *
@@ -137,7 +169,7 @@ public interface IStaticRoutingCapability {
     @Path("/routes/{version}/{ipSrc}/{ipDst}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRoutes(@PathParam("version") int version, 
+    public Response getRoutes(@PathParam("version") int version,
             @PathParam("ipSrc") String ipSrc,
             @PathParam("ipDst") String ipDst);
 
@@ -154,15 +186,41 @@ public interface IStaticRoutingCapability {
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRouteFile(@PathParam("fileName") String fileName, InputStream viDescription);
 
-    /**
-     * Called from dynamic routing bundle
-     * @param route
-     * @return 
-     */
     @Path("/dynamic-route")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRoute(String route);
-    
+
+    /**
+     * Test ODL, insert flows
+     *
+     * @return
+     */
+    @Path("/insertodl")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String insertodl();
+
+    /**
+     * Test ODL, insert flows
+     *
+     * @return
+     */
+    @Path("/removeodl")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String removeodl();
+
+    /**
+     * Test ODL, insert flows
+     *
+     * @param DPID
+     * @return
+     */
+    @Path("/getodl/{DPID}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getodl(@PathParam("DPID") String DPID);
+
 }

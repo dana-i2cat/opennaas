@@ -153,4 +153,12 @@ public interface IVTNCapability {
     @GET
     public Response ipreq(@PathParam("sDPID") String sDPID, @PathParam("inPort") String inPort, @PathParam("dDPID") String dDPID, @PathParam("putPort") String putPort);
 
+    @Path("/updateInterfaces")
+    @GET
+    public void updateInterfaces();
+    
+    @Path("/update")
+    @GET
+    public void update();
+
 }

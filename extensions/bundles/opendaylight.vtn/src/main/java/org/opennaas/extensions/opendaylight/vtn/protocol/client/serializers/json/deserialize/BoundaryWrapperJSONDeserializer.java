@@ -23,11 +23,14 @@ public class BoundaryWrapperJSONDeserializer extends JsonDeserializer<BoundaryWr
         BoundaryWrapper wrapper = new BoundaryWrapper();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String flowType = jp.getCurrentName();//vbridges
-            if (jp.getCurrentName() == null && flowType.equals("boundaries")) {
+            if (jp.getCurrentName() == null || !flowType.equals("boundaries")) {
                 break;
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//ports
                 jp.nextToken();
+                if (jp.getCurrentName() == null) {
+                    break;
+                }
                 Boundary bound = new Boundary();
                 while (jp.nextToken() != JsonToken.END_OBJECT) {
                     String n = jp.getCurrentName();

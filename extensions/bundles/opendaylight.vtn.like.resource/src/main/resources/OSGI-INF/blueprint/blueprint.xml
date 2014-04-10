@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!--  	Protocol Session Factory  -->
+	<bean id="opendaylightProtocolSessionFactory" class="org.opennaas.extensions.opendaylight.vtn.protocol.OpenDaylightProtocolSessionFactory"/>
+	<service ref="opendaylightProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="opendaylight"/>
+			<entry key="protocol.version" value="1.0"/>
+		</service-properties>
+	</service>
+	
+        <service ref="vtnCapability" interface="org.opennaas.extensions.opendaylight.vtn.capability.IVTNCapability">
+        <service-properties>
+            <!-- Rest -->
+            <entry key="service.exported.interfaces" value="*"/>
+            <entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+            <entry key="service.exported.intents" value="HTTP"/>
+            <entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/vtn"/>
+            <entry key="org.apache.cxf.rs.address" value="/"/>
+            <entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
+        </service-properties>
+    </service>
+        
+	<!--  	ofForwardingActionSet  -->
+	<bean id="ofForwardingActionset" class="org.opennaas.extensions.opendaylight.vtn.actionssets.OFForwardingActionsetImplementation"/>
+	<service ref="ofForwardingActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the opendaylight actionset -->
+			<entry key="actionset.name" value="opendaylight"/>
+			<entry key="actionset.capability" value="offorwarding"/>
+			<entry key="actionset.version" value="1.0"/>
+		</service-properties>
+	</service>	
+	
+	
+</blueprint>

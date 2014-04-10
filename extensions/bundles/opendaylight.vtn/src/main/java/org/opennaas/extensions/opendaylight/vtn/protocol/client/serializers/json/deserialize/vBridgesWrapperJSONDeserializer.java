@@ -14,7 +14,7 @@ import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridge
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWrapper> {
-
+    
     public vBridgesWrapperJSONDeserializer() {
     }
 
@@ -23,11 +23,14 @@ public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWr
         vBridgesWrapper wrapper = new vBridgesWrapper();
         while (jp.nextToken() != JsonToken.END_OBJECT) {
             String flowType = jp.getCurrentName();//vbridges
-            if (jp.getCurrentName() == null && flowType.equals("vbridges")) {
+            if (jp.getCurrentName() == null || !flowType.equals("vbridges")) {
                 break;
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//ports
                 jp.nextToken();
+                if (jp.getCurrentName() == null) {
+                    break;
+                }
                 OpenDaylightvBridge vbrs = new OpenDaylightvBridge();
                 while (jp.nextToken() != JsonToken.END_OBJECT) {
                     String n = jp.getCurrentName();
@@ -39,7 +42,7 @@ public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWr
                     }
                 }
 
-                // add flow
+                // add vBridge
                 if (vbrs.getVbr_name() != null) {
                     wrapper.add(vbrs);
                 }

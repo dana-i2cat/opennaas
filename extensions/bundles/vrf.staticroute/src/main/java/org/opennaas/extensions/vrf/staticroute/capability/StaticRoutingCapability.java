@@ -24,9 +24,7 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
@@ -361,52 +359,48 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
-//            insertFlow(listFlow.get(i));
+            insertFlow(listFlow.get(i));
         }
         return Response.ok(listFlow).build();
-        }
+    }
 
-        /**
-         * Insert routes from dynamic bundle
-         *
-         * @param json
-         * @return
-         */
-        @Override
-        public Response insertRoute
-        (String json
-        
-            ) {
+    /**
+     * Insert routes from dynamic bundle
+     *
+     * @param json
+     * @return
+     */
+    @Override
+    public Response insertRoute(String json
+    ) {
         ObjectMapper mapper = new ObjectMapper();
-            VRFRoute route = new VRFRoute();
-            try {
-                route = mapper.readValue(json, VRFRoute.class);
-            } catch (IOException ex) {
-                Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
-            VRFModel model = getVRFModel();
+        VRFRoute route = new VRFRoute();
+        try {
+            route = mapper.readValue(json, VRFRoute.class);
+        } catch (IOException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
+        VRFModel model = getVRFModel();
 
-            int version = 0;
-            if (Utils.isIpAddress(route.getSourceAddress()) == 4 && Utils.isIpAddress(route.getDestinationAddress()) == 4) {
-                version = 4;
-            } else if (Utils.isIpAddress(route.getSourceAddress()) == 6 && Utils.isIpAddress(route.getDestinationAddress()) == 6) {
-                version = 6;
-            } else {
-                log.error("IP version error. The detected version is: " + version);
-                return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
-            }
-            if (model.getTable(version) == null) {
-                return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
-            }
+        int version = 0;
+        if (Utils.isIpAddress(route.getSourceAddress()) == 4 && Utils.isIpAddress(route.getDestinationAddress()) == 4) {
+            version = 4;
+        } else if (Utils.isIpAddress(route.getSourceAddress()) == 6 && Utils.isIpAddress(route.getDestinationAddress()) == 6) {
+            version = 6;
+        } else {
+            log.error("IP version error. The detected version is: " + version);
+            return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
+        }
+        if (model.getTable(version) == null) {
+            return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
+        }
 //        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
 
-            String response = model.getTable(version).addRoute(route);
-            return Response.status(201).entity(response).build();
+        String response = model.getTable(version).addRoute(route);
+        return Response.status(201).entity(response).build();
 //        }
-        }
-
-    
+    }
 
     public void clearAllFlows() {
         org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:01");
@@ -497,184 +491,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return Response.ok().build();
     }
 
-    @Override
-    public String insertodl() {
-        Response response = null;
-        log.error("INSERT ODL ...................");
-        List<OFFlow> list = createODLFlows();
-
-        try {
-            for (OFFlow flow : list) {
-                String protocol = getProtocolType(flow.getDPID());
-                provisionLink(flow, protocol);
-            }
-        } catch (ResourceException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ActivatorException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return "Response ODL";
-    }
-
-    @Override
-    public String removeodl() {
-        log.error("REMOVE ODL ...................");
-        String id = "00:00:00:00:00:00:00:0";
-
-        try {
-            for (int i = 1; i < 9; i++) {
-                String id2 = id + i;
-                List<OFFlow> response2 = getLinks(id2);
-                for (OFFlow flow : (List<OFFlow>) response2) {
-                    String protocol = getProtocolType(id2);
-                    removeLink(flow.getName(), protocol, id2);
-                }
-            }
-        } catch (ResourceException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ActivatorException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return "Response ODL";
-    }
-
-    public String getodlFlow() {
-        Response response = null;
-
-        log.error("TEST ODL GET FLOW ...................");
-        String DPID = "00:00:00:00:00:00:00:01";
-        String name = "TESTODL";
-        log.error("Flow defined");
-        try {
-            String protocol = getProtocolType(DPID);
-            getLink(name, DPID, protocol);
-        } catch (ResourceException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ActivatorException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return "Response ODL";
-    }
-
-    /**
-     * Get list of flows given DPID
-     *
-     * @param DPID
-     * @return
-     */
-    @Override
-    public Response getodl(String DPID) {
-        Response response = null;
-
-        log.error("ODL GET list of Flows of switch " + DPID);
-        try {
-            String protocol = getProtocolType(DPID);
-            response = getLinks(protocol, DPID);
-        } catch (ResourceException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ActivatorException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return response;
-    }
-
-    private Response provisionLink(OFFlow flow, String protocol) throws ResourceException, ActivatorException {
-        log.error("Provision OpenFlow Flow Link " + flow.getDPID());
-
-        IResource resource = getResourceByName(flow.getDPID());
-        if (resource == null) {
-            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
-        }
-        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-        if (protocol.equals("opendaylight")) {
-            OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
-            forwardingCapability.createOpenflowForwardingRule(odlFlow);
-        } else if (protocol.equals("floodlight")) {
-            FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
-            forwardingCapability.createOpenflowForwardingRule(fldFlow);
-        }
-
-        return Response.ok().build();
-    }
-
-    private Response removeLink(String flowId, String protocol, String DPID) throws ResourceException, ActivatorException {
-        log.info("Provision Flow Link Floodlight");
-
-        String switchId = DPID;
-        IResource resource = getResourceByName(switchId);
-        if (resource == null) {
-            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
-        }
-        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-        if (protocol.equals("opendaylight")) {
-            forwardingCapability.removeOpenflowForwardingRule(DPID, flowId);
-        } else if (protocol.equals("floodlight")) {
-            forwardingCapability.removeOpenflowForwardingRule(DPID, flowId);
-        }
-
-        return Response.ok().build();
-    }
-
-    private Response getLinks(String protocol, String DPID) throws ResourceException, ActivatorException {
-        log.info("Provision Flow Link Floodlight");
-        List<OFFlow> list = new ArrayList<OFFlow>();
-        IResource resource = getResourceByName(DPID);
-        if (resource == null) {
-            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
-        }
-        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-        if (protocol.equals("opendaylight")) {
-            list = forwardingCapability.getOpenflowForwardingRules();
-        } else if (protocol.equals("floodlight")) {
-            list = forwardingCapability.getOpenflowForwardingRules();
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        String response = null;
-        try {
-            response = mapper.writeValueAsString(list);
-        } catch (IOException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return Response.ok(response).build();
-    }
-
-    private List<OFFlow> getLinks(String DPID) throws ResourceException, ActivatorException {
-        log.info("Provision Flow Link Floodlight");
-        List<OFFlow> list;
-        IResource resource = getResourceByName(DPID);
-
-        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-        list = forwardingCapability.getOpenflowForwardingRules();
-
-        return list;
-    }
-
-    private Response getLink(String name, String DPID, String protocol) throws ResourceException, ActivatorException {
-        log.info("Provision Flow Link Floodlight");
-
-        IResource resource = getResourceByName(DPID);
-        if (resource == null) {
-            return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
-        }
-        OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
-        IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-        if (protocol.equals("opendaylight")) {
-            flow = (OpenDaylightOFFlow) forwardingCapability.getOpenflowForwardingRule(DPID, name);
-        } else if (protocol.equals("floodlight")) {
-            forwardingCapability.getOpenflowForwardingRule(DPID, name);
-        }
-        log.error(flow.getName());
-        log.error(flow.getMatch().getSrcIp());
-
-        return Response.ok().build();
-    }
-
     private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
         IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
@@ -720,152 +536,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return protocol;
     }
 
-    private List<OFFlow> createODLFlows() {
-        List<OFFlow> list = new ArrayList<OFFlow>();
-
-        OFFlow flow = new OFFlow();
-        FloodlightOFMatch match = new FloodlightOFMatch();
-        List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
-        FloodlightOFAction action = new FloodlightOFAction();
-        match.setSrcIp("192.168.1.1");
-        match.setDstIp("192.168.4.4");
-//        match.setSrcMac("00:05:b9:7c:81:5f");
-//        match.setDstMac("01:05:b9:7c:81:51");
-        match.setEtherType("2048");
-        match.setIngressPort("1");
-        action.setType("OUTPUT");
-        action.setValue("3");
-        actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:03");
-        flow.setActions(actions);
-        flow.setMatch(match);
-        flow.setName("TEST-ODL2");
-        flow.setPriority("32767");
-        list.add(flow);
-
-        flow = new OpenDaylightOFFlow();
-        match = new FloodlightOFMatch();
-        actions = new ArrayList<FloodlightOFAction>();
-        action = new FloodlightOFAction();
-        match.setSrcIp("192.168.1.1");
-        match.setDstIp("192.168.4.4");
-//        match.setSrcMac("00:05:b9:7c:81:5f");
-//        match.setDstMac("01:05:b9:7c:81:51");
-        match.setEtherType("2048");
-        match.setIngressPort("1");
-        action.setType("OUTPUT");
-        action.setValue("4");
-        actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:04");
-        flow.setActions(actions);
-        flow.setMatch(match);
-        flow.setName("TEST-ODL3");
-        flow.setPriority("32767");
-        list.add(flow);
-
-        flow = new OpenDaylightOFFlow();
-        match = new FloodlightOFMatch();
-        actions = new ArrayList<FloodlightOFAction>();
-        action = new FloodlightOFAction();
-        match.setSrcIp("192.168.1.1");
-        match.setDstIp("192.168.4.4");
-//        match.setSrcMac("00:05:b9:7c:81:5f");
-//        match.setDstMac("01:05:b9:7c:81:51");
-        match.setEtherType("2048");
-        match.setIngressPort("3");
-        action.setType("OUTPUT");
-        action.setValue("2");
-        actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:01");
-        flow.setActions(actions);
-        flow.setMatch(match);
-        flow.setName("TEST-ODL1");
-        flow.setPriority("32767");
-        list.add(flow);
-
-        flow = new OpenDaylightOFFlow();
-        match = new FloodlightOFMatch();
-        actions = new ArrayList<FloodlightOFAction>();
-        action = new FloodlightOFAction();
-        match.setDstIp("192.168.1.1");
-        match.setSrcIp("192.168.4.4");
-//        match.setSrcMac("00:05:b9:7c:81:5f");
-//        match.setDstMac("01:05:b9:7c:81:51");
-        match.setEtherType("2048");
-        match.setIngressPort("3");
-        action.setType("OUTPUT");
-        action.setValue("1");
-        actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:03");
-        flow.setActions(actions);
-        flow.setMatch(match);
-        flow.setName("TEST-ODL5");
-        flow.setPriority("32767");
-        list.add(flow);
-
-        flow = new OpenDaylightOFFlow();
-        match = new FloodlightOFMatch();
-        actions = new ArrayList<FloodlightOFAction>();
-        action = new FloodlightOFAction();
-        match.setDstIp("192.168.1.1");
-        match.setSrcIp("192.168.4.4");
-//        match.setSrcMac("00:05:b9:7c:81:5f");
-//        match.setDstMac("01:05:b9:7c:81:51");
-        match.setEtherType("2048");
-        match.setIngressPort("4");
-        action.setType("OUTPUT");
-        action.setValue("1");
-        actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:04");
-        flow.setActions(actions);
-        flow.setMatch(match);
-        flow.setName("TEST-ODL6");
-        flow.setPriority("32767");
-        list.add(flow);
-
-        flow = new OpenDaylightOFFlow();
-        match = new FloodlightOFMatch();
-        actions = new ArrayList<FloodlightOFAction>();
-        action = new FloodlightOFAction();
-        match.setDstIp("192.168.1.1");
-        match.setSrcIp("192.168.4.4");
-//        match.setSrcMac("00:05:b9:7c:81:5f");
-//        match.setDstMac("01:05:b9:7c:81:51");
-        match.setEtherType("2048");
-        match.setIngressPort("2");
-        action.setType("OUTPUT");
-        action.setValue("3");
-        actions.add(action);
-        flow.setDPID("00:00:00:00:00:00:00:01");
-        flow.setActions(actions);
-        flow.setMatch(match);
-        flow.setName("TEST-ODL4");
-        flow.setPriority("32767");
-        list.add(flow);
-
-        /* 
-         flow = new OpenDaylightOFFlow();
-         match = new FloodlightOFMatch();
-         actions = new ArrayList<FloodlightOFAction>();
-         action = new FloodlightOFAction();
-         match.setDstIp("192.168.2.2");
-         match.setSrcIp("192.168.8.97");
-         match.setEtherType("2048");
-         match.setIngressPort("1");
-         action.setType("output");
-         action.setValue("2");
-         actions.add(action);
-         flow.setDPID("00:00:00:00:00:00:00:01");
-         flow.setActions(actions);
-         flow.setMatch(match);
-         flow.setName("TEST-ODL2");
-         list.add(flow);
-               
-         */
-        return list;
-
-    }
-
     public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
         log.error("Call VTN from Static Routing.");
         String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
@@ -878,7 +548,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
         client.accept(MediaType.TEXT_PLAIN);
         response = client.get();
-        log.error("VTN Manager response: "+response.getStatus());
+        log.error("VTN Manager response: " + response.getStatus());
         return response;
     }
 
