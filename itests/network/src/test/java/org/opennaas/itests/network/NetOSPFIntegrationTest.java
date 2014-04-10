@@ -22,10 +22,6 @@ package org.opennaas.itests.network;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
@@ -59,13 +55,17 @@ import org.opennaas.extensions.network.capability.queue.IQueueCapability;
 import org.opennaas.extensions.network.capability.queue.QueueCapability;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-@RunWith(JUnit4TestRunner.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class NetOSPFIntegrationTest {
 
 	protected static final String	ACTION_NAME				= null;
@@ -85,12 +85,10 @@ public class NetOSPFIntegrationTest {
 	@Inject
 	private IResourceManager		resourceManager;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.network.repository)", timeout = 20000)
 	private BlueprintContainer		networkRepoService;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer		routerRepoService;
@@ -103,10 +101,12 @@ public class NetOSPFIntegrationTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-network, opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-network, opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
+				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	/**
