@@ -20,12 +20,7 @@ package org.opennaas.itests.nettopology.internal;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,10 +31,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import junit.framework.Assert;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,11 +50,12 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
@@ -70,8 +65,8 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class TopologyTest {
 
 	private static final String			TOPOLOGY_FILE_RELATIVE_PATH				= "/nettopology.xml";
@@ -106,12 +101,12 @@ public class TopologyTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(
-				opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "itests-helpers"),
-				systemTimeout(1000 * 60 * 10),
-				noConsole(),
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "itests-helpers"),
+				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.keepLogConfiguration(),
 				// OpennaasExamOptions.openDebugSocket(),
-				keepRuntimeFolder());
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
