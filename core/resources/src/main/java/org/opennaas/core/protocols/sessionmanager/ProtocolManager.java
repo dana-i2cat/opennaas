@@ -188,7 +188,6 @@ public class ProtocolManager implements IProtocolManager {
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
-	@Override
 	public void sessionFactoryAdded(IProtocolSessionFactory serviceInstance, Map<?, ?> serviceProperties) {
 		if (serviceInstance != null && serviceProperties != null) {
 			log.debug("New protocol session factory added for protocols: " + serviceProperties.get(ProtocolSessionContext.PROTOCOL));

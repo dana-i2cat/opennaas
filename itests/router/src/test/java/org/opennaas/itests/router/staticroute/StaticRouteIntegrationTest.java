@@ -113,7 +113,6 @@ public class StaticRouteIntegrationTest {
 		Assert.assertFalse(routerResource.getCapabilities().isEmpty());
 		Assert.assertNotNull(routerResource.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE)));
 		Assert.assertNotNull(routerResource.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE)));
-
 	}
 
 	/**
