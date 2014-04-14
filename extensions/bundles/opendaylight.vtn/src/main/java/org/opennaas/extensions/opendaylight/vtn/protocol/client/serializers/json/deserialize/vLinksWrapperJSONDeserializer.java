@@ -27,8 +27,10 @@ public class vLinksWrapperJSONDeserializer extends JsonDeserializer<vLinksWrappe
                 break;
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//ports
-                jp.nextToken();
-                if (jp.getCurrentName() == null) {
+                if (jp.getCurrentToken() == JsonToken.START_ARRAY) {
+                        jp.nextToken();
+                }
+                if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
                     break;
                 }
                 vLink vlink = new vLink();

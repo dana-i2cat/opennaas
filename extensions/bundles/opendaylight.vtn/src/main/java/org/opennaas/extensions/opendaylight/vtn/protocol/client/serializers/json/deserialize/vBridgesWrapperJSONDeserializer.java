@@ -27,8 +27,10 @@ public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWr
                 break;
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//ports
-                jp.nextToken();
-                if (jp.getCurrentName() == null) {
+                if (jp.getCurrentToken() == JsonToken.START_ARRAY) {
+                        jp.nextToken();
+                }
+                if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
                     break;
                 }
                 OpenDaylightvBridge vbrs = new OpenDaylightvBridge();
