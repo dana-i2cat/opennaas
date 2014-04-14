@@ -119,4 +119,24 @@ public class OpenDaylightvtnAPIClient implements IOpenDaylightvtnAPIClient {
     public vLinksWrapper getvLinks(String vtnName) {
         return cxfClient.getvLinks(vtnName);
     }
+
+    @Override
+    public OpenDaylightvBridge deletevBridge(String vtn, String vbr) {
+         return cxfClient.deletevBridge(vtn, vbr);
+    }
+
+    @Override
+    public vBridgeInterfacesWrapper deleteInterfaces(String vtn, String vbr_name, String iface) {
+        return cxfClient.deleteInterfaces(vtn, vbr_name, iface);
+    }
+
+    @Override
+    public Boundary deleteBoundary(String bound) {
+        return cxfClient.deleteBoundary(bound);
+    }
+
+    @Override
+    public vLink deletevLink(String vtn, String vlink) {
+        return cxfClient.deletevLink(vtn, vlink);
+    }
 }

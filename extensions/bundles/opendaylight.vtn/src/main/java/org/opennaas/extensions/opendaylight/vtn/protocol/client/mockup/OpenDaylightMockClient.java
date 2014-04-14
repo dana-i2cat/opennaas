@@ -132,4 +132,24 @@ public class OpenDaylightMockClient implements IOpenDaylightvtnAPIClient {
     public vLinksWrapper getvLinks(String vtnName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public OpenDaylightvBridge deletevBridge(String vtn, String vbr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public vBridgeInterfacesWrapper deleteInterfaces(String vtn, String vbr_name, String iface) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Boundary deleteBoundary(String bound) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public vLink deletevLink(String vtn, String vlink) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -41,7 +41,9 @@ public class VTNCapability implements IVTNCapability {
     OpenDaylightProtocolSession session;
     IOpenDaylightvtnAPIClient client;
     private static final String SESSION_ID = "0001";
-    private String PROTOCOL_URI = "http://192.168.254.72:8083/";
+//    private String PROTOCOL_URI = "http://192.168.254.72:8083/";
+    private String PROTOCOL_URI = "http://84.88.40.153:8083/";
+
     private VTN vtn;
     private List<OpenDaylightController> controllers = new ArrayList<OpenDaylightController>();
     private List<Boundary> boundaries = new ArrayList<Boundary>();
@@ -72,16 +74,20 @@ public class VTNCapability implements IVTNCapability {
         vtn = new VTN();
         vtn.setVtn_name("vtn1");
         createVTN(vtn.getVtn_name());
-
-        createController("ctrl1", "192.168.254.156", "odc");
-        createController("ctrl2", "192.168.254.221", "odc");
+        
+        String ctrl1_IP = "192.168.254.156";
+        String ctrl2_IP = "192.168.254.221";
+//        String ctrl1_IP = "84.88.36.100";
+//        String ctrl2_IP = "84.88.41.171";
+        createController("ctrl1", ctrl1_IP, "odc");
+        createController("ctrl2", ctrl2_IP, "odc");
         OpenDaylightController ctrl1 = new OpenDaylightController();
         ctrl1.setController_id("ctrl1");
-        ctrl1.setIpaddr("192.168.254.156");
+        ctrl1.setIpaddr(ctrl1_IP);
         ctrl1.setType("odc");
         controllers.add(ctrl1);
         ctrl1 = new OpenDaylightController();
-        ctrl1.setController_id("ctrl2");
+        ctrl1.setController_id(ctrl2_IP);
         ctrl1.setIpaddr("192.168.254.221");
         ctrl1.setType("odc");
         controllers.add(ctrl1);
@@ -400,5 +406,22 @@ public class VTNCapability implements IVTNCapability {
     @Override
     public void update() {
         initConfig();
+    }
+
+    @Override
+    public void cleanVTN() {
+        client.deleteVTN("vtn1");
+        client.deletevBridge("vtn1", "vbr1");
+        client.deletevBridge("vtn1", "vbr2");
+        client.deleteInterfaces("vtn1", "vbr1", "if1");
+        client.deleteInterfaces("vtn1", "vbr1", "if2");
+        client.deleteInterfaces("vtn1", "vbr1", "if3");
+        client.deleteInterfaces("vtn1", "vbr1", "if4");
+        client.deleteInterfaces("vtn1", "vbr2", "if1");
+        client.deleteInterfaces("vtn1", "vbr2", "if2");
+        client.deleteInterfaces("vtn1", "vbr2", "if3");
+        client.deleteInterfaces("vtn1", "vbr2", "if4");
+        client.deleteBoundary("b1");
+        client.deletevLink("vtn1", "vlink1");
     }
 }

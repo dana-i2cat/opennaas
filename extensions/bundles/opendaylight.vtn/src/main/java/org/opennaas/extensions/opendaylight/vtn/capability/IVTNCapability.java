@@ -160,5 +160,9 @@ public interface IVTNCapability {
     @Path("/update")
     @GET
     public void update();
+    
+    @Path("/cleanvtn")
+    @GET
+    public void cleanVTN();
 
 }

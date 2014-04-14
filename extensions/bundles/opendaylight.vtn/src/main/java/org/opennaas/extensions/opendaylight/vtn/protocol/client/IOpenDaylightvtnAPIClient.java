@@ -1,6 +1,5 @@
 package org.opennaas.extensions.opendaylight.vtn.protocol.client;
 
-import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,7 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.opennaas.extensions.opendaylight.vtn.model.Boundary;
-import org.opennaas.extensions.opendaylight.vtn.model.LogicalPort;
 import org.opennaas.extensions.opendaylight.vtn.model.OpenDaylightController;
 import org.opennaas.extensions.opendaylight.vtn.model.OpenDaylightvBridge;
 import org.opennaas.extensions.opendaylight.vtn.model.PortMap;
@@ -132,5 +130,25 @@ public interface IOpenDaylightvtnAPIClient {
     @Path("/vtns/{vtn}/vlinks.json")
     @GET
     public vLinksWrapper getvLinks(@PathParam("vtn") String vtnName);
+    
+    
+    @Path("/vtns/{vtn}/vbridges/{vbr}.json")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public OpenDaylightvBridge deletevBridge(@PathParam("vtn") String vtn, @PathParam("vbr") String vbr);
+
+    @Path("/vtns/{vtn}/vbridges/{vbr}/interfaces/{iface}.json")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public vBridgeInterfacesWrapper deleteInterfaces(@PathParam("vtn") String vtn, @PathParam("vbr") String vbr_name, @PathParam("iface") String iface);
+        
+    @Path("/boundaries/{boundary}.json")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Boundary deleteBoundary(@PathParam("boundary") String bound);
+        
+    @Path("/vtns/{vtn}/vlinks/{vlink}.json")
+    @DELETE
+    public vLink deletevLink(@PathParam("vtn") String vtn, @PathParam("vlink") String vlink);
     
 }
