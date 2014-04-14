@@ -14,7 +14,7 @@ import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridge
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWrapper> {
-    
+
     public vBridgesWrapperJSONDeserializer() {
     }
 
@@ -26,25 +26,27 @@ public class vBridgesWrapperJSONDeserializer extends JsonDeserializer<vBridgesWr
             if (jp.getCurrentName() == null || !flowType.equals("vbridges")) {
                 break;
             }
-            while (jp.nextToken() != JsonToken.END_ARRAY) {//ports
-                jp.nextToken();
-                if (jp.getCurrentName() == null) {
+            while (jp.nextToken() != JsonToken.END_ARRAY) {
+		if (jp.getCurrentToken() == JsonToken.START_ARRAY) {
+			jp.nextToken();
+		}
+		if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
                     break;
                 }
-                OpenDaylightvBridge vbrs = new OpenDaylightvBridge();
+
+                OpenDaylightvBridge vbr = new OpenDaylightvBridge();
                 while (jp.nextToken() != JsonToken.END_OBJECT) {
                     String n = jp.getCurrentName();
                     if (n == null) {
                         break;
                     }
                     if (n.equals("vbr_name")) {
-                        vbrs.setVbr_name(jp.getText());
+                        vbr.setVbr_name(jp.getText());
                     }
                 }
-
                 // add vBridge
-                if (vbrs.getVbr_name() != null) {
-                    wrapper.add(vbrs);
+                if (vbr.getVbr_name() != null) {
+                    wrapper.add(vbr);
                 }
             }
         }
