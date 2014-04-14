@@ -23,7 +23,7 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.gretunnel;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

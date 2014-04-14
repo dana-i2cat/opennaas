@@ -20,10 +20,6 @@ package org.opennaas.itests.roadm.alarms;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
@@ -70,24 +66,27 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.karaf.options.KarafDistributionOption;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class MonitoringCapabilityTest implements EventHandler
 {
 
 	private final static Log		log							= LogFactory.getLog(MonitoringCapabilityTest.class);
 
+	@SuppressWarnings("unused")
 	@Inject
 	private BundleContext			bundleContext;
 
@@ -111,12 +110,10 @@ public class MonitoringCapabilityTest implements EventHandler
 	@Filter("(&(actionset.name=proteus)(actionset.capability=monitoring)(actionset.version=1.0))")
 	private IActionSet				actionSet;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)", timeout = 20000)
 	private BlueprintContainer		roadmRepositoryService;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)", timeout = 20000)
 	private BlueprintContainer		wonesysProtocolService;
@@ -138,10 +135,12 @@ public class MonitoringCapabilityTest implements EventHandler
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus"),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepLogConfiguration(),
+				KarafDistributionOption.keepRuntimeFolder());
 	}
 
 	@Before
@@ -267,18 +266,16 @@ public class MonitoringCapabilityTest implements EventHandler
 		String resourceId = resource.getResourceIdentifier().getId();
 
 		IProtocolSessionFactory factory = new MockProtocolSessionFactory();
-		Map serviceProperties = new HashMap<String, String>();
+		HashMap<String, String> serviceProperties = new HashMap<String, String>();
 		serviceProperties.put(ProtocolSessionContext.PROTOCOL, "mock");
 
 		((ProtocolManager) protocolManager).sessionFactoryAdded(factory, serviceProperties);
-
 		// create session
 		ProtocolSessionContext sessionContext = newWonesysSessionContextMock();
 
 		ProtocolSessionManager sessionManager =
 				(ProtocolSessionManager) protocolManager.getProtocolSessionManagerWithContext(resourceId, sessionContext);
 		IProtocolSession session = sessionManager.obtainSession(sessionContext, false);
-
 		// register this as ResourceAlarm listener
 		int registrationNum = registerAsCapabilityAlarmListener(this);
 
@@ -317,7 +314,7 @@ public class MonitoringCapabilityTest implements EventHandler
 		String resourceId = resource.getResourceIdentifier().getId();
 
 		IProtocolSessionFactory factory = new MockProtocolSessionFactory();
-		Map serviceProperties = new HashMap<String, String>();
+		Map<String, String> serviceProperties = new HashMap<String, String>();
 		serviceProperties.put(ProtocolSessionContext.PROTOCOL, "mock");
 
 		((ProtocolManager) protocolManager).sessionFactoryAdded(factory, serviceProperties);

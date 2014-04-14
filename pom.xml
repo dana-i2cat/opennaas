@@ -78,8 +78,8 @@
 		<jsonassert.version>1.2.0</jsonassert.version>					
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
-		<junit.version>4.10</junit.version>
-		<karaf.version>2.2.11</karaf.version>
+		<junit.version>4.11</junit.version>
+		<karaf.version>2.3.4</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
@@ -90,12 +90,12 @@
 		<opensaml.version>2.4.1_1</opensaml.version>
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam2.version>2.3.1</pax.exam2.version>
+		<pax.exam3.version>3.4.0</pax.exam3.version>
 		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.5.2</servicemix.version>
+		<servicemix.version>5.0.0</servicemix.version>
 		<servicemix.specs.version>2.2.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
@@ -113,8 +113,8 @@
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<snmp4j.version>2.1.0_1</snmp4j.version>
-		<spring.version>3.0.7.RELEASE</spring.version>
-		<spring.security.version>3.0.8.RELEASE</spring.security.version>
+		<spring.version>3.2.4.RELEASE</spring.version>
+		<spring.security.version>3.1.5.RELEASE</spring.security.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<stax2.api.version>3.1.1</stax2.api.version>
 		<tiles-api.version>2.2.2</tiles-api.version>
@@ -1051,30 +1051,42 @@
 			</dependency>
 			<!-- Integration tests -->
 			<dependency>
-				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-				<artifactId>paxexam-karaf-container</artifactId>
-				<version>${paxexam-karaf-container.version}</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam-container-karaf</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-junit4</artifactId>
-				<version>${pax.exam2.version}</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam-junit4</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.ops4j.pax.swissbox</groupId>
-				<artifactId>pax-swissbox-framework</artifactId>
-				<version>1.5.0</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
+			<dependency>
+			    <groupId>org.ops4j.pax.url</groupId>
+			    <artifactId>pax-url-aether</artifactId>
+			    <version>1.6.0</version>
+			    <scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>javax.inject</groupId>
+			    <artifactId>javax.inject</artifactId>
+			    <version>1</version>
+			    <scope>test</scope>
+			</dependency>			
 			<!-- Features -->
 			<!--  -->
 			<dependency>
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
 				<version>${servicemix.version}</version>
-				<type>tar.gz</type>
+				<type>zip</type>
 			</dependency>
 			<!-- Misc -->
 			<dependency>
