@@ -170,15 +170,15 @@
 		<constructor-arg>
 			<list>
 				<bean
-					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					class="org.springframework.security.core.authority.SimpleGrantedAuthority">
 					<constructor-arg value="ROLE_ADMIN" />
 				</bean>
 				<bean
-					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					class="org.springframework.security.core.authority.SimpleGrantedAuthority">
 					<constructor-arg value="ROLE_ADMIN" />
 				</bean>
 				<bean
-					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					class="org.springframework.security.core.authority.SimpleGrantedAuthority">
 					<constructor-arg value="ROLE_ADMIN" />
 				</bean>
 			</list>

@@ -46,10 +46,12 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -69,11 +71,18 @@ public class ACLManagerTest {
 	@Inject
 	protected IResourceManager	resourceManager;
 
+	/**
+	 * Make sure blueprint for org.opennaas.core.security bundle has finished its initialization
+	 */
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.core.security)", timeout = 20000)
+	private BlueprintContainer	securityBlueprintContainer;
+
 	@Configuration
 	public static Option[] configuration() {
 		return CoreOptions.options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
-				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos", "opennaas-vcpe", "itests-helpers"),
+				OpennaasExamOptions.includeFeatures("itests-helpers"),
 				OpennaasExamOptions.noConsole(),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
@@ -104,11 +113,11 @@ public class ACLManagerTest {
 
 		// create Authentication objects
 		Collection<GrantedAuthority> adminAuthorities = new ArrayList<GrantedAuthority>();
-		adminAuthorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+		adminAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		Authentication adminAuthentication = new UsernamePasswordAuthenticationToken(adminUser, adminUser, adminAuthorities);
 
 		Collection<GrantedAuthority> basicAuthorities = new ArrayList<GrantedAuthority>();
-		basicAuthorities.add(new GrantedAuthorityImpl("ROLE_USER"));
+		basicAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		Authentication basicAuthentication = new UsernamePasswordAuthenticationToken(basicUser, basicUser, basicAuthorities);
 
 		// secure Resource using ACLManager (admin credentials are necessary to create ACLs, set it)
