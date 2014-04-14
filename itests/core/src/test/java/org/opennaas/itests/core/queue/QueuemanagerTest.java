@@ -106,7 +106,7 @@ public class QueuemanagerTest
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos"),
 				OpennaasExamOptions.includeSwissboxFramework(),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
 

@@ -227,7 +227,7 @@ public class VRRPServicesTest {
 				// OpennaasExamOptions.openDebugSocket(),
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos", "itests-helpers", "ssh"),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}

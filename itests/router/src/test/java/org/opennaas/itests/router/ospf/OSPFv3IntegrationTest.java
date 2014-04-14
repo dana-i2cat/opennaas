@@ -97,7 +97,7 @@ public class OSPFv3IntegrationTest
 		return options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos", "itests-helpers"),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}

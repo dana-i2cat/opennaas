@@ -67,7 +67,7 @@ public class OpenflowResourceRepositoryIntegrationTest {
 		return options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "itests-helpers"),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}

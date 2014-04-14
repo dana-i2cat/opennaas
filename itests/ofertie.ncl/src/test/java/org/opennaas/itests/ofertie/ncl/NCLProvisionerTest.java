@@ -218,7 +218,7 @@ public class NCLProvisionerTest {
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork",
 						"opennaas-openflowswitch-driver-floodlight", "opennaas-ofertie-ncl", "itests-helpers"),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}

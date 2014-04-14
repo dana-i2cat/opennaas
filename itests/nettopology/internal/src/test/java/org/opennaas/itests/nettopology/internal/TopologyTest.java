@@ -103,7 +103,7 @@ public class TopologyTest {
 		return options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "itests-helpers"),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepLogConfiguration(),
 				// OpennaasExamOptions.openDebugSocket(),
 				OpennaasExamOptions.keepRuntimeFolder());

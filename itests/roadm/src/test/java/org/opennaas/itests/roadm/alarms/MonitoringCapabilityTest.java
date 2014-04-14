@@ -138,7 +138,7 @@ public class MonitoringCapabilityTest implements EventHandler
 		return options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus"),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepLogConfiguration(),
 				KarafDistributionOption.keepRuntimeFolder());
 	}

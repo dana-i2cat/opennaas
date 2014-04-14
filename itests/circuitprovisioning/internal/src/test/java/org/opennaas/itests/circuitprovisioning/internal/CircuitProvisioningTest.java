@@ -142,7 +142,7 @@ public class CircuitProvisioningTest {
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-genericnetwork", "itests-helpers"),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepRuntimeFolder(),
 				OpennaasExamOptions.keepLogConfiguration()
 		// , OpennaasExamOptions.openDebugSocket()

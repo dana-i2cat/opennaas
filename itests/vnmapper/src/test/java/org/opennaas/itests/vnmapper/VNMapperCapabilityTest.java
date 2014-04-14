@@ -126,6 +126,7 @@ public class VNMapperCapabilityTest {
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-vnmapper", "itests-helpers"),
 				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}

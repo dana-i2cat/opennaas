@@ -129,7 +129,7 @@ public class QueueTest
 				OpennaasExamOptions.includeFeatures("opennaas-cim", "opennaas-protocol-netconf", "opennaas-router", "opennaas-router-driver-junos",
 						"itests-helpers"),
 				OpennaasExamOptions.includeSwissboxFramework(),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
 

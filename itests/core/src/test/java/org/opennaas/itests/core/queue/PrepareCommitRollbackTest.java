@@ -110,7 +110,7 @@ public class PrepareCommitRollbackTest
 				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos"),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.includeSwissboxFramework(),
-				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
 

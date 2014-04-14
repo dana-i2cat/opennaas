@@ -52,6 +52,14 @@ public abstract class OpennaasExamOptions
 						.versionAsInProject());
 	}
 
+	public final static Option doNotDelayShell()
+	{
+
+		return KarafDistributionOption.editConfigurationFilePut("etc/custom.properties",
+				"karaf.delay.console",
+				"false");
+	}
+
 	public final static Option includeFeatures(String... features)
 	{
 		return KarafDistributionOption.editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
