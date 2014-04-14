@@ -27,8 +27,10 @@ public class LogicalPortsWrapperJSONDeserializer extends JsonDeserializer<Logica
                 break;
             }
             while (jp.nextToken() != JsonToken.END_ARRAY) {//[
-                jp.nextToken();
-                if (jp.getCurrentName() == null) {
+                if (jp.getCurrentToken() == JsonToken.START_ARRAY) {
+                        jp.nextToken();
+                }
+                if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
                     break;
                 }
                 LogicalPort lport = new LogicalPort();
