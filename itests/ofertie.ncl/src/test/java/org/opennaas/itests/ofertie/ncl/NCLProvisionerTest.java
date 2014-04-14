@@ -79,9 +79,9 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.karaf.options.KarafDistributionOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
@@ -212,16 +212,15 @@ public class NCLProvisionerTest {
 	@Inject
 	private INCLProvisioner				provisioner;
 
-	@org.ops4j.pax.exam.Configuration
+	@Configuration
 	public static Option[] configuration() {
 		return options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork",
-						"opennaas-openflowswitch-driver-floodlight",
-						"opennaas-ofertie-ncl", "itests-helpers"),
+						"opennaas-openflowswitch-driver-floodlight", "opennaas-ofertie-ncl", "itests-helpers"),
 				OpennaasExamOptions.noConsole(),
 				OpennaasExamOptions.keepLogConfiguration(),
-				KarafDistributionOption.keepRuntimeFolder());
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
