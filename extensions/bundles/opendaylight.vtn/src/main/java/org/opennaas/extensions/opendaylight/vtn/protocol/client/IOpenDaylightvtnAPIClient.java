@@ -20,6 +20,7 @@ import org.opennaas.extensions.opendaylight.vtn.model.vBridgeInterfaces;
 import org.opennaas.extensions.opendaylight.vtn.model.vLink;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.BoundaryWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.LogicalPortsOFFlowsWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.SwitchesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgeInterfacesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vLinksWrapper;
@@ -134,21 +135,23 @@ public interface IOpenDaylightvtnAPIClient {
     
     @Path("/vtns/{vtn}/vbridges/{vbr}.json")
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public OpenDaylightvBridge deletevBridge(@PathParam("vtn") String vtn, @PathParam("vbr") String vbr);
+    public Response deletevBridge(@PathParam("vtn") String vtn, @PathParam("vbr") String vbr);
 
     @Path("/vtns/{vtn}/vbridges/{vbr}/interfaces/{iface}.json")
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public vBridgeInterfacesWrapper deleteInterfaces(@PathParam("vtn") String vtn, @PathParam("vbr") String vbr_name, @PathParam("iface") String iface);
+    public Response deleteInterfaces(@PathParam("vtn") String vtn, @PathParam("vbr") String vbr_name, @PathParam("iface") String iface);
         
     @Path("/boundaries/{boundary}.json")
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public Boundary deleteBoundary(@PathParam("boundary") String bound);
+    public Response deleteBoundary(@PathParam("boundary") String bound);
         
     @Path("/vtns/{vtn}/vlinks/{vlink}.json")
     @DELETE
-    public vLink deletevLink(@PathParam("vtn") String vtn, @PathParam("vlink") String vlink);
+    public Response deletevLink(@PathParam("vtn") String vtn, @PathParam("vlink") String vlink);
+    
+    @Path("/controllers/{ctrl_id}/switches.json")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public SwitchesWrapper getListSwitchs(@PathParam("ctrl_id") String ctrl_id);
     
 }

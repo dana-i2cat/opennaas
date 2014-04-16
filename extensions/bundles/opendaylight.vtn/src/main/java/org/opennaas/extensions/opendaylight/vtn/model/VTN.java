@@ -72,4 +72,11 @@ public class VTN {
         return true;
     }
 
+    public OpenDaylightvBridge getvBridge(String vbrName){
+        for(OpenDaylightvBridge vbr : vBridges){
+            if(vbr.getVbr_name().equals(vbrName))
+                return vbr;
+        }
+        return null;
+    }
 }

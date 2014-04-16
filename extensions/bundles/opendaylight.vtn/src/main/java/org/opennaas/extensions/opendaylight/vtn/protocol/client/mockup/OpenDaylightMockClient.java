@@ -14,6 +14,7 @@ import org.opennaas.extensions.opendaylight.vtn.model.vLink;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.IOpenDaylightvtnAPIClient;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.BoundaryWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.LogicalPortsOFFlowsWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.SwitchesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgeInterfacesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vLinksWrapper;
@@ -134,22 +135,27 @@ public class OpenDaylightMockClient implements IOpenDaylightvtnAPIClient {
     }
 
     @Override
-    public OpenDaylightvBridge deletevBridge(String vtn, String vbr) {
+    public Response deletevBridge(String vtn, String vbr) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public vBridgeInterfacesWrapper deleteInterfaces(String vtn, String vbr_name, String iface) {
+    public Response deleteInterfaces(String vtn, String vbr_name, String iface) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Boundary deleteBoundary(String bound) {
+    public Response deleteBoundary(String bound) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public vLink deletevLink(String vtn, String vlink) {
+    public Response deletevLink(String vtn, String vlink) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public SwitchesWrapper getListSwitchs(String ctrl_id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

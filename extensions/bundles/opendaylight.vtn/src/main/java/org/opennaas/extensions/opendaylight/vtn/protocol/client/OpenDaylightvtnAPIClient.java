@@ -13,6 +13,7 @@ import org.opennaas.extensions.opendaylight.vtn.model.vBridgeInterfaces;
 import org.opennaas.extensions.opendaylight.vtn.model.vLink;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.BoundaryWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.LogicalPortsOFFlowsWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.SwitchesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgeInterfacesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vLinksWrapper;
@@ -121,22 +122,27 @@ public class OpenDaylightvtnAPIClient implements IOpenDaylightvtnAPIClient {
     }
 
     @Override
-    public OpenDaylightvBridge deletevBridge(String vtn, String vbr) {
+    public Response deletevBridge(String vtn, String vbr) {
          return cxfClient.deletevBridge(vtn, vbr);
     }
 
     @Override
-    public vBridgeInterfacesWrapper deleteInterfaces(String vtn, String vbr_name, String iface) {
+    public Response deleteInterfaces(String vtn, String vbr_name, String iface) {
         return cxfClient.deleteInterfaces(vtn, vbr_name, iface);
     }
 
     @Override
-    public Boundary deleteBoundary(String bound) {
+    public Response deleteBoundary(String bound) {
         return cxfClient.deleteBoundary(bound);
     }
 
     @Override
-    public vLink deletevLink(String vtn, String vlink) {
+    public Response deletevLink(String vtn, String vlink) {
         return cxfClient.deletevLink(vtn, vlink);
+    }
+
+    @Override
+    public SwitchesWrapper getListSwitchs(String ctrl_id) {
+        return cxfClient.getListSwitchs(ctrl_id);
     }
 }
