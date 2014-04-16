@@ -8,10 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.apache.cxf.jaxrs.client.WebClient;
 import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.jaxrs.client.WebClient;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -25,7 +25,6 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
-import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.model.L2Forward;
@@ -44,6 +43,8 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 
     Log log = LogFactory.getLog(StaticRoutingCapability.class);
     private VRFModel vrfModel;
+    private String username = "admin";
+    private String password = "123456";
 
     public StaticRoutingCapability() {
         this.vrfModel = new VRFModel();
@@ -559,8 +560,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         log.error("Call VTN from Static Routing.");
         String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
         Response response;
-        String username = "admin";
-        String password = "123456";
         String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
 
         WebClient client = WebClient.create(url);

@@ -122,12 +122,29 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
                 log.error("Route " + r.getSourceAddress() + " " + r.getDestinationAddress() + " " + r.getSwitchInfo().getDPID() + " " + r.getSwitchInfo().getInputPort() + " " + r.getSwitchInfo().getOutputPort());
                 listFlow.add(Utils.VRFRouteToOFFlow(r, "2048"));
                 listFlow.add(Utils.VRFRouteToOFFlow(r, "2054"));
-//                listFlow.add(Utils.VRFRouteToOFFlow(r, "0x0800"));
-//                listFlow.add(Utils.VRFRouteToOFFlow(r, "0x0806"));
-
             }
         }
 
+        String srcDPID = listFlow.get(0).getDPID();
+        String inPort = listFlow.get(0).getMatch().getIngressPort();
+        String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
+        String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
+	Response response;
+        try {
+            String initialSw = getProtocolType(srcDPID);
+            String targetSw = getProtocolType(dstDPID);
+            if(initialSw.equals("opendaylight")){
+                response = callVTN(dstDPID, outPort, srcDPID, inPort);//changed
+            }
+            if(targetSw.equals("opendaylight")){
+                response = callVTN(srcDPID, inPort, dstDPID, outPort);
+            }
+        } catch (ActivatorException ex) {
+            Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ResourceException ex) {
+            Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
@@ -429,8 +446,22 @@ log.error("Insert flows into "+protocol+" switchs.");
         IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
 
         protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
+        if(protocol == null) protocol = "floodlight";
 
-        log.info("Protocol of switch is: " + protocol);
         return protocol;
+    }
+    
+    public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
+        log.error("Call VTN from Dynamic (Dijkstra) Routing.");
+        String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
+        Response response;
+        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+
+        WebClient client = WebClient.create(url);
+        client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
+        client.accept(MediaType.TEXT_PLAIN);
+        response = client.get();
+        log.error("VTN Manager response: " + response.getStatus());
+        return response;
     }
 }

@@ -75,7 +75,11 @@ public class VTNCapability implements IVTNCapability {
     private void initConfig() {
         vtn = new VTN();
         vtn.setVtn_name("vtn1");
-        createVTN(vtn.getVtn_name());
+        Response response = createVTN(vtn.getVtn_name());
+        if(response.getEntity().equals("VTN is not accessible")){
+            log.error("VTN is not accesible, change the IP address");
+            return;
+        }
 
 //        String ctrl1_IP = "192.168.254.156";
 //        String ctrl2_IP = "192.168.254.221";
@@ -155,7 +159,12 @@ public class VTNCapability implements IVTNCapability {
         log.info("Create VTN " + name);
         vtn = new VTN();
         vtn.setVtn_name(name);
-        Response response = client.createVTN(vtn);
+        Response response;
+        try{
+            response = client.createVTN(vtn);
+        }catch(Exception e){
+            response = Response.ok("VTN is not accessible").build();
+        }
         return response;
     }
 
