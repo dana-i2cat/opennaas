@@ -55,9 +55,10 @@ public interface IVTNCapability {
      * @param name
      * @param ipaddr
      * @param type
+     * @param description
      * @return
      */
-    @Path("/controller/{name}/{ipaddr}/{type}/{description")
+    @Path("/controller/{name}/{ipaddr}/{type}/{description}")
     @GET
     public Response createController(@PathParam("name") String name, @PathParam("ipaddr") String ipaddr, @PathParam("type") String type, @PathParam("description") String description);
 
