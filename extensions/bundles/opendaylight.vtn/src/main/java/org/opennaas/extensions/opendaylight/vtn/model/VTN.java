@@ -14,6 +14,10 @@ public class VTN {
     private List<OpenDaylightvBridge> vBridges = new ArrayList<OpenDaylightvBridge>();
     private List<vLink> vlink = new ArrayList<vLink>();
 
+    public VTN(String vtn_name) {
+        this.vtn_name = vtn_name;
+    }
+
     public String getVtn_name() {
         return vtn_name;
     }
@@ -72,10 +76,11 @@ public class VTN {
         return true;
     }
 
-    public OpenDaylightvBridge getvBridge(String vbrName){
-        for(OpenDaylightvBridge vbr : vBridges){
-            if(vbr.getVbr_name().equals(vbrName))
+    public OpenDaylightvBridge getvBridge(String vbrName) {
+        for (OpenDaylightvBridge vbr : vBridges) {
+            if (vbr.getVbr_name().equals(vbrName)) {
                 return vbr;
+            }
         }
         return null;
     }

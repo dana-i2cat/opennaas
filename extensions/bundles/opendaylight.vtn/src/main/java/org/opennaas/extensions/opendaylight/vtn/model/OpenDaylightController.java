@@ -17,6 +17,15 @@ public class OpenDaylightController {
     private String actual_version;
     private String operstatus;
 
+    public OpenDaylightController(String controller_id, String ipaddr, String type, String version, String operstatus, String description) {
+        this.controller_id = controller_id;
+        this.description = description;
+        this.ipaddr = ipaddr;
+        this.type = type;
+        this.version = version;
+        this.operstatus = operstatus;
+    }
+
     public String getController_id() {
         return controller_id;
     }
@@ -96,5 +105,4 @@ public class OpenDaylightController {
     public void setOperstatus(String operstatus) {
         this.operstatus = operstatus;
     }
-
 }

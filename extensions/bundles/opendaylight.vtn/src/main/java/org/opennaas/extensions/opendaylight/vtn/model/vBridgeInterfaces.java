@@ -14,6 +14,13 @@ public class vBridgeInterfaces {
     private String adminstatus;
     private List<PortMap> portMaps = new ArrayList<PortMap>();
 
+    public vBridgeInterfaces(String if_name) {
+        this.if_name = if_name;
+    }
+
+    public vBridgeInterfaces() {
+    }
+
     public String getIf_name() {
         return if_name;
     }
@@ -72,5 +79,4 @@ public class vBridgeInterfaces {
         }
         return true;
     }
-
 }

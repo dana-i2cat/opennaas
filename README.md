@@ -1,6 +1,8 @@
 OpenNaaS with NFV - Routing bundle
 ========
 
+Supports Floodlight controller and OpenDaylight controller. Also manages the VTN Coordinator in order to manage the OpenDaylight resources.
+
 In order for NRENs and operators to be able to deploy and operate innovative NaaS offerings, an appropriate toolset needs to be created. With such goal in mind, Mantychore FP7 has created the OpenNaaS framework.
 
 OpenNaaS was born with the aim to create an open source software project community that allows several stakeholders to contribute and benefit from a common NaaS software stack. OpenNaaS offers a versatile toolset for the deployment of NaaS oriented services. The software is released with a dual L-GPL/ASF licensing schema that ensures that the platform will remain open and consistent, while commercial derivatives can be built on top. This open schema allows trust to be built on the platform, as NRENs and commercial network operators can rely on the continuity, transparency and adaptability of the platform.

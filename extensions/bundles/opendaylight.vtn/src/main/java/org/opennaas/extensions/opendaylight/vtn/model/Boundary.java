@@ -9,6 +9,14 @@ public class Boundary {
     private String boundary_id;
     private Link link;
 
+    public Boundary(String boundary_id, Link link) {
+        this.boundary_id = boundary_id;
+        this.link = link;
+    }
+
+    public Boundary() {
+    }
+
     public String getBoundary_id() {
         return boundary_id;
     }
@@ -24,7 +32,4 @@ public class Boundary {
     public void setLink(Link link) {
         this.link = link;
     }
-
-    
-
 }

@@ -68,13 +68,12 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         log.error("Insert route. Src: " + ipSource + " Dst: " + ipDest + " In: " + inputPort + " Out: " + outputPort);
         VRFModel model = getVRFModel();
 
-        int version = 0;
+        int version;
         if (Utils.isIpAddress(ipSource) == 4 && Utils.isIpAddress(ipDest) == 4) {
             version = 4;
         } else if (Utils.isIpAddress(ipSource) == 6 && Utils.isIpAddress(ipDest) == 6) {
             version = 6;
         } else {
-            log.error("IP version error. The detected version is: " + version);
             return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
         }
         if (model.getTable(version) == null) {
@@ -95,15 +94,12 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         log.error("Removing route " + id + " from table IPv" + version);
         VRFModel model = getVRFModel();
         VRFRoute route = model.getTable(version).getRouteId(id);
-        //call OpenNaaS provisioner
         OFFlow flowArp = Utils.VRFRouteToOFFlow(route, "2054");
         OFFlow flowIp = Utils.VRFRouteToOFFlow(route, "2048");
 
         //Conversion List of VRFRoute to List of FloodlightFlow
-        Response response1;
-        Response response2;
-        response1 = removeFlow(flowArp);
-        response2 = removeFlow(flowIp);
+        Response response1 = removeFlow(flowArp);
+        Response response2 = removeFlow(flowIp);
         /**
          * If the flow is no removed (aRP orIP) OpenNaaS always will show the
          * route removeLink should return: ok, not exist or error
@@ -356,14 +352,14 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         String inPort = Integer.toString(srcSwInfo.getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
-	Response response;
+        Response response;
         try {
             String initialSw = getProtocolType(srcDPID);
             String targetSw = getProtocolType(dstDPID);
-            if(initialSw.equals("opendaylight")){
+            if (initialSw.equals("opendaylight")) {
                 response = callVTN(dstDPID, outPort, srcDPID, inPort);//changed
             }
-            if(targetSw.equals("opendaylight")){
+            if (targetSw.equals("opendaylight")) {
                 response = callVTN(srcDPID, inPort, dstDPID, outPort);
             }
         } catch (ActivatorException ex) {
@@ -371,10 +367,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         } catch (ResourceException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        Response response = callVTN(srcDPID, inPort, dstDPID, outPort);
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
-            log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
+            log.debug("Provision Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
             insertFlow(listFlow.get(i));
         }
         return Response.ok(listFlow).build();
@@ -387,8 +382,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
      * @return
      */
     @Override
-    public Response insertRoute(String json
-    ) {
+    public Response insertRoute(String json) {
         ObjectMapper mapper = new ObjectMapper();
         VRFRoute route = new VRFRoute();
         try {
@@ -399,23 +393,20 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
         VRFModel model = getVRFModel();
 
-        int version = 0;
+        int version;
         if (Utils.isIpAddress(route.getSourceAddress()) == 4 && Utils.isIpAddress(route.getDestinationAddress()) == 4) {
             version = 4;
         } else if (Utils.isIpAddress(route.getSourceAddress()) == 6 && Utils.isIpAddress(route.getDestinationAddress()) == 6) {
             version = 6;
         } else {
-            log.error("IP version error. The detected version is: " + version);
             return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
         }
         if (model.getTable(version) == null) {
             return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
         }
-//        if (!ipSource.isEmpty() && !ipDest.isEmpty() && !switchDPID.isEmpty() && inputPort != 0 && outputPort != 0) {
 
         String response = model.getTable(version).addRoute(route);
         return Response.status(201).entity(response).build();
-//        }
     }
 
     public void clearAllFlows() {
@@ -443,7 +434,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         for (int i = 0; i < json.length; i++) {
             org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.insertFloodlightFlowHttpRequest("http://" + controllerInfo[i] + "/wm/staticflowentrypusher/json", json[i]);
         }
-        //insert hosts tunnel routes
     }
 
     /**
@@ -454,14 +444,13 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
      */
     private Response insertFlow(OFFlow flow) {
         log.info("Provision OpenFlow Flow Link");
-        Response response = null;
         String protocol;
         IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
-	    if(protocol == null){
-		return Response.ok("Protocol is null").build();
-	}
+            if (protocol == null) {
+                return Response.ok("Protocol is null").build();
+            }
             resource = getResourceByName(flow.getDPID());
             if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
@@ -486,7 +475,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 
     private Response removeFlow(OFFlow flow) {
         log.info("Remove Flow Link");
-        Response response = null;
         String protocol;
         IResource resource;
         try {
@@ -550,14 +538,14 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
 
         protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
-	if(protocol == null) protocol = "floodlight";
-
-//        log.error("Protocol of switch "+resourceName+" is: " + protocol);
+        if (protocol == null) {
+            protocol = "floodlight";
+        }
         return protocol;
     }
 
     public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
-        log.error("Call VTN from Static Routing.");
+        log.info("Call VTN from Static Routing.");
         String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
         Response response;
         String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);

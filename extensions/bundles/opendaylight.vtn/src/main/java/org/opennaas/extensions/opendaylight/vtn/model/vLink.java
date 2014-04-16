@@ -13,6 +13,19 @@ public class vLink {
     private String if2_name;
     private BoundaryMap boundaryMap;
 
+    public vLink(String vlk_name, String vnode1, String if1, String vnode2, String if2, BoundaryMap bound) {
+        this.vlk_name = vlk_name;
+        this.vnode1_name = vnode1;
+        this.if1_name = if1;
+        this.vnode2_name = vnode2;
+        this.if2_name = if2;
+        this.boundaryMap = bound;
+    }
+
+    public vLink() {
+        
+    }
+
     public String getVlk_name() {
         return vlk_name;
     }
@@ -96,5 +109,4 @@ public class vLink {
         }
         return true;
     }
-
 }

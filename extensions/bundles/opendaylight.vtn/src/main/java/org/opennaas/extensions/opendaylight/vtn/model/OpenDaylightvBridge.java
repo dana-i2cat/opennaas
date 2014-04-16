@@ -15,6 +15,16 @@ public class OpenDaylightvBridge {
     private String domain_id;
     private List<vBridgeInterfaces> iface = new ArrayList<vBridgeInterfaces>();
 
+    public OpenDaylightvBridge(String vbr_name, String controller_id, String domain_id) {
+        this.vbr_name = vbr_name;
+        this.controller_id = controller_id;
+        this.domain_id = domain_id;
+    }
+
+    public OpenDaylightvBridge() {
+        
+    }
+
     public String getVbr_name() {
         return vbr_name;
     }

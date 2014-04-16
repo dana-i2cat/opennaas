@@ -235,26 +235,14 @@ log.error("Insert flows into "+protocol+" switchs.");
                 dpid = actual.getDPID();
                 int outputPort = extractPort(actual, nextVertex, 1);
 
-                L2Forward sw = new L2Forward();
-                sw.setDPID(dpid);
-                sw.setInputPort(inputPort);
-                sw.setOutputPort(outputPort);
-                VRFRoute newRoute = new VRFRoute();
-                newRoute.setSourceAddress(sourceIP);
-                newRoute.setDestinationAddress(targetIP);
-                newRoute.setSwitchInfo(sw);
+                L2Forward sw = new L2Forward("2", inputPort, outputPort, dpid);
+                VRFRoute newRoute = new VRFRoute(sourceIP, targetIP, sw);
                 newRoute.setType("dynamic");
 
                 listRoutes.add(newRoute);
 
-                sw = new L2Forward();
-                sw.setDPID(dpid);
-                sw.setInputPort(outputPort);
-                sw.setOutputPort(inputPort);
-                newRoute = new VRFRoute();
-                newRoute.setSourceAddress(targetIP);
-                newRoute.setDestinationAddress(sourceIP);
-                newRoute.setSwitchInfo(sw);
+                sw = new L2Forward("2", outputPort, inputPort, dpid);
+                newRoute = new VRFRoute(targetIP, sourceIP, sw);
                 newRoute.setType("dynamic");
 
                 listRoutes.add(newRoute);
