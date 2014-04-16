@@ -46,7 +46,7 @@
 		<commons-lang.version>2.5</commons-lang.version>
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
-		<cxf.version>2.7.7</cxf.version>
+		<cxf.version>2.7.10</cxf.version>
 		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
 		<dom4j.version>1.6.1_5</dom4j.version>
 		<easymock.version>3.1</easymock.version>
