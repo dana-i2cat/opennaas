@@ -22,7 +22,6 @@ public class Utils {
         OFFlow OFFlow = new OFFlow();
         FloodlightOFMatch match = flow.getMatch();
         List<FloodlightOFAction> actions = flow.getActions();
-        
         OFFlow.setName(flow.getName());
         OFFlow.setMatch(match);
         OFFlow.setActions(actions);
@@ -59,7 +58,7 @@ public class Utils {
         FloodlightOFFlow flow = new FloodlightOFFlow();
         FloodlightOFMatch match = OFFlow.getMatch();
         List<FloodlightOFAction> actions = OFFlow.getActions();
-        
+	flow.setName(OFFlow.getName());
         flow.setMatch(match);
         flow.setActions(actions);
         return flow;

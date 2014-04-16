@@ -17,6 +17,7 @@ import org.opennaas.extensions.opendaylight.vtn.model.OpenDaylightController;
 import org.opennaas.extensions.opendaylight.vtn.model.OpenDaylightvBridge;
 import org.opennaas.extensions.opendaylight.vtn.model.PortMap;
 import org.opennaas.extensions.opendaylight.vtn.model.VTN;
+import org.opennaas.extensions.opendaylight.vtn.model.Switch;
 import org.opennaas.extensions.opendaylight.vtn.model.vBridgeInterfaces;
 import org.opennaas.extensions.opendaylight.vtn.model.vLink;
 import org.opennaas.extensions.opendaylight.vtn.protocol.OpenDaylightProtocolSession;
@@ -27,6 +28,7 @@ import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.Logical
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgeInterfacesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vLinksWrapper;
+import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.SwitchesWrapper;
 
 //import org.opennaas.extensions.openflowswitch.utils.Utils;
 /**
@@ -74,33 +76,36 @@ public class VTNCapability implements IVTNCapability {
         vtn = new VTN();
         vtn.setVtn_name("vtn1");
         createVTN(vtn.getVtn_name());
-        
-        String ctrl1_IP = "192.168.254.156";
-        String ctrl2_IP = "192.168.254.221";
-//        String ctrl1_IP = "84.88.36.100";
-//        String ctrl2_IP = "84.88.41.171";
-        createController("ctrl1", ctrl1_IP, "odc");
-        createController("ctrl2", ctrl2_IP, "odc");
+
+//        String ctrl1_IP = "192.168.254.156";
+//        String ctrl2_IP = "192.168.254.221";
+        String ctrl1_IP = "84.88.36.100";
+        String ctrl2_IP = "84.88.41.171";
+        createController("ctrl1", ctrl1_IP, "odc", "floodlight");
+        createController("ctrl2", ctrl2_IP, "odc", "opendaylight");
         OpenDaylightController ctrl1 = new OpenDaylightController();
         ctrl1.setController_id("ctrl1");
         ctrl1.setIpaddr(ctrl1_IP);
         ctrl1.setType("odc");
+	ctrl1.setDescription("floodlight");
         controllers.add(ctrl1);
         ctrl1 = new OpenDaylightController();
-        ctrl1.setController_id(ctrl2_IP);
-        ctrl1.setIpaddr("192.168.254.221");
+        ctrl1.setController_id("ctrl2");
+        ctrl1.setIpaddr(ctrl2_IP);
         ctrl1.setType("odc");
+	ctrl1.setDescription("");
         controllers.add(ctrl1);
 
         log.error("Register Bridges");
         vBridgesWrapper vbrs = getvBridges(vtn.getVtn_name());//get list
-        if (vbrs.size() > 1) {
+        if (vbrs.size() > 0) {
             for (OpenDaylightvBridge vbr : vbrs) {
                 vtn.getvBridges().add(getvBridge(vtn.getVtn_name(), vbr.getVbr_name()));
             }
         } else {
-            createvBridge(vtn.getVtn_name(), "vbr1", controllers.get(0).getController_id(), "DEFAULT");
-            createvBridge(vtn.getVtn_name(), "vbr2", controllers.get(1).getController_id(), "DEFAULT");
+		log.error("Creating vBridges");
+		createvBridge(vtn.getVtn_name(), "vbr1", controllers.get(0).getController_id(), "DEFAULT");
+		createvBridge(vtn.getVtn_name(), "vbr2", controllers.get(1).getController_id(), "DEFAULT");
         }
         log.error("Register interfaces...");
         updateInterfaces();
@@ -167,7 +172,7 @@ public class VTNCapability implements IVTNCapability {
     }
 
     @Override
-    public Response createController(String name, String ipaddr, String type) {
+    public Response createController(String name, String ipaddr, String type, String description) {
         log.error("Defining controller...");
         OpenDaylightController ctrl = new OpenDaylightController();
         ctrl.setController_id(name);
@@ -175,11 +180,12 @@ public class VTNCapability implements IVTNCapability {
         ctrl.setType(type);
         ctrl.setVersion("1.0");
         ctrl.setAuditstatus("enable");
+	ctrl.setDescription(description);
         Response response = client.createController(ctrl);
         if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
-            if( !controllers.contains(ctrl) ){
+//            if( !controllers.contains(ctrl) ){
                 controllers.add(ctrl);
-            }
+//            }
         }
         return response;
     }
@@ -194,9 +200,7 @@ public class VTNCapability implements IVTNCapability {
         Response response = client.createvBridge(vtn_name, vBridge);
         log.error(response.getStatus());
         if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
-            if (!vtn.getvBridges().contains(vBridge)) {
                 vtn.getvBridges().add(vBridge);
-            }
         }
         return response;
     }
@@ -206,13 +210,12 @@ public class VTNCapability implements IVTNCapability {
         vBridgeInterfaces inf = new vBridgeInterfaces();
         inf.setIf_name(iface);
         Response response = client.createInterfaces(vtn_name, vBridge, inf);
+	log.error("Set iface?: "+response.getStatus());
         if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
             for (OpenDaylightvBridge vbr : vtn.getvBridges()) {
                 if (vbr.getVbr_name().equals(vBridge)) {
-//                    if (!vbr.getIface().contains(inf)) {
                         vbr.getIface().add(inf);
                     }
-//                }
             }
         }
         return response;
@@ -291,7 +294,8 @@ public class VTNCapability implements IVTNCapability {
         log.error("Port: " + outPort);
 //        port = "PP-OF:00:00:00:00:00:00:00:05-s5-eth2";
         String iface = "if2";
-        for (vBridgeInterfaces inf : vtn.getvBridges().get(1).getIface()) {
+	String vbrName = getvBridgeOfSwitch(dstDPID);
+        for (vBridgeInterfaces inf : vtn.getvBridge(vbrName).getIface()) {
             for (PortMap pm : inf.getPortMaps()) {
                 if (pm.getLogical_port_id() != null) {
                     if (pm.getLogical_port_id().equals(outPort)) {
@@ -302,8 +306,11 @@ public class VTNCapability implements IVTNCapability {
                 }
             }
         }
+	if(vtn.getvBridge(vbrName).getIface().size() == 1){
+		createInterfaces(vtn.getVtn_name(), vbrName, iface);
+	}
         log.error("iface: " + iface + " Port: " + outPort);
-        response = mapPort(vtn.getVtn_name(), "vbr2", iface, outPort);
+        response = mapPort(vtn.getVtn_name(), vbrName, iface, outPort);
         log.error("Req to ODL VTN - portMap: " + response.getStatus());
 
         return response;
@@ -353,6 +360,7 @@ public class VTNCapability implements IVTNCapability {
 
     @Override
     public vBridgeInterfacesWrapper getInterfaces(String vtnName, String vBridge) {
+	log.error("Get Interfaces");
         vBridgeInterfacesWrapper ifaces = client.getInterfaces(vtnName, vBridge);
         return ifaces;
     }
@@ -379,39 +387,53 @@ public class VTNCapability implements IVTNCapability {
 
     private int getNumInts(String controller_id) {
         LogicalPortsOFFlowsWrapper resp = getLogicalPorts(controller_id, "DEFAULT");
+log.error(resp.size());
         return resp.size();
     }
 
     @Override
     public void updateInterfaces(){
-        log.error("Register interfaces...");
+        log.error("Updating Interfaces...");
         vBridgeInterfacesWrapper ifaces;
+	log.error("Vbridge size: "+vtn.getvBridges().size());
         for (OpenDaylightvBridge vbr : vtn.getvBridges()) {
+log.error("Ifaces before");
             ifaces = getInterfaces(vtn.getVtn_name(), vbr.getVbr_name());
-            if (ifaces.size() > 1) {
+log.error("Ifaces: "+ifaces.size());
+            if (ifaces.size() > 0) {
                 for (vBridgeInterfaces iface : ifaces) {
                     vbr.getIface().add(iface);
                 }
             } else {
+		log.error("Creating interfaces of vBridge "+vbr.getVbr_name());
 //                List<vBridgeInterfaces> ints = getPossibleInts(vbr.getVbr_name(), vbr.getController_id());
-                int numInt = getNumInts(vbr.getController_id());
-                for (int i = 1; i < numInt + 1; i++) {
-                    String ifName = "if" + i;
-                    createInterfaces(vtn.getVtn_name(), vbr.getVbr_name(), ifName);
-                }
+		if (getODLController(vbr.getController_id()).getDescription().equals("floodlight")){
+                    createInterfaces(vtn.getVtn_name(), vbr.getVbr_name(), "if1");
+                }else{
+			int numInt = getNumInts(vbr.getController_id());
+			createInterfaces(vtn.getVtn_name(), vbr.getVbr_name(), "if1");
+log.error("Number of possible interfaces of vBridge "+vbr.getVbr_name());
+        	        for (int i = 1; i < numInt ; i++) {
+	                    String ifName = "if" + (i+1);
+	                    createInterfaces(vtn.getVtn_name(), vbr.getVbr_name(), ifName);
+        	        }
+		}
             }
         }
     }
-    
+
     @Override
     public void update() {
+	vtn = new VTN();
+	controllers = new ArrayList<OpenDaylightController>();
+	boundaries = new ArrayList<Boundary>();
         initConfig();
     }
 
     @Override
     public void cleanVTN() {
         client.deleteVTN("vtn1");
-        client.deletevBridge("vtn1", "vbr1");
+/*        client.deletevBridge("vtn1", "vbr1");
         client.deletevBridge("vtn1", "vbr2");
         client.deleteInterfaces("vtn1", "vbr1", "if1");
         client.deleteInterfaces("vtn1", "vbr1", "if2");
@@ -421,7 +443,27 @@ public class VTNCapability implements IVTNCapability {
         client.deleteInterfaces("vtn1", "vbr2", "if2");
         client.deleteInterfaces("vtn1", "vbr2", "if3");
         client.deleteInterfaces("vtn1", "vbr2", "if4");
-        client.deleteBoundary("b1");
-        client.deletevLink("vtn1", "vlink1");
+*/        client.deleteBoundary("b1");
+//        client.deletevLink("vtn1", "vlink1");
+    }
+	private OpenDaylightController getODLController(String controller_id){
+        for(OpenDaylightController ctrl : controllers){
+            if(ctrl.getController_id().equals(controller_id))
+                return ctrl;
+        }
+        return null;
+    }
+
+private String getvBridgeOfSwitch(String DPID){
+        String vbrName = "vbr2";
+        for ( OpenDaylightvBridge vB : vtn.getvBridges()){
+            SwitchesWrapper listSw = client.getListSwitchs(vB.getController_id());
+            for(Switch sw : listSw){
+                if(sw.getSwitch_id().equals(DPID)){
+                    return vB.getVbr_name();
+                }
+            }
+        }
+        return vbrName;
     }
 }

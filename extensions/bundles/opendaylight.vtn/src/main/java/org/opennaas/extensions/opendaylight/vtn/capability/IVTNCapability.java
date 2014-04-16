@@ -57,9 +57,9 @@ public interface IVTNCapability {
      * @param type
      * @return
      */
-    @Path("/controller/{name}/{ipaddr}/{type}")
+    @Path("/controller/{name}/{ipaddr}/{type}/{description")
     @GET
-    public Response createController(@PathParam("name") String name, @PathParam("ipaddr") String ipaddr, @PathParam("type") String type);
+    public Response createController(@PathParam("name") String name, @PathParam("ipaddr") String ipaddr, @PathParam("type") String type, @PathParam("description") String description);
 
     /**
      * Create vBridge

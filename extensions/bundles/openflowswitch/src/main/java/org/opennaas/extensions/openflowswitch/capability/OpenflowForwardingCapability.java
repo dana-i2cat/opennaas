@@ -147,11 +147,6 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
      */
     private List<OFFlow> refreshModelFlows() throws CapabilityException {
         log.info("Start of refreshModelFlows call");
-        try {
-            log.error(getResourceModel().toXml());
-        } catch (SerializationException ex) {
-            Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
         IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.GETFLOWS, null);
 
         ActionResponse response = executeAction(action);

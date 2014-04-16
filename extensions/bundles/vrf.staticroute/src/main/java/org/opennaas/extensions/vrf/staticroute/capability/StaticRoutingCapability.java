@@ -355,7 +355,22 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         String inPort = Integer.toString(srcSwInfo.getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
-        Response response = callVTN(srcDPID, inPort, dstDPID, outPort);
+	Response response;
+        try {
+            String initialSw = getProtocolType(srcDPID);
+            String targetSw = getProtocolType(dstDPID);
+            if(initialSw.equals("opendaylight")){
+                response = callVTN(dstDPID, outPort, srcDPID, inPort);//changed
+            }
+            if(targetSw.equals("opendaylight")){
+                response = callVTN(srcDPID, inPort, dstDPID, outPort);
+            }
+        } catch (ActivatorException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ResourceException ex) {
+            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        Response response = callVTN(srcDPID, inPort, dstDPID, outPort);
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
@@ -443,16 +458,19 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
+	    if(protocol == null){
+		return Response.ok("Protocol is null").build();
+	}
             resource = getResourceByName(flow.getDPID());
             if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
             }
             IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
             if (protocol.equals("opendaylight")) {
-                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")) {
-                    OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
-                    forwardingCapability.createOpenflowForwardingRule(odlFlow);
-                }
+//                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")) {
+//                    OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
+//                    forwardingCapability.createOpenflowForwardingRule(odlFlow);
+//                }
             } else if (protocol.equals("floodlight")) {
                 FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
                 forwardingCapability.createOpenflowForwardingRule(fldFlow);
@@ -531,8 +549,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
 
         protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
+	if(protocol == null) protocol = "floodlight";
 
-        log.error("Protocol of switch is: " + protocol);
+//        log.error("Protocol of switch "+resourceName+" is: " + protocol);
         return protocol;
     }
 
