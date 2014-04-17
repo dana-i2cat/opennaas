@@ -28,7 +28,7 @@ public abstract class OpennaasExamOptions
 				.frameworkUrl(platformUrl)
 				.unpackDirectory(new File("target/paxexam"))
 				.name("opennaas")
-				.karafVersion("2.3.4");
+				.karafVersion("2.3.5");
 
 	}
 

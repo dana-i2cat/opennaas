@@ -79,7 +79,7 @@
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<junit.version>4.11</junit.version>
-		<karaf.version>2.3.4</karaf.version>
+		<karaf.version>2.3.5</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
@@ -1083,10 +1083,10 @@
 			<!-- Features -->
 			<!--  -->
 			<dependency>
-				<groupId>org.apache.servicemix</groupId>
-				<artifactId>apache-servicemix</artifactId>
-				<version>${servicemix.version}</version>
-				<type>zip</type>
+				<groupId>org.apache.karaf</groupId>
+				<artifactId>apache-karaf</artifactId>
+				<version>${karaf.version}</version>
+				<type>tar.gz</type>			    
 			</dependency>
 			<!-- Misc -->
 			<dependency>
