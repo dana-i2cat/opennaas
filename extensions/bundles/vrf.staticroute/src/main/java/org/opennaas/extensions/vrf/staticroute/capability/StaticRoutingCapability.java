@@ -357,10 +357,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             String initialSw = getProtocolType(srcDPID);
             String targetSw = getProtocolType(dstDPID);
             if (initialSw.equals("opendaylight")) {
-                response = callVTN(dstDPID, outPort, srcDPID, inPort);//changed
+                response = callVTN(srcDPID, inPort);//changed
             }
             if (targetSw.equals("opendaylight")) {
-                response = callVTN(srcDPID, inPort, dstDPID, outPort);
+                response = callVTN(dstDPID, outPort);
             }
         } catch (ActivatorException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
@@ -410,20 +410,13 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     }
 
     public void clearAllFlows() {
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:01");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:02");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8191", "00:00:00:00:00:00:00:03");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8192", "00:00:00:00:00:00:00:04");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8192", "00:00:00:00:00:00:00:05");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8192", "00:00:00:00:00:00:00:06");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM2:8193", "00:00:00:00:00:00:00:07");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM2:8193", "00:00:00:00:00:00:00:08");
+        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:01");
+        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:02");
+        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:03");
 
         String json[] = new String[6];
         String controllerInfo[] = new String[6];
         controllerInfo[1] = controllerInfo[0] = "controllersVM:8191";
-        controllerInfo[2] = controllerInfo[3] = "controllersVM:8192";
-        controllerInfo[4] = controllerInfo[5] = "controllersVM2:8193";
         json[0] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-11\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.1.1\", \"src-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=3\"}";
         json[1] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-12\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.1.1\", \"dst-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=65534\"}";
         json[2] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-41\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.4.4\", \"src-ip\":\"192.168.4.94\",\"active\":\"true\", \"actions\":\"output=4\"}";
@@ -544,9 +537,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return protocol;
     }
 
-    public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
+    public Response callVTN(String DPID, String Port) {
         log.info("Calling VTN from Static Routing.");
-        String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
+        String url = "http://localhost:8888/opennaas/vtn/ipreq/" + DPID + "/" + Port;
         Response response;
         String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
 

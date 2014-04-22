@@ -28,7 +28,6 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
-import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.DijkstraAlgorithm;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Edge;
@@ -135,10 +134,10 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
             String initialSw = getProtocolType(srcDPID);
             String targetSw = getProtocolType(dstDPID);
             if(initialSw.equals("opendaylight")){
-                response = callVTN(dstDPID, outPort, srcDPID, inPort);//changed
+                response = callVTN(srcDPID, inPort);//changed
             }
             if(targetSw.equals("opendaylight")){
-                response = callVTN(srcDPID, inPort, dstDPID, outPort);
+                response = callVTN(dstDPID, outPort);
             }
         } catch (ActivatorException ex) {
             Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
@@ -439,13 +438,13 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         return protocol;
     }
 
-    public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
+    public Response callVTN(String DPID, String Port) {
         log.error("Calling VTN from Dynamic (Dijkstra) Routing.");
-        if(dstDPID == null || outPort == null){
-            log.error("DstDPID: "+dstDPID+" outPort: "+outPort);
+        if(DPID == null || Port == null){
+            log.error("DstDPID: "+DPID+" outPort: "+Port);
             return Response.status(400).entity("DstDPID or outPut port is null").build();
         }
-        String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
+        String url = "http://localhost:8888/opennaas/vtn/ipreq/" + DPID + "/" + Port;
         String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
 
         WebClient client = WebClient.create(url);

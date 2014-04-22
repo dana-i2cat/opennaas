@@ -170,6 +170,7 @@ public class VTNCapability implements IVTNCapability {
     public Response createController(String name, String ipaddr, String type, String description) {
         OpenDaylightController ctrl = new OpenDaylightController(name, ipaddr, type, "1.0", "enable", description);
         Response response = client.createController(ctrl);
+        log.error("Response "+response.getStatus());
         if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
             controllers.add(ctrl);
         }
@@ -180,6 +181,7 @@ public class VTNCapability implements IVTNCapability {
     public Response createvBridge(String vtn_name, String name, String ctrl, String domain) {
         OpenDaylightvBridge vBridge = new OpenDaylightvBridge(name, ctrl, domain);
         Response response = client.createvBridge(vtn_name, vBridge);
+        log.error("Response "+response.getStatus());
         if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
             vtn.getvBridges().add(vBridge);
         }
@@ -231,29 +233,23 @@ public class VTNCapability implements IVTNCapability {
     }
 
     @Override
-    public Response ipreq(String srcDPID, String inPort, String dstDPID, String dstPort) {
+    public Response ipreq(String DPID, String Port) {
         log.error("Requested route in VRF. Trying to map the ODL ports.");
-        log.error("Req. information: " + srcDPID + " " + inPort + " " + dstDPID + " " + dstPort);
+        log.error("Req. information: " + DPID + " " + Port);
         Response response;
 
         if (vtn == null) {
             return Response.status(500).entity("VTN no exists. Please create a VTN").build();
         }
-        if (dstPort == null) {
+        if (Port == null) {
             return Response.accepted("Error. Destination port is null").build();
         }
-
-        //configure map-ports
-//        String Sw_num = "s" + srcDPID.substring(srcDPID.length() - 1);
-//        String port = "PP-OF:" + srcDPID + "-s" + Sw_num + "-eth" + inPort;
-//        response = mapPort(vtn.getVtn_name(), "vbr1", "if1", port);
-//        log.error("portMap " + response.getStatus());
-        String dstSw_num = "s" + dstDPID.substring(dstDPID.length() - 1);
-        String outPort = "PP-OF:" + dstDPID + "-" + dstSw_num + "-eth" + dstPort;
+        String dstSw_num = "s" + DPID.substring(DPID.length() - 1);
+        String outPort = "PP-OF:" + DPID + "-" + dstSw_num + "-eth" + Port;
         log.error("Port: " + outPort);
 //        port = "PP-OF:00:00:00:00:00:00:00:05-s5-eth2";
         String iface = "if2";
-        String vbrName = getvBridgeOfSwitch(dstDPID);
+        String vbrName = getvBridgeOfSwitch(DPID);
         for (vBridgeInterfaces inf : vtn.getvBridge(vbrName).getIface()) {
             for (PortMap pm : inf.getPortMaps()) {
                 if (pm.getLogical_port_id() != null) {

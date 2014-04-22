@@ -150,9 +150,9 @@ public interface IVTNCapability {
     @GET
     public Response coordinatorAddress(@PathParam("address") String address, @PathParam("port") String port);
 
-    @Path("/ipreq/{sDPID}/{inPort}/{dDPID}/{putPort}")
+    @Path("/ipreq/{DPID}/{Port}")
     @GET
-    public Response ipreq(@PathParam("sDPID") String sDPID, @PathParam("inPort") String inPort, @PathParam("dDPID") String dDPID, @PathParam("putPort") String putPort);
+    public Response ipreq(@PathParam("DPID") String DPID, @PathParam("Port") String Port);
 
     @Path("/updateInterfaces")
     @GET
