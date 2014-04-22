@@ -281,9 +281,7 @@ public class Utils {
      * @return
      */
     public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route, String etherType) {
-        log.error("Convert VRFROute to Floodlight FLOW .................................................................");
         FloodlightOFFlow flow = new FloodlightOFFlow();
-
         FloodlightOFMatch match = new FloodlightOFMatch();
         List<FloodlightOFAction> listActions = new ArrayList<FloodlightOFAction>();
         FloodlightOFAction action = new FloodlightOFAction();
@@ -306,7 +304,7 @@ public class Utils {
     }
 
     public static String createFlowName(String id, String ethType, String source, String target, String dpid) {
-        log.error("SETNAME FLOW: 0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2));
+//        log.error("SETNAME FLOW: 0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2));
 //        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
         source = source.replace("/", "-");
         target = target.replace("/", "-");
@@ -372,7 +370,7 @@ public class Utils {
      * @return
      */
     public static OFFlow VRFRouteToOFFlow(VRFRoute route, String etherType) {
-        log.error("Convert VRFROute to OpenFlow FLOW .................................................................");
+//        log.error("............................ Convert VRFROute to OpenFlow FLOW ");
         OFFlow flow = new OFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();
@@ -381,7 +379,7 @@ public class Utils {
         match.setSrcIp(route.getSourceAddress());
         match.setDstIp(route.getDestinationAddress());
         match.setEtherType(etherType);
-//        match.setIngressPort(String.valueOf(route.getSwitchInfo().getInputPort()));
+        match.setIngressPort(String.valueOf(route.getSwitchInfo().getInputPort()));
 
         action.setType(FloodlightOFAction.TYPE_OUTPUT);
         action.setValue(String.valueOf(route.getSwitchInfo().getOutputPort()));

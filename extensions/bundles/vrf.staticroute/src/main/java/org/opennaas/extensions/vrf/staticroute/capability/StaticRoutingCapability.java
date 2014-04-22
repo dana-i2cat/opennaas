@@ -545,7 +545,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     }
 
     public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
-        log.info("Call VTN from Static Routing.");
+        log.info("Calling VTN from Static Routing.");
         String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
         Response response;
         String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);

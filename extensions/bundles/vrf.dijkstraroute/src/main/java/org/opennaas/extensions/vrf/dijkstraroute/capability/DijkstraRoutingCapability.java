@@ -129,6 +129,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
+        log.error("SrcDPID "+srcDPID+" "+inPort+" "+dstDPID+" "+outPort);
 	Response response;
         try {
             String initialSw = getProtocolType(srcDPID);
@@ -144,7 +145,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         } catch (ResourceException ex) {
             Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             log.debug("Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
@@ -165,18 +166,17 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
-log.error("Insert flows into "+protocol+" switchs.");
             resource = getResourceByName(flow.getDPID());
             if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
             }
             IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
             if (protocol.equals("opendaylight")) {
-                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")){
+/*                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")){
                     OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
                     forwardingCapability.createOpenflowForwardingRule(odlFlow);
                 }
-            } else if (protocol.equals("floodlight")) {
+*/            } else if (protocol.equals("floodlight")) {
                 FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
                 forwardingCapability.createOpenflowForwardingRule(fldFlow);
             }
@@ -187,7 +187,7 @@ log.error("Insert flows into "+protocol+" switchs.");
         }
         return Response.ok().build();
     }
-    
+
     private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
         log.info("Get Resource By switch ID: " + resourceName);
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
@@ -269,7 +269,7 @@ log.error("Insert flows into "+protocol+" switchs.");
         for (int i = 0; i < edges.size(); i++) {
             //from the newVertex try to find the next hop
             if (edges.get(i).getSource().equals(source) && edges.get(i).getDestination().equals(actual)) {
-                log.error("S" + i + " " + source + " to " + actual + " Src: " + edges.get(i).getSrcPort() + " Dst: " + edges.get(i).getDstPort());
+//                log.error("S" + i + " " + source + " to " + actual + " Src: " + edges.get(i).getSrcPort() + " Dst: " + edges.get(i).getDstPort());
                 if (edges.get(i).getSrcPort() == 0) {
                     port = edges.get(i).getDstPort();
                 } else if (edges.get(i).getDstPort() == 0) {
@@ -284,7 +284,7 @@ log.error("Insert flows into "+protocol+" switchs.");
                 break;
             }
         }
-        log.error("Return Port: " + port);
+//        log.error("Return Port: " + port);
         return port;
     }
 
@@ -397,7 +397,7 @@ log.error("Insert flows into "+protocol+" switchs.");
 
         response = client.accept(MediaType.TEXT_PLAIN).type(MediaType.APPLICATION_JSON).put(response, String.class);
 
-        log.error("Inser to other Bundle Response: " + response);
+        log.error("Insert to other Bundle Response: " + response);
         return response;
     }
 
@@ -438,18 +438,21 @@ log.error("Insert flows into "+protocol+" switchs.");
 
         return protocol;
     }
-    
+
     public Response callVTN(String srcDPID, String inPort, String dstDPID, String outPort) {
-        log.error("Call VTN from Dynamic (Dijkstra) Routing.");
+        log.error("Calling VTN from Dynamic (Dijkstra) Routing.");
+        if(dstDPID == null || outPort == null){
+            log.error("DstDPID: "+dstDPID+" outPort: "+outPort);
+            return Response.status(400).entity("DstDPID or outPut port is null").build();
+        }
         String url = "http://localhost:8888/opennaas/vtn/ipreq/" + srcDPID + "/" + inPort + "/" + dstDPID + "/" + outPort;
-        Response response;
         String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
 
         WebClient client = WebClient.create(url);
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
         client.accept(MediaType.TEXT_PLAIN);
-        response = client.get();
-        log.error("VTN Manager response: " + response.getStatus());
+        Response response = client.get();
+        log.error("VTN Coordinator response: " + response.getStatus());
         return response;
     }
 }

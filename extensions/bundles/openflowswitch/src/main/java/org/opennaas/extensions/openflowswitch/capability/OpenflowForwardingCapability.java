@@ -3,7 +3,6 @@ package org.opennaas.extensions.openflowswitch.capability;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -78,7 +77,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
     public void createOpenflowForwardingRule(FloodlightOFFlow forwardingRule) throws CapabilityException {
 
         log.info("Start of createOpenflowForwardingRule call");
-        log.info("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
+        log.info("Creating forwarding rule " + forwardingRule.getName());
 
         IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
 
@@ -161,14 +160,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         }
 
         getResourceModel().getOfTables().get(0).setOfForwardingRules(currentFlows);
-        try {
-            log.error("Name " + getResourceModel().getOfTables().get(0).getOfForwardingRules().get(0).getName());
-        } catch (Exception e) {
-            log.error("Exception. Name of forwardingRule no exists.");
-        }
-
         log.info("End of refreshModelFlows call");
-
         return currentFlows;
     }
 
@@ -206,7 +198,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
     @Override
     public void createOpenflowForwardingRule(OpenDaylightOFFlow forwardingRule) throws CapabilityException {
         log.info("Start of createOpenflowForwardingRule call");
-        log.error("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
+        log.error("Creating ODL forwarding rule " + forwardingRule.getName());
 
         IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
         ActionResponse response = executeAction(action);
