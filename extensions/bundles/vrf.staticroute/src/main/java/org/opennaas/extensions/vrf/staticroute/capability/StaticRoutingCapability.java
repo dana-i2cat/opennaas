@@ -11,11 +11,6 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.MappingJsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -35,7 +30,6 @@ import org.opennaas.extensions.vrf.model.topology.TopologyInfo;
 import org.opennaas.extensions.vrf.model.topology.Vertex;
 import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.extensions.vrf.utils.UtilsTopology;
-//import org.opennaas.extensions.openflowswitch.utils.Utils;
 
 /**
  *
@@ -66,12 +60,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         this.vrfModel = VRFModel;
     }
 
-    /// /////////////////////////////
-    // IRoutingCapability Methods //
-    /// /////////////////////////////
     @Override
     public Response insertRoute(String ipSource, String ipDest, String switchDPID, int inputPort, int outputPort, int lifeTime) {
-        log.error("Insert route. Src: " + ipSource + " Dst: " + ipDest + " In: " + inputPort + " Out: " + outputPort);
+        log.info("Insert route. Src: " + ipSource + " Dst: " + ipDest + " In: " + inputPort + " Out: " + outputPort);
         VRFModel model = getVRFModel();
 
         int version;
@@ -222,70 +213,24 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     @Override
     public Response insertRouteFile(String filename, InputStream file) {
         log.info("Insert Routes from File");
+        VRFModel model = getVRFModel();
         String content = "";
         try {
             content = Utils.convertStreamToString(file);
         } catch (IOException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        VRFModel model = getVRFModel();
-        String response = "Inserted";
-        try {
-            JsonFactory f = new MappingJsonFactory();
-            JsonParser jp = f.createJsonParser(content);
-            JsonToken current = jp.nextToken();
-            if (current != JsonToken.START_OBJECT) {
-                log.error("Error: root should be object: quiting.");
-                return Response.status(404).entity("Error: root should be object: quiting.").build();
-            }
-            while (jp.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = jp.getCurrentName();
-                current = jp.nextToken();// move from field name to field value
-                if (fieldName.equals("routeIPv4") || fieldName.equals("routeIPv6")) {
-                    if (model.getTable(4) == null) {
-                        model.setTable(new RoutingTable(4), 4);
-                    }
-                    if (current == JsonToken.START_ARRAY) {
-                        // For each of the records in the array
-                        while (jp.nextToken() != JsonToken.END_ARRAY) {
-                            // read the record into a tree model,
-                            // this moves the parsing position to the end of it
-                            JsonNode node = jp.readValueAsTree();
-                            String field = jp.getCurrentName();
-                            // And now we have random access to everything in the object
-                            VRFRoute newRoute = new VRFRoute();
-                            L2Forward newSwitch = new L2Forward();
-                            newRoute.setSourceAddress(node.get("srcAddr").getValueAsText());
-                            newRoute.setDestinationAddress(node.get("dstAddr").getValueAsText());
-                            newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
-                            newSwitch.setOutputPort(Integer.parseInt(node.get("swInfo").getPath("outPort").getValueAsText()));
-                            newSwitch.setDPID(node.get("swInfo").getPath("dpid").getValueAsText());
-                            newRoute.setSwitchInfo(newSwitch);
-                            if (fieldName.equals("routeIPv4")) {
-                                model.getTable(4).addRoute(newRoute);
-                            } else if (fieldName.equals("routeIPv6")) {
-                                model.getTable(6).addRoute(newRoute);
-                            }
-                        }
-                    } else {
-                        response = "Error: records should be an array: skipping.";
-                        log.error(response);
-                        jp.skipChildren();
-                    }
-                } else {
-                    response = "Unprocessed property: " + fieldName;
-                    log.error(response);
-                    jp.skipChildren();
-                }
-            }
-            setVRFModel(model);
-            return Response.ok(response).build();
-
-        } catch (IOException ex) {
-            Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
+        
+        Response response = Utils.insertRoutesFromJSONFile(content);
+        List<VRFRoute> list = (List<VRFRoute>) response.getEntity();
+        if (model.getTable(4) == null) {
+            model.setTable(new RoutingTable(4), 4);
         }
-
-        return Response.status(404).entity("Some error. Check the file. Possible error: " + response).build();
+        for (VRFRoute r : list) {
+            model.getTable(4).addRoute(r);
+        }
+        setVRFModel(model);
+        return Response.ok(response).build();
     }
 
     @Override
@@ -312,7 +257,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         if (routeId != 0) {
             outPortSrcSw = model.getTable(version).getOutputPort(routeId);
         } else {
-            return Response.status(404).type("text/plain").entity("Route Not found.").build();
+            return Response.status(404).type(MediaType.TEXT_PLAIN).entity("Route Not found.").build();
         }
         /* Proactive routing */
 
@@ -321,7 +266,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             response = proactiveRouting(route, version);
             List<OFFlow> listOF = ((List<OFFlow>) response.getEntity());
             if (listOF.isEmpty()) {
-                return Response.status(404).type("text/plain").entity("Route Not found.").build();
+                return Response.status(404).type(MediaType.TEXT_PLAIN).entity("Route Not found.").build();
             }
             listFlows = Utils.createJSONPath(ipSource, switchDPID, listOF, ipDest);
         }
@@ -337,9 +282,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
         edges = topInfo.getEdges();
         nodes = topInfo.getNodes();
-        
+
         sortRoutes(routeSubnetList, route);
-        
+
         //Conversion List of VRFRoute to List of OFFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
@@ -399,10 +344,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         } else if (Utils.isIpAddress(route.getSourceAddress()) == 6 && Utils.isIpAddress(route.getDestinationAddress()) == 6) {
             version = 6;
         } else {
-            return Response.status(403).type("text/plain").entity("The IP version is not detected. Analyze the IP.").build();
+            return Response.status(403).type(MediaType.TEXT_PLAIN).entity("The IP version is not detected. Analyze the IP.").build();
         }
         if (model.getTable(version) == null) {
-            return Response.status(403).type("text/plain").entity("IPv" + version + " table does not exist.").build();
+            return Response.status(403).type(MediaType.TEXT_PLAIN).entity("IPv" + version + " table does not exist.").build();
         }
 
         String response = model.getTable(version).addRoute(route);
@@ -551,7 +496,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return response;
     }
 
-
     /**
      * Sort routes given route and edges of topology
      *
@@ -572,7 +516,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                     if ((edges.get(i).getSource().getDPID().equals(nodeSrc)
                             && edges.get(i).getDestination().getDPID().equals(routes.get(j).getSwitchInfo().getDPID())) || (edges.get(i).getDestination().getDPID().equals(nodeSrc)
                             && edges.get(i).getSource().getDPID().equals(routes.get(j).getSwitchInfo().getDPID()))) {
-
                         nodeSrc = routes.get(j).getSwitchInfo().getDPID();
                         set = false;
                         break;
