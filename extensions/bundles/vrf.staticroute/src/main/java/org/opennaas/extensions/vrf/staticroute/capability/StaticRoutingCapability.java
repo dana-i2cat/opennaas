@@ -50,7 +50,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private final String password = "123456";
     private List<Vertex> nodes = new ArrayList<Vertex>();
     private List<Edge> edges = new ArrayList<Edge>();
-    private String topologyFilename = "data/dynamicTopology.json";
+    private final String topologyFilename = "data/dynamicTopology.json";
 
     public StaticRoutingCapability() {
         this.vrfModel = new VRFModel();
@@ -351,7 +351,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         edges = topInfo.getEdges();
         nodes = topInfo.getNodes();
         
-        sortRoutes(route, routeSubnetList);
+        sortRoutes(routeSubnetList, route);
         
         //Conversion List of VRFRoute to List of OFFlow
         if (routeSubnetList.size() > 0) {
@@ -361,7 +361,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             }
         }
 
-//         String srcDPID = listFlow.get(0).getDPID();
         String srcDPID = route.getSwitchInfo().getDPID();
         String inPort = Integer.toString(route.getSwitchInfo().getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
@@ -573,16 +572,13 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
      * @param routes
      * @return
      */
-    private List<VRFRoute> sortRoutes(VRFRoute route, List<VRFRoute> routes) {
-        List<VRFRoute> sorted = new ArrayList<VRFRoute>();
-
+    private void sortRoutes(List<VRFRoute> routes, VRFRoute route) {
         String nodeSrc = route.getSwitchInfo().getDPID();
         Boolean set = true;
 
         for (int j = 0; j < routes.size(); j++) {
             if (nodeSrc.equals(routes.get(j).getSwitchInfo().getDPID())) {
                 //the defined routes contains two directions. It is possible that there are two routes with the same DPID. Then, we add to sort routes
-                sorted.add(routes.get(j));
                 set = false;
             } else {
                 for (int i = 0; i < edges.size(); i++) {//find the dest node given a source node. Initial node is the source host
@@ -591,7 +587,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                             && edges.get(i).getSource().getDPID().equals(routes.get(j).getSwitchInfo().getDPID()))) {
 
                         nodeSrc = routes.get(j).getSwitchInfo().getDPID();
-                        sorted.add(routes.get(j));
                         set = false;
                         break;
                     } else {//if not exists a match, move the dpid to the final of the array in order to analyze later
@@ -599,12 +594,11 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                     }
                 }
             }
-            if (set) {//no exist match
+            if (set) {//move routes in order to reorder
                 UtilsTopology.moveValueAtIndexToEnd(routes, j);
                 set = false;
                 j--;
             }
         }
-        return sorted;
     }
 }
