@@ -1,7 +1,8 @@
 OpenNaaS with NFV - Routing bundle
 ========
 
-Supports Floodlight controller and OpenDaylight controller. Also manages the VTN Coordinator in order to manage the OpenDaylight resources.
+ ** Supports Floodlight controller and OpenDaylight controller. Also manages the VTN Coordinator in order to manage the OpenDaylight resources. **
+ ** The VTN coordinator makes the portmapping according with the route found by the VRF module of OpenNaaS. **
 
 In order for NRENs and operators to be able to deploy and operate innovative NaaS offerings, an appropriate toolset needs to be created. With such goal in mind, Mantychore FP7 has created the OpenNaaS framework.
 
