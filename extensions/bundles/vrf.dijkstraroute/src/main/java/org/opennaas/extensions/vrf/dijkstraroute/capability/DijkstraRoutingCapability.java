@@ -23,12 +23,12 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.DijkstraAlgorithm;
-import org.opennaas.extensions.vrf.model.topology.Edge;
-import org.opennaas.extensions.vrf.model.topology.Graph;
-import org.opennaas.extensions.vrf.model.topology.Vertex;
 import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.VRFRoute;
+import org.opennaas.extensions.vrf.model.topology.Edge;
+import org.opennaas.extensions.vrf.model.topology.Graph;
 import org.opennaas.extensions.vrf.model.topology.TopologyInfo;
+import org.opennaas.extensions.vrf.model.topology.Vertex;
 import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.extensions.vrf.utils.UtilsTopology;
 
