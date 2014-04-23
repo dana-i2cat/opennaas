@@ -398,7 +398,7 @@ public class ResourceRepository implements IResourceRepository {
 			throw re;
 		}
 
-		logger.debug("Resource initialized");
+		logger.debug("Resource initialized: " + resourceIdentifier.getId());
 		return resource;
 	}
 
@@ -450,7 +450,7 @@ public class ResourceRepository implements IResourceRepository {
 
 			try {
 				resource.activate();
-				logger.debug("Resource activated");
+				logger.debug("Resource activated: " + resource.getResourceIdentifier().getId());
 			} catch (IncorrectLifecycleStateException e) {
 
 				throw new ResourceException(e);
@@ -513,7 +513,7 @@ public class ResourceRepository implements IResourceRepository {
 				}
 			}
 
-			logger.debug("Resource deactivated");
+			logger.debug("Resource deactivated: " + resourceId);
 
 		} catch (ResourceException e) {
 			// roll back
@@ -540,7 +540,7 @@ public class ResourceRepository implements IResourceRepository {
 
 		removeResourceFromRepository(resourceId);
 
-		logger.debug("Resource shut down");
+		logger.debug("Resource shut down: " + resourceId);
 	}
 
 	/**
@@ -710,7 +710,10 @@ public class ResourceRepository implements IResourceRepository {
 		if (descriptorRepository == null) {
 			throw new ResourceException("Failed to persist resource. No descriptorRepository found.");
 		}
-		return descriptorRepository.save(descriptor);
+		ResourceDescriptor persisted = descriptorRepository.save(descriptor);
+		logger.debug("Resource Persisted " + descriptor.getId());
+
+		return persisted;
 	}
 
 	private void unpersistResourceDescriptor(ResourceDescriptor descriptor) throws ResourceException {
@@ -719,6 +722,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 
 		descriptorRepository.delete(descriptor);
+		logger.debug("Resource unpersisted " + descriptor.getId());
 	}
 
 	private void createProtocolSessionManagerForResource(String resourceId) throws ActivatorException {

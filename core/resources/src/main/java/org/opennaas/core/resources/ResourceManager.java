@@ -120,12 +120,14 @@ public class ResourceManager implements IResourceManager {
 			return this.listResources();
 		} else {
 			// return resources of a given type
-			IResourceRepository repo = resourceRepositories.get(type);
-			if (repo != null) {
-				return new ArrayList<IResource>(repo.listResources());
-			} else {
+			IResourceRepository repo = null;
+			try {
+				repo = getResourceRepository(type);
+			} catch (ResourceException e) {
+				// The contract specifically tells this method should return null if repository is not found.
 				return null;
 			}
+			return new ArrayList<IResource>(repo.listResources());
 		}
 	}
 
@@ -265,6 +267,15 @@ public class ResourceManager implements IResourceManager {
 	private synchronized IResourceRepository getResourceRepository(String resourceType) throws ResourceException {
 		IResourceRepository repo = resourceRepositories.get(resourceType);
 		if (repo == null) {
+			logger.info("Failed to get repo for type " + resourceType);
+			if (logger.isDebugEnabled()) {
+				StringBuffer sf = new StringBuffer();
+				for (String availableType : resourceRepositories.keySet()) {
+					sf.append(availableType + " ");
+				}
+				logger.debug("Available types: " + sf.toString());
+			}
+
 			throw new ResourceException("Didn't find an engine repository for engine type: " + resourceType);
 		}
 		return repo;
@@ -335,6 +346,15 @@ public class ResourceManager implements IResourceManager {
 			}
 		}
 
+		logger.info("Failed to get repo for resource with id " + ID);
+		if (logger.isDebugEnabled()) {
+			StringBuffer sf = new StringBuffer();
+			for (String availableType : resourceRepositories.keySet()) {
+				sf.append(availableType + " ");
+			}
+			logger.debug("Available respos: " + sf.toString());
+		}
+
 		return null;
 	}
 
@@ -347,6 +367,16 @@ public class ResourceManager implements IResourceManager {
 				// ignore, try next repository
 			}
 		}
+
+		logger.info("Failed to get repo for resource with id " + resourceId);
+		if (logger.isDebugEnabled()) {
+			StringBuffer sf = new StringBuffer();
+			for (String availableType : resourceRepositories.keySet()) {
+				sf.append(availableType + " ");
+			}
+			logger.debug("Available respos: " + sf.toString());
+		}
+
 		throw new ResourceException("No resource with ID " + resourceId + " was found.");
 	}
 
