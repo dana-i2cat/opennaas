@@ -273,12 +273,12 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		Assert.assertEquals("forwardingRule2 has been correctly created", forwardingRule2, capability
 				.getOpenflowForwardingRules().get(1));
 
-		capability.removeOpenflowForwardingRule(forwardingRule1.getName());
+		capability.removeOpenflowForwardingRule(forwardingRule1.getDPID(),forwardingRule1.getName());
 		Assert.assertEquals("There is one single rule after deleting forwardingRule1", 1, capability.getOpenflowForwardingRules().size());
 		Assert.assertEquals("forwardingRule2 is still in the switch after deleting forwardingRule1", forwardingRule2, capability
 				.getOpenflowForwardingRules().get(0));
 
-		capability.removeOpenflowForwardingRule(forwardingRule2.getName());
+		capability.removeOpenflowForwardingRule(forwardingRule2.getDPID(), forwardingRule2.getName());
 		Assert.assertTrue("There is no rule after 2 deletions", capability.getOpenflowForwardingRules().isEmpty());
 	}
 

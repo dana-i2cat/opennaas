@@ -235,7 +235,7 @@ public class VTNCapability implements IVTNCapability {
     @Override
     public Response ipreq(String DPID, String Port) {
         log.error("Requested route in VRF. Trying to map the ODL ports.");
-        log.error("Req. information: " + DPID + " " + Port);
+        log.error("Req. information: " + DPID + " mapPort: " + Port);
         Response response;
 
         if (vtn == null) {
@@ -244,9 +244,8 @@ public class VTNCapability implements IVTNCapability {
         if (Port == null) {
             return Response.accepted("Error. Destination port is null").build();
         }
-        String dstSw_num = "s" + DPID.substring(DPID.length() - 1);
-        String outPort = "PP-OF:" + DPID + "-" + dstSw_num + "-eth" + Port;
-        log.error("Port: " + outPort);
+        String dstSw_num = DPID.substring(DPID.length() - 1);
+        String outPort = "PP-OF:" + DPID + "-s" + dstSw_num + "-eth" + Port;
 //        port = "PP-OF:00:00:00:00:00:00:00:05-s5-eth2";
         String iface = "if2";
         String vbrName = getvBridgeOfSwitch(DPID);
@@ -266,7 +265,7 @@ public class VTNCapability implements IVTNCapability {
         }
         log.error("iface: " + iface + " Port: " + outPort);
         response = mapPort(vtn.getVtn_name(), vbrName, iface, outPort);
-        log.error("Req to ODL VTN - portMap: " + response.getStatus());
+        log.error("HTTP Code of ODL VTN - portMap: " + response.getStatus());
 
         return response;
     }

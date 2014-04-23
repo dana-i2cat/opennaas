@@ -315,6 +315,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             return Response.status(404).type("text/plain").entity("Route Not found.").build();
         }
         /* Proactive routing */
+
         StringBuilder listFlows = new StringBuilder();
         if (proactive) {
             response = proactiveRouting(route, version);
@@ -322,21 +323,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             if (listOF.isEmpty()) {
                 return Response.status(404).type("text/plain").entity("Route Not found.").build();
             }
-            listFlows.append("[");
-            listFlows.append("{ip:'").append(ipSource).append("'},")//source IP
-                    .append("{dpid:'").append(switchDPID).append("'},");//first switch id
-
-            for (int i = 0; i < listOF.size(); i++) {
-                if (i == 0) {
-                    listFlows.append("{dpid:'").append(listOF.get(i).getDPID()).append("'},");//others switch ids
-                }
-                for (int j = 0; j < i; j++) {
-                    if (!listFlows.toString().contains(listOF.get(i).getDPID())) {
-                        listFlows.append("{dpid:'").append(listOF.get(i).getDPID()).append("'},");//others switch ids
-                    }
-                }
-            }
-            listFlows.append("{ip:'").append(ipDest).append("'}]");//final destination
+            listFlows = Utils.createJSONPath(ipSource, switchDPID, listOF, ipDest);
         }
         return Response.ok(Integer.toString(outPortSrcSw) + ":" + listFlows).build();
     }

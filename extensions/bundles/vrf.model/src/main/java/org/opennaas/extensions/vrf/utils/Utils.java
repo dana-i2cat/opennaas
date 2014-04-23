@@ -1,7 +1,5 @@
 package org.opennaas.extensions.vrf.utils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
@@ -405,5 +405,38 @@ public class Utils {
     
     public static String base64Encode(String stringToEncode) {
         return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+    }
+
+    /**
+     * Create a JSON string that contains the path.
+     * Format: [{ip:''},{dpid:'00:00'},{ip:''}]
+     * @param source
+     * @param listOF
+     * @param target 
+     */
+    public static StringBuilder createJSONPath(String source, String switchDPID, List<OFFlow> listOF, String target) {
+        StringBuilder listFlows = new StringBuilder();
+        listFlows.append("[");
+        listFlows.append("{ip:'").append(source).append("'},");//source IP
+        if(switchDPID != null){
+            listFlows.append("{dpid:'").append(switchDPID).append("'},");//first switch id
+        }
+        for (int i = 0; i < listOF.size(); i++) {
+            if (i == 0) {
+                listFlows.append("{dpid:'");
+                listFlows.append(listOF.get(i).getDPID());
+                listFlows.append("'},");//others switch ids
+            }
+            for (int j = 0; j < i; j++) {
+                if (!listFlows.toString().contains(listOF.get(i).getDPID())) {
+                    listFlows.append("{dpid:'");
+                    listFlows.append(listOF.get(i).getDPID());
+                    listFlows.append("'},");//others switch ids
+                }
+            }
+
+        }
+        listFlows.append("{ip:'").append(target).append("'}]");//final destination
+        return listFlows;
     }
 }

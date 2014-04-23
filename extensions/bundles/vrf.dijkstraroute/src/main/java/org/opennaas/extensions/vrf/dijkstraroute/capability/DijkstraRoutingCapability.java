@@ -53,7 +53,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         target = Utils.intIPv4toString(Integer.parseInt(target));
         log.error("Request route " + source + " dst: " + target);
 
-        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
+        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, staticDijkstraCost);
         edges = topInfo.getEdges();
         nodes = topInfo.getNodes();
         Vertex src = getVertex(source);
@@ -69,41 +69,19 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         if (path != null) {//if path null???
             listRoutes = creatingRoutes(path, source, target);
         } else {
-            return Response.ok("Path null.").build();
+            return Response.ok("Path null. This route is not possible.").build();
         }
 
         int outPutPortSrcSw = getOutPortSrcSw(path);
-        StringBuilder listFlows = new StringBuilder();
-        List<OFFlow> listOF;
         Response response = proactiveRouting(listRoutes);
-        listOF = ((List<OFFlow>) response.getEntity());
+        List<OFFlow> listOF = ((List<OFFlow>) response.getEntity());
         if (listOF.isEmpty()) {
             return Response.status(404).type("text/plain").entity("Route Not found.").build();
         }
-        listFlows.append("[");
-        listFlows.append("{ip:'").append(source).append("'},");//source IP
-
-        for (int i = 0; i < listOF.size(); i++) {
-            if (i == 0) {
-                listFlows.append("{dpid:'");
-                listFlows.append(listOF.get(i).getDPID());
-                listFlows.append("'},");//others switch ids
-            }
-            for (int j = 0; j < i; j++) {
-                if (!listFlows.toString().contains(listOF.get(i).getDPID())) {
-                    listFlows.append("{dpid:'");
-                    listFlows.append(listOF.get(i).getDPID());
-                    listFlows.append("'},");//others switch ids
-                }
-            }
-
-        }
-        listFlows.append("{ip:'").append(target).append("'}]");//final destination
+        StringBuilder listFlows = Utils.createJSONPath(source, null, listOF, target);
         return Response.ok(outPutPortSrcSw + ":" + listFlows).build();
 
         //path format ; [192.168.1.1, 00:00:00:00:00:00:00:01, 00:00:00:00:00:00:00:03, 192.168.2.51]
-        //return path.toString();
-//        return response;
     }
 
     private Response proactiveRouting(List<VRFRoute> routeSubnetList) {
