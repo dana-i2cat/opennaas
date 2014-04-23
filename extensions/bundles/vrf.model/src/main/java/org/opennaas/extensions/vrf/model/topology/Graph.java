@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra;
+package org.opennaas.extensions.vrf.model.topology;
 
 import java.util.List;
 

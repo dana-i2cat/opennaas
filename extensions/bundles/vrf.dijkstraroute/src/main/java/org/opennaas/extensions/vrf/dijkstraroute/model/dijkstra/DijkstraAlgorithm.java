@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.vrf.model.topology.Edge;
+import org.opennaas.extensions.vrf.model.topology.Graph;
+import org.opennaas.extensions.vrf.model.topology.Vertex;
 
 /**
  *

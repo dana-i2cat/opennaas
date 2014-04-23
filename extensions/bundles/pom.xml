@@ -22,7 +22,7 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>router.actionsets.junos</module>
+<!--		<module>router.actionsets.junos</module>
 		<module>router.actionsets.opener</module>
 		<module>router.repository</module>
 		<module>router.capability.chassis</module>
@@ -78,10 +78,12 @@
 		<module>sampleresource</module>
 		
 		<module>quantum</module>
-		
-		<module>ofertie.ncl</module>
+-->		
+<!--		<module>ofertie.ncl</module>-->
 		<module>openflowswitch</module>
 		<module>openflowswitch.driver.floodlight</module>
+		<module>openflowswitch.driver.opendaylight</module>
+		<module>opendaylight.vtn</module>
 		<module>sdnnetwork</module>
 
 		<module>vrf.model</module>

@@ -13,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.opennaas.extensions.vrf.model.VRFRoute;
 
 /**
  *
@@ -146,6 +145,7 @@ public interface IStaticRoutingCapability {
      * Insert Routes from json file
      *
      * @param fileName The name of the file
+     * @param viDescription
      * @return Status of the request.
      */
     @Path("/insertRouteFromFile/{fileName}")
@@ -154,30 +154,15 @@ public interface IStaticRoutingCapability {
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRouteFile(@PathParam("fileName") String fileName, InputStream viDescription);
 
-    /* ------------- DEMO ------------- */
     /**
-     * Used in demonstrations. Request a log from OpenNaaS in order to see the route requests events.
+     * Called from dynamic routing bundle
+     * @param route
      * @return 
      */
-    @Path("/log")
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getLog();
-    
-    /**
-     * Send the path
-     * @return 
-     */
-    @Path("/stream")
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getStream();
-   
-    /* ------------- DEMO ------------- */
-    
     @Path("/dynamic-route")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRoute(String route);
+    
 }

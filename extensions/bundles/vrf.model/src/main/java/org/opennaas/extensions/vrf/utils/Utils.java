@@ -1,11 +1,5 @@
 package org.opennaas.extensions.vrf.utils;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,14 +14,27 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import javax.ws.rs.core.Response;
+import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.MappingJsonFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
 import org.opennaas.extensions.sdnnetwork.model.Port;
+import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.VRFRoute;
 
 /**
@@ -36,7 +43,17 @@ import org.opennaas.extensions.vrf.model.VRFRoute;
  */
 public class Utils {
 
-static Log log = LogFactory.getLog(Utils.class);
+    static Log log = LogFactory.getLog(Utils.class);
+    
+    public static int detectIPVersion(String ip){
+        if (Utils.isIPv4Address(ip)){
+            return 4;
+        } else if (Utils.isIpAddress(ip) == 6 ) {
+            return 6;
+        } else {
+            return 0;
+        }
+    }
 
     /**
      * Accepts an IPv4 address and returns of string of the form xxx.xxx.xxx.xxx
@@ -270,12 +287,11 @@ static Log log = LogFactory.getLog(Utils.class);
      * Layer3 to layer2
      *
      * @param route
+     * @param etherType
      * @return
      */
     public static FloodlightOFFlow VRFRouteToFloodlightFlow(VRFRoute route, String etherType) {
-log.error("Convert VRFROute to Floodlight FLOW .................................................................");
         FloodlightOFFlow flow = new FloodlightOFFlow();
-
         FloodlightOFMatch match = new FloodlightOFMatch();
         List<FloodlightOFAction> listActions = new ArrayList<FloodlightOFAction>();
         FloodlightOFAction action = new FloodlightOFAction();
@@ -297,17 +313,20 @@ log.error("Convert VRFROute to Floodlight FLOW .................................
         return flow;
     }
 
-    public static String createFlowName(String id, String ethType, String source, String target, String dpid){
-log.error("SETNAME FLOW: 0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2));
+    public static String createFlowName(String id, String ethType, String source, String target, String dpid) {
+//        log.error("SETNAME FLOW: 0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2));
 //        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
-                return "0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
+        source = source.replace("/", "-");
+        target = target.replace("/", "-");
+        return "0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2);
     }
-    
+
     /**
      * Copy InputStream to OutputStream (file).
+     *
      * @param is
      * @param os
-     * @throws IOException 
+     * @throws IOException
      */
     public static void copyStream(InputStream is, OutputStream os) throws IOException {
         int BUFFER_SIZE = 16384;
@@ -326,6 +345,7 @@ log.error("SETNAME FLOW: 0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(
      * buffer) method. We iterate until the Reader return -1 which means there's
      * no more data to read. We use the StringWriter class to produce the
      * string.
+     *
      * @param is
      * @return The string that contains the value of the inputstream
      * @throws IOException
@@ -349,5 +369,132 @@ log.error("SETNAME FLOW: 0-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(
         } else {
             return "";
         }
+    }
+
+    /**
+     * Mapping VRFRoute to Floodlight Flow used by SDN-OF module of OpenNaaS
+     * Layer3 to layer2
+     *
+     * @param route
+     * @param etherType
+     * @return
+     */
+    public static OFFlow VRFRouteToOFFlow(VRFRoute route, String etherType) {
+//        log.error("............................ Convert VRFROute to OpenFlow FLOW ");
+        OFFlow flow = new OFFlow();
+
+        FloodlightOFMatch match = new FloodlightOFMatch();
+        List<FloodlightOFAction> listActions = new ArrayList<FloodlightOFAction>();
+        FloodlightOFAction action = new FloodlightOFAction();
+        match.setSrcIp(route.getSourceAddress());
+        match.setDstIp(route.getDestinationAddress());
+        match.setEtherType(etherType);
+        match.setIngressPort(String.valueOf(route.getSwitchInfo().getInputPort()));
+
+        action.setType(FloodlightOFAction.TYPE_OUTPUT);
+        action.setValue(String.valueOf(route.getSwitchInfo().getOutputPort()));
+        listActions.add(action);
+        flow.setActions(listActions);
+        flow.setActive(true);
+        flow.setMatch(match);
+//        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
+        flow.setName(createFlowName(String.valueOf(route.getId()), etherType, route.getSourceAddress(), route.getDestinationAddress(), route.getSwitchInfo().getDPID()));
+        flow.setDPID(route.getSwitchInfo().getDPID());
+        return flow;
+    }
+
+    public static String intIPToString(String ip, int detectIPVersion) {
+        if(detectIPVersion == 4)
+            return Utils.intIPv4toString(Integer.parseInt(ip));
+        else if(detectIPVersion == 6){
+            return Utils.tryToCompressIPv6(ip);
+        }
+        return null;
+    }
+    
+    public static String base64Encode(String stringToEncode) {
+        return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+    }
+
+    /**
+     * Create a JSON string that contains the path.
+     * Format: [{ip:''},{dpid:'00:00'},{ip:''}]
+     * @param source
+     * @param listOF
+     * @param target 
+     */
+    public static StringBuilder createJSONPath(String source, String switchDPID, List<OFFlow> listOF, String target) {
+        StringBuilder listFlows = new StringBuilder();
+        listFlows.append("[");
+        listFlows.append("{ip:'").append(source).append("'},");//source IP
+        if(switchDPID != null){
+            listFlows.append("{dpid:'").append(switchDPID).append("'},");//first switch id
+        }
+        for (int i = 0; i < listOF.size(); i++) {
+            if (i == 0) {
+                listFlows.append("{dpid:'");
+                listFlows.append(listOF.get(i).getDPID());
+                listFlows.append("'},");//others switch ids
+            }
+            for (int j = 0; j < i; j++) {
+                if (!listFlows.toString().contains(listOF.get(i).getDPID())) {
+                    listFlows.append("{dpid:'");
+                    listFlows.append(listOF.get(i).getDPID());
+                    listFlows.append("'},");//others switch ids
+                }
+            }
+
+        }
+        listFlows.append("{ip:'").append(target).append("'}]");//final destination
+        return listFlows;
+    }
+
+    public static Response insertRoutesFromJSONFile(String content) {
+        String response = "Inserted";
+        List<VRFRoute> routes = new ArrayList<VRFRoute>();
+        try {
+            JsonFactory f = new MappingJsonFactory();
+            JsonParser jp = f.createJsonParser(content);
+            JsonToken current = jp.nextToken();
+            if (current != JsonToken.START_OBJECT) {
+                return Response.status(404).entity("Error: root should be object: quiting.").build();
+            }
+            while (jp.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = jp.getCurrentName();
+                current = jp.nextToken();// move from field name to field value
+                if (fieldName.equals("routeIPv4") || fieldName.equals("routeIPv6")) {
+                    if (current == JsonToken.START_ARRAY) {
+                        // For each of the records in the array
+                        while (jp.nextToken() != JsonToken.END_ARRAY) {
+                            // read the record into a tree model,
+                            // this moves the parsing position to the end of it
+                            JsonNode node = jp.readValueAsTree();
+                            String field = jp.getCurrentName();
+                            // And now we have random access to everything in the object
+                            VRFRoute newRoute = new VRFRoute();
+                            L2Forward newSwitch = new L2Forward();
+                            newRoute.setSourceAddress(node.get("srcAddr").getValueAsText());
+                            newRoute.setDestinationAddress(node.get("dstAddr").getValueAsText());
+                            newSwitch.setInputPort(Integer.parseInt(node.get("swInfo").getPath("inPort").getValueAsText()));
+                            newSwitch.setOutputPort(Integer.parseInt(node.get("swInfo").getPath("outPort").getValueAsText()));
+                            newSwitch.setDPID(node.get("swInfo").getPath("dpid").getValueAsText());
+                            newRoute.setSwitchInfo(newSwitch);
+                            routes.add(newRoute);
+                        }
+                    } else {
+                        response = "Error: records should be an array: skipping.";
+                        jp.skipChildren();
+                    }
+                } else {
+                    response = "Unprocessed property: " + fieldName;
+                    jp.skipChildren();
+                }
+            }
+            return Response.ok(routes).build();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.status(404).entity("Some error. Check the file. Possible error: " + response).build();
     }
 }

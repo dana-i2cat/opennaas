@@ -1,0 +1,12 @@
+osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/openflowswitch/target/org.opennaas.extensions.openflowswitch-0.24.2.jar
+
+osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/openflowswitch.driver.opendaylight/target/org.opennaas.extensions.openflowswitch.driver.opendaylight-0.24.2.jar
+
+osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.model/target/org.opennaas.extensions.vrf.model-0.24.2.jar
+
+osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.staticroute/target/org.opennaas.extensions.vrf.staticroute-0.24.2.jar
+
+osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.dijkstraroute/target/org.opennaas.extensions.vrf.dijkstraroute-0.24.2.jar
+
+osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.selector/target/org.opennaas.extensions.vrf.selector-0.24.2.jar
+

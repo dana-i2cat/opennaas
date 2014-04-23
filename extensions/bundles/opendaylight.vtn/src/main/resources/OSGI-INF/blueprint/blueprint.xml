@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint  xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" 
+            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+ 						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+    
+    <!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
+    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+    
+    <!--  	Protocol Session Factory  -->
+    <bean id="opendaylightProtocolSessionFactory" class="org.opennaas.extensions.opendaylight.vtn.protocol.OpenDaylightProtocolSessionFactory"/>
+    <service ref="opendaylightProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+        <service-properties>
+            <entry key="protocol" value="opendaylight"/>
+            <entry key="protocol.version" value="1.0"/>
+        </service-properties>
+    </service>
+	
+    <bean id="vtnCapability" class="org.opennaas.extensions.opendaylight.vtn.capability.VTNCapability"/>
+        
+    <service ref="vtnCapability" interface="org.opennaas.extensions.opendaylight.vtn.capability.IVTNCapability">
+        <service-properties>
+            <!-- Rest -->
+            <entry key="service.exported.interfaces" value="*"/>
+            <entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+            <entry key="service.exported.intents" value="HTTP"/>
+            <entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/vtn"/>
+            <entry key="org.apache.cxf.rs.address" value="/"/>
+            <entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
+        </service-properties>
+    </service>
+       
+    <!-- Forces this bundle to wait for dataSourceResources being published -->
+    <reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>        
+
+</blueprint>

@@ -40,6 +40,11 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-bundle</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -57,7 +62,7 @@
                 -->
                 <configuration>
                     <instructions>
-                        <Bundle-Activator>org.opennaas.extensions.vrf.staticroute.capability.Activator</Bundle-Activator>
+                        <Bundle-Activator>org.opennaas.extensions.vrf.staticroute.Activator</Bundle-Activator>
                         <Import-Package>
                             org.slf4j,
                             org.opennaas.extensions.vrf.model,

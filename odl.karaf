@@ -1,0 +1,52 @@
+shell:echo Script to insert the information of each controller and the default routes implementing NFV
+
+#create resource from descriptor
+
+exec cp /opt/opennaas-routing-nfv/curlInsertRoutes.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
+exec cp /opt/opennaas-routing-nfv/mapSwDevices.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
+exec cp /opt/opennaas-routing-nfv/autoMapSwDevices.sh /opt/opennaas-routing-nfv/platform/target/opennaas-0.24.2/opennaas-0.24.2/
+
+exec sh curlInsertRoutes.sh
+
+resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/sdn1.descriptor
+resource:start sdnnetwork:sdn1
+
+#Create openflowswitches
+resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s1.descriptor
+resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s2.descriptor
+resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s3.descriptor
+resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl4.descriptor
+resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl5.descriptor
+resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl6.descriptor
+#resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl7.descriptor
+#resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl8.descriptor
+
+#Set protocol context for each switch
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:01 openflowswitch:s1 floodlight noauth http://controllersVM:8080
+resource:start openflowswitch:s1
+
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:02 openflowswitch:s2 floodlight noauth http://controllersVM:8080
+resource:start openflowswitch:s2
+
+protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:03 openflowswitch:s3 floodlight noauth http://controllersVM:8080
+resource:start openflowswitch:s3
+
+protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:04 openflowswitch:s4 opendaylight noauth http://controllersVM2:8080
+resource:start openflowswitch:s4
+
+protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:05 openflowswitch:s5 opendaylight noauth http://controllersVM2:8080
+resource:start openflowswitch:s5
+
+protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:06 openflowswitch:s6 opendaylight noauth http://controllersVM2:8080
+resource:start openflowswitch:s6
+
+#protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:07 openflowswitch:s7 opendaylight noauth http://controllersVM:8080
+#resource:start openflowswitch:s7
+
+#protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:08 openflowswitch:s8 opendaylight noauth http://controllersVM:8080
+#resource:start openflowswitch:s8
+
+#Auto Map resourceId and DPID
+exec sh autoMapSwDevices.sh
+
+#install file:///home/josep/controller/opendaylight/nfv/vrf/target/nfv.vrf-1.4.2-SNAPSHOT.jar
