@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -31,7 +30,10 @@ import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.RoutingTable;
 import org.opennaas.extensions.vrf.model.VRFModel;
 import org.opennaas.extensions.vrf.model.VRFRoute;
+import org.opennaas.extensions.vrf.model.topology.Edge;
+import org.opennaas.extensions.vrf.model.topology.Vertex;
 import org.opennaas.extensions.vrf.utils.Utils;
+import org.opennaas.extensions.vrf.utils.UtilsTopology;
 //import org.opennaas.extensions.openflowswitch.utils.Utils;
 
 /**
@@ -43,8 +45,11 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 
     Log log = LogFactory.getLog(StaticRoutingCapability.class);
     private VRFModel vrfModel;
-    private String username = "admin";
-    private String password = "123456";
+    private final String username = "admin";
+    private final String password = "123456";
+    private List<Vertex> nodes = new ArrayList<Vertex>();
+    private List<Edge> edges = new ArrayList<Edge>();
+    private final String topologyFilename = "data/dynamicTopology.json";
 
     public StaticRoutingCapability() {
         this.vrfModel = new VRFModel();
@@ -311,7 +316,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         /* Proactive routing */
         StringBuilder listFlows = new StringBuilder();
         if (proactive) {
-            response = proactiveRouting(switchInfo, route, version);
+            response = proactiveRouting(route, version);
             List<OFFlow> listOF = ((List<OFFlow>) response.getEntity());
             if (listOF.isEmpty()) {
                 return Response.status(404).type("text/plain").entity("Route Not found.").build();
@@ -335,11 +340,15 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return Response.ok(Integer.toString(outPortSrcSw) + ":" + listFlows).build();
     }
 
-    private Response proactiveRouting(L2Forward srcSwInfo, VRFRoute route, int version) {
+    private Response proactiveRouting(VRFRoute route, int version) {
         log.info("Proactive Routing. Searching the last Switch of the Route...");
         VRFModel model = getVRFModel();
-        List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, srcSwInfo, srcSwInfo);
+        List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, route.getSwitchInfo(), route.getSwitchInfo());
         List<OFFlow> listFlow = new ArrayList<OFFlow>();
+
+        edges = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1).getEdges();
+        nodes = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1).getNodes();
+        List<VRFRoute> sortedRoutes = sortRoutes(route, routeSubnetList);
 
         //Conversion List of VRFRoute to List of OFFlow
         if (routeSubnetList.size() > 0) {
@@ -348,10 +357,13 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                 listFlow.add(Utils.VRFRouteToOFFlow(r, "2054"));
             }
         }
-        String srcDPID = listFlow.get(0).getDPID();
-        String inPort = Integer.toString(srcSwInfo.getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
+
+//         String srcDPID = listFlow.get(0).getDPID();
+        String srcDPID = route.getSwitchInfo().getDPID();
+        String inPort = Integer.toString(route.getSwitchInfo().getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
+        log.error("DstDPID: " + dstDPID);
         Response response;
         try {
             String initialSw = getProtocolType(srcDPID);
@@ -370,7 +382,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             log.debug("Provision Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
-            insertFlow(listFlow.get(i));
+//            insertFlow(listFlow.get(i));
         }
         return Response.ok(listFlow).build();
     }
@@ -541,7 +553,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         log.info("Calling VTN from Static Routing.");
         String url = "http://localhost:8888/opennaas/vtn/ipreq/" + DPID + "/" + Port;
         Response response;
-        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+        String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
 
         WebClient client = WebClient.create(url);
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
@@ -551,7 +563,46 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return response;
     }
 
-    private static String base64Encode(String stringToEncode) {
-        return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+
+    /**
+     * Sort routes given route and edges of topology
+     *
+     * @param route
+     * @param routes
+     * @return
+     */
+    private List<VRFRoute> sortRoutes(VRFRoute route, List<VRFRoute> routes) {
+        List<VRFRoute> sorted = new ArrayList<VRFRoute>();
+
+        String nodeSrc = route.getSwitchInfo().getDPID();
+        Boolean set = true;
+
+        for (int j = 0; j < routes.size(); j++) {
+            if (nodeSrc.equals(routes.get(j).getSwitchInfo().getDPID())) {
+                //the defined routes contains two directions. It is possible that there are two routes with the same DPID. Then, we add to sort routes
+                sorted.add(routes.get(j));
+                set = false;
+            } else {
+                for (int i = 0; i < edges.size(); i++) {//find the dest node given a source node. Initial node is the source host
+                    if ((edges.get(i).getSource().getDPID().equals(nodeSrc)
+                            && edges.get(i).getDestination().getDPID().equals(routes.get(j).getSwitchInfo().getDPID())) || (edges.get(i).getDestination().getDPID().equals(nodeSrc)
+                            && edges.get(i).getSource().getDPID().equals(routes.get(j).getSwitchInfo().getDPID()))) {
+
+                        nodeSrc = routes.get(j).getSwitchInfo().getDPID();
+                        sorted.add(routes.get(j));
+                        set = false;
+                        break;
+                    } else {//if not exists a match, move the dpid to the final of the array in order to analyze later
+                        set = true;
+                    }
+                }
+            }
+            if (set) {//no exist match
+                UtilsTopology.moveValueAtIndexToEnd(routes, j);
+                set = false;
+                j--;
+            }
+        }
+        return sorted;
     }
 }

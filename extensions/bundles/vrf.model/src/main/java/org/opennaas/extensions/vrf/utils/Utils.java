@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import javax.xml.bind.DatatypeConverter;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
@@ -402,4 +403,7 @@ public class Utils {
         return null;
     }
     
+    public static String base64Encode(String stringToEncode) {
+        return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+    }
 }

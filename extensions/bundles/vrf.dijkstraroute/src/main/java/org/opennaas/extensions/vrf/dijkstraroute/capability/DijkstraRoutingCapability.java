@@ -1,6 +1,5 @@
 package org.opennaas.extensions.vrf.dijkstraroute.capability;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,16 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.ext.form.Form;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.MappingJsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
@@ -30,12 +23,13 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.DijkstraAlgorithm;
-import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Edge;
-import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Graph;
-import org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra.Vertex;
+import org.opennaas.extensions.vrf.model.topology.Edge;
+import org.opennaas.extensions.vrf.model.topology.Graph;
+import org.opennaas.extensions.vrf.model.topology.Vertex;
 import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.VRFRoute;
 import org.opennaas.extensions.vrf.utils.Utils;
+import org.opennaas.extensions.vrf.utils.UtilsTopology;
 
 /**
  *
@@ -58,7 +52,8 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         target = Utils.intIPv4toString(Integer.parseInt(target));
         log.error("Request route " + source + " dst: " + target);
 
-        createAdjacencyMatrix();
+        edges = UtilsTopology.createAdjacencyMatrix(topologyFilename, staticDijkstraCost).getEdges();
+        nodes = UtilsTopology.createAdjacencyMatrix(topologyFilename, staticDijkstraCost).getNodes();
         Vertex src = getVertex(source);
         Vertex dst = getVertex(target);
 
@@ -128,15 +123,15 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
-        log.error("SrcDPID "+srcDPID+" "+inPort+" "+dstDPID+" "+outPort);
-	Response response;
+        log.error("SrcDPID " + srcDPID + " " + inPort + " " + dstDPID + " " + outPort);
+        Response response;
         try {
             String initialSw = getProtocolType(srcDPID);
             String targetSw = getProtocolType(dstDPID);
-            if(initialSw.equals("opendaylight")){
+            if (initialSw.equals("opendaylight")) {
                 response = callVTN(srcDPID, inPort);//changed
             }
-            if(targetSw.equals("opendaylight")){
+            if (targetSw.equals("opendaylight")) {
                 response = callVTN(dstDPID, outPort);
             }
         } catch (ActivatorException ex) {
@@ -171,11 +166,11 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
             }
             IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
             if (protocol.equals("opendaylight")) {
-/*                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")){
-                    OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
-                    forwardingCapability.createOpenflowForwardingRule(odlFlow);
-                }
-*/            } else if (protocol.equals("floodlight")) {
+                /*                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")){
+                 OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
+                 forwardingCapability.createOpenflowForwardingRule(odlFlow);
+                 }
+                 */            } else if (protocol.equals("floodlight")) {
                 FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
                 forwardingCapability.createOpenflowForwardingRule(fldFlow);
             }
@@ -297,78 +292,6 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
     }
 
     /**
-     * Read the json file that contains the topology and store the nodes and
-     * edges in the global variables.
-     */
-    private void createAdjacencyMatrix() {
-
-        nodes = new ArrayList<Vertex>();
-        edges = new ArrayList<Edge>();
-
-        try {
-            JsonFactory f = new MappingJsonFactory();
-            JsonParser jp = f.createJsonParser(new File(topologyFilename));
-            JsonToken current = jp.nextToken();
-            if (current != JsonToken.START_OBJECT) {
-                log.error("Error: root should be object: quiting.");
-            }
-            while (jp.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = jp.getCurrentName();
-                current = jp.nextToken();// move from field name to field value
-                if (fieldName.equals("nodes")) {
-                    if (current == JsonToken.START_ARRAY) {
-                        while (jp.nextToken() != JsonToken.END_ARRAY) {
-                            JsonNode node = jp.readValueAsTree();
-                            int type;
-                            if (node.get("type").getValueAsText().equals("sw")) {
-                                type = 0;
-                            } else {
-                                type = 1;
-                            }
-                            Vertex v = new Vertex(node.get("id").getValueAsText(),
-                                    node.get("dpid").getValueAsText(),
-                                    type);
-                            nodes.add(v);
-                        }
-                    } else {
-                        jp.skipChildren();
-                    }
-                } else if (fieldName.equals("links")) {
-                    if (current == JsonToken.START_ARRAY) {
-                        // For each of the records in the array
-                        while (jp.nextToken() != JsonToken.END_ARRAY) {
-                            JsonNode link = jp.readValueAsTree();
-                            String srcId = link.get("source").getValueAsText();
-                            String dstId = link.get("target").getValueAsText();
-                            int srcPort = Integer.parseInt(link.get("srcP").getValueAsText());
-                            int dstPort = Integer.parseInt(link.get("dstP").getValueAsText());
-                            Vertex srcV = null;
-                            Vertex dstV = null;
-                            for (Vertex v : nodes) {
-                                if (v.getId().equals(srcId)) {
-                                    srcV = new Vertex(v.getId(), v.getDPID(), v.getType());
-                                } else if (v.getId().equals(dstId)) {
-                                    dstV = new Vertex(v.getId(), v.getDPID(), v.getType());
-                                }
-                            }
-                            Edge e = new Edge(link.get("id").getValueAsText(), srcV, dstV, staticDijkstraCost, srcPort, dstPort);
-                            edges.add(e);
-                            e = new Edge(link.get("id").getValueAsText() + "-", dstV, srcV, staticDijkstraCost, dstPort, srcPort);
-                            edges.add(e);
-                        }
-                    } else {
-                        jp.skipChildren();
-                    }
-                } else {
-                    jp.skipChildren();
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(DijkstraRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
      * Call a rest service to insert a StaticRoute
      *
      * @param route
@@ -383,7 +306,7 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         fm.set("route", (VRFRoute) route);
 
         WebClient client = WebClient.create(url);
-        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+        String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -398,10 +321,6 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
 
         log.error("Insert to other Bundle Response: " + response);
         return response;
-    }
-
-    private String base64Encode(String stringToEncode) {
-        return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
     }
 
     @Override
@@ -433,19 +352,21 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
 
         protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
-        if(protocol == null) protocol = "floodlight";
+        if (protocol == null) {
+            protocol = "floodlight";
+        }
 
         return protocol;
     }
 
     public Response callVTN(String DPID, String Port) {
         log.error("Calling VTN from Dynamic (Dijkstra) Routing.");
-        if(DPID == null || Port == null){
-            log.error("DstDPID: "+DPID+" outPort: "+Port);
+        if (DPID == null || Port == null) {
+            log.error("DstDPID: " + DPID + " outPort: " + Port);
             return Response.status(400).entity("DstDPID or outPut port is null").build();
         }
         String url = "http://localhost:8888/opennaas/vtn/ipreq/" + DPID + "/" + Port;
-        String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+        String base64encodedUsernameAndPassword = Utils.base64Encode(username + ":" + password);
 
         WebClient client = WebClient.create(url);
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);

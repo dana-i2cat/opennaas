@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vrf.dijkstraroute.model.dijkstra;
+package org.opennaas.extensions.vrf.model.topology;
 
 /**
  * Vertex class. Used in Dijkstra algorithm. Id of the node, dpid/ip and the type var is used in order to differentite the switchs from hosts.
