@@ -31,6 +31,7 @@ import org.opennaas.extensions.vrf.model.RoutingTable;
 import org.opennaas.extensions.vrf.model.VRFModel;
 import org.opennaas.extensions.vrf.model.VRFRoute;
 import org.opennaas.extensions.vrf.model.topology.Edge;
+import org.opennaas.extensions.vrf.model.topology.TopologyInfo;
 import org.opennaas.extensions.vrf.model.topology.Vertex;
 import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.extensions.vrf.utils.UtilsTopology;
@@ -49,7 +50,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private final String password = "123456";
     private List<Vertex> nodes = new ArrayList<Vertex>();
     private List<Edge> edges = new ArrayList<Edge>();
-    private final String topologyFilename = "data/dynamicTopology.json";
+    private String topologyFilename = "data/dynamicTopology.json";
 
     public StaticRoutingCapability() {
         this.vrfModel = new VRFModel();
@@ -346,10 +347,12 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, route.getSwitchInfo(), route.getSwitchInfo());
         List<OFFlow> listFlow = new ArrayList<OFFlow>();
 
-        edges = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1).getEdges();
-        nodes = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1).getNodes();
-        List<VRFRoute> sortedRoutes = sortRoutes(route, routeSubnetList);
-
+        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
+        edges = topInfo.getEdges();
+        nodes = topInfo.getNodes();
+        
+        sortRoutes(route, routeSubnetList);
+        
         //Conversion List of VRFRoute to List of OFFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
@@ -363,7 +366,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         String inPort = Integer.toString(route.getSwitchInfo().getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
-        log.error("DstDPID: " + dstDPID);
         Response response;
         try {
             String initialSw = getProtocolType(srcDPID);

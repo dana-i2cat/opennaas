@@ -28,6 +28,7 @@ import org.opennaas.extensions.vrf.model.topology.Graph;
 import org.opennaas.extensions.vrf.model.topology.Vertex;
 import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.VRFRoute;
+import org.opennaas.extensions.vrf.model.topology.TopologyInfo;
 import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.extensions.vrf.utils.UtilsTopology;
 
@@ -52,8 +53,9 @@ public class DijkstraRoutingCapability implements IDijkstraRoutingCapability {
         target = Utils.intIPv4toString(Integer.parseInt(target));
         log.error("Request route " + source + " dst: " + target);
 
-        edges = UtilsTopology.createAdjacencyMatrix(topologyFilename, staticDijkstraCost).getEdges();
-        nodes = UtilsTopology.createAdjacencyMatrix(topologyFilename, staticDijkstraCost).getNodes();
+        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
+        edges = topInfo.getEdges();
+        nodes = topInfo.getNodes();
         Vertex src = getVertex(source);
         Vertex dst = getVertex(target);
 

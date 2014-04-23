@@ -1,5 +1,6 @@
 package org.opennaas.extensions.vrf.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class UtilsTopology {
 
         try {
             JsonFactory f = new MappingJsonFactory();
-            JsonParser jp = f.createJsonParser(topologyFilename);
+            JsonParser jp = f.createJsonParser(new File(topologyFilename));
             JsonToken current = jp.nextToken();
             if (current != JsonToken.START_OBJECT) {
                 Logger.getLogger(UtilsTopology.class.getName()).log(Level.SEVERE, null, "Error: root should be object: quiting.");
