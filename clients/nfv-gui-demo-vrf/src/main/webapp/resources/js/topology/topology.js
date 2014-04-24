@@ -3,7 +3,7 @@
  */
 
 var sw_x = 90, sw_y = 80;
-var node_x = 30, node_y = 200;
+var node_x = 30, node_y = 220;
 
 function readTextFile(url) {
     if (window.XMLHttpRequest) {              
