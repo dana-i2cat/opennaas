@@ -220,7 +220,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         } catch (IOException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         Response response = Utils.insertRoutesFromJSONFile(content);
         List<VRFRoute> list = (List<VRFRoute>) response.getEntity();
         if (model.getTable(4) == null) {
@@ -279,9 +279,11 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         List<VRFRoute> routeSubnetList = model.getTable(version).getListRoutes(route, route.getSwitchInfo(), route.getSwitchInfo());
         List<OFFlow> listFlow = new ArrayList<OFFlow>();
 
-        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
-        edges = topInfo.getEdges();
-        nodes = topInfo.getNodes();
+	if(edges.isEmpty()){
+	        TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
+	        edges = topInfo.getEdges();
+	        nodes = topInfo.getNodes();
+	}
 
         sortRoutes(routeSubnetList, route);
 

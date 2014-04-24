@@ -23,7 +23,6 @@ public interface IRoutingCapability {
      * @param ipDest Destination IP Address in integer format (received from Floodlight)
      * @param switchDPID DPID of the switch
      * @param inputPort Input port
-     * @param proactive Type of request (reactive/proactive)
      * @return output Port where the switch forward the packet
      */
     @Path("/route/{ipSource}/{ipDest}/{switchDPID}/{inputPort}")
@@ -38,7 +37,7 @@ public interface IRoutingCapability {
      * Set the working mode of the selector (static or dijkstra)
      *
      * @param mode
-     * @return output Port where the switch forward the packet
+     * @return response code
      */
     @Path("/routeMode/{mode}")
     @GET
@@ -46,16 +45,15 @@ public interface IRoutingCapability {
     public Response setSelectorMode(@PathParam("mode") String mode);
 
    /**
-     * Set the working mode of the selector (static or dijkstra)
+     * Get the working mode of the selector (static or dijkstra)
      *
-     * @param mode
-     * @return output Port where the switch forward the packet
+     * @return routing Mode
      */
     @Path("/routeMode")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getSelectorMode();
-    
+
     @Path("/switchMapping")
     @GET
     public Response switchMapping();

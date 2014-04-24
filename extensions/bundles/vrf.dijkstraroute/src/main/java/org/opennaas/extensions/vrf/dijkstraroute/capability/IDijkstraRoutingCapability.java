@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/")
 public interface IDijkstraRoutingCapability {
-    
+
     /**
      * Dynamic routing. Return the path.
      * Get Route given Destination IP, DPID of the switch and the input
@@ -29,20 +29,20 @@ public interface IDijkstraRoutingCapability {
     public Response getDynamicRoute(
             @PathParam("source") String source, 
             @PathParam("target") String target);
-    
+
     /**
      * Return the topology filename used and the directory
-     * @return 
+     * @return
      */
     @Path("/topologyName")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getTopologyFilename();
-    
+
     /**
      * Set the directory and name of the filename
      * @param fileName
-     * @return 
+     * @return
      */
     @Path("/topologyName/{fileName}")
     @GET
