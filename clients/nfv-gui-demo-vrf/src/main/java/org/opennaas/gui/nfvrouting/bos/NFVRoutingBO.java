@@ -47,8 +47,6 @@ public class NFVRoutingBO {
     /**
      * Remove route given the id
      *
-     * @param id
-     * @param version
      * @return status
      */
     public String deleteAllRoutes() {

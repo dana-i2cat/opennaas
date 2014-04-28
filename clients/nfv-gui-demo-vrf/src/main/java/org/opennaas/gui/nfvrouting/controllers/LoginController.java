@@ -1,7 +1,6 @@
 package org.opennaas.gui.nfvrouting.controllers;
 
 import org.apache.log4j.Logger;
-import org.opennaas.gui.nfvrouting.entities.settings.Settings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;

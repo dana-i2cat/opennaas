@@ -103,8 +103,6 @@ public class NFVRoutingService extends GenericRestService {
     /**
      * Remove Route given the id
      *
-     * @param id
-     * @param version
      * @return
      */
     public String deleteAllRoutes() {
