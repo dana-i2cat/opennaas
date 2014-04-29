@@ -132,7 +132,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 			// replace currently allocated (already aggregated) with new aggregated circuits
 			List<Circuit> oldAggregated = new ArrayList<Circuit>();
-			oldAggregated.addAll(getAllocatedCircuits());
+			oldAggregated.addAll(circuitProvCapability.getCircuits());
 			List<Circuit> newAggregated = new ArrayList<Circuit>(allAggregatedCircuits.size());
 			newAggregated.addAll(allAggregatedCircuits);
 
@@ -174,7 +174,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		// replace currently aggregated by newAggregatedCircuits
 		List<Circuit> oldAggregated = new ArrayList<Circuit>();
-		oldAggregated.addAll(getAllocatedCircuits());
+		oldAggregated.addAll(circuitProvCapability.getCircuits());
 		List<Circuit> newAggregated = new ArrayList<Circuit>(newAggregatedCircuits.size());
 		newAggregated.addAll(newAggregatedCircuits);
 
@@ -187,20 +187,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public Collection<Circuit> getAllocatedCircuits() throws CapabilityException {
-
-		ICircuitProvisioningCapability circuitProvCapability;
-
-		try {
-			circuitProvCapability = (ICircuitProvisioningCapability) getCapability(ICircuitProvisioningCapability.class);
-
-		} catch (ResourceException e) {
-			throw new CapabilityException(e);
-		}
-
-		List<Circuit> circuits = circuitProvCapability.getCircuits();
-
-		return circuits;
+	public Collection<Circuit> getAllocatedCircuits() {
+		return getRequestedCircuits();
 	}
 
 	public Collection<Circuit> getRequestedCircuits() {
@@ -225,7 +213,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	@Override
-	public CircuitCollection getAllocatedCircuitsAPI() throws CapabilityException {
+	public CircuitCollection getAllocatedCircuitsAPI() {
 
 		CircuitCollection circuitCollection = new CircuitCollection();
 
@@ -379,7 +367,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		// replace currently aggregated by newAggregatedCircuits
 		List<Circuit> oldAggregated = new ArrayList<Circuit>();
-		oldAggregated.addAll(getAllocatedCircuits());
+		oldAggregated.addAll(circuitProvCapability.getCircuits());
 		List<Circuit> newAggregated = new ArrayList<Circuit>(newAggregatedCircuits.size());
 		newAggregated.addAll(newAggregatedCircuits);
 
