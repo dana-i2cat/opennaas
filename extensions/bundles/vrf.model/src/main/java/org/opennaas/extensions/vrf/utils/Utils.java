@@ -420,8 +420,10 @@ public class Utils {
      * Create a JSON string that contains the path.
      * Format: [{ip:''},{dpid:'00:00'},{ip:''}]
      * @param source
+     * @param switchDPID
      * @param listOF
      * @param target 
+     * @return  
      */
     public static StringBuilder createJSONPath(String source, String switchDPID, List<OFFlow> listOF, String target) {
         StringBuilder listFlows = new StringBuilder();

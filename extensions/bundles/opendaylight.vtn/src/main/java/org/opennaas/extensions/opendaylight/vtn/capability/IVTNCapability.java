@@ -165,5 +165,4 @@ public interface IVTNCapability {
     @Path("/cleanvtn")
     @GET
     public void cleanVTN();
-
 }

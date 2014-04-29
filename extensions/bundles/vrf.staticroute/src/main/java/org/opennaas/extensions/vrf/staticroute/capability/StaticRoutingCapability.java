@@ -284,7 +284,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 	        edges = topInfo.getEdges();
 	        nodes = topInfo.getNodes();
 	}
-
         sortRoutes(routeSubnetList, route);
 
         //Conversion List of VRFRoute to List of OFFlow
@@ -294,7 +293,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                 listFlow.add(Utils.VRFRouteToOFFlow(r, "2054"));
             }
         }
-
+        //VTN OpenDaylight
         String srcDPID = route.getSwitchInfo().getDPID();
         String inPort = Integer.toString(route.getSwitchInfo().getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
@@ -304,7 +303,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             String initialSw = getProtocolType(srcDPID);
             String targetSw = getProtocolType(dstDPID);
             if (initialSw.equals("opendaylight")) {
-                response = callVTN(srcDPID, inPort);//changed
+                response = callVTN(srcDPID, inPort);
             }
             if (targetSw.equals("opendaylight")) {
                 response = callVTN(dstDPID, outPort);
@@ -508,7 +507,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private void sortRoutes(List<VRFRoute> routes, VRFRoute route) {
         String nodeSrc = route.getSwitchInfo().getDPID();
         Boolean set = true;
-
+int maxLoop = routes.size()*4;
         for (int j = 0; j < routes.size(); j++) {
             if (nodeSrc.equals(routes.get(j).getSwitchInfo().getDPID())) {
                 //the defined routes contains two directions. It is possible that there are two routes with the same DPID. Then, we add to sort routes
@@ -530,6 +529,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                 UtilsTopology.moveValueAtIndexToEnd(routes, j);
                 set = false;
                 j--;
+                maxLoop--;
+            }
+            if(maxLoop <= 0){//avoid infinite bucles
+                j++;
             }
         }
     }

@@ -160,9 +160,9 @@ console.log("Dragstart");
                 if(ctrlKey){
                     d.x = d3.event.x, d.y = d3.event.y;
                     var t = d;
-                    nodes[d.name].x = d.x;
-                    nodes[d.name].px = d.x;
-                    nodes[d.name].py = d.y;
+                    nodes[d.id].x = d.x;
+                    nodes[d.id].px = d.x;
+                    nodes[d.id].py = d.y;
                     node.filter(function(d) { return d.name === t.name; }).attr("transform", transform);
 //      	        d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", function(d) { return "translate(" + d.x + ", "+d.y+")"; });
                     link.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
@@ -253,7 +253,7 @@ console.log("MOUSEUP");
     help = help.data([0]);
     help.enter().append("svg:image")
         .attr('x', 20)
-        .attr('y', height - 50)
+        .attr('y', height - 30)
         .attr("id", "helpImage")
         .attr("width", 20)
         .attr("height", 20)

@@ -127,7 +127,7 @@ public interface IStaticRoutingCapability {
     public Response getRoutes(@PathParam("version") int version);
 
     /**
-     * Get the Route Table of specific IP version
+     * Get Routes where the IP source/target appears. Used in GUI
      *
      * @param version Version of IP (4 or 6)
      * @param ipSrc
