@@ -30,6 +30,8 @@ var linkImage = urlVar+"/topology/link_green.png";
 var helpImage = urlVar+"/topology/helpImage.png";
 var cloudONImage = urlVar+"/topology/opennaas_cloud.png";
 var domainCloudImage = urlVar+"/topology/cloud.png";
+var i2CAT_Logo = urlVar+"/logo-color-transparent.png";
+var PSNC_Logo = urlVar+"/psnc_logo_3_new.png";
 
 // set up SVG for D3
 var width = 700,
@@ -87,14 +89,16 @@ function update(){
         .attr('height', function (d) {return d.height;})
         .attr('xlink:href', function (d) {return domainCloudImage;});
 
-    domainCloud.append("text")
-        .attr('class', "domain_txt")
+    domainCloud.append("image")
         .attr('id', function (d) { return d.id + "_text";})
-	.style("font-size","24px")
-        .style('fill', 'black')
         .attr('x', function (d) {return d.x_txt;})
         .attr('y', function (d) {return d.y_txt;})
-        .text(function (d) {return d.name; });
+        .attr("width", function (d) {return d.img_width;})
+        .attr('height', function (d) {return d.img_height;})
+        .attr('xlink:href', function (d) {
+            if(d.name === "i2CAT")return i2CAT_Logo;
+            else if(d.name === "PSNC")return PSNC_Logo;
+        });
     
     /* Links between switches and hosts */
     link = link.data(links);

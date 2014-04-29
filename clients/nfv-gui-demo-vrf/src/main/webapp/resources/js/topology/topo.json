@@ -41,7 +41,7 @@
     {id: "0", source: 0, target: 0, type: "static"},
     {id: "1", source: 0, target: 1, type: "static"}],
 "domains" : [
-    {id: "0", name:"PSNC", width: 260, height: 300, x: 0, y: 60, x_txt: 160, y_txt: 240},
-    {id: "1", name:"i2CAT", width: 310, height: 320, x: 300, y: 60, x_txt: 330, y_txt: 250}]
+    {id: "0", name:"PSNC", width: 260, height: 300, x: 0, y: 60, x_txt: 100, y_txt: 200, img_width: 150, img_height: 80},
+    {id: "1", name:"i2CAT", width: 310, height: 320, x: 300, y: 60, x_txt: 510, y_txt: 130, img_width: 130, img_height: 80}]
 }
 
