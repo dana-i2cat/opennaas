@@ -28,7 +28,7 @@ function runtime(node, links, controller) {
                 //list of switches connected with this controller
                 var ctrlId = d.id;
                 var listSw = new Array();
-                listSw = nodes.filter(function (d) { return (d.controller === ctrlId)});
+                listSw = nodes.filter(function (d) { return (d.controller === ctrlId);});
                 updateCtrlInfo(listSw, controllers);
             });
 }

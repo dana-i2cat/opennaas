@@ -104,6 +104,8 @@ function removeAll(){
 
 /**
  * Remove a link given its id.
+ * @param {type} id
+ * @returns {String|data}
  */
 function del(id){
     waiting(true);
@@ -176,6 +178,8 @@ function removeAllRoutes(){
 /**
  * Create an array of possible routes given the routes created in OpenNaaS.
  * Returns a list with the following format: [ipSrc1:ipDst1, ipSrc2:ipDst2]
+ * @param {type} jsonReceived
+ * @returns {getRouteList.possibleRoutes|Array}
  */
 function getRouteList(jsonReceived){
     var possibleRoutes = [];
@@ -206,11 +210,15 @@ function getRouteList(jsonReceived){
     }
     return possibleRoutes;
 }
-/**
- * Request the list of links of specific route
- */
+
 var showRoutes = false;
 var toggle;
+/**
+ * Request the list of links of specific route
+ * @param {type} src
+ * @param {type} dst
+ * @returns {undefined}
+ */
 function getSpecificRoute(src, dst){
     var newToggle = src+"-"+dst;
     if(showRoutes){
@@ -250,6 +258,8 @@ function getSpecificRoute(src, dst){
 
 /**
  * Request to OpenNaaS in order to obtain the list of routes given the IP version in the following format (Ipv4/IPv6)
+ * @param {type} type
+ * @returns {unresolved}
  */
 function getAllRoutes(type){
     var result = "";

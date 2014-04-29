@@ -76,8 +76,10 @@ function streamPacket(returnedRoutes){
 }
 
 /**
-* Uri format: //84.88.40.153:4200/h1
-*/
+ * Uri format: //84.88.40.153:4200/h1
+ * @param {type} nameHost
+ * @returns {String}
+ */
 function openHostShell(nameHost){
 	var url = "http://84.88.40.153:4200";
 	var uri = url + "/" + nameHost;
