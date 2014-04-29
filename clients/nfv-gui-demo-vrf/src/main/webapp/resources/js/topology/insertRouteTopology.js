@@ -21,7 +21,7 @@ var sourceIp, destinationIp;
 var stackRoute = new Array();
 var manualPath = [];//manual path end-to-end
 
-function runtime(node) {
+function runtime(node, links, controller) {
     node
         .on('mouseover', function (d) {
             if(mode === auto && activeNode !== null)
