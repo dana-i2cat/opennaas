@@ -1,0 +1,8 @@
+switchName = advaSwitch
+switchDPID = 
+floodlightURL = 
+
+resource:create -n $switchName $descriptors.path/ofswitch.descriptor
+protocols:context -p protocol.floodlight.switchid=$switchDPID openflowswitch:$switchName floodlight noauth $floodlightURL
+resource:start openflowswitch:$switchName
+
