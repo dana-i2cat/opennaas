@@ -77,8 +77,8 @@ public class ContentProvisioning implements IContentProvisioning {
 			if (!streaming)
 				throw new Exception("Not streaming. Nothing to stop.");
 
-			deallocateFlowInSwitch(flowId);
 			stopStreamInServer(streamId);
+			deallocateFlowInSwitch(flowId);
 			streaming = false;
 		}
 	}
