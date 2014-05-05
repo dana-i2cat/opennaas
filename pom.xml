@@ -449,6 +449,12 @@
 				<artifactId>netconf4j</artifactId>
 				<version>${netconf4j.version}</version>
 			</dependency>
+			<!-- Netconf server -->
+			<dependency>
+			    <groupId>net.i2cat</groupId>
+			    <artifactId>netconf-server</artifactId>
+			    <version>${netconf-server.version}</version>
+			</dependency>
 			<!-- Digester, velocity and deps -->
 			<dependency>
 				<groupId>xerces</groupId>

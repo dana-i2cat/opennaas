@@ -125,7 +125,8 @@
 								<!-- Our featuresRepositories -->
 								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
 								<descriptor>mvn:org.opennaas/org.opennaas.extensions.all.features/${project.version}/xml/features</descriptor>
-							
+								<descriptor>mvn:net.i2cat/netconf-server/${netconf-server.version}/xml/features</descriptor>
+														
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
