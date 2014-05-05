@@ -54,7 +54,10 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Import-Package>org.slf4j,*</Import-Package>
+						<Import-Package>org.slf4j,
+						    org.springframework.beans.factory;version="${spring.version}",
+						    org.springframework.beans.factory.annotation;version="${spring.version}",*
+						</Import-Package>
 						<Private-Package>org.opennaas.core.hsqldb.internal</Private-Package>
 					</instructions>
 				</configuration>

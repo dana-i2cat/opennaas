@@ -20,13 +20,7 @@ package org.opennaas.itests.core.queue;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeSwissboxFramework;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -67,19 +61,22 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.swissbox.tracker.ServiceLookup;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-@RunWith(JUnit4TestRunner.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class PrepareCommitRollbackTest
 {
-	private final static Log		log			= LogFactory.getLog(PrepareCommitRollbackTest.class);
-
-	private final String			resourceID	= "junosResource";
+	private final static Log		log	= LogFactory.getLog(PrepareCommitRollbackTest.class);
 
 	private MockResource			mockResource;
 	private ICapability				queueCapability;
@@ -98,23 +95,23 @@ public class PrepareCommitRollbackTest
 	@Filter("(capability=queue)")
 	private ICapabilityFactory		queueManagerFactory;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)", timeout = 20000)
 	private BlueprintContainer		routerService;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)", timeout = 20000)
 	private BlueprintContainer		queueService;
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-router-driver-junos"),
-				includeSwissboxFramework(),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-router-driver-junos"),
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.includeSwissboxFramework(),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	/**
@@ -156,7 +153,7 @@ public class PrepareCommitRollbackTest
 		log.info("INFO: Before test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
-		queueManagerCapability = getService(bundleContext, IQueueManagerCapability.class, 50000,
+		queueManagerCapability = ServiceLookup.getService(bundleContext, IQueueManagerCapability.class, 50000,
 				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}
 

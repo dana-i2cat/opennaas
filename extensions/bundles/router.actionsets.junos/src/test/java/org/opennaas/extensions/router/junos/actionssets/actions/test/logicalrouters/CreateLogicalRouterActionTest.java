@@ -22,11 +22,10 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.logicalrou
 
 import java.util.HashMap;
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
@@ -50,8 +49,8 @@ public class CreateLogicalRouterActionTest {
 
 	static ProtocolSessionContext		netconfContext;
 
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
 		action = new CreateLogicalRouterAction();
 		action.setModelToUpdate(new ComputerSystem());
 		protocolManager = new ProtocolManager();

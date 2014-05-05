@@ -22,11 +22,10 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.ospf;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
@@ -45,14 +44,13 @@ public class RemoveOSPFInterfaceInAreaActionTest {
 	static ActionTestHelper							helper;
 	static ProtocolSessionManager					protocolsessionmanager;
 
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
 
 		action = new RemoveOSPFInterfaceInAreaAction();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 		action.setParams(helper.newParamsInterfaceEthernet());
-		helper = new ActionTestHelper();
 		protocolsessionmanager = helper.getProtocolSessionManager();
 	}
 

@@ -20,10 +20,6 @@ package org.opennaas.itests.circuitprovisioning.internal;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.IOException;
@@ -84,11 +80,12 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository;
 import org.opennaas.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 
@@ -101,8 +98,8 @@ import com.google.common.collect.HashBiMap;
  * @author Julio Carlos Barrera
  * 
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class CircuitProvisioningTest {
 
 	private final static Log	log								= LogFactory.getLog(CircuitProvisioningTest.class);
@@ -141,10 +138,13 @@ public class CircuitProvisioningTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight", "opennaas-genericnetwork", "itests-helpers"),
-				noConsole(),
-				keepRuntimeFolder()
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight",
+						"opennaas-genericnetwork", "itests-helpers"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepRuntimeFolder(),
+				OpennaasExamOptions.keepLogConfiguration()
 		// , OpennaasExamOptions.openDebugSocket()
 		);
 	}

@@ -85,8 +85,10 @@
 							net.sf.ehcache.concurrent;version="${ehcache.version}",
 							net.sf.ehcache.bootstrap;version="${ehcache.version}",
 							net.sf.ehcache;version="${ehcache.version}",
+							org.springframework.beans.factory.annotation;version="${spring.version}",
 							org.springframework.beans.factory.config;version="${spring.version}",
 							org.springframework.beans.factory.support;version="${spring.version}",
+							
 							org.springframework.cache.ehcache;version="${spring.version}",
 							org.springframework.jdbc;version="${spring.version}",
 							org.springframework.web.filter,
@@ -97,6 +99,7 @@
 							org.springframework.security.web.authentication;version="${spring.security.version}",
 							org.springframework.security.web.authentication.www;version="${spring.security.version}",
 							org.springframework.security.access.vote;version="${spring.security.version}",
+							org.springframework.security.provisioning;version="${spring.security.version}",
 							org.springframework.aop;version="${spring.version}",
 							org.springframework.aop.framework;version="${spring.version}",
 							org.aopalliance.aop;version="1.0.0",

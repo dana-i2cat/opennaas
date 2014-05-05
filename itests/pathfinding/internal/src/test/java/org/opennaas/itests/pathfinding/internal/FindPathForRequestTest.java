@@ -20,10 +20,6 @@ package org.opennaas.itests.pathfinding.internal;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.File;
@@ -61,19 +57,20 @@ import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.Destination;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.Source;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
  * 
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class FindPathForRequestTest {
 
 	@Inject
@@ -106,10 +103,12 @@ public class FindPathForRequestTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-genericnetwork", "itests-helpers"),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-genericnetwork", "itests-helpers"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before

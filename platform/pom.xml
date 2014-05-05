@@ -13,7 +13,7 @@
 	<artifactId>platform</artifactId>
 
 	<properties>
-		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
+		<karaf.path>apache-karaf-${karaf.version}</karaf.path>
 	</properties>
 
 	<dependencies>
@@ -50,8 +50,8 @@
 		</dependency>		
 		
 		<dependency>
-			<groupId>org.apache.servicemix</groupId>
-			<artifactId>apache-servicemix</artifactId>
+			<groupId>org.apache.karaf</groupId>
+			<artifactId>apache-karaf</artifactId>
 			<type>tar.gz</type>
 		</dependency>
 		
@@ -75,12 +75,12 @@
 	<build>
 		<plugins>
 			<plugin>
-				<!-- Unpack servicemix. The assembly will use this when packaging opennaas. -->
+				<!-- Unpack karaf. The assembly will use this when packaging opennaas. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>unpack-apache-servicemix</id>
+						<id>unpack-apache-karaf</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -88,8 +88,8 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>org.apache.servicemix</groupId>
-									<artifactId>apache-servicemix</artifactId>
+									<groupId>org.apache.karaf</groupId>
+									<artifactId>apache-karaf</artifactId>
 									<type>tar.gz</type>
 								</artifactItem>
 							</artifactItems>
@@ -125,7 +125,8 @@
 								<!-- Our featuresRepositories -->
 								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
 								<descriptor>mvn:org.opennaas/org.opennaas.extensions.all.features/${project.version}/xml/features</descriptor>
-							
+								<descriptor>mvn:net.i2cat/netconf-server/${netconf-server.version}/xml/features</descriptor>
+														
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>

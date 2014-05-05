@@ -23,7 +23,7 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.queue;
 import java.util.HashMap;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

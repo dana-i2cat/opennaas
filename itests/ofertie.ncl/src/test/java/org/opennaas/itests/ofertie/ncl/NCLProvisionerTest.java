@@ -20,10 +20,6 @@ package org.opennaas.itests.ofertie.ncl;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.File;
@@ -82,11 +78,12 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
@@ -97,8 +94,8 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class NCLProvisionerTest {
 
 	private IResource					sdnNetResource;
@@ -193,19 +190,15 @@ public class NCLProvisionerTest {
 	/**
 	 * Make sure blueprint for specified bundle has finished its initialization
 	 */
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch)", timeout = 50000)
 	private BlueprintContainer			switchBlueprintContainer;
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.openflowswitch.driver.floodlight)", timeout = 50000)
 	private BlueprintContainer			floodlightDriverBundleContainer;
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.genericnetwork)", timeout = 50000)
 	private BlueprintContainer			genericNetworkBlueprintContainer;
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.ofertie.ncl)", timeout = 50000)
 	private BlueprintContainer			nclBlueprintContainer;
@@ -222,12 +215,12 @@ public class NCLProvisionerTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(
-				opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork", "opennaas-openflowswitch-driver-floodlight",
-						"opennaas-ofertie-ncl", "itests-helpers"),
-				// OpennaasExamOptions.openDebugSocket(),
-				noConsole(),
-				keepRuntimeFolder());
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork",
+						"opennaas-openflowswitch-driver-floodlight", "opennaas-ofertie-ncl", "itests-helpers"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
