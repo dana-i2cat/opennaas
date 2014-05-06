@@ -153,7 +153,7 @@ function update(){
     node = node.data(nodes);
     node.enter().append("g")
         .attr("class", "node")
-        .style("cursor", "pointer")
+        .style("cursor", "pointer")/*
         .call(d3.behavior.drag()
             .on("dragstart", function(d){
 console.log("Dragstart");                
@@ -180,7 +180,7 @@ console.log("Dragstart");
                 updateTopology(storedNodes);
                 d3.select(this).classed("dragging", false);
             })
-	);
+	)*/;
 
     node.append("image")
         .attr('class', function (d) {return d.type;})
