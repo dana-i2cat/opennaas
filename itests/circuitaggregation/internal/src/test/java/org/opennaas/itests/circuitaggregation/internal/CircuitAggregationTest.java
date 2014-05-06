@@ -20,10 +20,6 @@ package org.opennaas.itests.circuitaggregation.internal;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.IOException;
@@ -41,7 +37,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -57,11 +52,12 @@ import org.opennaas.extensions.genericnetwork.capability.circuitaggregation.ICir
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.helpers.GenericNetworkModelUtils;
 import org.opennaas.extensions.genericnetwork.repository.GenericNetworkRepository;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
@@ -71,8 +67,8 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class CircuitAggregationTest {
 
 	private final static Log	log							= LogFactory.getLog(CircuitAggregationTest.class);
@@ -105,11 +101,12 @@ public class CircuitAggregationTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-genericnetwork", "itests-helpers"),
-				noConsole(),
-				KarafDistributionOption.doNotModifyLogConfiguration(),
-				keepRuntimeFolder()
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-genericnetwork", "itests-helpers"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
+				OpennaasExamOptions.keepRuntimeFolder(),
+				OpennaasExamOptions.keepLogConfiguration()
 		// , OpennaasExamOptions.openDebugSocket()
 		);
 	}
