@@ -1,7 +1,8 @@
 {
+  "id": "TNC_demo",
   "nodes": [
-    {id: 0, name: "SW1", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x, y: sw_y, dpid: "00:00:00:00:00:00:00:01"},
-    {id: 1, name: "SW2", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*4, y: sw_y, dpid: "00:00:00:00:00:00:00:02"},
+    {id: 0, name: "SW1", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x, y: sw_y, dpid: "00:00:64:87:88:58:f6:57"},
+    {id: 1, name: "SW2", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*4, y: sw_y, dpid: "00:00:64:87:88:58:f8:57"},
     {id: 2, name: "SW3", type: "switch", controller: "Ctrl2", fixed: true, x: sw_x*9, y: sw_y, dpid: "00:00:00:00:00:00:00:03"},
     {id: 3, name: "SW4", type: "switch", controller: "Ctrl2", fixed: true, x: sw_x*12, y: sw_y, dpid: "00:00:00:00:00:00:00:04"},
     {id: 4, name: "SW5", type: "switch", controller: "Ctrl2", fixed: true, x: sw_x*11, y: sw_y*1.5, dpid: "00:00:00:00:00:00:00:05"},
@@ -14,19 +15,19 @@
     {id: 9, name: "h4", type: "host", fixed: true, x: node_x*17+20, y: node_y, ip: "10.0.2.4", SW: "SW4", port: 4},
     {id: 10, name: "h5", type: "host", fixed: true, x: node_x*19+20, y: node_y, ip: "10.0.2.5", SW: "SW5", port: 3}],
   "links": [
-    {id: "path01", source: 0, target: 1, srcPort: 1, dstPort: 1, type: "static"},
-    {id: "path12", source: 1, target: 2, srcPort: 2, dstPort: 2, type: "static"},
-    {id: "path23", source: 2, target: 3, srcPort: 3, dstPort: 1, type: "static"},
-    {id: "path34", source: 3, target: 4, srcPort: 2, dstPort: 1, type: "static"},
-    {id: "path35", source: 3, target: 5, srcPort: 3, dstPort: 1, type: "static"},
-    {id: "path45", source: 4, target: 5, srcPort: 3, dstPort: 2, type: "static"},
+    {id: "path01", source: 0, target: 1, srcPort: 4, dstPort: 3, type: "static"},
+    {id: "path12", source: 1, target: 2, srcPort: 4, dstPort: 2, type: "static"},
+    {id: "path23", source: 2, target: 3, srcPort: 1, dstPort: 3, type: "static"},
+    {id: "path34", source: 3, target: 4, srcPort: 1, dstPort: 3, type: "static"},
+    {id: "path35", source: 3, target: 5, srcPort: 2, dstPort: 3, type: "static"},
+    
     {id: "path60", source: 6, target: 0, srcPort: 3, dstPort: 3, type: "static"},
-    {id: "path74", source: 7, target: 4, srcPort: 2, dstPort: 2, type: "static"},
+    {id: "path74", source: 7, target: 4, srcPort: 1, dstPort: 1, type: "static"},
     {id: "path84", source: 8, target: 4, srcPort: 2, dstPort: 2, type: "static"},
-    {id: "path95", source: 9, target: 5, srcPort: 2, dstPort: 2, type: "static"},
+    {id: "path95", source: 9, target: 5, srcPort: 1, dstPort: 1, type: "static"},
     {id: "path105", source: 10, target: 5, srcPort: 2, dstPort: 2, type: "static"}],
 "controllers" : [
-    {id: 0, name: "Ctrl1", type: "controller", controller: "controllersVM:8080", ctrlType: "fdl", fixed: true, x: sw_x*2.5, y: 20},
+    {id: 0, name: "Ctrl1", type: "controller", controller: "psnc-ctrl:8080", ctrlType: "fdl", fixed: true, x: sw_x*2.5, y: 20},
     {id: 1, name: "Ctrl2", type: "controller", controller: "controllersVM2:8080", ctrlType: "odl", fixed: true, x: sw_x*11+30, y: 20}],
 "controllersLinks" : [
     {id: "00", source: 0, target: 0, type: "static"},

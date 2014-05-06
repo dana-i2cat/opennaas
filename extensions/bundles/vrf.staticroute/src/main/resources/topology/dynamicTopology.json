@@ -1,7 +1,8 @@
 {
+  "id": "TNC_demo",
   "nodes": [
-    {"id":0, "dpid":"00:00:00:00:00:00:00:01", "type":"sw"},
-    {"id":1, "dpid":"00:00:00:00:00:00:00:02", "type":"sw"},
+    {"id":0, "dpid":"00:00:64:87:88:58:f6:57", "type":"sw"},
+    {"id":1, "dpid":"00:00:64:87:88:58:f8:57", "type":"sw"},
     {"id":2, "dpid":"00:00:00:00:00:00:00:03", "type":"sw"},
     {"id":3, "dpid":"00:00:00:00:00:00:00:04", "type":"sw"},
     {"id":4, "dpid":"00:00:00:00:00:00:00:05", "type":"sw"},
@@ -17,7 +18,7 @@
     {"id":13, "dpid":"10.0.2.8", "type":"h"}
   ],
   "links": [
-      {"id":0, "source":0, "target":6, "srcP":1, "dstP":0},
+      {"id":0, "source":0, "target":6, "srcP":3, "dstP":0},
             
       {"id":1, "source":4, "target":7, "srcP":1, "dstP":0},
       {"id":2, "source":4, "target":8, "srcP":2, "dstP":0},
@@ -28,7 +29,7 @@
       {"id":6, "source":3, "target":5, "srcP":2, "dstP":3},
       {"id":7, "source":2, "target":3, "srcP":1, "dstP":3},
             
-      {"id":9, "source":0, "target":1, "srcP":2, "dstP":1},
-      {"id":9, "source":1, "target":2, "srcP":2, "dstP":2}
+      {"id":9, "source":0, "target":1, "srcP":4, "dstP":3},
+      {"id":9, "source":1, "target":2, "srcP":4, "dstP":2}
 ]}
 
