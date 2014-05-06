@@ -70,6 +70,7 @@ public class NFVRoutingController {
             typ = 6;
         } else {
             model.addAttribute("errorMsg", "This type of table does not exist.");
+            model.addAttribute("json", "'null'");
             return "configRoute";
         }
         try {
@@ -81,6 +82,7 @@ public class NFVRoutingController {
             model.addAttribute("json", response);
         } catch (RestServiceException e) {
             model.addAttribute("errorMsg", e.getMessage());
+            model.addAttribute("json", "null");
             return "configRoute";
         }
 

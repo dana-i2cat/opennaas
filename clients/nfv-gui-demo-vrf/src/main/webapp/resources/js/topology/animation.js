@@ -28,12 +28,12 @@ console.log("Runtime");
 
     node.on('mousedown', function (d) {
         console.log(shellMode);
-        if(d.type == "host"){
-            if(shellMode == "tab"){
-                addTab(d.id);
-            }else if(shellMode == "window"){
-                var myWindow = window.open(openHostShell(d.id));
-                myWindow.document.write('<html><head><title>Host '+d.id+'</title></head><body height="100%" width="100%"><iframe src="' + openHostShell(d.id) + '" height="95%" width="100%" style="border: 0;"></iframe></body></html>');
+        if(d.type === "host"){
+            if(shellMode === "tab"){
+                addTab(d.name);
+            }else if(shellMode === "window"){
+                var myWindow = window.open(openHostShell(d.name));
+                myWindow.document.write('<html><head><title>Host '+d.name+'</title></head><body height="100%" width="100%"><iframe src="' + openHostShell(d.name) + '" height="95%" width="100%" style="border: 0;"></iframe></body></html>');
             }
         }
     });

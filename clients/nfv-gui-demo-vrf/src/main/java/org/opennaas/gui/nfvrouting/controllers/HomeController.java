@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.UploadedFile;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
 import org.opennaas.gui.nfvrouting.entities.settings.Settings;
+import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.opennaas.gui.nfvrouting.validator.FileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -134,8 +135,8 @@ public class HomeController {
     @RequestMapping(method = RequestMethod.POST, value = "/secure/nfvRouting/home")
     public String create(@ModelAttribute("uploadedFile") UploadedFile uploadedFile, BindingResult result, ModelMap model, HttpServletRequest request,
             HttpSession session) {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
+        InputStream inputStream;
+        OutputStream outputStream;
 
         MultipartFile file = uploadedFile.getFile();
         fileValidator.validate(uploadedFile, result);
@@ -195,7 +196,8 @@ public class HomeController {
             }
 //            String response = nfvRoutingBO.getInfoControllers();
 //            model.addAttribute("json", response);
-        } catch (Exception e) {
+        } catch (RestServiceException e) {
+            model.addAttribute("errorMsg", "OpenNaaS is not started");
             return "home";
         }
 File newFile = new File(request.getRealPath("") + "/resources/js/topology/topo.json");

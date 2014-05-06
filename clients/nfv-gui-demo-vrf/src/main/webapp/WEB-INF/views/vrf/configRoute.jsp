@@ -14,19 +14,21 @@
     <h3>Configured routes</h3>
     <div id="listRoutes"></div>
     <div class="outer">
-	<div id="innerTable" class="innera">
+        <div id="innerTable" class="innera">
             <table id="jsonTable" class="tablesorter"></table>
         </div>
     </div>
     <script>
         var text = "<hr style='margin: 0.45em;'><input style='margin-right: 11.5px' class='addRouteButton' onClick='removeAllRoutes()' type='button' value='Remove all routes' name='Clean table'/>";
-        var jsonRoutes = ${json};
-        if( JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !==  '[]'){
-            $('.outer').after(text);
+        if (${json} !== null) {
+            var jsonRoutes = ${json};
+            if (JSON.stringify(jsonRoutes) !== 'OpenNaaS is not started' && JSON.stringify(jsonRoutes.routeTable) !== '[]') {
+                $('.outer').after(text);
+            }
         }
         var oppositeColor = opposite(routeRowColor);
-        document.write('<font color="'+routeRowColor+'" style="background-color:'+oppositeColor+'; font-weight: bold;">Dynamic routes</font>');
-        </script>
+        document.write('<font color="' + routeRowColor + '" style="background-color:' + oppositeColor + '; font-weight: bold;">Dynamic routes</font>');
+    </script>
 </div>
 <div id="config_topology" class="topology ui-widget-content ui-corner-all">
     <c:if test="${!empty topologyName}">
@@ -41,23 +43,22 @@
 
 <script language="JavaScript" type="text/JavaScript">
     var type = getURLParameter("type");
-//console.log(${json});
-    var listRoutes = getRouteList(${json});
-//getRoute
-//console.log(listRoutes);
-//console.log(listRoutes[0]);
-    for ( var i = 0; i < listRoutes.length; i++){
-//        getSpecificRoute(listRoutes[i].node.split(":")[0],listRoutes[i].node.split(":")[1]);
-        document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
+    //console.log(${json});
+    if(${json} != null){
+        var listRoutes = getRouteList(${json});
+        for ( var i = 0; i < listRoutes.length; i++){
+        //        getSpecificRoute(listRoutes[i].node.split(":")[0],listRoutes[i].node.split(":")[1]);
+            document.getElementById("listRoutes").innerHTML += '<a style="text-decoration:none" href="javascript:void(0)" onclick="getSpecificRoute(\''+listRoutes[i].node.split(":")[0]+'\',\''+listRoutes[i].node.split(":")[1]+'\')"><span id="innerTextRoute">Route: '+listRoutes[i].id+'.</span> Source/target: '+listRoutes[i].node+'</span></a><br/>';
+        }
     }
-//    var jsonHtmlTable = ConvertJsonToRouteTable(${json}, 'jsonTable');
-//    document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
+    //    var jsonHtmlTable = ConvertJsonToRouteTable(${json}, 'jsonTable');
+    //    document.getElementById("jsonTable").innerHTML = jsonHtmlTable;
 </script>
 
 <div class="modal"></div>
 
 <script>
-    if ( $(window).height() > 450 ){
-        $(".innera").height($(window).height() - 400);
-    }
+            if ($(window).height() > 450) {
+                $(".innera").height($(window).height() - 400);
+            }
 </script>

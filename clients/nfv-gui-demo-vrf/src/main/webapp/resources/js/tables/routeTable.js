@@ -225,8 +225,8 @@ function getSpecificRoute(src, dst){
         console.log("Hide routes");
         document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
         showRoutes = false;
-        if(toggle != null){
-            if(toggle == newToggle){
+        if(toggle !== null){
+            if(toggle === newToggle){
                 return;
             }
         }
@@ -286,7 +286,7 @@ function waiting(status){
 function highlightDynamicRoutes(){
     if(undefined == routeRowColor || routeRowColor == null)
         routeRowColor = "#81DAF5";
-    var patt = new RegExp("D[0-9]")
+    var patt = new RegExp("D[0-9]");
     var table = document.getElementById('jsonTable');
     if ( table.getElementsByTagName('tr').length > 1 ){
         var tbody = table.getElementsByTagName('tbody')[0];
