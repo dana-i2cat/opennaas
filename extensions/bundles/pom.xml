@@ -139,6 +139,9 @@
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
+		
+		<!-- Content Provisioning -->
+		<module>contentprovisioning</module>
 
 	</modules>
 </project>
