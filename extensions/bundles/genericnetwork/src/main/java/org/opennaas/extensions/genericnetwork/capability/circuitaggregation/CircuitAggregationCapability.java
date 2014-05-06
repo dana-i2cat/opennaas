@@ -58,7 +58,11 @@ public class CircuitAggregationCapability extends AbstractCapability implements 
 	public CircuitAggregationCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
-		this.useAggregation = Boolean.parseBoolean(this.getCapabilityDescriptor().getProperty(USE_AGGREGATION_PROPERTY).getValue());
+		if (this.getCapabilityDescriptor().getProperty(USE_AGGREGATION_PROPERTY) == null) {
+			this.useAggregation = false;
+		} else {
+			this.useAggregation = Boolean.parseBoolean(this.getCapabilityDescriptor().getProperty(USE_AGGREGATION_PROPERTY).getValue());
+		}
 		log.debug("Built new Circuit Aggregation Capability");
 	}
 
