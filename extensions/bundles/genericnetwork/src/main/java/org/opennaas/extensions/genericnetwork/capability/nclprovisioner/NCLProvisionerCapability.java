@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,15 +69,16 @@ import org.osgi.service.event.EventHandler;
 
 public class NCLProvisionerCapability extends AbstractCapability implements INCLProvisionerCapability, EventHandler {
 
-	public static final String	CAPABILITY_TYPE	= "nclprovisioner";
+	public static final String	CAPABILITY_TYPE			= "nclprovisioner";
 
-	private Log					log				= LogFactory.getLog(NCLProvisionerCapability.class);
-	private String				resourceId		= "";
+	private Log					log						= LogFactory.getLog(NCLProvisionerCapability.class);
+	private String				resourceId				= "";
 
 	private ServiceRegistration	eventListenerRegistration;
 
-	private final static String	NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl";
-	private final static String	AUTOREROUTE_KEY	= "ncl.autoreroute";
+	private final static String	NCL_CONFIG_FILE			= "org.opennaas.extensions.ofertie.ncl";
+	private final static String	AUTOREROUTE_KEY			= "ncl.autoreroute";
+	private final static String	AUTOREROUTE_DELAY_KEY	= "ncl.autoreroute.delay";
 
 	public NCLProvisionerCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -232,19 +235,15 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			String portId = (String) congestionEvent.getProperty(PortCongestionEvent.PORT_ID_KEY);
 
 			log.info("PortCongestionEvent alarm received for port" + portId);
+
 			boolean autoReroute = readAutorerouteOption();
 			if (autoReroute) {
-				log.debug("Auto-reroute is activated. Launching auto-reroute");
-				try {
-					launchRerouteMechanism(portId);
-				} catch (Exception e) {
-					log.error(e.getMessage());
-					// TODO can not throw exception, since EventHandler interface does not allow it.
-				}
+				long delay = readAutorerouteDelayOption();
+				log.debug("Auto-reroute is activated. Launching delayed auto-reroute (delay = " + delay + " ms)");
+				new Timer().schedule(new RerouteMechanism(portId), delay * 1000);
 			} else {
 				log.debug("Auto-reroute is deactivated. Ignoring received LinkCongestion alarm. ");
 			}
-
 		}
 		else
 			log.debug("Ignoring non-LinkCongestion alarm.");
@@ -299,6 +298,18 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		return autoReroute;
 	}
 
+	private long readAutorerouteDelayOption() {
+
+		long delay = 0l;
+		try {
+			delay = doReadAutorerouteDelayOption();
+		} catch (IOException ioe) {
+			log.error("Failed to read auto-reroute-delay option. ", ioe);
+			log.warn("Delay set to 0");
+		}
+		return delay;
+	}
+
 	private boolean doReadAutorerouteOption() throws IOException {
 
 		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
@@ -310,6 +321,19 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			return false;
 		}
 		return Boolean.parseBoolean(value);
+	}
+
+	private long doReadAutorerouteDelayOption() throws IOException {
+
+		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
+		if (properties == null)
+			throw new IOException("Failed to determine auto-reroute delay option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
+
+		String value = properties.getProperty(AUTOREROUTE_DELAY_KEY);
+		if (value == null) {
+			return 0l;
+		}
+		return Long.parseLong(value);
 	}
 
 	private void launchRerouteMechanism(String portId) throws Exception {
@@ -402,5 +426,25 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		}
 
 		return circuitsIdsInPort;
+	}
+
+	class RerouteMechanism extends TimerTask {
+
+		String	portId;
+
+		public RerouteMechanism(String portId) {
+			this.portId = portId;
+		}
+
+		@Override
+		public void run() {
+			try {
+				launchRerouteMechanism(portId);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				// TODO can not throw exception, since TimerTask interface does not allow it.
+			}
+		}
+
 	}
 }
