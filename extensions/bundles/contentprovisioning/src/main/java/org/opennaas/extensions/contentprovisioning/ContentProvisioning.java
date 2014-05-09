@@ -20,6 +20,9 @@ package org.opennaas.extensions.contentprovisioning;
  * #L%
  */
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -38,7 +41,7 @@ public class ContentProvisioning implements IContentProvisioning {
 	private String				resourceName;
 	private String				resourceType	= "openflowswitch";
 
-	private String				flowId;
+	private List<String>		flowIds;
 	private String				streamId;
 	private boolean				streaming		= false;
 	private final Object		lock			= new Object();
@@ -65,7 +68,10 @@ public class ContentProvisioning implements IContentProvisioning {
 			if (streaming)
 				throw new Exception("Already streaming");
 
-			flowId = allocateFlowInSwitch();
+			String inputPort = getFlowInputPort();
+			String outputPort = getFlowOutputPort();
+
+			flowIds = allocateFlowsInSwitch(inputPort, outputPort);
 			streamId = startStreamInServer();
 			streaming = true;
 		}
@@ -78,22 +84,27 @@ public class ContentProvisioning implements IContentProvisioning {
 				throw new Exception("Not streaming. Nothing to stop.");
 
 			stopStreamInServer(streamId);
-			deallocateFlowInSwitch(flowId);
+			deallocateFlowsInSwitch(flowIds);
+			flowIds.clear();
 			streaming = false;
 		}
 	}
 
-	private String allocateFlowInSwitch() throws ResourceException {
+	private List<String> allocateFlowsInSwitch(String inputPort, String outputPort) throws ResourceException {
 
-		FloodlightOFFlow flow = FlowFactory.newFlow();
+		FloodlightOFFlow flow1 = FlowFactory.newFlow(inputPort, outputPort);
+		FloodlightOFFlow flow2 = FlowFactory.newFlow(outputPort, inputPort);
 
-		getOFForwardingCapability().createOpenflowForwardingRule(flow);
+		getOFForwardingCapability().createOpenflowForwardingRule(flow1);
+		getOFForwardingCapability().createOpenflowForwardingRule(flow2);
 
-		return flow.getName();
+		return Arrays.asList(flow1.getName(), flow2.getName());
 	}
 
-	private void deallocateFlowInSwitch(String flowId) throws ResourceException {
-		getOFForwardingCapability().removeOpenflowForwardingRule(flowId);
+	private void deallocateFlowsInSwitch(List<String> flowIds) throws ResourceException {
+		for (String flowId : flowIds) {
+			getOFForwardingCapability().removeOpenflowForwardingRule(flowId);
+		}
 	}
 
 	private String startStreamInServer() {
@@ -114,6 +125,16 @@ public class ContentProvisioning implements IContentProvisioning {
 		} catch (ResourceException e) {
 			throw new ResourceException("Unable to get desired resource", e);
 		}
+	}
+
+	private String getFlowInputPort() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String getFlowOutputPort() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

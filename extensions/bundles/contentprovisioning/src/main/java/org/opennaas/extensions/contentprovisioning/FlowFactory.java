@@ -29,7 +29,7 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
  */
 public class FlowFactory {
 
-	public static FloodlightOFFlow newFlow() {
+	public static FloodlightOFFlow newFlow(String inputPort, String outputPort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
