@@ -20,6 +20,8 @@
 	<bean id="contentProvisioning" class="org.opennaas.extensions.contentprovisioning.ContentProvisioning" >
 		<property name="rm" ref="resourceManager" />
 		<property name="resourceName" value="${cp:org.opennaas.contentprovisioning.switchName}" />
+		<property name="flowInputPort" value="${cp:org.opennaas.contentprovisioning.switchInputPort}" />
+		<property name="flowOutputPort" value="${cp:org.opennaas.contentprovisioning.switchOutputPort}" />
 	</bean>
 	<service ref="contentProvisioning" interface="org.opennaas.extensions.contentprovisioning.IContentProvisioning">
 		<service-properties>
