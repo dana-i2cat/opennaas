@@ -1,0 +1,20 @@
+<resourceDescriptor>
+    <capabilityDescriptors>
+        <capabilityProperty name="actionset.name" value="floodlight" />
+        <capabilityProperty name="actionset.version" value="0.90" />
+        <information><type>offorwarding</type></information>
+    </capabilityDescriptors>
+    <capabilityDescriptors>
+        <capabilityProperty name="actionset.name" value="floodlight" />
+        <capabilityProperty name="actionset.version" value="0.90" />
+        <information><type>monitoring</type></information>
+    </capabilityDescriptors>
+
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>openflowswitch</type>
+        <name>ofswitch</name>
+    </information>
+    <properties/>
+</resourceDescriptor>
+

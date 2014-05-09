@@ -1,0 +1,5 @@
+switchName = advaSwitch 
+
+resource:stop openflowswitch:$switchName
+resource:remove openflowswitch:$switchName
+
