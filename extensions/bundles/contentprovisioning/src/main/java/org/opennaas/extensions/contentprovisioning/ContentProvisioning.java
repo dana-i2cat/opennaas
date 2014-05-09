@@ -23,6 +23,8 @@ package org.opennaas.extensions.contentprovisioning;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.IMediaEncoder;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.client.MediaEncoderClientFactory;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository;
@@ -30,6 +32,7 @@ import org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepositor
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 public class ContentProvisioning implements IContentProvisioning {
@@ -37,6 +40,9 @@ public class ContentProvisioning implements IContentProvisioning {
 	private IResourceManager	rm;
 
 	private String				switchResourceName;
+	private String				mediaEncoderBaseURL;
+
+	private IMediaEncoder		mediaEncoderClient;
 
 	private String				flowId;
 	private String				streamId;
@@ -57,6 +63,20 @@ public class ContentProvisioning implements IContentProvisioning {
 	 */
 	public void setSwitchResourceName(String switchResourceName) {
 		this.switchResourceName = switchResourceName;
+	}
+
+	/**
+	 * 
+	 * @param mediaEncoderBaseURL
+	 *            the Media Encoder base URL to set
+	 */
+	public void setMediaEncoderBaseURL(String mediaEncoderBaseURL) {
+		this.mediaEncoderBaseURL = mediaEncoderBaseURL;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		// initialize media encoder client
+		mediaEncoderClient = MediaEncoderClientFactory.getClient(mediaEncoderBaseURL);
 	}
 
 	@Override
