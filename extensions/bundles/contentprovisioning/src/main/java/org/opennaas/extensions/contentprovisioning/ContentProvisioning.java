@@ -40,6 +40,8 @@ public class ContentProvisioning implements IContentProvisioning {
 
 	private String				resourceName;
 	private String				resourceType	= "openflowswitch";
+	private String				flowInputPort;
+	private String				flowOutputPort;
 
 	private List<String>		flowIds;
 	private String				streamId;
@@ -60,6 +62,36 @@ public class ContentProvisioning implements IContentProvisioning {
 	 */
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
+	}
+
+	/**
+	 * @return the flowInputPort
+	 */
+	public String getFlowInputPort() {
+		return flowInputPort;
+	}
+
+	/**
+	 * @param flowInputPort
+	 *            the flowInputPort to set
+	 */
+	public void setFlowInputPort(String flowInputPort) {
+		this.flowInputPort = flowInputPort;
+	}
+
+	/**
+	 * @return the flowOutputPort
+	 */
+	public String getFlowOutputPort() {
+		return flowOutputPort;
+	}
+
+	/**
+	 * @param flowOutputPort
+	 *            the flowOutputPort to set
+	 */
+	public void setFlowOutputPort(String flowOutputPort) {
+		this.flowOutputPort = flowOutputPort;
 	}
 
 	@Override
@@ -125,16 +157,6 @@ public class ContentProvisioning implements IContentProvisioning {
 		} catch (ResourceException e) {
 			throw new ResourceException("Unable to get desired resource", e);
 		}
-	}
-
-	private String getFlowInputPort() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String getFlowOutputPort() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
