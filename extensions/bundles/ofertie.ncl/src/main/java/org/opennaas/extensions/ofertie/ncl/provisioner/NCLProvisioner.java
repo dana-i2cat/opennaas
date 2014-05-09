@@ -20,8 +20,10 @@ package org.opennaas.extensions.ofertie.ncl.provisioner;
  * #L%
  */
 
+import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -29,10 +31,12 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProvisionerCapability;
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
 import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.ofertie.ncl.Activator;
 import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestWrapperParser;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
@@ -145,6 +149,13 @@ public class NCLProvisioner implements INCLProvisioner {
 						.getCapabilityByInterface(INCLProvisionerCapability.class);
 
 				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosPolicyRequest);
+
+				// FIXME TO BE REMOVED: demo specific code.
+				int vlan = readMatchVlan();
+				if (vlan != -1) {
+					circuitRequest.setVlan(String.valueOf(vlan));
+				}
+
 				String circuitId = nclProvCapab.allocateCircuit(circuitRequest);
 
 				getAllocatedRequests().put(circuitId, circuitRequest);
@@ -174,6 +185,12 @@ public class NCLProvisioner implements INCLProvisioner {
 						.getCapabilityByInterface(INCLProvisionerCapability.class);
 
 				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(updatedQosPolicyRequest);
+
+				// FIXME TO BE REMOVED: demo specific code.
+				int vlan = readMatchVlan();
+				if (vlan != -1) {
+					circuitRequest.setVlan(String.valueOf(vlan));
+				}
 
 				nclProvCapab.updateCircuit(flowId, circuitRequest);
 
@@ -359,6 +376,22 @@ public class NCLProvisioner implements INCLProvisioner {
 		IResource resource = resourceManager.getResourceById(networkId);
 
 		return resource;
+	}
+
+	private int readMatchVlan() throws IOException {
+		ConfigurationAdminUtil configurationAdmin = new ConfigurationAdminUtil(Activator.getBundleContext());
+
+		String readVlan = configurationAdmin.getProperty("org.ofertie.ncl.network", "circuits.match.vlan");
+		if (StringUtils.isEmpty(readVlan))
+			return -1;
+
+		int vlan = -1;
+		try {
+			vlan = Integer.parseInt(readVlan);
+		} catch (NumberFormatException e) {
+			// ignored. This method will return -1
+		}
+		return vlan;
 	}
 
 }

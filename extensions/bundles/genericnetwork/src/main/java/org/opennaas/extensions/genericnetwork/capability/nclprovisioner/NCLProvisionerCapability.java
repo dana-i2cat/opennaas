@@ -127,6 +127,10 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			Route route = pathFindingCapab.findPathForRequest(circuitRequest);
 			Circuit toAllocate = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
 
+			// FIXME TO BE REMOVED: demo specific code.
+			if (circuitRequest.getVlan() != null && !circuitRequest.getVlan().isEmpty())
+				toAllocate.getTrafficFilter().setVlanId(circuitRequest.getVlan());
+
 			// call aggregation logic with all requested circuits and the one toAllocate
 			Set<Circuit> toAggregate = new HashSet<Circuit>();
 			toAggregate.addAll(getRequestedCircuits());
@@ -378,6 +382,10 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		Circuit withNewRoute = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
 		withNewRoute.setCircuitId(toReroute.getCircuitId());
+
+		// FIXME TO BE REMOVED: demo specific code.
+		if (toReroute.getTrafficFilter().getVlanId() != null && !toReroute.getTrafficFilter().getVlanId().isEmpty())
+			withNewRoute.getTrafficFilter().setVlanId(toReroute.getTrafficFilter().getVlanId());
 
 		// call aggregation logic with all requested circuits
 		// except the original one to be re-routed and with the one to be re-rerouted updated
