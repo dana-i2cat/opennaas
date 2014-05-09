@@ -25,6 +25,7 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository;
 
 /**
  * 
@@ -35,13 +36,12 @@ public class ContentProvisioning implements IContentProvisioning {
 
 	private IResourceManager	rm;
 
-	private String				resourceName;
-	private String				resourceType	= "openflowswitch";
+	private String				switchResourceName;
 
 	private String				flowId;
 	private String				streamId;
-	private boolean				streaming		= false;
-	private final Object		lock			= new Object();
+	private boolean				streaming	= false;
+	private final Object		lock		= new Object();
 
 	/**
 	 * @param rm
@@ -52,11 +52,11 @@ public class ContentProvisioning implements IContentProvisioning {
 	}
 
 	/**
-	 * @param resourceName
-	 *            the resourceName to set
+	 * @param switchResourceName
+	 *            the switchResourceName to set
 	 */
-	public void setResourceName(String resourceName) {
-		this.resourceName = resourceName;
+	public void setSwitchResourceName(String switchResourceName) {
+		this.switchResourceName = switchResourceName;
 	}
 
 	@Override
@@ -108,11 +108,12 @@ public class ContentProvisioning implements IContentProvisioning {
 	private IOpenflowForwardingCapability getOFForwardingCapability() throws ResourceException {
 		try {
 
-			IResource resource = rm.getResource(rm.getIdentifierFromResourceName(resourceType, resourceName));
-			return (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+			IResource switchResource = rm.getResource(rm.getIdentifierFromResourceName(OpenflowSwitchRepository.OF_SWITCH_RESOURCE_TYPE,
+					switchResourceName));
+			return (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
 		} catch (ResourceException e) {
-			throw new ResourceException("Unable to get desired resource", e);
+			throw new ResourceException("Unable to get desired OF switch resource", e);
 		}
 	}
 

@@ -17,9 +17,10 @@
 	<!-- Get a reference to OpenNaaS resource manager service -->
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
 
+	<!-- Create content provisioning bean and OSGi service -->
 	<bean id="contentProvisioning" class="org.opennaas.extensions.contentprovisioning.ContentProvisioning" >
 		<property name="rm" ref="resourceManager" />
-		<property name="resourceName" value="${cp:org.opennaas.contentprovisioning.switchName}" />
+		<property name="switchResourceName" value="${cp:org.opennaas.contentprovisioning.switchName}" />
 	</bean>
 	<service ref="contentProvisioning" interface="org.opennaas.extensions.contentprovisioning.IContentProvisioning">
 		<service-properties>
