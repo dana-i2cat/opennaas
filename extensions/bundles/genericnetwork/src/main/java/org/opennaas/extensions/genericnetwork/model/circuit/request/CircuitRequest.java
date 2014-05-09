@@ -58,6 +58,21 @@ public class CircuitRequest {
 	@XmlElement(name = "qos_policy")
 	private QoSPolicy	qosPolicy;
 
+	// FIXME TO BE REMOVED: demo specific code.
+	@XmlAttribute(name = "vlan")
+	@XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+	private String		vlan;
+
+	// FIXME TO BE REMOVED: demo specific code.
+	public String getVlan() {
+		return vlan;
+	}
+
+	// FIXME TO BE REMOVED: demo specific code.
+	public void setVlan(String vlan) {
+		this.vlan = vlan;
+	}
+
 	public String getAtomic() {
 		return atomic;
 	}
