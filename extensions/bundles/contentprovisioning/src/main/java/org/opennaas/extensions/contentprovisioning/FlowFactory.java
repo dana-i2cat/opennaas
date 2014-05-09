@@ -20,7 +20,12 @@ package org.opennaas.extensions.contentprovisioning;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
 /**
  * 
@@ -29,9 +34,41 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
  */
 public class FlowFactory {
 
+	public static final String	DEFAULT_FLOW_PRIORITY	= "32000";
+
+	/**
+	 * Creates a FloodlightOFFlow data structure with given input and output ports.
+	 * 
+	 * The FloodlightOFFlow will match all traffic arriving at inputPort and, and will redirect it to outputPort.
+	 * 
+	 * @param inputPort
+	 * @param outputPort
+	 * @return FloodlightOFFlow as described
+	 */
 	public static FloodlightOFFlow newFlow(String inputPort, String outputPort) {
-		// TODO Auto-generated method stub
-		return null;
+
+		// create match filtering traffic arriving at inputPort
+		FloodlightOFMatch match = new FloodlightOFMatch();
+		match.setIngressPort(inputPort);
+
+		// create action redirecting matching traffic to port outputPort
+		FloodlightOFAction action = new FloodlightOFAction();
+		action.setType(FloodlightOFAction.TYPE_OUTPUT);
+		action.setValue(outputPort);
+
+		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>(1);
+		actions.add(action);
+
+		FloodlightOFFlow flow = new FloodlightOFFlow();
+		flow.setName(inputPort + "->-" + outputPort);
+		flow.setActive(true);
+		flow.setPriority(DEFAULT_FLOW_PRIORITY);
+		// switchId will be set by the driver :)
+		// flow.setSwitchId();
+		flow.setMatch(match);
+		flow.setActions(actions);
+
+		return flow;
 	}
 
 }
