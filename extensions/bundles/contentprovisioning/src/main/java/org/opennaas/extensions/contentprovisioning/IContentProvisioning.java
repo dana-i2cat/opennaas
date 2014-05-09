@@ -23,6 +23,7 @@ package org.opennaas.extensions.contentprovisioning;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 /**
  * 
@@ -33,9 +34,11 @@ import javax.ws.rs.Path;
 public interface IContentProvisioning {
 
 	@POST
-	public void startStream() throws Exception;
+	@Path("/{streamId}")
+	public void startStream(@PathParam("streamId") int streamId) throws Exception;
 
 	@DELETE
-	public void stopStream() throws Exception;
+	@Path("/{streamId}")
+	public void stopStream(@PathParam("streamId") int streamId) throws Exception;
 
 }
