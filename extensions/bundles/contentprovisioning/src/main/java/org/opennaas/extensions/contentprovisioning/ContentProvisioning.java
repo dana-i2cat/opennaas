@@ -23,6 +23,8 @@ package org.opennaas.extensions.contentprovisioning;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -39,6 +41,8 @@ import org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepositor
  * 
  */
 public class ContentProvisioning implements IContentProvisioning {
+
+	private static Log			log			= LogFactory.getLog(ContentProvisioning.class);
 
 	private IResourceManager	rm;
 
@@ -80,6 +84,7 @@ public class ContentProvisioning implements IContentProvisioning {
 	}
 
 	public void afterPropertiesSet() throws Exception {
+		log.info("Initializing media encoder client. Using base URL: " + mediaEncoderBaseURL);
 		// initialize media encoder client
 		mediaEncoderClient = MediaEncoderClientFactory.getClient(mediaEncoderBaseURL);
 	}
@@ -116,9 +121,12 @@ public class ContentProvisioning implements IContentProvisioning {
 
 	@Override
 	public void startStream() throws Exception {
+		log.info("Starting stream...");
 		synchronized (lock) {
-			if (streaming)
+			if (streaming) {
+				log.error("Already streaming.");
 				throw new Exception("Already streaming");
+			}
 
 			String inputPort = getFlowInputPort();
 			String outputPort = getFlowOutputPort();
@@ -131,9 +139,12 @@ public class ContentProvisioning implements IContentProvisioning {
 
 	@Override
 	public void stopStream() throws Exception {
+		log.info("Stoping stream...");
 		synchronized (lock) {
-			if (!streaming)
+			if (!streaming) {
+				log.error("Not streaming. Nothing to stop.");
 				throw new Exception("Not streaming. Nothing to stop.");
+			}
 
 			stopStreamInServer(streamId);
 			deallocateFlowsInSwitch(flowIds);
