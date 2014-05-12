@@ -18,11 +18,13 @@
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
 
 	<!-- Create content provisioning bean and OSGi service -->
-	<bean id="contentProvisioning" class="org.opennaas.extensions.contentprovisioning.ContentProvisioning" >
+	<bean id="contentProvisioning" class="org.opennaas.extensions.contentprovisioning.ContentProvisioning"
+		init-method="init">
 		<property name="rm" ref="resourceManager" />
 		<property name="switchResourceName" value="${cp:org.opennaas.contentprovisioning.switchName}" />
 		<property name="flowInputPort" value="${cp:org.opennaas.contentprovisioning.switchInputPort}" />
 		<property name="flowOutputPort" value="${cp:org.opennaas.contentprovisioning.switchOutputPort}" />
+		<property name="mediaEncoderBaseURL" value="${cp:org.opennaas.contentprovisioning.mediaEncoder.baseURL}" />
 	</bean>
 	<service ref="contentProvisioning" interface="org.opennaas.extensions.contentprovisioning.IContentProvisioning">
 		<service-properties>

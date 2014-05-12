@@ -74,19 +74,8 @@ public class ContentProvisioning implements IContentProvisioning {
 		this.switchResourceName = switchResourceName;
 	}
 
-	/**
-	 * 
-	 * @param mediaEncoderBaseURL
-	 *            the Media Encoder base URL to set
-	 */
 	public void setMediaEncoderBaseURL(String mediaEncoderBaseURL) {
 		this.mediaEncoderBaseURL = mediaEncoderBaseURL;
-	}
-
-	public void afterPropertiesSet() throws Exception {
-		log.info("Initializing media encoder client. Using base URL: " + mediaEncoderBaseURL);
-		// initialize media encoder client
-		mediaEncoderClient = MediaEncoderClientFactory.getClient(mediaEncoderBaseURL);
 	}
 
 	/**
@@ -117,6 +106,12 @@ public class ContentProvisioning implements IContentProvisioning {
 	 */
 	public void setFlowOutputPort(String flowOutputPort) {
 		this.flowOutputPort = flowOutputPort;
+	}
+
+	public void init() throws Exception {
+		log.info("Initializing media encoder client. Using base URL: " + mediaEncoderBaseURL);
+		// initialize media encoder client
+		mediaEncoderClient = MediaEncoderClientFactory.getClient(mediaEncoderBaseURL);
 	}
 
 	@Override
