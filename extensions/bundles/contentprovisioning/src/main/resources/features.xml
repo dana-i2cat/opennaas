@@ -5,6 +5,8 @@
 
 	<feature name="opennaas-content-provisioning" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-openflowswitch</feature>
+		
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.contentprovisioning/${project.version}</bundle>
 	</feature>
