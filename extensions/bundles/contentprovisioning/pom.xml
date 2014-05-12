@@ -47,6 +47,7 @@
 					<instructions>
 						<Import-Package>
 							!org.opennaas.extensions.contentprovisioning,
+							javax.ws.rs.core,
 							*
 						</Import-Package>
 					</instructions>
