@@ -29,6 +29,9 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.contentprovisioning.mediaencoder.api.IMediaEncoder;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.messages.Reset;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.messages.Start;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.messages.Stop;
 import org.opennaas.extensions.contentprovisioning.mediaencoder.client.MediaEncoderClientFactory;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
@@ -165,11 +168,12 @@ public class ContentProvisioning implements IContentProvisioning {
 	}
 
 	private void startStreamInServer(int streamId) {
-		// TODO Auto-generated method stub
+		mediaEncoderClient.start(streamId, new Start());
 	}
 
 	private void stopStreamInServer(int streamId) {
-		// TODO Auto-generated method stub
+		mediaEncoderClient.stop(streamId, new Stop());
+		mediaEncoderClient.reset(streamId, new Reset());
 	}
 
 	private IOpenflowForwardingCapability getOFForwardingCapability() throws ResourceException {
