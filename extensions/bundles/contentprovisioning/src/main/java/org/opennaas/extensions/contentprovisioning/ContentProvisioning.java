@@ -54,7 +54,6 @@ public class ContentProvisioning implements IContentProvisioning {
 	private IMediaEncoder		mediaEncoderClient;
 
 	private List<String>		flowIds;
-	private String				streamId;
 	private boolean				streaming	= false;
 	private final Object		lock		= new Object();
 
@@ -115,7 +114,7 @@ public class ContentProvisioning implements IContentProvisioning {
 	}
 
 	@Override
-	public void startStream() throws Exception {
+	public void startStream(int streamId) throws Exception {
 		log.info("Starting stream...");
 		synchronized (lock) {
 			if (streaming) {
@@ -127,13 +126,13 @@ public class ContentProvisioning implements IContentProvisioning {
 			String outputPort = getFlowOutputPort();
 
 			flowIds = allocateFlowsInSwitch(inputPort, outputPort);
-			streamId = startStreamInServer();
+			startStreamInServer(streamId);
 			streaming = true;
 		}
 	}
 
 	@Override
-	public void stopStream() throws Exception {
+	public void stopStream(int streamId) throws Exception {
 		log.info("Stoping stream...");
 		synchronized (lock) {
 			if (!streaming) {
@@ -165,12 +164,11 @@ public class ContentProvisioning implements IContentProvisioning {
 		}
 	}
 
-	private String startStreamInServer() {
+	private void startStreamInServer(int streamId) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
-	private void stopStreamInServer(String streamId) {
+	private void stopStreamInServer(int streamId) {
 		// TODO Auto-generated method stub
 	}
 
