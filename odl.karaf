@@ -17,7 +17,7 @@ resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/s2.descript
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl3.descriptor
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl4.descriptor
 resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl5.descriptor
-resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl6.descriptor
+#resource:create /opt/opennaas-routing-nfv/utils/examples/descriptors/odl6.descriptor
 
 #Set protocol context for each switch
 protocols:context -p protocol.floodlight.switchid=00:00:64:87:88:58:f6:57 openflowswitch:s1 floodlight noauth http://psnc-ctrl:8080
@@ -35,8 +35,8 @@ resource:start openflowswitch:s4
 protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:05 openflowswitch:s5 opendaylight noauth http://controllersVM2:8080
 resource:start openflowswitch:s5
 
-protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:06 openflowswitch:s6 opendaylight noauth http://controllersVM2:8080
-resource:start openflowswitch:s6
+#protocols:context -p protocol.opendaylight.switchid=00:00:00:00:00:00:00:06 openflowswitch:s6 opendaylight noauth http://controllersVM2:8080
+#resource:start openflowswitch:s6
 
 #Auto Map resourceId and DPID
 exec sh autoMapSwDevices.sh

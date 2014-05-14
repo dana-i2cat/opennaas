@@ -506,6 +506,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
      */
     private void sortRoutes(List<VRFRoute> routes, VRFRoute route) {
         String nodeSrc = route.getSwitchInfo().getDPID();
+        log.error("nideSrc: "+nodeSrc);
+        if(nodeSrc == null){
+            return;
+        }
         Boolean set = true;
 int maxLoop = routes.size()*4;
         for (int j = 0; j < routes.size(); j++) {
