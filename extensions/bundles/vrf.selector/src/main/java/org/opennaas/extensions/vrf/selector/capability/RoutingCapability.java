@@ -103,7 +103,15 @@ public class RoutingCapability implements IRoutingCapability {
                 List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
                 for (IResource r : listResources) {
                     String name = r.getResourceDescriptor().getInformation().getName();
-                    String DPID = "00:00:00:00:00:00:00:0" + name.substring(name.length() - 1);
+                    //PSNC
+                    String DPID;
+                    if(name.equals("s1")){
+                        DPID = "00:00:64:87:88:58:f6:57";
+                    }else if(name.equals("s2")){
+                        DPID = "00:00:64:87:88:58:f8:57";
+                    }else{
+                        DPID = "00:00:00:00:00:00:00:0" + name.substring(name.length() - 1);
+                    }
                     log.error(DPID);
                     String resourceId = r.getResourceIdentifier().getId();
                     log.error(resourceId);
