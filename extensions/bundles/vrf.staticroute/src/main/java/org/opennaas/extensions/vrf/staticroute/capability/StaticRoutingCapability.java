@@ -441,13 +441,13 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return Response.ok().build();
     }
 
-    private IResource getResourceByName(String resourceName) throws ActivatorException, ResourceException {
+    private IResource getResourceByName(String dpid) throws ActivatorException, ResourceException {
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
         IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
         IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-
+String resourceName;
         List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
-        String resourceSdnNetworkId = sdnCapab.getMapDeviceResource(resourceName);
+        String resourceSdnNetworkId = sdnCapab.getMapDeviceResource(dpid);
         if (resourceSdnNetworkId == null) {
             log.error("This Switch ID is not mapped to any ofswitch resource.");
             return null;
@@ -460,7 +460,15 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         }
 
         /*hardcode*/
-        resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:02 --> s2
+        resourceName = "s" + dpid.substring(dpid.length() - 1);//00:00:00:00:00:00:00:02 --> s2
+        if(resourceName.equals("s7")){//PSNC switches
+            resourceName = dpid.substring(19, dpid.length() - 3);//00:00:00:00:00:00:00:02 --> s2
+            if(resourceName.equals("6")){
+                resourceName = "s1";
+            }else if(resourceName.equals("8")){
+                resourceName = "s2";
+            }
+        }
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
 
         if (resourceId == null) {
@@ -470,15 +478,15 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return resourceManager.getResource(resourceId);
     }
 
-    private String getProtocolType(String resourceName) throws ActivatorException, ResourceException {
+    private String getProtocolType(String dpid) throws ActivatorException, ResourceException {
         String protocol;
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
+String resourceName;
+        IResource resource = getResourceByName(dpid);//switchId
 
-        IResource resource = getResourceByName(resourceName);//switchId
-
-        resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:00:00:00:02 --> s2
-        if(resourceName.equals("7")){//PSNC switches
-            resourceName = resourceName.substring(19, resourceName.length() - 3);//00:00:00:00:00:00:00:02 --> s2
+        resourceName = "s" + dpid.substring(dpid.length() - 1);//00:00:00:00:00:00:00:02 --> s2
+        if(resourceName.equals("s7")){//PSNC switches
+            resourceName = dpid.substring(19, dpid.length() - 3);//00:00:00:00:00:00:00:02 --> s2
             if(resourceName.equals("6")){
                 resourceName = "s1";
             }else if(resourceName.equals("8")){
