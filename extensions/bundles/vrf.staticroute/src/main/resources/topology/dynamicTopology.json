@@ -7,19 +7,19 @@
     {"id":3, "dpid":"00:00:00:00:00:00:00:04", "type":"sw"},
     {"id":4, "dpid":"00:00:00:00:00:00:00:05", "type":"sw"},
 
-    {"id":6, "dpid":"192.168.122.1", "type":"h"},
-    {"id":7, "dpid":"192.168.121.202", "type":"h"},
-    {"id":8, "dpid":"192.168.121.203", "type":"h"},
-    {"id":9, "dpid":"192.168.121.204", "type":"h"},
-    {"id":10, "dpid":"192.168.121.205", "type":"h"}
+    {"id":5, "dpid":"192.168.122.1", "type":"h"},
+    {"id":6, "dpid":"192.168.121.202", "type":"h"},
+    {"id":7, "dpid":"192.168.121.203", "type":"h"},
+    {"id":8, "dpid":"192.168.121.204", "type":"h"},
+    {"id":9, "dpid":"192.168.121.205", "type":"h"}
   ],
   "links": [
-      {"id":0, "source":0, "target":6, "srcP":3, "dstP":0},
+      {"id":0, "source":0, "target":5, "srcP":3, "dstP":0},
             
-      {"id":1, "source":3, "target":7, "srcP":1, "dstP":0},
-      {"id":2, "source":3, "target":8, "srcP":2, "dstP":0},
-      {"id":3, "source":4, "target":9, "srcP":1, "dstP":0},
-      {"id":4, "source":4, "target":10, "srcP":2, "dstP":0},
+      {"id":1, "source":3, "target":6, "srcP":1, "dstP":0},
+      {"id":2, "source":3, "target":7, "srcP":2, "dstP":0},
+      {"id":3, "source":4, "target":8, "srcP":1, "dstP":0},
+      {"id":4, "source":4, "target":9, "srcP":2, "dstP":0},
       
       {"id":5, "source":3, "target":5, "srcP":2, "dstP":3},
       {"id":6, "source":2, "target":3, "srcP":1, "dstP":3},

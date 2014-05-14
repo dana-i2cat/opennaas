@@ -286,7 +286,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 	}
         log.error("Edges");
         for(Edge e: edges){
-            log.error("e: "+e.getId());
+            log.error("e: "+e.getId()+" "+e.getSource().getId()+" "+e.getDestination().getId());
         }
         sortRoutes(routeSubnetList, route);
 
@@ -477,6 +477,14 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         IResource resource = getResourceByName(resourceName);//switchId
 
         resourceName = "s" + resourceName.substring(resourceName.length() - 1);//00:00:00:00:00:00:00:02 --> s2
+        if(resourceName.equals("7")){//PSNC switches
+            resourceName = resourceName.substring(19, resourceName.length() - 3);//00:00:00:00:00:00:00:02 --> s2
+            if(resourceName.equals("6")){
+                resourceName = "s1";
+            }else if(resourceName.equals("8")){
+                resourceName = "s2";
+            }
+        }
         IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
         IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
 
