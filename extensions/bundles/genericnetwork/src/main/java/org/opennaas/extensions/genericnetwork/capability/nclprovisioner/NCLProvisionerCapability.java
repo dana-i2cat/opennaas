@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -458,8 +459,18 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		if (circuitsInPort.isEmpty()) {
 			return null;
 		}
+
 		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
-		return circuitsInPort.get(0);
+
+		// Selecting always the same circuit is not a good strategy:
+		// There is the possibility of rerouting failing because no other route is available for that circuit.
+		// In such situation, the program will select always the same circuit and fail, without performing its task correctly.
+
+		// Choosing randomly avoids this situation.
+		// Given enough time, all re-enrutable circuits will be selected and rerouting applied to them ;)
+		Random r = new Random();
+		int selectedIndex = r.nextInt(circuitsInPort.size());
+		return circuitsInPort.get(selectedIndex);
 
 	}
 
