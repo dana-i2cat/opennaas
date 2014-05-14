@@ -284,6 +284,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 	        edges = topInfo.getEdges();
 	        nodes = topInfo.getNodes();
 	}
+        log.error("Edges");
+        for(Edge e: edges){
+            log.error("e: "+e.getId());
+        }
         sortRoutes(routeSubnetList, route);
 
         //Conversion List of VRFRoute to List of OFFlow
@@ -507,17 +511,15 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private void sortRoutes(List<VRFRoute> routes, VRFRoute route) {
         String nodeSrc = route.getSwitchInfo().getDPID();
         log.error("nideSrc: "+nodeSrc);
-        if(nodeSrc == null){
-            return;
-        }
         Boolean set = true;
-int maxLoop = routes.size()*4;
+        int maxLoop = routes.size()*4;
         for (int j = 0; j < routes.size(); j++) {
             if (nodeSrc.equals(routes.get(j).getSwitchInfo().getDPID())) {
                 //the defined routes contains two directions. It is possible that there are two routes with the same DPID. Then, we add to sort routes
                 set = false;
             } else {
                 for (int i = 0; i < edges.size(); i++) {//find the dest node given a source node. Initial node is the source host
+                    log.error(edges.get(i).getSource().getId()+"    i:"+i);
                     if ((edges.get(i).getSource().getDPID().equals(nodeSrc)
                             && edges.get(i).getDestination().getDPID().equals(routes.get(j).getSwitchInfo().getDPID())) || (edges.get(i).getDestination().getDPID().equals(nodeSrc)
                             && edges.get(i).getSource().getDPID().equals(routes.get(j).getSwitchInfo().getDPID()))) {
