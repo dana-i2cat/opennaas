@@ -471,7 +471,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 				CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
 				alternativeRoute = pathFindingCapab.findPathForRequest(circuitRequest);
 			} catch (CapabilityException e) {
-				// ignored. CapabilityException means we were not able to get an alternative route
+				// ignored
+				log.debug("Unable to find uncongested alternative route for circuit " + circuit.getCircuitId() + ". Cause: " + e.getMessage());
 			}
 			if (alternativeRoute != null)
 				reallocableCircuits.add(circuit);
