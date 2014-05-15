@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -370,7 +369,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		String circuitId = selectCircuitToReallocate(portId);
 
 		if (circuitId == null) {
-			log.info("No allocated circuit currently using port " + portId + ". Ignoring alarm.");
+			log.info("No reallocable circuit currently using port " + portId + ". Ignoring alarm.");
 			return;
 		}
 		try {
@@ -453,35 +452,74 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		}
 	}
 
-	private String selectCircuitToReallocate(String portId) {
-		List<String> circuitsInPort = getAllCircuitsInPort(portId);
+	private String selectCircuitToReallocate(String portId) throws CapabilityException {
+		List<Circuit> circuitsInPort = getAllCircuitsInPort(portId);
+		if (log.isDebugEnabled()) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("[");
+			for (Circuit c : circuitsInPort) {
+				sb.append(c.getCircuitId() + ", ");
+			}
+			sb.append("]");
+			log.debug("Circuits using port " + portId + ": " + sb.toString());
+		}
 
 		if (circuitsInPort.isEmpty()) {
 			return null;
 		}
 
+		List<Circuit> reallocables = filterReallocableCircuits(circuitsInPort);
+		if (log.isDebugEnabled()) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("[");
+			for (Circuit c : reallocables) {
+				sb.append(c.getCircuitId() + ", ");
+			}
+			sb.append("]");
+			log.debug("Reallocable circuits using port " + portId + ": " + sb.toString());
+		}
+
+		if (reallocables.isEmpty())
+			return null;
+
 		// TODO select in a more intelligent way, for example, based on ToS, flowCapacity, etc.
-
-		// Selecting always the same circuit is not a good strategy:
-		// There is the possibility of rerouting failing because no other route is available for that circuit.
-		// In such situation, the program will select always the same circuit and fail, without performing its task correctly.
-
-		// Choosing randomly avoids this situation.
-		// Given enough time, all re-enrutable circuits will be selected and rerouting applied to them ;)
-		Random r = new Random();
-		int selectedIndex = r.nextInt(circuitsInPort.size());
-		return circuitsInPort.get(selectedIndex);
-
+		return reallocables.get(0).getCircuitId();
 	}
 
-	private List<String> getAllCircuitsInPort(String portId) {
+	private List<Circuit> filterReallocableCircuits(List<Circuit> circuits) throws CapabilityException {
+		// TODO: implement in a more efficient way
 
-		List<String> circuitsIdsInPort = new ArrayList<String>();
+		IPathFindingCapability pathFindingCapab;
+		try {
+			pathFindingCapab = (IPathFindingCapability) getCapability(IPathFindingCapability.class);
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		List<Circuit> reallocableCircuits = new ArrayList<Circuit>(circuits.size());
+		for (Circuit circuit : circuits) {
+			Route alternativeRoute = null;
+			try {
+				CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
+				alternativeRoute = pathFindingCapab.findPathForRequest(circuitRequest);
+			} catch (CapabilityException e) {
+				// ignored. CapabilityException means we were not able to get an alternative route
+			}
+			if (alternativeRoute != null)
+				reallocableCircuits.add(circuit);
+		}
+
+		return reallocableCircuits;
+	}
+
+	private List<Circuit> getAllCircuitsInPort(String portId) {
+
+		List<Circuit> circuitsIdsInPort = new ArrayList<Circuit>();
 
 		// look here for NOT-AGGREGATED CIRCUITS.
 		for (Circuit circuit : getRequestedCircuits()) {
 			if (GenericNetworkModelHelper.isPortInCircuit(portId, circuit))
-				circuitsIdsInPort.add(circuit.getCircuitId());
+				circuitsIdsInPort.add(circuit);
 		}
 
 		return circuitsIdsInPort;
