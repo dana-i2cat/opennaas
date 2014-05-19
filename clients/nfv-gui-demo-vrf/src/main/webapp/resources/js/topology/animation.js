@@ -81,7 +81,11 @@ function streamPacket(returnedRoutes){
  * @returns {String}
  */
 function openHostShell(nameHost){
-	var url = "http://84.88.40.153:4200";
+	if(nameHost == "h1"){
+		var url = "http://84.88.40.90:4200";
+	}else{
+		var url = "http://84.88.40.153:4200";
+	}
 	var uri = url + "/" + nameHost;
 return uri;
 //send uri to src of iframe

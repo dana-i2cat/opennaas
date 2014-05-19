@@ -24,6 +24,14 @@ function runtime(node, links, controller) {
         });
         
     controller
+	.on('dblclick', function (d) {
+                console.log(d);
+                if(d.ctrlType == "odl")
+                        window.open(d.controller);
+                else if (d.ctrlType == "fdl")
+                        window.open(d.controller+"/ui/index.html");
+        })
+
             .on('mousedown', function (d){
                 //list of switches connected with this controller
                 var ctrlId = d.id;

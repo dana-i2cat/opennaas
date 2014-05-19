@@ -188,20 +188,21 @@ console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.
             dstPort = nextLink.srcPort;
             if ( orgLink.source === sourceNode ){
                 targetNode = orgLink.target;
-                srcPort = orgLink.dstPort;
+/*                srcPort = orgLink.dstPort;
                 if( nextLink.source === orgLink.target ){
                     dstPort = nextLink.srcPort;
                 }else{
                     dstPort = nextLink.dstPort;
                 }
+*/ //TNC DEMO
             } else if ( orgLink.target === sourceNode ){
                 targetNode = orgLink.source;
-                srcPort = orgLink.srcPort;
+/*                srcPort = orgLink.srcPort;
                 if( nextLink.source === orgLink.target ){
                     dstPort = nextLink.srcPort;
                 }else{
                     dstPort = nextLink.dstPort;
-                }
+                }*/ //TNC DEMO
             }
 console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+targetNode.dpid+" "+srcPort+" "+dstPort);
             insertRoute(ipSrc, ipDst, targetNode.dpid, srcPort, dstPort);

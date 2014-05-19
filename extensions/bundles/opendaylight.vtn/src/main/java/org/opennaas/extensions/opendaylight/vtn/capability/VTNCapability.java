@@ -111,8 +111,8 @@ public class VTNCapability implements IVTNCapability {
                 boundaries.add(getBoundary(bound.getBoundary_id()));
             }
         } else {
-            String borderPort1 = "PP-OF:00:00:00:00:00:00:00:01-s1-eth3";
-            String borderPort2 = "PP-OF:00:00:00:00:00:00:00:04-s4-eth3";
+            String borderPort1 = "PP-OF:00:00:64:87:88:58:f8:57-ge-1/0/3.0";
+            String borderPort2 = "PP-OF:00:00:00:00:00:00:00:03-eth1";
             createBoundary("b1", controllers.get(0).getController_id(), "DEFAULT", borderPort1, controllers.get(1).getController_id(), "DEFAULT", borderPort2);
         }
 

@@ -318,7 +318,8 @@ public class Utils {
 //        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
         source = source.replace("/", "-");
         target = target.replace("/", "-");
-        return "0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2);
+        dpid = dpid.substring(dpid.length() - 4).replace(":", "-");
+        return "0-" + ethType + "-" + source + "-" + target + "-" + dpid;
     }
 
     /**
@@ -380,7 +381,6 @@ public class Utils {
      * @return
      */
     public static OFFlow VRFRouteToOFFlow(VRFRoute route, String etherType) {
-//        log.error("............................ Convert VRFROute to OpenFlow FLOW ");
         OFFlow flow = new OFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();

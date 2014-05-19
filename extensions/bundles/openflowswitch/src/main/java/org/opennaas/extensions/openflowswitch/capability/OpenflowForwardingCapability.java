@@ -78,6 +78,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 
         log.info("Start of createOpenflowForwardingRule call");
         log.info("Creating forwarding rule " + forwardingRule.getName());
+        log.info("Inoput - Output " + forwardingRule.getMatch().getIngressPort()+" "+forwardingRule.getActions().get(0).getValue());
 
         IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
 
@@ -204,12 +205,12 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
         ActionResponse response = executeAction(action);
         
         refreshModelFlows();
-        try {
-            log.error(getResourceModel().toXml());
+/*        try {
+            log.error(getResourceModel().otoXml());
         } catch (SerializationException ex) {
             Logger.getLogger(OpenflowForwardingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        log.info("End of createOpenflowForwardingRule call");
+*/        log.info("End of createOpenflowForwardingRule call");
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client
 
 import java.io.IOException;
 import java.util.List;
-
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
@@ -18,7 +17,6 @@ public class FloodlightOFFlowJSONSerializer extends
 	public void serialize(FloodlightOFFlow flow, JsonGenerator jGen,
 			SerializerProvider serializer) throws IOException,
 			JsonProcessingException {
-
 		jGen.writeStartObject();
 		if (flow.getSwitchId() != null)
 			jGen.writeStringField("switch", flow.getSwitchId());

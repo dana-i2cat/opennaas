@@ -225,6 +225,7 @@ function getSpecificRoute(src, dst){
         console.log("Hide routes");
         document.getElementById("innerTable").innerHTML = '<table id="jsonTable" class="tablesorter"></table>';
         showRoutes = false;
+	cleanDisplayedLink();
         if(toggle !== null){
             if(toggle === newToggle){
                 return;

@@ -20,6 +20,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.capability.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.RoutingTable;
@@ -284,11 +285,11 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
 	        edges = topInfo.getEdges();
 	        nodes = topInfo.getNodes();
 	}
-        log.error("Edges");
-        for(Edge e: edges){
+        //log.error("Edges");
+/*        for(Edge e: edges){
             log.error("e: "+e.getId()+" "+e.getSource().getId()+" "+e.getDestination().getId());
         }
-        sortRoutes(routeSubnetList, route);
+*/        sortRoutes(routeSubnetList, route);
 
         //Conversion List of VRFRoute to List of OFFlow
         if (routeSubnetList.size() > 0) {
@@ -298,7 +299,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             }
         }
         //VTN OpenDaylight
-        String srcDPID = route.getSwitchInfo().getDPID();
+/*        String srcDPID = route.getSwitchInfo().getDPID();
         String inPort = Integer.toString(route.getSwitchInfo().getInputPort());//String inPort = listFlow.get(0).getMatch().getIngressPort();
         String dstDPID = listFlow.get(listFlow.size() - 1).getDPID();
         String outPort = listFlow.get(listFlow.size() - 1).getActions().get(0).getValue();
@@ -317,10 +318,10 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         } catch (ResourceException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // provision each link and mark the last one
+*/        // provision each link and mark the last one
         for (int i = 0; i < listFlow.size(); i++) {
             log.debug("Provision Flow " + listFlow.get(i).getMatch().getSrcIp() + " " + listFlow.get(i).getMatch().getDstIp() + " " + listFlow.get(i).getDPID() + " " + listFlow.get(i).getActions().get(0).getType() + ": " + listFlow.get(i).getActions().get(0).getValue());
-//            insertFlow(listFlow.get(i));
+            insertFlow(listFlow.get(i));
         }
         return Response.ok(listFlow).build();
     }
@@ -340,7 +341,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         } catch (IOException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
         }
-        log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress());
+        log.error("Insert dynamic route. Src: " + route.getSourceAddress() + " Dst: " + route.getDestinationAddress()+" OutPort: "+route.getSwitchInfo().getOutputPort());
         VRFModel model = getVRFModel();
 
         int version;
@@ -360,22 +361,44 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     }
 
     public void clearAllFlows() {
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:01");
-        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:02");
         org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:03");
+        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:04");
+        org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.deleteFloodlightFlowHttpRequest("http://controllersVM:8080", "00:00:00:00:00:00:00:05");
 
-        String json[] = new String[6];
-        String controllerInfo[] = new String[6];
-        controllerInfo[1] = controllerInfo[0] = "controllersVM:8191";
-        json[0] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-11\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.1.1\", \"src-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=3\"}";
-        json[1] = "{\"switch\": \"00:00:00:00:00:00:00:01\", \"name\":\"flow-mod-12\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.1.1\", \"dst-ip\":\"192.168.1.91\",\"active\":\"true\", \"actions\":\"output=65534\"}";
-        json[2] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-41\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.4.4\", \"src-ip\":\"192.168.4.94\",\"active\":\"true\", \"actions\":\"output=4\"}";
-        json[3] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-42\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.4.4\", \"dst-ip\":\"192.168.4.94\",\"active\":\"true\", \"actions\":\"output=65534\"}";
-        json[4] = "{\"switch\": \"00:00:00:00:00:00:00:08\", \"name\":\"flow-mod-81\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.2.51\", \"src-ip\":\"192.168.2.98\",\"active\":\"true\", \"actions\":\"output=2\"}";
-        json[5] = "{\"switch\": \"00:00:00:00:00:00:00:08\", \"name\":\"flow-mod-82\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.2.51\", \"dst-ip\":\"192.168.2.98\",\"active\":\"true\", \"actions\":\"output=65534\"}";
-
+        String json[] = new String[8];
+        String controllerInfo ="controllersVM:8080";
+        json[0] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-41\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.121.202\", \"src-ip\":\"192.168.121.194\",\"active\":\"true\", \"actions\":\"output=1\"}";
+        json[1] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-42\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.121.202\", \"dst-ip\":\"192.168.121.194\",\"active\":\"true\", \"actions\":\"output=65534\"}";
+        json[2] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-43\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.121.203\", \"src-ip\":\"192.168.121.194\",\"active\":\"true\", \"actions\":\"output=2\"}";
+        json[3] = "{\"switch\": \"00:00:00:00:00:00:00:04\", \"name\":\"flow-mod-44\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.121.203\", \"dst-ip\":\"192.168.121.194\",\"active\":\"true\", \"actions\":\"output=65534\"}";
+        json[4] = "{\"switch\": \"00:00:00:00:00:00:00:05\", \"name\":\"flow-mod-51\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.121.204\", \"src-ip\":\"192.168.121.195\",\"active\":\"true\", \"actions\":\"output=1\"}";
+        json[5] = "{\"switch\": \"00:00:00:00:00:00:00:05\", \"name\":\"flow-mod-52\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.121.204\", \"dst-ip\":\"192.168.121.195\",\"active\":\"true\", \"actions\":\"output=65534\"}";
+        json[6] = "{\"switch\": \"00:00:00:00:00:00:00:05\", \"name\":\"flow-mod-53\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.121.205\", \"src-ip\":\"192.168.121.195\",\"active\":\"true\", \"actions\":\"output=2\"}";
+        json[7] = "{\"switch\": \"00:00:00:00:00:00:00:05\", \"name\":\"flow-mod-54\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.121.205\", \"dst-ip\":\"192.168.121.195\",\"active\":\"true\", \"actions\":\"output=65534\"}";
+        
         for (int i = 0; i < json.length; i++) {
-            org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.insertFloodlightFlowHttpRequest("http://" + controllerInfo[i] + "/wm/staticflowentrypusher/json", json[i]);
+            org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.insertFloodlightFlowHttpRequest("http://" + controllerInfo + "/wm/staticflowentrypusher/json", json[i]);
+        }
+        IResource resource;
+        String DPID = "00:00:64:87:88:58:f6:57";
+        
+        try {
+            resource = getResourceByName(DPID);
+            IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+            List<OFFlow> list = forwardingCapability.getOpenflowForwardingRules();
+            for(int i = 0; i<list.size(); i++){
+                forwardingCapability.removeOpenflowForwardingRule(DPID, list.get(i).getName());
+            }
+            DPID = "00:00:64:87:88:58:f8:57";
+            resource = getResourceByName(DPID);
+            forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+            list = forwardingCapability.getOpenflowForwardingRules();
+            for(int i = 0; i<list.size(); i++){
+                forwardingCapability.removeOpenflowForwardingRule(DPID, list.get(i).getName());
+            }
+        }catch(ActivatorException e){
+            
+        } catch (ResourceException e) {
         }
     }
 
@@ -398,13 +421,15 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
             }
-            IOpenflowForwardingCapability forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+            IOpenflowForwardingCapability forwardingCapability;// = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
             if (protocol.equals("opendaylight")) {
-//                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")) {
-//                    OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
-//                    forwardingCapability.createOpenflowForwardingRule(odlFlow);
-//                }
+                if (!flow.getMatch().getEtherType().equals("2054") && !flow.getMatch().getEtherType().equals("0x0806")) {
+                    forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+                    OpenDaylightOFFlow odlFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToODL(flow);
+                    forwardingCapability.createOpenflowForwardingRule(odlFlow);
+                }
             } else if (protocol.equals("floodlight")) {
+                forwardingCapability = (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
                 FloodlightOFFlow fldFlow = org.opennaas.extensions.openflowswitch.utils.Utils.OFFlowToFLD(flow);
                 forwardingCapability.createOpenflowForwardingRule(fldFlow);
             }
@@ -481,9 +506,8 @@ String resourceName;
     private String getProtocolType(String dpid) throws ActivatorException, ResourceException {
         String protocol;
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
-String resourceName;
+	String resourceName;
         IResource resource = getResourceByName(dpid);//switchId
-
         resourceName = "s" + dpid.substring(dpid.length() - 1);//00:00:00:00:00:00:00:02 --> s2
         if(resourceName.equals("s7")){//PSNC switches
             resourceName = dpid.substring(19, dpid.length() - 3);//00:00:00:00:00:00:00:02 --> s2
@@ -499,6 +523,8 @@ String resourceName;
         protocol = resourceDesc.getResourceDescriptor().getInformation().getDescription();
         if (protocol == null) {
             protocol = "floodlight";
+        }else{
+            
         }
         return protocol;
     }
@@ -526,7 +552,7 @@ String resourceName;
      */
     private void sortRoutes(List<VRFRoute> routes, VRFRoute route) {
         String nodeSrc = route.getSwitchInfo().getDPID();
-        log.error("nideSrc: "+nodeSrc);
+//        log.error("nideSrc: "+nodeSrc);
         Boolean set = true;
         int maxLoop = routes.size()*4;
         for (int j = 0; j < routes.size(); j++) {
@@ -535,7 +561,7 @@ String resourceName;
                 set = false;
             } else {
                 for (int i = 0; i < edges.size(); i++) {//find the dest node given a source node. Initial node is the source host
-                    log.error(edges.get(i).getSource().getId()+"    i:"+i);
+//                    log.error(edges.get(i).getSource().getId()+"    i:"+i);
                     if ((edges.get(i).getSource().getDPID().equals(nodeSrc)
                             && edges.get(i).getDestination().getDPID().equals(routes.get(j).getSwitchInfo().getDPID())) || (edges.get(i).getDestination().getDPID().equals(nodeSrc)
                             && edges.get(i).getSource().getDPID().equals(routes.get(j).getSwitchInfo().getDPID()))) {

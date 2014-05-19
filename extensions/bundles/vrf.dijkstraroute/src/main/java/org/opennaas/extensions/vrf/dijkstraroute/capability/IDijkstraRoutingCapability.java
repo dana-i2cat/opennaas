@@ -23,12 +23,14 @@ public interface IDijkstraRoutingCapability {
      * @param target Destination IP Address in integer format (received from Floodlight)
      * @return output Port where the switch forward the packet
      */
-    @Path("/route/{source}/{target}")
+    @Path("/route/{source}/{target}/{DPID}/{inport}")
     @GET
     @Produces({MediaType.TEXT_XML, MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON}) 
     public Response getDynamicRoute(
             @PathParam("source") String source, 
-            @PathParam("target") String target);
+            @PathParam("target") String target,
+	    @PathParam("DPID") String DPID,
+	    @PathParam("inport") int inPort);
 
     /**
      * Return the topology filename used and the directory

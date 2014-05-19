@@ -59,7 +59,7 @@ public class RoutingCapability implements IRoutingCapability {
             response = service.getRoute(ipSource, ipDest, switchDPID, inputPort, proactive);
         } else if (mode.equals("dijkstra")) {
             DijkstraRoutingCapability dynamicRoute = new DijkstraRoutingCapability();
-            response = dynamicRoute.getDynamicRoute(ipSource, ipDest);
+            response = dynamicRoute.getDynamicRoute(ipSource, ipDest, switchDPID, inputPort);
         }
         return response;
     }
