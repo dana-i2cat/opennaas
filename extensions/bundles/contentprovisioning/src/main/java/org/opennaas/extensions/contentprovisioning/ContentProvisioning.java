@@ -20,6 +20,7 @@ package org.opennaas.extensions.contentprovisioning;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -158,7 +159,7 @@ public class ContentProvisioning implements IContentProvisioning {
 		getOFForwardingCapability().createOpenflowForwardingRule(flow1);
 		getOFForwardingCapability().createOpenflowForwardingRule(flow2);
 
-		return Arrays.asList(flow1.getName(), flow2.getName());
+		return new ArrayList<String>(Arrays.asList(flow1.getName(), flow2.getName()));
 	}
 
 	private void deallocateFlowsInSwitch(List<String> flowIds) throws ResourceException {
