@@ -20,32 +20,46 @@ package org.opennaas.extensions.contentprovisioning;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.IMediaEncoder;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.messages.Reset;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.messages.Start;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.api.messages.Stop;
+import org.opennaas.extensions.contentprovisioning.mediaencoder.client.MediaEncoderClientFactory;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 public class ContentProvisioning implements IContentProvisioning {
 
+	private static Log			log			= LogFactory.getLog(ContentProvisioning.class);
+
 	private IResourceManager	rm;
 
-	private String				resourceName;
-	private String				resourceType	= "openflowswitch";
+	private String				switchResourceName;
+	private String				mediaEncoderBaseURL;
 	private String				flowInputPort;
 	private String				flowOutputPort;
 
+	private IMediaEncoder		mediaEncoderClient;
+
 	private List<String>		flowIds;
-	private boolean				streaming		= false;
-	private final Object		lock			= new Object();
+	private boolean				streaming	= false;
+	private final Object		lock		= new Object();
 
 	/**
 	 * @param rm
@@ -56,11 +70,15 @@ public class ContentProvisioning implements IContentProvisioning {
 	}
 
 	/**
-	 * @param resourceName
-	 *            the resourceName to set
+	 * @param switchResourceName
+	 *            the switchResourceName to set
 	 */
-	public void setResourceName(String resourceName) {
-		this.resourceName = resourceName;
+	public void setSwitchResourceName(String switchResourceName) {
+		this.switchResourceName = switchResourceName;
+	}
+
+	public void setMediaEncoderBaseURL(String mediaEncoderBaseURL) {
+		this.mediaEncoderBaseURL = mediaEncoderBaseURL;
 	}
 
 	/**
@@ -93,11 +111,20 @@ public class ContentProvisioning implements IContentProvisioning {
 		this.flowOutputPort = flowOutputPort;
 	}
 
+	public void init() throws Exception {
+		log.info("Initializing media encoder client. Using base URL: " + mediaEncoderBaseURL);
+		// initialize media encoder client
+		mediaEncoderClient = MediaEncoderClientFactory.getClient(mediaEncoderBaseURL);
+	}
+
 	@Override
 	public void startStream(int streamId) throws Exception {
+		log.info("Starting stream...");
 		synchronized (lock) {
-			if (streaming)
+			if (streaming) {
+				log.error("Already streaming.");
 				throw new Exception("Already streaming");
+			}
 
 			String inputPort = getFlowInputPort();
 			String outputPort = getFlowOutputPort();
@@ -110,9 +137,12 @@ public class ContentProvisioning implements IContentProvisioning {
 
 	@Override
 	public void stopStream(int streamId) throws Exception {
+		log.info("Stoping stream...");
 		synchronized (lock) {
-			if (!streaming)
+			if (!streaming) {
+				log.error("Not streaming. Nothing to stop.");
 				throw new Exception("Not streaming. Nothing to stop.");
+			}
 
 			stopStreamInServer(streamId);
 			deallocateFlowsInSwitch(flowIds);
@@ -129,7 +159,7 @@ public class ContentProvisioning implements IContentProvisioning {
 		getOFForwardingCapability().createOpenflowForwardingRule(flow1);
 		getOFForwardingCapability().createOpenflowForwardingRule(flow2);
 
-		return Arrays.asList(flow1.getName(), flow2.getName());
+		return new ArrayList<String>(Arrays.asList(flow1.getName(), flow2.getName()));
 	}
 
 	private void deallocateFlowsInSwitch(List<String> flowIds) throws ResourceException {
@@ -139,21 +169,23 @@ public class ContentProvisioning implements IContentProvisioning {
 	}
 
 	private void startStreamInServer(int streamId) {
-		// TODO Auto-generated method stub
+		mediaEncoderClient.start(streamId, new Start());
 	}
 
 	private void stopStreamInServer(int streamId) {
-		// TODO Auto-generated method stub
+		mediaEncoderClient.stop(streamId, new Stop());
+		mediaEncoderClient.reset(streamId, new Reset());
 	}
 
 	private IOpenflowForwardingCapability getOFForwardingCapability() throws ResourceException {
 		try {
 
-			IResource resource = rm.getResource(rm.getIdentifierFromResourceName(resourceType, resourceName));
-			return (IOpenflowForwardingCapability) resource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+			IResource switchResource = rm.getResource(rm.getIdentifierFromResourceName(OpenflowSwitchRepository.OF_SWITCH_RESOURCE_TYPE,
+					switchResourceName));
+			return (IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
 		} catch (ResourceException e) {
-			throw new ResourceException("Unable to get desired resource", e);
+			throw new ResourceException("Unable to get desired OF switch resource", e);
 		}
 	}
 

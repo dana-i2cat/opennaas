@@ -10,18 +10,21 @@
 	<!-- need to disambiguate between the two property-placeholder definitions by assigning 
 	a unique placeholder prefix/suffix to them. 
 	The default values are "${" for the prefix and "}" for the suffix -->
-	<cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+	<cm:property-placeholder persistent-id="org.opennaas" update-strategy="none" />
 	<cm:property-placeholder persistent-id="org.opennaas.extensions.contentprovisioning" 
-	placeholder-prefix="${cp:" update-strategy="reload" />
+	placeholder-prefix="${cp:" update-strategy="none" />
 
 	<!-- Get a reference to OpenNaaS resource manager service -->
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
 
-	<bean id="contentProvisioning" class="org.opennaas.extensions.contentprovisioning.ContentProvisioning" >
+	<!-- Create content provisioning bean and OSGi service -->
+	<bean id="contentProvisioning" class="org.opennaas.extensions.contentprovisioning.ContentProvisioning"
+		init-method="init">
 		<property name="rm" ref="resourceManager" />
-		<property name="resourceName" value="${cp:org.opennaas.contentprovisioning.switchName}" />
+		<property name="switchResourceName" value="${cp:org.opennaas.contentprovisioning.switchName}" />
 		<property name="flowInputPort" value="${cp:org.opennaas.contentprovisioning.switchInputPort}" />
 		<property name="flowOutputPort" value="${cp:org.opennaas.contentprovisioning.switchOutputPort}" />
+		<property name="mediaEncoderBaseURL" value="${cp:org.opennaas.contentprovisioning.mediaEncoder.baseURL}" />
 	</bean>
 	<service ref="contentProvisioning" interface="org.opennaas.extensions.contentprovisioning.IContentProvisioning">
 		<service-properties>

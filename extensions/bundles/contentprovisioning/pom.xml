@@ -21,6 +21,10 @@
 			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 			<version>${cxf.version}</version>
@@ -43,6 +47,7 @@
 					<instructions>
 						<Import-Package>
 							!org.opennaas.extensions.contentprovisioning,
+							javax.ws.rs.core,
 							*
 						</Import-Package>
 					</instructions>
