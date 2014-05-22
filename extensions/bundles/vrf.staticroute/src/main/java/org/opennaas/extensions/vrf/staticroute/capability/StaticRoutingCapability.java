@@ -376,8 +376,8 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         json[6] = "{\"switch\": \"00:00:00:00:00:00:00:05\", \"name\":\"flow-mod-53\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"dst-ip\":\"192.168.121.205\", \"src-ip\":\"192.168.121.195\",\"active\":\"true\", \"actions\":\"output=2\"}";
         json[7] = "{\"switch\": \"00:00:00:00:00:00:00:05\", \"name\":\"flow-mod-54\", \"cookie\":\"0\", \"priority\":\"32768\", \"ether-type\":\"0x0800\", \"src-ip\":\"192.168.121.205\", \"dst-ip\":\"192.168.121.195\",\"active\":\"true\", \"actions\":\"output=65534\"}";
         
-        for (int i = 0; i < json.length; i++) {
-            org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.insertFloodlightFlowHttpRequest("http://" + controllerInfo + "/wm/staticflowentrypusher/json", json[i]);
+        for (String json1 : json) {
+            org.opennaas.extensions.vrf.staticroute.capability.utils.Utils.insertFloodlightFlowHttpRequest("http://" + controllerInfo + "/wm/staticflowentrypusher/json", json1);
         }
         IResource resource;
         String DPID = "00:00:64:87:88:58:f6:57";
@@ -411,13 +411,12 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private Response insertFlow(OFFlow flow) {
         log.info("Provision OpenFlow Flow Link");
         String protocol;
-        IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
             if (protocol == null) {
                 return Response.ok("Protocol is null").build();
             }
-            resource = getResourceByName(flow.getDPID());
+            IResource resource = getResourceByName(flow.getDPID());
             if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
             }
@@ -444,10 +443,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private Response removeFlow(OFFlow flow) {
         log.info("Remove Flow Link");
         String protocol;
-        IResource resource;
         try {
             protocol = getProtocolType(flow.getDPID());
-            resource = getResourceByName(flow.getDPID());
+            IResource resource = getResourceByName(flow.getDPID());
             if (resource == null) {
                 return Response.serverError().entity("Does not exist a OFSwitch resource mapped with this switch Id").build();
             }
@@ -470,7 +468,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         IResourceManager resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
         IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
         IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-String resourceName;
+        String resourceName;
         List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
         String resourceSdnNetworkId = sdnCapab.getMapDeviceResource(dpid);
         if (resourceSdnNetworkId == null) {

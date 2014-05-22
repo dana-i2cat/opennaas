@@ -11,7 +11,7 @@ var storedNodes = nodes;
 //if(undefined == linkColor || linkColor == null){
 //    linkColor = "black";
 //}
-var linkColor = "black";
+var ctrlLinkColor = "#ccc";
 var auto = "Automatic";
 var man = "Manual";
 var ctrlKey = false;//ctrl key is pressed?
@@ -108,7 +108,8 @@ function update(){
     link.enter().append("svg:line")
         .attr('id', function (d) {return d.id;})
         .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
-        .classed('selected', function (d) {return d === selected_link;});
+        .classed('selected', function (d) {return d === selected_link;})
+	.attr("stroke", "black");
     //remove selected/drawed links
     d3.selectAll(".link2").remove();
     
@@ -116,7 +117,9 @@ function update(){
     controllerLink = controllerLink.data(controllersLinks);
     controllerLink.enter().append("svg:line")
         .attr("class", "linkCtrl")
-        .attr("stroke", linkColor);
+        .attr("stroke", ctrlLinkColor)
+        .attr("stroke-width", "2px")
+        .attr("stroke-dasharray", "3, 3");
     
     link.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
@@ -235,7 +238,10 @@ console.log("MOUSEUP");
     /** OpenNaaS cloud **/
     cloudLink = cloudLink.data(cloudLinks);
     cloudLink.enter().append("svg:line")
-        .attr("class", "linkCtrl");
+        .attr("class", "linkCtrl")
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", "2px")
+        .attr("stroke-dasharray", "3, 3");
     
     cloudLink.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})

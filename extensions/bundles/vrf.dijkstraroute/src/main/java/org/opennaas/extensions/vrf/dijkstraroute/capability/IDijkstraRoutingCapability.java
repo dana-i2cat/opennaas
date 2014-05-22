@@ -21,6 +21,8 @@ public interface IDijkstraRoutingCapability {
      * port where the packet entry in the switch
      * @param source Source IP Address in integer format (received from Floodlight)
      * @param target Destination IP Address in integer format (received from Floodlight)
+     * @param DPID
+     * @param inPort
      * @return output Port where the switch forward the packet
      */
     @Path("/route/{source}/{target}/{DPID}/{inport}")

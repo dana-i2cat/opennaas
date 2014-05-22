@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.protocol.client.wrappers.OpenDaylightOFFlowsWrapper;
-import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 @Path("/controller/nb/v2/flowprogrammer/default")

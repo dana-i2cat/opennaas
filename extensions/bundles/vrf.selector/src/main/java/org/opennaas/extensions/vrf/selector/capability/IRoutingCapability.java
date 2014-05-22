@@ -54,6 +54,10 @@ public interface IRoutingCapability {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getSelectorMode();
 
+    /**
+     * Map each resource (resourceId/resoruceName) - DPID
+     * @return 
+     */
     @Path("/switchMapping")
     @GET
     public Response switchMapping();

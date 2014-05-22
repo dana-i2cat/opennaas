@@ -89,20 +89,4 @@ $("#add_tab")
         }
     });
     
-    setInterval(function(){ 
-        $.ajax({
-            type: 'GET',
-            url : "getLog/",
-            async: false,
-            success : function (data) {
-                if(data !== ""){
-                    var image = '<img src="<c:url value="/resources/images/arrow_icon.svg.png" />" width="18px"/>';
-                    document.getElementById('log').innerHTML = image+data;
-                }else{
-                    document.getElementById('log').innerHTML = data;
-                }
-                result = data;                 
-            }
-        });
-    }, 5000);//5000
 </script>
