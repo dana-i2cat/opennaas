@@ -8,7 +8,7 @@
   <artifactId>org.opennaas.extensions.openflowswitch.driver.opendaylight</artifactId>
   	<!--  Maven configuration -->
   	<packaging>bundle</packaging>
-	<name>OpenNaaS :: OpenFlow Switch :: OpenDaylight Test </name>
+	<name>OpenNaaS :: OpenFlow Switch :: OpenDaylight</name>
 	<description>OpenFlow Switch driver using OpenDaylight</description>
 
  	<dependencies>

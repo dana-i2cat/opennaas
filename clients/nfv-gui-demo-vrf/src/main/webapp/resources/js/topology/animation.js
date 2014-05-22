@@ -28,12 +28,12 @@ console.log("Runtime");
 
     node.on('mousedown', function (d) {
         console.log(shellMode);
-        if(d.type == "host"){
-            if(shellMode == "tab"){
-                addTab(d.id);
-            }else if(shellMode == "window"){
-                var myWindow = window.open(openHostShell(d.id));
-                myWindow.document.write('<html><head><title>Host '+d.id+'</title></head><body height="100%" width="100%"><iframe src="' + openHostShell(d.id) + '" height="95%" width="100%" style="border: 0;"></iframe></body></html>');
+        if(d.type === "host"){
+            if(shellMode === "tab"){
+                addTab(d.name);
+            }else if(shellMode === "window"){
+                var myWindow = window.open(openHostShell(d.name));
+                myWindow.document.write('<html><head><title>Host '+d.name+'</title></head><body height="100%" width="100%"><iframe src="' + openHostShell(d.name) + '" height="95%" width="100%" style="border: 0;"></iframe></body></html>');
             }
         }
     });
@@ -76,10 +76,16 @@ function streamPacket(returnedRoutes){
 }
 
 /**
-* Uri format: //84.88.40.153:4200/h1
-*/
+ * Uri format: //84.88.40.153:4200/h1
+ * @param {type} nameHost
+ * @returns {String}
+ */
 function openHostShell(nameHost){
-	var url = "http://84.88.40.153:4200";
+	if(nameHost == "h1"){
+		var url = "http://84.88.40.90:4200";
+	}else{
+		var url = "http://84.88.40.153:4200";
+	}
 	var uri = url + "/" + nameHost;
 return uri;
 //send uri to src of iframe

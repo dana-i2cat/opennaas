@@ -39,7 +39,7 @@ public class CreateOFForwardingAction extends OpenDaylightAction {
             String DPID = getSwitchIdInModel();
             String name = flow.getName();
 
-            log.error("Flow: " + name + " Switch ID: " + DPID);
+            log.info("Creating forwarding action. Flow: " + name + " Switch ID: " + DPID);
             flow = updateFlowWithControllerRequiredValues(flow);
             IOpenDaylightStaticFlowPusherClient client = getOpenDaylightProtocolSession(protocolSessionManager).getOpenDaylightClientForUse();
             client.addFlow(flow, DPID, name);
@@ -130,7 +130,6 @@ public class CreateOFForwardingAction extends OpenDaylightAction {
     }
 
     private void setSwitchIdInModel(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
-        log.error("Set SWitch Model");
         OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
         model.setSwitchId(getSwitchIdFromSession(protocolSessionManager));
     }

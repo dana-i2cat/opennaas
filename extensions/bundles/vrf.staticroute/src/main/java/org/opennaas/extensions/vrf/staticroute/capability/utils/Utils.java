@@ -1,7 +1,6 @@
 package org.opennaas.extensions.vrf.staticroute.capability.utils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,12 +20,11 @@ public class Utils {
     static Log log = LogFactory.getLog(Utils.class);
     
     public static void deleteFloodlightFlowHttpRequest(String uri, String dpid) {
-        String response = "";
         try {
             OutputStreamWriter wr = null;
             URL url = new URL(uri + "/wm/staticflowentrypusher/clear/" + dpid + "/json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            InputStream is = connection.getInputStream();
+            connection.getInputStream();
             //response = connection.getResponseMessage();
         } catch (IOException ex) {
             Logger.getLogger(StaticRoutingCapability.class.getName()).log(Level.SEVERE, null, ex);

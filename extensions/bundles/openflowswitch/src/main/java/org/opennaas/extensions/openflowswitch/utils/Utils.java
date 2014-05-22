@@ -63,18 +63,4 @@ public class Utils {
         flow.setActions(actions);
         return flow;
     }
-    
-    /**
-     * Create Flow name given config parameters
-     * @param id
-     * @param ethType
-     * @param source
-     * @param target
-     * @param dpid
-     * @return 
-     */
-    private static String createFlowName(String id, String ethType, String source, String target, String dpid) {
-//        return id+"-"+ethType+"-"+source+"-"+target+"-" + dpid.substring(dpid.length() - 2);
-        return "0-" + ethType + "-" + source + "-" + target + "-" + dpid.substring(dpid.length() - 2);
     }
-}

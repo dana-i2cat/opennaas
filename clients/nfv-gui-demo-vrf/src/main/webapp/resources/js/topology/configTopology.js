@@ -50,12 +50,12 @@ function runtime(node, links) {
             source = mousedown_node;
             target = mouseup_node;
             newSource = source;
-console.log("Source " + source.id + " to Dest " + target.id);
+console.log("Source " + source.name + " to Dest " + target.name);
             var link;
             link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
 
             //request to OpenNaaS
-            swNode = nodes.filter(function (n) {return n.id === source.SW; });
+            swNode = nodes.filter(function (n) {return n.name === source.SW; });
             var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
 console.log("Before: "+JSON.stringify(returnedRoutes));
 //            returnedRoutes = [{dpid: '00:00:00:00:00:00:00:01'}, {dpid: '00:00:00:00:00:00:00:03'}, {dpid: '00:00:00:00:00:00:00:04'},{dpid: '00:00:00:00:00:00:00:06'}, {dpid: '00:00:00:00:00:00:00:07'}, {dpid: '00:00:00:00:00:00:00:08'}, {ip: '192.168.2.51'}];
@@ -144,10 +144,10 @@ function getRoute(ipSrc, ipDst, dpid, inPort) {
             response = data;
         }
     });
-console.log(response);
-if(response == null){
-    cleanDisplayedLink();
-}
+    console.log(response);
+    if(response == null){
+        cleanDisplayedLink();
+    }
     return response;
 }
 
@@ -215,7 +215,7 @@ function mouseOverImage(){
         gravity: $.fn.tipsy.autoNS, //north(n)/west(w)/dynamic
         title: function() {
             var d = this.__data__;
-            var info ="<b>Id:</b> "+d.id+"<br>";
+            var info ="<b>Id:</b> "+d.name+"<br>";
             if(d.type === "switch"){
                 info +="<b>DPID:</b> "+d.dpid+"<br>";
                 info +="<b>Controller:</b> "+d.controller+"<br>";
@@ -236,11 +236,11 @@ function showGraphicRoute(sourceIp, targetIp, json){
     source = nodes.filter(function (n) {return n.ip === sourceIp; })[0];
     target = nodes.filter(function (n) {return n.ip === targetIp; })[0];
     newSource = source;
-console.log("Source " + source.id + " to Dest " + target.id);
+console.log("Source " + source.name + " to Dest " + target.name);
     var link;
 //    link = links.filter(function (l) { return (l.source === source && l.target === target); })[0];
     //request to OpenNaaS
-    swNode = nodes.filter(function (n) {return n.id === source.SW; });
+    swNode = nodes.filter(function (n) {return n.name === source.SW; });
     var returnedRoutes = eval('(' + getRoute(source.ip, target.ip, swNode[0].dpid, source.port) + ')');
     //returnedRoutes = json;
 console.log("Before: "+JSON.stringify(returnedRoutes));

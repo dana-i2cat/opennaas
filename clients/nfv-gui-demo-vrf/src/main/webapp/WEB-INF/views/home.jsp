@@ -9,7 +9,7 @@
 <script language="JavaScript">
         function Validate(){
             var owlFile =document.getElementById("owlFile").value;
-            if(owlFile!=''){
+            if(owlFile != ''){
                 var checkimg = owlFile.toLowerCase();
                 if (!checkimg.match(/(\.json)$/)){
                     $( "#dialogUploadVI" ).dialog("open");

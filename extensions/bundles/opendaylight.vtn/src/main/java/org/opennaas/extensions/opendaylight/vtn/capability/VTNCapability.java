@@ -111,8 +111,8 @@ public class VTNCapability implements IVTNCapability {
                 boundaries.add(getBoundary(bound.getBoundary_id()));
             }
         } else {
-            String borderPort1 = "PP-OF:00:00:00:00:00:00:00:01-s1-eth3";
-            String borderPort2 = "PP-OF:00:00:00:00:00:00:00:04-s4-eth3";
+            String borderPort1 = "PP-OF:00:00:64:87:88:58:f8:57-ge-1/0/3.0";
+            String borderPort2 = "PP-OF:00:00:00:00:00:00:00:03-eth1";
             createBoundary("b1", controllers.get(0).getController_id(), "DEFAULT", borderPort1, controllers.get(1).getController_id(), "DEFAULT", borderPort2);
         }
 
@@ -250,6 +250,7 @@ public class VTNCapability implements IVTNCapability {
         String iface = "if2";
         String vbrName = getvBridgeOfSwitch(DPID);
         for (vBridgeInterfaces inf : vtn.getvBridge(vbrName).getIface()) {
+//            client.configPortMap(vtn.getVtn_name(), vbrName, inf.getIf_name());
             for (PortMap pm : inf.getPortMaps()) {
                 if (pm.getLogical_port_id() != null) {
                     if (pm.getLogical_port_id().equals(outPort)) {
@@ -314,7 +315,6 @@ public class VTNCapability implements IVTNCapability {
 
     @Override
     public vBridgeInterfacesWrapper getInterfaces(String vtnName, String vBridge) {
-        log.error("Get Interfaces");
         vBridgeInterfacesWrapper ifaces = client.getInterfaces(vtnName, vBridge);
         return ifaces;
     }
@@ -350,7 +350,7 @@ public class VTNCapability implements IVTNCapability {
         vBridgeInterfacesWrapper ifaces;
         for (OpenDaylightvBridge vbr : vtn.getvBridges()) {
             ifaces = getInterfaces(vtn.getVtn_name(), vbr.getVbr_name());
-            log.error("Ifaces bridge "+vbr.getVbr_name()+": " + ifaces.size());
+            log.error("Get Interfaces. Ifaces bridge "+vbr.getVbr_name()+": " + ifaces.size());
             if (ifaces.size() > 0) {
                 for (vBridgeInterfaces iface : ifaces) {
                     vbr.getIface().add(iface);

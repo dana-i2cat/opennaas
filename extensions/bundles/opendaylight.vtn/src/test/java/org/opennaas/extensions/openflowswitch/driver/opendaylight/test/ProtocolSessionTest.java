@@ -60,7 +60,7 @@ public class ProtocolSessionTest {
     }
 
     private ProtocolSessionContext generateContext() {
-        ProtocolSessionContext context = new ProtocolSessionContext();
+        context = new ProtocolSessionContext();
         context.addParameter(ProtocolSessionContext.PROTOCOL, OpenDaylightProtocolSession.OPENDAYLIGHT_PROTOCOL_TYPE);
         context.addParameter(ProtocolSessionContext.PROTOCOL_URI, FLOODLIGHT_URI);
         context.addParameter(ProtocolSessionContext.AUTH_TYPE, "noauth");

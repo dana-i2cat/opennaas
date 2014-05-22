@@ -21,11 +21,11 @@ var sourceIp, destinationIp;
 var stackRoute = new Array();
 var manualPath = [];//manual path end-to-end
 
-function runtime(node) {
+function runtime(node, links, controller) {
     node
         .on('mouseover', function (d) {
             if(mode === auto && activeNode !== null)
-                showPath(d.id_num);
+                showPath(d.id);
         })
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
@@ -33,12 +33,12 @@ function runtime(node) {
                 selectedNode = false;
                 destinationIp = d.ip;
                 if(mode === auto)
-                    setPath(d.id_num);//insert path in OpenNaaS
+                    setPath(d.id);//insert path in OpenNaaS
             } else {
                 selectedNode = true;
-                setActive(d.id_num);
+                setActive(d.id);
                 if ( originNode === null )
-                    originNode = d.id_num;
+                    originNode = d.id;
                 sourceIp = d.ip;
             }
             // select node
@@ -59,7 +59,7 @@ function runtime(node) {
             //updateLinks();
         })
         .on('mouseup', function (d) {    
-            if ( d.id_num === activeNode) return;
+            if ( d.id === activeNode) return;
             if (!mousedown_node) return;
             // needed by FF
             drag_line
@@ -72,7 +72,7 @@ function runtime(node) {
             source = mousedown_node;
             target = mouseup_node;
          
-console.log("MouseUp on node " + d.id+" Source h " + source.id+" Dest h " + target.id);
+console.log("MouseUp on node " + d.name+" Source h " + source.name+" Dest h " + target.name);
             var originLink;//Link that match with source <-> target
             var newLink;//New defined link (this should includes CSS changes)
 
@@ -84,7 +84,7 @@ var routeExists = false;
             //Adding new link in Manual Mode
             if ( mode === man ){
 console.log("New Link. Manual mode. ");
-                dest1 = nodes.filter(function(n) {return n.id === target.id; })[0];
+                dest1 = nodes.filter(function(n) {return n.name === target.name; })[0];
                 newLink = {id: links.length, source: source, target: dest1, type: "new_link"};
                                 
                 //this link exists? It is possible to make this connection?
@@ -92,7 +92,7 @@ console.log("New Link. Manual mode. ");
                     if( (newLink.source === links[i].source && newLink.target === links[i].target ) || 
                         newLink.source === links[i].target && newLink.target === links[i].source){
 
-                        manualPath.push(newLink.target.id_num);
+                        manualPath.push(newLink.target.id);
                         links.push(newLink);
                         if ( manualType === "Point-to-point" ){
                             insertIpDialog(newLink, originLink).done(function (answer) {
@@ -184,24 +184,25 @@ console.log(nextLink);
 console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+orgLink.target.dpid+" "+orgLink.dstPort+" "+nextLink.srcPort);
 
 /*search the source dpid -> the dpid common in path and nextPath */
-            srcPort = orgLink.dstPort
+            srcPort = orgLink.dstPort;
             dstPort = nextLink.srcPort;
             if ( orgLink.source === sourceNode ){
                 targetNode = orgLink.target;
-                srcPort = orgLink.dstPort;
+/*                srcPort = orgLink.dstPort;
                 if( nextLink.source === orgLink.target ){
                     dstPort = nextLink.srcPort;
                 }else{
                     dstPort = nextLink.dstPort;
                 }
+*/ //TNC DEMO
             } else if ( orgLink.target === sourceNode ){
                 targetNode = orgLink.source;
-                srcPort = orgLink.srcPort;
+/*                srcPort = orgLink.srcPort;
                 if( nextLink.source === orgLink.target ){
                     dstPort = nextLink.srcPort;
                 }else{
                     dstPort = nextLink.dstPort;
-                }
+                }*/ //TNC DEMO
             }
 console.log("i:"+i+" src: "+ipSrc+" "+ipDst+" "+targetNode.dpid+" "+srcPort+" "+dstPort);
             insertRoute(ipSrc, ipDst, targetNode.dpid, srcPort, dstPort);

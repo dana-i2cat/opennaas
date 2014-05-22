@@ -11,7 +11,7 @@ var storedNodes = nodes;
 //if(undefined == linkColor || linkColor == null){
 //    linkColor = "black";
 //}
-var linkColor = "black";
+var ctrlLinkColor = "#ccc";
 var auto = "Automatic";
 var man = "Manual";
 var ctrlKey = false;//ctrl key is pressed?
@@ -23,10 +23,15 @@ var node_size_width_big = node_size_width + 25, node_size_height_sw_big = node_s
 var switchImage = urlVar+"/topology/switch2.png";//urlVar obtained in header!
 var hostImage = urlVar+"/topology/laptop.png";
 var controllerImage = urlVar+"/topology/controller2.png";
+var controllerFDLImage = urlVar+"/topology/controller_fdl.png";
+var controllerODLImage = urlVar+"/topology/controller_odl.png";
 var packetImage = urlVar+"/topology/movie_tape.gif";
 var linkImage = urlVar+"/topology/link_green.png";
 var helpImage = urlVar+"/topology/helpImage.png";
 var cloudONImage = urlVar+"/topology/opennaas_cloud.png";
+var domainCloudImage = urlVar+"/topology/cloud.png";
+var i2CAT_Logo = urlVar+"/logo-color-transparent.png";
+var PSNC_Logo = urlVar+"/psnc_logo_3_new.png";
 
 // set up SVG for D3
 var width = 700,
@@ -58,6 +63,7 @@ var force = d3.layout.force()
 var drag_line = svg.append('svg:path')
     .attr('class', 'dragline hidden')
     .attr('d', 'M0,0L0,0');
+var domainCloud = svg.append("svg:g").selectAll(".domainCloud");
 var link = svg.append("svg:g").selectAll("link.sw");
 var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
 var node = svg.append("svg:g").selectAll(".node");
@@ -72,6 +78,28 @@ d3.json("", function (error, json) {
 });
 
 function update(){
+    domainCloud = domainCloud.data(domains)
+        .enter().append("g")
+        .attr("class", "domainCloud");
+
+    domainCloud.append("image")
+        .attr("x", function (d) {return d.x;})
+        .attr("y", function (d) {return d.y;})
+        .attr("width", function (d) {return d.width;})
+        .attr('height', function (d) {return d.height;})
+        .attr('xlink:href', function (d) {return domainCloudImage;});
+
+    domainCloud.append("image")
+        .attr('id', function (d) { return d.id + "_text";})
+        .attr('x', function (d) {return d.x_txt;})
+        .attr('y', function (d) {return d.y_txt;})
+        .attr("width", function (d) {return d.img_width;})
+        .attr('height', function (d) {return d.img_height;})
+        .attr('xlink:href', function (d) {
+            if(d.name === "i2CAT")return i2CAT_Logo;
+            else if(d.name === "PSNC")return PSNC_Logo;
+        });
+    
     /* Links between switches and hosts */
     link = link.data(links);
     link.classed('selected', function (d) {return d === selected_link;})
@@ -80,7 +108,8 @@ function update(){
     link.enter().append("svg:line")
         .attr('id', function (d) {return d.id;})
         .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
-        .classed('selected', function (d) {return d === selected_link;});
+        .classed('selected', function (d) {return d === selected_link;})
+	.attr("stroke", "black");
     //remove selected/drawed links
     d3.selectAll(".link2").remove();
     
@@ -88,7 +117,9 @@ function update(){
     controllerLink = controllerLink.data(controllersLinks);
     controllerLink.enter().append("svg:line")
         .attr("class", "linkCtrl")
-        .attr("stroke", linkColor);
+        .attr("stroke", ctrlLinkColor)
+        .attr("stroke-width", "2px")
+        .attr("stroke-dasharray", "3, 3");
     
     link.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
@@ -109,9 +140,12 @@ function update(){
     controller.append("image")
         .attr("x", function (d) {return d.x - 20;})
         .attr("y", function (d) {return d.y - 10;})
-        .attr("width", 50)
-        .attr('height', 50)
-        .attr('xlink:href', function (d) {return controllerImage;});
+        .attr("width", 100)
+        .attr('height', 70)
+        .attr('xlink:href', function (d) {
+		if(d.ctrlType === "fdl") return controllerFDLImage;
+		else if(d.ctrlType === "odl") return controllerODLImage;
+	});
 
     /* Drawing nodes (switchs and hosts) */
     var node_x = "-30", node_y = "-30";
@@ -122,7 +156,7 @@ function update(){
     node = node.data(nodes);
     node.enter().append("g")
         .attr("class", "node")
-        .style("cursor", "pointer")
+        .style("cursor", "pointer")/*
         .call(d3.behavior.drag()
             .on("dragstart", function(d){
 console.log("Dragstart");                
@@ -133,10 +167,10 @@ console.log("Dragstart");
                 if(ctrlKey){
                     d.x = d3.event.x, d.y = d3.event.y;
                     var t = d;
-                    nodes[d.id_num].x = d.x;
-                    nodes[d.id_num].px = d.x;
-                    nodes[d.id_num].py = d.y;
-                    node.filter(function(d) { return d.id === t.id; }).attr("transform", transform);
+                    nodes[d.id].x = d.x;
+                    nodes[d.id].px = d.x;
+                    nodes[d.id].py = d.y;
+                    node.filter(function(d) { return d.name === t.name; }).attr("transform", transform);
 //      	        d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", function(d) { return "translate(" + d.x + ", "+d.y+")"; });
                     link.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
                     link.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
@@ -149,11 +183,11 @@ console.log("Dragstart");
                 updateTopology(storedNodes);
                 d3.select(this).classed("dragging", false);
             })
-	);
+	)*/;
 
     node.append("image")
         .attr('class', function (d) {return d.type;})
-        .attr('id', function (d) {return d.id;})
+        .attr('id', function (d) {return d.name;})
         .attr("x", node_x)
         .attr("y", node_y)
         .attr("width", node_width)
@@ -168,9 +202,9 @@ console.log("MOUSEUP");
             d3.select(this).attr("width", node_width_big).attr("height", node_height_big); //image big
 
             if (d.type === "switch")
-                d3.select("#" + d.id + "_text").attr("x", -15).attr("y", -40); //move text when big  12
+                d3.select("#" + d.name + "_text").attr("x", -15).attr("y", -40); //move text when big  12
             else if (d.type === "host")
-                d3.select("#" + d.id + "_text").attr("x", -9).attr("y", 35); //move text when big
+                d3.select("#" + d.name + "_text").attr("x", -9).attr("y", 35); //move text when big
             if (!mousedown_node) return;
             if (d.type === "switch") {
                 d3.selectAll('.link2').attr('d', 'M0,0L0,0');
@@ -183,13 +217,13 @@ console.log("MOUSEUP");
         
     /* Drawing text of each node */
     node.append("text")
-        .attr('id', function (d) { return d.id + "_text";})
+        .attr('id', function (d) { return d.name + "_text";})
         .attr('class', function (d) { return (d.type === "switch") ? 'id_txt_sw' : "id_txt_host";})
         .attr("dx", 12)
         .attr("dy", function (d) { return (d.type === "switch") ? "1.10em" : ".30em";})
         .attr('x',  function (d) { return (d.type === "switch") ? node_txt_x_sw : node_txt_x_h;})
         .attr('y', function (d) { return (d.type === "switch") ? node_txt_y_sw :  node_txt_y_h;})
-        .text(function (d) { return d.id;});
+        .text(function (d) { return d.name;});
 
     node.attr("transform", function (d) {
         new_x = d.x;
@@ -204,7 +238,10 @@ console.log("MOUSEUP");
     /** OpenNaaS cloud **/
     cloudLink = cloudLink.data(cloudLinks);
     cloudLink.enter().append("svg:line")
-        .attr("class", "linkCtrl");
+        .attr("class", "linkCtrl")
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", "2px")
+        .attr("stroke-dasharray", "3, 3");
     
     cloudLink.attr("x1", function (d) {return d.source.x;})
         .attr("y1", function (d) {return d.source.y;})
@@ -219,14 +256,14 @@ console.log("MOUSEUP");
     cloudON.append("image")
         .attr("x", function (d) {return d.x-30;})
         .attr("y", function (d) {return d.y-35;})
-        .attr("width", 80)
-        .attr('height', 80)
+        .attr("width", 90)
+        .attr('height', 90)
         .attr('xlink:href', function (d) {return cloudONImage;});
     
     help = help.data([0]);
     help.enter().append("svg:image")
         .attr('x', 20)
-        .attr('y', height - 50)
+        .attr('y', height - 30)
         .attr("id", "helpImage")
         .attr("width", 20)
         .attr("height", 20)
@@ -236,6 +273,8 @@ console.log("MOUSEUP");
     force.on("tick", function () {
         runtime(node, links, controller);
     });
+    
+    
 }
 
 /**
@@ -297,7 +336,7 @@ function resetMouseVars() {
 
 d3.select(window)
     .on('keydown', keydown)
-    .on('keyup', keyup)
+    .on('keyup', keyup);
 
 function spliceLinksForNode(node) {
     var toSplice = links.filter(function (l) {

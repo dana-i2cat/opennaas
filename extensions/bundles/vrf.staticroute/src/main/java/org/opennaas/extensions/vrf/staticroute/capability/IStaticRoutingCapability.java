@@ -125,9 +125,9 @@ public interface IStaticRoutingCapability {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getRoutes(@PathParam("version") int version);
-    
+
     /**
-     * Get the Route Table of specific IP version
+     * Get Routes where the IP source/target appears. Used in GUI
      *
      * @param version Version of IP (4 or 6)
      * @param ipSrc
@@ -137,9 +137,7 @@ public interface IStaticRoutingCapability {
     @Path("/routes/{version}/{ipSrc}/{ipDst}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRoutes(@PathParam("version") int version, 
-            @PathParam("ipSrc") String ipSrc,
-            @PathParam("ipDst") String ipDst);
+    public Response getRoutes(@PathParam("version") int version, @PathParam("ipSrc") String ipSrc, @PathParam("ipDst") String ipDst);
 
     /**
      * Insert Routes from json file
@@ -157,12 +155,12 @@ public interface IStaticRoutingCapability {
     /**
      * Called from dynamic routing bundle
      * @param route
-     * @return 
+     * @return
      */
     @Path("/dynamic-route")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response insertRoute(String route);
-    
+
 }

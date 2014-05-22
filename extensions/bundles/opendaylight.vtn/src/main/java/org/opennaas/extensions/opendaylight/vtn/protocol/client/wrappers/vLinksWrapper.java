@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import org.opennaas.extensions.opendaylight.vtn.model.vLink;
 
 /**
- * Object wrapper of ArrayList {@link LogicPort} to allow custom JSON
+ * Object wrapper of ArrayList {@link vLinks} to allow custom JSON
  * deserialization
  *
  * @author Jospe Batallé

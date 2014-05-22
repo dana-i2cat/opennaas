@@ -24,11 +24,19 @@ function runtime(node, links, controller) {
         });
         
     controller
+	.on('dblclick', function (d) {
+                console.log(d);
+                if(d.ctrlType == "odl")
+                        window.open(d.controller);
+                else if (d.ctrlType == "fdl")
+                        window.open(d.controller+"/ui/index.html");
+        })
+
             .on('mousedown', function (d){
                 //list of switches connected with this controller
                 var ctrlId = d.id;
                 var listSw = new Array();
-                listSw = nodes.filter(function (d) { return (d.controller === ctrlId)});
+                listSw = nodes.filter(function (d) { return (d.controller === ctrlId);});
                 updateCtrlInfo(listSw, controllers);
             });
 }
@@ -133,6 +141,6 @@ function getFlowTable(dpid) {
 }
 
 function getControllerInfo(name){
-    var node = controllers.filter(function (l) {return (l.id === name ); })[0];
+    var node = controllers.filter(function (l) {return (l.name === name ); })[0];
     return node.controller;
 }

@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-
+<%--
 <ul id="navbar">
     <li>
         <a href="<c:url value="${url}/secure/noc/nfvRouting/getRouteTable?type=IPv4" />">
@@ -36,3 +36,4 @@
         </a>
     </li>
 </ul>
+--%>

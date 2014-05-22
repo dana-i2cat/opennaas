@@ -1,8 +1,8 @@
 package org.opennaas.extensions.opendaylight.vtn.protocol.client.mockup;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import javax.ws.rs.core.Response;
 import org.opennaas.extensions.opendaylight.vtn.model.Boundary;
 import org.opennaas.extensions.opendaylight.vtn.model.OpenDaylightController;
@@ -18,25 +18,27 @@ import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.Switche
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgeInterfacesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vBridgesWrapper;
 import org.opennaas.extensions.opendaylight.vtn.protocol.client.wrappers.vLinksWrapper;
-import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
  *
- * @author Adrian Rosello (i2CAT)
+ * @author Josep Batallé (i2CAT)
  *
  */
 public class OpenDaylightMockClient implements IOpenDaylightvtnAPIClient {
 
-    private Map<String, List<OpenDaylightOFFlow>> flows;
     private List<VTN> vtns;
-    private List<OpenDaylightController> controllers;
-    private List<OpenDaylightvBridge> vBridges;
-    private List<vBridgeInterfaces> vInterfaces;
-    private List<Boundary> boundaries;
-    private List<vLink> vLinks;
+    private Set<OpenDaylightController> controllers;
+    private Set<OpenDaylightvBridge> vBridges;
+    private Set<vBridgeInterfaces> vInterfaces;
+    private Set<Boundary> boundaries;
+    private Set<vLink> vLinks;
 
     public OpenDaylightMockClient() {
-        this.flows = new HashMap<String, List<OpenDaylightOFFlow>>();
+        this.controllers = new HashSet<OpenDaylightController>();
+        this.vBridges = new HashSet<OpenDaylightvBridge>();
+        this.vInterfaces = new HashSet<vBridgeInterfaces>();
+        this.boundaries = new HashSet<Boundary>();
+        this.vLinks = new HashSet<vLink>();
     }
 
     @Override

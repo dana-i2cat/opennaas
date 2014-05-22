@@ -2,8 +2,8 @@
  Topology definition. Nodes and links. Images path.
  */
 
-var sw_x = 90, sw_y = 80;
-var node_x = 30, node_y = 200;
+var sw_x = 40, sw_y = 160;
+var node_x = 30, node_y = 300;
 
 function readTextFile(url) {
     if (window.XMLHttpRequest) {              
@@ -20,7 +20,7 @@ function readTextFile(url) {
     }                                             
 }
 
-var dataTopology = readTextFile("/resources/js/topology/topo.json");
+var dataTopology = readTextFile("/nfv-gui-demo-vrf/resources/js/topology/topo.json");
 dataTopology = eval("(" +dataTopology+ ")");
 if( dataTopology ){
     console.log("Create topology vars");
@@ -48,6 +48,7 @@ function createJSVars(dataTopology){
         dataTopology.cloudLinks[i].target = controllers[dataTopology.cloudLinks[i].target];
     }
     cloudLinks = dataTopology.cloudLinks;
+    domains = dataTopology.domains;
 }
 var lastNodeId = 2,
     vertexNum = nodes.length;
@@ -61,14 +62,14 @@ function createAdjacencyMatrix() {
         }
     }
     for (i = 0; i < links.length; i++) {
-        f[links[i].source.id_num][links[i].target.id_num] = 1;
-        f[links[i].target.id_num][links[i].source.id_num] = 1;
+        f[links[i].source.id][links[i].target.id] = 1;
+        f[links[i].target.id][links[i].source.id] = 1;
     }
     return f;
 }
 
 function getNonZeroRandomNumber(){
     var random = Math.floor(Math.random()*80) - 60;
-    if(random==0) return getNonZeroRandomNumber();
+    if(random == 0) return getNonZeroRandomNumber();
     return random;
 }
