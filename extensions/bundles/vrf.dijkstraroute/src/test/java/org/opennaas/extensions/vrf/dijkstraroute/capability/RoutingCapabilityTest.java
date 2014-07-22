@@ -42,17 +42,20 @@ public class RoutingCapabilityTest {
         System.out.println("getDynamicRoute");
         String source = "";
         String target = "";
+        String DPID = "";
+        int inPort = 0;
         DijkstraRoutingCapability instance = new DijkstraRoutingCapability();
         Response expResult = null;
-        Response result = instance.getDynamicRoute(source, target);
+        Response result = instance.getDynamicRoute(source, target, DPID, inPort);
         assertEquals(404, result);
         // TODO review the generated test code and remove the default call to fail.
                
         source = String.valueOf(Utils.StringIPv4toInt("192.168.1.2"));
-        target = String.valueOf(Utils.StringIPv4toInt("192.168.2.51"));
+        target = String.valueOf(Utils.StringIPv4toInt("192.168.2.2"));
+        DPID = "00:00:00:00:00:00:00:01";
+        inPort = 1;
         instance = new DijkstraRoutingCapability();
-        result = instance.getDynamicRoute(source, target);
+        result = instance.getDynamicRoute(source, target, DPID, inPort);
         assertEquals(200, result.getStatus());
-    }
-    
+    }    
 }
