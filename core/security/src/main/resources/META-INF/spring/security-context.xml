@@ -4,9 +4,9 @@
 	xmlns:security="http://www.springframework.org/schema/security"
 	xmlns:osgi="http://www.springframework.org/schema/osgi"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/security
-		http://www.springframework.org/schema/security/spring-security-3.0.4.xsd
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd
 		http://www.springframework.org/schema/osgi
 		http://www.springframework.org/schema/osgi/spring-osgi-1.2.xsd
 		">
@@ -14,7 +14,10 @@
 	<!-- Spring Security Context -->
 	<!-- from https://josh.media.berkeley.edu/?p=61 -->
 	<bean id="mySecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
-		<security:filter-chain-map path-type="ant">
+		<security:filter-chain-map request-matcher="ant">
+			<!-- Unsecured urls -->
+			<security:filter-chain pattern="/opennaas/ofertie/**" filters="none" />
+			<!-- Secured urls -->
 			<security:filter-chain pattern="/opennaas/**"
 				filters="securityContextPersistenceFilterWithASCFalseSkippingClearContext,
 				basicAuthenticationFilter,
@@ -167,15 +170,15 @@
 		<constructor-arg>
 			<list>
 				<bean
-					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					class="org.springframework.security.core.authority.SimpleGrantedAuthority">
 					<constructor-arg value="ROLE_ADMIN" />
 				</bean>
 				<bean
-					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					class="org.springframework.security.core.authority.SimpleGrantedAuthority">
 					<constructor-arg value="ROLE_ADMIN" />
 				</bean>
 				<bean
-					class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+					class="org.springframework.security.core.authority.SimpleGrantedAuthority">
 					<constructor-arg value="ROLE_ADMIN" />
 				</bean>
 			</list>
@@ -194,36 +197,16 @@
 			value="org.springframework.security.acls.domain.BasePermission.READ" />
 	</bean>
 
-	<!-- Register OpenNaaS OSGi Services & Beans for Security -->
-
-	<!-- DataSourceSecurity bean -->
-	<bean id="dataSourceSecurity" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url"
-			value="jdbc:hsqldb:file:databases/security/security_db;hsqldb.default_table_type=cached;shutdown=true" />
-		<property name="username" value="sa" />
-		<property name="password" value="" />
-	</bean>
-
-	<!-- DataSourceSecurity exported as OSGi service -->
-	<osgi:service ref="dataSourceSecurity" interface="javax.sql.DataSource">
-		<osgi:service-properties>
-			<entry key="osgi.jndi.service.name" value="jdbc/opennaas-security" />
-		</osgi:service-properties>
-	</osgi:service>
-
-	<!-- SecurityRepository bean -->
-	<bean id="securityRepository"
-		class="org.opennaas.core.security.persistence.SecurityRepository"
-		init-method="init" destroy-method="close">
-		<property name="persistenceUnit" value="opennaas-security" />
-	</bean>
+	<!-- Get a dataSourceSecurity reference, used in aclService -->
+	<osgi:reference id="dataSourceSecurity" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-security)"/>
+	
+	<!-- Get a SecurityRepository reference, used in aclManager -->
+	<osgi:reference id="securityRepositoryService" interface="org.opennaas.core.security.persistence.SecurityRepository" />
 
 	<!-- ACLManager bean -->
 	<bean id="aclManager" class="org.opennaas.core.security.acl.ACLManager"
 		init-method="init">
-		<property name="securityRepository" ref="securityRepository" />
+		<property name="securityRepository" ref="securityRepositoryService" />
 		<property name="aclService" ref="aclService" />
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
 		<property name="usersPropertiesFile" value="users" />

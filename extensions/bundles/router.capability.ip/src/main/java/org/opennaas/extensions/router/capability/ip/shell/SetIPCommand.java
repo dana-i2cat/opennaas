@@ -1,16 +1,32 @@
 package org.opennaas.extensions.router.capability.ip.shell;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: IP Capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
 @Command(scope = "ip", name = "setIP", description = "Set an IP address in a given interface of a resource")
 public class SetIPCommand extends GenericKarafCommand {
@@ -28,51 +44,18 @@ public class SetIPCommand extends GenericKarafCommand {
 		printInitCommand("set IP address");
 
 		try {
-			IResourceManager manager = getResourceManager();
-			if (manager == null) {
-				printError("Error in manager.");
-				printEndCommand();
-				return null;
-			}
+			IResource resource = getResourceFromFriendlyName(resourceId);
 
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
-
-			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return null;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-			validateResource(resource);
-
-			NetworkPort networkPort = getNetworkPort();
-
-			if (networkPort == null) {
-				printError("Interface " + interfaceName + " not found in model");
-				printEndCommand();
-				return null;
-			}
 			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
-			try {
-				ipCapability.setIP(networkPort, ipAddress);
-			} catch (CapabilityException ce) {
-				printError("Ip format incorrect. It must match one of the following constraints: ");
-				printError("Ipv4: IPv4 Address + Net mask. Example : 144.156.12.1/24");
-				printError("Ipv6: IPv6 Address + Prefix Length. Example: A::43A:B41/64");
-				printEndCommand();
-				return null;
+			ipCapability.setIP(interfaceName, ipAddress);
 
-			}
-
+		} catch (CapabilityException ce) {
+			printError(ce);
+			printError("Remember that IP format must match one of the following constraints: ");
+			printError("Ipv4: IPv4 Address + Net mask. Example : 144.156.12.1/24");
+			printError("Ipv6: IPv6 Address + Prefix Length. Example: A::43A:B41/64");
+			printEndCommand();
+			return null;
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -86,66 +69,4 @@ public class SetIPCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-
-	/**
-	 * Get the NetworkPort
-	 * 
-	 * @return the networkPort
-	 * @throws Exception
-	 */
-	private NetworkPort getNetworkPort() throws Exception {
-		String argsInterface[] = new String[2];
-		NetworkPort networkPort = null;
-
-		if (interfaceName.startsWith("lo")) {
-			printError("Configuration for Loopback interface not allowed");
-			throw new Exception("Configuration for Loopback interface not allowed");
-		} else {
-			try {
-				argsInterface = splitInterfaces(interfaceName);
-				String interfaceName = argsInterface[0];
-				int port = Integer.parseInt(argsInterface[1]);
-
-				networkPort = new NetworkPort();
-				networkPort.setName(interfaceName);
-				networkPort.setPortNumber(port);
-				networkPort.setLinkTechnology(LinkTechnology.OTHER);
-
-				printInfo("[" + networkPort.getName() + "." + networkPort.getPortNumber() + "]  " + ipAddress);
-			} catch (Exception e) {
-				throw e;
-			}
-
-			return networkPort;
-		}
-	}
-
-	/**
-	 * TODO FORMAT TO STRING
-	 * 
-	 * @param ipAddress
-	 * @return
-	 */
-	public final static boolean validateIPAddress(String ipAddress) {
-		String[] parts = ipAddress.split("\\.");
-
-		if (parts.length != 4) {
-			return false;
-		}
-
-		for (String s : parts) {
-			try {
-				int i = Integer.parseInt(s);
-
-				if ((i < 0) || (i > 255)) {
-					return false;
-				}
-			} catch (NumberFormatException e) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 }

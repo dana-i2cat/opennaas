@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+	
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.network.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.features/${opennaas.version}/xml/features</repository>
+	
+	<feature name="opennaas-bod" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+		<feature version="${project.version}">opennaas-network-model-indl</feature>
+
+		<bundle dependency="true">mvn:joda-time/joda-time/${jodatime.version}</bundle>
+		<bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
+	</feature>
+
+</features>

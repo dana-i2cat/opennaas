@@ -5,7 +5,28 @@
 
 package org.opennaas.extensions.router.model;
 
+/*
+ * #%L
+ * OpenNaaS :: CIM Model
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -408,6 +429,67 @@ public class ManagedElement implements IModel, Serializable {
 				return removeFromAssociation(assoc);
 			}
 		return false;
+	}
+
+	// Setting Data
+	/**
+	 * @return List of {@link SettingData} associated to this {@link ManagedElement} through {@link ElementSettingData} dependency.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SettingData> getElementsSettingData() {
+		return (List<SettingData>) this.getToAssociatedElementsByType(ElementSettingData.class);
+	}
+
+	/**
+	 * Associates {@link SettingData} to this {@link ManagedElement} through {@link ElementSettingData} dependency. *
+	 * 
+	 * @param settingData
+	 * @return
+	 */
+
+	public boolean addElementSettingData(SettingData settingData) {
+		if (settingData == null)
+			return false;
+		return (ElementSettingData.link(this, settingData) != null);
+
+	}
+
+	/**
+	 * Removes {@link ElementSettingData} dependency between {@link SettingData} and this {@link ManagedElement}.
+	 * 
+	 * @param settingData
+	 * @return true if association has been removed. False otherwise (including the association was not present)
+	 */
+	public boolean removeElementSettingData(SettingData settingData) {
+
+		if (settingData == null)
+			return false;
+
+		Association a = this.getFirstToAssociationByTypeAndElement(ElementSettingData.class, settingData);
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
+	}
+
+	/**
+	 * @return List of {@link SettingData} associated to this {@link ManagedElement} through {@link ElementSettingData} dependency, filtered by a
+	 *         specific type.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends SettingData> List<T> getAllElementSettingDataByType(Class<T> clazz) {
+		List<SettingData> list = getElementsSettingData();
+
+		ArrayList<T> toReturn = new ArrayList<T>();
+		for (SettingData settingData : list) {
+			if (clazz.getClass().isInstance(settingData)) {
+				toReturn.add((T) settingData);
+			}
+		}
+		return toReturn;
 	}
 
 	/**

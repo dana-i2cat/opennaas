@@ -1,60 +1,87 @@
 package org.opennaas.extensions.openflowswitch.model;
 
+/*
+ * #%L
+ * OpenNaaS :: OpenFlow Switch
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FloodlightOFMatch {
+public class FloodlightOFMatch implements Serializable {
 
-	protected String	wildcards;
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long	serialVersionUID	= -3887645282263515698L;
+
+	protected String			wildcards;
 	/**
 	 * switch port on which the packet is received. <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	ingressPort;
+	protected String			ingressPort;
 	/**
 	 * <mac address> xx:xx:xx:xx:xx:xx
 	 */
-	protected String	srcMac;
+	protected String			srcMac;
 	/**
 	 * <mac address> xx:xx:xx:xx:xx:xx
 	 */
-	protected String	dstMac;
+	protected String			dstMac;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	vlanId;
+	protected String			vlanId;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	vlanPriority;
+	protected String			vlanPriority;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	etherType;
+	protected String			etherType;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	tosBits;
+	protected String			tosBits;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	protocol;
+	protected String			protocol;
 	/**
 	 * <ip address> xx.xx.xx.xx
 	 */
-	protected String	srcIp;
+	protected String			srcIp;
 	/**
 	 * <ip address> xx.xx.xx.xx
 	 */
-	protected String	dstIp;
+	protected String			dstIp;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	srcPort;
+	protected String			srcPort;
 	/**
 	 * <number> Can be hexadecimal (with leading 0x) or decimal
 	 */
-	protected String	dstPort;
+	protected String			dstPort;
 
 	/**
 	 * Default constructor

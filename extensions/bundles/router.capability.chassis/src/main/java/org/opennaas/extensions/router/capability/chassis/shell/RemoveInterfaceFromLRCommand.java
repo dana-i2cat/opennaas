@@ -1,45 +1,61 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import java.util.ArrayList;
+/*
+ * #%L
+ * OpenNaaS :: Router :: Chassis Capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.List;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
 
-@Command(scope = "chassis", name = "removeInterfaceFromLR", description = "Transfere an exitent subinterface from a logical router to the physical one.")
+@Command(scope = "chassis", name = "removeInterfaceFromLR", description = "Remove an exitent subinterface from a logical router.")
 public class RemoveInterfaceFromLRCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:ParentResourceName", description = "Parent resource id, target of the transference", required = true, multiValued = false)
-	private String	physicalResourceId;
+	@Argument(index = 0, name = "resourceType:ParentResourceName", description = "Parent resource id, target of the transference.", required = true, multiValued = false)
+	private String			physicalResourceId;
 
 	@Argument(index = 1, name = "resourceType:ChildResourceName", description = "Child resource id, source of the transference.", required = true, multiValued = false)
-	private String	logicalResourceId;
+	private String			logicalResourceId;
 
-	@Argument(index = 2, name = "interface", description = "The name of the interface to be transfered", required = true, multiValued = false)
-	private String	interfaceName;
+	@Argument(index = 2, name = "interfaces", description = "The names list of the interfaces to be removed.", required = true, multiValued = true)
+	private List<String>	subinterfaces;
 
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Remove an interface from a child logical router");
 
 		try {
-
 			IResource sourceResource = getResourceFromFriendlyName(physicalResourceId);
 
-			/* create call parameters */
-			ComputerSystem lrModel = createLRModel(logicalResourceId);
-			NetworkPort iface = createInterface(interfaceName);
-			List<LogicalPort> interfacesToAdd = new ArrayList<LogicalPort>();
-			interfacesToAdd.add(iface);
+			InterfacesNamesList interfacesNamesList = null;
+			if (subinterfaces != null && !subinterfaces.isEmpty()) {
+				interfacesNamesList = new InterfacesNamesList();
+				interfacesNamesList.setInterfaces(subinterfaces);
+			}
 
 			IChassisCapability chassisCapability = (IChassisCapability) sourceResource.getCapabilityByInterface(IChassisCapability.class);
-			chassisCapability.removeInterfacesFromLogicalRouter(lrModel, interfacesToAdd);
+			chassisCapability.removeInterfacesFromLogicalRouter(splitResourceName(logicalResourceId)[1], interfacesNamesList);
 
 		} catch (Exception e) {
 			printError(e);
@@ -51,26 +67,4 @@ public class RemoveInterfaceFromLRCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	public ComputerSystem createLRModel(String logicalRouterFriendlyId) throws Exception {
-		// That's a hack for not requiring logicalRouter to be already added in the resource manager when this command is executed.
-		// Instead of getting the resource using resource manager, we take logicalRouter name from the friendly id.
-		ComputerSystem logicalRouterModel = new ComputerSystem();
-		String[] targetResourceName = splitResourceName(logicalRouterFriendlyId);
-		logicalRouterModel.setName(targetResourceName[1]);
-		logicalRouterModel.setElementName(targetResourceName[1]);
-
-		return logicalRouterModel;
-	}
-
-	public NetworkPort createInterface(String interfaceNameWithPort) throws Exception {
-		// That's a hack for not requiring interface to be already created in opennaas model when this command is executed.
-		// Instead of getting it from physical router model, we use only the interface identifier.
-		// Action will fail (in execute) if this interface is not created
-		String[] paramsInterface = splitInterfaces(interfaceNameWithPort);
-		NetworkPort iface = new NetworkPort();
-		iface.setName(paramsInterface[0]);
-		iface.setPortNumber(Integer.parseInt(paramsInterface[1]));
-
-		return iface;
-	}
 }

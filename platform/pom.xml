@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.24.2</version>
+		<version>0.29-SNAPSHOT</version>
 	</parent>
 
 	<packaging>pom</packaging>
@@ -13,13 +13,12 @@
 	<artifactId>platform</artifactId>
 
 	<properties>
-		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
+		<karaf.path>apache-karaf-${karaf.version}</karaf.path>
 	</properties>
 
 	<dependencies>
-		<!-- We must list all the things we want to include in the
-		     distribution. Otherwise there is no guarantee that Maven
-		     has build those artifacts first. -->
+		<!-- We must list all the things we want to include in the distribution. 
+			Otherwise there is no guarantee that Maven has build those artifacts first. -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>karafbranding-opennaas</artifactId>
@@ -38,158 +37,50 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.bod.autobahn</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.features</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.transports.sockets</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.protocols.cli</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.protocols.tl1</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.wonesys</groupId>
-			<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ospfv3</artifactId>
-		</dependency>		
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.vrrp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.sampleresource</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.opennaas.itests</groupId>
 			<artifactId>org.opennaas.itests.helpers</artifactId>
-		</dependency>
-			<dependency>
-				<groupId>org.apache.servicemix</groupId>
-				<artifactId>apache-servicemix</artifactId>
-				<type>zip</type>
-			</dependency>
+		</dependency>		
 		
+		<dependency>
+			<groupId>org.apache.karaf</groupId>
+			<artifactId>apache-karaf</artifactId>
+			<type>tar.gz</type>
+		</dependency>
+		
+
 	</dependencies>
+
+	<pluginRepositories>
+		<!-- Codehause Snapshots - NSIS plugin requirement -->
+		<pluginRepository>
+			<id>Codehaus Snapshots</id>
+			<url>http://nexus.codehaus.org/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<plugins>
 			<plugin>
-				<!-- Unpack servicemix. The assembly will use this
-				     when packaging opennaas. -->
+				<!-- Unpack karaf. The assembly will use this when packaging opennaas. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>unpack-apache-servicemix</id>
+						<id>unpack-apache-karaf</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -197,9 +88,9 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>org.apache.servicemix</groupId>
-									<artifactId>apache-servicemix</artifactId>
-									<type>zip</type>
+									<groupId>org.apache.karaf</groupId>
+									<artifactId>apache-karaf</artifactId>
+									<type>tar.gz</type>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
@@ -208,12 +99,8 @@
 			</plugin>
 
 			<plugin>
-				<!-- Build a system repository with the artifacts we
-				     need. The assembly will include this when
-				     packaging opennaas. 
-				     Build following this guide:
-					 http://fusesource.com/docs/esb/4.4/esb_deploy_osgi/Locate-CustomRepo.html
-				-->
+				<!-- Build a system repository with the artifacts we need. The assembly 
+					will include this when packaging opennaas. Build following this guide: http://fusesource.com/docs/esb/4.4/esb_deploy_osgi/Locate-CustomRepo.html -->
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
 				<executions>
@@ -226,8 +113,7 @@
 						<configuration>
 							<karafVersion>${karaf.version}</karafVersion>
 							<descriptors>
-								<!-- List taken from featuresRepositories in 
-								org/apache/servicemix/apache-servicemix/${servicemix.version}/etc/org.apache.karaf.features.cfg -->
+								<!-- List taken from featuresRepositories in org/apache/servicemix/apache-servicemix/${servicemix.version}/etc/org.apache.karaf.features.cfg -->
 								<!-- Some of they may be unused -->
 								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.karaf.assemblies.features/enterprise/${karaf.version}/xml/features</descriptor>
@@ -238,12 +124,14 @@
 								<!-- Other featuresRepositories our ones depend on -->
 								<!-- Our featuresRepositories -->
 								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/org.opennaas.extensions.all.features/${project.version}/xml/features</descriptor>
+								<descriptor>mvn:net.i2cat/netconf-server/${netconf-server.version}/xml/features</descriptor>
+														
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
-								<feature version="${project.version}">opennaas</feature>
-								<feature version="${project.version}">itests-helpers</feature>
-								<feature version="${project.version}">nexus-testprofile</feature>
+								<feature version="${project.version}">opennaas-core</feature>
+								<feature version="${project.version}">opennaas-extensions-all</feature> 
 							</features>
 							<repository>target/system</repository>
 						</configuration>
@@ -278,4 +166,34 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>win-installer</id>
+			<build>
+				<plugins>
+					<!-- NSIS plugin for producing Windows installer -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>nsis-maven-plugin</artifactId>
+						<version>1.0-alpha-1</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>generate-headerfile</goal>
+									<goal>make</goal>
+								</goals>
+								<configuration>
+									<scriptFile>src/nsis/opennaas.nsi</scriptFile>
+									<outputFile>opennaas-${project.version}-installer.exe</outputFile>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

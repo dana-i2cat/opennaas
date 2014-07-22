@@ -1,5 +1,26 @@
 package org.opennaas.extensions.router.capability.ospfv3;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: OSPFv3 Capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +34,10 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.AddInterfacesInOSPFAreaRequest;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.RemoveInterfacesInOSPFAreaRequest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -23,8 +48,6 @@ import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.Service;
-import org.opennaas.extensions.router.model.wrappers.AddInterfacesInOSPFAreaRequest;
-import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaRequest;
 
 public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capability {
 
@@ -319,7 +342,7 @@ public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capab
 	@Override
 	public OSPFService showOSPFv3Configuration() throws CapabilityException {
 		log.info("Start of showOSPFv3Configuration call");
-		OSPFService ospfService = null;
+		OSPFService ospfService = new OSPFService();
 		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
 		if (lServices == null || lServices.isEmpty()) {
 			return null;
@@ -337,6 +360,24 @@ public class OSPFv3Capability extends AbstractCapability implements IOSPFv3Capab
 		}
 		log.info("End of showOSPFv3Configuration call");
 		return ospfService;
+	}
+
+	@Override
+	public OSPFServiceWrapper readOSPFv3Configuration() throws CapabilityException {
+
+		log.info("Start of readOSPFv3Configuration call.");
+
+		OSPFService ospfService = showOSPFv3Configuration();
+		OSPFServiceWrapper serviceWrapper;
+		try {
+			serviceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+
+		log.info("End of readOSPFv3Configuration call");
+
+		return serviceWrapper;
 	}
 
 	@Override

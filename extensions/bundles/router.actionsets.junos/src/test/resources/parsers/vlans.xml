@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<rpc-reply xmlns:junos="http://xml.juniper.net/junos/10.0R3/junos">
+	<configuration junos:changed-seconds="1310541978"
+		junos:changed-localtime="2011-07-13 07:26:18 UTC">
+		<vlans>
+			<vlan>
+				<name>vlan12</name>
+				<vlan-id>12</vlan-id>
+				<description>VLANBridge with VLAN 12</description>
+				<interface><name>fe-0/4/1.0</name></interface>
+			</vlan>
+			<vlan>
+				<name>vlan20</name>
+				<vlan-id>20</vlan-id>
+				<description>VLANBridge with VLAN 20</description>
+				<interface><name>ge-1/1/1.0</name></interface>
+				<interface><name>fe-1/2/1.0</name></interface>
+			</vlan>
+		</vlans>
+	</configuration>
+</rpc-reply>

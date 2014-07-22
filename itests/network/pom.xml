@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>org.opennaas.itests</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.24.2</version>
+		<version>0.29-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests.network</artifactId>
@@ -40,5 +40,10 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
+		</dependency>
+		
  	</dependencies>
 </project>

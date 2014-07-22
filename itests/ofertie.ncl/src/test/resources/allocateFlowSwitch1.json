@@ -1,0 +1,14 @@
+{
+   "switch":"00:00:00:00:00:00:00:01",
+   "name":"d56911a5-77ee-4abb-b96e-61759b152e15",
+   "priority":"32000",
+   "active":"true",
+   "ingress-port":"3",
+   "ether-type":"2048",
+   "tos-bits":"0",
+   "src-ip":"192.168.10.10",
+   "dst-ip":"192.168.10.11",
+   "src-port":"0",
+   "dst-port":"0",
+   "actions":"output=1"
+}

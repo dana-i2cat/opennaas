@@ -5,6 +5,26 @@
 
 package org.opennaas.extensions.router.model;
 
+/*
+ * #%L
+ * OpenNaaS :: CIM Model
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +54,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 * 
 	 * @return List of Services associated to this System through HostedService dependency.
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Service> getHostedService() {
 		return (List<Service>) this.getToAssociatedElementsByType(HostedService.class);
 	}
@@ -94,6 +115,104 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return somethingIsRemoved;
 	}
 
+	// HOSTED COLLECTION
+
+	/**
+	 * 
+	 * @return List of {@link SystemSpecificCollection} associated to this {@link System} through {@link HostedCollection} dependency.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SystemSpecificCollection> getHostedCollection() {
+		return (List<SystemSpecificCollection>) this.getToAssociatedElementsByType(HostedCollection.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends SystemSpecificCollection> List<T> getAllHostedCollectionsByType(Class<T> clazz) {
+		List<SystemSpecificCollection> list = getHostedCollection();
+
+		ArrayList<T> desiredServices = new ArrayList<T>();
+		for (SystemSpecificCollection hostedCollection : list) {
+			if (clazz.isInstance(hostedCollection)) {
+				desiredServices.add((T) hostedCollection);
+			}
+		}
+		return desiredServices;
+	}
+
+	/**
+	 * Adds a {@link HostedCollection} dependency between {@link SystemSpecificCollection} and this {@link System}
+	 * 
+	 * @param collection
+	 * @return
+	 */
+	public boolean addHostedCollection(SystemSpecificCollection collection) {
+		if (collection == null)
+			return false;
+
+		return (HostedCollection.link(this, collection) != null);
+	}
+
+	/**
+	 * Removes {@link HostedCollection} dependency between {@link SystemSpecificCollection} and this {@link System}
+	 * 
+	 * @param collection
+	 * @return true if association has been removed. False otherwise (including the association was not present)
+	 */
+	public boolean removeHostedCollection(SystemSpecificCollection collection) {
+		if (collection == null)
+			return false;
+
+		Association a = this.getFirstToAssociationByTypeAndElement(HostedCollection.class, collection);
+
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
+
+	}
+
+	/**
+	 * Removes all {@link HostedCollection} dependencies between {@link SystemSpecificCollection} and this {@link System}
+	 * 
+	 * @param clazz
+	 * @return true if some association has been removed. False otherwise.
+	 */
+	public boolean removeAllHostedCollectionByType(Class<BridgeDomain> clazz) {
+		List<SystemSpecificCollection> list = getHostedCollection();
+
+		boolean somethingIsRemoved = false;
+		for (SystemSpecificCollection hc : list) {
+			if (clazz.isInstance(hc)) {
+				removeHostedCollection(hc);
+				somethingIsRemoved = true;
+			}
+		}
+		return somethingIsRemoved;
+
+	}
+
+	/**
+	 * Returns the list of {@link HostedCollection} dependencies of a specific type with this {@link System}
+	 * 
+	 * @param model
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends SystemSpecificCollection> List<T> getHostedCollectionByType(T clazz) {
+
+		List<SystemSpecificCollection> list = getHostedCollection();
+		List<T> listToReturn = new ArrayList<T>();
+
+		for (SystemSpecificCollection hc : list)
+			if (clazz.getClass().isInstance(hc))
+				listToReturn.add((T) hc);
+
+		return listToReturn;
+
+	}
+
 	/* NEXT HOP ROUTES */
 	/**
 	 * Add a new HostedRoute association between NexthopRoute and this element
@@ -126,8 +245,28 @@ public class System extends EnabledLogicalElement implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<NextHopRoute> getNextHopRoute() {
 		return (List<NextHopRoute>) this.getToAssociatedElementsByType(HostedRoute.class);
+	}
+
+	/**
+	 * Remove all NexthopRoute elements
+	 * 
+	 * @return
+	 */
+	public boolean removeAllNextHopRoutes() {
+		List<NextHopRoute> list = getNextHopRoute();
+
+		boolean oneRemoved = false;
+
+		for (NextHopRoute nhr : list) {
+			if (removeNextHopRoute(nhr)) {
+				oneRemoved = true;
+			}
+		}
+
+		return oneRemoved;
 	}
 
 	/* LOGICAL DEVICES */
@@ -137,18 +276,21 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return (SystemDevice.link(this, logicalDevice) != null);
 	}
 
-	// TODO control the return value
 	public boolean removeAllLogicalDeviceByType(Class<? extends ManagedElement> clazz) {
 		List<LogicalDevice> list = getLogicalDevices();
+
+		boolean oneRemoved = false;
 
 		for (LogicalDevice ld : list) {
 
 			if (clazz.isInstance(ld)) {
-				removeLogicalDevice(ld);
+				if (removeLogicalDevice(ld)) {
+					oneRemoved = true;
+				}
 			}
 		}
 
-		return true;
+		return oneRemoved;
 	}
 
 	public boolean removeLogicalDevice(LogicalDevice logicalDevice) {
@@ -164,6 +306,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<LogicalDevice> getLogicalDevices() {
 		return (List<LogicalDevice>) this.getToAssociatedElementsByType(SystemDevice.class);
 	}

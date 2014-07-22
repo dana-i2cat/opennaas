@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+	
+	<!-- INSERT ALL FEATURES REPOSITORIES YOUR FEATURE DEPENDS ON, AS IN THE FOLLOWING EXAMPLE -->
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository> -->
+	
+	<!-- DEFINE YOUR NEW FEATURE, BY ADDING ALL FEATURES AND BUNDLES IT DEPENDS ON - as many was you want -->
+	<!-- DON'T FORGET TO EDIT THE NAME OF THE FEATURE -->
+	<feature name="[FEATURE-NAME]" version="${opennaas.version}">
+		<!-- opennaas features dependencies -->
+		<feature version="${project.version}">opennaas-feature-dependency-1</feature>
+		
+		<!-- external features dependencies -->
+		<feature version="[FEATURE.VERSION]">external-feature-dependency-1</feature>
+
+		<!-- single bundles dependencies -->
+		<bundle dependency="true">mvn:groupid/artifacid/${bundle-version}</bundle>
+
+		<!-- bundles of my feature -->
+		<bundle>mvn:org.opennaas/mybundle/${project.version}</bundle>
+	</feature>
+
+</features>

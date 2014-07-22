@@ -98,4 +98,38 @@
 		</service-properties>
 	</service>
 	
+	<bean id="linkAggregationActionSet" class="org.opennaas.extensions.router.junos.actionssets.LinkAggregationActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="linkAggregationActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="linkaggregation"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+	
+
+	<bean id="vlanBridgeActionSet" class="org.opennaas.extensions.router.junos.actionssets.VLANBridgeActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="vlanBridgeActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="vlanbridge"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+
+	<bean id="l3vlanActionSet" class="org.opennaas.extensions.router.junos.actionssets.L3VlanActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="l3vlanActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="l3vlan"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+	
 </blueprint>

@@ -1,5 +1,25 @@
 package org.opennaas.extensions.router.capability.ospf.shell;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: OSPF capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +28,8 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 
 /**
  * @author Isart Canyameres
@@ -32,16 +52,10 @@ public class EnableInterfaceCommand extends GenericKarafCommand {
 			// FIXME Cannot read model to get OSPFProtocolEndpoints and their OSPFArea.
 			// model may not be updated :S
 
-			List<OSPFProtocolEndpoint> ospfPeps = new ArrayList<OSPFProtocolEndpoint>(interfaceNames.size());
-			OSPFProtocolEndpoint pep;
-			for (String ifaceName : interfaceNames) {
-				pep = new OSPFProtocolEndpoint();
-				pep.setName(ifaceName);
-				ospfPeps.add(pep);
-			}
+			InterfacesNamesList interfaces = getInterfaces();
 
 			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
-			ospfCapability.enableOSPFInterfaces(ospfPeps);
+			ospfCapability.enableOSPFInterfaces(interfaces);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -55,5 +69,14 @@ public class EnableInterfaceCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
+	}
+
+	private InterfacesNamesList getInterfaces() {
+		InterfacesNamesList ifaces = new InterfacesNamesList();
+		List<String> interfaces = new ArrayList<String>();
+		interfaces.addAll(interfaceNames);
+		ifaces.setInterfaces(interfaces);
+
+		return ifaces;
 	}
 }

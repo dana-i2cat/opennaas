@@ -1,0 +1,30 @@
+<configuration>
+	#if(!$elementName.equals("") )		
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	
+    <interfaces>
+    	<interface>
+    		<name>$param.getName()</name>
+    		<unit>
+    			<name>$param.getPortNumber()</name>
+    			<family>
+	    			<ethernet-switching operation="merge">
+	    				#if ($param.getElementsSettingData().get(0).getPortMode())
+		    				#if (!$param.getElementsSettingData().get(0).getPortMode().equals("") )
+		    					<port-mode>$param.getElementsSettingData().get(0).getPortMode()</port-mode>
+		    				#end
+	    				#end
+	    				#if ($param.getElementsSettingData().get(0).getNativeVlanId() > -1)
+	    					<native-vlan-id>$param.getElementsSettingData().get(0).getNativeVlanId()</native-vlan-id>
+	    				#end    				
+	    			</ethernet-switching>
+    			</family>
+    		</unit>
+    	</interface>
+    </interfaces>
+	#if(!$elementName.equals("") )		
+		</logical-systems>
+	#end
+</configuration>

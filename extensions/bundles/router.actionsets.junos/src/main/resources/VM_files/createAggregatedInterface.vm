@@ -1,0 +1,36 @@
+#** 
+@param param: an AggregatedLogicalPort to be configured 
+@param isLR: a boolean telling whether AggregatedLogicalPort should be created in a logical router is a logical router or not
+@param lrName: a String with the logical router name (only set if isLR is true)
+@param setMinimumLinks: boolean telling whether minimum-links tag should be set or not
+@param setLinkSpeed: boolean telling whether link-speed tag should be set or not
+*#
+<configuration>
+	#if($isLR)
+		<logical-systems>
+			<name>$lrName</name>
+	#end
+	<interfaces>
+		<interface operation="create" >
+			<name>$param.getElementName()</name>
+				<aggregated-ether-options>
+					<lacp>
+					#if($param.getAggregatedOptions().isLacpActive())
+						<active />
+					#else
+						<passive />
+					#end
+					</lacp>
+					#if($setMinimumLinks)
+					<minimum-links>$param.getAggregatedOptions().getMinimumLinks()</minimum-links>
+					#end
+					#if($setLinkSpeed)
+					<link-speed>$param.getAggregatedOptions().getLinkSpeed()</link-speed>
+					#end
+				</aggregated-ether-options>
+		</interface>
+	</interfaces>
+	#if($isLR)
+		</logical-systems>
+	#end
+</configuration>

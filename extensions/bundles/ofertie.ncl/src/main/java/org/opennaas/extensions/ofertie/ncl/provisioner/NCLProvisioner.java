@@ -1,31 +1,89 @@
 package org.opennaas.extensions.ofertie.ncl.provisioner;
 
-import java.util.Collection;
+/*
+ * #%L
+ * OpenNaaS :: OFERTIE :: NCL components
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
-import org.opennaas.extensions.ofertie.ncl.controller.api.INCLController;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProvisionerCapability;
+import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
+import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
+import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestWrapperParser;
+import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowNotFoundException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Flow;
-import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.FlowRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
-import org.opennaas.extensions.ofertie.ncl.provisioner.components.IPathFinder;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
-import org.opennaas.extensions.sdnnetwork.model.Route;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.NCLModel;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
+ * @author Adrian Rosello Rey (i2CAT)
  * 
  */
 public class NCLProvisioner implements INCLProvisioner {
 
 	private IQoSPDP				qoSPDP;
 	private INetworkSelector	networkSelector;
-	private IPathFinder			pathFinder;
-	private INCLController		nclController;
+	private IResourceManager	resourceManager;
+
+	private NCLModel			model;
+
+	private final Object		mutex;
+
+	public NCLProvisioner() {
+		mutex = new Object();
+	}
+
+	public NCLModel getModel() {
+		return model;
+	}
+
+	public void setModel(NCLModel model) {
+		this.model = model;
+	}
+
+	private Log	log	= LogFactory.getLog(NCLProvisioner.class);
+
+	public Map<String, CircuitRequest> getAllocatedRequests() {
+		return model.getAllocatedRequests();
+	}
 
 	/**
 	 * @return the qoSPDP
@@ -57,27 +115,12 @@ public class NCLProvisioner implements INCLProvisioner {
 		this.networkSelector = networkSelector;
 	}
 
-	/**
-	 * @return the pathFinder
-	 */
-	public IPathFinder getPathFinder() {
-		return pathFinder;
+	public IResourceManager getResourceManager() {
+		return resourceManager;
 	}
 
-	/**
-	 * @param pathFinder
-	 *            the pathFinder to set
-	 */
-	public void setPathFinder(IPathFinder pathFinder) {
-		this.pathFinder = pathFinder;
-	}
-
-	public INCLController getNclController() {
-		return nclController;
-	}
-
-	public void setNclController(INCLController nclController) {
-		this.nclController = nclController;
+	public void setResourceManager(IResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
 	}
 
 	// ///////////////////////////
@@ -85,56 +128,237 @@ public class NCLProvisioner implements INCLProvisioner {
 	// ///////////////////////////
 
 	@Override
-	public String allocateFlow(FlowRequest flowRequest)
-			throws FlowAllocationException, ProvisionerException {
+	public String allocateFlow(QosPolicyRequest qosPolicyRequest) throws ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
 
-		try {
+			try {
 
-			String userId = "alice";
-			if (!getQoSPDP().shouldAcceptRequest(userId, flowRequest)) {
-				throw new FlowAllocationRejectedException("Rejected by policy");
+				String userId = "alice";
+				if (!getQoSPDP().shouldAcceptRequest(userId, qosPolicyRequest)) {
+					throw new FlowAllocationRejectedException("Rejected by policy");
+				}
+
+				String netId = getNetworkSelector().getNetwork();
+
+				IResource networkResource = getResource(netId);
+				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
+						.getCapabilityByInterface(INCLProvisionerCapability.class);
+
+				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosPolicyRequest);
+				String circuitId = nclProvCapab.allocateCircuit(circuitRequest);
+
+				getAllocatedRequests().put(circuitId, circuitRequest);
+
+				return circuitId;
+			} catch (FlowAllocationException fae) {
+				throw fae;
+			} catch (CapabilityException ce) {
+				throw new FlowAllocationException(ce);
+			} catch (Exception e) {
+				throw new ProvisionerException(e);
 			}
-
-			String netId = getNetworkSelector().findNetworkForRequest(flowRequest);
-			Route route = getPathFinder().findPathForRequest(flowRequest, netId);
-			String flowId = getNclController().allocateFlow(flowRequest, route, netId);
-
-			return flowId;
-
-		} catch (FlowAllocationException fae) {
-			throw fae;
-		} catch (Exception e) {
-			throw new ProvisionerException(e);
 		}
 	}
 
 	@Override
-	public String updateFlow(String flowId, FlowRequest updatedFlowRequest)
-			throws FlowAllocationException, FlowNotFoundException,
+	public String updateFlow(String flowId, QosPolicyRequest updatedQosPolicyRequest) throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented");
-	}
+		synchronized (mutex) {
 
-	@Override
-	public void deallocateFlow(String flowId) throws FlowNotFoundException,
-			ProvisionerException {
+			try {
 
-		try {
+				String netId = getNetworkSelector().getNetwork();
 
-			String netId = getNetworkSelector().findNetworkForFlowId(flowId);
-			getNclController().deallocateFlow(flowId, netId);
+				IResource networkResource = getResource(netId);
+				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
+						.getCapabilityByInterface(INCLProvisionerCapability.class);
 
-		} catch (Exception e) {
-			throw new ProvisionerException(e);
+				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(updatedQosPolicyRequest);
+
+				nclProvCapab.updateCircuit(flowId, circuitRequest);
+
+				getAllocatedRequests().put(flowId, circuitRequest);
+
+				return flowId;
+			} catch (CircuitAllocationException e) {
+				throw new FlowAllocationException(e);
+			} catch (NotExistingCircuitException e) {
+				throw new FlowNotFoundException(e);
+			} catch (ResourceException e) {
+				throw new ProvisionerException(e);
+			} catch (Exception e) {
+				throw new ProvisionerException(e);
+			}
 		}
 	}
 
 	@Override
-	public Collection<Flow> readAllocatedFlows()
-			throws ProvisionerException {
+	public void deallocateFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
+		synchronized (mutex) {
+			try {
 
-		return getNclController().getFlows();
+				String netId = getNetworkSelector().getNetwork();
+
+				IResource networkResource = getResource(netId);
+				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
+						.getCapabilityByInterface(INCLProvisionerCapability.class);
+
+				nclProvCapab.deallocateCircuit(flowId);
+
+				getAllocatedRequests().remove(flowId);
+
+			} catch (NotExistingCircuitException e) {
+				throw new FlowNotFoundException(e);
+			} catch (ResourceException e) {
+				throw new ProvisionerException(e);
+			} catch (Exception e) {
+				throw new ProvisionerException(e);
+			}
+		}
+	}
+
+	@Override
+	public QoSPolicyRequestsWrapper readAllocatedFlows() throws ProvisionerException {
+
+		synchronized (mutex) {
+			try {
+				QoSPolicyRequestsWrapper wrapper;
+
+				Map<String, CircuitRequest> allocatedRequests = getAllocatedRequests();
+
+				wrapper = QoSPolicyRequestWrapperParser.fromCircuitRequests(allocatedRequests);
+
+				return wrapper;
+
+			} catch (Exception e) {
+				throw new ProvisionerException(e);
+			}
+		}
+
+	}
+
+	public QosPolicyRequest getFlow(String flowId) throws FlowNotFoundException, ProvisionerException {
+		synchronized (mutex) {
+			if (getAllocatedRequests().containsKey(flowId)) {
+				return QosPolicyRequestParser.fromCircuitRequest(getAllocatedRequests().get(flowId));
+			}
+			throw new FlowNotFoundException();
+		}
+	}
+
+	// ////////////////////
+	// Parameter Methods //
+	// ////////////////////
+
+	@Override
+	public Latency getLatency(String flowId) throws FlowNotFoundException, ProvisionerException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			return qosPolicyRequest.getQosPolicy().getLatency();
+		}
+	}
+
+	@Override
+	public void updateLatency(String flowId, Latency latency) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setLatency(latency);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	@Override
+	public void deleteLatency(String flowId) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setLatency(null);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	@Override
+	public Jitter getJitter(String flowId) throws FlowNotFoundException, ProvisionerException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			return qosPolicyRequest.getQosPolicy().getJitter();
+		}
+	}
+
+	@Override
+	public void updateJitter(String flowId, Jitter jitter) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setJitter(jitter);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	@Override
+	public void deleteJitter(String flowId) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setJitter(null);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	@Override
+	public Throughput getThroughput(String flowId) throws FlowNotFoundException, ProvisionerException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			return qosPolicyRequest.getQosPolicy().getThroughput();
+		}
+	}
+
+	@Override
+	public void updateThroughput(String flowId, Throughput throughput) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setThroughput(throughput);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	@Override
+	public void deleteThroughput(String flowId) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setThroughput(null);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	@Override
+	public PacketLoss getPacketLoss(String flowId) throws FlowNotFoundException, ProvisionerException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			return qosPolicyRequest.getQosPolicy().getPacketLoss();
+		}
+	}
+
+	@Override
+	public void updatePacketLoss(String flowId, PacketLoss packetLoss) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setPacketLoss(packetLoss);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	@Override
+	public void deletePacketLoss(String flowId) throws FlowNotFoundException, ProvisionerException, FlowAllocationException {
+		synchronized (mutex) {
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			qosPolicyRequest.getQosPolicy().setPacketLoss(null);
+			updateFlow(flowId, qosPolicyRequest);
+		}
+	}
+
+	private IResource getResource(String networkId) throws ActivatorException, ResourceException {
+
+		IResource resource = resourceManager.getResourceById(networkId);
+
+		return resource;
 	}
 
 }

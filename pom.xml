@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.24.2</version>
+	<version>0.29-SNAPSHOT</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -31,6 +31,7 @@
 
 		<ant.version>1.7.0_4</ant.version>
 		<activemq.version>5.7.0</activemq.version>
+		<apache.oro.version>2.0.8_6</apache.oro.version>
 		<axiom.version>1.2.12</axiom.version>
 		<beanutils.version>1.8.0</beanutils.version>
 		<camel.version>2.10.6</camel.version>
@@ -41,14 +42,16 @@
 		<commons.dbcp.version>1.2.2_7</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
 		<commons.io.version>1.4</commons.io.version>
-		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
-		<commons.lang.version>2.4_4</commons.lang.version>
+		<commons.jxpath.version>1.2_5</commons.jxpath.version>
+		<commons-lang.version>2.5</commons-lang.version>
+		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
-		<cxf.version>2.7.7</cxf.version>
+		<cxf.version>2.7.10</cxf.version>
 		<cxf.dosgi.version>1.5.0</cxf.dosgi.version>
 		<dom4j.version>1.6.1_5</dom4j.version>
 		<easymock.version>3.1</easymock.version>
+		<powermock.version>1.5.4</powermock.version>
 		<felix.eventadmin.version>1.2.14</felix.eventadmin.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -56,7 +59,7 @@
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.3</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
-		<guava.version>10.0.1</guava.version>	
+		<guava.version>16.0.1</guava.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate-validator>4.3.0.Final</hibernate-validator>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
@@ -69,30 +72,31 @@
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>
+		<jetty.version>7.5.4.v20111024</jetty.version>
 		<jodatime.version>2.1</jodatime.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 		<jdom.version>1.1_4</jdom.version>
 		<jsonassert.version>1.2.0</jsonassert.version>					
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
-		<junit.version>4.10</junit.version>
-		<karaf.version>2.2.11</karaf.version>
+		<junit.version>4.11</junit.version>
+		<karaf.version>2.3.5</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
-		<netconf4j.version>0.0.4</netconf4j.version>
+		<netconf4j.version>0.0.8</netconf4j.version>
 		<nmr.version>1.6.1</nmr.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
 		<opensaml.version>2.4.1_1</opensaml.version>
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam2.version>2.3.0</pax.exam2.version>
+		<pax.exam3.version>3.4.0</pax.exam3.version>
 		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.5.2</servicemix.version>
+		<servicemix.version>5.0.0</servicemix.version>
 		<servicemix.specs.version>2.2.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.11.0_1</servicemix.xerces.version>
@@ -110,8 +114,8 @@
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<snmp4j.version>2.1.0_1</snmp4j.version>
-		<spring.version>3.0.7.RELEASE</spring.version>
-		<spring.security.version>3.0.8.RELEASE</spring.security.version>
+		<spring.version>3.2.4.RELEASE</spring.version>
+		<spring.security.version>3.1.5.RELEASE</spring.security.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<stax2.api.version>3.1.1</stax2.api.version>
 		<tiles-api.version>2.2.2</tiles-api.version>
@@ -126,7 +130,17 @@
 		<xml.resolver.version>1.2_1</xml.resolver.version>
 		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
-		<opennaas.gim.version>0.24.2</opennaas.gim.version>
+		<opennaas.gim.version>0.29-SNAPSHOT</opennaas.gim.version>
+		<!-- Maven license plugin version -->
+		<license.plugin.version>1.6</license.plugin.version>
+		
+		<!-- Properties for license -->
+		<project.inceptionYear>2007</project.inceptionYear>
+		<project.organization.name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</project.organization.name>
+		<project.name>OpenNaaS</project.name>
+		
+		<!-- Netconf server for itests -->
+		<netconf-server.version>0.0.3</netconf-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -260,6 +274,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.actionsets.opener</artifactId>
+				<version>${project.version}</version>
+			</dependency>				
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -270,9 +289,19 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.vlanbridge</artifactId>
+				<version>${project.version}</version>				
+			</dependency>			
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+			 	<groupId>org.opennaas</groupId>
+			 	<artifactId>org.opennaas.extensions.router.capabilities.api</artifactId>
+			 	<version>${project.version}</version>
+			</dependency>			
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
@@ -330,6 +359,16 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.l3vlan</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.linkaggregation</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -374,15 +413,10 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-                                <groupId>org.opennaas</groupId>
-                                <artifactId>org.opennaas.extensions.openflowswitch.driver.opendaylight</artifactId>
-                                <version>${project.version}</version>
-                        </dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.sdnnetwork</artifactId>
-				<version>${project.version}</version>
-			</dependency>
+                    <groupId>org.opennaas</groupId>
+                    <artifactId>org.opennaas.extensions.openflowswitch.driver.opendaylight</artifactId>
+                    <version>${project.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.gim</artifactId>
@@ -401,28 +435,33 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 	 			<artifactId>org.opennaas.extensions.ofertie.ncl</artifactId>
-				<version>${project.version}</version>	 			
-			</dependency>	
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 	 			<artifactId>org.opennaas.extensions.vrf.model</artifactId>
 				<version>${project.version}</version>	 			
 			</dependency>
 			 <dependency>
-                                <groupId>org.opennaas</groupId>
-                                <artifactId>org.opennaas.extensions.vrf.staticroute</artifactId>
-                                <version>${project.version}</version>
-                        </dependency>
+                    <groupId>org.opennaas</groupId>
+                    <artifactId>org.opennaas.extensions.vrf.staticroute</artifactId>
+                    <version>${project.version}</version>
+            </dependency>
 			 <dependency>
-                                <groupId>org.opennaas</groupId>
-                                <artifactId>org.opennaas.extensions.vrf.dijkstraroute</artifactId>
-                                <version>${project.version}</version>
-                        </dependency>
+                    <groupId>org.opennaas</groupId>
+                    <artifactId>org.opennaas.extensions.vrf.dijkstraroute</artifactId>
+                    <version>${project.version}</version>
+            </dependency>
 			 <dependency>
-                                <groupId>org.opennaas</groupId>
-                                <artifactId>org.opennaas.extensions.vrf.selector</artifactId>
-                                <version>${project.version}</version>
-                        </dependency>
+		            <groupId>org.opennaas</groupId>
+		            <artifactId>org.opennaas.extensions.vrf.selector</artifactId>
+		            <version>${project.version}</version>
+		    </dependency>
 			
 			<!-- iTests -->
 			<dependency>
@@ -435,6 +474,12 @@
 				<groupId>net.i2cat.netconf</groupId>
 				<artifactId>netconf4j</artifactId>
 				<version>${netconf4j.version}</version>
+			</dependency>
+			<!-- Netconf server -->
+			<dependency>
+			    <groupId>net.i2cat</groupId>
+			    <artifactId>netconf-server</artifactId>
+			    <version>${netconf-server.version}</version>
 			</dependency>
 			<!-- Digester, velocity and deps -->
 			<dependency>
@@ -455,22 +500,17 @@
 			<dependency>
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
-				<version>2.5</version>
+				<version>${commons-lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.0.1</version>
+				<version>${commons-lang3.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-digester</groupId>
 				<artifactId>commons-digester</artifactId>
 				<version>${commons.digester.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.servicemix.bundles</groupId>
-				<artifactId>org.apache.servicemix.bundles.commons-lang</artifactId>
-				<version>${commons.lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
@@ -948,6 +988,11 @@
 				<version>${cxf.version}</version>
 			</dependency>
 			<dependency>
+			    <groupId>org.apache.cxf</groupId>
+			    <artifactId>cxf-bundle-jaxrs</artifactId>
+			    <version>${cxf.version}</version>
+			</dependency>			
+			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
@@ -1021,32 +1066,59 @@
 				<version>${easymock.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<!-- PowerMock (https://code.google.com/p/powermock/) and
+			     Mockito (https://code.google.com/p/mockito/) 
+				 test frameworks -->
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-module-junit4</artifactId>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito</artifactId>
+				<version>${powermock.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<!-- Integration tests -->
 			<dependency>
-				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-				<artifactId>paxexam-karaf-container</artifactId>
-				<version>${paxexam-karaf-container.version}</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam-container-karaf</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-junit4</artifactId>
-				<version>${pax.exam2.version}</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam-junit4</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.ops4j.pax.swissbox</groupId>
-				<artifactId>pax-swissbox-framework</artifactId>
-				<version>1.5.0</version>
-				<scope>test</scope>
+			    <groupId>org.ops4j.pax.exam</groupId>
+			    <artifactId>pax-exam</artifactId>
+			    <version>${pax.exam3.version}</version>
+			    <scope>test</scope>
 			</dependency>
+			<dependency>
+			    <groupId>org.ops4j.pax.url</groupId>
+			    <artifactId>pax-url-aether</artifactId>
+			    <version>1.6.0</version>
+			    <scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>javax.inject</groupId>
+			    <artifactId>javax.inject</artifactId>
+			    <version>1</version>
+			    <scope>test</scope>
+			</dependency>			
 			<!-- Features -->
 			<!--  -->
 			<dependency>
-				<groupId>org.apache.servicemix</groupId>
-				<artifactId>apache-servicemix</artifactId>
-				<version>${servicemix.version}</version>
-				<type>zip</type>
+				<groupId>org.apache.karaf</groupId>
+				<artifactId>apache-karaf</artifactId>
+				<version>${karaf.version}</version>
+				<type>tar.gz</type>			    
 			</dependency>
 			<!-- Misc -->
 			<dependency>
@@ -1070,8 +1142,9 @@
 				<version>${hibernate.jpa-api.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.googlecode.guava-osgi</groupId>
-				<artifactId>guava-osgi</artifactId>
+				<!-- Guava's Team is releasing Guava as OSGi since 12.0.0 -->
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
 			</dependency>
 			<dependency>
@@ -1120,7 +1193,25 @@
 				<version>${jsonassert.version}</version>
 			</dependency>			
 			
+			<!-- Jetty -->
+	       <dependency>
+	           <groupId>org.eclipse.jetty</groupId>
+	           <artifactId>jetty-server</artifactId>
+	           <version>${jetty.version}</version>
+	       </dependency>
+       
+		    <dependency>
+		       <groupId>org.eclipse.jetty</groupId>
+		       <artifactId>jetty-servlet</artifactId>
+	           <version>${jetty.version}</version>
+		   </dependency>     			
 			
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-http</artifactId>
+	           <version>${jetty.version}</version>				
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -1143,7 +1234,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.6</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1302,6 +1393,11 @@
 						</dependency>
 					</dependencies>
 				</plugin>
+				<plugin>
+          			<groupId>org.codehaus.mojo</groupId>
+          			<artifactId>license-maven-plugin</artifactId>
+          			<version>${license.plugin.version}</version>
+        		</plugin>		
 			</plugins>
 		</pluginManagement>
 

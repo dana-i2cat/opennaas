@@ -1,5 +1,28 @@
 package org.opennaas.extensions.router.junos.actionssets;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: Junos ActionSet
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.AddOSPFInterfaceInAreaAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.ClearOSPFAction;
@@ -11,6 +34,11 @@ import org.opennaas.extensions.router.junos.actionssets.actions.ospf.GetOSPFConf
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.RemoveOSPFAreaAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.ospf.RemoveOSPFInterfaceInAreaAction;
 
+/**
+ * 
+ * @author Adrian Rosello Rey (i2CAT)
+ * 
+ */
 public class OSPFActionSet extends ActionSet {
 
 	public OSPFActionSet() {
@@ -30,5 +58,24 @@ public class OSPFActionSet extends ActionSet {
 
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.OSPF_GET_CONFIGURATION);
+	}
+
+	@Override
+	public List<String> getActionNames() {
+		List<String> actionNames = new ArrayList<String>();
+
+		actionNames.add(ActionConstants.OSPF_GET_CONFIGURATION);
+		actionNames.add(ActionConstants.OSPF_CONFIGURE);
+		actionNames.add(ActionConstants.OSPF_CLEAR);
+		actionNames.add(ActionConstants.OSPF_ACTIVATE);
+		actionNames.add(ActionConstants.OSPF_DEACTIVATE);
+		actionNames.add(ActionConstants.OSPF_ENABLE_INTERFACE);
+		actionNames.add(ActionConstants.OSPF_DISABLE_INTERFACE);
+		actionNames.add(ActionConstants.OSPF_CONFIGURE_AREA);
+		actionNames.add(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA);
+		actionNames.add(ActionConstants.OSPF_REMOVE_AREA);
+		actionNames.add(ActionConstants.OSPF_REMOVE_INTERFACE_IN_AREA);
+
+		return actionNames;
 	}
 }

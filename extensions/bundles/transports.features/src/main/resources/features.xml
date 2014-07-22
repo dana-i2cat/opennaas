@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+
+
+	<feature name="opennaas-transport-all" version="${project.version}">
+		<feature version="${project.version}">opennaas-transport-telnet</feature>
+		<feature version="${project.version}">opennaas-transport-sockets</feature>
+		<feature version="${project.version}">opennaas-transport-virtual</feature>
+	</feature>
+
+	
+	<feature name="opennaas-transport-telnet" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+		
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oro/${apache.oro.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-net/${commons.net.version}</bundle>
+	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.telnet/${project.version}</bundle>
+	</feature>
+	
+	<feature name="opennaas-transport-sockets" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.sockets/${project.version}</bundle>
+	</feature>	
+	
+	<feature name="opennaas-transport-virtual" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.virtual/${project.version}</bundle>
+	</feature>
+	
+</features>

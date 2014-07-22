@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<routes>
+	<route>
+		<id>1</id>
+		<networkConnections>
+			<name>h6-2-&gt;s5-3</name>
+			<source id="h6-2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-3-&gt;s5-2</name>
+			<source id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-2-&gt;s4-3</name>
+			<source id="s5.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s4.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s4-3-&gt;s4-1</name>
+			<source id="s4.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s4.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s4-1-&gt;s1-3</name>
+			<source id="s4.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s1.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s1-3-&gt;s1-1</name>
+			<source id="s1.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s1.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s1-1-&gt;s2-1</name>
+			<source id="s1.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-1-&gt;s2-3</name>
+			<source id="s2.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-3-&gt;h8-2</name>
+			<source id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="h8.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+	</route>
+	<route>
+		<id>2</id>
+		<networkConnections>
+			<name>h8-2-&gt;s2-3</name>
+			<source id="h8.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-3-&gt;s2-1</name>
+			<source id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-1-&gt;s1-1</name>
+			<source id="s2.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s1.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s1-1-&gt;s1-3</name>
+			<source id="s1.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s1.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s1-3-&gt;s4-1</name>
+			<source id="s1.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s4.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s4-1-&gt;s4-3</name>
+			<source id="s4.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s4.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s4-3-&gt;s5-2</name>
+			<source id="s4.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-2-&gt;s5-3</name>
+			<source id="s5.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-3-&gt;h6-2</name>
+			<source id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="h6.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+	</route>
+	<route>
+		<id>3</id>
+		<networkConnections>
+			<name>h6-2-&gt;s5-3</name>
+			<source id="h6.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-3-&gt;s5-1</name>
+			<source id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-1-&gt;s3-4</name>
+			<source id="s5.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s3.4">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s3-4-&gt;s3-2</name>
+			<source id="s3.4">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s3.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s3-2-&gt;s2-2</name>
+			<source id="s3.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.3">
+				<portNumber>2</portNumber>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-2-&gt;s2-3</name>
+			<source id="s2.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-3-&gt;h8-2</name>
+			<source id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+	</route>
+	<route>
+		<id>4</id>
+		<networkConnections>
+			<name>h8-2-&gt;s2-3</name>
+			<source id="h8.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-3-&gt;s2-2</name>
+			<source id="s2.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s2.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s2-2-&gt;s3-2</name>
+			<source id="s2.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s3.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s3-2-&gt;s3-4</name>
+			<source id="s3.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s3.4">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s3-4-&gt;s5-1</name>
+			<source id="s3.4">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-1-&gt;s5-3</name>
+			<source id="s5.1">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+		<networkConnections>
+			<name>s5-3-&gt;h6-2</name>
+			<source id="s5.3">
+				<state>
+					<congested>false</congested>
+				</state>
+			</source>
+			<destination id="h6.2">
+				<state>
+					<congested>false</congested>
+				</state>
+			</destination>
+		</networkConnections>
+	</route>
+</routes>

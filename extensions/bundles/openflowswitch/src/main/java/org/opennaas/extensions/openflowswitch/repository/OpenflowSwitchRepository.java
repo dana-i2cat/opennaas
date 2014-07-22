@@ -1,5 +1,25 @@
 package org.opennaas.extensions.openflowswitch.repository;
 
+/*
+ * #%L
+ * OpenNaaS :: OpenFlow Switch
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
@@ -9,83 +29,72 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 /**
- *
+ * 
  * @author Adrian Rosello (i2CAT)
- *
+ * 
  */
 public class OpenflowSwitchRepository extends ResourceRepository {
 
-    Log log = LogFactory.getLog(OpenflowSwitchRepository.class);
+	public static final String	OF_SWITCH_RESOURCE_TYPE	= "openflowswitch";
 
-    public OpenflowSwitchRepository(String resourceType) {
-        super(resourceType);
-    }
+	Log							log						= LogFactory.getLog(OpenflowSwitchRepository.class);
 
-    @Override
-    protected void checkResourceCanBeStarted(IResource resource)
-            throws ResourceException {
-        checkResourceHasAnAssociatedContext(resource);
-        super.checkResourceCanBeStarted(resource);
-    }
+	public OpenflowSwitchRepository(String resourceType) {
+		super(resourceType);
+	}
 
-    public void capabilityFactoryAdded(ICapabilityFactory capabilityFactory) {
-        log.info("Adding factory: " + capabilityFactory.getType());
-        this.capabilityFactories.put(capabilityFactory.getType(), capabilityFactory);
-    }
+	@Override
+	protected void checkResourceCanBeStarted(IResource resource)
+			throws ResourceException {
+		checkResourceHasAnAssociatedContext(resource);
+		super.checkResourceCanBeStarted(resource);
+	}
 
-    public void capabilityFactoryDeleted(ICapabilityFactory capabilityFactory) {
-        if (capabilityFactory != null) {
-            log.info("Deleting factory: " + capabilityFactory.getType());
-            this.capabilityFactories.remove(capabilityFactory.getType());
-        }
-    }
+	public void capabilityFactoryAdded(ICapabilityFactory capabilityFactory) {
+		log.info("Adding factory: " + capabilityFactory.getType());
+		this.capabilityFactories.put(capabilityFactory.getType(), capabilityFactory);
+	}
 
-    private void checkResourceHasAnAssociatedContext(IResource resource) throws ResourceException {
-        IProtocolSessionManager sessionManager;
-        try {
+	public void capabilityFactoryDeleted(ICapabilityFactory capabilityFactory) {
+		if (capabilityFactory != null) {
+			log.info("Deleting factory: " + capabilityFactory.getType());
+			this.capabilityFactories.remove(capabilityFactory.getType());
+		}
+	}
 
-            String name = resource.getResourceDescriptor().getInformation().getName();
-            String type = resource.getResourceDescriptor().getInformation().getType();
-            String resourceId = type + ":" + name;
+	private void checkResourceHasAnAssociatedContext(IResource resource) throws ResourceException {
+		IProtocolSessionManager sessionManager;
+		try {
 
-            sessionManager = getProtocolSessionManager(resource.getResourceDescriptor().getId());
-            if (sessionManager.getRegisteredContexts().isEmpty()) {
-                throw new ResourceException(
-                        "There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
-            }
-            IProtocolSession session = null;
-            ProtocolSessionContext sessionContext = null;
+			String name = resource.getResourceDescriptor().getInformation().getName();
+			String type = resource.getResourceDescriptor().getInformation().getType();
+			String resourceId = type + ":" + name;
 
-            try {
-                session = sessionManager.obtainSessionByProtocol("floodlight", false);
-                sessionContext = session.getSessionContext();
+			sessionManager = getProtocolSessionManager(resource.getResourceDescriptor().getId());
+			if (sessionManager.getRegisteredContexts().isEmpty())
+				throw new ResourceException(
+						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
 
-                if (!(sessionContext.getSessionParameters().containsKey("protocol.floodlight.switchid"))) {
-                    throw new ResourceException("There is no switch id in resource " + resourceId + " session context.");
-                }
-            } catch (ProtocolException e) {
-                log.error("ERROR: " + e.getMessage());
-                session = sessionManager.obtainSessionByProtocol("opendaylight", false);
-                sessionContext = session.getSessionContext();
-                if (!(sessionContext.getSessionParameters().containsKey("protocol.opendaylight.switchid"))) {
-                    throw new ResourceException("There is no switch id in resource " + resourceId + " session context.");
-                }
-            }
-        } catch (ResourceException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ResourceException("Error loading session manager: ", e);
-        }
-    }
+			IProtocolSession session = sessionManager.obtainSessionByProtocol("floodlight", false);
+			ProtocolSessionContext sessionContext = session.getSessionContext();
 
-    private IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {
-        IProtocolManager protocolManager = Activator.getProtocolManagerService();
-        return protocolManager.getProtocolSessionManager(resourceId);
-    }
+			if (!(sessionContext.getSessionParameters().containsKey("protocol.floodlight.switchid")))
+				throw new ResourceException("There is no switch id in resource " + resourceId + " session context.");
+
+		} catch (ResourceException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ResourceException("Error loading session manager: ", e);
+		}
+	}
+
+	private IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {
+		IProtocolManager protocolManager = Activator.getProtocolManagerService();
+		return protocolManager.getProtocolSessionManager(resourceId);
+	}
 
 }
 

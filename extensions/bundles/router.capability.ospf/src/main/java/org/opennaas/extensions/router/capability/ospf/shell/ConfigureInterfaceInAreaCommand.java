@@ -1,5 +1,25 @@
 package org.opennaas.extensions.router.capability.ospf.shell;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: OSPF capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +29,8 @@ import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * @author Isart Canyameres
@@ -43,21 +59,14 @@ public class ConfigureInterfaceInAreaCommand extends GenericKarafCommand {
 			// FIXME Cannot read model to get interfaces.
 			// model may not be updated :S
 
-			OSPFArea area = new OSPFArea();
-			area.setAreaID(ModelHelper.ipv4StringToLong(areaId));
-
-			List<LogicalPort> interfaces = new ArrayList<LogicalPort>(interfaceNames.size());
-			for (String interfaceName : interfaceNames) {
-				interfaces.add(createInterface(interfaceName));
-			}
+			InterfacesNamesList ifaces = getInterfaces();
 
 			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
 
-			if (delete) {
-				ospfCapability.removeInterfacesInOSPFArea(interfaces, area);
-			} else {
-				ospfCapability.addInterfacesInOSPFArea(interfaces, area);
-			}
+			if (delete)
+				ospfCapability.removeInterfacesInOSPFArea(areaId, ifaces);
+			else
+				ospfCapability.addInterfacesInOSPFArea(areaId, ifaces);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -73,27 +82,13 @@ public class ConfigureInterfaceInAreaCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private NetworkPort createInterface(String interfaceName) throws Exception {
-		String argsInterface[] = new String[2];
-		try {
-			argsInterface = splitInterfaces(interfaceName);
-		} catch (Exception e) {
-			return null;
-		}
+	private InterfacesNamesList getInterfaces() {
+		InterfacesNamesList ifaces = new InterfacesNamesList();
+		List<String> interfaces = new ArrayList<String>();
+		interfaces.addAll(interfaceNames);
+		ifaces.setInterfaces(interfaces);
 
-		String name = argsInterface[0];
-		int port = Integer.parseInt(argsInterface[1]);
-
-		if (name.startsWith("lo")) {
-			printError("Configuration for Loopback interface not allowed");
-			return null;
-		}
-
-		NetworkPort networkPort = new NetworkPort();
-		networkPort.setName(name);
-		networkPort.setPortNumber(port);
-		networkPort.setLinkTechnology(LinkTechnology.OTHER);
-
-		return networkPort;
+		return ifaces;
 	}
+
 }

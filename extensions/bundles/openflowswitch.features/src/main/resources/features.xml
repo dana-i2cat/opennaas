@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-openflowswitch" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.openflowswitch/${project.version}</bundle>
+	</feature>
+	
+</features>

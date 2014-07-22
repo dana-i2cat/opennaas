@@ -1,5 +1,25 @@
 package org.opennaas.extensions.roadm.capability.monitoring.shell;
 
+/*
+ * #%L
+ * OpenNaaS :: ROADM :: Monitoring Capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.List;
 
 import org.apache.felix.gogo.commands.Argument;
@@ -28,10 +48,8 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		printInitCommand("list alarms");
 		try {
-			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String friendlyId : resourceIDs) {
-				IResourceIdentifier resourceIdentifier = getResourceIdentifier(friendlyId, manager);
-				IResource resource = manager.getResource(resourceIdentifier);
+				IResource resource = getResourceFromFriendlyName(friendlyId);
 				IMonitoringCapability monitoringCapability = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
 				List<ResourceAlarm> alarms = monitoringCapability.getAlarms();
 				printAlarms(alarms);
@@ -41,13 +59,6 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
-	}
-
-	private IResourceIdentifier getResourceIdentifier(String friendlyName, IResourceManager resourceManager) throws Exception {
-		String[] argsRouterName = new String[2];
-		argsRouterName = splitResourceName(friendlyName);
-		IResourceIdentifier identifier = resourceManager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-		return identifier;
 	}
 
 	private void printAlarms(List<ResourceAlarm> alarms) {

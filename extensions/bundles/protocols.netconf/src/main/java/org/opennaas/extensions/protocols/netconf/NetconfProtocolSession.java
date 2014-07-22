@@ -1,5 +1,25 @@
 package org.opennaas.extensions.protocols.netconf;
 
+/*
+ * #%L
+ * OpenNaaS :: Protocol :: Netconf
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -9,7 +29,7 @@ import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.errors.NetconfProtocolException;
 import net.i2cat.netconf.errors.TransportException;
-import net.i2cat.netconf.errors.TransportNotImplementedException;
+import net.i2cat.netconf.errors.TransportNotRegisteredException;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.RPCElement;
 
@@ -103,7 +123,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 		} catch (URISyntaxException e) {
 			log.error("Error with the syntaxis");
 			throw new ProtocolException("Error with the syntaxis" + e.getMessage(), e);
-		} catch (TransportNotImplementedException e) {
+		} catch (TransportNotRegisteredException e) {
 			log.error("Error with the transport initialization");
 			throw new ProtocolException("Error with the transport initialization" + e.getMessage(), e);
 		} catch (ConfigurationException e) {
@@ -173,12 +193,10 @@ public class NetconfProtocolSession implements IProtocolSession {
 					"Cannot disconnect because the session is already disconnected. Current state: "
 							+ status);
 		}
-		try {
-			netconfSession.disconnect();
-			status = Status.DISCONNECTED_BY_USER;
-		} catch (TransportException e) {
-			throw new ProtocolException(e);
-		}
+
+		netconfSession.disconnect();
+		status = Status.DISCONNECTED_BY_USER;
+
 		log.info("Protocol session stopped");
 	}
 

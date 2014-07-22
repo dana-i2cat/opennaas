@@ -10,8 +10,8 @@ import javax.inject.Inject;
 import org.apache.felix.gogo.runtime.CommandNotFoundException;
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
+import org.ops4j.pax.exam.ProbeBuilder;
 import org.ops4j.pax.exam.TestProbeBuilder;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.osgi.framework.Constants;
 
 public class AbstractKarafCommandTest

@@ -1,5 +1,27 @@
 package org.opennaas.core.resources.shell;
 
+/*
+ * #%L
+ * OpenNaaS :: Core :: Resources
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
@@ -29,6 +51,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	protected int				totalFiles			= 0;
 	protected String[]			argsInterface		= null;
 	// Messages
+	protected String			warn				= "[WARN] ";
 	protected String			error				= "[ERROR] ";
 	protected String			info				= "[INFO] ";
 	// Symbols
@@ -87,6 +110,11 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	public void printEndCommand() {
 		// printSymbol(doubleLine);
 		log.debug("Command finished.");
+	}
+
+	public void printWarn(String message) {
+		out.println(warn + message);
+		log.warn(warn + message);
 	}
 
 	public void printError(String message) {
@@ -206,7 +234,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	/**
-	 * TODO A method don't have to return null!!! REFACTOR
+	 * 
 	 * 
 	 * @param resourceId
 	 * @return
@@ -218,29 +246,17 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		try {
 			manager = getResourceManager();
 		} catch (Exception e) {
-			printError("Error getting resource manager.");
-			printError(e);
-			return null;
-		}
-		if (manager == null) {
-			printError("Error in manager.");
-			printEndCommand();
-			return null;
+			throw new ResourceException("Error getting resource manager.", e);
 		}
 
 		String[] argsRouterName = new String[2];
 		try {
 			argsRouterName = splitResourceName(resourceId);
 		} catch (Exception e) {
-			return null;
+			throw new ResourceException("Error processing resource ID .", e);
 		}
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-		if (resourceIdentifier == null) {
-			printError("Error in identifier.");
-			printEndCommand();
-			return null;
-		}
 
 		IResource resource = manager.getResource(resourceIdentifier);
 		validateResource(resource);
@@ -270,7 +286,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	public static final String	NOTMODELINITIALIZED			= "The resource didn't have a model initialized. Start the resource first.";
 	public static final String	NOTCAPABILITIESINITIALIZED	= "The resource didn't have the capabilities initialized. Start the resource first.";
 
-	protected boolean validateResource(IResource resource) throws ResourceException {
+	private boolean validateResource(IResource resource) throws ResourceException {
 		if (resource == null)
 			throw new ResourceException(NORESOURCEFOUND);
 		if (resource.getModel() == null)

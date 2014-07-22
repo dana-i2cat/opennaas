@@ -1,22 +1,32 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+/*
+ * #%L
+ * OpenNaaS :: Router :: Chassis Capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfaceInfo;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-import org.opennaas.extensions.router.model.VLANEndpoint;
 
 @Command(scope = "chassis", name = "createSubInterface", description = "Create a subinterface on a given resource.")
 public class CreateSubInterfaceCommand extends GenericKarafCommand {
@@ -42,39 +52,17 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		printInitCommand("create subInterface");
 
 		try {
-			IResourceManager manager = getResourceManager();
-
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
-
-			IResourceIdentifier resourceIdentifier = null;
-
-			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return -1;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-
-			validateResource(resource);
-
-			checkParams(resource);
-
+			IResource resource = getResourceFromFriendlyName(resourceId);
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
-			chassisCapability.createSubInterface(prepareParams());
 
-		} catch (ResourceException e) {
-			printError(e);
-			printEndCommand();
-			return -1;
+			InterfaceInfo interfaceInfo = new InterfaceInfo();
+			interfaceInfo.setName(subinterface);
+			interfaceInfo.setDescription(description);
+			interfaceInfo.setVlan(String.valueOf(vlanid));
+			interfaceInfo.setPeerUnit(String.valueOf(peerunit));
+
+			chassisCapability.createSubInterface(interfaceInfo);
+
 		} catch (Exception e) {
 			printError("Error configuring interfaces.");
 			printError(e);
@@ -85,54 +73,4 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	public void checkParams(IResource resource) throws Exception {
-
-		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
-		Matcher ltmatcher = ltPattern.matcher(subinterface);
-		Pattern ethPattern = Pattern.compile("[fg]e-[0-9]/[0-9]/[0-9].[0-9]");
-		Matcher ethmatcher = ethPattern.matcher(subinterface);
-		Pattern loPattern = Pattern.compile("lo[0-9].[0-9]");
-		Matcher lomatcher = loPattern.matcher(subinterface);
-
-		String[] args = subinterface.split("\\.");
-		/* check logical tunnels */
-		if (ltmatcher.find()) {
-			if (peerunit == -1)
-				throw new Exception("peerUnit must be specified in lt interfaces");
-		}
-
-		/* check ethernet ports */
-		if (ethmatcher.find()) {
-			if ((vlanid == -1) && (Integer.parseInt(args[1]) != 0))
-				throw new Exception("Only unit 0 is valid for non tagged-ethernet encapsulation.");
-		}
-
-	}
-
-	private NetworkPort prepareParams() throws Exception {
-		String[] args = subinterface.split("\\.");
-		// check if it is a logical tunnel
-		NetworkPort networkPort = null;
-		if (args[0].startsWith("lt")) {
-			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
-			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
-			// TODO THIS CHECK HAVE TO BE INCLUDED IN THE VIEW?
-			if (peerunit == -1)
-				throw new Exception("peerUnit must be specified in lt interfaces");
-			logicalTunnel.setPeer_unit(peerunit);
-			networkPort = logicalTunnel;
-		} else {
-			networkPort = new EthernetPort();
-		}
-
-		networkPort.setName(args[0]);
-		networkPort.setPortNumber(Integer.parseInt(args[1]));
-		if (vlanid != -1) {
-			VLANEndpoint vlanEndpoint = new VLANEndpoint();
-			vlanEndpoint.setVlanID(vlanid); // TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
-			networkPort.addProtocolEndpoint(vlanEndpoint);
-		}
-		networkPort.setDescription(description);
-		return networkPort;
-	}
 }

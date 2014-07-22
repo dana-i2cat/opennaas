@@ -1,9 +1,25 @@
 package org.opennaas.itests.roadm.connections;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+/*
+ * #%L
+ * OpenNaaS :: iTests :: ROADM
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.IOException;
@@ -73,25 +89,23 @@ import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.Won
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import org.opennaas.extensions.router.model.utils.OpticalSwitchCardFactory;
 import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.opennaas.itests.roadm.helpers.CapabilityHelper;
 import org.opennaas.itests.roadm.mock.MockProtocolSessionManager;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class ConnectionsCapabilityIntegrationTest
 {
 	private final static Log		log				= LogFactory.getLog(ConnectionsCapabilityIntegrationTest.class);
-
-	private final String			deviceID		= "roadm";
-	private final String			queueID			= "queue";
 
 	private String					resourceId		= "pedrosa";
 	private String					hostIpAddress	= "10.10.80.11";
@@ -102,6 +116,7 @@ public class ConnectionsCapabilityIntegrationTest
 	private IConnectionsCapability	connectionsCapability;
 	private IQueueManagerCapability	queueCapability;
 
+	@SuppressWarnings("unused")
 	@Inject
 	private BundleContext			bundleContext;
 
@@ -119,17 +134,18 @@ public class ConnectionsCapabilityIntegrationTest
 	@Filter("(capability=connections)")
 	private ICapabilityFactory		connectionFactory;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)", timeout = 20000)
 	private BlueprintContainer		wonesysProtocolService;
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-roadm", "opennaas-roadm-driver-proteus"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Test

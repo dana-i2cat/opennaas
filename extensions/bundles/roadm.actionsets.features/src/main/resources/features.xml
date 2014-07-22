@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.extensions.roadm.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.protocols.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-roadm-driver-proteus" version="${project.version}">
+		<feature version="${project.version}">opennaas-roadm</feature>
+		<feature version="${project.version}">opennaas-protocol-wonesys</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.actionsets.wonesys/${project.version}</bundle>
+	</feature>
+
+
+</features>

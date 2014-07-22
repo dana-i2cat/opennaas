@@ -1,13 +1,35 @@
 package org.opennaas.extensions.router.junos.actionssets.digester.test;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: Junos ActionSet
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Ignore;
@@ -22,6 +44,7 @@ import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPortVLANSettingData;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.Service;
@@ -30,6 +53,7 @@ import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.VRRPGroup;
 import org.opennaas.extensions.router.model.VRRPProtocolEndpoint;
+import org.xml.sax.SAXException;
 
 public class IPInterfaceParserTest {
 	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
@@ -545,6 +569,73 @@ public class IPInterfaceParserTest {
 	@Test
 	public void testMultipleVRRPGroupsConfigParser() {
 		// TODO
+	}
+
+	@Test
+	/**
+	 * This test checks that the model created from the /parsers/ethernetSwitching.xml by the IPInterfaceParser contains
+	 * two NetworkPorts, one of them with an associated (and different) NetworkPortVLANSettingData.
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	public void testEthernetSwitching() throws IOException, SAXException {
+
+		String message = IOUtils.toString(this.getClass().getResourceAsStream("/parsers/ethernetSwitching.xml"));
+
+		System model = new ComputerSystem();
+
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		System updatedModel = parser.getModel();
+
+		Assert.assertNotNull("Model should not be null", updatedModel);
+
+		List<LogicalDevice> logicalDevices = model.getLogicalDevices();
+		Assert.assertEquals("Model should have 2 differents logical devices.", 2, logicalDevices.size());
+
+		Assert.assertTrue("Both logical devices should be instance of NetworkPort", logicalDevices.get(0) instanceof NetworkPort);
+		Assert.assertTrue("Both logical devices should be instance of NetworkPort", logicalDevices.get(1) instanceof NetworkPort);
+
+		NetworkPort port1 = (NetworkPort) logicalDevices.get(0);
+		NetworkPort port2 = (NetworkPort) logicalDevices.get(1);
+
+		Assert.assertEquals("Name of NetworkPort should be fe-0/1/0", "fe-0/1/0", port1.getName());
+		Assert.assertEquals("Name of NetworkPort should be fe-0/1/0", "fe-0/1/0", port2.getName());
+
+		// One port has portNumber 100 and the other one portNumber 200
+		Assert.assertTrue(port1.getPortNumber() == 100 || port1.getPortNumber() == 200);
+		Assert.assertTrue(port2.getPortNumber() == 100 || port2.getPortNumber() == 200);
+		Assert.assertTrue(port1.getPortNumber() != port2.getPortNumber());
+
+		// check networkPortVlanSettingData associated to each port
+		for (LogicalDevice ld : logicalDevices) {
+			NetworkPort port = (NetworkPort) ld;
+
+			Assert.assertNotNull("NetworkPort " + port.getName() + "." + port.getPortNumber() + " should have an associated ElementSettingData.",
+					port.getElementsSettingData());
+			Assert.assertEquals("NetworkPort " + port.getName() + "." + port.getPortNumber() + " should have an associated ElementSettingData.", 1,
+					port.getElementsSettingData().size());
+
+			Assert.assertTrue(
+					"ElementSetting data associated to NetworkPort" + port.getName() + "." + port.getPortNumber() + " should be instance of NetworkPortVLANSettingData",
+					port.getElementsSettingData().get(0) instanceof NetworkPortVLANSettingData);
+
+			NetworkPortVLANSettingData settingData = (NetworkPortVLANSettingData) port.getElementsSettingData().get(0);
+
+			if (port.getPortNumber() == 100) {
+
+				Assert.assertTrue("NetworkPortVLANSettingData should have native-vlan-id == 100", settingData.getNativeVlanId() == 100);
+				Assert.assertEquals("NetworkPortVLANSettingData should have \"trunk\" port-mode", "trunk", settingData.getPortMode());
+			}
+			else {
+				Assert.assertTrue("NetworkPortVLANSettingData should have native-vlan-id == 200", settingData.getNativeVlanId() == 200);
+				Assert.assertEquals("NetworkPortVLANSettingData should have \"access\" port-mode", "access", settingData.getPortMode());
+
+			}
+		}
+
 	}
 
 	/**

@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>org.opennaas.core</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.24.2</version>
+		<version>0.29-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.opennaas.core.hsqldb</artifactId>
@@ -54,7 +54,10 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Import-Package>org.slf4j,*</Import-Package>
+						<Import-Package>org.slf4j,
+						    org.springframework.beans.factory;version="${spring.version}",
+						    org.springframework.beans.factory.annotation;version="${spring.version}",*
+						</Import-Package>
 						<Private-Package>org.opennaas.core.hsqldb.internal</Private-Package>
 					</instructions>
 				</configuration>

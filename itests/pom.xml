@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.24.2</version>
+        <version>0.29-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -23,7 +23,17 @@
 		<module>vnmapper</module>
 		<module>security</module>
 		<module>openflowswitch</module>
-<!--		<module>ofertie.ncl</module>-->
+		<module>ofertie.ncl</module>
+		<module>openflowforwarding/floodlight</module>
+		<module>monitoring/floodlight</module>
+		<module>ip/opener</module>
+		<module>sampleresource</module>
+		<module>vrrp/junos10</module>
+		<module>nettopology/internal</module>
+		<module>pathfinding/internal</module>
+		<module>nclmonitoring</module>
+		<module>circuitprovisioning/internal</module>
+		<module>circuitaggregation/internal</module>
 	</modules>
 
 	<dependencies>
@@ -32,8 +42,24 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ops4j.pax.swissbox</groupId>
-			<artifactId>pax-swissbox-framework</artifactId>
+			<groupId>org.ops4j.pax.exam</groupId>
+			<artifactId>pax-exam-container-karaf</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.exam</groupId>
+			<artifactId>pax-exam-junit4</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.ops4j.pax.exam</groupId>
+		    <artifactId>pax-exam</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.ops4j.pax.url</groupId>
+		    <artifactId>pax-url-aether</artifactId>
+		    <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
@@ -71,6 +97,30 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>license-maven-plugin</artifactId>
+			    <configuration>
+			        <verbose>false</verbose>
+			    </configuration>
+			    <executions>
+			        <execution>
+			            <id>extensions-license</id>
+			            <goals>
+			                <goal>update-file-header</goal>
+			            </goals>
+			            <phase>compile</phase>
+			            <configuration>
+			                <licenseName>apache_v2</licenseName>
+			                <roots>
+			                    <root>src/main/java</root>
+			                    <root>src/test/java</root>
+			                </roots>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>			
 		</plugins>
 	</build>
 </project>
+

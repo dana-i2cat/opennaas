@@ -1,19 +1,37 @@
 package org.opennaas.itests.security;
 
+/*
+ * #%L
+ * OpenNaaS :: iTests :: Security
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Inject;
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
@@ -22,16 +40,18 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.security.acl.IACLManager;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -39,8 +59,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author Julio Carlos Barrera
  * 
  */
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class ACLManagerTest {
 
 	private final static Log	log	= LogFactory.getLog(ACLManagerTest.class);
@@ -51,14 +71,21 @@ public class ACLManagerTest {
 	@Inject
 	protected IResourceManager	resourceManager;
 
+	/**
+	 * Make sure blueprint for org.opennaas.core.security bundle has finished its initialization
+	 */
+	@Inject
+	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.core.security)", timeout = 20000)
+	private BlueprintContainer	securityBlueprintContainer;
+
 	@Configuration
 	public static Option[] configuration() {
-		return CoreOptions.options(OpennaasExamOptions.opennaasDistributionConfiguration(),
-
-				OpennaasExamOptions.includeFeatures("opennaas-router", "opennaas-junos", "opennaas-vcpe", "itests-helpers"),
-				OpennaasExamOptions.noConsole(),
-				// OpennaasExamOptions.openDebugSocket(),
-				KarafDistributionOption.keepRuntimeFolder());
+		return CoreOptions.options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("itests-helpers"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
@@ -86,11 +113,11 @@ public class ACLManagerTest {
 
 		// create Authentication objects
 		Collection<GrantedAuthority> adminAuthorities = new ArrayList<GrantedAuthority>();
-		adminAuthorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+		adminAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		Authentication adminAuthentication = new UsernamePasswordAuthenticationToken(adminUser, adminUser, adminAuthorities);
 
 		Collection<GrantedAuthority> basicAuthorities = new ArrayList<GrantedAuthority>();
-		basicAuthorities.add(new GrantedAuthorityImpl("ROLE_USER"));
+		basicAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		Authentication basicAuthentication = new UsernamePasswordAuthenticationToken(basicUser, basicUser, basicAuthorities);
 
 		// secure Resource using ACLManager (admin credentials are necessary to create ACLs, set it)

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.features/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.protocols.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-router-driver-all" version="${project.version}">
+		<feature version="${project.version}">opennaas-router-driver-junos</feature>
+		<feature version="${project.version}">opennaas-router-driver-opener</feature>	
+	</feature>	
+	
+	<feature name="opennaas-router-driver-junos" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+		<feature version="${project.version}">opennaas-protocol-netconf</feature>
+		<feature version="${project.version}">opennaas-router</feature>
+
+		<bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oro/${oro.version}</bundle> -->
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.velocity/${servicemix.velocity.version}</bundle>-->
+		
+		<!-- fragment, so no autostart -->
+		<bundle start="false">mvn:org.opennaas/org.opennaas.extensions.fragment.velocity/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.junos/${project.version}</bundle>
+	</feature>
+
+	<feature name="opennaas-router-driver-opener" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+		<feature version="${project.version}">opennaas-router</feature>
+		
+		<bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-api/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-core/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-bindings-xml/${cxf.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http/${cxf.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-frontend-jaxrs/${cxf.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.actionsets.opener/${project.version}</bundle>					
+	</feature>
+
+
+</features>

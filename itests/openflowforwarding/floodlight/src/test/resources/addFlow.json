@@ -1,0 +1,8 @@
+{
+   "switch":"00:00:00:00:00:00:00:01",
+   "name":"flow-mod-1",
+   "priority":"32767",
+   "ingress-port":"1",
+   "active":"true",
+   "actions":"output=2"
+}

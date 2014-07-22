@@ -1,5 +1,27 @@
 package org.opennaas.core.resources;
 
+/*
+ * #%L
+ * OpenNaaS :: Core :: Resources
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -200,6 +222,8 @@ public class ResourceRepository implements IResourceRepository {
 				// ignored, protocolManager availability is already checked in protocolManagerIsAvailable()
 				logger.warn("Ignoring fail to retrieve protocolManager during createProtocolSessionManagerForResource");
 			}
+		} else {
+			logger.warn("Unable to create protocolSessionManager for resource " + resourceDescriptor.getInformation().getName() + ". ProtocolManager is not available.");
 		}
 
 		logger.debug("Resource Initialized");
@@ -332,6 +356,16 @@ public class ResourceRepository implements IResourceRepository {
 		} catch (CorruptStateException e) {
 			throw new ResourceException(e);
 		}
+		if (protocolManagerIsAvailable()) {
+			try {
+				createProtocolSessionManagerForResource(resourceIdentifier.getId());
+			} catch (ActivatorException e) {
+				// ignored, protocolManager availability is already checked in protocolManagerIsAvailable()
+				logger.warn("Ignoring fail to retrieve protocolManager during createProtocolSessionManagerForResource");
+			}
+		} else {
+			logger.warn("Unable to create protocolSessionManager for resource " + resourceDescriptor.getInformation().getName() + ". ProtocolManager is not available.");
+		}
 	}
 
 	private IResource initResource(Resource resource, ResourceDescriptor resourceDescriptor, IResourceIdentifier resourceIdentifier)
@@ -364,7 +398,7 @@ public class ResourceRepository implements IResourceRepository {
 			throw re;
 		}
 
-		logger.debug("Resource initialized");
+		logger.debug("Resource initialized: " + resourceIdentifier.getId());
 		return resource;
 	}
 
@@ -416,7 +450,7 @@ public class ResourceRepository implements IResourceRepository {
 
 			try {
 				resource.activate();
-				logger.debug("Resource activated");
+				logger.debug("Resource activated: " + resource.getResourceIdentifier().getId());
 			} catch (IncorrectLifecycleStateException e) {
 
 				throw new ResourceException(e);
@@ -479,7 +513,7 @@ public class ResourceRepository implements IResourceRepository {
 				}
 			}
 
-			logger.debug("Resource deactivated");
+			logger.debug("Resource deactivated: " + resourceId);
 
 		} catch (ResourceException e) {
 			// roll back
@@ -506,7 +540,7 @@ public class ResourceRepository implements IResourceRepository {
 
 		removeResourceFromRepository(resourceId);
 
-		logger.debug("Resource shut down");
+		logger.debug("Resource shut down: " + resourceId);
 	}
 
 	/**
@@ -676,7 +710,10 @@ public class ResourceRepository implements IResourceRepository {
 		if (descriptorRepository == null) {
 			throw new ResourceException("Failed to persist resource. No descriptorRepository found.");
 		}
-		return descriptorRepository.save(descriptor);
+		ResourceDescriptor persisted = descriptorRepository.save(descriptor);
+		logger.debug("Resource Persisted " + descriptor.getId());
+
+		return persisted;
 	}
 
 	private void unpersistResourceDescriptor(ResourceDescriptor descriptor) throws ResourceException {
@@ -685,6 +722,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 
 		descriptorRepository.delete(descriptor);
+		logger.debug("Resource unpersisted " + descriptor.getId());
 	}
 
 	private void createProtocolSessionManagerForResource(String resourceId) throws ActivatorException {

@@ -1,5 +1,26 @@
 package org.opennaas.extensions.router.capability.ospf;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: OSPF capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +34,11 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capabilities.api.helper.ChassisAPIHelper;
+import org.opennaas.extensions.router.capabilities.api.helper.OSPFApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFAreaWrapper;
+import org.opennaas.extensions.router.capabilities.api.model.ospf.OSPFServiceWrapper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -23,12 +49,11 @@ import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.RouteCalculationService.AlgorithmType;
 import org.opennaas.extensions.router.model.Service;
-import org.opennaas.extensions.router.model.wrappers.AddInterfacesInOSPFAreaRequest;
-import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaRequest;
 
 /**
  * @author Isart Canyameres
  * @author Jordi Puig
+ * @author Adrián Roselló Rey (i2CAT)
  */
 public class OSPFCapability extends AbstractCapability implements IOSPFCapability {
 
@@ -122,6 +147,15 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of configureOSPF call");
 	}
 
+	@Override
+	public void configureOSPF(OSPFServiceWrapper ospfServiceWrapper) throws CapabilityException {
+
+		OSPFService ospfService = OSPFApiHelper.buildOSPFService(ospfServiceWrapper);
+
+		configureOSPF(ospfService);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -180,6 +214,11 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of clearOSPFconfiguration call");
 	}
 
+	@Override
+	public void clearOSPFconfiguration() throws CapabilityException {
+		clearOSPFconfiguration(new OSPFService());
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -191,6 +230,20 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CONFIGURE_AREA, ospfAreaConfiguration);
 		queueAction(action);
 		log.info("End of configureOSPFArea call");
+	}
+
+	@Override
+	public void configureOSPFArea(OSPFAreaWrapper ospfAreaWrapper) throws CapabilityException {
+
+		OSPFAreaConfiguration ospfAreaConfig;
+
+		try {
+			ospfAreaConfig = OSPFApiHelper.buildOSPFAreaConfiguration(ospfAreaWrapper);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+		configureOSPFArea(ospfAreaConfig);
+
 	}
 
 	/*
@@ -206,15 +259,19 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End removeOSPFArea call");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#addInterfacesInOSPFArea(org.opennaas.extensions.router.model.wrappers.
-	 * AddInterfacesOSPFRequest)
-	 */
 	@Override
-	public void addInterfacesInOSPFArea(AddInterfacesInOSPFAreaRequest request) throws CapabilityException {
-		addInterfacesInOSPFArea(request.getInterfaces(), request.getOspfArea());
+	public void removeOSPFArea(String areaId) throws CapabilityException {
+
+		OSPFAreaConfiguration areaConfig;
+
+		try {
+			areaConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaId);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+
+		removeOSPFArea(areaConfig);
+
 	}
 
 	/*
@@ -250,15 +307,42 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of addInterfacesInOSPFArea call");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#removeInterfacesInOSPFArea(org.opennaas.extensions.router.model.wrappers.
-	 * AddInterfacesOSPFRequest)
-	 */
 	@Override
-	public void removeInterfacesInOSPFArea(RemoveInterfacesInOSPFAreaRequest request) throws CapabilityException {
-		removeInterfacesInOSPFArea(request.getInterfaces(), request.getOspfArea());
+	public void addInterfacesInOSPFArea(String areaId, InterfacesNamesList interfaces) throws CapabilityException {
+		OSPFAreaConfiguration ospfConfig;
+		List<LogicalPort> ifaces = new ArrayList<LogicalPort>();
+
+		try {
+			ospfConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaId);
+
+			for (String iface : interfaces.getInterfaces())
+				ifaces.add(ChassisAPIHelper.interfaceName2LogicalPort(iface));
+
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+
+		addInterfacesInOSPFArea(ifaces, ospfConfig.getOSPFArea());
+
+	}
+
+	@Override
+	public void removeInterfacesInOSPFArea(String areaId, InterfacesNamesList interfaces) throws CapabilityException {
+		OSPFAreaConfiguration ospfConfig;
+		List<LogicalPort> ifaces = new ArrayList<LogicalPort>();
+
+		try {
+			ospfConfig = OSPFApiHelper.buildOSPFAreaConfiguration(areaId);
+
+			for (String iface : interfaces.getInterfaces())
+				ifaces.add(ChassisAPIHelper.interfaceName2LogicalPort(iface));
+
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+
+		removeInterfacesInOSPFArea(ifaces, ospfConfig.getOSPFArea());
+
 	}
 
 	/*
@@ -322,6 +406,14 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of enableOSPFInterfaces call");
 	}
 
+	@Override
+	public void enableOSPFInterfaces(InterfacesNamesList interfaces) throws CapabilityException {
+
+		List<OSPFProtocolEndpoint> endpoints = OSPFApiHelper.buildOSPFProtocolEndpointsWrapperCollection(interfaces);
+
+		enableOSPFInterfaces(endpoints);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -350,6 +442,13 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.info("End of disableOSPFInterfaces call");
 	}
 
+	@Override
+	public void disableOSPFInterfaces(InterfacesNamesList interfaces) throws CapabilityException {
+
+		List<OSPFProtocolEndpoint> endpoints = OSPFApiHelper.buildOSPFProtocolEndpointsWrapperCollection(interfaces);
+		disableOSPFInterfaces(endpoints);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -358,7 +457,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	@Override
 	public OSPFService showOSPFConfiguration() throws CapabilityException {
 		log.info("Start of showOSPFConfiguration call");
-		OSPFService ospfService = null;
+		OSPFService ospfService = new OSPFService();
 		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
 		if (lServices == null || lServices.isEmpty()) {
 			return null;
@@ -375,6 +474,21 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		}
 		log.info("End of showOSPFConfiguration call");
 		return ospfService;
+	}
+
+	@Override
+	public OSPFServiceWrapper readOSPFConfiguration() throws CapabilityException {
+
+		OSPFServiceWrapper ospfServiceWrapper;
+
+		OSPFService ospfService = showOSPFConfiguration();
+		try {
+			ospfServiceWrapper = OSPFApiHelper.buildOSPFServiceWrapper(ospfService);
+		} catch (IOException e) {
+			throw new CapabilityException(e);
+		}
+
+		return ospfServiceWrapper;
 	}
 
 	/**

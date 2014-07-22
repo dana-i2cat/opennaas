@@ -1,5 +1,27 @@
 package org.opennaas.core.resources;
 
+/*
+ * #%L
+ * OpenNaaS :: Core :: Resources
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,9 +30,14 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.api.helper.ResourceManagerAPIHelper;
+import org.opennaas.core.resources.api.model.ResourceInfo;
+import org.opennaas.core.resources.api.model.ResourceListWrapper;
+import org.opennaas.core.resources.api.model.ResourceTypeListWrapper;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
@@ -19,6 +46,8 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
  * 
  * @author Eduard Grasa
  * @author Roc Vallès <roc.valles@i2cat.net>
+ * @author Adrian Rosello Rey (i2CAT)
+ * @author Héctor Fernández
  * 
  */
 public class ResourceManager implements IResourceManager {
@@ -91,12 +120,14 @@ public class ResourceManager implements IResourceManager {
 			return this.listResources();
 		} else {
 			// return resources of a given type
-			IResourceRepository repo = resourceRepositories.get(type);
-			if (repo != null) {
-				return new ArrayList<IResource>(repo.listResources());
-			} else {
+			IResourceRepository repo = null;
+			try {
+				repo = getResourceRepository(type);
+			} catch (ResourceException e) {
+				// The contract specifically tells this method should return null if repository is not found.
 				return null;
 			}
+			return new ArrayList<IResource>(repo.listResources());
 		}
 	}
 
@@ -236,9 +267,31 @@ public class ResourceManager implements IResourceManager {
 	private synchronized IResourceRepository getResourceRepository(String resourceType) throws ResourceException {
 		IResourceRepository repo = resourceRepositories.get(resourceType);
 		if (repo == null) {
+			logger.info("Failed to get repo for type " + resourceType);
+			if (logger.isDebugEnabled()) {
+				StringBuffer sf = new StringBuffer();
+				for (String availableType : resourceRepositories.keySet()) {
+					sf.append(availableType + " ");
+				}
+				logger.debug("Available types: " + sf.toString());
+			}
+
 			throw new ResourceException("Didn't find an engine repository for engine type: " + resourceType);
 		}
 		return repo;
+	}
+
+	/**
+	 * @return the available resource types
+	 */
+	@Override
+	public synchronized ResourceTypeListWrapper getResourceTypesAPI() {
+
+		ResourceTypeListWrapper wrapper = new ResourceTypeListWrapper();
+		wrapper.setResourcesTypes(this.getResourceTypes());
+
+		return wrapper;
+
 	}
 
 	/**
@@ -293,6 +346,15 @@ public class ResourceManager implements IResourceManager {
 			}
 		}
 
+		logger.info("Failed to get repo for resource with id " + ID);
+		if (logger.isDebugEnabled()) {
+			StringBuffer sf = new StringBuffer();
+			for (String availableType : resourceRepositories.keySet()) {
+				sf.append(availableType + " ");
+			}
+			logger.debug("Available respos: " + sf.toString());
+		}
+
 		return null;
 	}
 
@@ -305,6 +367,16 @@ public class ResourceManager implements IResourceManager {
 				// ignore, try next repository
 			}
 		}
+
+		logger.info("Failed to get repo for resource with id " + resourceId);
+		if (logger.isDebugEnabled()) {
+			StringBuffer sf = new StringBuffer();
+			for (String availableType : resourceRepositories.keySet()) {
+				sf.append(availableType + " ");
+			}
+			logger.debug("Available respos: " + sf.toString());
+		}
+
 		throw new ResourceException("No resource with ID " + resourceId + " was found.");
 	}
 
@@ -378,6 +450,74 @@ public class ResourceManager implements IResourceManager {
 	@Override
 	public String createResourceWS(ResourceDescriptor resourceDescriptor) throws ResourceException {
 		return createResource(resourceDescriptor).getResourceIdentifier().getId();
+	}
+
+	@Override
+	public ResourceListWrapper listResourcesNameByType(String type) throws ResourceException {
+		ResourceListWrapper wrapper = new ResourceListWrapper();
+
+		if (StringUtils.isEmpty(type))
+			throw new ResourceException("You didn't specify any resource type.");
+
+		IResourceRepository repo = resourceRepositories.get(type);
+
+		if (repo == null)
+			throw new ResourceException("Didn't find any resource repository of type " + type);
+
+		List<IResource> resources = repo.listResources();
+		List<String> resourcesNames = new ArrayList<String>();
+		for (IResource resource : resources)
+			resourcesNames.add(resource.getResourceDescriptor().getInformation().getName());
+
+		wrapper.setResources(resourcesNames);
+
+		return wrapper;
+	}
+
+	@Override
+	public String getIdentifierFromResourceTypeName(String resourceType, String resourceName) throws ResourceException {
+		return this.getIdentifierFromResourceName(resourceType, resourceName).getId();
+	}
+
+	@Override
+	public String getStatus(String resourceId) throws ResourceException {
+		return this.getResourceById(resourceId).getState().name();
+
+	}
+
+	@Override
+	public ResourceListWrapper listResourcesByTypeAPI(String type) {
+		List<IResource> resources = this.listResourcesByType(type);
+
+		ResourceListWrapper wrapper = ResourceManagerAPIHelper.buildResourceListWrapper(resources);
+
+		return wrapper;
+	}
+
+	@Override
+	public ResourceListWrapper listResourcesAPI() {
+		List<IResource> resources = this.listResources();
+
+		ResourceListWrapper wrapper = ResourceManagerAPIHelper.buildResourceListWrapper(resources);
+
+		return wrapper;
+	}
+
+	@Override
+	public void forceStopResource(String resourceId) throws ResourceException {
+
+		IResource resource = this.getResourceById(resourceId);
+
+		this.forceStopResource(resource.getResourceIdentifier());
+	}
+
+	@Override
+	public ResourceInfo getResourceInfoById(String resourceId) throws ResourceException {
+
+		IResource resource = this.getResourceById(resourceId);
+		ResourceInfo resourceInfo = ResourceManagerAPIHelper.buildResourceInfo(resource);
+
+		return resourceInfo;
 	}
 
 }

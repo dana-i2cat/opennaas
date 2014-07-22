@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<interfaces>
+		<interface>
+			<name>fe-3/3/1</name>
+			<unit>
+				<name>100</name>
+				<family>
+					<ethernet-switching operation="merge">
+					</ethernet-switching>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>

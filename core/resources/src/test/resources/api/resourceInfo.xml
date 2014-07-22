@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<resourceInfo>
+    <resourceId>xfh3-125gfw-123</resourceId>
+    <name>router1</name>
+    <type>router</type>
+    <state>ACTIVE</state>
+    <capabilities>
+        <capability>ospf</capability>
+        <capability>chassis</capability>
+    </capabilities>
+</resourceInfo>

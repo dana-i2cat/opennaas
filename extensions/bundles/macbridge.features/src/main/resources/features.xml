@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+		
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository> -->	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.transports.features/${opennaas.version}/xml/features</repository> -->	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.protocols.features/${opennaas.version}/xml/features</repository> -->	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.router.features/${opennaas.version}/xml/features</repository> -->	
+	
+	<feature name="opennaas-macbridge" version="${project.version}">
+		
+		<feature version="${project.version}">opennaas-transport-sockets</feature>
+		<feature version="${project.version}">opennaas-transport-telnet</feature>
+		<feature version="${project.version}">opennaas-transport-virtual</feature>
+		<feature version="${project.version}">opennaas-protocol-cli</feature>
+		<feature version="${project.version}">opennaas-protocol-tl1</feature>
+		<feature version="${project.version}">opennaas-cim</feature>
+			
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-net/${commons.net.version}</bundle>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.model/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.capability.vlanawarebridge/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.ios.resource/${project.version}</bundle>
+	</feature>
+
+</features>

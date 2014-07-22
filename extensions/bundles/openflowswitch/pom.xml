@@ -1,25 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.opennaas</groupId>
-    <artifactId>org.opennaas.extensions.bundles</artifactId>
-    <version>0.24.2</version>
-  </parent>
-  <artifactId>org.opennaas.extensions.openflowswitch</artifactId>
-  	<!--  Maven configuration -->
-  	<packaging>bundle</packaging>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.opennaas</groupId>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
+		<version>0.29-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
+	<!--  Maven configuration -->
+	<packaging>bundle</packaging>
 	<name>OpenNaaS :: OpenFlow Switch </name>
-	<description>OpenFLow Switch Resource Implementation</description>
+	<description>OpenFlow Switch Resource Implementation</description>
 
- 	<dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
-
-
-				
- 	</dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -37,12 +35,11 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>org.opennaas.extensions.openflowswitch.repository.Activator</Bundle-Activator>	
+						<Bundle-Activator>org.opennaas.extensions.openflowswitch.repository.Activator</Bundle-Activator>
+						<Import-Package>javax.persistence,*</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

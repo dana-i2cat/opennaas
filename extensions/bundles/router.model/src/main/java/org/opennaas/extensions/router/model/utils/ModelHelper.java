@@ -1,5 +1,25 @@
 package org.opennaas.extensions.router.model.utils;
 
+/*
+ * #%L
+ * OpenNaaS :: CIM Model
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -8,9 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.router.model.AggregatedLogicalPort;
+import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.ManagedElement;
+import org.opennaas.extensions.router.model.ManagedSystemElement;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
@@ -28,6 +53,97 @@ public class ModelHelper {
 			}
 		}
 		return ports;
+	}
+
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// public static List<LogicalPort> getPhysicalInterfaces(System system) {
+	// List<LogicalPort> ports = new ArrayList<LogicalPort>();
+	// for (LogicalDevice dev : system.getLogicalDevices()) {
+	// if (dev.getClass().equals(LogicalPort.class)) {
+	// ports.add((LogicalPort) dev);
+	// }
+	// }
+	// return ports;
+	// }
+
+	public static List<ProtocolEndpoint> getGREProtocolEndpoints(System system) {
+		List<ProtocolEndpoint> greEps = new ArrayList<ProtocolEndpoint>();
+		List<GREService> greServices = system.getAllHostedServicesByType(new GREService());
+		// FIXME why do we use greServices.get(0) instead of iterating over all greServices?
+		if (!greServices.isEmpty()) {
+			GREService greService = greServices.get(0);
+			greEps.addAll(greService.getProtocolEndpoint());
+		}
+		return greEps;
+	}
+
+	/**
+	 * Returns interface name given a NetworkPort
+	 * 
+	 * @param networkPort
+	 * @return
+	 */
+	public static String getInterfaceName(NetworkPort networkPort) {
+		return networkPort.getName() + "." + String.valueOf(networkPort.getPortNumber());
+	}
+
+	/**
+	 * Returns interface name given a GRE ProtocolEndpoint
+	 * 
+	 * @param networkPort
+	 * @return
+	 */
+	public static String getInterfaceName(ProtocolEndpoint greProtocolEndpoint) {
+		return greProtocolEndpoint.getName();
+	}
+
+	// TODO: Store physical interfaces in model as LogicalPorts
+	// /**
+	// * Returns the NetworkPort associated with given name, null if it not found
+	// *
+	// * @param name
+	// * @param system
+	// * @return
+	// */
+	// public static LogicalPort getLogicalPortFromName(String name, System system) {
+	// for (LogicalPort port : getPhysicalInterfaces(system)) {
+	// if (port.getName().equals(name)) {
+	// return port;
+	// }
+	// }
+	// return null;
+	// }
+
+	/**
+	 * Returns the NetworkPort associated with given name, null if it not found
+	 * 
+	 * @param name
+	 * @param system
+	 * @return
+	 */
+	public static NetworkPort getNetworkPortFromName(String name, System system) {
+		for (NetworkPort networkPort : getInterfaces(system)) {
+			if (getInterfaceName(networkPort).equals(name)) {
+				return networkPort;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the GRE ProtocolEndpoint associated with given name, null if it not found
+	 * 
+	 * @param name
+	 * @param system
+	 * @return
+	 */
+	public static ProtocolEndpoint getGREProtocolEndpointFromName(String name, System system) {
+		for (ProtocolEndpoint protocolEndpoint : getGREProtocolEndpoints(system)) {
+			if (getInterfaceName(protocolEndpoint).equals(name)) {
+				return protocolEndpoint;
+			}
+		}
+		return null;
 	}
 
 	public static long ipv4StringToLong(String ip) throws IOException {
@@ -52,6 +168,24 @@ public class ModelHelper {
 
 		InetAddress address = Inet4Address.getByAddress(bytes);
 		return address.getHostAddress();
+	}
+
+	/**
+	 * Returns a list of Logical Routers given a Router model
+	 * 
+	 * @param computerSystem
+	 * @return
+	 */
+	public static List<ComputerSystem> getLogicalRouters(ComputerSystem computerSystem) {
+		List<ComputerSystem> list = new ArrayList<ComputerSystem>();
+
+		for (ManagedSystemElement systemElement : computerSystem.getManagedSystemElements()) {
+			if (systemElement instanceof ComputerSystem) {
+				list.add((ComputerSystem) systemElement);
+			}
+		}
+
+		return list;
 	}
 
 	public static VRRPGroup copyVRRPConfiguration(VRRPGroup vrrpGroup) {
@@ -139,4 +273,83 @@ public class ModelHelper {
 
 		return null;
 	}
+
+	/**
+	 * 
+	 * @param bridgeDomainList
+	 * @param name
+	 * @return The {@link BridgeDomain} of the list which {@link BridgeDomain#getElementName()} matches the specified name. Null if there's no
+	 *         {@link BridgeDomain) in the list which {@link BridgeDomain#getElementName()} matches the specified name.
+	 */
+	public static BridgeDomain getBridgeDomainByName(List<BridgeDomain> bridgeDomainList, String name) {
+
+		for (BridgeDomain brDomain : bridgeDomainList)
+			if (brDomain.getElementName().equals(name))
+				return brDomain;
+
+		return null;
+	}
+
+	/**
+	 * Retrieves {@link BridgeDomain}'s present in the given model
+	 * 
+	 * @param model
+	 * @return
+	 */
+	public static List<BridgeDomain> getBridgeDomains(System model) {
+		return model.getAllHostedCollectionsByType(BridgeDomain.class);
+	}
+
+	/**
+	 * Retrieves Layer 3 {@link BridgeDomain}'s present in the given model. Retrieves only the ones with set ipAddress field.
+	 * 
+	 * @param model
+	 * @return
+	 */
+	public static List<BridgeDomain> getL3BridgeDomains(System model) {
+		List<BridgeDomain> l3BridgeDomains = new ArrayList<BridgeDomain>(0);
+
+		for (BridgeDomain bridgeDomain : model.getAllHostedCollectionsByType(BridgeDomain.class)) {
+			if (bridgeDomain.getIpAddress() != null && !bridgeDomain.getIpAddress().isEmpty()) {
+				l3BridgeDomains.add(bridgeDomain);
+			}
+		}
+
+		return l3BridgeDomains;
+	}
+
+	/**
+	 * Retrieves the list of AggregatedLogicalPort's in given System
+	 * 
+	 * @param system
+	 * @return a list containing AggregatedLogicalPort's in given System. Will be empty when given systems does not contain any AggregatedLogicalPort.
+	 */
+	public static List<AggregatedLogicalPort> getAggregatedLogicalPorts(System system) {
+		List<AggregatedLogicalPort> aggregators = new ArrayList<AggregatedLogicalPort>();
+		for (LogicalDevice dev : system.getLogicalDevices()) {
+			if (dev instanceof AggregatedLogicalPort) {
+				aggregators.add((AggregatedLogicalPort) dev);
+			}
+		}
+		return aggregators;
+	}
+
+	/**
+	 * 
+	 * @param elements
+	 * @param elementName
+	 * @return First managedElement in elements witn given elementName. null if there is no such ManagedElement.
+	 */
+	public static ManagedElement getManagedElementByElementName(List<? extends ManagedElement> elements, String elementName) {
+		if (elementName == null)
+			return null;
+
+		for (ManagedElement el : elements) {
+			if (elementName.equals(el.getElementName()))
+				return el;
+		}
+
+		return null;
+	}
+
 }

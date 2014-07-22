@@ -1,5 +1,25 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
+/*
+ * #%L
+ * OpenNaaS :: Router :: Chassis Capability
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -7,8 +27,8 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.ManagedSystemElement;
+import org.opennaas.extensions.router.capabilities.api.model.chassis.LogicalRoutersNamesList;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 
 @Command(scope = "chassis", name = "listLogicalRouters", description = "List all logical resources of a given resource.")
 public class ListLogicalRoutersCommand extends GenericKarafCommand {
@@ -22,42 +42,13 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 		printInitCommand("list logical routers");
 
 		try {
-			IResourceManager manager = getResourceManager();
+			IResource resource = getResourceFromFriendlyName(resourceId);
 
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			LogicalRoutersNamesList namesList = chassisCapability.getLogicalRoutersNames();
 
-			IResourceIdentifier resourceIdentifier = null;
-
-			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return null;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-
-			validateResource(resource);
-
-			// TODO implement force refresh of the router configuration
-			// maybe asking (parser) only for logical router information
-			//
-			ComputerSystem model = (ComputerSystem) resource.getModel();
-
-			// printInfo("Found " + model.getChildren().size() + " logical resources.");
-			for (ManagedSystemElement systemElement : model.getManagedSystemElements()) {
-
-				if (systemElement instanceof ComputerSystem) {
-
-					printSymbol(systemElement.getName());
-				}
+			for (String name : namesList.getLogicalRouters()) {
+				printSymbol(name);
 			}
 
 		} catch (ResourceException e) {
