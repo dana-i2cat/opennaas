@@ -1,5 +1,25 @@
 package org.opennaas.extensions.vrf.utils;
 
+/*
+ * #%L
+ * OpenNaaS :: Virtual Routing Function :: Model
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,12 +48,18 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.MappingJsonFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
-import org.opennaas.extensions.sdnnetwork.model.NetworkConnection;
-import org.opennaas.extensions.sdnnetwork.model.Port;
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
+import org.opennaas.extensions.genericnetwork.model.topology.Port;
+//import org.opennaas.extensions.sdnnetwork.model.Port;
 import org.opennaas.extensions.vrf.model.L2Forward;
 import org.opennaas.extensions.vrf.model.VRFRoute;
 
@@ -273,11 +299,15 @@ public class Utils {
 //        netCon.setId();//internal-id, nom del flow que guarda el floodlight
         netCon.setName(String.valueOf(route.getId()));//user friendly name
         Port port = new Port();
-        port.setDeviceId(route.getSwitchInfo().getDPID());
+        /*port.setDeviceId(route.getSwitchInfo().getDPID());
         port.setPortNumber(String.valueOf(route.getSwitchInfo().getInputPort()));
         netCon.setSource(port);
         port.setDeviceId(route.getSwitchInfo().getDPID());
         port.setPortNumber(String.valueOf(route.getSwitchInfo().getOutputPort()));
+        */
+        port.setId(String.valueOf(route.getSwitchInfo().getInputPort()));
+        netCon.setSource(port);
+        port.setId(String.valueOf(route.getSwitchInfo().getOutputPort()));
         netCon.setDestination(port);
         return netCon;
     }
@@ -498,5 +528,30 @@ public class Utils {
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
         return Response.status(404).entity("Some error. Check the file. Possible error: " + response).build();
+    }
+    
+    public static IResource getIResource(String resourceName){
+        try {
+            IResourceManager resourceManager = org.opennaas.extensions.genericnetwork.Activator.getResourceManagerService();
+            IResourceIdentifier resourceId = null;
+            try {
+                resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
+            } catch (ResourceException ex) {
+                Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if (resourceId == null) {
+                log.error("IResource id is null.");
+                return null;
+            }
+            try {
+                return resourceManager.getResource(resourceId);
+            } catch (ResourceException ex) {
+                Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ActivatorException ex) {
+            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
