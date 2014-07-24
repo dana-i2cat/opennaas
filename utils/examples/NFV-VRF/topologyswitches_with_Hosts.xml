@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:topology xmlns:ns2="opennaas.api">
+        <networkElements>
+		<networkElement xsi:type="host" id="host:h1"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<ip>10.0.1.1</ip>
+                        <state>
+                                <congested>false</congested>
+                        </state>
+	
+                        <ports>
+                                <port id="h1.1">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                        </ports>
+                </networkElement>
+		<networkElement xsi:type="host" id="host:h2"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<ip>10.0.2.2</ip>
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <ports>
+                                <port id="h2.1">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                        </ports>
+                </networkElement>
+                <networkElement xsi:type="switch" id="openflowswitch:s1"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <ports>
+                                <port id="s1.1">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                                <port id="s1.2">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                                <port id="s1.3">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                        </ports>
+                </networkElement>
+                <networkElement xsi:type="switch" id="openflowswitch:s2"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <ports>
+                                <port id="s2.1">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                                <port id="s2.2">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                        </ports>
+                </networkElement>
+                <networkElement xsi:type="switch" id="openflowswitch:s3"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <ports>
+                                <port id="s3.1">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                                <port id="s3.2">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                        </ports>
+                </networkElement>
+		<networkElement xsi:type="switch" id="openflowswitch:s4"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <ports>
+                                <port id="s4.1">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                                <port id="s4.2">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+				<port id="s4.3">
+                                        <state>
+                                                <congested>false</congested>
+                                        </state>
+                                </port>
+                        </ports>
+                </networkElement>
+        </networkElements>
+        <links>
+                <link>
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <srcPort>s1.1</srcPort>
+                        <dstPort>s2.1</dstPort>
+                </link>
+                <link>
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <srcPort>s1.2</srcPort>
+                        <dstPort>s3.1</dstPort>
+                </link>
+                <link>
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <srcPort>s2.2</srcPort>
+                        <dstPort>s3.2</dstPort>
+                </link>
+		<link>
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <srcPort>s1.3</srcPort>
+                        <dstPort>h1.1</dstPort>
+                </link>
+		<link>
+                        <state>
+                                <congested>false</congested>
+                        </state>
+                        <srcPort>s4.3</srcPort>
+                        <dstPort>h2.1</dstPort>
+                </link>
+
+        </links>
+        <networkDevicePortIdsMap>
+                <entry>
+                        <key>s1.1</key>
+                        <value>
+                                <deviceId>openflowswitch:s1</deviceId>
+                                <devicePortId>1</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s1.2</key>
+                        <value>
+                                <deviceId>openflowswitch:s1</deviceId>
+                                <devicePortId>2</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s1.3</key>
+                        <value>
+                                <deviceId>openflowswitch:s1</deviceId>
+                                <devicePortId>3</devicePortId>
+                        </value>
+                </entry>
+		<entry>
+			<key>s1.4</key>
+			<value>
+		            <deviceId>openflowswitch:s1</deviceId>
+		            <devicePortId>4</devicePortId>
+		        </value>
+		</entry>
+                <entry>
+                        <key>s2.1</key>
+                        <value>
+                                <deviceId>openflowswitch:s2</deviceId>
+                                <devicePortId>1</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s2.2</key>
+                        <value>
+                                <deviceId>openflowswitch:s2</deviceId>
+                                <devicePortId>2</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s3.1</key>
+                        <value>
+                                <deviceId>openflowswitch:s3</deviceId>
+                                <devicePortId>1</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s3.2</key>
+                        <value>
+                                <deviceId>openflowswitch:s3</deviceId>
+                                <devicePortId>2</devicePortId>
+                        </value>
+                </entry>
+<entry>
+                        <key>s4.1</key>
+                        <value>
+                                <deviceId>openflowswitch:s4</deviceId>
+                                <devicePortId>1</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s4.2</key>
+                        <value>
+                                <deviceId>openflowswitch:s4</deviceId>
+                                <devicePortId>2</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s4.3</key>
+                        <value>
+                                <deviceId>openflowswitch:s4</deviceId>
+                                <devicePortId>3</devicePortId>
+                        </value>
+                </entry>
+                <entry>
+                        <key>s4.4</key>
+                        <value>
+                                <deviceId>openflowswitch:s4</deviceId>
+                                <devicePortId>4</devicePortId>
+                        </value>
+                </entry>
+        </networkDevicePortIdsMap>
+</ns2:topology>
