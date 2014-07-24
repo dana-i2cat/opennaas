@@ -1,12 +1,17 @@
-osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/openflowswitch/target/org.opennaas.extensions.openflowswitch-0.24.2.jar
+install file:///opt/opennaas/extensions/bundles/openflowswitch/target/org.opennaas.extensions.openflowswitch-0.29-SNAPSHOT.jar
+install file:///opt/opennaas/extensions/bundles/openflowswitch.driver.opendaylight/target/org.opennaas.extensions.openflowswitch.driver.opendaylight-0.29-SNAPSHOT.jar
+install file:///opt/opennaas/extensions/bundles/vrf.features/target/org.opennaas.extensions.vrf.features-0.29-SNAPSHOT.jar
+install file:///opt/opennaas/extensions/bundles/vrf.model/target/org.opennaas.extensions.vrf.model-0.29-SNAPSHOT.jar
+install file:///opt/opennaas/extensions/bundles/vrf.staticroute/target/org.opennaas.extensions.vrf.staticroute-0.29-SNAPSHOT.jar
+install file:///opt/opennaas/extensions/bundles/vrf.dijkstraroute/target/org.opennaas.extensions.vrf.dijkstraroute-0.29-SNAPSHOT.jar
+install file:///opt/opennaas/extensions/bundles/vrf.selector/target/org.opennaas.extensions.vrf.selector-0.29-SNAPSHOT.jar
 
-osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/openflowswitch.driver.opendaylight/target/org.opennaas.extensions.openflowswitch.driver.opendaylight-0.24.2.jar
 
-osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.model/target/org.opennaas.extensions.vrf.model-0.24.2.jar
+file="/opt/opennaas/utils/examples/NFV-VRF/routes.json"
+curl -H "Content-Type: application/json"  -H "Accept: text/plain" -d @$file http://admin:123456@localhost:8888/opennaas/vrf/routemgt/insertRouteFromFile/vrf
 
-osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.staticroute/target/org.opennaas.extensions.vrf.staticroute-0.24.2.jar
+curl -X GET http://admin:123456@localhost:8888/opennaas/vrf/routemgt/route
 
-osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.dijkstraroute/target/org.opennaas.extensions.vrf.dijkstraroute-0.24.2.jar
+curl -X GET http://admin:123456@localhost:8888/opennaas/vrf/staticrouting/route/167772417/167772674/00:00:00:00:00:00:00:01/3/true
 
-osgi:install file:///opt/opennaas-routing-nfv/extensions/bundles/vrf.selector/target/org.opennaas.extensions.vrf.selector-0.24.2.jar
-
+curl -X GET http://admin:123456@localhost:8888/opennaas/vrf/routemgt/routes/4/167772417/167772674

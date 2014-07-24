@@ -447,16 +447,16 @@
 	 			<artifactId>org.opennaas.extensions.vrf.model</artifactId>
 				<version>${project.version}</version>	 			
 			</dependency>
+                        <dependency>
+                                <groupId>org.opennaas</groupId>
+                                <artifactId>org.opennaas.extensions.vrf.staticroute</artifactId>
+                                <version>${project.version}</version>
+                        </dependency>
 			 <dependency>
-                    <groupId>org.opennaas</groupId>
-                    <artifactId>org.opennaas.extensions.vrf.staticroute</artifactId>
-                    <version>${project.version}</version>
-            </dependency>
-			 <dependency>
-                    <groupId>org.opennaas</groupId>
-                    <artifactId>org.opennaas.extensions.vrf.dijkstraroute</artifactId>
-                    <version>${project.version}</version>
-            </dependency>
+                                <groupId>org.opennaas</groupId>
+                                <artifactId>org.opennaas.extensions.vrf.dijkstraroute</artifactId>
+                                <version>${project.version}</version>
+                        </dependency>
 			 <dependency>
 		            <groupId>org.opennaas</groupId>
 		            <artifactId>org.opennaas.extensions.vrf.selector</artifactId>

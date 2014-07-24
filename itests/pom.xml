@@ -22,10 +22,10 @@
 		<module>vcpe</module>
 		<module>vnmapper</module>
 		<module>security</module>
-		<module>openflowswitch</module>
+<!--		<module>openflowswitch</module>
 		<module>ofertie.ncl</module>
 		<module>openflowforwarding/floodlight</module>
-		<module>monitoring/floodlight</module>
+		<module>monitoring/floodlight</module>-->
 		<module>ip/opener</module>
 		<module>sampleresource</module>
 		<module>vrrp/junos10</module>
