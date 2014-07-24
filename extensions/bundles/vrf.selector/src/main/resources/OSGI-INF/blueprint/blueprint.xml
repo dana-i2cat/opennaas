@@ -8,10 +8,10 @@
     <!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
     <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
   
-    <bean id="exampleBean" class="org.opennaas.extensions.vrf.staticroute.capability.StaticRoutingCapability"/>
+    <bean id="exampleBean" class="org.opennaas.extensions.vrf.staticroute.capability.routing.StaticRoutingCapability"/>
     <!-- Directly obtain an unique service -->
     <!--    <reference id="staticRoutingCapab" interface="org.opennaas.extensions.vrf.staticroute.capability.IStaticRoutingCapability"/>-->
-    <reference-list id="listRoutingCapab" interface="org.opennaas.extensions.vrf.staticroute.capability.IStaticRoutingCapability" />
+    <reference-list id="listRoutingCapab" interface="org.opennaas.extensions.vrf.staticroute.capability.routing.IStaticRoutingCapability" />
     
     <bean id="routingSelector" class="org.opennaas.extensions.vrf.selector.capability.RoutingCapability">
         <!--        <argument ref="staticRoutingCapab"/>-->

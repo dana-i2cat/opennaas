@@ -1,18 +1,31 @@
 package org.opennaas.extensions.vrf.selector.capability;
 
+/*
+ * #%L
+ * OpenNaaS :: Virtual Routing Function :: Selector
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.extensions.sdnnetwork.capability.ofprovision.IOFProvisioningNetworkCapability;
 import org.opennaas.extensions.vrf.dijkstraroute.capability.DijkstraRoutingCapability;
-import org.opennaas.extensions.vrf.staticroute.capability.IStaticRoutingCapability;
+import org.opennaas.extensions.vrf.staticroute.capability.routing.IStaticRoutingCapability;
 
 /**
  *
@@ -81,53 +94,4 @@ public class RoutingCapability implements IRoutingCapability {
         return Response.ok(mode).build();
     }
 
-    @Override
-    public Response switchMapping() {
-        IResourceManager resourceManager;
-        try {
-            resourceManager = org.opennaas.extensions.sdnnetwork.Activator.getResourceManagerService();
-            try {
-                log.info("ResourceManager " + resourceManager.getIdentifierFromResourceName("sdnnetwork", "sdn1").getId());
-            } catch (ResourceException ex) {
-                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            IResource sdnNetResource = resourceManager.listResourcesByType("sdnnetwork").get(0);
-            try {
-                IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-                /*            String resourceSdnNetworkId = sdnCapab.getMapDeviceResource(resourceName);
-                 if (resourceSdnNetworkId == null) {
-                 log.error("This Switch ID is not mapped to any ofswitch resource.");
-                 return null;
-                 }
-                 */
-                List<IResource> listResources = resourceManager.listResourcesByType("openflowswitch");
-                for (IResource r : listResources) {
-                    String name = r.getResourceDescriptor().getInformation().getName();
-                    //PSNC
-                    String DPID;
-                    if(name.equals("s1")){
-                        DPID = "00:00:64:87:88:58:f6:57";
-                    }else if(name.equals("s2")){
-                        DPID = "00:00:64:87:88:58:f8:57";
-                    }else{
-                        DPID = "00:00:00:00:00:00:00:0" + name.substring(name.length() - 1);
-                    }
-                    log.error(DPID);
-                    String resourceId = r.getResourceIdentifier().getId();
-                    log.error(resourceId);
-                    sdnCapab.mapDeviceResource(DPID, resourceId);
-                    /*            if (r.getResourceDescriptor().getId().equals(resourceSdnNetworkId)) {
-                     resourceName = r.getResourceDescriptor().getInformation().getName();
-                     log.debug("Switch name is: " + resourceName);
-                     }
-                     */                }
-            } catch (ResourceException ex) {
-                Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (ActivatorException ex) {
-            Logger.getLogger(RoutingCapability.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return Response.ok().build();
-    }
 }
