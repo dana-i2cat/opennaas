@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.representation.Form;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
+import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.vrf.utils.Utils;
 import org.opennaas.gui.nfvrouting.entities.Route;
 import org.opennaas.gui.nfvrouting.services.rest.GenericRestService;
@@ -15,11 +16,17 @@ import org.opennaas.gui.nfvrouting.utils.Constants;
 
 /**
  * @author Josep Batallé (josep.batalle@i2cat.net)
+ * TODO: 
+ * - remove SDN_Network
+ * - remove or adapt getSwInfo(), requires switchName used in OpenNaaS
+ * - obtain switchName before (in the controller/javascript????)
+ * - extract from the NetTopology?
  */
 public class NFVRoutingService extends GenericRestService {
 
     private static final Logger LOGGER = Logger.getLogger(NFVRoutingService.class);
     private static final String sdn = Constants.SDN_RESOURCE;
+    private static final String genericNetwork = Constants.GENERICNETWORK_RESOURCE;
 
     /**
      * Call a rest service to get the Route Table of the virtualized router
@@ -256,7 +263,7 @@ public class NFVRoutingService extends GenericRestService {
         return response.getEntity(String.class);
     }
     
-    //---------------------DEMO
+    //---------------------DEMO -- to remove
     public String getLog() {
         String response;
         try {
@@ -322,5 +329,27 @@ public class NFVRoutingService extends GenericRestService {
             return "OpenNaaS not started";
         }
         return response;
+    }
+    
+    /**
+     * Obtain OpenNaaS generic network
+     * @return
+     * @throws RestServiceException 
+     */
+    public Topology getTopology() throws RestServiceException{
+        ClientResponse response;
+        try {
+            LOGGER.info("Calling get Topology");
+            String url = getURL("genericnetwork/"+genericNetwork+"/nettopology/topology");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
+            LOGGER.error("Topology: " + response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        return checkResponse(response) ? response.getEntity(Topology.class) : null;
     }
 }
