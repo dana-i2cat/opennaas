@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-vrf" version="${project.version}">
+<!--                <feature version="${project.version}">opennaas-sdn-network</feature>-->
+                <feature version="${project.version}">opennaas-cim</feature>
+
+                <bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+                <bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.staticroute/${project.version}</bundle>
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.dijkstraroute/${project.version}</bundle>
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.selector/${project.version}</bundle>
+                <bundle>mvn:org.opennaas/org.opennaas.extensions.vrf.model/${project.version}</bundle>
+        </feature>
+
+
+</features>
