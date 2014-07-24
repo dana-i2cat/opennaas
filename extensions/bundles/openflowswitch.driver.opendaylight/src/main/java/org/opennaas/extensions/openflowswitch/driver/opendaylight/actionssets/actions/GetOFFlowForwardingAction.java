@@ -1,8 +1,5 @@
 package org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
@@ -16,8 +13,6 @@ import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
  *
  */
 public class GetOFFlowForwardingAction extends OpenDaylightAction {
-
-    Log log = LogFactory.getLog(GetOFFlowForwardingAction.class);
 
     @Override
     public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
