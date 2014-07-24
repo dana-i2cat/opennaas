@@ -8,15 +8,28 @@
     <!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
     <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
   
-    <bean id="staticRouting" class="org.opennaas.extensions.vrf.staticroute.capability.StaticRoutingCapability"/>
+    <bean id="staticRouting" class="org.opennaas.extensions.vrf.staticroute.capability.routing.StaticRoutingCapability"/>
+    <bean id="routeMgt" class="org.opennaas.extensions.vrf.staticroute.capability.routemgt.StaticRouteMgtCapability"/>
 
-    <service ref="staticRouting" interface="org.opennaas.extensions.vrf.staticroute.capability.IStaticRoutingCapability">
+    <service ref="staticRouting" interface="org.opennaas.extensions.vrf.staticroute.capability.routing.IStaticRoutingCapability">
         <service-properties>
             <!-- Rest -->
             <entry key="service.exported.interfaces" value="*"/>
             <entry key="service.exported.configs" value="org.apache.cxf.rs"/>
             <entry key="service.exported.intents" value="HTTP"/>
             <entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/vrf/staticrouting"/>
+            <entry key="org.apache.cxf.rs.address" value="/"/>
+            <entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
+        </service-properties>
+    </service>
+    
+    <service ref="routeMgt" interface="org.opennaas.extensions.vrf.staticroute.capability.routemgt.IStaticRouteMgtCapability">
+        <service-properties>
+            <!-- Rest -->
+            <entry key="service.exported.interfaces" value="*"/>
+            <entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+            <entry key="service.exported.intents" value="HTTP"/>
+            <entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/vrf/routemgt"/>
             <entry key="org.apache.cxf.rs.address" value="/"/>
             <entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
         </service-properties>
