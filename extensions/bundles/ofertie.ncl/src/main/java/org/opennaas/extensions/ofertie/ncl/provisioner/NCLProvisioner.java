@@ -379,6 +379,10 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	private int readMatchVlan() throws IOException {
+		// Gracefully ignore this feature in non OSGi environments (i.e. unit tests)
+		if (Activator.getBundleContext() == null)
+			return -1;
+
 		ConfigurationAdminUtil configurationAdmin = new ConfigurationAdminUtil(Activator.getBundleContext());
 
 		String readVlan = configurationAdmin.getProperty("org.ofertie.ncl.network", "circuits.match.vlan");
