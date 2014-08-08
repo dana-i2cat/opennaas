@@ -1,0 +1,33 @@
+{
+  "id": "TNC_demo",
+  "nodes": [
+        {id: 0, name: "SW1", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*2, y: sw_y, dpid: "00:00:00:00:00:00:00:01"},
+        {id: 1, name: "SW2", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*6, y: sw_y-40, dpid: "00:00:00:00:00:00:00:02"},
+        {id: 2, name: "SW3", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*6, y: sw_y+40, dpid: "00:00:00:00:00:00:00:03"},
+        {id: 3, name: "SW4", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*12, y: sw_y, dpid: "00:00:00:00:00:00:00:04"},
+        
+        {id: 4, name: "h1", type: "host", fixed: true, x: node_x+10, y: node_y-40, ip: "192.168.122.111", SW: "SW1", port: 3},
+        {id: 5, name: "h2", type: "host", fixed: true, x: node_x*13+10, y: node_y, ip: "192.168.121.202", SW: "SW4", port: 1}],
+  "links": [
+        {id: "path01", source: 0, target: 1, srcPort: 4, dstPort: 3, type: "static"},
+        {id: "path02", source: 0, target: 2, srcPort: 4, dstPort: 3, type: "static"},
+        {id: "path13", source: 1, target: 3, srcPort: 1, dstPort: 3, type: "static"},
+        {id: "path23", source: 2, target: 3, srcPort: 2, dstPort: 3, type: "static"},
+        {id: "path40", source: 4, target: 0, srcPort: 3, dstPort: 3, type: "static"},
+        {id: "path53", source: 5, target: 3, srcPort: 1, dstPort: 1, type: "static"}],
+    "controllers" : [
+        {id: 0, name: "Ctrl1", type: "controller", controller: "localhost:8080", ctrlType: "odl", fixed: true, x: sw_x*2.5, y: 20},
+        {id: 1, name: "Ctrl2", type: "controller", controller: "controllersVM:8080", ctrlType: "fdl", fixed: true, x: sw_x*11+30, y: 20}],
+    "controllersLinks" : [
+        {id: "00", source: 0, target: 0, type: "static"},
+        {id: "10", source: 1, target: 0, type: "static"},
+        {id: "20", source: 2, target: 0, type: "static"},
+        {id: "31", source: 3, target: 0, type: "static"}],
+    "cloud" : [
+        {id: 0, name: "cloud", type: "cloud", fixed: true, x: 270, y: 17}],
+    "cloudLinks" : [
+        {id: "0", source: 0, target: 0, type: "static"}],
+    "domains" : [
+        {id: "0", name:"i2CAT", width: 260, height: 300, x: 0, y: 60, x_txt: 100, y_txt: 200, img_width: 150, img_height: 80}]
+}
+
