@@ -53,7 +53,6 @@ public class NFVRoutingController {
             settings = (Settings) session.getAttribute("settings");
         } else {
             model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
-//		return "home";
         }
         if (settings == null) {
             settings = new Settings();
@@ -64,23 +63,17 @@ public class NFVRoutingController {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }
 
-        int typ;
-        if (type.equals("IPv4")) {
-            typ = 4;
-        } else if (type.equals("IPv6")) {
-            typ = 6;
-        } else {
-            model.addAttribute("errorMsg", "This type of table does not exist.");
-            model.addAttribute("json", "'null'");
-            return "configRoute";
-        }
         try {
-            String response = nfvRoutingBO.getRouteTable(typ);
+            String response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]));
             if (response.equals("OpenNaaS is not started")) {
                 model.addAttribute("errorMsg", response);
             }
             LOGGER.info("received json: " + response);
             model.addAttribute("json", response);
+        } catch(NumberFormatException e){//handle the split type IP version
+            model.addAttribute("errorMsg", "This type of table does not exist. Err: "+e.getMessage());
+            model.addAttribute("json", "'null'");
+            return "configRoute";
         } catch (RestServiceException e) {
             model.addAttribute("errorMsg", e.getMessage());
             model.addAttribute("json", "null");
@@ -104,7 +97,6 @@ public class NFVRoutingController {
             model.put("settings", (Settings) session.getAttribute("settings"));
         } else {
             model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
-//                return "home";
         }
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
@@ -115,7 +107,8 @@ public class NFVRoutingController {
     }
 
     /**
-     * Redirect to insert view and insert the values received by POST
+     * Redirect to insert view and insert the values received by POST. 
+     * This function is used when we insert routes using the FORM after press Update
      *
      * @param route
      * @param result
@@ -143,23 +136,20 @@ public class NFVRoutingController {
     }
 
     /**
-     * Redirect to insert view and insert the values received by POST
+     * Scenario view. Show the topology and allow to open a terminal of each host using ShellinaBox
      *
-     * @param route
-     * @param result
      * @param model
      * @param session
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/demonstrator")
-    public String demonstrator(insertRoutes route, BindingResult result, ModelMap model, HttpSession session) {
-        LOGGER.info("Demonstator ------------------> " + route.getListRoutes());
+    public String demonstrator(ModelMap model, HttpSession session) {
+        LOGGER.info("Demonstator ------------------> ");
         Settings settings = null;
         if ((Settings) session.getAttribute("settings") != null) {
             model.put("settings", (Settings) session.getAttribute("settings"));
         } else {
             model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
-//                return "home";
         }
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
@@ -182,27 +172,19 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteRoute/{id}")
-    public @ResponseBody
-    String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
-        LOGGER.debug("Remove Route ------------------> " + id);
-        LOGGER.error("REMOVE ROUTE " + id + " " + type);
+    public @ResponseBody String deleteRoute(@RequestParam("type") String type, @PathVariable("id") int id, ModelMap model) {
+        LOGGER.debug("Remove Route ------------------> " + id + ", type: "+type);
         String response = "";
-        int version;
-        if (type.equals("IPv4")) {
-            version = 4;
-        } else if (type.equals("IPv6")) {
-            version = 6;
-        } else {
-            model.addAttribute("errorMsg", "This type of table does not exist.");
-            return "configRoute";
-        }
         try {
-            response = nfvRoutingBO.deleteRoute(id, version);
+            response = nfvRoutingBO.deleteRoute(id, Integer.parseInt(type.split("IPv")[1]));
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
+        } catch(NumberFormatException e){//handle the split type IP version
+            model.addAttribute("errorMsg", "This type of table does not exist. Err: "+e.getMessage());
+            return "configRoute";
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
-        }
+        } 
         return response;
     }
 
@@ -213,8 +195,7 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/nfvRouting/deleteAllRoutes")
-    public @ResponseBody
-    String deleteAllRoutes(ModelMap model) {
+    public @ResponseBody String deleteAllRoutes(ModelMap model) {
         LOGGER.debug("Remove All Route ------------------> ");
         String response = "";
 
@@ -232,27 +213,26 @@ public class NFVRoutingController {
      * Obtain information of a switch. In which controller is connected and the
      * Flow table.
      *
-     * @param dpid
+     * @param resourceName
      * @param model
      * @return the information of the switch (IP:port)
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/getInfoSw/{dpid}")
-    public @ResponseBody String getAllocatedFlows(@PathVariable("dpid") String dpid, ModelMap model) {
+    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/getFlowTable/{resourceName}")
+    public @ResponseBody String getAllocatedFlows(@PathVariable("resourceName") String resourceName, ModelMap model) {
         LOGGER.debug("Get Information about switch ------------------");
-        String response = nfvRoutingBO.getFlowTable(dpid);
+        String response = nfvRoutingBO.getFlowTable(resourceName);
         return response;
     }
 
     /**
-     * Obtain information of a switch. In which controller is connected and the
-     * Flow table.
+     * Call directly to StaticRoute REST API in order to request a route
      *
      * @param ipSrc
      * @param ipDst
      * @param dpid
      * @param inPort
      * @param model
-     * @return the information of the switch (IP:port)
+     * @return the route
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRoute/{ipSrc}/{ipDst}/{dpid}/{inPort}")
     public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst,
@@ -268,7 +248,8 @@ public class NFVRoutingController {
     }
 
     /**
-     * Redirect to insert view and insert the values received by POST
+     * Insert a route using AJAX. 
+     * Used when we draw the routes in the picture
      *
      * @param ipSrc
      * @param ipDst
@@ -296,6 +277,7 @@ public class NFVRoutingController {
 
     /**
      * Get route paths given ipSrc and IpDest
+     * Used when we request a link of specific route (from Ip source to Ip dest)
      *
      * @param ipSrc
      * @param ipDst
@@ -304,7 +286,7 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/route/{ipSrc}/{ipDst:.+}")
     public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, ModelMap model) {
-        LOGGER.error("Get ROUTE " + ipSrc + " " + ipDst);
+        LOGGER.error("Get route " + ipSrc + " " + ipDst);
         String response = "";
         try {
             response = nfvRoutingBO.getRoute(ipSrc, ipDst);
@@ -327,24 +309,17 @@ public class NFVRoutingController {
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/routeAll")
     public @ResponseBody
     String getRouteAll(@RequestParam("type") String type, ModelMap model) {
-        LOGGER.error("Get Route Table ------------------> IPv" + type);
+        LOGGER.info("Get Route Table ------------------> IPv" + type);
 
-        int typ;
-        if (type.equals("IPv4")) {
-            typ = 4;
-        } else if (type.equals("IPv6")) {
-            typ = 6;
-        } else {
-            model.addAttribute("errorMsg", "This type of table does not exist.");
-            return "configRoute";
-        }
         String response = "";
         try {
-            response = nfvRoutingBO.getRouteTable(typ);
+            response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]));
+        } catch(NumberFormatException e){//handle the split type IP version
+            model.addAttribute("errorMsg", "This type of table does not exist. Err: "+e.getMessage());
+            return "configRoute";
         } catch (RestServiceException ex) {
             java.util.logging.Logger.getLogger(NFVRoutingController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return response;
     }
 
@@ -355,10 +330,7 @@ public class NFVRoutingController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getONRouteMode")
-    public @ResponseBody
-    String getONRouteMode(ModelMap model) {
-        LOGGER.error("Get Route MODE ------------------>");
-
+    public @ResponseBody String getONRouteMode(ModelMap model) {
         String response = "";
         try {
             response = nfvRoutingBO.getONRouteMode();
@@ -369,15 +341,14 @@ public class NFVRoutingController {
     }
 
     /**
-     * Set Route mode
+     * Set Route mode using AJAX
      *
      * @param mode
      * @param model
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/setONRouteMode/{mode}")
-    public @ResponseBody
-    String setONRouteMode(@PathVariable("mode") String mode, ModelMap model) {
+    public @ResponseBody String setONRouteMode(@PathVariable("mode") String mode, ModelMap model) {
         LOGGER.error("Set Route Mode ------------------> Mode" + mode);
         String response = "";
         try {
@@ -385,36 +356,6 @@ public class NFVRoutingController {
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
         }
-        return response;
-    }
-    
-    /**
-     * Used in the Demo in order to show the Log
-     *
-     * @param model
-     * @return the log of OpenNaaS
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getLog")
-    public @ResponseBody
-    String getLog(ModelMap model) {
-        LOGGER.debug("Get log ------------------");
-        String response = nfvRoutingBO.getLog();
-
-        return response;
-    }
-
-    /**
-     * Used in the Demo in order to obtain a route each 5 seconds
-     *
-     * @param model
-     * @return the log of OpenNaaS
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getStreamInfo")
-    public @ResponseBody
-    String getStreamRoute(ModelMap model) {
-        LOGGER.debug("Get stream route ------------------");
-        String response = nfvRoutingBO.getStream();
-
         return response;
     }
 }

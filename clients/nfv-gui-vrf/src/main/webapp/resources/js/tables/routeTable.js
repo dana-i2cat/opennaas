@@ -56,7 +56,7 @@ function ConvertJsonToRouteTable(parsedJson, tableId) {
                     var dpid = parsedJson.routeTable[i]['switchInfo'].dpid;
                     var switchId = nodes.filter(function (d) {
                         return (d.dpid === dpid );
-                    })[0].id;
+                    })[0].name;
                     tbCon += tdRow.format(switchId);
                     //                    tbCon += tdRow.format(parsedJson.routeTable[i]['switchInfo'].outputPort);
                     tbCon += tdRowHide.format(parsedJson.routeTable[i]['switchInfo'].dpid);

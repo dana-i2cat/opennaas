@@ -9,7 +9,7 @@ function runtime(node, links) {
         .on('mousedown', function (d) {
             if (d3.event.ctrlKey) return;
             if (d.type === "switch"){
-//                getFlowTable(d.dpid);
+                getFlowTable(d.name);
 //                switchSelected(d.dpid, "getControllerInfo(d.controller)");
                 switchSelected(d.dpid, "void");//call home jsp in order to show the values
             }
@@ -129,13 +129,13 @@ function toggleHideLegend(){
 
 /**
  * Call OpenNaaS get Flow Table
- * @param {type} dpid
+ * @param {type} switchName
  * @returns {undefined}
  */
-function getFlowTable(dpid) {
+function getFlowTable(switchName) {
     $.ajax({
         type: "GET",
-        url: "getInfoSw/" + dpid,
+        url: "getFlowTable/" + switchName,
         success: function (data) {
             $('#ajaxUpdate').html(data);
         }

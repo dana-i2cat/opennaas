@@ -132,12 +132,11 @@ public class NFVRoutingService extends GenericRestService {
     /**
      * Information about the switch.
      *
-     * @param dpid
+     * @param resourceName
      * @return Flow table of the switch.
      */
-    public String getFlowTable(String dpid) {
+    public String getFlowTable(String resourceName) {
         String response = null;
-        String resourceName = getSwitchResourceName(dpid);//request the resourceName
         try {
             LOGGER.info("Calling get Flow Table");
             String url = getURL("openflowswitch/" + resourceName + "/offorwarding/getOFForwardingRules");
@@ -149,34 +148,6 @@ public class NFVRoutingService extends GenericRestService {
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
             throw e;
-        }
-        return response;
-    }
-
-    /**
-     * Given the DPID of switch, return the Resource name stored in OpenNaaS
-     *
-     * @param dpid
-     * @return
-     */
-    public String getSwitchResourceName(String dpid) {
-        String response = null;
-        try {
-            LOGGER.info("Calling get Controller Status");
-            String url = getURL("sdnnetwork/" + sdn + "/ofprovisionnet/getDeviceResourceName/" + dpid);
-            LOGGER.error(url);
-            Client client = Client.create();
-            addHTTPBasicAuthentication(client);
-            WebResource webResource = client.resource(url);
-            response = webResource.get(String.class);
-            LOGGER.info("Controller status: " + response);
-            LOGGER.error("Resource ID: "+response);
-        } catch (ClientHandlerException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
-        } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
-            LOGGER.error("Unauthorized");
-            response = "s1";
         }
         return response;
     }

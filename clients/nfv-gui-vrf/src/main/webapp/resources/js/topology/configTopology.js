@@ -112,20 +112,6 @@ svg.on('mousemove', mousemove)
     .on('mouseup', mouseup);
 
 /**
- * Call OpenNaaS get Route Table
- * @param {type} dpid
- * @returns {undefined}
- */
-function getRouteTable(dpid) {
-    $.ajax({
-        type: "GET",
-        url: "getInfoSw/" + dpid,
-        success: function (data) {
-            $('#ajaxUpdate').html(data);
-        }
-    });
-}
-/**
  * Get Route to OpenNaaS
  * @param {type} ipSrc
  * @param {type} ipDst

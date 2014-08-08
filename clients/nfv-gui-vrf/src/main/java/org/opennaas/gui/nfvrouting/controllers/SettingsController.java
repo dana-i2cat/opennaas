@@ -44,7 +44,6 @@ public class SettingsController {
             settings = (Settings) session.getAttribute("settings");
         }else{
 		model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
-//		return "home";
 	}
         
         if ((String) session.getAttribute("topologyName") != null) {

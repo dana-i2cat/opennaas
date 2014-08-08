@@ -57,24 +57,11 @@ public class NFVRoutingBO {
     /**
      * Request the status of specific controller
      *
-     * @param dpid
+     * @param resourceName
      * @return Offline or Online
      */
-    /*    public String getControllerStatus(String ip) {
-     return nfvRoutingService.getControllerStatus(ip);
-     }
-     */
-    public String getFlowTable(String dpid) {
-        return nfvRoutingService.getFlowTable(dpid);
-    }
-
-    /**
-     * Obtain the log of the OpenNaaS console. Used only in Demos...
-     *
-     * @return
-     */
-    public String getLog() {
-        return nfvRoutingService.getLog();
+    public String getFlowTable(String resourceName) {
+        return nfvRoutingService.getFlowTable(resourceName);
     }
 
     public String getRoute(String ipSrc, String ipDst, String dpid, String inPort) {
@@ -83,10 +70,6 @@ public class NFVRoutingBO {
 
     public String insertRoute(String ipSrc, String ipDst, String dpid, String srcPort, String dstPort) {
         return nfvRoutingService.insertRoute(ipSrc, ipDst, dpid, srcPort, dstPort);
-    }
-
-    public String getStream() {
-        return nfvRoutingService.getStream();
     }
 
     public String getRoute(String srcIP, String dstIP) {

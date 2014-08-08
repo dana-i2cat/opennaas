@@ -20,19 +20,7 @@
 </div>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>
 <script src="<c:url value="/resources/js/topology/animation.js" />"></script>
-<script>
-    $.ajax({
-        type: 'GET',
-        url : "getStreamInfo/",
-        async: false,
-        success : function (data) {
-            if(data !== ""){
-                returnedRoutes = data;
-//                streamPacket(eval('(' + returnedRoutes + ')'));
-            }
-        }
-    });
-</script>
+
 <c:if test="${settings.addShellMode=='tab'}">
     <div id="tabs">
         <ul>

@@ -17,6 +17,7 @@ import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
 import org.opennaas.gui.nfvrouting.entities.settings.Settings;
 import org.opennaas.gui.nfvrouting.entities.topology.GuiTopology;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
+import org.opennaas.gui.nfvrouting.utils.Constants;
 import org.opennaas.gui.nfvrouting.utils.model.OpennaasBeanUtils;
 import org.opennaas.gui.nfvrouting.validator.FileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +55,14 @@ public class HomeController {
      * @param model
      * @param locale
      * @param session
+     * @param request
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home")
-    public String home(ModelMap model, Locale locale, HttpSession session) {
+    public String home(ModelMap model, Locale locale, HttpSession session, HttpServletRequest request) {
+        LOGGER.error("aaaaaa"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
+        Constants.HOME_URL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        LOGGER.error(Constants.HOME_URL);
         LOGGER.debug("home");
         model.addAttribute(new UploadedFile());
         if ((String) session.getAttribute("topologyName") != null) {
@@ -69,9 +74,7 @@ public class HomeController {
             if (response.equals("OpenNaaS is not started")) {
                 model.addAttribute("errorMsg", response);
             }
-//            String response = nfvRoutingBO.getInfoControllers();
-//            model.addAttribute("json", response);
-        } catch (Exception e) {
+        } catch (RestServiceException e) {
             return "home";
         }
         Settings settings = (Settings) session.getAttribute("settings");
@@ -81,28 +84,6 @@ public class HomeController {
         }
 	model.addAttribute("settings", settings);
         return "home";
-    }
-
-    /**
-     * Request the status of the controllers
-     *
-     * @param ip
-     * @param model
-     * @param locale
-     * @param session
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/controllerStatus/{ip}")
-    public @ResponseBody
-    String ctrlStatus(@PathVariable("ip") String ip, Model model, Locale locale, HttpSession session) {
-        LOGGER.debug("Controller Status " + ip);
-        String response = "Offline";
-        try {
-//            response = nfvRoutingBO.getControllerStatus(ip);
-        } catch (Exception e) {
-            return response;
-        }
-        return response;
     }
 
     /**
@@ -128,7 +109,7 @@ public class HomeController {
     }
 
     /**
-     * Create a form to upload new VI. Redirect to management view
+     * Create a form to upload new Topology. Redirect to management view
      *
      * @param uploadedFile
      * @param model
@@ -154,30 +135,24 @@ public class HomeController {
         try {
             inputStream = file.getInputStream();
             LOGGER.error("Path" + request.getRealPath(""));
-//            File dir = new File(request.getRealPath("") + "/resources/files/");
-//            dir.mkdir();
 
-            // inputStream = file.getInputStream();
             if (file.getSize() > 100000) {
                 model.addAttribute("errorMsg", "The file is more bigger than 10 MB.");
                 return "home";
             }
 
-//            newFile = new File(request.getRealPath("") + "/resources/files/" + fileName);
             newFile = new File(request.getRealPath("") + "/resources/js/topology/topology.json");
-//            if (!newFile.exists()) {
             newFile.createNewFile();
-//            }
             outputStream = new FileOutputStream(newFile);
-            int read = 0;
-            byte[] bytes = new byte[1024];
 
+            int read;
+            byte[] bytes = new byte[1024];
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            model.addAttribute("errorMsg", "Error: "+e.getMessage());
+            return "home";
         }
         model.addAttribute("infoMsg", "Topology uploaded.");
 
@@ -185,11 +160,19 @@ public class HomeController {
         session.setAttribute("topologyName", newFile.getPath());
         return "home";
     }
-    
+
+    /**
+     * Load a predefined topology located in resources/js/topology/topology.json
+     * @param topoName
+     * @param model
+     * @param locale
+     * @param request
+     * @param session
+     * @return 
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home/{topoName}")
     public String home(@PathVariable("topoName") String topoName, ModelMap model, Locale locale, HttpServletRequest request, HttpSession session) {
         LOGGER.debug("home");
-        model.addAttribute(new UploadedFile());
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }
@@ -199,8 +182,6 @@ public class HomeController {
             if (response.equals("OpenNaaS is not started")) {
                 model.addAttribute("errorMsg", response);
             }
-//            String response = nfvRoutingBO.getInfoControllers();
-//            model.addAttribute("json", response);
         } catch (RestServiceException e) {
             model.addAttribute("errorMsg", "OpenNaaS is not started");
             return "home";
@@ -210,32 +191,38 @@ public class HomeController {
         return "home";
     }
     
+    /**
+     * Load the Home view after loading the OpenNaaS topology (genericNetwork)
+     * @param model
+     * @param locale
+     * @param request
+     * @param session
+     * @return 
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home/opennaasTopology")
     public String loadOpenNaaSTopology(ModelMap model, Locale locale, HttpServletRequest request, HttpSession session) {
 //        InputStream inputStream;
         String topologyJSON = topologyToGuiTopology();
         if(topologyJSON.equals("")){
             model.addAttribute("errorMsg", "Generic Network not initiated or not contain a topoology. ");
-             return "home";
+            return "home";
         }
         try {
-//            inputStream = new ByteArrayInputStream(topologyJSON.getBytes(StandardCharsets.UTF_8));
             LOGGER.error("Path" + request.getRealPath(""));
-           File newFile = new File(request.getRealPath("") + "/resources/js/topology/topology.json");
+            File newFile = new File(request.getRealPath("") + "/resources/js/topology/topology.json");
             newFile.createNewFile();
             FileUtils.writeStringToFile(newFile, topologyJSON);
             session.setAttribute("topologyName", newFile.getPath());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            model.addAttribute("errorMsg", "Error when the toplogy is read. Err: "+e.getMessage());
+            return "home";
         }
         model.addAttribute("infoMsg", "Topology uploaded.");
 
-//        nfvRoutingBO.uploadTopology(newFile.getAbsolutePath());
         return "home";
     }
     
-    
+    //tests...
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/topologyToGUI")
     public @ResponseBody String topologyToGuiTopology(ModelMap model) {
         LOGGER.debug("Load OpenNaaS Topology");
@@ -256,8 +243,12 @@ public class HomeController {
         return topo;
     }
     
-    public String topologyToGuiTopology() {
-        String response = "";
+    /**
+     * Extract the topology of OpenNaaS (genericNetwork) and convert it to json.
+     * @return the topology in json format
+     */
+    private String topologyToGuiTopology() {
+        String response;
         GuiTopology guiTop = null;
         Map<String, String> possibleHosts;
         try {
