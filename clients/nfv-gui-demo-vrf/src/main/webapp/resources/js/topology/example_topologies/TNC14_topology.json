@@ -1,0 +1,45 @@
+{
+  "id": "TNC_demo",
+  "nodes": [
+    {id: 0, name: "SW1", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x, y: sw_y, dpid: "00:00:64:87:88:58:f6:57"},
+    {id: 1, name: "SW2", type: "switch", controller: "Ctrl1", fixed: true, x: sw_x*4, y: sw_y, dpid: "00:00:64:87:88:58:f8:57"},
+    {id: 2, name: "SW3", type: "switch", controller: "Ctrl2", fixed: true, x: sw_x*11, y: sw_y, dpid: "00:00:00:00:00:00:00:03"},
+    {id: 3, name: "SW4", type: "switch", controller: "Ctrl2", fixed: true, x: sw_x*10, y: sw_y*1.5, dpid: "00:00:00:00:00:00:00:04"},
+    {id: 4, name: "SW5", type: "switch", controller: "Ctrl2", fixed: true, x: sw_x*12, y: sw_y*1.5, dpid: "00:00:00:00:00:00:00:05"},
+
+    {id: 5, name: "h1", type: "host", fixed: true, x: node_x+10, y: node_y-40, ip: "192.168.122.111", SW: "SW1", port: 3},
+    {id: 6, name: "h2", type: "host", fixed: true, x: node_x*13+10, y: node_y, ip: "192.168.121.202", SW: "SW4", port: 1},
+
+    {id: 7, name: "h3", type: "host", fixed: true, x: node_x*15+10, y: node_y, ip: "192.168.121.203", SW: "SW4", port: 2},
+    {id: 8, name: "h4", type: "host", fixed: true, x: node_x*17+20, y: node_y, ip: "192.168.121.204", SW: "SW5", port: 1},
+    {id: 9, name: "h5", type: "host", fixed: true, x: node_x*19+20, y: node_y, ip: "192.168.121.205", SW: "SW5", port: 2}],
+  "links": [
+    {id: "path01", source: 0, target: 1, srcPort: 4, dstPort: 3, type: "static"},
+    {id: "path12", source: 1, target: 2, srcPort: 4, dstPort: 3, type: "static"},
+    {id: "path23", source: 2, target: 3, srcPort: 1, dstPort: 3, type: "static"},
+    {id: "path24", source: 2, target: 4, srcPort: 2, dstPort: 3, type: "static"},
+    
+    {id: "path50", source: 5, target: 0, srcPort: 3, dstPort: 3, type: "static"},
+    {id: "path63", source: 6, target: 3, srcPort: 1, dstPort: 1, type: "static"},
+    {id: "path73", source: 7, target: 3, srcPort: 2, dstPort: 2, type: "static"},
+    {id: "path84", source: 8, target: 4, srcPort: 1, dstPort: 1, type: "static"},
+    {id: "path94", source: 9, target: 4, srcPort: 2, dstPort: 2, type: "static"}],
+"controllers" : [
+    {id: 0, name: "Ctrl1", type: "controller", controller: "psnc-ctrl:8080", ctrlType: "odl", fixed: true, x: sw_x*2.5, y: 20},
+    {id: 1, name: "Ctrl2", type: "controller", controller: "controllersVM:8080", ctrlType: "fdl", fixed: true, x: sw_x*11+30, y: 20}],
+"controllersLinks" : [
+    {id: "00", source: 0, target: 0, type: "static"},
+    {id: "10", source: 1, target: 0, type: "static"},
+    {id: "20", source: 2, target: 1, type: "static"},
+    {id: "31", source: 3, target: 1, type: "static"},
+    {id: "41", source: 4, target: 1, type: "static"}],
+"cloud" : [
+    {id: 0, name: "cloud", type: "cloud", fixed: true, x: 270, y: 17}],
+"cloudLinks" : [
+    {id: "0", source: 0, target: 0, type: "static"},
+    {id: "1", source: 0, target: 1, type: "static"}],
+"domains" : [
+    {id: "0", name:"PSNC", width: 260, height: 300, x: 0, y: 60, x_txt: 100, y_txt: 200, img_width: 150, img_height: 80},
+    {id: "1", name:"i2CAT", width: 310, height: 320, x: 300, y: 60, x_txt: 510, y_txt: 130, img_width: 130, img_height: 80}]
+}
+

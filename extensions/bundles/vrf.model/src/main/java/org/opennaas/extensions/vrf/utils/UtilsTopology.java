@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -47,6 +49,7 @@ import org.opennaas.extensions.vrf.model.topology.Vertex;
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 public class UtilsTopology {
+    static Log log = LogFactory.getLog(Utils.class);
 
     /**
      * Read the json file that contains the topology and store the nodes and

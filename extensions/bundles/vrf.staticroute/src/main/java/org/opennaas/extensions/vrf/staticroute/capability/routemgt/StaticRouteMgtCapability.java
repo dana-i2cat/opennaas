@@ -304,24 +304,6 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
         return Response.ok().build();
     }
 
-    /*
-     private String getDPID() throws ActivatorException, ResourceException{
-     IResourceManager resourceManager = org.opennaas.extensions.genericnetwork.Activator.getResourceManagerService();
-     IResource sdnNetResource = resourceManager.listResourcesByType("genericnetwork").get(0);
-     IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-     INetTopologyCapability netTopo = (INetTopologyCapability) sdnNetResource.getCapabilityByInterface(INetTopologyCapability.class);
-     Topology top = netTopo.getTopology();
-     Set<NetworkElement> lis = top.getNetworkElements();
-     for(NetworkElement nE : lis){
-     nE.getId();//openflowswitch:s1
-     IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
-     IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
-
-     }
-     return "";
-     }
-     */
-    
     //given DPID returns resourceName and save this relation
     private static String autoLearningMapping(String DPID) {
         IResourceManager resourceManager = null;

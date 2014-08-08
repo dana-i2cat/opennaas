@@ -61,7 +61,7 @@
                         <Import-Package>
                             org.slf4j,
                             org.opennaas.extensions.vrf.model,
-                            org.opennaas.extensions.sdnnetwork.repository,
+                            org.opennaas.extensions.genericnetwork.repository,
                             *
                         </Import-Package>                        
                     </instructions>

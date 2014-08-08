@@ -21,6 +21,7 @@ package org.opennaas.extensions.vrf.staticroute.capability.routing;
  */
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -54,5 +55,18 @@ public interface IStaticRoutingCapability {
             @PathParam("switchDPID") String switchDPID,
             @PathParam("inputPort") int inputPort,
             @PathParam("action") boolean proactive);
+    
+    /**
+     * Define the resource name of Generic Network. 
+     * In order to use the NetTopology that contains the resource network in OpenNaaS
+     * By default: ofnet1.
+     *
+     * @param resourceName Resource name of Generic Network
+     * @return output Port where the switch forward the packet
+     */
+    @Path("/gennetres/{resourceName}")
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response setGenNetResource(@PathParam("resourceName") String resourceName);
 
 }

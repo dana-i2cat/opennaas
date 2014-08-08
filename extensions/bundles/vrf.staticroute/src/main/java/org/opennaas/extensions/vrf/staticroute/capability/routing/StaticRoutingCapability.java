@@ -56,7 +56,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     private final VRFModel vrfModel;
     private final String username = "admin";
     private final String password = "123456";
-    private final String netResourceName = "ofnet1";
+    private String netResourceName = "ofnet1";//default value. Usin REST can be changed
     private List<Vertex> nodes = new ArrayList<Vertex>();
     private List<Edge> edges = new ArrayList<Edge>();
     private boolean vtn_enabled = false;
@@ -187,23 +187,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         return Response.ok().build();
     }
 
-    /*
-     private String getDPID() throws ActivatorException, ResourceException{
-     IResourceManager resourceManager = org.opennaas.extensions.genericnetwork.Activator.getResourceManagerService();
-     IResource sdnNetResource = resourceManager.listResourcesByType("genericnetwork").get(0);
-     IOFProvisioningNetworkCapability sdnCapab = (IOFProvisioningNetworkCapability) sdnNetResource.getCapabilityByInterface(IOFProvisioningNetworkCapability.class);
-     INetTopologyCapability netTopo = (INetTopologyCapability) sdnNetResource.getCapabilityByInterface(INetTopologyCapability.class);
-     Topology top = netTopo.getTopology();
-     Set<NetworkElement> lis = top.getNetworkElements();
-     for(NetworkElement nE : lis){
-     nE.getId();//openflowswitch:s1
-     IResourceIdentifier resourceId = resourceManager.getIdentifierFromResourceName("openflowswitch", resourceName);
-     IResource resourceDesc = resourceManager.getResourceById(resourceId.getId());
-
-     }
-     return "";
-     }
-     */
     /**
      * Sort routes given route and edges of topology
      *
@@ -283,5 +266,11 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         client.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
         response = client.accept(MediaType.APPLICATION_XML).get(Topology.class);
         return UtilsTopology.createAdjacencyMatrix(response, staticDijkstraCost);
+    }
+
+    @Override
+    public Response setGenNetResource(String resourceName) {
+        netResourceName = resourceName;
+        return Response.ok("Resource name changed.").build();
     }
 }
