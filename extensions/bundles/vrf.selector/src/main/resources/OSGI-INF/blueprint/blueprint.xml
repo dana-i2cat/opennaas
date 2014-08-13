@@ -6,9 +6,13 @@
  						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
 						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
     <!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
-    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="none">
+        <cm:default-properties>
+            <cm:property name="ws.rest.url" value="/opennaas"/>
+        </cm:default-properties> 
+    </cm:property-placeholder>
   
-    <bean id="exampleBean" class="org.opennaas.extensions.vrf.staticroute.capability.routing.StaticRoutingCapability"/>
+    <bean id="staticRouteBean" class="org.opennaas.extensions.vrf.staticroute.capability.routing.StaticRoutingCapability"/>
     <!-- Directly obtain an unique service -->
     <!--    <reference id="staticRoutingCapab" interface="org.opennaas.extensions.vrf.staticroute.capability.IStaticRoutingCapability"/>-->
     <reference-list id="listRoutingCapab" interface="org.opennaas.extensions.vrf.staticroute.capability.routing.IStaticRoutingCapability" />

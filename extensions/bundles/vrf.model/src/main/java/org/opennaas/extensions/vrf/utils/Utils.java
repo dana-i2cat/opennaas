@@ -411,6 +411,7 @@ public class Utils {
      * @return
      */
     public static OFFlow VRFRouteToOFFlow(VRFRoute route, String etherType) {
+        log.error("VRFROute to OFFLOW");
         OFFlow flow = new OFFlow();
 
         FloodlightOFMatch match = new FloodlightOFMatch();
@@ -424,12 +425,14 @@ public class Utils {
         action.setType(FloodlightOFAction.TYPE_OUTPUT);
         action.setValue(String.valueOf(route.getSwitchInfo().getOutputPort()));
         listActions.add(action);
+        
         flow.setActions(listActions);
         flow.setActive(true);
         flow.setMatch(match);
 //        flow.setName(String.valueOf(route.getId())+"-"+etherType+"-"+route.getSourceAddress()+"-"+route.getDestinationAddress());
         flow.setName(createFlowName(String.valueOf(route.getId()), etherType, route.getSourceAddress(), route.getDestinationAddress(), route.getSwitchInfo().getDPID()));
         flow.setDPID(route.getSwitchInfo().getDPID());
+        flow.setPriority("32767");
         return flow;
     }
 

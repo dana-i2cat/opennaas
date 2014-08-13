@@ -280,7 +280,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
     }
 
     private Response removeFlow(OFFlow flow) {
-        log.info("Remove Flow Link");
+        log.info("Remove Flow "+flow.getName());
         String protocol;
         try {
             String resourceName = getSwitchMapping(flow.getDPID());
@@ -335,31 +335,32 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
                     protocolType.put(resourceName, "floodlight");
                     return resourceName;
                 }
+                if(protocolSession == null){
+                    protocolSession = sessionManager.obtainSessionByProtocol("opendaylight", true);
 
-                protocolSession = sessionManager.obtainSessionByProtocol("opendaylight", true);
-
-                t = protocolSession.getSessionContext().getSessionParameters();
-                extractedDPID = (String) t.get("protocol.opendaylight.switchid");
-                if (extractedDPID.equals(DPID)) {
-                    switchMapping.put(DPID, resourceName);
-                    protocolType.put(resourceName, "opendaylight");
-                    return resourceName;
+                    t = protocolSession.getSessionContext().getSessionParameters();
+                    extractedDPID = (String) t.get("protocol.opendaylight.switchid");
+                    if (extractedDPID.equals(DPID)) {
+                        switchMapping.put(DPID, resourceName);
+                        protocolType.put(resourceName, "opendaylight");
+                        return resourceName;
+                    }
                 }
             } catch (ProtocolException ex) {
+//                log.error("Protcol Exception error");
                 Logger.getLogger(StaticRouteMgtCapability.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return "No resource name with this DPID";
     }
-
+    
     public static IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {
         IProtocolManager protocolManager = org.opennaas.core.resources.Activator.getProtocolManagerService();
         return protocolManager.getProtocolSessionManager(resourceId);
     }
-
+   
     public final static String getSwitchMapping(String DPID) {
         Iterator<String> keySetIterator = switchMapping.keySet().iterator();
-
         while (keySetIterator.hasNext()) {
             String key = keySetIterator.next();
             if (key.equals(DPID)) {
@@ -371,7 +372,6 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
 
     public final static String getProtocolType(String resourceName) {
         Iterator<String> keySetIterator = protocolType.keySet().iterator();
-
         while (keySetIterator.hasNext()) {
             String key = keySetIterator.next();
             if (key.equals(resourceName)) {

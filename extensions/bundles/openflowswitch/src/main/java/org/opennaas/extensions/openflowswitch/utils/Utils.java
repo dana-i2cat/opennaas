@@ -29,7 +29,7 @@ import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 
 /**
  *
- * @author josep
+ * @author Josep Batallé (josep.batalle@i2cat.net)
  */
 public class Utils {
 
@@ -57,9 +57,9 @@ public class Utils {
         OpenDaylightOFFlow flow = new OpenDaylightOFFlow();
         FloodlightOFMatch match = OFFlow.getMatch();
         List<FloodlightOFAction> actions = OFFlow.getActions();
-        for(int i=0; i<actions.size(); i++){
-            if(actions.get(i).getType().equals("output")){
-                actions.get(i).setType("OUTPUT");
+        for (FloodlightOFAction action : actions) {
+            if (action.getType().equals("output")) {
+                action.setType("OUTPUT");
             }
         }
         
@@ -79,6 +79,10 @@ public class Utils {
         FloodlightOFMatch match = OFFlow.getMatch();
         List<FloodlightOFAction> actions = OFFlow.getActions();
 	flow.setName(OFFlow.getName());
+        flow.setPriority(OFFlow.getPriority());
+        flow.setSwitchId(OFFlow.getDPID());
+        flow.setDPID(OFFlow.getDPID());
+        flow.setActive(true);
         flow.setMatch(match);
         flow.setActions(actions);
         return flow;

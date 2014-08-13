@@ -119,7 +119,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             nodes = topInfo.getNodes();
         }
         sortRoutes(routeSubnetList, route);//requires topology (Edges)
-
         //Conversion List of VRFRoute to List of OFFlow
         if (routeSubnetList.size() > 0) {
             for (VRFRoute r : routeSubnetList) {
@@ -143,9 +142,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
                 response = callVTN(dstDPID, outPort);
             }
         }
-        for (OFFlow listFlow1 : listFlow) {
-            log.debug("Provision Flow " + listFlow1.getMatch().getSrcIp() + " " + listFlow1.getMatch().getDstIp() + " " + listFlow1.getDPID() + " " + listFlow1.getActions().get(0).getType() + ": " + listFlow1.getActions().get(0).getValue());
-            insertFlow(listFlow1);
+        for (OFFlow flow : listFlow) {
+            log.error("Provision Flow " + flow.getMatch().getSrcIp() + " " + flow.getMatch().getDstIp() + " " + flow.getDPID() + " " + flow.getActions().get(0).getType() + ": " + flow.getActions().get(0).getValue() + " " + flow.getPriority());
+            insertFlow(flow);
         }
         return Response.ok(listFlow).build();
     }
@@ -196,7 +195,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
      */
     private void sortRoutes(List<VRFRoute> routes, VRFRoute route) {
         String nodeSrc = route.getSwitchInfo().getDPID();
-//        log.error("nideSrc: "+nodeSrc);
         Boolean set = true;
         int maxLoop = routes.size() * 4;
         for (int j = 0; j < routes.size(); j++) {
@@ -206,7 +204,6 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
             } else {
                 for (Edge edge : edges) {
                     //find the dest node given a source node. Initial node is the source host
-//                    log.error(edges.get(i).getSource().getId()+"    i:"+i);
                     if ((edge.getSource().getDPID().equals(nodeSrc) && edge.getDestination().getDPID().equals(routes.get(j).getSwitchInfo().getDPID())) || (edge.getDestination().getDPID().equals(nodeSrc) && edge.getSource().getDPID().equals(routes.get(j).getSwitchInfo().getDPID()))) {
                         nodeSrc = routes.get(j).getSwitchInfo().getDPID();
                         set = false;

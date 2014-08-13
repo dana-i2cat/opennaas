@@ -65,8 +65,7 @@ public class RoutingCapability implements IRoutingCapability {
 
     @Override
     public Response getRoute(String ipSource, String ipDest, String switchDPID, int inputPort) {
-        log.error("SELECTOR: GET ROUTE");
-        log.error(ipSource + " " + ipDest + " " + switchDPID + " " + inputPort);
+        log.error("SELECTOR: GET ROUTE: "+ipSource + " " + ipDest + " " + switchDPID + " " + inputPort);
         Response response = null;
         if (mode.equals("static")) {
             response = service.getRoute(ipSource, ipDest, switchDPID, inputPort, proactive);
