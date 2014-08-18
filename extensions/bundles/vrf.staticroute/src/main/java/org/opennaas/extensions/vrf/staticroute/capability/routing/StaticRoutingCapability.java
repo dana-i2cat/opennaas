@@ -64,7 +64,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     public StaticRoutingCapability() {
         this.vrfModel = StaticRouteMgtCapability.getVRFModel();
     }
-    
+
     public VRFModel getVRFModel() {
         return vrfModel;
     }
@@ -113,10 +113,7 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
         List<OFFlow> listFlow = new ArrayList<OFFlow>();
 
         if (edges.isEmpty()) {
-//            TopologyInfo topInfo = UtilsTopology.createAdjacencyMatrix(topologyFilename, 1);
-            TopologyInfo topInfo = getTopology(1);
-            edges = topInfo.getEdges();
-            nodes = topInfo.getNodes();
+            defineTopologyVars();
         }
         sortRoutes(routeSubnetList, route);//requires topology (Edges)
         //Conversion List of VRFRoute to List of OFFlow
@@ -157,10 +154,9 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
      */
     private Response insertFlow(OFFlow flow) {
         log.info("Provision OpenFlow Flow Link");
-        String protocol;
         try {
             String resourceName = getSwitchMapping(flow.getDPID());
-            protocol = getProtocolType(resourceName);
+            String protocol = getProtocolType(resourceName);
             if (protocol == null) {
                 return Response.ok("Protocol is null").build();
             }
@@ -269,5 +265,11 @@ public class StaticRoutingCapability implements IStaticRoutingCapability {
     public Response setGenNetResource(String resourceName) {
         netResourceName = resourceName;
         return Response.ok("Resource name changed.").build();
+    }
+
+    private void defineTopologyVars() {
+        TopologyInfo topInfo = getTopology(1);
+        edges = topInfo.getEdges();
+        nodes = topInfo.getNodes();
     }
 }

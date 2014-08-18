@@ -8,6 +8,6 @@ if [ ! -z "$1" ]
 		file="$1"
 fi
 echo $file
-response=$(curl -H "Content-Type: application/json"  -H "Accept: text/plain" -d @$file http://admin:123456@localhost:8888/opennaas/vrf/staticrouting/insertRouteFromFile/vrf)
+response=$(curl -H "Content-Type: application/json"  -H "Accept: text/plain" -d @$file http://admin:123456@localhost:8888/opennaas/vrf/routemgt/insertRouteFromFile/vrf)
 echo $response
 echo "Insert done..."

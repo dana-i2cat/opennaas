@@ -378,7 +378,7 @@ public class StaticRouteMgtCapability implements IStaticRouteMgtCapability {
                 return protocolType.get(key);
             }
         }
-        return "No protocol detected.";
+        return null;
     }
 
     @Override
