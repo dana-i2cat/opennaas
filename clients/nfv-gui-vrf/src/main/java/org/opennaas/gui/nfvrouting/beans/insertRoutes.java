@@ -1,6 +1,6 @@
 package org.opennaas.gui.nfvrouting.beans;
 
-import org.opennaas.gui.nfvrouting.entities.Route;
+import org.opennaas.gui.nfvrouting.entities.route.Route;
 import org.springframework.util.AutoPopulatingList;
 
 /**

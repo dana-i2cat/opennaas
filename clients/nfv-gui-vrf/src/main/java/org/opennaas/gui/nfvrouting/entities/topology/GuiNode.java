@@ -4,7 +4,7 @@ package org.opennaas.gui.nfvrouting.entities.topology;
  *
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
-public class Node {
+public class GuiNode {
 
     private int id;
     private String name;

@@ -1,7 +1,7 @@
 package org.opennaas.gui.nfvrouting.bos;
 
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
-import org.opennaas.gui.nfvrouting.entities.Route;
+import org.opennaas.gui.nfvrouting.entities.route.Route;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.opennaas.gui.nfvrouting.services.rest.routing.NFVRoutingService;
 import org.springframework.beans.factory.annotation.Autowired;

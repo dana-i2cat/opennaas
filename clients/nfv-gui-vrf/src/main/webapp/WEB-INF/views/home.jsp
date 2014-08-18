@@ -40,28 +40,38 @@
     </c:if>
     <c:if test="${empty topologyName}">
         <div id="home_topology" class="topology ui-widget-content ui-corner-all" style="width: 100%;">
-            <h3><spring:message code="topology.notdefined"/></h3>
-            <div id="create">
-                <form:form modelAttribute="uploadedFile" name="frm" method="post" enctype="multipart/form-data" onSubmit="return Validate();">
-                    <fieldset>
-                        <legend>Topology form</legend>
-                        <p><form:label for="fileName" path="fileName">Topology Name</form:label><br/>
-                        <form:input path="fileName" type="text" name="fileName" id="fileName" class="ipInput text ui-widget-content ui-corner-all" value=""/></p>
-                        <p><form:label for="file" path="file">Topology File</form:label><br/>
-                        <form:input class="submitButton" path="file" id="owlFile" type="file"/></p>
-                        <input id="submitVI" class="submitButton" type="submit" value="<spring:message code="buttons.upload"/>" />
-                    </fieldset>
-                </form:form>
-            </div>
-            <div id="otherTop2">
-                <h3>Load topology from OpenNaaS Generic network</h3>
-                <a href="home/opennaasTopology">Load (in the case that exists)</a>
-            </div>
-            <br/>
-            <div id="otherTop">
-            <h3>Other used topologies:</h3>
-            <a href="home/demoTopo">Demo Topology (demo-topology.json)</a>
-            </div>
+            <center><h3 style="color:red"><spring:message code="topology.notdefined"/></h3></center>
+            <hr>
+            <ul>
+                <li>
+                    <div id="otherTop2">
+                        <h3>Load topology from OpenNaaS Generic network</h3>
+                        <a href="home/opennaasTopology">Load (in the case that exists)</a>
+                    </div>
+                </li>
+                <br/>
+                <li>
+                    <div id="create">
+                        <h3>Upload a topology file</h3>
+                        <form:form modelAttribute="uploadedFile" name="frm" method="post" enctype="multipart/form-data" onSubmit="return Validate();">
+                            <fieldset>
+                                <legend>Topology form</legend>
+                                <p><form:label for="fileName" path="fileName">Topology Name</form:label><br/>
+                                <form:input path="fileName" type="text" name="fileName" id="fileName" class="ipInput text ui-widget-content ui-corner-all" value=""/></p>
+                                <p><form:label for="file" path="file">Topology File</form:label><br/>
+                                <form:input class="submitButton" path="file" id="owlFile" type="file"/></p>
+                                <input id="submitVI" class="submitButton" type="submit" value="<spring:message code="buttons.upload"/>" />
+                            </fieldset>
+                        </form:form>
+                    </div>
+                </li>
+                <li>
+                    <div id="otherTop">
+                        <h3>Other used topologies</h3>
+                        <a href="home/demoTopo">Demo Topology (demo-topology.json)</a>
+                    </div>
+                </li>
+            </ul>
         </div>
     </c:if>
 <script src="<c:url value="/resources/js/topology/base.js" />"></script>

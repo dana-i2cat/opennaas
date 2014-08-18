@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.nfvrouting.beans.insertRoutes;
 import org.opennaas.gui.nfvrouting.bos.NFVRoutingBO;
-import org.opennaas.gui.nfvrouting.entities.Route;
+import org.opennaas.gui.nfvrouting.entities.route.Route;
 import org.opennaas.gui.nfvrouting.entities.settings.Settings;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.opennaas.gui.nfvrouting.utils.Constants;
@@ -198,7 +198,6 @@ public class NFVRoutingController {
     public @ResponseBody String deleteAllRoutes(ModelMap model) {
         LOGGER.debug("Remove All Route ------------------> ");
         String response = "";
-
         try {
             response = nfvRoutingBO.deleteAllRoutes();
             model.addAttribute("json", response);
@@ -237,10 +236,9 @@ public class NFVRoutingController {
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/getRoute/{ipSrc}/{ipDst}/{dpid}/{inPort}")
     public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst,
             @PathVariable("dpid") String dpid, @PathVariable("inPort") String inPort, ModelMap model) {
-        LOGGER.debug("Get Route ------------------");
         LOGGER.debug("Requested route: " + ipSrc + " " + ipDst + " " + dpid + " " + inPort + "------------------");
         String response = nfvRoutingBO.getRoute(ipSrc, ipDst, dpid, inPort);
-        LOGGER.error("Response: " + response);
+        LOGGER.debug("Response: " + response);
         if(response.equals("Route Not found.")){
             return response;
         }
@@ -286,11 +284,10 @@ public class NFVRoutingController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/nfvRouting/route/{ipSrc}/{ipDst:.+}")
     public @ResponseBody String getRoute(@PathVariable("ipSrc") String ipSrc, @PathVariable("ipDst") String ipDst, ModelMap model) {
-        LOGGER.error("Get route " + ipSrc + " " + ipDst);
+        LOGGER.debug("Get route " + ipSrc + " " + ipDst);
         String response = "";
         try {
             response = nfvRoutingBO.getRoute(ipSrc, ipDst);
-            LOGGER.error(response);
             model.addAttribute("json", response);
             model.addAttribute("infoMsg", "Route removed correctly.");
         } catch (Exception e) {
@@ -310,7 +307,6 @@ public class NFVRoutingController {
     public @ResponseBody
     String getRouteAll(@RequestParam("type") String type, ModelMap model) {
         LOGGER.info("Get Route Table ------------------> IPv" + type);
-
         String response = "";
         try {
             response = nfvRoutingBO.getRouteTable(Integer.parseInt(type.split("IPv")[1]));

@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.vrf.utils.Utils;
-import org.opennaas.gui.nfvrouting.entities.Route;
+import org.opennaas.gui.nfvrouting.entities.route.Route;
 import org.opennaas.gui.nfvrouting.services.rest.GenericRestService;
 import org.opennaas.gui.nfvrouting.services.rest.RestServiceException;
 import org.opennaas.gui.nfvrouting.utils.Constants;

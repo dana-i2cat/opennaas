@@ -141,9 +141,3 @@ function getFlowTable(switchName) {
         }
     });
 }
-/*
-function getControllerInfo(name){
-    var node = controllers.filter(function (l) {return (l.name === name ); })[0];
-    return node.controller;
-}
-*/

@@ -11,15 +11,15 @@ import java.util.Map;
  */
 public class GuiTopology {
 
-    private List<Node> nodes = new ArrayList<Node>();
+    private List<GuiNode> nodes = new ArrayList<GuiNode>();
     private List<GuiLink> links = new ArrayList<GuiLink>();
     private Map<String, String> possibleHosts = new HashMap<String, String>();
 
-    public List<Node> getNodes() {
+    public List<GuiNode> getNodes() {
         return nodes;
     }
 
-    public void setNodes(List<Node> nodes) {
+    public void setNodes(List<GuiNode> nodes) {
         this.nodes = nodes;
     }
 

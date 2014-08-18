@@ -21,7 +21,7 @@
     </appender>
 
 	<!-- OpenNaas Loggers -->
-	<logger name="org.opennaas.gui.nfv">
+	<logger name="org.opennaas.gui.nfvrouting">
 		<level value="debug" />
         <appender-ref ref="file" />
 	</logger>

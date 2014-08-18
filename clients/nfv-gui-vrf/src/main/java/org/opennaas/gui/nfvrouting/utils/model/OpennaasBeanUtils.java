@@ -18,7 +18,7 @@ import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.gui.nfvrouting.entities.topology.GuiSwitch;
 import org.opennaas.gui.nfvrouting.entities.topology.GuiLink;
 import org.opennaas.gui.nfvrouting.entities.topology.GuiTopology;
-import org.opennaas.gui.nfvrouting.entities.topology.Node;
+import org.opennaas.gui.nfvrouting.entities.topology.GuiNode;
 import org.opennaas.gui.nfvrouting.entities.topology.SwitchCollection;
 
 /**
@@ -37,29 +37,23 @@ public class OpennaasBeanUtils {
         Set<NetworkElement> nEs = topology.getNetworkElements();
         GuiSwitch sw;
         for (NetworkElement nE : nEs) {
-            log.error(nE.getId());
             sw = new GuiSwitch();
             sw.setDpid(nE.getId());
-
             for (Port port : nE.getPorts()) {
-                log.error("ports " + port.getId());
                 sw.getPorts().add(port.getId());
             }
             sws.add(sw);
         }
         ofTopo.setSwitches(sws);
-        log.error(ofTopo.getSwitches().size());
         return ofTopo;
     }
 
     public static String getSwitchOfPort(String port, SwitchCollection ofTopo) {
-        log.error("GET Switch of Prot");
         log.error("GET Switch of Prot" + ofTopo.getSwitches().size());
         for (GuiSwitch sw : ofTopo.getSwitches()) {
             log.error("Switch " + sw.getDpid());
             for (String p : sw.getPorts()) {
-                log.error("GEtWI " + p);
-                log.error(port);
+                log.error("GEtWI " + p+ " "+port);
                 if (p.equals(port)) {
                     return sw.getDpid();
                 }
@@ -70,13 +64,13 @@ public class OpennaasBeanUtils {
     
     public static GuiTopology convertONTopologyToGuiTopology(Topology topology) {
         GuiTopology guiTop = new GuiTopology();
-        List<Node> nodes = new ArrayList<Node>();
+        List<GuiNode> nodes = new ArrayList<GuiNode>();
         List<GuiLink> links = new ArrayList<GuiLink>();
         SwitchCollection of = getTopology(topology);
-        Node node;
+        GuiNode node;
         int id=0;
         for (NetworkElement nE : topology.getNetworkElements()) {
-            node = new Node();
+            node = new GuiNode();
             node.setId(id);
             if (nE instanceof Host) {
                 node.setName(nE.getId().split("host:")[1]);
@@ -95,14 +89,11 @@ public class OpennaasBeanUtils {
             String target = getSwitchOfPort(link.getDstPort().getId(), of);
             int idenSrc = getIdOfNode(nodes, source);
             int idenDst = getIdOfNode(nodes, target);
-            log.error("Id: "+idenSrc);
-            log.error("Id: "+idenDst);
             String srcPort = "0";
             String dstPort = "0";
             if (getNodeType(nodes, idenSrc).equals("switch")) {
                 srcPort = getPhysicalPortId(topology, link.getSrcPort().getId());
             }else{
-                log.error(nodes.get(idenSrc).getId());
                 nodes.get(idenSrc).setSW(nodes.get(idenDst).getName());
                 nodes.get(idenSrc).setPort(getPhysicalPortId(topology, link.getDstPort().getId()));
             }
@@ -120,9 +111,8 @@ public class OpennaasBeanUtils {
         return guiTop;
     }
 
-    private static int getIdOfNode(List<Node> nodes, String name){
-        log.error("Name: "+name);
-        for (Node n : nodes) {
+    private static int getIdOfNode(List<GuiNode> nodes, String name){
+        for (GuiNode n : nodes) {
             if(name.split("host:").length > 1){
                 if(n.getName().equals(name.split("host:")[1]))
                     return n.getId();
@@ -135,9 +125,9 @@ public class OpennaasBeanUtils {
         return 0;
     }
     
-    private static String getNodeType(List<Node> nodes, int id){
-        log.error("GetNode id : "+id);
-        for (Node n : nodes) {
+    private static String getNodeType(List<GuiNode> nodes, int id){
+        log.error("GetNodeType id : "+id);
+        for (GuiNode n : nodes) {
             if(n.getId() == id)
                 return n.getType();
         }

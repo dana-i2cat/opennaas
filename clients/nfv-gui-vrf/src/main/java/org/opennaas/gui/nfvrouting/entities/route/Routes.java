@@ -1,4 +1,4 @@
-package org.opennaas.gui.nfvrouting.entities;
+package org.opennaas.gui.nfvrouting.entities.route;
 
 import java.util.ArrayList;
 import java.util.List;

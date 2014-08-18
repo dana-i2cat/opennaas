@@ -1,4 +1,4 @@
-package org.opennaas.gui.nfvrouting.entities;
+package org.opennaas.gui.nfvrouting.entities.route;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
