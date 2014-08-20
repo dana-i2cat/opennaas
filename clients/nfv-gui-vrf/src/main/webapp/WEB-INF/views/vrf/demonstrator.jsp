@@ -40,7 +40,7 @@
 
 <script>
     //var tabContent = '<iframe src="//84.88.40.153/webconsole/webconsole.php" id="gadget{id}" name="gadget{id}" frameborder="1" width="100%" height="500"></iframe>',
-    var tabContent = '<iframe src="//84.88.40.153:4200/{hostName}" id="gadget{id}" name="gadget{id}" frameborder="1" width="100%" height="500"></iframe>',
+    var tabContent = '<iframe src="//84.88.40.153:5642/{hostName}" id="gadget{id}" name="gadget{id}" frameborder="1" width="100%" height="500"></iframe>',
             tabTemplate = "<li><a href='{href}'>{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
             tabCounter = 2;
 

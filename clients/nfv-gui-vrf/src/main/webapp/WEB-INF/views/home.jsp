@@ -38,7 +38,6 @@
         <p id="chart" ></p>
          </div>
     </c:if>
-    ${topologyName}
     <c:if test="${empty topologyName}">
         <div id="home_topology" class="topology ui-widget-content ui-corner-all" style="width: 100%;">
             <center><h3 style="color:red"><spring:message code="topology.notdefined"/></h3></center>
