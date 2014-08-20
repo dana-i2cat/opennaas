@@ -60,10 +60,8 @@ public class HomeController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home")
     public String home(ModelMap model, Locale locale, HttpSession session, HttpServletRequest request) {
-        LOGGER.error("aaaaaa"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
-        Constants.HOME_URL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-        LOGGER.error(Constants.HOME_URL);
         LOGGER.debug("home");
+        Constants.HOME_URL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         model.addAttribute(new UploadedFile());
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
@@ -201,10 +199,12 @@ public class HomeController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/secure/nfvRouting/home/opennaasTopology")
     public String loadOpenNaaSTopology(ModelMap model, Locale locale, HttpServletRequest request, HttpSession session) {
-//        InputStream inputStream;
         String topologyJSON = topologyToGuiTopology();
-        if(topologyJSON.equals("")){
-            model.addAttribute("errorMsg", "Generic Network not initiated or not contain a topoology. ");
+        LOGGER.error("Topology " + topologyJSON);
+        if(topologyJSON.equals("null")){
+            model.addAttribute("errorMsg", "Generic Network not initiated or not contain a topology. ");
+            model.addAttribute(new UploadedFile());
+            session.setAttribute("topologyName", null);
             return "home";
         }
         try {

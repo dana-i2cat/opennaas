@@ -38,6 +38,7 @@
         <p id="chart" ></p>
          </div>
     </c:if>
+    ${topologyName}
     <c:if test="${empty topologyName}">
         <div id="home_topology" class="topology ui-widget-content ui-corner-all" style="width: 100%;">
             <center><h3 style="color:red"><spring:message code="topology.notdefined"/></h3></center>
@@ -46,7 +47,7 @@
                 <li>
                     <div id="otherTop2">
                         <h3>Load topology from OpenNaaS Generic network</h3>
-                        <a href="home/opennaasTopology">Load (in the case that exists)</a>
+                        <a href="/nfv-gui-vrf/secure/nfvRouting/home/opennaasTopology">Load (in the case that exists)</a>
                     </div>
                 </li>
                 <br/>
@@ -68,7 +69,7 @@
                 <li>
                     <div id="otherTop">
                         <h3>Other used topologies</h3>
-                        <a href="home/demoTopo">Demo Topology (demo-topology.json)</a>
+                        <a href="/nfv-gui-vrf/secure/nfvRouting/home/demoTopo">Demo Topology (demo-topology.json)</a>
                     </div>
                 </li>
             </ul>

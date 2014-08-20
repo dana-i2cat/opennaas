@@ -54,6 +54,8 @@
         </div>
     </form:form>
 </div>
+<hr/>
+<iframe style="border: 2px red solid;" src="//84.88.40.153:4200/opennaas" id="OpenNaaS" name="OpenNaaS" frameBorder="0" width="100%" height="500"></iframe>
 
 <script language="JavaScript" type="text/JavaScript">
     /*
