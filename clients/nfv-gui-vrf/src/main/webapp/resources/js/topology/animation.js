@@ -76,15 +76,15 @@ function streamPacket(returnedRoutes){
 }
 
 /**
- * Uri format: //84.88.40.153:5642/h1
+ * Uri format: //mininetIP/h1
  * @param {type} nameHost
  * @returns {String}
  */
 function openHostShell(nameHost){
 	if(nameHost == "h1"){
-		var url = "http://84.88.40.90:5642";
+		var url = "http://"+mininetIP;
 	}else{
-		var url = "http://84.88.40.153:5642";
+		var url = "http://"+mininetIP;
 	}
 	var uri = url + "/" + nameHost;
 return uri;

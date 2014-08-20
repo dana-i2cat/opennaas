@@ -2,6 +2,8 @@
  *  Base file of d3js
  */
 console.log("Loading BASE.js");
+var mininetIP = "84.88.40.153:5642";
+
 /*
 if(sessvars.nodes){
     nodes = sessvars.nodes;

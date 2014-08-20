@@ -9,6 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <script>
     document.getElementById("ui-id-4").className += " ui-state-highlight";
+    var openNaaSIP = "84.88.40.153:5642";
 </script>
 <div id="settings" class="ui-widget-content ui-corner-all routTable padding">
     <h3>Settings</h3>
@@ -54,8 +55,10 @@
         </div>
     </form:form>
 </div>
-<hr/>
-<iframe style="border: 2px red solid;" src="//84.88.40.153:5642/opennaas" id="OpenNaaS" name="OpenNaaS" frameBorder="0" width="100%" height="500"></iframe>
+<hr/><script>
+document.write('<iframe style="border: 2px red solid;" src="//'+openNaaSIP+'/opennaas" id="OpenNaaS" name="OpenNaaS" frameBorder="0" width="100%" height="500"></iframe>');
+</script>
+<!--<iframe style="border: 2px red solid;" src=openNaaSIP+"/opennaas" id="OpenNaaS" name="OpenNaaS" frameBorder="0" width="100%" height="500"></iframe>-->
 
 <script language="JavaScript" type="text/JavaScript">
     /*
