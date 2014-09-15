@@ -225,8 +225,8 @@ function getAllCircuits() {
     var xml = "";
     $.ajax({
         type: 'GET',
-        url: "getCircuits/ajax",
-//        url: "http://84.88.40.109:8083/ofertie/secure/ofertie/noc/getCircuits/ajax",
+        url: "ajax/getCircuits",
+//        url: "http://84.88.40.109:8083/dolfin/secure/dolfin/ajax/getCircuits",
         async: false,
         success: function(data) {
             //                $("#dynamicContent").html(data);
@@ -247,8 +247,8 @@ function getCircuit(circuitId) {
     var xml = "";
     $.ajax({
         type: 'GET',
-        url: "getCircuit/" + circuitId,
-//        url: "http://84.88.40.109:8083/ofertie/secure/ofertie/getCircuit/"+circuitId,
+        url: "ajax/getCircuit/" + circuitId,
+//        url: "http://84.88.40.109:8083/dolfin/secure/dolfin/ajax/getCircuit/"+circuitId,
         async: false,
         success: function(data) {
             //                $("#dynamicContent").html(data);
@@ -272,7 +272,7 @@ function portIdsMap(){
     var xml = "";
     $.ajax({
         type: 'GET',
-        url: "portIdsMap",
+        url: "ajax/portIdsMap",
         async: false,
         success: function(data) {
             //                $("#dynamicContent").html(data);

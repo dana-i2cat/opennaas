@@ -3,7 +3,7 @@
  *
  */
 var file = "home";
-var getAllocatedFlowsUrl = "getAllocatedFlows";
+var getAllocatedFlowsUrl = "ajax/getAllocatedFlows";
 
 function runtime(node, links, controller) {
     node

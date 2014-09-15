@@ -52,12 +52,12 @@ svg.on('mousemove', mousemove);
  * @returns {data}
  */
 function getAllocatedCircuit(circuitId) {
-    console.log("getCircuitSwitches/" + circuitId);
+    console.log("ajax/getCircuitSwitches/" + circuitId);
     var response;
     $.ajax({
         type: "GET",
         async: false,
-        url: "getCircuitSwitches/" + circuitId,
+        url: "ajax/getCircuitSwitches/" + circuitId,
         success: function(data) {
             response = data;
         }
