@@ -50,7 +50,7 @@ public class DolfinService extends GenericRestService {
      * @throws RestServiceException 
      */
     public Topology getTopology() throws RestServiceException{
-        ClientResponse response;
+        ClientResponse response = null;
         try {
             LOGGER.info("Calling get Topology");
             String url = getURL("genericnetwork/"+genericNetwork+"/nettopology/topology");
@@ -61,7 +61,7 @@ public class DolfinService extends GenericRestService {
             LOGGER.error("Topology: " + response);
         } catch (ClientHandlerException e) {
             LOGGER.error(e.getMessage());
-            throw e;
+//            throw e;
         }
         return checkResponse(response) ? response.getEntity(Topology.class) : null;
     }
