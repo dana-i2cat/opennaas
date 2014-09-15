@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("settings")
 public class SettingsController {
 
-    private static final Logger LOGGER = Logger.getLogger(OfertieController.class);
+    private static final Logger LOGGER = Logger.getLogger(SettingsController.class);
     @Autowired
     protected OfertieBO ofertieBO;
 
