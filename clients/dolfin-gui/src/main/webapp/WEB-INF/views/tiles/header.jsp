@@ -29,17 +29,22 @@
 </div>	
 <div id="header_menu" class="ui-widget-content ui-corner-all">
     <div id="home">
-        <a href="/ofertie/secure/ofertie/home"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
+        <a href="<c:url value="${url}/secure/dolfin/home" />"><button id="homeButton" class="button" style="margin: 0px"><spring:message code="header.home"/></button></a>
     </div>
 
     <ul id="nav">
         <li>
-            <a href="<c:url value="${url}/secure/noc/ofertie/getCircuits" />">
+            <a href="<c:url value="${url}/secure/dolfin/circuits" />">
                 <spring:message code="menu.RouteTable" />
             </a>
         </li>
         <li>
-            <a href="<c:url value="${url}/secure/noc/ofertie/settings" />">
+            <a href="<c:url value="${url}/secure/dolfin/statistics" />">
+                <spring:message code="menu.Statistics" />
+            </a>
+        </li>
+        <li>
+            <a href="<c:url value="${url}/secure/dolfin/settings" />">
                 <spring:message code="menu.settings" />
             </a>
         </li>

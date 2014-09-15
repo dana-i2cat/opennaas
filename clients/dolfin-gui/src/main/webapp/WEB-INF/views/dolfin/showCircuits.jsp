@@ -99,9 +99,9 @@ for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
         var url;
         var response;
         if(type === "demoPath"){
-            url = "/ofertie/secure/ofertie/insertDemoPath";
+            url = "demo/insertDemoPath";
         }else{
-            url = "/ofertie/secure/ofertie/insertIperfReq";
+            url = "demo/insertIperfReq";
         }
         $.ajax({
             type: 'GET',
@@ -129,7 +129,7 @@ for ( var i = 0; i < jsonObject.circuits.circuit.length; i++){
     function deallocateFlows(){
         $.ajax({
             type: 'GET',
-            url : "/ofertie/secure/ofertie/delete",
+            url : "demo/deleteFlows",
             async: false,
             success : function (data) {
                 result = data;                 
