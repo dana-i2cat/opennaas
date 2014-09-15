@@ -55,31 +55,20 @@ VRF - OpenNaaS Custom CSS
 #innerTextRoute{
     text-decoration: underline;
 }
-/* Insert Routes view */
-#insert_topology {
-    width:66%;
-    min-height: 300px;
+/* Statistics view */
+#resources_list{
+    float:left;
+    width:26%;
 }
-#insert_routeTable{
-    width:100%;
-    padding: 10px;
-    margin-bottom: 55px;
-    margin-top: 5px;
+#statistics{
+    float:left;
+    width:73%;
 }
-#insert_info{
-    width:28%;
-}
-#insertRouteInfo{
-    padding: 10px;
-    width: 92%;
-    margin-left: 3px;
-}
-#mode0 {
-    position: absolute !important;
-}
-#changeMode{
-    margin-left: 3px;
-}
+#accordion {
+    width: 100%;
+    height: 220px;
+    border: 0;
+  }
 /* Animation view */
 #animaton_topology{
     width:100%;

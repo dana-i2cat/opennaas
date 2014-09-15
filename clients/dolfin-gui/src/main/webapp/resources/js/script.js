@@ -41,6 +41,12 @@ $(document).ready(function() {
         $(this).css('color', 'rgb(255, 255, 255)');
     });
 
+    $( "#accordion" ).accordion({//list resources
+      heightStyle: "fill",
+      collapsible: true,
+      active: false
+    });
+
     $("#dialog").dialog({
         autoOpen : false,
         modal : true,
@@ -215,38 +221,7 @@ $(function() {
             primary : "ui-icon-flag"
         }
     });
-    // English
-    $("#english").click(function(event) {
-        open: window.open("/opennaas-vcpe/secure/vcpeNetwork/home?locale=en_gb", "_self");
-    });
-	        
-    $("#radioset").buttonset();
-    $("#radioset2").buttonset();
-
-    /**
-	 * Template selection
-	 */	
-    $("#selectable").selectable();
-    $("#selectTemplateButton").click(function(event) {	
-        if ($('#selectable .ui-selected').attr('id') != undefined) {
-            if ($('#selectable .ui-selected').attr('id') == 'sp_vcpe') {
-                url = "/opennaas-vcpe/secure/noc/vcpeNetwork/singleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');
-            } else {
-                url = "/opennaas-vcpe/secure/noc/vcpeNetwork/multipleProvider/physical?templateType=" + $('#selectable .ui-selected').attr('id');				
-            }
-                open: window.open(url, "_self");
-        }
-        else {
-            $("#noTemplate").dialog('option', 'buttons', {			
-                "Go back" : function() {
-                    $(this).dialog("close");
-                }
-            });
-            $(".ui-dialog-titlebar-close").hide();
-            $("#noTemplate").dialog("open");
-        }
-    });	
-	
+    	
     $("#noTemplate").dialog({
         autoOpen : false,
         modal : true,
