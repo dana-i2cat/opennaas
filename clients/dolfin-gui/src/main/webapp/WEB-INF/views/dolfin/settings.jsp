@@ -12,7 +12,7 @@
 </script>
 <div id="settings" class="ui-widget-content ui-corner-all routTable padding">
     <h3>Settings</h3>
-    <form:form action="/ofertie/secure/noc/ofertie/settings" modelAttribute="settings" method="post" enctype="multipart/form-data">
+    <form:form action="settings" modelAttribute="settings" method="post" enctype="multipart/form-data">
         
         <div class="row">
             <form:label path="addShellMode">Open hosts shell in a: </form:label>
@@ -46,48 +46,5 @@
         </div>
     </form:form>
 </div>
-
-<script language="JavaScript" type="text/JavaScript">
-    /*
-    if(getONRouteMode() == "static"){
-        document.getElementById("static").checked = true;
-        document.getElementById("dynamic").checked = false;
-    }else{
-        document.getElementById("dynamic").checked = true;
-        document.getElementById("static").checked = false;
-    }
-    $( "input:disabled" ).val( "this is it" );
-     */
-    var type = getURLParameter("type");
-    
-    function getONRouteMode(){
-        var result;
-        $.ajax({
-            type: "GET",
-            url: "getONRouteMode",
-            success: function (data) {
-                $('#ajaxUpdate').html(data);
-                result = data;
-                document.getElementById("routingType").value = data;
-            }
-        });
-        return result;
-    }
-    function setONRouteMode(mode){
-        if( mode == "Static")
-            mode = "static";
-        else
-            mode = "dijkstra";
-        $.ajax({
-            type: "GET",
-            url: "setONRouteMode/" + mode,
-            success: function (data) {
-                $('#ajaxUpdate').html(data);
-            }
-        });
-        document.getElementById("routingType").value = mode;
-        //        getONRouteMode();
-    }
-</script>
 
 <div class="modal"></div>
