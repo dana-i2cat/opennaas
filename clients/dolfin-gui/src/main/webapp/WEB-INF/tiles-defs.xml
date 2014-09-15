@@ -30,17 +30,22 @@
         
         <definition name="showCircuits" extends="base.definition">
 		<put-attribute name="title" value="Provisioned Circuits" />
-		<put-attribute name="body" value="/WEB-INF/views/ofertie/showCircuits.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/showCircuits.jsp" />
 	</definition>
         
         <definition name="infoTopology" extends="base.definition">
 		<put-attribute name="title" value="Information about the topology" />
-		<put-attribute name="body" value="/WEB-INF/views/ofertie/home.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/home.jsp" />
 	</definition>
         
         <definition name="settings" extends="base.definition">
-		<put-attribute name="title" value="Ofertie settings" />
-		<put-attribute name="body" value="/WEB-INF/views/ofertie/settings.jsp" />
+		<put-attribute name="title" value="Dolfin settings" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/settings.jsp" />
+	</definition>
+        
+        <definition name="statistics" extends="base.definition">
+		<put-attribute name="title" value="Statistics" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/statistics.jsp" />
 	</definition>
 
 </tiles-definitions>
