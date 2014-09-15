@@ -67,9 +67,7 @@
 		</property>
 	</bean>
 
-        <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />  
 	<!-- OpenNaas Beans-->
 	<bean id="DolfinBO" class="org.opennaas.gui.dolfin.bos.DolfinBO" />
 	<bean id="dolfinService" class="org.opennaas.gui.dolfin.services.rest.dolfin.DolfinService" />
-        <bean id="fileValidator" class="org.opennaas.gui.dolfin.validator.FileValidator" />
 </beans>

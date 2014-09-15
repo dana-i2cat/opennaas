@@ -25,7 +25,7 @@ public class DolfinService extends GenericRestService {
     /**
      * 
      * @return 
-     * @throws org.opennaas.gui.ofertie.services.rest.RestServiceException 
+     * @throws org.opennaas.gui.dolfin.services.rest.RestServiceException 
      */
     public CircuitCollection getAllocatedCircuits() throws RestServiceException {
         ClientResponse response;
