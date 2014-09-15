@@ -219,3 +219,16 @@ input.ipInput {
 #submitUpdateConfig{
     float: right;
 }
+/**Help Image in settings show help to OpenNaaS shell */
+#wrapper .text {
+position:relative;
+bottom:12px;
+left:23px;
+visibility:hidden;
+color: blue;
+}
+#wrapper:hover .text {
+visibility:visible;
+}
+
+

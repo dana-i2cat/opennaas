@@ -54,6 +54,10 @@
             </span>
         </div>
     </form:form>
+	<div id="wrapper">
+                <img src="<c:url value="/resources/images/topology/helpImage.png" />" class="hover" height="20px"/>
+                <p class="text">Load default script with the following command: shell:source vrf.karaf</p>
+        </div>
 </div>
 <hr/><script>
 document.write('<iframe style="border: 2px red solid;" src="//'+openNaaSIP+'/opennaas" id="OpenNaaS" name="OpenNaaS" frameBorder="0" width="100%" height="500"></iframe>');
