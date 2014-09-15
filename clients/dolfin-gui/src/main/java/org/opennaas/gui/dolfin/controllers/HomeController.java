@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.dolfin.beans.UploadedFile;
-import org.opennaas.gui.dolfin.bos.OfertieBO;
+import org.opennaas.gui.dolfin.bos.DolfinBO;
 import org.opennaas.gui.dolfin.entities.settings.Settings;
 import org.opennaas.gui.dolfin.validator.FileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class HomeController {
 
     private static final Logger LOGGER = Logger.getLogger(HomeController.class);
     @Autowired
-    protected OfertieBO ofertieBO;
+    protected DolfinBO ofertieBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
     @Autowired

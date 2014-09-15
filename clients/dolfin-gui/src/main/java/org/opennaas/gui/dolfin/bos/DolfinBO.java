@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
-public class OfertieBO {
+public class DolfinBO {
 
     @Autowired
     private DolfinService ofertieService;

@@ -3,7 +3,7 @@ package org.opennaas.gui.dolfin.controllers;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
-import org.opennaas.gui.dolfin.bos.OfertieBO;
+import org.opennaas.gui.dolfin.bos.DolfinBO;
 import org.opennaas.gui.dolfin.entities.settings.Settings;
 import static org.opennaas.gui.dolfin.utils.Constants.OFERTIE_GUI_URL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class SettingsController {
 
     private static final Logger LOGGER = Logger.getLogger(SettingsController.class);
     @Autowired
-    protected OfertieBO ofertieBO;
+    protected DolfinBO ofertieBO;
 
     /**
      * Redirect to Settings view.

@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
-	<context:component-scan base-package="org.opennaas.gui.ofertie" />
+	<context:component-scan base-package="org.opennaas.gui.dolfin" />
 
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven validator="validator"/>
@@ -69,7 +69,7 @@
 
         <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />  
 	<!-- OpenNaas Beans-->
-	<bean id="ofertieBO" class="org.opennaas.gui.ofertie.bos.OfertieBO" />
-	<bean id="ofertieService" class="org.opennaas.gui.ofertie.services.rest.ofertie.OfertieService" />
-        <bean id="fileValidator" class="org.opennaas.gui.ofertie.validator.FileValidator" />
+	<bean id="DolfinBO" class="org.opennaas.gui.dolfin.bos.DolfinBO" />
+	<bean id="dolfinService" class="org.opennaas.gui.dolfin.services.rest.dolfin.DolfinService" />
+        <bean id="fileValidator" class="org.opennaas.gui.dolfin.validator.FileValidator" />
 </beans>

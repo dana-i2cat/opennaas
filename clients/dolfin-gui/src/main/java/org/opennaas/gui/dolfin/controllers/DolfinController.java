@@ -18,7 +18,7 @@ import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
-import org.opennaas.gui.dolfin.bos.OfertieBO;
+import org.opennaas.gui.dolfin.bos.DolfinBO;
 import org.opennaas.gui.dolfin.entities.GuiCircuitCollection;
 import org.opennaas.gui.dolfin.entities.GuiCircuits;
 import org.opennaas.gui.dolfin.entities.GuiSwitch;
@@ -48,7 +48,7 @@ public class DolfinController {
 
     private static final Logger LOGGER = Logger.getLogger(DolfinController.class);
     @Autowired
-    protected OfertieBO ofertieBO;
+    protected DolfinBO ofertieBO;
     @Autowired
     protected ReloadableResourceBundleMessageSource messageSource;
     private OfertieTopology ofertieTopology;
