@@ -27,7 +27,6 @@
         <!-- Javascript -->
 	<script src="<c:url value="/resources/js/jquery-1.8.2.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui-1.10.0.custom.js" />"></script>
-	<script src="<c:url value="/resources/js/jquery.jsPlumb-1.3.16-all.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery.validate-1.10.0.js" />"></script>
 	<script src="<c:url value="/resources/js/script.js" />"></script>
         <!-- Table sorter and xml2json converter --> 
