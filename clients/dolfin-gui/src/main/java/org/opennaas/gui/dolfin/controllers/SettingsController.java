@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 @Controller
+@RequestMapping("/secure/dolfin")
 @SessionAttributes("settings")
 public class SettingsController {
 
     private static final Logger LOGGER = Logger.getLogger(SettingsController.class);
     @Autowired
-    protected DolfinBO ofertieBO;
+    protected DolfinBO dolfinBO;
 
     /**
      * Redirect to Settings view.
@@ -34,7 +35,7 @@ public class SettingsController {
      * @param session
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/secure/noc/ofertie/settings")
+    @RequestMapping(method = RequestMethod.GET, value = "/settings")
     public String settings(ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Settings view -----------------");
 
@@ -43,7 +44,7 @@ public class SettingsController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/ofertie/home'>Home</a>");
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/dolfin/home'>Home</a>");
 //		return "home";
         }
 
@@ -55,7 +56,7 @@ public class SettingsController {
         return "settings";
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/secure/noc/ofertie/settings")
+    @RequestMapping(method = RequestMethod.POST, value = "/settings")
     public String settings(Settings settings, BindingResult result, ModelMap model, Locale locale, HttpSession session) {
         LOGGER.error("Get Settings view -----------------");
 
@@ -64,7 +65,7 @@ public class SettingsController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings_ses = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/ofertie/home'>Home</a>");
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/dolfin/home'>Home</a>");
         }
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
