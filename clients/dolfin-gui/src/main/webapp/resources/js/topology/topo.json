@@ -1,0 +1,39 @@
+{
+  "id": "OFERTIE_TNC_demo",
+  "nodes": [
+    {id: 0, name: "s1", controller: "Ctrl1", x: 390, y: 150, dpid: "10:00:00:00:00:00:00:01", type: "switch", fixed: true},
+    {id: 1, name: "s2", controller: "Ctrl1", x: 420, y: 340, dpid: "10:00:00:00:00:00:00:02", type: "switch", fixed: true},
+    {id: 2, name: "s3", controller: "Ctrl1", x: 300, y: 380, dpid: "10:00:00:00:00:00:00:03", type: "switch", fixed: true},
+    {id: 3, name: "s4", controller: "Ctrl1", x: 220, y: 150, dpid: "10:00:00:00:00:00:00:04", type: "switch", fixed: true},
+    {id: 4, name: "s5", controller: "Ctrl1", x: 180, y: 340, dpid: "10:00:00:00:00:00:00:05", type: "switch", fixed: true},
+
+    {id: 5, name: "h6", x: 50, y: 340, ip: "192.168.10.10", SW: "s5", port: 3, hPort: 2, type: "host", fixed: true},
+    {id: 6, name: "h7", x: 20, y: 150, ip: "192.168.10.20", SW: "s4", port: 4, hPort: 1, type: "host", fixed: true},
+    {id: 7, name: "h8", x: 550, y: 340, ip: "192.168.10.11", SW: "s2", port: 3, hPort: 2, type: "host", fixed: true},
+    {id: 8, name: "h9", x: 550, y: 150, ip: "192.168.10.21", SW: "s1", port: 4, hPort: 1, type: "host", fixed: true}],
+  "links": [
+    {id: "path01", source: 0, target: 1, srcPort: 1, dstPort: 1, type: "static"},
+    {id: "path02", source: 0, target: 2, srcPort: 2, dstPort: 1, type: "static"},
+    {id: "path03", source: 0, target: 3, srcPort: 3, dstPort: 1, type: "static"},
+    {id: "path12", source: 1, target: 2, srcPort: 2, dstPort: 2, type: "static"},
+    {id: "path23", source: 2, target: 3, srcPort: 3, dstPort: 2, type: "static"},
+    {id: "path24", source: 2, target: 4, srcPort: 4, dstPort: 1, type: "static"},
+    {id: "path34", source: 3, target: 4, srcPort: 3, dstPort: 2, type: "static"},
+    
+    {id: "path54", source: 5, target: 4, srcPort: 2, dstPort: 3, type: "static"},
+    {id: "path63", source: 6, target: 3, srcPort: 1, dstPort: 4, type: "static"},
+    {id: "path71", source: 7, target: 1, srcPort: 2, dstPort: 3, type: "static"},
+    {id: "path80", source: 8, target: 0, srcPort: 1, dstPort: 4, type: "static"}],
+"controllers" : [
+    {id: 0, name: "Ctrl1", type: "controller", controller: "controllersVM:8191", fixed: true, x: 200, y: 40}],
+"controllersLinks" : [
+    {id: "00", source: 0, target: 0, type: "static"},
+    {id: "10", source: 1, target: 0, type: "static"},
+    {id: "20", source: 2, target: 0, type: "static"},
+    {id: "30", source: 3, target: 0, type: "static"},
+    {id: "40", source: 4, target: 0, type: "static"}],
+"cloud" : [
+    {id: 0, name: "cloud", type: "cloud", fixed: true, x: 330, y: 25}],
+"cloudLinks" : [
+    {id: 0, source: 0, target: 0, type: "static"}]
+}

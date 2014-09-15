@@ -1,0 +1,221 @@
+/* -----------------------------------------------------------------------
+VRF - OpenNaaS Custom CSS
+----------------------------------------------------------------------- */
+
+.topology{/*class*/
+    float:left;
+    padding: 10px;
+}
+.routeTable{
+    float:left;
+}
+.padding{
+    padding: 10px;
+    float: left;
+}
+/* Home view */
+#home_info{
+    width: 32%;
+}
+#home_topology{
+    min-height: 300px;
+    width:63%;
+    margin-left: 3px;/*remove when we show the topology*/
+}
+
+.flowTable {
+    width: 10px;
+}
+#legend-link{
+    text-decoration: none;
+    color: gray;
+}
+.legendRect{
+    fill:blue;
+    stroke: black;
+    stroke-width: 2;
+    fill-opacity: 0.1;
+    stroke-opacity: 0.9;
+    cursor: pointer;
+}
+.legendLink body{
+    background: none;
+    font: 14px 'Helvetica Neue';
+}
+
+/* Config Routes view */
+#config_topology {
+    width:60%;
+    margin-left: 3px;/*remove when we show the topology*/
+}
+#config_routeTable{
+    width:35%;
+    margin-bottom: 55px;
+}
+#innerTextRoute{
+    text-decoration: underline;
+}
+/* Insert Routes view */
+#insert_topology {
+    width:66%;
+    min-height: 300px;
+}
+#insert_routeTable{
+    width:100%;
+    padding: 10px;
+    margin-bottom: 55px;
+    margin-top: 5px;
+}
+#insert_info{
+    width:28%;
+}
+#insertRouteInfo{
+    padding: 10px;
+    width: 92%;
+    margin-left: 3px;
+}
+#mode0 {
+    position: absolute !important;
+}
+#changeMode{
+    margin-left: 3px;
+}
+/* Animation view */
+#animaton_topology{
+    width:100%;
+    text-align: center;
+    float: none;
+}
+#animation_log{
+    width:100%;
+    position: relative;
+    bottom: 20px;
+    margin-top: 30px;
+}
+#settings{
+    width: 80%;
+    margin-left: 10%;
+}
+#log{
+    font-size: 20px;
+    background:black;
+    color:white;
+    min-height:200px;
+    width:100%;
+    margin:0 auto;
+}
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+        url('http://i.stack.imgur.com/FhHRx.gif') 
+        50% 50% 
+        no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+.menu {
+    width : 100px;
+}
+
+.menu .ui-menu-item.selected { 
+    background-color : red;
+}
+
+.menu .ui-menu-item.selected > .ui-state-focus,
+.menu .ui-menu-item.selected > .ui-state-active{
+    background-color: red ;
+    background-image: none;
+}
+
+#manualType{
+    width: 120px;
+    margin-right: 0;
+    float: right;
+}
+
+/** Scrollable table */
+.outer {
+    position:relative;
+    padding:4em 0 0 0;
+}
+.innera {
+    overflow:auto;
+    width: 100%;
+    height: 300px;
+}
+.outer thead tr {
+    position:absolute;
+    top:1.5em;
+    height:1.5em;
+    left:0;
+}
+.outer tfoot td {
+    position:absolute;
+    width:51.5em;
+    text-align:center;
+    background:#f0c992; 
+    bottom:0;
+    left:0
+}
+.outer th, .outer td {
+    width:10em; 
+    text-align:left;
+}
+
+/* Input form */
+.ipLabel{
+    float: left;
+}
+input.ipInput {
+    width: 8em;
+    margin-top: -2px;
+}
+#insertRouteInfo input.ipInput{
+    float: right;
+}
+.macInput{
+    width: 11em;
+}
+.portInput{
+    width: 2em;
+}
+.controllerPort{
+    width: 2.5em;
+}
+#jsonTable thead {
+    cursor: pointer;
+}
+.addRouteButton{
+    float:right;
+    margin-right: 26px;
+}
+.addCtrlInfoButton{
+    float:right;
+    margin-right: 65px;
+}
+#submitUpdateConfig{
+    float: right;
+}

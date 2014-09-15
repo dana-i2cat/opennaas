@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+
+	<definition name="login" template="/WEB-INF/views/login.jsp" >
+		<put-attribute name="title" value="Login" />
+	</definition>
+		
+	<definition name="exception" template="/WEB-INF/views/exception.jsp" />
+
+	<definition name="base.definition" template="/WEB-INF/views/tiles/baseLayout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/views/tiles/menu.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp" />
+	</definition>
+
+	<definition name="home" extends="base.definition">
+		<put-attribute name="title" value="Home" />
+		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+	</definition>
+
+	<definition name="denied" extends="base.definition">
+		<put-attribute name="title" value="Denied" />
+		<put-attribute name="body" value="/WEB-INF/views/denied.jsp" />
+	</definition>
+        
+        <definition name="showCircuits" extends="base.definition">
+		<put-attribute name="title" value="Provisioned Circuits" />
+		<put-attribute name="body" value="/WEB-INF/views/ofertie/showCircuits.jsp" />
+	</definition>
+        
+        <definition name="infoTopology" extends="base.definition">
+		<put-attribute name="title" value="Information about the topology" />
+		<put-attribute name="body" value="/WEB-INF/views/ofertie/home.jsp" />
+	</definition>
+        
+        <definition name="settings" extends="base.definition">
+		<put-attribute name="title" value="Ofertie settings" />
+		<put-attribute name="body" value="/WEB-INF/views/ofertie/settings.jsp" />
+	</definition>
+
+</tiles-definitions>
