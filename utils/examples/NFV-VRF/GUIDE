@@ -1,0 +1,32 @@
+
+1. Define the topology in mininet. In this example is defined in mininet_topology.py file.
+1.2. Put the IP of the controller
+
+2. Start OpenNaaS
+2.1. Create the openflowswitch resources and the genericNetwork resource.
+	resource:create /opt/opennaas/utils/examples/NFV-VRF/s1.descriptor
+	resource:create /opt/opennaas/utils/examples/NFV-VRF/s2.descriptor
+	resource:create /opt/opennaas/utils/examples/NFV-VRF/s3.descriptor
+	resource:create /opt/opennaas/utils/examples/NFV-VRF/s4.descriptor
+	resource:create /opt/opennaas/utils/examples/NFV-VRF/ofnet1.descriptor
+   Take into account that the ofnet1 descriptor contains topology. This topology is read from the topology.xml file
+2.2. Define the context of the openflow switch. DPID of the switch and the controller IP
+	protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:01 openflowswitch:s1 floodlight noauth http://localhost:8080
+	protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:02 openflowswitch:s2 floodlight noauth http://localhost:8080
+	protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:03 openflowswitch:s3 floodlight noauth http://localhost:8080
+	protocols:context -p protocol.floodlight.switchid=00:00:00:00:00:00:00:04 openflowswitch:s4 floodlight noauth http://localhost:8080
+2.3. Start the resources
+	resource:start openflowswitch:s1
+	resource:start openflowswitch:s2
+	resource:start openflowswitch:s3
+	resource:start openflowswitch:s4
+	resource:start genericnetwork:ofnet1
+
+3. Start Openflow controller
+3.1. Both Floodlight and OpenDaylight controllers requires a NFV bundle
+
+4. Start Mininet
+4.1. Use the example topology (mininet_topology.py file). ./mininet_topology.py
+4.2. Start ShellInABox script
+
+5. Start the GUI with Tomcat

@@ -6,11 +6,16 @@
  						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
 						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
     <!-- allows using properties defined in org.opennaas.cfg config file, in this blueprint file -->
-    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
+    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="none">
+        <cm:default-properties>
+            <cm:property name="ws.rest.url" value="/opennaas"/>
+        </cm:default-properties> 
+    </cm:property-placeholder>
   
-    <bean id="staticRouting" class="org.opennaas.extensions.vrf.staticroute.capability.StaticRoutingCapability"/>
+    <bean id="staticRouting" class="org.opennaas.extensions.vrf.staticroute.capability.routing.StaticRoutingCapability"/>
+    <bean id="routeMgt" class="org.opennaas.extensions.vrf.staticroute.capability.routemgt.StaticRouteMgtCapability"/>
 
-    <service ref="staticRouting" interface="org.opennaas.extensions.vrf.staticroute.capability.IStaticRoutingCapability">
+    <service ref="staticRouting" interface="org.opennaas.extensions.vrf.staticroute.capability.routing.IStaticRoutingCapability">
         <service-properties>
             <!-- Rest -->
             <entry key="service.exported.interfaces" value="*"/>
@@ -21,7 +26,18 @@
             <entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
         </service-properties>
     </service>
-        
+
+    <service ref="routeMgt" interface="org.opennaas.extensions.vrf.staticroute.capability.routemgt.IStaticRouteMgtCapability">
+        <service-properties>
+            <entry key="service.exported.interfaces" value="*"/>
+            <entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+            <entry key="service.exported.intents" value="HTTP"/>
+            <entry key="org.apache.cxf.rs.httpservice.context" value="${ws.rest.url}/vrf/routemgt"/>
+            <entry key="org.apache.cxf.rs.address" value="/"/>
+            <entry key="org.apache.cxf.httpservice.requirefilter" value="true"/>
+        </service-properties>
+    </service>
+
     <!-- Forces this bundle to wait for dataSourceResources being published -->
     <reference id="dataSourceResources" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/opennaas-resources)"/>        
 

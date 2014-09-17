@@ -132,18 +132,18 @@
 	
 		<!-- Openflow Switch Drivers -->
 		<module>openflowswitch.driver.floodlight</module>
-		<module>openflowswitch.driver.features</module>	
-
 		<module>openflowswitch.driver.opendaylight</module>
-		<module>opendaylight.vtn</module>
+		<module>openflowswitch.driver.features</module>	
+<!--		<module>opendaylight.vtn</module>-->
 		
 		<!-- GenericNetwork -->
 		<module>genericnetwork</module>
 
 		<module>vrf.model</module>
 		<module>vrf.staticroute</module>
-        <module>vrf.dijkstraroute</module>
-        <module>vrf.selector</module>
+	        <module>vrf.dijkstraroute</module>
+        	<module>vrf.selector</module>
+		<module>vrf.features</module>
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>

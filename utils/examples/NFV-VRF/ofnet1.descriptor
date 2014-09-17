@@ -1,0 +1,15 @@
+<resourceDescriptor>
+
+    <capabilityDescriptors>
+        <capabilityProperty name="actionset.name" value="internal" />
+        <capabilityProperty name="actionset.version" value="1.0.0" />
+        <information><type>nettopology</type></information>
+        <capabilityProperty name="topology.file.path" value="/opt/opennaas/utils/examples/NFV-VRF/topologyswitches_with_Hosts.xml" />
+    </capabilityDescriptors>
+
+    <information>
+        <type>genericnetwork</type>
+        <name>ofnet1</name>
+    </information>
+    <properties/>
+</resourceDescriptor>

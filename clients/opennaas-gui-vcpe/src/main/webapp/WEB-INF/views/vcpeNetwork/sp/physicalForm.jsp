@@ -18,7 +18,7 @@
 			<!-- WAN -->
 			<div id="wan">
 				<h2><spring:message code="physical.sp.wan"/></h2>
-				<div style="=width:780px;">
+				<div style="width:780px;">
 					<div id="cpe_core">
 						<h3><spring:message code="physical.sp.routerCore"/>: ${physicalInfrastructure.physicalRouterCore.name}</h3>
 						<div>

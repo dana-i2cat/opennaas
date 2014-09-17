@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({ Domain.class, Switch.class })
+@XmlSeeAlso({ Domain.class, Switch.class, Host.class })
 public class NetworkElement extends TopologyElement {
 
 	/**

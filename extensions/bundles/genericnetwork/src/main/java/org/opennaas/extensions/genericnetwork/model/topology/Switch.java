@@ -22,17 +22,30 @@ package org.opennaas.extensions.genericnetwork.model.topology;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Josep Batallé Oronich (i2cat)
  * 
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Switch extends NetworkElement {
 
+        @XmlElement(name = "dpid")
+        protected String dpid;
+
+        public String getDpid() {
+            return dpid;
+        }
+
+        public void setDpid(String dpid) {
+            this.dpid = dpid;
+        }
+    
 	/*
 	 * (non-Javadoc)
 	 * 
