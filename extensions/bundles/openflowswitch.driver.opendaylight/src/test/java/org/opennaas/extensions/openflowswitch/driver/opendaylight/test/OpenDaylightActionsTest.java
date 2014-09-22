@@ -31,6 +31,7 @@ import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowFo
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.OpenDaylightConstants;
 import org.opennaas.extensions.openflowswitch.driver.opendaylight.actionssets.actions.CreateOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
+import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFAction;
 import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 
@@ -46,7 +47,7 @@ public class OpenDaylightActionsTest {
 
     @Test
     public void createOFForwardingActionValidCreationTest() throws ActionException {
-        OpenDaylightOFFlow forwardingRule = generateValidFloodlightOFFlow();
+        OpenDaylightOFFlow forwardingRule = generateValidOpenDaylightOFFlow();
         boolean isOk = createOFForwardingAction.checkParams(forwardingRule);
         Assert.assertTrue("Params are correct", isOk);
     }
@@ -56,7 +57,7 @@ public class OpenDaylightActionsTest {
 
         int priority = Integer.parseInt(OpenDaylightConstants.MAX_PRIORITY) + 1;
 
-        OpenDaylightOFFlow forwardingRule = generateValidFloodlightOFFlow();
+        OpenDaylightOFFlow forwardingRule = generateValidOpenDaylightOFFlow();
         forwardingRule.setPriority(String.valueOf(priority));
         boolean isOk = createOFForwardingAction.checkParams(forwardingRule);
         Assert.assertFalse("Check params failed", isOk);
@@ -67,17 +68,17 @@ public class OpenDaylightActionsTest {
 
         int priority = Integer.parseInt(OpenDaylightConstants.MIN_PRIORITY) - 1;
 
-        OpenDaylightOFFlow forwardingRule = generateValidFloodlightOFFlow();
+        OpenDaylightOFFlow forwardingRule = generateValidOpenDaylightOFFlow();
         forwardingRule.setPriority(String.valueOf(priority));
         boolean isOk = createOFForwardingAction.checkParams(forwardingRule);
         Assert.assertFalse("Check params failed", isOk);
     }
 
-    private static OpenDaylightOFFlow generateValidFloodlightOFFlow() {
-        return generateSampleFloodlightOFFlow("testingFlow", "1", "2");
+    private static OpenDaylightOFFlow generateValidOpenDaylightOFFlow() {
+        return generateSampleOpenDaylightOFFlow("testingFlow", "1", "2");
     }
 
-    private static OpenDaylightOFFlow generateSampleFloodlightOFFlow(String name, String inputPort, String outputPort) {
+    private static OpenDaylightOFFlow generateSampleOpenDaylightOFFlow(String name, String inputPort, String outputPort) {
 
         OpenDaylightOFFlow forwardingRule = new OpenDaylightOFFlow();
         forwardingRule.setName(name);
@@ -89,7 +90,7 @@ public class OpenDaylightActionsTest {
         forwardingRule.setMatch(match);
 
         FloodlightOFAction floodlightAction = new FloodlightOFAction();
-        floodlightAction.setType("output");
+        floodlightAction.setType(OpenDaylightOFAction.TYPE_OUTPUT);
         floodlightAction.setValue(outputPort);
 
         List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
