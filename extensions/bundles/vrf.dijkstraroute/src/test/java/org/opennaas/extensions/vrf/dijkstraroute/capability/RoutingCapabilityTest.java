@@ -21,12 +21,15 @@ package org.opennaas.extensions.vrf.dijkstraroute.capability;
  */
 
 import javax.ws.rs.core.Response;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import org.opennaas.extensions.vrf.utils.Utils;
 
 /**
@@ -60,8 +63,8 @@ public class RoutingCapabilityTest {
     @Test
     public void testGetDynamicRoute() {
         System.out.println("getDynamicRoute");
-        String source = "";
-        String target = "";
+        String source = String.valueOf(Utils.StringIPv4toInt("192.168.0.1"));
+        String target = String.valueOf(Utils.StringIPv4toInt("192.168.0.2"));
         String DPID = "";
         int inPort = 0;
         DijkstraRoutingCapability instance = new DijkstraRoutingCapability();
@@ -70,8 +73,8 @@ public class RoutingCapabilityTest {
         assertEquals(404, result);
         // TODO review the generated test code and remove the default call to fail.
                
-        source = String.valueOf(Utils.StringIPv4toInt("192.168.1.2"));
-        target = String.valueOf(Utils.StringIPv4toInt("192.168.2.2"));
+        source = String.valueOf(Utils.StringIPv4toInt("10.0.1.1"));
+        target = String.valueOf(Utils.StringIPv4toInt("10.0.2.2"));
         DPID = "00:00:00:00:00:00:00:01";
         inPort = 1;
         instance = new DijkstraRoutingCapability();

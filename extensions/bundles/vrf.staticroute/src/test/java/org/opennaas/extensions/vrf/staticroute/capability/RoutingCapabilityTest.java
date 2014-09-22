@@ -52,8 +52,8 @@ public class RoutingCapabilityTest {
     @Test
     public void testGetRoute() throws FileNotFoundException, IOException {
         System.out.println("getRoute");
-        String ipSource = String.valueOf(Utils.StringIPv4toInt("192.168.1.2"));
-        String ipDest = String.valueOf(Utils.StringIPv4toInt("192.168.2.51"));
+        String ipSource = String.valueOf(Utils.StringIPv4toInt("10.0.1.1"));
+        String ipDest = String.valueOf(Utils.StringIPv4toInt("10.0.2.2"));
         String switchDPID = "00:00:00:00:00:00:00:01";
         int inputPort = 1;
         boolean proactive = true;
@@ -69,6 +69,7 @@ public class RoutingCapabilityTest {
         String filename = textFileToString(PATH_FILE);
         InputStream is = new ByteArrayInputStream(filename.getBytes("UTF-8"));
         instance2.insertRouteFile(FILE_NAME, is);
+        proactive = false;
         result = instance.getRoute(ipSource, ipDest, switchDPID, inputPort, proactive);
         assertEquals(200, result.getStatus());
     }
