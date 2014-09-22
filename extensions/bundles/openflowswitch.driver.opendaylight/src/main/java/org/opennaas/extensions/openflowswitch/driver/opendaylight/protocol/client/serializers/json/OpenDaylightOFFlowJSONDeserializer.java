@@ -45,7 +45,6 @@ public class OpenDaylightOFFlowJSONDeserializer extends
         List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>(0);
 
         JsonToken token;
-
         // token = jp.nextToken();
         // if ((token = jp.getCurrentToken()) != JsonToken.START_OBJECT) {
         // throw new IOException("Expected START_OBJECT");
@@ -60,18 +59,24 @@ public class OpenDaylightOFFlowJSONDeserializer extends
             if (jp.getText().equals("")) {
                 continue;
             }
-
+            
             if (n == "name") {
                 flow.setName(jp.getText());
             } else if (n == "node") {
                 jp.nextToken();
-                while (jp.nextToken() != JsonToken.END_ARRAY) {
-                    if (n == "id") {
+                while (jp.nextToken() != JsonToken.END_OBJECT) {
+                    if (jp.getText() == "id") {
+                        jp.nextToken();
                         flow.setSwitchId(jp.getText());
                     }
                 }
             } else if (n == "actions") {
-                actions = parseActions(jp.getText());
+                actions = new ArrayList<FloodlightOFAction>();
+                while (jp.nextToken() != JsonToken.END_ARRAY) {
+                    FloodlightOFAction action = new FloodlightOFAction();
+                    action = parseAction(jp.getText());
+                    actions.add(action);
+                }
             } else if (n == "priority") {
                 flow.setPriority(jp.getText());
             } else if (n == "active") {
@@ -104,7 +109,6 @@ public class OpenDaylightOFFlowJSONDeserializer extends
                 match.setDstPort(jp.getText());
             }
         }
-
         flow.setMatch(match);
         flow.setActions(actions);
         return flow;
@@ -135,5 +139,23 @@ public class OpenDaylightOFFlowJSONDeserializer extends
             }
         }
         return actions;
+    }
+    
+    private FloodlightOFAction parseAction(String actionstr) {
+        FloodlightOFAction currentAction;
+        String type;
+        String value;
+
+        if (actionstr != null) {
+            type = actionstr.split("[=:]")[0];
+            value = actionstr.split("[=:]")[1];
+            
+            currentAction = new FloodlightOFAction();
+            currentAction.setType(type);
+            currentAction.setValue(value);
+
+            return currentAction;
+        }
+        return null;
     }
 }
