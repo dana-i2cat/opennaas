@@ -23,12 +23,17 @@ package org.opennaas.extensions.router.capability.topologydiscovery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.LocalInformation;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.Neighbours;
 
@@ -76,8 +81,8 @@ public class TopologyDiscoveryCapability extends AbstractCapability implements I
 	}
 
 	@Override
-	public void queueAction(IAction arg0) throws CapabilityException {
-		// TODO Auto-generated method stub
+	public void queueAction(IAction action) throws CapabilityException {
+		throw new UnsupportedOperationException();
 
 	}
 
@@ -86,15 +91,50 @@ public class TopologyDiscoveryCapability extends AbstractCapability implements I
 	// ################################
 
 	@Override
-	public Neighbours getNeighbours() {
-		// TODO Auto-generated method stub
-		return null;
+	public Neighbours getNeighbours() throws CapabilityException {
+
+		IAction action = createActionAndCheckParams(TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_NEIGHBOURS, null);
+
+		ActionResponse response = executeAction(action);
+
+		return (Neighbours) response.getResult();
 	}
 
 	@Override
-	public LocalInformation getLocalDeviceId() {
-		// TODO Auto-generated method stub
-		return null;
+	public LocalInformation getLocalDeviceId() throws CapabilityException {
+		IAction action = createActionAndCheckParams(TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_LOCAL_DEVICE_ID, null);
+
+		ActionResponse response = executeAction(action);
+
+		return (LocalInformation) response.getResult();
+	}
+
+	private ActionResponse executeAction(IAction action) throws CapabilityException {
+		ActionResponse response;
+		try {
+			IProtocolManager protocolManager = Activator.getProtocolManagerService();
+			IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
+
+			response = action.execute(protocolSessionManager);
+
+		} catch (ProtocolException pe) {
+			log.error("Error with protocol session - " + pe.getMessage());
+			throw new CapabilityException(pe);
+		} catch (ActionException ae) {
+			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
+			throw (ae);
+		} catch (ActivatorException ae) {
+			String errorMsg = "Error getting protocol manager - " + ae.getMessage();
+			log.error(errorMsg);
+			throw new CapabilityException(errorMsg, ae);
+		}
+
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			String errMsg = "Error executing " + action.getActionID() + " action - " + response.getInformation();
+			log.error(errMsg);
+			throw new ActionException(errMsg);
+		}
+		return response;
 	}
 
 }

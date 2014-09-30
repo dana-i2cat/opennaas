@@ -28,6 +28,7 @@ import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -87,5 +88,10 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION,
 				version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
+	}
+
+	public static IProtocolManager getProtocolManagerService() throws ActivatorException {
+		log.debug("Calling ProtocolManager service");
+		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
 }

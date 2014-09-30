@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.LocalInformation;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.Neighbours;
@@ -40,10 +41,10 @@ public interface ITopologyDiscoveryCapability extends ICapability {
 	@Path("/localInformation")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public LocalInformation getLocalDeviceId();
+	public LocalInformation getLocalDeviceId() throws CapabilityException;
 
 	@Path("/neighbours")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public Neighbours getNeighbours();
+	public Neighbours getNeighbours() throws CapabilityException;
 }
