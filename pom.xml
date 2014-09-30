@@ -291,7 +291,12 @@
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.vlanbridge</artifactId>
 				<version>${project.version}</version>				
-			</dependency>			
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.topologydiscovery</artifactId>
+				<version>${project.version}</version>				
+			</dependency>					
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.repository</artifactId>
