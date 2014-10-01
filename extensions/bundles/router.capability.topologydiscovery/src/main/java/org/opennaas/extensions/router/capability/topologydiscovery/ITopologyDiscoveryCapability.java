@@ -41,7 +41,7 @@ public interface ITopologyDiscoveryCapability extends ICapability {
 	@Path("/localInformation")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public LocalInformation getLocalDeviceId() throws CapabilityException;
+	public LocalInformation getLocalInformation() throws CapabilityException;
 
 	@Path("/neighbours")
 	@GET

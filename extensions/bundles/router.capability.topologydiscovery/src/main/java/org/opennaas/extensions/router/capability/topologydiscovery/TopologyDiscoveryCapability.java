@@ -93,6 +93,8 @@ public class TopologyDiscoveryCapability extends AbstractCapability implements I
 	@Override
 	public Neighbours getNeighbours() throws CapabilityException {
 
+		log.info("Getting " + resourceId + " neighbours");
+
 		IAction action = createActionAndCheckParams(TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_NEIGHBOURS, null);
 
 		ActionResponse response = executeAction(action);
@@ -101,12 +103,16 @@ public class TopologyDiscoveryCapability extends AbstractCapability implements I
 	}
 
 	@Override
-	public LocalInformation getLocalDeviceId() throws CapabilityException {
-		IAction action = createActionAndCheckParams(TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_LOCAL_DEVICE_ID, null);
+	public LocalInformation getLocalInformation() throws CapabilityException {
+
+		log.info("Getting " + resourceId + " local information");
+
+		IAction action = createActionAndCheckParams(TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_LOCAL_INFORMATION, null);
 
 		ActionResponse response = executeAction(action);
 
 		return (LocalInformation) response.getResult();
+
 	}
 
 	private ActionResponse executeAction(IAction action) throws CapabilityException {

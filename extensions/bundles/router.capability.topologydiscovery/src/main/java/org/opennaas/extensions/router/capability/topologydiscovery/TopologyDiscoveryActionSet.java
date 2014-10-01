@@ -29,7 +29,7 @@ import org.opennaas.core.resources.action.IActionSetDefinition;
  */
 public class TopologyDiscoveryActionSet implements IActionSetDefinition {
 
-	public static final String	TOPOLOGY_DISCOVERY_GET_NEIGHBOURS		= "getNeighbours";
-	public static final String	TOPOLOGY_DISCOVERY_GET_LOCAL_DEVICE_ID	= "getLocalDeviceId";
+	public static final String	TOPOLOGY_DISCOVERY_GET_NEIGHBOURS			= "getNeighbours";
+	public static final String	TOPOLOGY_DISCOVERY_GET_LOCAL_INFORMATION	= "getLocalInformation";
 
 }

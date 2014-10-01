@@ -29,22 +29,22 @@ import java.util.Map;
  */
 public class Neighbours {
 
-	// This map indicates to which device a port belongs. The key of the map is the port ID, and the value is the device ID.
-	private Map<String, String>	devicePortMap;
+	// This map indicates to which remote device a port is connected. The key of the map is the local port ID, and the value is the remote Device id.
+	private Map<String, String>	connectionMap;
 
 	public Map<String, String> getDevicePortMap() {
-		return devicePortMap;
+		return connectionMap;
 	}
 
 	public void setDevicePortMap(Map<String, String> devicePortMap) {
-		this.devicePortMap = devicePortMap;
+		this.connectionMap = devicePortMap;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((devicePortMap == null) ? 0 : devicePortMap.hashCode());
+		result = prime * result + ((connectionMap == null) ? 0 : connectionMap.hashCode());
 		return result;
 	}
 
@@ -57,17 +57,17 @@ public class Neighbours {
 		if (getClass() != obj.getClass())
 			return false;
 		Neighbours other = (Neighbours) obj;
-		if (devicePortMap == null) {
-			if (other.devicePortMap != null)
+		if (connectionMap == null) {
+			if (other.connectionMap != null)
 				return false;
-		} else if (!devicePortMap.equals(other.devicePortMap))
+		} else if (!connectionMap.equals(other.connectionMap))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Neighbours [devicePortMap=" + devicePortMap + "]";
+		return "Neighbours [devicePortMap=" + connectionMap + "]";
 	}
 
 }
