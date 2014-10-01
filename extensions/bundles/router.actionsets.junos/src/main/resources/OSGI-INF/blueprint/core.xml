@@ -134,7 +134,7 @@
 	
 	<bean id="topologyDiscoveryActionSet" class="org.opennaas.extensions.router.junos.actionssets.TopologyDiscoveryActionSet"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
-	<service ref="l3vlanActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+	<service ref="topologyDiscoveryActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
 			<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="junos"/>
