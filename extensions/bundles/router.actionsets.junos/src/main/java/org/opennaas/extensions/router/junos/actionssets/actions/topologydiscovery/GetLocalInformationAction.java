@@ -42,7 +42,7 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.LocalInformation;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
+import org.opennaas.extensions.router.junos.commandsets.commands.GenericJunosCommand;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -83,7 +83,8 @@ public class GetLocalInformationAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
 		try {
-			GetNetconfCommand command = new GetNetconfCommand(REQUEST_XML);
+
+			GenericJunosCommand command = new GenericJunosCommand("get-lldp-local-info", REQUEST_XML);
 			command.initialize();
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);

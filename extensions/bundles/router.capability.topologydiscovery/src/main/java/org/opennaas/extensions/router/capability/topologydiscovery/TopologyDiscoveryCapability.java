@@ -82,7 +82,7 @@ public class TopologyDiscoveryCapability extends AbstractCapability implements I
 
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
-		throw new UnsupportedOperationException();
+		// throw new UnsupportedOperationException();
 
 	}
 

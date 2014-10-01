@@ -42,7 +42,7 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.Neighbours;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
-import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
+import org.opennaas.extensions.router.junos.commandsets.commands.GenericJunosCommand;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -59,7 +59,7 @@ public class GetNeighboursAction extends JunosAction {
 	private static final String	REQUEST_XML				= "<get-lldp-neighbors-information />";
 
 	private static final String	NEIGHBOUR_PATH			= "//lldp-neighbors-information/lldp-neighbor-information";
-	private static final String	LOCAL_PORT_ID_TAG		= "lldp-local-port-id";
+	private static final String	LOCAL_PORT_ID_TAG		= "lldp-local-interface";
 	private static final String	REMOTE_CHASSIS_ID_TAG	= "lldp-remote-chassis-id";
 
 	private Log					log						= LogFactory.getLog(GetLocalInformationAction.class);
@@ -81,7 +81,8 @@ public class GetNeighboursAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
 		try {
-			GetNetconfCommand command = new GetNetconfCommand(REQUEST_XML);
+
+			GenericJunosCommand command = new GenericJunosCommand("get-lldp-neighbors-information", REQUEST_XML);
 			command.initialize();
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
