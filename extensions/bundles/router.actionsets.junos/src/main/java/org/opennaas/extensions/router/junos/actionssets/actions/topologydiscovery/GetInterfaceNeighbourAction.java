@@ -21,8 +21,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions.topologydiscove
  */
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,35 +37,29 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.extensions.router.capability.topologydiscovery.model.Neighbours;
-import org.opennaas.extensions.router.capability.topologydiscovery.model.Port;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.GenericJunosCommand;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
-public class GetNeighboursAction extends JunosAction {
+public class GetInterfaceNeighbourAction extends JunosAction {
 
-	private static final String	PROTOCOL_NAME			= "netconf";
-	private static final String	REQUEST_XML				= "<get-lldp-neighbors-information />";
+	private static final String	PROTOCOL_NAME		= "netconf";
+	private static final String	TEMPLATE_URL		= "/VM_files/topologydiscovery/getInterfaceNeighbour.vm";
+	private static final String	REMOTE_PORT_ID_TAG	= "//lldp-neighbor-information/lldp-remote-port-id";
 
-	private static final String	NEIGHBOUR_PATH			= "//lldp-neighbors-information/lldp-neighbor-information";
-	private static final String	LOCAL_PORT_ID_TAG		= "lldp-local-interface";
-	private static final String	REMOTE_CHASSIS_ID_TAG	= "lldp-remote-chassis-id";
+	private Log					log					= LogFactory.getLog(GetInterfaceNeighbourAction.class);
+	private String				rpcResponse;
 
-	private Log					log						= LogFactory.getLog(GetLocalInformationAction.class);
-	private Neighbours			rpcResponse;
-
-	public GetNeighboursAction() {
-		setActionID(ActionConstants.TOPOLOGY_DISCOVERY_GET_NEIGHBOURS);
+	public GetInterfaceNeighbourAction() {
+		setActionID(ActionConstants.TOPOLOGY_DISCOVERY_GET_INTERFACE_NEIGHBOUR);
 		this.protocolName = PROTOCOL_NAME;
+		setTemplate(TEMPLATE_URL); // ask for the whole configuration
 
 	}
 
@@ -82,7 +74,8 @@ public class GetNeighboursAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
 		try {
-			GenericJunosCommand command = new GenericJunosCommand("get-lldp-neighbors-information", REQUEST_XML);
+
+			GenericJunosCommand command = new GenericJunosCommand("get-lldp-interface-neighbour", getVelocityMessage());
 			command.initialize();
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
@@ -107,48 +100,47 @@ public class GetNeighboursAction extends JunosAction {
 		if (message != null) {
 			try {
 
-				DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilderFactory builderFactory =
+						DocumentBuilderFactory.newInstance();
 				DocumentBuilder builder = builderFactory.newDocumentBuilder();
-
-				XPath xPath = XPathFactory.newInstance().newXPath();
 				Document xmlDocument = builder.parse(new ByteArrayInputStream(message.getBytes()));
 
-				NodeList neighboursList = (NodeList) xPath.compile(NEIGHBOUR_PATH).evaluate(xmlDocument, XPathConstants.NODESET);
+				XPath xPath = XPathFactory.newInstance().newXPath();
 
-				Map<String, Port> connectionMap = new HashMap<String, Port>();
-
-				for (int i = 0; i < neighboursList.getLength(); i++) {
-					Element element = (Element) neighboursList.item(i);
-
-					String localPortId = element.getElementsByTagName(LOCAL_PORT_ID_TAG).item(0).getTextContent();
-					String remoteDeviceId = element.getElementsByTagName(REMOTE_CHASSIS_ID_TAG).item(0).getTextContent();
-
-					Port port = new Port();
-					port.setDeviceId(remoteDeviceId);
-					connectionMap.put(localPortId, port);
-
-				}
-
-				rpcResponse = new Neighbours();
-				rpcResponse.setDevicePortMap(connectionMap);
+				rpcResponse = (String) xPath.compile(REMOTE_PORT_ID_TAG).evaluate(xmlDocument, XPathConstants.STRING);
 
 			} catch (Exception e) {
 				log.error("Error parsing netconf message: ", e);
 				throw new ActionException(e);
 			}
+
 		}
 
 	}
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		log.debug("Ignoring params in " + this.actionID + " action");
+		if (params == null)
+			throw new ActionException("Params should not be null for action " + this.actionID);
+		if (!(params instanceof String))
+			throw new ActionException("Param should be a string for action " + this.actionID);
+		if (((String) params).isEmpty())
+			throw new ActionException("Param should be an interface name for action " + this.actionID);
 
 		return true;
 	}
 
 	@Override
 	public void prepareMessage() throws ActionException {
+		if (template == null || template.equals(""))
+			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
+		checkParams(params);
+
+		try {
+			setVelocityMessage(prepareVelocityCommand(params, template));
+		} catch (Exception e) {
+			throw new ActionException(e);
+		}
 
 	}
 

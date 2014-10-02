@@ -46,8 +46,6 @@ public class GetNeighboursActionTest {
 	private final static String	IFACE_2_NAME		= "ge-0/0/2";
 	private final static String	REMOTE_DEVICE_1_ID	= "18:88:14:cf:c0:90";
 	private final static String	REMOTE_DEVICE_2_ID	= "84:18:88:14:cf:c0";
-	private final static String	REMOTE_PORT_1_ID	= "528";
-	private final static String	REMOTE_PORT_2_ID	= "610";
 
 	GetNeighboursAction			action;
 	Reply						reply;
@@ -83,15 +81,14 @@ public class GetNeighboursActionTest {
 		Assert.assertTrue("Response contained information for interface " + IFACE_2_NAME,
 				neighbours.getDevicePortMap().keySet().contains(IFACE_2_NAME));
 
-		checkPort(neighbours.getDevicePortMap().get(IFACE_1_NAME), IFACE_1_NAME, REMOTE_PORT_1_ID, REMOTE_DEVICE_1_ID);
-		checkPort(neighbours.getDevicePortMap().get(IFACE_2_NAME), IFACE_2_NAME, REMOTE_PORT_2_ID, REMOTE_DEVICE_2_ID);
+		checkRemoteDevice(neighbours.getDevicePortMap().get(IFACE_1_NAME), IFACE_1_NAME, REMOTE_DEVICE_1_ID);
+		checkRemoteDevice(neighbours.getDevicePortMap().get(IFACE_2_NAME), IFACE_2_NAME, REMOTE_DEVICE_2_ID);
 
 	}
 
-	private void checkPort(Port port, String localIfaceName, String remotePortId, String remoteDeviceId) {
+	private void checkRemoteDevice(Port port, String localIfaceName, String remoteDeviceId) {
 
 		Assert.assertNotNull("Remote port connected to interface " + localIfaceName + " should not be null", port);
-		Assert.assertEquals("Interface " + localIfaceName + " should be connected to port " + remotePortId, port.getPortId(), remotePortId);
 		Assert.assertEquals("Interface " + localIfaceName + " should be connected to device " + remoteDeviceId, port.getDeviceId(),
 				remoteDeviceId);
 

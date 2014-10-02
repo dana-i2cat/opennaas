@@ -31,5 +31,6 @@ public class TopologyDiscoveryActionSet implements IActionSetDefinition {
 
 	public static final String	TOPOLOGY_DISCOVERY_GET_NEIGHBOURS			= "getNeighbours";
 	public static final String	TOPOLOGY_DISCOVERY_GET_LOCAL_INFORMATION	= "getLocalInformation";
+	public static final String	TOPOLOGY_DISCOVERY_GET_INTERFACE_NEIGHBOUR	= "getInterfaceNeighbour";
 
 }

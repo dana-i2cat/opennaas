@@ -131,5 +131,6 @@ public class ActionConstants {
 	// TOPOLOGY DISCOVERY actionset
 	public static final String	TOPOLOGY_DISCOVERY_GET_NEIGHBOURS			= TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_NEIGHBOURS;
 	public static final String	TOPOLOGY_DISCOVERY_GET_LOCAL_INFORMATION	= TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_LOCAL_INFORMATION;
+	public static final String	TOPOLOGY_DISCOVERY_GET_INTERFACE_NEIGHBOUR	= TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_INTERFACE_NEIGHBOUR;
 
 }

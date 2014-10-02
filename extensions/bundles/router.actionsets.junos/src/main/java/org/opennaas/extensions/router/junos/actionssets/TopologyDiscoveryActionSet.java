@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.extensions.router.junos.actionssets.actions.topologydiscovery.GetInterfaceNeighbourAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.topologydiscovery.GetLocalInformationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.topologydiscovery.GetNeighboursAction;
 
@@ -39,6 +40,8 @@ public class TopologyDiscoveryActionSet extends ActionSet {
 
 		this.putAction(ActionConstants.TOPOLOGY_DISCOVERY_GET_LOCAL_INFORMATION, GetLocalInformationAction.class);
 		this.putAction(ActionConstants.TOPOLOGY_DISCOVERY_GET_NEIGHBOURS, GetNeighboursAction.class);
+		this.putAction(ActionConstants.TOPOLOGY_DISCOVERY_GET_INTERFACE_NEIGHBOUR, GetInterfaceNeighbourAction.class);
+
 	}
 
 	@Override
@@ -48,6 +51,7 @@ public class TopologyDiscoveryActionSet extends ActionSet {
 
 		actionNames.add(ActionConstants.TOPOLOGY_DISCOVERY_GET_LOCAL_INFORMATION);
 		actionNames.add(ActionConstants.TOPOLOGY_DISCOVERY_GET_NEIGHBOURS);
+		actionNames.add(ActionConstants.TOPOLOGY_DISCOVERY_GET_INTERFACE_NEIGHBOUR);
 
 		return actionNames;
 

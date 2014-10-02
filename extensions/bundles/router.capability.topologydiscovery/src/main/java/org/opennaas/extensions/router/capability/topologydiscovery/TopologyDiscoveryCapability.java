@@ -36,6 +36,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.LocalInformation;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.Neighbours;
+import org.opennaas.extensions.router.capability.topologydiscovery.model.Port;
 
 public class TopologyDiscoveryCapability extends AbstractCapability implements ITopologyDiscoveryCapability {
 
@@ -99,7 +100,18 @@ public class TopologyDiscoveryCapability extends AbstractCapability implements I
 
 		ActionResponse response = executeAction(action);
 
-		return (Neighbours) response.getResult();
+		Neighbours neighbours = (Neighbours) response.getResult();
+		for (String localIfaceName : neighbours.getDevicePortMap().keySet()) {
+
+			action = createActionAndCheckParams(TopologyDiscoveryActionSet.TOPOLOGY_DISCOVERY_GET_INTERFACE_NEIGHBOUR, localIfaceName);
+			response = executeAction(action);
+
+			Port remotePort = neighbours.getDevicePortMap().get(localIfaceName);
+			remotePort.setPortId((String) response.getResult());
+
+		}
+
+		return neighbours;
 	}
 
 	@Override
