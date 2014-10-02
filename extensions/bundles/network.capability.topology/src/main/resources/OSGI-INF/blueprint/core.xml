@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<!-- Factory that creates protocol capabilities -->
+	<bean id="topologyDiscoveryCapabilityFactory" class="org.opennaas.extensions.network.capability.topology.TopologyDiscoveryCapabilityFactory">
+		<property name="type" value="topology"/>
+	</bean>
+	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="topologyDiscoveryCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="topology"/>
+		</service-properties>
+	</service>
+	
+</blueprint>
