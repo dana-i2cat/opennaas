@@ -22,11 +22,17 @@ package org.opennaas.extensions.router.capability.topologydiscovery.model;
 
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
+@XmlRootElement(namespace = "opennaas.api")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Neighbours {
 
 	// This map indicates to which remote port and device a port is connected. The key of the map is the local port ID, and the value is the remote

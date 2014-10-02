@@ -1,5 +1,9 @@
 package org.opennaas.extensions.router.capability.topologydiscovery.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
 /*
  * #%L
  * OpenNaaS :: Router :: Topology Discovery capability
@@ -25,6 +29,8 @@ package org.opennaas.extensions.router.capability.topologydiscovery.model;
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Port {
 
 	private String	portId;
