@@ -20,32 +20,51 @@ package org.opennaas.extensions.router.capability.topologydiscovery.model;
  * #L%
  */
 
-import java.util.Map;
-
 /**
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
-public class Neighbours {
+public class Port {
 
-	// This map indicates to which remote port and device a port is connected. The key of the map is the local port ID, and the value is the remote
-	// port, containing the port id and the device id
-	private Map<String, Port>	connectionMap;
+	private String	portId;
+	private String	deviceId;
 
-	public Map<String, Port> getDevicePortMap() {
-		return connectionMap;
+	public Port() {
 	}
 
-	public void setDevicePortMap(Map<String, Port> devicePortMap) {
-		this.connectionMap = devicePortMap;
+	public Port(String portId, String deviceId) {
+		this.portId = portId;
+		this.deviceId = deviceId;
+	}
+
+	public String getPortId() {
+		return portId;
+	}
+
+	public void setPortId(String portId) {
+		this.portId = portId;
+	}
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	@Override
+	public String toString() {
+		return "Port [portId=" + portId + ", deviceId=" + deviceId + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((connectionMap == null) ? 0 : connectionMap.hashCode());
+		result = prime * result + ((deviceId == null) ? 0 : deviceId.hashCode());
+		result = prime * result + ((portId == null) ? 0 : portId.hashCode());
 		return result;
 	}
 
@@ -57,18 +76,18 @@ public class Neighbours {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Neighbours other = (Neighbours) obj;
-		if (connectionMap == null) {
-			if (other.connectionMap != null)
+		Port other = (Port) obj;
+		if (deviceId == null) {
+			if (other.deviceId != null)
 				return false;
-		} else if (!connectionMap.equals(other.connectionMap))
+		} else if (!deviceId.equals(other.deviceId))
+			return false;
+		if (portId == null) {
+			if (other.portId != null)
+				return false;
+		} else if (!portId.equals(other.portId))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Neighbours [devicePortMap=" + connectionMap + "]";
 	}
 
 }

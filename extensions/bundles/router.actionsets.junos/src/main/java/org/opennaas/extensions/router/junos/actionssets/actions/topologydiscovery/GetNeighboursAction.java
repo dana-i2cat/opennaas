@@ -40,6 +40,7 @@ import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.capability.topologydiscovery.model.Neighbours;
+import org.opennaas.extensions.router.capability.topologydiscovery.model.Port;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.GenericJunosCommand;
@@ -61,6 +62,7 @@ public class GetNeighboursAction extends JunosAction {
 	private static final String	NEIGHBOUR_PATH			= "//lldp-neighbors-information/lldp-neighbor-information";
 	private static final String	LOCAL_PORT_ID_TAG		= "lldp-local-interface";
 	private static final String	REMOTE_CHASSIS_ID_TAG	= "lldp-remote-chassis-id";
+	private static final String	REMOTE_PORT_ID_TAG		= "lldp-remote-port-id";
 
 	private Log					log						= LogFactory.getLog(GetLocalInformationAction.class);
 	private Neighbours			rpcResponse;
@@ -115,15 +117,18 @@ public class GetNeighboursAction extends JunosAction {
 
 				NodeList neighboursList = (NodeList) xPath.compile(NEIGHBOUR_PATH).evaluate(xmlDocument, XPathConstants.NODESET);
 
-				Map<String, String> connectionMap = new HashMap<String, String>();
+				Map<String, Port> connectionMap = new HashMap<String, Port>();
 
 				for (int i = 0; i < neighboursList.getLength(); i++) {
 					Element element = (Element) neighboursList.item(i);
 
 					String localPortId = element.getElementsByTagName(LOCAL_PORT_ID_TAG).item(0).getTextContent();
 					String remoteDeviceId = element.getElementsByTagName(REMOTE_CHASSIS_ID_TAG).item(0).getTextContent();
+					String remotePortId = element.getElementsByTagName(REMOTE_PORT_ID_TAG).item(0).getTextContent();
 
-					connectionMap.put(localPortId, remoteDeviceId);
+					Port port = new Port(remotePortId, remoteDeviceId);
+
+					connectionMap.put(localPortId, port);
 
 				}
 

@@ -51,8 +51,9 @@ public class GetNeighboursCommand extends GenericKarafCommand {
 
 			for (String portId : neighbours.getDevicePortMap().keySet()) {
 				StringBuilder sb = new StringBuilder();
-				sb.append("Device: \t").append(neighbours.getDevicePortMap().get(portId));
-				sb.append("\t PortId: \t").append(portId);
+				sb.append("Local Port Id \t").append(portId);
+				sb.append("\t Remote Device: \t").append(neighbours.getDevicePortMap().get(portId).getDeviceId());
+				sb.append("\t Remote Port: \t").append(neighbours.getDevicePortMap().get(portId).getPortId());
 				printSymbol(sb.toString());
 			}
 
