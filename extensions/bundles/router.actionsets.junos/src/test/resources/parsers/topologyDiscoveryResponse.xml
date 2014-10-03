@@ -1,0 +1,13 @@
+<rpc-reply>
+	<lldp-local-info>
+		<lldp-local-chassis-id>ac:4b:c8:27:5e:80</lldp-local-chassis-id>
+		<lldp-local-interface-info>
+			<lldp-local-interface-name>me0.0</lldp-local-interface-name>
+			<lldp-local-interface-id>34</lldp-local-interface-id>
+		</lldp-local-interface-info>
+		<lldp-local-interface-info>
+			<lldp-local-interface-name>ge-0/0/2.0</lldp-local-interface-name>
+			<lldp-local-interface-id>508</lldp-local-interface-id>
+		</lldp-local-interface-info>
+	</lldp-local-info>
+</rpc-reply>
