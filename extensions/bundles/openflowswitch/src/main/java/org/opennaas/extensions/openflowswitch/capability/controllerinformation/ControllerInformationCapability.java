@@ -3,16 +3,26 @@ package org.opennaas.extensions.openflowswitch.capability.controllerinformation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.HealthState;
 import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.MemoryUsage;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
 
+/**
+ * 
+ * @author Adrián Roselló Rey (i2CAT)
+ *
+ */
 public class ControllerInformationCapability extends AbstractCapability implements IControllerInformationCapability {
 
 	public static String	CAPABILITY_TYPE	= "controllerinformation";
@@ -56,14 +66,57 @@ public class ControllerInformationCapability extends AbstractCapability implemen
 
 	@Override
 	public HealthState getHealthState() throws CapabilityException {
-		return null;
+		IAction action = createActionAndCheckParams(ControllerInformationActionSet.GET_HEALTH_STATE, null);
+		ActionResponse response = executeAction(action);
+
+		Object result = response.getResult();
+		if (!(result instanceof HealthState)) {
+			throw new CapabilityException("Unexpected action response object:" + result.getClass().getName());
+		}
+
+		return (HealthState) result;
 
 	}
 
 	@Override
-	public MemoryUsage getControllerMemoryUsage() {
+	public MemoryUsage getControllerMemoryUsage() throws CapabilityException {
+		IAction action = createActionAndCheckParams(ControllerInformationActionSet.GET_MEMORY_USAGE, null);
+		ActionResponse response = executeAction(action);
 
-		return null;
+		Object result = response.getResult();
+		if (!(result instanceof MemoryUsage)) {
+			throw new CapabilityException("Unexpected action response object:" + result.getClass().getName());
+		}
+
+		return (MemoryUsage) result;
+	}
+
+	private ActionResponse executeAction(IAction action) throws CapabilityException {
+		ActionResponse response;
+		try {
+			IProtocolManager protocolManager = Activator.getProtocolManagerService();
+			IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
+
+			response = action.execute(protocolSessionManager);
+
+		} catch (ProtocolException pe) {
+			log.error("Error with protocol session - " + pe.getMessage());
+			throw new CapabilityException(pe);
+		} catch (ActivatorException ae) {
+			String errorMsg = "Error getting protocol manager - " + ae.getMessage();
+			log.error(errorMsg);
+			throw new CapabilityException(errorMsg, ae);
+		} catch (ActionException ae) {
+			log.error("Error executing " + action.getActionID() + " action - " + ae.getMessage());
+			throw (ae);
+		}
+
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			String errMsg = "Error executing " + action.getActionID() + " action - " + response.getInformation();
+			log.error(errMsg);
+			throw new ActionException(errMsg);
+		}
+		return response;
 	}
 
 }

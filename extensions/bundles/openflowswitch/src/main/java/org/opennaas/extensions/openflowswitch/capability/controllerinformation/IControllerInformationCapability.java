@@ -21,7 +21,7 @@ public interface IControllerInformationCapability extends ICapability {
 	@GET
 	@Path("/memoryUsage")
 	@Produces(MediaType.APPLICATION_XML)
-	public MemoryUsage getControllerMemoryUsage();
+	public MemoryUsage getControllerMemoryUsage() throws CapabilityException;
 
 	@GET
 	@Path("/healthState")
