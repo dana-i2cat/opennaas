@@ -57,4 +57,17 @@
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
+	
+	<bean id="controllerInformationCapabilityFactory" class="org.opennaas.extensions.openflowswitch.capability.controllerinformation.ControllerInformationCapabilityFactory">
+		<property name="type" value="controllerinformation"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="controllerInformationCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="controllerinformation"/>
+			<entry key="capability.model" value="openflowswitch"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
 </blueprint>

@@ -101,4 +101,21 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
 
+	public static IActionSet getControllerInformationActionSetService(String name, String version) throws ActivatorException {
+		log.debug("Calling getControllerInformationActionSetService");
+		try {
+			return (IActionSet) getServiceFromRegistry(context, createFilterControllerInformationActionSet(name, version));
+		} catch (InvalidSyntaxException e) {
+			throw new ActivatorException(e);
+		}
+	}
+
+	private static Filter createFilterControllerInformationActionSet(String name, String version) throws InvalidSyntaxException {
+		Properties properties = new Properties();
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, "controllerinformation");
+		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
+		return createServiceFilter(IActionSet.class.getName(), properties);
+	}
+
 }
