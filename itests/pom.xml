@@ -25,7 +25,7 @@
 		<module>openflowswitch</module>
 		<module>ofertie.ncl</module>
 		<module>openflowforwarding/floodlight</module>
-		<module>monitoring/floodlight</module>
+		<module>portstatistics/floodlight</module>
 		<module>ip/opener</module>
 		<module>sampleresource</module>
 		<module>vrrp/junos10</module>

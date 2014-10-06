@@ -23,8 +23,8 @@ import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
 import org.opennaas.extensions.genericnetwork.model.topology.Port;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
 /*
  * #%L

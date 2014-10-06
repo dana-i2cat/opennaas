@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.MonitoringActionSet;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsActionSet;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.monitoring.actionssets.actions.GetPortStatisticsAction;
 
 /**
@@ -39,7 +39,7 @@ public class MonitoringActionsetImplementation extends ActionSet {
 
 	public MonitoringActionsetImplementation() {
 		super.setActionSetId(ACTIONSET_ID);
-		this.putAction(MonitoringActionSet.GET_PORT_STATISTICS, GetPortStatisticsAction.class);
+		this.putAction(PortStatisticsActionSet.GET_PORT_STATISTICS, GetPortStatisticsAction.class);
 
 	}
 
@@ -47,7 +47,7 @@ public class MonitoringActionsetImplementation extends ActionSet {
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
 
-		actionNames.add(MonitoringActionSet.GET_PORT_STATISTICS);
+		actionNames.add(PortStatisticsActionSet.GET_PORT_STATISTICS);
 
 		return actionNames;
 	}

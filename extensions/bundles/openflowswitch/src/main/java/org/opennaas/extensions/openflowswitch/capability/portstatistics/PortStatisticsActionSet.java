@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.capability.monitoring;
+package org.opennaas.extensions.openflowswitch.capability.portstatistics;
 
 /*
  * #%L
@@ -20,34 +20,16 @@ package org.opennaas.extensions.openflowswitch.capability.monitoring;
  * #L%
  */
 
-import java.util.Map;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.action.IActionSetDefinition;
 
 /**
- * Monitoring Capability
+ * Port Statistics capability action set
  * 
  * @author Julio Carlos Barrera
  * 
  */
-@Path("/")
-public interface IMonitoringCapability extends ICapability {
+public class PortStatisticsActionSet implements IActionSetDefinition {
 
-	/**
-	 * Get switch statistics
-	 * 
-	 * @return a {@link Map} with port ID as key and {@link PortStatistics} as value.
-	 * @throws CapabilityException
-	 */
-	@GET
-	@Path("/readPortStatistics")
-	@Produces(MediaType.APPLICATION_XML)
-	public SwitchPortStatistics getPortStatistics() throws CapabilityException;
+	public static final String	GET_PORT_STATISTICS	= "getPortStatistics";
 
 }

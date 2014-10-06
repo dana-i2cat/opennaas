@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.capability.monitoring;
+package org.opennaas.extensions.openflowswitch.capability.portstatistics;
 
 /*
  * #%L
