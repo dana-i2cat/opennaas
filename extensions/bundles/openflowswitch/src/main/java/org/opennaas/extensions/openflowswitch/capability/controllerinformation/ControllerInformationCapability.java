@@ -80,12 +80,27 @@ public class ControllerInformationCapability extends AbstractCapability implemen
 		}
 	}
 
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				IControllerInformationCapability.class.getName());
+		super.activate();
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		unregisterService();
+		super.deactivate();
+	}
+
 	// ###############################################
 	// ### IControllerInformationCapability methods ###
 	// ###############################################
 
 	@Override
 	public HealthState getHealthState() throws CapabilityException {
+		log.info("Getting Controller's Health State.");
+
 		IAction action = createActionAndCheckParams(ControllerInformationActionSet.GET_HEALTH_STATE, null);
 		ActionResponse response = executeAction(action);
 
@@ -100,6 +115,9 @@ public class ControllerInformationCapability extends AbstractCapability implemen
 
 	@Override
 	public MemoryUsage getControllerMemoryUsage() throws CapabilityException {
+
+		log.info("Getting Controller's Memory Usage.");
+
 		IAction action = createActionAndCheckParams(ControllerInformationActionSet.GET_MEMORY_USAGE, null);
 		ActionResponse response = executeAction(action);
 

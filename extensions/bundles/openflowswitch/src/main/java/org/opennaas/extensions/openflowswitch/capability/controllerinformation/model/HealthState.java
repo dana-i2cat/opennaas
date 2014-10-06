@@ -1,5 +1,8 @@
 package org.opennaas.extensions.openflowswitch.capability.controllerinformation.model;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * #%L
  * OpenNaaS :: OpenFlow Switch
@@ -25,6 +28,8 @@ package org.opennaas.extensions.openflowswitch.capability.controllerinformation.
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
+@XmlRootElement
+@XmlEnum
 public enum HealthState {
 
 	OK("ok"),
