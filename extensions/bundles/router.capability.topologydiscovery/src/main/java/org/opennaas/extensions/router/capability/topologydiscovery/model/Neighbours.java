@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Neighbours {
 
-	// This map indicates to which remote port and device a port is connected. The key of the map is the local port ID, and the value is the remote
+	// This map indicates to which remote port and device a port is connected. The key of the map is the local port name, and the value is the remote
 	// port, containing the port id and the device id
 	private Map<String, Port>	connectionMap;
 
