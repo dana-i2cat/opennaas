@@ -304,6 +304,7 @@ public class TopologyDiscoveryCapability extends AbstractCapability implements I
 	@Override
 	public void queueAction(IAction arg0) throws CapabilityException {
 		// this capability does not use queue
+		throw new UnsupportedOperationException("Not Implemented. This capability is not using the queue.");
 	}
 
 	private org.opennaas.extensions.router.capability.topologydiscovery.ITopologyDiscoveryCapability getRouterTopologyDiscoveryCapability(
