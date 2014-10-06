@@ -58,8 +58,7 @@ public class Link {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((from == null) ? 0 : from.hashCode());
-		result = prime * result + ((to == null) ? 0 : to.hashCode());
+		result = prime * result + ((from == null) ? 0 : from.hashCode()) + ((to == null) ? 0 : to.hashCode());
 		return result;
 	}
 
@@ -75,14 +74,16 @@ public class Link {
 		if (from == null) {
 			if (other.from != null)
 				return false;
-		} else if (!from.equals(other.from))
-			return false;
+		}
 		if (to == null) {
 			if (other.to != null)
 				return false;
-		} else if (!to.equals(other.to))
-			return false;
-		return true;
+		}
+		// from and to are interchangeable
+		else if (from.equals(other.from) && to.equals(other.to) || from.equals(other.to) && to.equals(other.from)) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
