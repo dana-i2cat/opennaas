@@ -38,7 +38,7 @@
 		<service-properties>
 			<!--  identify the floodlight actionset -->
 			<entry key="actionset.name" value="floodlight"/>
-			<entry key="actionset.capability" value="controllerInformation"/>
+			<entry key="actionset.capability" value="controllerinformation"/>
 			<entry key="actionset.version" value="0.90"/>
 		</service-properties>
 	</service>	

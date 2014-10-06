@@ -32,6 +32,8 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.FloodlightClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.controllerinformationclient.FloodlightControllerInformationClientfactory;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.controllerinformationclient.IFloodlightControllerInformationClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.countersclient.FloodlightCountersClientFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.countersclient.IFloodlightCountersClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portstatisticsclient.FloodlightPortsStatisticsClientFactory;
@@ -45,24 +47,27 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portsta
  */
 public class FloodlightProtocolSession implements IProtocolSession {
 
-	public static final String						FLOODLIGHT_PROTOCOL_TYPE	= "floodlight";
-	public static final String						SWITCHID_CONTEXT_PARAM_NAME	= "protocol." + FLOODLIGHT_PROTOCOL_TYPE + ".switchid";
+	public static final String								FLOODLIGHT_PROTOCOL_TYPE	= "floodlight";
+	public static final String								SWITCHID_CONTEXT_PARAM_NAME	= "protocol." + FLOODLIGHT_PROTOCOL_TYPE + ".switchid";
 
-	private ProtocolSessionContext					sessionContext				= null;
-	private String									sessionId					= null;
-	private Status									status						= null;
+	private ProtocolSessionContext							sessionContext				= null;
+	private String											sessionId					= null;
+	private Status											status						= null;
 
-	private Map<String, IProtocolSessionListener>	protocolListeners			= null;
-	private Map<String, IProtocolMessageFilter>		protocolMessageFilters		= null;
+	private Map<String, IProtocolSessionListener>			protocolListeners			= null;
+	private Map<String, IProtocolMessageFilter>				protocolMessageFilters		= null;
 
-	private FloodlightClientFactory					clientFactory;
-	private IFloodlightStaticFlowPusherClient		floodlightStaticFlowPusherClient;
+	private FloodlightClientFactory							clientFactory;
+	private IFloodlightStaticFlowPusherClient				floodlightStaticFlowPusherClient;
 
-	private FloodlightCountersClientFactory			countersClientFactory;
-	private IFloodlightCountersClient				floodlightCountersClient;
+	private FloodlightCountersClientFactory					countersClientFactory;
+	private IFloodlightCountersClient						floodlightCountersClient;
 
-	private FloodlightPortsStatisticsClientFactory	portsStatisticsClientFactory;
-	private IFloodlightPortsStatisticsClient		floodlightPortsStatisticsClient;
+	private FloodlightPortsStatisticsClientFactory			portsStatisticsClientFactory;
+	private IFloodlightPortsStatisticsClient				floodlightPortsStatisticsClient;
+
+	private FloodlightControllerInformationClientfactory	floodlightControllerInformationClientFactory;
+	private IFloodlightControllerInformationClient			floodlightControllerInformationClient;
 
 	public FloodlightProtocolSession(String sessionID,
 			ProtocolSessionContext protocolSessionContext) throws ProtocolException {
@@ -76,6 +81,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		this.clientFactory = new FloodlightClientFactory();
 		this.countersClientFactory = new FloodlightCountersClientFactory();
 		this.portsStatisticsClientFactory = new FloodlightPortsStatisticsClientFactory();
+		this.floodlightControllerInformationClientFactory = new FloodlightControllerInformationClientfactory();
 
 		this.status = Status.DISCONNECTED_BY_USER;
 
@@ -115,6 +121,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		this.floodlightStaticFlowPusherClient = this.clientFactory.createClient((getSessionContext()));
 		this.floodlightCountersClient = this.countersClientFactory.createClient((getSessionContext()));
 		this.floodlightPortsStatisticsClient = this.portsStatisticsClientFactory.createClient((getSessionContext()));
+		this.floodlightControllerInformationClient = this.floodlightControllerInformationClientFactory.createClient(getSessionContext());
 		setStatus(Status.CONNECTED);
 	}
 
@@ -127,6 +134,7 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		this.floodlightStaticFlowPusherClient = clientFactory.destroyClient();
 		this.floodlightCountersClient = countersClientFactory.destroyClient();
 		this.floodlightPortsStatisticsClient = portsStatisticsClientFactory.destroyClient();
+		this.floodlightControllerInformationClient = this.floodlightControllerInformationClientFactory.destroyClient();
 		setStatus(Status.DISCONNECTED_BY_USER);
 	}
 
@@ -237,6 +245,10 @@ public class FloodlightProtocolSession implements IProtocolSession {
 		return floodlightPortsStatisticsClient;
 	}
 
+	private IFloodlightControllerInformationClient getFloodlightControllerInformationClient() {
+		return floodlightControllerInformationClient;
+	}
+
 	public void setFloodlightPortsStatisticsClient(IFloodlightPortsStatisticsClient floodlightPortsStatisticsClient) {
 		this.floodlightPortsStatisticsClient = floodlightPortsStatisticsClient;
 	}
@@ -262,6 +274,22 @@ public class FloodlightProtocolSession implements IProtocolSession {
 					"Cannot use ports statistics client. Session is not connected. Current session status is " + status);
 		}
 		return getFloodlightPortsStatisticsClient();
+	}
+
+	/**
+	 * Retrieve Floodlight Controller Information Client and checks session is connected. This method may be used in Actions to retrieve the client
+	 * and call its methods afterwards.
+	 * 
+	 * @return initialized client.
+	 * @throws ProtocolException
+	 *             if this ProtocolSession is not connected.
+	 */
+	public IFloodlightControllerInformationClient getFloodlightControllerInformationClientForUse() throws ProtocolException {
+		if (!status.equals(Status.CONNECTED)) {
+			throw new ProtocolException(
+					"Cannot use ports statistics client. Session is not connected. Current session status is " + status);
+		}
+		return getFloodlightControllerInformationClient();
 	}
 
 	protected void setStatus(Status status) {
