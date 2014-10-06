@@ -1,8 +1,8 @@
-package org.opennaas.extensions.router.capability.topologydiscovery.model;
+package org.opennaas.extensions.network.capability.topology.api;
 
 /*
  * #%L
- * OpenNaaS :: Router :: Topology Discovery capability
+ * OpenNaaS :: Network :: Topology Discovery capability
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -20,38 +20,47 @@ package org.opennaas.extensions.router.capability.topologydiscovery.model;
  * #L%
  */
 
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * Port model class
  * 
- * @author Adrián Roselló Rey (i2CAT)
+ * @author Julio Carlos Barrera
  *
  */
-@XmlRootElement(namespace = "opennaas.api")
+@XmlRootElement(name = "port", namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Neighbours {
+public class Port {
 
-	// This map indicates to which remote port and device a port is connected. The key of the map is the local port name, and the value is the remote
-	// port, containing the port id and the device id
-	private Map<String, Port>	connectionMap;
+	private String	deviceId;
 
-	public Map<String, Port> getDevicePortMap() {
-		return connectionMap;
+	// interface related to this port
+	private String	id;
+
+	public String getDeviceId() {
+		return deviceId;
 	}
 
-	public void setDevicePortMap(Map<String, Port> devicePortMap) {
-		this.connectionMap = devicePortMap;
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((connectionMap == null) ? 0 : connectionMap.hashCode());
+		result = prime * result + ((deviceId == null) ? 0 : deviceId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -63,18 +72,23 @@ public class Neighbours {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Neighbours other = (Neighbours) obj;
-		if (connectionMap == null) {
-			if (other.connectionMap != null)
+		Port other = (Port) obj;
+		if (deviceId == null) {
+			if (other.deviceId != null)
 				return false;
-		} else if (!connectionMap.equals(other.connectionMap))
+		} else if (!deviceId.equals(other.deviceId))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Neighbours [devicePortMap=" + connectionMap + "]";
+		return "Port [deviceId=" + deviceId + ", id=" + id + "]";
 	}
 
 }
