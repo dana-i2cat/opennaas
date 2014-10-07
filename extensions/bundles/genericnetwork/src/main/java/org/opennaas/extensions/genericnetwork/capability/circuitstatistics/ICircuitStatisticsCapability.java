@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.genericnetwork.model.TimePeriod;
 
 /**
  * 
@@ -23,6 +24,6 @@ public interface ICircuitStatisticsCapability extends ICapability {
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getStatistics();
+	public String getStatistics(TimePeriod timePeriod);
 
 }

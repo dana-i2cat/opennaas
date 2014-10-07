@@ -14,8 +14,7 @@ public class CircuitStatistics implements Serializable {
 	 */
 	private static final long	serialVersionUID	= 5141194713845400788L;
 
-	private long				startTime;
-	private long				endTime;
+	private TimePeriod			timePeriod;
 	private String				slaFlowId;
 	private String				throughput;
 	private String				packetLoss;
@@ -23,20 +22,12 @@ public class CircuitStatistics implements Serializable {
 	private String				jitter;
 	private String				flowData;
 
-	public long getStartTime() {
-		return startTime;
+	public TimePeriod getTimePeriod() {
+		return timePeriod;
 	}
 
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-
-	public long getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(long endTime) {
-		this.endTime = endTime;
+	public void setTimePeriod(TimePeriod timePeriod) {
+		this.timePeriod = timePeriod;
 	}
 
 	public String getSlaFlowId() {
@@ -92,13 +83,12 @@ public class CircuitStatistics implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((delay == null) ? 0 : delay.hashCode());
-		result = prime * result + (int) (endTime ^ (endTime >>> 32));
 		result = prime * result + ((flowData == null) ? 0 : flowData.hashCode());
 		result = prime * result + ((jitter == null) ? 0 : jitter.hashCode());
 		result = prime * result + ((packetLoss == null) ? 0 : packetLoss.hashCode());
 		result = prime * result + ((slaFlowId == null) ? 0 : slaFlowId.hashCode());
-		result = prime * result + (int) (startTime ^ (startTime >>> 32));
 		result = prime * result + ((throughput == null) ? 0 : throughput.hashCode());
+		result = prime * result + ((timePeriod == null) ? 0 : timePeriod.hashCode());
 		return result;
 	}
 
@@ -115,8 +105,6 @@ public class CircuitStatistics implements Serializable {
 			if (other.delay != null)
 				return false;
 		} else if (!delay.equals(other.delay))
-			return false;
-		if (endTime != other.endTime)
 			return false;
 		if (flowData == null) {
 			if (other.flowData != null)
@@ -138,18 +126,21 @@ public class CircuitStatistics implements Serializable {
 				return false;
 		} else if (!slaFlowId.equals(other.slaFlowId))
 			return false;
-		if (startTime != other.startTime)
-			return false;
 		if (throughput == null) {
 			if (other.throughput != null)
 				return false;
 		} else if (!throughput.equals(other.throughput))
+			return false;
+		if (timePeriod == null) {
+			if (other.timePeriod != null)
+				return false;
+		} else if (!timePeriod.equals(other.timePeriod))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "CircuitStatistic [startTime=" + startTime + ", endTime=" + endTime + ", slaFlowId=" + slaFlowId + ", throughput=" + throughput + ", packetLoss=" + packetLoss + ", delay=" + delay + ", jitter=" + jitter + ", flowData=" + flowData + "]";
+		return "CircuitStatistics [timePeriod=" + timePeriod + ", slaFlowId=" + slaFlowId + ", throughput=" + throughput + ", packetLoss=" + packetLoss + ", delay=" + delay + ", jitter=" + jitter + ", flowData=" + flowData + "]";
 	}
 }

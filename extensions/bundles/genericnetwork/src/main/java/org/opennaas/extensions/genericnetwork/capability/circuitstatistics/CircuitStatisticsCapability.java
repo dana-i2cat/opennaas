@@ -8,6 +8,7 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.genericnetwork.model.TimePeriod;
 
 /**
  * 
@@ -68,7 +69,7 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 	}
 
 	@Override
-	public String getStatistics() {
+	public String getStatistics(TimePeriod timePeriod) {
 		// TODO Auto-generated method stub
 		return null;
 	}
