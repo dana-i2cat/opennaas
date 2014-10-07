@@ -130,7 +130,7 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 		return options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight", "itests-helpers"),
-				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
@@ -218,7 +218,7 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 				WS_USERNAME, WS_PASSWORD);
 		forwardingClient.createOpenflowForwardingRule(forwardingRule);
 
-		List<FloodlightOFFlow> forwardingRules = forwardingClient.getOpenflowForwardingRules();
+		List<FloodlightOFFlow> forwardingRules = forwardingClient.getOpenflowForwardingRulesAPI().getForwardingRules();
 		Assert.assertNotNull(forwardingRules);
 		Assert.assertEquals(1, forwardingRules.size());
 
