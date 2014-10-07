@@ -21,6 +21,7 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portst
  */
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,20 +59,26 @@ public class SwitchStatisticsMapJSONDeserializer extends JsonDeserializer<Switch
 			// get switch ID
 			String switchId = jp.getCurrentName();
 
-			// expect start array
-			if (jp.nextToken() != JsonToken.START_ARRAY) {
-				throw new IOException("Expected START_ARRAY and it was " + jp.getCurrentToken());
-			}
-
-			// action array loop
-			while (jp.nextToken() != JsonToken.END_ARRAY) {
-				// expect action start object
-				if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
-					throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
+			JsonToken switchStatisticsToken = jp.nextToken();
+			if (switchStatisticsToken == JsonToken.VALUE_NULL) {
+				// add empty switch statistics
+				wrapper.addSwitchStatistics(switchId, new HashMap<Integer, PortStatistics>());
+			} else {
+				// expect start array
+				if (switchStatisticsToken != JsonToken.START_ARRAY) {
+					throw new IOException("Expected START_ARRAY and it was " + jp.getCurrentToken());
 				}
 
-				PortStatistics ps = parseStatistics(switchId, jp);
-				wrapper.addPortStatisticsForSwitch(switchId, ps.getPort(), ps);
+				// action array loop
+				while (jp.nextToken() != JsonToken.END_ARRAY) {
+					// expect action start object
+					if (jp.getCurrentToken() != JsonToken.START_OBJECT) {
+						throw new IOException("Expected START_OBJECT and it was " + jp.getCurrentToken());
+					}
+
+					PortStatistics ps = parseStatistics(switchId, jp);
+					wrapper.addPortStatisticsForSwitch(switchId, ps.getPort(), ps);
+				}
 			}
 		}
 

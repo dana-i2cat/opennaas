@@ -23,6 +23,7 @@ package org.opennaas.extensions.genericnetwork.test.capability.nclprovisioner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -36,6 +37,11 @@ import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
+import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
+import org.opennaas.extensions.genericnetwork.model.circuit.Route;
+import org.opennaas.extensions.genericnetwork.model.topology.Port;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.xml.sax.SAXException;
 
 /**
@@ -45,11 +51,17 @@ import org.xml.sax.SAXException;
  */
 public class CircuitCollectionSerializationTest {
 
-	private static final Logger	LOG				= Logger.getLogger(CircuitCollectionSerializationTest.class);
-	private static final String	FILE_PATH		= "/circuitCollection.xml";
+	private static final Logger	LOG					= Logger.getLogger(CircuitCollectionSerializationTest.class);
+	private static final String	FILE_PATH			= "/circuitCollection.xml";
 
-	private String				CIRCUIT_A_ID	= "1";
-	private String				CIRCUIT_B_ID	= "2";
+	private static String		CIRCUIT_A_ID		= "1";
+	private static String		CIRCUIT_B_ID		= "2";
+	private static String		CIRCUIT_C_ID		= "3";
+
+	private static final String	SRC_PORT_EXTERNAL	= "p0In";
+	private static final String	DST_PORT_EXTERNAL	= "p0Out";
+
+	private static final String	TOS					= "4";
 
 	@Test
 	public void circuitCollectionSerializationTest() throws SerializationException, IOException, SAXException, TransformerException,
@@ -66,6 +78,24 @@ public class CircuitCollectionSerializationTest {
 		Assert.assertTrue(XmlHelper.compareXMLStrings(expectedXml, xml));
 
 		LOG.debug(xml);
+	}
+
+	@Test
+	public void completeCircuitCollectionSerializationDeserializationTest() throws SerializationException, IOException, SAXException,
+			TransformerException,
+			ParserConfigurationException {
+
+		LOG.info("CircuitCollection Serialization Test");
+
+		CircuitCollection circuitCollection = generateSampleCircuitCollection();
+		circuitCollection.getCircuits().add(generateCircuit());
+
+		String xml = ObjectSerializer.toXml(circuitCollection);
+
+		LOG.debug(xml);
+
+		CircuitCollection generatedCircuitCollection = (CircuitCollection) ObjectSerializer.fromXml(xml, CircuitCollection.class);
+		Assert.assertEquals(circuitCollection, generatedCircuitCollection);
 	}
 
 	@Test
@@ -116,6 +146,67 @@ public class CircuitCollectionSerializationTest {
 		circuit.setCircuitId(id);
 
 		return circuit;
+	}
+
+	private static Circuit generateCircuit() {
+		Circuit circuit = new Circuit();
+
+		circuit.setTrafficFilter(generateTrafficFilter(SRC_PORT_EXTERNAL));
+
+		circuit.setCircuitId(CIRCUIT_C_ID);
+
+		circuit.setQos(generateQoSPolicy());
+
+		// set Route with a NetworkConnection
+		Route route = new Route();
+		route.setId("R1");
+
+		List<NetworkConnection> networkConnections = new ArrayList<NetworkConnection>();
+		NetworkConnection networkConnection = new NetworkConnection();
+		networkConnection.setName("NC1");
+		networkConnection.setId("NC1");
+		networkConnection.setSource(generatePort(SRC_PORT_EXTERNAL));
+		networkConnection.setDestination(generatePort(DST_PORT_EXTERNAL));
+		networkConnections.add(networkConnection);
+
+		NetworkConnection networkConnection2 = new NetworkConnection();
+		networkConnection2.setName("NC2");
+		networkConnection2.setId("NC2");
+		networkConnection2.setSource(generatePort(SRC_PORT_EXTERNAL));
+		networkConnection2.setDestination(generatePort(DST_PORT_EXTERNAL));
+		networkConnections.add(networkConnection2);
+
+		route.setNetworkConnections(networkConnections);
+
+		circuit.setRoute(route);
+
+		return circuit;
+	}
+
+	private static FloodlightOFMatch generateTrafficFilter(String ingressPort) {
+		FloodlightOFMatch match = new FloodlightOFMatch();
+		match.setIngressPort(ingressPort);
+		match.setTosBits(TOS);
+		return match;
+	}
+
+	private static QoSPolicy generateQoSPolicy() {
+		QoSPolicy qoSPolicy = new QoSPolicy();
+		qoSPolicy.setMinJitter(123);
+		qoSPolicy.setMaxJitter(234);
+		qoSPolicy.setMinLatency(345);
+		qoSPolicy.setMaxLatency(456);
+		qoSPolicy.setMinThroughput(567);
+		qoSPolicy.setMaxThroughput(678);
+		qoSPolicy.setMinPacketLoss(789);
+		qoSPolicy.setMaxPacketLoss(890);
+		return qoSPolicy;
+	}
+
+	private static Port generatePort(String portId) {
+		Port port = new Port();
+		port.setId(portId);
+		return port;
 	}
 
 }

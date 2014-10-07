@@ -20,10 +20,9 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.vlanBridge
  * #L%
  */
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opennaas.core.resources.action.ActionException;

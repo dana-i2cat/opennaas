@@ -111,8 +111,11 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 			}
 		}
 
-		allocateCircuits(toAllocate);
+		// HAVE TO DEALLOCATE BEFORE ALLOCATE
+		// if toDllocate and toDeallocate contain circuits with same id but with different from each others (i.e. because of re-routing)
+		// doing this in reverse order would mean deallocating the newly allocated circuit.
 		deallocateCircuits(toDeallocate);
+		allocateCircuits(toAllocate);
 	}
 
 	private void allocateCircuits(List<Circuit> circuits) throws CapabilityException {

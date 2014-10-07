@@ -166,7 +166,9 @@ public class NCLMonitoring {
 					NetworkStatistics currentNetworkStatistics = readCurrentNetworkStatistics(network);
 					long currentTimestamp = System.currentTimeMillis();
 
-					if (currentNetworkStatistics != null) {
+					if (currentNetworkStatistics == null) {
+						log.debug("Network statistics not available.");
+					} else {
 						if (previousNetworkStatistics != null && previousTimestamp > 0) {
 
 							// calculate throughput and check threshold for each port

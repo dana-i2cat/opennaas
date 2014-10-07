@@ -4,7 +4,7 @@
 			on platform -->
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.28</version>
+		<version>0.30-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -28,11 +28,25 @@
 			<artifactId>pax-exam-junit4</artifactId>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-			<artifactId>paxexam-karaf-container</artifactId>
+		    <groupId>org.ops4j.pax.exam</groupId>
+		    <artifactId>pax-exam-container-karaf</artifactId>
+		    <scope>compile</scope>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.ops4j.pax.exam</groupId>
+		    <artifactId>pax-exam</artifactId>
+		    <scope>compile</scope>
+		</dependency>			
+		
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		
 		<!-- Required for createRestClient -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -91,6 +105,8 @@
 							org.slf4j,
 							org.osgi.framework,
 							org.apache.commons.lang;version="2.4",
+							org.ops4j.pax.exam,
+							!org.ops4j.pax.exam.karaf.options,
 							*
 						</Import-Package>
 						<!-- | assume public classes are in the top package, and private classes 

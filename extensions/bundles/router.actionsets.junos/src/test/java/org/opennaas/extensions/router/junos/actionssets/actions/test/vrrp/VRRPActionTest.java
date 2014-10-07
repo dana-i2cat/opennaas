@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import junit.framework.Assert;
 import net.i2cat.netconf.rpc.Query;
 
 import org.apache.commons.logging.Log;
@@ -35,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.resources.action.ActionResponse;
