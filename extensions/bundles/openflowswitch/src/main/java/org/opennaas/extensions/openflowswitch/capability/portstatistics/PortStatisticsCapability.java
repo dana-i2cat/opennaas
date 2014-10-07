@@ -105,7 +105,7 @@ public class PortStatisticsCapability extends AbstractCapability implements IPor
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
-			return Activator.getMonitoringActionSetService(name, version);
+			return Activator.getPortStatisticsActionSetService(name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 
