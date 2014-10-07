@@ -55,7 +55,7 @@ public class PortStatisticsCapability extends AbstractCapability implements IPor
 	public PortStatisticsCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
-		log.debug("Built new Monitoring Capability");
+		log.debug("Built new Port Statistics Capability");
 	}
 
 	@Override
