@@ -1,5 +1,11 @@
 package org.opennaas.extensions.genericnetwork.capability.circuitstatistics;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.IAction;
@@ -8,7 +14,11 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.genericnetwork.model.CircuitStatistics;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.TimePeriod;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * 
@@ -63,9 +73,61 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 	// ############################################
 
 	@Override
-	public void reportStatistics(String csvStatistics) {
-		// TODO Auto-generated method stub
+	public void reportStatistics(String csvStatistics) throws CapabilityException {
 
+		log.info("Circuit Statistics report received.");
+
+		try {
+			Set<CircuitStatistics> circuitStatistics = parseCSV(csvStatistics);
+			GenericNetworkModel model = (GenericNetworkModel) resource.getModel();
+			model.getCircuitStatistics().addAll(circuitStatistics);
+		} catch (Exception e) {
+			log.info("Error parsing received CSV", e);
+			throw new CapabilityException(e);
+		}
+
+		log.info("Circuits statistics stored.");
+
+	}
+
+	private Set<CircuitStatistics> parseCSV(String csvStatistics) throws IllegalArgumentException, IOException {
+		CSVReader reader = new CSVReader(new StringReader(csvStatistics));
+
+		try {
+
+			Set<CircuitStatistics> circuitStatistics = new HashSet<CircuitStatistics>();
+
+			List<String[]> records = reader.readAll();
+
+			log.debug("Storing the new " + records.size() + " received circuits statistics.");
+
+			for (String[] currentRecord : records) {
+
+				if (currentRecord.length != 8)
+					throw new IllegalArgumentException("Invalid record length: it should contain 8 fields.");
+
+				TimePeriod timePeriod = new TimePeriod();
+				CircuitStatistics currentStatistics = new CircuitStatistics();
+
+				timePeriod.setStartTime(Long.valueOf(currentRecord[0].trim()).longValue());
+				timePeriod.setEndTime(Long.valueOf(currentRecord[1].trim()).longValue());
+
+				currentStatistics.setTimePeriod(timePeriod);
+				currentStatistics.setSlaFlowId(currentRecord[2].trim());
+				currentStatistics.setThroughput(currentRecord[3].trim());
+				currentStatistics.setPacketLoss(currentRecord[4].trim());
+				currentStatistics.setDelay(currentRecord[5].trim());
+				currentStatistics.setJitter(currentRecord[6].trim());
+				currentStatistics.setFlowData(currentRecord[7].trim());
+
+				circuitStatistics.add(currentStatistics);
+			}
+
+			return circuitStatistics;
+
+		} finally {
+			reader.close();
+		}
 	}
 
 	@Override

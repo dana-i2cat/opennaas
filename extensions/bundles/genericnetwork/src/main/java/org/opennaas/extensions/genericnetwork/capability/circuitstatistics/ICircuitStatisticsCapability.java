@@ -7,6 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.model.TimePeriod;
 
@@ -20,7 +21,7 @@ public interface ICircuitStatisticsCapability extends ICapability {
 
 	@PUT
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void reportStatistics(String csvStatistics);
+	public void reportStatistics(String csvStatistics) throws CapabilityException;
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
