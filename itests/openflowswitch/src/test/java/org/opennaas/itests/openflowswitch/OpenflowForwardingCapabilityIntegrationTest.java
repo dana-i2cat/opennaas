@@ -116,7 +116,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		return options(
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight", "itests-helpers"),
-				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
@@ -259,20 +259,6 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-		createDeleteGetPerformAndCheck(capability);
-	}
-
-	@Test
-	public void createDeleteGetWSTest() throws Exception {
-
-		IOpenflowForwardingCapability capabilityWSClient = InitializerTestHelper.createRestClient(WS_URI, IOpenflowForwardingCapability.class, null,
-				WS_USERNAME, WS_PASSWORD);
-
-		createDeleteGetPerformAndCheck(capabilityWSClient);
-	}
-
-	private void createDeleteGetPerformAndCheck(IOpenflowForwardingCapability capability) throws Exception {
-
 		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
 		forwardingRule1.setSwitchId(SWITCH_ID);
 
@@ -298,6 +284,42 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 		capability.removeOpenflowForwardingRule(forwardingRule2.getName());
 		Assert.assertTrue("There is no rule after 2 deletions", capability.getOpenflowForwardingRules().isEmpty());
+	}
+
+	@Test
+	public void createDeleteGetWSTest() throws Exception {
+
+		IOpenflowForwardingCapability capabilityWSClient = InitializerTestHelper.createRestClient(WS_URI, IOpenflowForwardingCapability.class, null,
+				WS_USERNAME, WS_PASSWORD);
+
+		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
+		forwardingRule1.setSwitchId(SWITCH_ID);
+
+		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
+		forwardingRule2.setSwitchId(SWITCH_ID);
+
+		Assert.assertTrue("No rules in a freshly created switch", capabilityWSClient.getOpenflowForwardingRulesAPI().getForwardingRules().isEmpty());
+
+		capabilityWSClient.createOpenflowForwardingRule(forwardingRule1);
+		Assert.assertEquals("There is one single rule after creating one", 1, capabilityWSClient.getOpenflowForwardingRulesAPI().getForwardingRules()
+				.size());
+		Assert.assertEquals("forwardingRule1 has been correctly created", forwardingRule1, capabilityWSClient
+				.getOpenflowForwardingRulesAPI().getForwardingRules().get(0));
+
+		capabilityWSClient.createOpenflowForwardingRule(forwardingRule2);
+		Assert.assertEquals("There are two rules after creating two", 2, capabilityWSClient.getOpenflowForwardingRulesAPI().getForwardingRules()
+				.size());
+		Assert.assertEquals("forwardingRule2 has been correctly created", forwardingRule2, capabilityWSClient
+				.getOpenflowForwardingRulesAPI().getForwardingRules().get(1));
+
+		capabilityWSClient.removeOpenflowForwardingRule(forwardingRule1.getName());
+		Assert.assertEquals("There is one single rule after deleting forwardingRule1", 1, capabilityWSClient.getOpenflowForwardingRulesAPI()
+				.getForwardingRules().size());
+		Assert.assertEquals("forwardingRule2 is still in the switch after deleting forwardingRule1", forwardingRule2, capabilityWSClient
+				.getOpenflowForwardingRulesAPI().getForwardingRules().get(0));
+
+		capabilityWSClient.removeOpenflowForwardingRule(forwardingRule2.getName());
+		Assert.assertTrue("There is no rule after 2 deletions", capabilityWSClient.getOpenflowForwardingRulesAPI().getForwardingRules().isEmpty());
 	}
 
 	private void startResource() throws ResourceException, ProtocolException {
