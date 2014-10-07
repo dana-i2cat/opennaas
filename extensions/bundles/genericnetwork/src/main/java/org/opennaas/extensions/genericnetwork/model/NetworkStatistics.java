@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
 /**
  * 

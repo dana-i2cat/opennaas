@@ -45,14 +45,14 @@
 		</service-properties>
 	</service>
 	
-	<bean id="monitoringCapabilityFactory" class="org.opennaas.extensions.openflowswitch.capability.monitoring.MonitoringCapabilityFactory">
-		<property name="type" value="ofmonitoring"/>
+	<bean id="portStatisticsCapabilityFactory" class="org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsCapabilityFactory">
+		<property name="type" value="portstatistics"/>
 	</bean>	
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="monitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+	<service ref="portStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="ofmonitoring"/>
+			<entry key="capability" value="portstatistics"/>
 			<entry key="capability.model" value="openflowswitch"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>

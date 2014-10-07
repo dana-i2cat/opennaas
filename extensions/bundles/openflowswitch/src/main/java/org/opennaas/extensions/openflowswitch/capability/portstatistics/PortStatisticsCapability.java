@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.capability.monitoring;
+package org.opennaas.extensions.openflowswitch.capability.portstatistics;
 
 /*
  * #%L
@@ -39,20 +39,20 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
 
 /**
- * {@link IMonitoringCapability} implementation
+ * {@link IPortStatisticsCapability} implementation
  * 
  * @author Julio Carlos Barrera
  * 
  */
-public class MonitoringCapability extends AbstractCapability implements IMonitoringCapability {
+public class PortStatisticsCapability extends AbstractCapability implements IPortStatisticsCapability {
 
-	public static String	CAPABILITY_TYPE	= "ofmonitoring";
+	public static String	CAPABILITY_TYPE	= "portstatistics";
 
-	private Log				log				= LogFactory.getLog(MonitoringCapability.class);
+	private Log				log				= LogFactory.getLog(PortStatisticsCapability.class);
 
 	private String			resourceId		= "";
 
-	public MonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
+	public PortStatisticsCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Monitoring Capability");
@@ -60,7 +60,7 @@ public class MonitoringCapability extends AbstractCapability implements IMonitor
 
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IMonitoringCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IPortStatisticsCapability.class.getName());
 		super.activate();
 	}
 
@@ -77,7 +77,7 @@ public class MonitoringCapability extends AbstractCapability implements IMonitor
 
 	@Override
 	public SwitchPortStatistics getPortStatistics() throws CapabilityException {
-		IAction action = createActionAndCheckParams(MonitoringActionSet.GET_PORT_STATISTICS, null);
+		IAction action = createActionAndCheckParams(PortStatisticsActionSet.GET_PORT_STATISTICS, null);
 		ActionResponse response = executeAction(action);
 
 		Object responseObject = response.getResult();
