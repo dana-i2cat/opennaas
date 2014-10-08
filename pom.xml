@@ -41,7 +41,7 @@
 		<commons.configuration.version>1.6</commons.configuration.version>
 		<commons.dbcp.version>1.2.2_7</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
-		<commons.io.version>1.4</commons.io.version>
+		<commons.io.version>2.4</commons.io.version>
 		<commons.jxpath.version>1.2_5</commons.jxpath.version>
 		<commons-lang.version>2.5</commons-lang.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
@@ -140,7 +140,7 @@
 		<project.name>OpenNaaS</project.name>
 		
 		<!-- Netconf server for itests -->
-		<netconf-server.version>0.0.3</netconf-server.version>
+		<netconf-server.version>0.0.4</netconf-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -1195,6 +1195,12 @@
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-http</artifactId>
 	           <version>${jetty.version}</version>				
+			</dependency>
+			
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons.io.version}</version>
 			</dependency>
 
 		</dependencies>

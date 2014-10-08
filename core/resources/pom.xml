@@ -67,7 +67,13 @@
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
+			<scope>test</scope>
 		</dependency>	
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- REST annotations -->
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
