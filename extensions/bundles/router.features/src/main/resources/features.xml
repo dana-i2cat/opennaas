@@ -29,6 +29,7 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.l3vlan/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.linkaggregation/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.vlanbridge/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.topologydiscovery/${project.version}</bundle>		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capabilities.api/${project.version}</bundle>
 	</feature>	
 	

@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
-		<version>0.29-SNAPSHOT</version>
+		<version>0.30-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>org.opennaas.extensions.openflowswitch</artifactId>

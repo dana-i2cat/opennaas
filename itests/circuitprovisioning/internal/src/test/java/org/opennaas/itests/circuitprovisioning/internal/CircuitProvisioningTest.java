@@ -142,7 +142,7 @@ public class CircuitProvisioningTest {
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight",
 						"opennaas-genericnetwork", "itests-helpers"),
-				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepRuntimeFolder(),
 				OpennaasExamOptions.keepLogConfiguration()
 		// , OpennaasExamOptions.openDebugSocket()
@@ -569,7 +569,7 @@ public class CircuitProvisioningTest {
 		INCLProvisionerCapability cap = PowerMockito.mock(NCLProvisionerCapability.class);
 
 		// initialize internal loggers (Capability and AbstractCapability instances)
-		Whitebox.setInternalState(cap, Log.class, LogFactory.getLog(INCLProvisionerCapability.class));
+		// Whitebox.setInternalState(cap, Log.class, LogFactory.getLog(INCLProvisionerCapability.class));
 		Whitebox.setInternalState(cap, Log.class, LogFactory.getLog(INCLProvisionerCapability.class), AbstractCapability.class);
 
 		return cap;
