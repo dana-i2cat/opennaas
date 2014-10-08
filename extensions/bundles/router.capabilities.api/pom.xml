@@ -13,6 +13,11 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 <build>
 		<plugins>
