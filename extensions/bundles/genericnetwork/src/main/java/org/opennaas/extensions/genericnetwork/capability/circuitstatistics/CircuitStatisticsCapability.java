@@ -113,6 +113,49 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 
 	}
 
+	@Override
+	public String getStatistics(TimePeriod timePeriod) throws CapabilityException {
+		try {
+			GenericNetworkModel model = (GenericNetworkModel) resource.getModel();
+			Set<CircuitStatistics> circuitStatistics = model.getCircuitStatistics();
+
+			String csvStatistics = writeToCSV(circuitStatistics);
+
+			return csvStatistics;
+		} catch (IOException io) {
+			log.error("Error parsing cirucir statistics to CSV.", io);
+			throw new CapabilityException(io);
+		}
+	}
+
+	private String writeToCSV(Set<CircuitStatistics> circuitStatistics) throws IOException {
+
+		StringBuilder sb = new StringBuilder();
+		CSVWriter writer = new CSVWriter(new StringBuilderWriter(sb), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
+		try {
+
+			for (CircuitStatistics currentStatistic : circuitStatistics) {
+
+				String[] csvStatistic = new String[8];
+				csvStatistic[0] = String.valueOf(currentStatistic.getTimePeriod().getStartTime());
+				csvStatistic[1] = String.valueOf(currentStatistic.getTimePeriod().getEndTime());
+				csvStatistic[2] = String.valueOf(currentStatistic.getSlaFlowId());
+				csvStatistic[3] = String.valueOf(currentStatistic.getThroughput());
+				csvStatistic[4] = String.valueOf(currentStatistic.getPacketLoss());
+				csvStatistic[5] = String.valueOf(currentStatistic.getDelay());
+				csvStatistic[6] = String.valueOf(currentStatistic.getJitter());
+				csvStatistic[7] = String.valueOf(currentStatistic.getFlowData());
+
+				writer.writeNext(csvStatistic);
+
+			}
+
+			return sb.toString();
+		} finally {
+			writer.close();
+		}
+	}
+
 	private Set<CircuitStatistics> parseCSV(String csvStatistics) throws IllegalArgumentException, IOException {
 		CSVReader reader = new CSVReader(new StringReader(csvStatistics));
 
@@ -158,46 +201,4 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 		}
 	}
 
-	@Override
-	public String getStatistics(TimePeriod timePeriod) throws CapabilityException {
-		try {
-			GenericNetworkModel model = (GenericNetworkModel) resource.getModel();
-			Set<CircuitStatistics> circuitStatistics = model.getCircuitStatistics();
-
-			String csvStatistics = writeToCSV(circuitStatistics);
-
-			return csvStatistics;
-		} catch (IOException io) {
-			log.error("Error parsing cirucir statistics to CSV.", io);
-			throw new CapabilityException(io);
-		}
-	}
-
-	private String writeToCSV(Set<CircuitStatistics> circuitStatistics) throws IOException {
-
-		StringBuilder sb = new StringBuilder();
-		CSVWriter writer = new CSVWriter(new StringBuilderWriter(sb), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
-		try {
-
-			for (CircuitStatistics currentStatistic : circuitStatistics) {
-
-				String[] csvStatistic = new String[8];
-				csvStatistic[0] = String.valueOf(currentStatistic.getTimePeriod().getStartTime());
-				csvStatistic[1] = String.valueOf(currentStatistic.getTimePeriod().getEndTime());
-				csvStatistic[2] = String.valueOf(currentStatistic.getSlaFlowId());
-				csvStatistic[3] = String.valueOf(currentStatistic.getThroughput());
-				csvStatistic[4] = String.valueOf(currentStatistic.getPacketLoss());
-				csvStatistic[5] = String.valueOf(currentStatistic.getDelay());
-				csvStatistic[6] = String.valueOf(currentStatistic.getJitter());
-				csvStatistic[7] = String.valueOf(currentStatistic.getFlowData());
-
-				writer.writeNext(csvStatistic);
-
-			}
-
-			return sb.toString();
-		} finally {
-			writer.close();
-		}
-	}
 }
