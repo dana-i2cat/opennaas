@@ -6,8 +6,8 @@
 		<version>0.30-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
-	<artifactId>org.opennaas.itests.monitoring.floodlight</artifactId>
-	<name>OpenNaaS :: iTests :: Monitoring :: Floodlight</name>
+	<artifactId>org.opennaas.itests.portstatistics.floodlight</artifactId>
+	<name>OpenNaaS :: iTests :: PortStatistics :: Floodlight</name>
 	<packaging>jar</packaging>
 
 	<dependencies>

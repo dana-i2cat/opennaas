@@ -1,4 +1,4 @@
-package org.opennaas.itests.monitoring.floodlight;
+package org.opennaas.itests.portstatistics.floodlight;
 
 /*
  * #%L
@@ -51,10 +51,10 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.IMonitoringCapability;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.MonitoringCapability;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.IPortStatisticsCapability;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsCapability;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.OpennaasExamOptions;
@@ -71,7 +71,7 @@ import org.osgi.framework.BundleContext;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
-public class MonitoringTest extends MockHTTPServerTest {
+public class PortStatisticsTest extends MockHTTPServerTest {
 
 	@Inject
 	protected IResourceManager			resourceManager;
@@ -98,7 +98,7 @@ public class MonitoringTest extends MockHTTPServerTest {
 
 	private static final String			SWITCH_ID_NAME		= FloodlightProtocolSession.SWITCHID_CONTEXT_PARAM_NAME;
 
-	private final static Log			log					= LogFactory.getLog(MonitoringTest.class);
+	private final static Log			log					= LogFactory.getLog(PortStatisticsTest.class);
 
 	private IResource					ofSwitchResource;
 	private WSEndpointListenerHandler	listenerHandler;
@@ -156,7 +156,7 @@ public class MonitoringTest extends MockHTTPServerTest {
 	@Test
 	public void getPortStatsTest() throws ResourceException {
 
-		IMonitoringCapability monitoringCapab = (IMonitoringCapability) getCapability(IMonitoringCapability.class);
+		IPortStatisticsCapability monitoringCapab = (IPortStatisticsCapability) getCapability(IPortStatisticsCapability.class);
 		SwitchPortStatistics portStats = monitoringCapab.getPortStatistics();
 
 		Assert.assertNotNull("Capability should return statistics.", portStats);
@@ -224,7 +224,7 @@ public class MonitoringTest extends MockHTTPServerTest {
 
 		CapabilityDescriptor monitoringDescriptor = ResourceHelper.newCapabilityDescriptor(ACTIONSET_NAME,
 				ACTIONSET_VERSION,
-				MonitoringCapability.CAPABILITY_TYPE,
+				PortStatisticsCapability.CAPABILITY_TYPE,
 				MOCK_URI);
 		lCapabilityDescriptors.add(monitoringDescriptor);
 
@@ -243,7 +243,7 @@ public class MonitoringTest extends MockHTTPServerTest {
 
 		// Start resource
 		listenerHandler = new WSEndpointListenerHandler();
-		listenerHandler.registerWSEndpointListener(context, IMonitoringCapability.class);
+		listenerHandler.registerWSEndpointListener(context, IPortStatisticsCapability.class);
 		resourceManager.startResource(ofSwitchResource.getResourceIdentifier());
 		listenerHandler.waitForEndpointToBePublished();
 

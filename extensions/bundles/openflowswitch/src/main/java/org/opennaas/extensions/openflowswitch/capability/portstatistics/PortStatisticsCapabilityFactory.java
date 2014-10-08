@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.capability.monitoring;
+package org.opennaas.extensions.openflowswitch.capability.portstatistics;
 
 /*
  * #%L
@@ -27,24 +27,25 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
 /**
- * Monitoring capability factory
+ * Port Statistics capability factory
  * 
  * @author Julio Carlos Barrera
  * 
  */
-public class MonitoringCapabilityFactory extends AbstractCapabilityFactory {
+public class PortStatisticsCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(MonitoringCapability.CAPABILITY_TYPE), resource
-				.getResourceDescriptor().getId());
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(PortStatisticsCapability.CAPABILITY_TYPE),
+				resource
+						.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
 	}
 
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
-		return new MonitoringCapability(capabilityDescriptor, resourceId);
+		return new PortStatisticsCapability(capabilityDescriptor, resourceId);
 	}
 
 }

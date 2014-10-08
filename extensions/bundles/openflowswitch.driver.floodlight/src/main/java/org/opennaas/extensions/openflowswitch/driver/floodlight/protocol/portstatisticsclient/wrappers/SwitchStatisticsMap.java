@@ -23,7 +23,7 @@ package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.portst
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
 
 /**
  * Switch statistics map of port statistics wrapper.<br />
