@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,7 +42,7 @@ public class FloodlightOFFlowListWrapper implements Serializable {
 	 */
 	private static final long		serialVersionUID	= 6469082812844530401L;
 
-	@XmlElement(name = "floodlightOFFlow")
+	@XmlElementWrapper(name = "floodlightOFFlows")
 	private List<FloodlightOFFlow>	forwardingRules;
 
 	public List<FloodlightOFFlow> getForwardingRules() {
