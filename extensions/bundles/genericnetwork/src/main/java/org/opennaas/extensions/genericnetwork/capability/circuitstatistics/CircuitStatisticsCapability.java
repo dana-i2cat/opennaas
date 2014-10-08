@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.output.StringBuilderWriter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.IAction;
@@ -130,6 +131,11 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 
 				TimePeriod timePeriod = new TimePeriod();
 				CircuitStatistics currentStatistics = new CircuitStatistics();
+
+				if (!StringUtils.isNumeric(currentRecord[0].trim()))
+					throw new IllegalArgumentException("Records should start with timestamp.");
+				if (!StringUtils.isNumeric(currentRecord[1].trim()))
+					throw new IllegalArgumentException("Second record field should contain a timestamp.");
 
 				timePeriod.setStartTime(Long.valueOf(currentRecord[0].trim()).longValue());
 				timePeriod.setEndTime(Long.valueOf(currentRecord[1].trim()).longValue());
