@@ -34,6 +34,8 @@ import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.driver.NetworkConnectionImplementationId;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedStatistics;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedSwitchPortStatistics;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 
 /**
@@ -81,6 +83,12 @@ public class GenericNetworkModel implements IModel {
 	 * Maps device ID in GenericNetworkModel and resource ID in OpenNaaS
 	 */
 	private Map<String, String>										deviceResourceMap;
+	
+	/**
+	 * Stores timed statistics for switch ports.
+	 * Used by NCLMonitoringCapability
+	 */
+	private TimedSwitchPortStatistics timedSwitchPortStatistics;
 
 	public GenericNetworkModel() {
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
@@ -88,6 +96,8 @@ public class GenericNetworkModel implements IModel {
 		requestedCircuits = new HashMap<String, Circuit>();
 		deviceResourceMap = new HashMap<String, String>();
 		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
+		timedSwitchPortStatistics = new TimedSwitchPortStatistics();
+		timedSwitchPortStatistics.setStatisticsMap(new HashMap<String, Map<String, List<TimedStatistics>>>());
 	}
 
 	/**
@@ -156,6 +166,14 @@ public class GenericNetworkModel implements IModel {
 	@Override
 	public String toXml() throws SerializationException {
 		return ObjectSerializer.toXml(this);
+	}
+
+	public TimedSwitchPortStatistics getTimedSwitchPortStatistics() {
+		return timedSwitchPortStatistics;
+	}
+
+	public void setTimedSwitchPortStatistics(TimedSwitchPortStatistics timedSwitchPortStatistics) {
+		this.timedSwitchPortStatistics = timedSwitchPortStatistics;
 	}
 
 }
