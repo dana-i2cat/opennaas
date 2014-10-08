@@ -45,6 +45,7 @@ public interface ICircuitStatisticsCapability extends ICapability {
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_XML)
 	public String getStatistics(TimePeriod timePeriod) throws CapabilityException;
 
 }
