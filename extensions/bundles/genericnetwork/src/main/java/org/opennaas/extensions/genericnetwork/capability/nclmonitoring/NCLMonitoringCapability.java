@@ -20,8 +20,10 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
  * #L%
  */
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,27 +34,32 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.genericnetwork.capability.nclmonitoring.portstatistics.IPortStatisticsMonitoringCapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedPortStatistics;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedStatistics;
 
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-public class NCLMonitoringCapability extends AbstractCapability implements INCLMonitoringCapability {
+public class NCLMonitoringCapability extends AbstractCapability implements
+		IPortStatisticsMonitoringCapability {
 
-	public static final String	CAPABILITY_TYPE	= "nclmonitoring";
+	public static final String CAPABILITY_TYPE = "nclmonitoring";
 
-	private Log					log				= LogFactory.getLog(NCLProvisionerCapability.class);
+	private Log log = LogFactory.getLog(NCLProvisionerCapability.class);
 
-	private String				resourceId		= "";
-	private IEventManager		eventManager;
+	private String resourceId = "";
+	private IEventManager eventManager;
 
-	private NCLMonitoring		nclMonitoring;
+	private NCLMonitoring nclMonitoring;
 
-	public NCLMonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
+	public NCLMonitoringCapability(CapabilityDescriptor descriptor,
+			String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new NCLMonitoring Capability");
@@ -65,19 +72,22 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
-		throw new UnsupportedOperationException("Not Implemented. This capability is not using the queue.");
+		throw new UnsupportedOperationException(
+				"Not Implemented. This capability is not using the queue.");
 	}
 
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
-		throw new UnsupportedOperationException("This capability does not contain actionset.");
+		throw new UnsupportedOperationException(
+				"This capability does not contain actionset.");
 	}
 
 	@Override
 	public void activate() throws CapabilityException {
 		initNCLMonitoring();
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
-				INCLMonitoringCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE,
+				getResourceType(), getResourceName(),
+				IPortStatisticsMonitoringCapability.class.getName());
 		super.activate();
 	}
 
@@ -96,22 +106,6 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 		this.eventManager = eventManager;
 	}
 
-	/**
-	 * Register the capability like an OSGi service but NOT as a web service through DOSGi.
-	 * 
-	 * The fact this capability has no methods to export as WS in INCLMonitoringCapability causes an error if registered with DOSGi.
-	 * 
-	 * @param name
-	 * @param resourceId
-	 * @return
-	 * @throws CapabilityException
-	 */
-	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
-			String ifaceName) throws CapabilityException {
-		Dictionary<String, String> props = new Hashtable<String, String>();
-		return registration = bundleContext.registerService(ifaceName, this, props);
-	}
-
 	// ///////////////////////////////
 	// NCLMonitoring Implementation //
 	// ///////////////////////////////
@@ -126,6 +120,49 @@ public class NCLMonitoringCapability extends AbstractCapability implements INCLM
 	private void stopNCLMonitoring() {
 		nclMonitoring.stop();
 		nclMonitoring = null;
+	}
+
+	// //////////////////////////////////////////////////
+	// IPortStatisticsMonitoringCapability implementation
+	// //////////////////////////////////////////////////
+
+	@Override
+	public TimedPortStatistics getPortStatistics(TimePeriod period) {
+
+		// filtered map with keys from period.getInit() to period.getEnd() both inclusive (achieved by adding 1 to period.getEnd() :P)
+		SortedMap<Long, Map<String, List<TimedStatistics>>> filteredMap = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics().getStatisticsMap().
+				subMap(Long.valueOf(period.getInit()), Long.valueOf(period.getEnd()+1));
+		
+		// build a list with all values
+		List<TimedStatistics> stats = new ArrayList<TimedStatistics>();
+		for (Long timestamp : filteredMap.keySet()) {
+			for (String switchId : filteredMap.get(timestamp).keySet()) {
+				stats.addAll(filteredMap.get(timestamp).get(switchId));
+			}
+		}
+		
+		TimedPortStatistics result = new TimedPortStatistics();
+		result.setStatistics(stats);
+		return result;
+	}
+
+	@Override
+	public TimedPortStatistics getPortStatistics(TimePeriod period,
+			String switchId) {
+
+		// filtered map with keys from period.getInit() to period.getEnd() both inclusive (achieved by adding 1 to period.getEnd() :P)
+		SortedMap<Long, Map<String, List<TimedStatistics>>> filteredMap = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics().getStatisticsMap().
+				subMap(Long.valueOf(period.getInit()), Long.valueOf(period.getEnd()+1));
+		
+		// build a list with all values
+		List<TimedStatistics> switchStats = new ArrayList<TimedStatistics>();
+		for (Long timestamp : filteredMap.keySet()) {
+			switchStats.addAll(filteredMap.get(timestamp).get(switchId));
+		}
+		
+		TimedPortStatistics stats = new TimedPortStatistics();
+		stats.setStatistics(switchStats);
+		return stats;
 	}
 
 }
