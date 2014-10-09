@@ -34,21 +34,12 @@ public class CircuitStatistics implements Serializable {
 	 */
 	private static final long	serialVersionUID	= 5141194713845400788L;
 
-	private TimePeriod			timePeriod;
 	private String				slaFlowId;
 	private String				throughput;
 	private String				packetLoss;
 	private String				delay;
 	private String				jitter;
 	private String				flowData;
-
-	public TimePeriod getTimePeriod() {
-		return timePeriod;
-	}
-
-	public void setTimePeriod(TimePeriod timePeriod) {
-		this.timePeriod = timePeriod;
-	}
 
 	public String getSlaFlowId() {
 		return slaFlowId;
@@ -108,7 +99,6 @@ public class CircuitStatistics implements Serializable {
 		result = prime * result + ((packetLoss == null) ? 0 : packetLoss.hashCode());
 		result = prime * result + ((slaFlowId == null) ? 0 : slaFlowId.hashCode());
 		result = prime * result + ((throughput == null) ? 0 : throughput.hashCode());
-		result = prime * result + ((timePeriod == null) ? 0 : timePeriod.hashCode());
 		return result;
 	}
 
@@ -151,16 +141,11 @@ public class CircuitStatistics implements Serializable {
 				return false;
 		} else if (!throughput.equals(other.throughput))
 			return false;
-		if (timePeriod == null) {
-			if (other.timePeriod != null)
-				return false;
-		} else if (!timePeriod.equals(other.timePeriod))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "CircuitStatistics [timePeriod=" + timePeriod + ", slaFlowId=" + slaFlowId + ", throughput=" + throughput + ", packetLoss=" + packetLoss + ", delay=" + delay + ", jitter=" + jitter + ", flowData=" + flowData + "]";
+		return "CircuitStatistics [slaFlowId=" + slaFlowId + ", throughput=" + throughput + ", packetLoss=" + packetLoss + ", delay=" + delay + ", jitter=" + jitter + ", flowData=" + flowData + "]";
 	}
 }

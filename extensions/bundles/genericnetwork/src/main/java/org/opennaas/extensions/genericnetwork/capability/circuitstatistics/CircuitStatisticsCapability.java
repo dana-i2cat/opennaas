@@ -22,9 +22,10 @@ package org.opennaas.extensions.genericnetwork.capability.circuitstatistics;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.commons.lang.StringUtils;
@@ -60,6 +61,7 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Circuit Statistics Capability");
+
 	}
 
 	@Override
@@ -101,9 +103,17 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 		log.info("Circuit Statistics report received.");
 
 		try {
-			Set<CircuitStatistics> circuitStatistics = parseCSV(csvStatistics);
+			SortedMap<Long, List<CircuitStatistics>> circuitStatistics = parseCSV(csvStatistics);
 			GenericNetworkModel model = (GenericNetworkModel) resource.getModel();
-			model.getCircuitStatistics().addAll(circuitStatistics);
+
+			SortedMap<Long, List<CircuitStatistics>> modelStatistics = model.getCircuitStatistics();
+			for (Long timestamp : circuitStatistics.keySet()) {
+				if (modelStatistics.keySet().contains(timestamp))
+					modelStatistics.get(timestamp).addAll(circuitStatistics.get(timestamp));
+				else
+					modelStatistics.put(timestamp, circuitStatistics.get(timestamp));
+			}
+
 		} catch (Exception e) {
 			log.info("Error parsing received CSV", e);
 			throw new CapabilityException(e);
@@ -117,9 +127,11 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 	public String getStatistics(TimePeriod timePeriod) throws CapabilityException {
 		try {
 			GenericNetworkModel model = (GenericNetworkModel) resource.getModel();
-			Set<CircuitStatistics> circuitStatistics = model.getCircuitStatistics();
 
-			String csvStatistics = writeToCSV(circuitStatistics);
+			SortedMap<Long, List<CircuitStatistics>> filteredStatistics = model.getCircuitStatistics().subMap(timePeriod.getStartTime(),
+					timePeriod.getEndTime() + 1L); // we add 1 to the long, since the "to" of the subMap is exclusive
+
+			String csvStatistics = writeToCSV(filteredStatistics);
 
 			return csvStatistics;
 		} catch (IOException io) {
@@ -128,27 +140,28 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 		}
 	}
 
-	private String writeToCSV(Set<CircuitStatistics> circuitStatistics) throws IOException {
+	private String writeToCSV(SortedMap<Long, List<CircuitStatistics>> circuitStatistics) throws IOException {
 
 		StringBuilder sb = new StringBuilder();
 		CSVWriter writer = new CSVWriter(new StringBuilderWriter(sb), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
 		try {
 
-			for (CircuitStatistics currentStatistic : circuitStatistics) {
+			for (Long timestamp : circuitStatistics.keySet())
 
-				String[] csvStatistic = new String[8];
-				csvStatistic[0] = String.valueOf(currentStatistic.getTimePeriod().getStartTime());
-				csvStatistic[1] = String.valueOf(currentStatistic.getTimePeriod().getEndTime());
-				csvStatistic[2] = String.valueOf(currentStatistic.getSlaFlowId());
-				csvStatistic[3] = String.valueOf(currentStatistic.getThroughput());
-				csvStatistic[4] = String.valueOf(currentStatistic.getPacketLoss());
-				csvStatistic[5] = String.valueOf(currentStatistic.getDelay());
-				csvStatistic[6] = String.valueOf(currentStatistic.getJitter());
-				csvStatistic[7] = String.valueOf(currentStatistic.getFlowData());
+				for (CircuitStatistics currentStatistic : circuitStatistics.get(timestamp)) {
 
-				writer.writeNext(csvStatistic);
+					String[] csvStatistic = new String[7];
+					csvStatistic[0] = String.valueOf(timestamp);
+					csvStatistic[1] = String.valueOf(currentStatistic.getSlaFlowId());
+					csvStatistic[2] = String.valueOf(currentStatistic.getThroughput());
+					csvStatistic[3] = String.valueOf(currentStatistic.getPacketLoss());
+					csvStatistic[4] = String.valueOf(currentStatistic.getDelay());
+					csvStatistic[5] = String.valueOf(currentStatistic.getJitter());
+					csvStatistic[6] = String.valueOf(currentStatistic.getFlowData());
 
-			}
+					writer.writeNext(csvStatistic);
+
+				}
 
 			return sb.toString();
 		} finally {
@@ -156,12 +169,12 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 		}
 	}
 
-	private Set<CircuitStatistics> parseCSV(String csvStatistics) throws IllegalArgumentException, IOException {
+	private SortedMap<Long, List<CircuitStatistics>> parseCSV(String csvStatistics) throws IllegalArgumentException, IOException {
 		CSVReader reader = new CSVReader(new StringReader(csvStatistics));
 
 		try {
 
-			Set<CircuitStatistics> circuitStatistics = new HashSet<CircuitStatistics>();
+			SortedMap<Long, List<CircuitStatistics>> circuitsStatistics = new TreeMap<Long, List<CircuitStatistics>>();
 
 			List<String[]> records = reader.readAll();
 
@@ -169,32 +182,34 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 
 			for (String[] currentRecord : records) {
 
-				if (currentRecord.length != 8)
-					throw new IllegalArgumentException("Invalid record length: it should contain 8 fields.");
+				if (currentRecord.length != 7)
+					throw new IllegalArgumentException("Invalid record length: it should contain 7 fields.");
 
-				TimePeriod timePeriod = new TimePeriod();
 				CircuitStatistics currentStatistics = new CircuitStatistics();
 
 				if (!StringUtils.isNumeric(currentRecord[0].trim()))
 					throw new IllegalArgumentException("Records should start with timestamp.");
-				if (!StringUtils.isNumeric(currentRecord[1].trim()))
-					throw new IllegalArgumentException("Second record field should contain a timestamp.");
 
-				timePeriod.setStartTime(Long.valueOf(currentRecord[0].trim()).longValue());
-				timePeriod.setEndTime(Long.valueOf(currentRecord[1].trim()).longValue());
+				Long timestamp = Long.valueOf(currentRecord[0].trim());
 
-				currentStatistics.setTimePeriod(timePeriod);
-				currentStatistics.setSlaFlowId(currentRecord[2].trim());
-				currentStatistics.setThroughput(currentRecord[3].trim());
-				currentStatistics.setPacketLoss(currentRecord[4].trim());
-				currentStatistics.setDelay(currentRecord[5].trim());
-				currentStatistics.setJitter(currentRecord[6].trim());
-				currentStatistics.setFlowData(currentRecord[7].trim());
+				currentStatistics.setSlaFlowId(currentRecord[1].trim());
+				currentStatistics.setThroughput(currentRecord[2].trim());
+				currentStatistics.setPacketLoss(currentRecord[3].trim());
+				currentStatistics.setDelay(currentRecord[4].trim());
+				currentStatistics.setJitter(currentRecord[5].trim());
+				currentStatistics.setFlowData(currentRecord[6].trim());
 
-				circuitStatistics.add(currentStatistics);
+				if (circuitsStatistics.keySet().contains(timestamp))
+					circuitsStatistics.get(timestamp).add(currentStatistics);
+
+				else {
+					List<CircuitStatistics> circuitStatisticsList = new ArrayList<CircuitStatistics>();
+					circuitStatisticsList.add(currentStatistics);
+					circuitsStatistics.put(timestamp, circuitStatisticsList);
+				}
 			}
 
-			return circuitStatistics;
+			return circuitsStatistics;
 
 		} finally {
 			reader.close();

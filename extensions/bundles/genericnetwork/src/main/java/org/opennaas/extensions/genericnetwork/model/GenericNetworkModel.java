@@ -22,10 +22,10 @@ package org.opennaas.extensions.genericnetwork.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -85,9 +85,9 @@ public class GenericNetworkModel implements IModel {
 	private Map<String, String>										deviceResourceMap;
 
 	/**
-	 * Set containing all circuit statistics reported to the network.
+	 * Map containing all circuit statistics reported to the network, ordered by timestamp.
 	 */
-	private Set<CircuitStatistics>									circuitStatistics;
+	private SortedMap<Long, List<CircuitStatistics>>				circuitStatistics;
 
 	public GenericNetworkModel() {
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
@@ -95,7 +95,7 @@ public class GenericNetworkModel implements IModel {
 		requestedCircuits = new HashMap<String, Circuit>();
 		deviceResourceMap = new HashMap<String, String>();
 		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
-		circuitStatistics = new HashSet<CircuitStatistics>();
+		circuitStatistics = new TreeMap<Long, List<CircuitStatistics>>();
 	}
 
 	/**
@@ -156,11 +156,11 @@ public class GenericNetworkModel implements IModel {
 		this.circuitImplementation = circuitImplementation;
 	}
 
-	public Set<CircuitStatistics> getCircuitStatistics() {
+	public SortedMap<Long, List<CircuitStatistics>> getCircuitStatistics() {
 		return circuitStatistics;
 	}
 
-	public void setCircuitStatistics(Set<CircuitStatistics> circuitStatistics) {
+	public void setCircuitStatistics(SortedMap<Long, List<CircuitStatistics>> circuitStatistics) {
 		this.circuitStatistics = circuitStatistics;
 	}
 
