@@ -1,24 +1,4 @@
-package org.opennaas.extensions.openflowswitch.capability.portstatistics;
-
-/*
- * #%L
- * OpenNaaS :: OpenFlow Switch
- * %%
- * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+package org.opennaas.extensions.genericnetwork.capability.portstatistics;
 
 import java.util.Map;
 
@@ -36,23 +16,26 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.extensions.openflowswitch.repository.Activator;
+import org.opennaas.extensions.genericnetwork.Activator;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.IPortStatisticsCapability;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsActionSet;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
 /**
- * {@link IPortStatisticsCapability} implementation
+ * {@link IPortStatisticsCapability} implementation for Generic Network
  * 
  * @author Julio Carlos Barrera
  * 
  */
-public class PortStatisticsCapability extends AbstractCapability implements IPortStatisticsCapability {
+public class NetPortStatisticsCapability extends AbstractCapability implements IPortStatisticsCapability {
 
 	public static String	CAPABILITY_TYPE	= "portstatistics";
 
-	private Log				log				= LogFactory.getLog(PortStatisticsCapability.class);
+	private Log				log				= LogFactory.getLog(NetPortStatisticsCapability.class);
 
 	private String			resourceId		= "";
 
-	public PortStatisticsCapability(CapabilityDescriptor descriptor, String resourceId) {
+	public NetPortStatisticsCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Port Statistics Capability");
@@ -85,13 +68,8 @@ public class PortStatisticsCapability extends AbstractCapability implements IPor
 			throw new CapabilityException("Unexpected action response object:" + responseObject.getClass());
 		}
 
-		// assuming the action returns what it is meant to
-		Map<String, PortStatistics> portStatistics = (Map<String, PortStatistics>) responseObject;
-
-		SwitchPortStatistics statistics = new SwitchPortStatistics();
-		statistics.setStatistics(portStatistics);
-
-		return statistics;
+		// TODO
+		return null;
 	}
 
 	@Override
@@ -105,10 +83,9 @@ public class PortStatisticsCapability extends AbstractCapability implements IPor
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
-			return Activator.getPortStatisticsActionSetService(name, version);
+			return Activator.getActionSetService(NetPortStatisticsCapability.CAPABILITY_TYPE, name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
-
 		}
 	}
 

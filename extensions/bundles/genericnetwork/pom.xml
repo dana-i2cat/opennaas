@@ -35,6 +35,11 @@
 			<artifactId>commons-lang3</artifactId>
 			<!-- Required version is 3.0.1 or above as of http://jira.i2cat.net:8080/browse/OPENNAAS-1392-->
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
