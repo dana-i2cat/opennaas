@@ -22,8 +22,10 @@ package org.opennaas.extensions.genericnetwork.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -82,12 +84,18 @@ public class GenericNetworkModel implements IModel {
 	 */
 	private Map<String, String>										deviceResourceMap;
 
+	/**
+	 * Set containing all circuit statistics reported to the network.
+	 */
+	private Set<CircuitStatistics>									circuitStatistics;
+
 	public GenericNetworkModel() {
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
 		allocatedCircuits = new HashMap<String, Circuit>();
 		requestedCircuits = new HashMap<String, Circuit>();
 		deviceResourceMap = new HashMap<String, String>();
 		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
+		circuitStatistics = new HashSet<CircuitStatistics>();
 	}
 
 	/**
@@ -146,6 +154,14 @@ public class GenericNetworkModel implements IModel {
 
 	public void setCircuitImplementation(Map<String, List<NetworkConnectionImplementationId>> circuitImplementation) {
 		this.circuitImplementation = circuitImplementation;
+	}
+
+	public Set<CircuitStatistics> getCircuitStatistics() {
+		return circuitStatistics;
+	}
+
+	public void setCircuitStatistics(Set<CircuitStatistics> circuitStatistics) {
+		this.circuitStatistics = circuitStatistics;
 	}
 
 	@Override

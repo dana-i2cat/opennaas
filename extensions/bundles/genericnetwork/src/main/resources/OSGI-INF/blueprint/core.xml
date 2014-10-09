@@ -232,4 +232,20 @@
 		</service-properties>
 	</service>
 	
+	<!-- ########################################
+	     CircuitStatistics Capability 
+	     ########################################
+	 -->
+	<bean id="circuitStatisticsCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.circuitstatistics.CircuitStatisticsCapabilityFactory">
+		<property name="type" value="circuitstatistics"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="circuitStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="circuitstatistics"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
 </blueprint>
