@@ -39,7 +39,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.model.CircuitStatistics;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
-import org.opennaas.extensions.genericnetwork.model.TimePeriod;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -128,8 +128,8 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 		try {
 			GenericNetworkModel model = (GenericNetworkModel) resource.getModel();
 
-			SortedMap<Long, List<CircuitStatistics>> filteredStatistics = model.getCircuitStatistics().subMap(timePeriod.getStartTime(),
-					timePeriod.getEndTime() + 1L); // we add 1 to the long, since the "to" of the subMap is exclusive
+			SortedMap<Long, List<CircuitStatistics>> filteredStatistics = model.getCircuitStatistics().subMap(timePeriod.getInit(),
+					timePeriod.getEnd() + 1L); // we add 1 to the long, since the "to" of the subMap is exclusive
 
 			String csvStatistics = writeToCSV(filteredStatistics);
 

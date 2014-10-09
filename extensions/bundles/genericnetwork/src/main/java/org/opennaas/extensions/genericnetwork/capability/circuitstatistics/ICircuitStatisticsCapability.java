@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.genericnetwork.model.TimePeriod;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 
 /**
  * 

@@ -42,7 +42,7 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.extensions.genericnetwork.capability.circuitstatistics.CircuitStatisticsCapability;
 import org.opennaas.extensions.genericnetwork.model.CircuitStatistics;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
-import org.opennaas.extensions.genericnetwork.model.TimePeriod;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 
 /**
  * 
