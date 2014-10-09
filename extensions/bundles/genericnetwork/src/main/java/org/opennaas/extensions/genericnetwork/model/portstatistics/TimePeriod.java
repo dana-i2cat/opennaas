@@ -1,5 +1,9 @@
 package org.opennaas.extensions.genericnetwork.model.portstatistics;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * #%L
  * OpenNaaS :: Generic Network
@@ -25,6 +29,8 @@ package org.opennaas.extensions.genericnetwork.model.portstatistics;
  * @author Isart Canyameres Gimenez (i2cat)
  *
  */
+@XmlRootElement(namespace = "opennaas.api")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TimePeriod {
 
 	private long	init;

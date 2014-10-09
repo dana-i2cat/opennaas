@@ -152,12 +152,12 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 
 					String[] csvStatistic = new String[7];
 					csvStatistic[0] = String.valueOf(timestamp);
-					csvStatistic[1] = String.valueOf(currentStatistic.getSlaFlowId());
-					csvStatistic[2] = String.valueOf(currentStatistic.getThroughput());
-					csvStatistic[3] = String.valueOf(currentStatistic.getPacketLoss());
-					csvStatistic[4] = String.valueOf(currentStatistic.getDelay());
-					csvStatistic[5] = String.valueOf(currentStatistic.getJitter());
-					csvStatistic[6] = String.valueOf(currentStatistic.getFlowData());
+					csvStatistic[1] = currentStatistic.getSlaFlowId();
+					csvStatistic[2] = currentStatistic.getThroughput();
+					csvStatistic[3] = currentStatistic.getPacketLoss();
+					csvStatistic[4] = currentStatistic.getDelay();
+					csvStatistic[5] = currentStatistic.getJitter();
+					csvStatistic[6] = currentStatistic.getFlowData();
 
 					writer.writeNext(csvStatistic);
 
@@ -199,7 +199,7 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 				currentStatistics.setJitter(currentRecord[5].trim());
 				currentStatistics.setFlowData(currentRecord[6].trim());
 
-				if (circuitsStatistics.keySet().contains(timestamp))
+				if (circuitsStatistics.containsKey(timestamp))
 					circuitsStatistics.get(timestamp).add(currentStatistics);
 
 				else {
