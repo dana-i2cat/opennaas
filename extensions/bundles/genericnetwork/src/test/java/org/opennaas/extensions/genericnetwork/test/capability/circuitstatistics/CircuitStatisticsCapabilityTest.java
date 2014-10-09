@@ -21,6 +21,7 @@ package org.opennaas.extensions.genericnetwork.test.capability.circuitstatistics
  */
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -29,13 +30,19 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.Resource;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.extensions.genericnetwork.capability.circuitstatistics.CircuitStatisticsCapability;
 import org.opennaas.extensions.genericnetwork.model.CircuitStatistics;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.TimePeriod;
 
 /**
  * 
@@ -67,8 +74,12 @@ public class CircuitStatisticsCapabilityTest {
 	private static final String	THIRD_CIRCUIT_JITTER		= "1";
 	private static final String	THIRD_CIRCUIT_FLOW_DATA		= "1233";
 
-	private static final Long	FIRST_TIMESTAMP				= Long.valueOf("12378612378613");
+	private static final Long	FIRST_TIMESTAMP				= Long.valueOf("10000000000000");
 	private static final long	SECOND_TIMESTAMP			= Long.valueOf("12378612378614");
+
+	CircuitStatistics			firstStatistics;
+	CircuitStatistics			secondStatistics;
+	CircuitStatistics			thirdStatistics;
 
 	CircuitStatisticsCapability	circuitStatisticsCapab;
 
@@ -78,6 +89,14 @@ public class CircuitStatisticsCapabilityTest {
 		Information capabilityInformation = new Information(null, null, null);
 		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
 		circuitStatisticsCapab = new CircuitStatisticsCapability(capabilityDescriptor, null);
+
+		firstStatistics = generateCircuitStatistics(FIRST_CIRCUIT_FLOW_ID,
+				FIRST_CIRCUIT_THROUGHPUT, FIRST_CIRCUIT_PACKET_LOSS, FIRST_CIRCUIT_DELAY, FIRST_CIRCUIT_JITTER, FIRST_CIRCUIT_FLOW_DATA);
+		secondStatistics = generateCircuitStatistics(SECOND_CIRCUIT_FLOW_ID,
+				SECOND_CIRCUIT_THROUGHPUT, SECOND_CIRCUIT_PACKET_LOSS, SECOND_CIRCUIT_DELAY, SECOND_CIRCUIT_JITTER, SECOND_CIRCUIT_FLOW_DATA);
+		thirdStatistics = generateCircuitStatistics(THIRD_CIRCUIT_FLOW_ID,
+				THIRD_CIRCUIT_THROUGHPUT, THIRD_CIRCUIT_PACKET_LOSS, THIRD_CIRCUIT_DELAY, THIRD_CIRCUIT_JITTER, THIRD_CIRCUIT_FLOW_DATA);
+
 	}
 
 	@Test
@@ -160,13 +179,6 @@ public class CircuitStatisticsCapabilityTest {
 	public void writeToCSVTest() throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException, IOException {
 
-		CircuitStatistics firstStatistics = generateCircuitStatistics(FIRST_CIRCUIT_FLOW_ID,
-				FIRST_CIRCUIT_THROUGHPUT, FIRST_CIRCUIT_PACKET_LOSS, FIRST_CIRCUIT_DELAY, FIRST_CIRCUIT_JITTER, FIRST_CIRCUIT_FLOW_DATA);
-		CircuitStatistics secondStatistics = generateCircuitStatistics(SECOND_CIRCUIT_FLOW_ID,
-				SECOND_CIRCUIT_THROUGHPUT, SECOND_CIRCUIT_PACKET_LOSS, SECOND_CIRCUIT_DELAY, SECOND_CIRCUIT_JITTER, SECOND_CIRCUIT_FLOW_DATA);
-		CircuitStatistics thirdStatistics = generateCircuitStatistics(THIRD_CIRCUIT_FLOW_ID,
-				THIRD_CIRCUIT_THROUGHPUT, THIRD_CIRCUIT_PACKET_LOSS, THIRD_CIRCUIT_DELAY, THIRD_CIRCUIT_JITTER, THIRD_CIRCUIT_FLOW_DATA);
-
 		SortedMap<Long, List<CircuitStatistics>> circuitStatistics = new TreeMap<Long, List<CircuitStatistics>>();
 
 		circuitStatistics.put(FIRST_TIMESTAMP, Arrays.asList(firstStatistics, secondStatistics));
@@ -185,6 +197,64 @@ public class CircuitStatisticsCapabilityTest {
 
 	}
 
+	@Test
+	@SuppressWarnings("unchecked")
+	public void filterByTimePeriodTest() throws SecurityException, IllegalArgumentException, IllegalAccessException, CapabilityException,
+			NoSuchMethodException, InvocationTargetException {
+
+		GenericNetworkModel model = new GenericNetworkModel();
+
+		SortedMap<Long, List<CircuitStatistics>> circuitStatistics = new TreeMap<Long, List<CircuitStatistics>>();
+		circuitStatistics.put(FIRST_TIMESTAMP, Arrays.asList(firstStatistics, secondStatistics));
+		circuitStatistics.put(SECOND_TIMESTAMP, Arrays.asList(thirdStatistics));
+
+		model.setCircuitStatistics(circuitStatistics);
+		IResource resource = new Resource();
+		resource.setModel(model);
+
+		injectPrivateField(circuitStatisticsCapab, resource, "resource");
+
+		TimePeriod timePeriod = new TimePeriod(FIRST_TIMESTAMP - 2L, FIRST_TIMESTAMP - 1L);
+		String statisticsInCSV = circuitStatisticsCapab.getStatistics(timePeriod);
+		Assert.assertTrue("Capability should not contain any statistic for this time period", statisticsInCSV.isEmpty());
+
+		timePeriod = new TimePeriod(SECOND_TIMESTAMP + 1L, SECOND_TIMESTAMP + 2L);
+		statisticsInCSV = circuitStatisticsCapab.getStatistics(timePeriod);
+		Assert.assertTrue("Capability should not contain any statistic for this time period", statisticsInCSV.isEmpty());
+
+		timePeriod = new TimePeriod(FIRST_TIMESTAMP, SECOND_TIMESTAMP - 1L);
+		statisticsInCSV = circuitStatisticsCapab.getStatistics(timePeriod);
+		Assert.assertFalse("Capability should contain statistics for this time period", statisticsInCSV.isEmpty());
+
+		// call private method by reflection in order to parse CSV and make assertions
+		Method method = circuitStatisticsCapab.getClass().getDeclaredMethod("parseCSV", String.class);
+		method.setAccessible(true);
+		SortedMap<Long, List<CircuitStatistics>> statistics = (SortedMap<Long, List<CircuitStatistics>>) method.invoke(circuitStatisticsCapab,
+				statisticsInCSV);
+
+		Assert.assertEquals("There's only one timestamp between this period of time", 1, statistics.keySet().size());
+		Assert.assertNotNull("There should be statistics between this period of time.", statistics.get(FIRST_TIMESTAMP));
+		Assert.assertEquals("There should be two statistics between this period of time.", 2, statistics.get(FIRST_TIMESTAMP).size());
+		Assert.assertEquals(statistics.get(FIRST_TIMESTAMP).get(0), firstStatistics);
+		Assert.assertEquals(statistics.get(FIRST_TIMESTAMP).get(1), secondStatistics);
+
+		timePeriod = new TimePeriod(SECOND_TIMESTAMP - 1L, SECOND_TIMESTAMP);
+		statisticsInCSV = circuitStatisticsCapab.getStatistics(timePeriod);
+		Assert.assertFalse("Capability should contain statistics for this time period", statisticsInCSV.isEmpty());
+
+		// call private method by reflection in order to parse CSV and make assertions
+		method = circuitStatisticsCapab.getClass().getDeclaredMethod("parseCSV", String.class);
+		method.setAccessible(true);
+		statistics = (SortedMap<Long, List<CircuitStatistics>>) method.invoke(circuitStatisticsCapab,
+				statisticsInCSV);
+
+		Assert.assertEquals("There's only one timestamp between this period of time", 1, statistics.keySet().size());
+		Assert.assertNotNull("There should be statistics between this period of time.", statistics.get(SECOND_TIMESTAMP));
+		Assert.assertEquals("There should be one statistic between this period of time.", 1, statistics.get(SECOND_TIMESTAMP).size());
+		Assert.assertEquals(statistics.get(SECOND_TIMESTAMP).get(0), thirdStatistics);
+
+	}
+
 	private CircuitStatistics generateCircuitStatistics(String circuiSLAtFlowId,
 			String circuitThroughput, String circuitPackgetLoss, String circuitDelay, String circuitJitter, String circuitFlowData) {
 
@@ -199,4 +269,35 @@ public class CircuitStatisticsCapabilityTest {
 
 		return circuitStatistics;
 	}
+
+	private static <T, F> void injectPrivateField(T classInstance, F fieldInstance, String fieldName) throws SecurityException,
+			IllegalArgumentException, IllegalAccessException {
+
+		// get all super classes and add itself
+		List<Class<?>> classes = ClassUtils.getAllSuperclasses(classInstance.getClass());
+		classes.add(classInstance.getClass());
+
+		for (Class<?> clazz : classes) {
+
+			Field field;
+			try {
+				field = clazz.getDeclaredField(fieldName);
+			} catch (NoSuchFieldException e) {
+				// try next class
+				continue;
+			}
+			if (!field.getType().isAssignableFrom(fieldInstance.getClass())) {
+				throw new IllegalArgumentException("Invalid fieldName received, fieldInstance can not assigned to field.");
+			}
+
+			field.setAccessible(true);
+			field.set(classInstance, fieldInstance);
+			field.setAccessible(false);
+			return;
+
+		}
+
+		throw new IllegalArgumentException("Invalid fieldName received, a field with this name can not be found in this class or its superclasses.");
+	}
+
 }
