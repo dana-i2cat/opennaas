@@ -1,4 +1,4 @@
-package org.opennaas.extensions.openflowswitch.driver.floodlight.monitoring.actionssets;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.portstatistics.actionssets;
 
 /*
  * #%L
@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsActionSet;
-import org.opennaas.extensions.openflowswitch.driver.floodlight.monitoring.actionssets.actions.GetPortStatisticsAction;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.portstatistics.actionssets.actions.GetPortStatisticsAction;
 
 /**
  * Action Set implementation of Monitoring capability
