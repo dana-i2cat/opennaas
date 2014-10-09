@@ -29,25 +29,25 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *  Wrapper containing {@code List<TimedStatistics>}.
- *  
+ * Wrapper containing {@code List<TimedStatistics>}.
+ * 
  * @author Isart Canyameres Gimenez (i2cat)
  *
  */
-@XmlRootElement
+@XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TimedPortStatistics {
-	
+
 	@XmlElementWrapper
-	private List<TimedStatistics> statistics;
-	
+	private List<TimedStatistics>	statistics;
+
 	/**
 	 * Default constructor
 	 */
 	public TimedPortStatistics() {
-		
+
 	}
-	
+
 	/**
 	 * Copy constructor
 	 * 

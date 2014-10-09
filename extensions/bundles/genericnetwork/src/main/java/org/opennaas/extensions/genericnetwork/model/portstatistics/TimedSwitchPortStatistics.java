@@ -31,13 +31,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Wrapper containing {@code SortedMap<Long, Map<String, List<TimedStatistics>>> statisticsMap}, 
- * with the key first being the timestamp and the second one the switch id.
+ * Wrapper containing {@code SortedMap<Long, Map<String, List<TimedStatistics>>> statisticsMap}, with the key first being the timestamp and the second
+ * one the switch id.
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  *
  */
-@XmlRootElement
+@XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TimedSwitchPortStatistics {
 
@@ -45,15 +45,15 @@ public class TimedSwitchPortStatistics {
 	 * timestamp, switchid, List<TimedStatistics>
 	 */
 	@XmlElementWrapper
-	private SortedMap<Long, Map<String, List<TimedStatistics>>> statisticsMap;
-	
+	private SortedMap<Long, Map<String, List<TimedStatistics>>>	statisticsMap;
+
 	/**
 	 * Default constructor
 	 */
 	public TimedSwitchPortStatistics() {
-		
+
 	}
-	
+
 	/**
 	 * Copy constructor
 	 * 
@@ -97,6 +97,5 @@ public class TimedSwitchPortStatistics {
 			return false;
 		return true;
 	}
-	
-	
+
 }

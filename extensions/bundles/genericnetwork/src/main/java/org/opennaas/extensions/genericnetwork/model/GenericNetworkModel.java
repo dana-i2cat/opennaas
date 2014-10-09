@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -84,12 +85,16 @@ public class GenericNetworkModel implements IModel {
 	 * Maps device ID in GenericNetworkModel and resource ID in OpenNaaS
 	 */
 	private Map<String, String>										deviceResourceMap;
-	
+
 	/**
-	 * Stores timed statistics for switch ports.
-	 * Used by NCLMonitoringCapability
+	 * Stores timed statistics for switch ports. Used by NCLMonitoringCapability
 	 */
-	private TimedSwitchPortStatistics timedSwitchPortStatistics;
+	private TimedSwitchPortStatistics								timedSwitchPortStatistics;
+
+	/**
+	 * Map containing all circuit statistics reported to the network, ordered by timestamp.
+	 */
+	private SortedMap<Long, List<CircuitStatistics>>				circuitStatistics;
 
 	public GenericNetworkModel() {
 		netFlowsPerResource = new HashMap<String, List<NetOFFlow>>();
@@ -97,6 +102,8 @@ public class GenericNetworkModel implements IModel {
 		requestedCircuits = new HashMap<String, Circuit>();
 		deviceResourceMap = new HashMap<String, String>();
 		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
+
+		circuitStatistics = new TreeMap<Long, List<CircuitStatistics>>();
 		timedSwitchPortStatistics = new TimedSwitchPortStatistics();
 		timedSwitchPortStatistics.setStatisticsMap(new TreeMap<Long, Map<String, List<TimedStatistics>>>());
 	}
@@ -157,6 +164,14 @@ public class GenericNetworkModel implements IModel {
 
 	public void setCircuitImplementation(Map<String, List<NetworkConnectionImplementationId>> circuitImplementation) {
 		this.circuitImplementation = circuitImplementation;
+	}
+
+	public SortedMap<Long, List<CircuitStatistics>> getCircuitStatistics() {
+		return circuitStatistics;
+	}
+
+	public void setCircuitStatistics(SortedMap<Long, List<CircuitStatistics>> circuitStatistics) {
+		this.circuitStatistics = circuitStatistics;
 	}
 
 	@Override
