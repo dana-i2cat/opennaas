@@ -390,10 +390,10 @@ public class NCLMonitoring {
 		// (receivePacket(t1) - receivePackets(t0))
 		
 		long currentReceiveErrors = getPortReceiveErrors(currentStats, switchName, portId);
-		long previousReceiveErrors = getPortReceiveErrors(currentStats, switchName, portId);
+		long previousReceiveErrors = getPortReceiveErrors(previousStats, switchName, portId);
 		
 		long currentReceivedPackets = getPortReceivedPackets(currentStats, switchName, portId);
-		long previousReceivedPackets = getPortReceivedPackets(currentStats, switchName, portId);
+		long previousReceivedPackets = getPortReceivedPackets(previousStats, switchName, portId);
 		
 		if (currentReceivedPackets == previousReceivedPackets)
 			return 0;
