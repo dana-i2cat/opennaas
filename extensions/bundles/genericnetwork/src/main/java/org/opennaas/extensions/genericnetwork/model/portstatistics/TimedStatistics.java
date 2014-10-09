@@ -8,6 +8,10 @@ package org.opennaas.extensions.genericnetwork.model.portstatistics;
 public class TimedStatistics {
 	
 	private long timestamp;
+	
+	private String switchId;
+	private String portId;
+	
 	private String throughput;
 	private String packetLoss;
 	
@@ -17,6 +21,22 @@ public class TimedStatistics {
 	
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+	
+	public String getSwitchId() {
+		return switchId;
+	}
+	
+	public void setSwitchId(String switchId) {
+		this.switchId = switchId;
+	}
+	
+	public String getPortId() {
+		return portId;
+	}
+	
+	public void setPortId(String portId) {
+		this.portId = portId;
 	}
 	
 	public String getThroughput() {
@@ -41,6 +61,9 @@ public class TimedStatistics {
 		int result = 1;
 		result = prime * result
 				+ ((packetLoss == null) ? 0 : packetLoss.hashCode());
+		result = prime * result + ((portId == null) ? 0 : portId.hashCode());
+		result = prime * result
+				+ ((switchId == null) ? 0 : switchId.hashCode());
 		result = prime * result
 				+ ((throughput == null) ? 0 : throughput.hashCode());
 		result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
@@ -61,6 +84,16 @@ public class TimedStatistics {
 				return false;
 		} else if (!packetLoss.equals(other.packetLoss))
 			return false;
+		if (portId == null) {
+			if (other.portId != null)
+				return false;
+		} else if (!portId.equals(other.portId))
+			return false;
+		if (switchId == null) {
+			if (other.switchId != null)
+				return false;
+		} else if (!switchId.equals(other.switchId))
+			return false;
 		if (throughput == null) {
 			if (other.throughput != null)
 				return false;
@@ -73,7 +106,8 @@ public class TimedStatistics {
 
 	@Override
 	public String toString() {
-		return "TimedStatistics [timestamp=" + timestamp + ", throughput="
+		return "TimedStatistics [timestamp=" + timestamp + ", switchId="
+				+ switchId + ", portId=" + portId + ", throughput="
 				+ throughput + ", packetLoss=" + packetLoss + "]";
 	}
 }

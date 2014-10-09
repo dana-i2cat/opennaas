@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -97,7 +98,7 @@ public class GenericNetworkModel implements IModel {
 		deviceResourceMap = new HashMap<String, String>();
 		circuitImplementation = new HashMap<String, List<NetworkConnectionImplementationId>>();
 		timedSwitchPortStatistics = new TimedSwitchPortStatistics();
-		timedSwitchPortStatistics.setStatisticsMap(new HashMap<String, Map<String, List<TimedStatistics>>>());
+		timedSwitchPortStatistics.setStatisticsMap(new TreeMap<Long, Map<String, List<TimedStatistics>>>());
 	}
 
 	/**

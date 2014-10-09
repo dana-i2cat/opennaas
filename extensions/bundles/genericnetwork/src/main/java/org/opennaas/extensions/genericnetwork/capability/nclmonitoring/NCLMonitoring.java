@@ -206,18 +206,21 @@ public class NCLMonitoring {
 										
 										TimedStatistics timedStats = new TimedStatistics();
 										timedStats.setTimestamp(currentTimestamp);
+										timedStats.setSwitchId(switchName);
+										timedStats.setPortId(portId);
 										timedStats.setThroughput(String.valueOf(throughput));
 										timedStats.setPacketLoss(String.valueOf(packetLoss));
 										
 										// store TimedStats in network model
 										TimedSwitchPortStatistics allStats = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics();
-										if (! allStats.getStatisticsMap().containsKey(switchName)) {
-											allStats.getStatisticsMap().put(switchName, new HashMap<String, List<TimedStatistics>>());
+										
+										if (! allStats.getStatisticsMap().containsKey(Long.valueOf(currentTimestamp))) {
+											allStats.getStatisticsMap().put(currentTimestamp, new HashMap<String, List<TimedStatistics>>());
 										}
-										if (! allStats.getStatisticsMap().get(switchName).containsKey(portId)) {
-											allStats.getStatisticsMap().get(switchName).put(portId, new ArrayList<TimedStatistics>());
+										if (! allStats.getStatisticsMap().get(currentTimestamp).containsKey(switchName)) {
+											allStats.getStatisticsMap().get(currentTimestamp).put(switchName, new ArrayList<TimedStatistics>());
 										}
-										allStats.getStatisticsMap().get(switchName).get(portId).add(timedStats);
+										allStats.getStatisticsMap().get(currentTimestamp).get(switchName).add(timedStats);
 										
 									} catch (Exception e) {
 										log.debug("Failed to calculate throughput or packetloss for port " + portId + " in switch " + switchName + ": " + e.getMessage());

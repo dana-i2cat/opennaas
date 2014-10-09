@@ -22,6 +22,9 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,6 +37,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.genericnetwork.capability.nclmonitoring.portstatistics.IPortStatisticsMonitoringCapability;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvisionerCapability;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedPortStatistics;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedStatistics;
@@ -55,8 +59,6 @@ public class NCLMonitoringCapability extends AbstractCapability implements
 	private IEventManager eventManager;
 
 	private NCLMonitoring nclMonitoring;
-
-	private TimedSwitchPortStatistics allStatistics;
 
 	public NCLMonitoringCapability(CapabilityDescriptor descriptor,
 			String resourceId) {
@@ -129,20 +131,27 @@ public class NCLMonitoringCapability extends AbstractCapability implements
 	@Override
 	public TimedSwitchPortStatistics getPortStatistics(TimePeriod period) {
 
-		// TODO filter by period
-
-		// defensive copy
-		return new TimedSwitchPortStatistics(allStatistics);
+		// filtered map with keys from period.getInit() to period.getEnd() both inclusive (achieved by adding 1 to period.getEnd() :P)
+		SortedMap<Long, Map<String, List<TimedStatistics>>> filteredMap = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics().getStatisticsMap().
+				subMap(Long.valueOf(period.getInit()), Long.valueOf(period.getEnd()+1));
+		
+		TimedSwitchPortStatistics result = new TimedSwitchPortStatistics();
+		// defensive copy of filteredMap
+		result.setStatisticsMap(new TreeMap<Long, Map<String,List<TimedStatistics>>>(filteredMap));
+		return result;
 	}
 
 	@Override
 	public TimedPortStatistics getPortStatistics(TimePeriod period,
 			String switchId) {
 
-		// TODO filter by period
+		// filtered map with keys from period.getInit() to period.getEnd() both inclusive (achieved by adding 1 to period.getEnd() :P)
+		SortedMap<Long, Map<String, List<TimedStatistics>>> filteredMap = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics().getStatisticsMap().
+				subMap(Long.valueOf(period.getInit()), Long.valueOf(period.getEnd()+1));
 		
 		TimedPortStatistics stats = new TimedPortStatistics();
-		stats.setStatisticsMap(new HashMap<String, List<TimedStatistics>>(allStatistics.getStatisticsMap().get(switchId)));
+		// defensive copy
+		stats.setStatisticsMap(new HashMap<String, List<TimedStatistics>>(filteredMap.get(switchId)));
 		return stats;
 	}
 
