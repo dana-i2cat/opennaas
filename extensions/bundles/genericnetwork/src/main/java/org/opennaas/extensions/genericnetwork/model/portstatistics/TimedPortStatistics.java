@@ -1,8 +1,7 @@
 package org.opennaas.extensions.genericnetwork.model.portstatistics;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,7 +9,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *  Wrapper containing  Map<String, List<TimedStatistics>>, with the key being the port id.
+ *  Wrapper containing {@code List<TimedStatistics>}.
  *  
  * @author Isart Canyameres Gimenez (i2cat)
  *
@@ -19,11 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TimedPortStatistics {
 	
-	/**
-	 * portId : TimedStatistics
-	 */
 	@XmlElementWrapper
-	private Map<String, List<TimedStatistics>> statisticsMap;
+	private List<TimedStatistics> statistics;
 	
 	/**
 	 * Default constructor
@@ -38,14 +34,40 @@ public class TimedPortStatistics {
 	 * @param other
 	 */
 	public TimedPortStatistics(TimedPortStatistics other) {
-		this.statisticsMap = new HashMap<String, List<TimedStatistics>>(other.getStatisticsMap());
+		this.statistics = new ArrayList<TimedStatistics>(other.statistics);
 	}
 
-	public Map<String, List<TimedStatistics>> getStatisticsMap() {
-		return statisticsMap;
+	public List<TimedStatistics> getStatistics() {
+		return statistics;
 	}
 
-	public void setStatisticsMap(HashMap<String, List<TimedStatistics>> statisticsMap) {
-		this.statisticsMap = statisticsMap;
+	public void setStatistics(List<TimedStatistics> statistics) {
+		this.statistics = statistics;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((statistics == null) ? 0 : statistics.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TimedPortStatistics other = (TimedPortStatistics) obj;
+		if (statistics == null) {
+			if (other.statistics != null)
+				return false;
+		} else if (!statistics.equals(other.statistics))
+			return false;
+		return true;
 	}
 }

@@ -15,6 +15,20 @@ public class TimedStatistics {
 	private String throughput;
 	private String packetLoss;
 	
+	public TimedStatistics() {
+		super();
+	}
+	
+	public TimedStatistics(long timestamp, String switchId, String portId,
+			String throughput, String packetLoss) {
+		super();
+		this.timestamp = timestamp;
+		this.switchId = switchId;
+		this.portId = portId;
+		this.throughput = throughput;
+		this.packetLoss = packetLoss;
+	}
+
 	public long getTimestamp() {
 		return timestamp;
 	}

@@ -20,11 +20,10 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
  * #L%
  */
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +40,6 @@ import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedPortStatistics;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedStatistics;
-import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedSwitchPortStatistics;
 
 /**
  * 
@@ -129,15 +127,22 @@ public class NCLMonitoringCapability extends AbstractCapability implements
 	// //////////////////////////////////////////////////
 
 	@Override
-	public TimedSwitchPortStatistics getPortStatistics(TimePeriod period) {
+	public TimedPortStatistics getPortStatistics(TimePeriod period) {
 
 		// filtered map with keys from period.getInit() to period.getEnd() both inclusive (achieved by adding 1 to period.getEnd() :P)
 		SortedMap<Long, Map<String, List<TimedStatistics>>> filteredMap = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics().getStatisticsMap().
 				subMap(Long.valueOf(period.getInit()), Long.valueOf(period.getEnd()+1));
 		
-		TimedSwitchPortStatistics result = new TimedSwitchPortStatistics();
-		// defensive copy of filteredMap
-		result.setStatisticsMap(new TreeMap<Long, Map<String,List<TimedStatistics>>>(filteredMap));
+		// build a list with all values
+		List<TimedStatistics> stats = new ArrayList<TimedStatistics>();
+		for (Long timestamp : filteredMap.keySet()) {
+			for (String switchId : filteredMap.get(timestamp).keySet()) {
+				stats.addAll(filteredMap.get(timestamp).get(switchId));
+			}
+		}
+		
+		TimedPortStatistics result = new TimedPortStatistics();
+		result.setStatistics(stats);
 		return result;
 	}
 
@@ -149,9 +154,14 @@ public class NCLMonitoringCapability extends AbstractCapability implements
 		SortedMap<Long, Map<String, List<TimedStatistics>>> filteredMap = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics().getStatisticsMap().
 				subMap(Long.valueOf(period.getInit()), Long.valueOf(period.getEnd()+1));
 		
+		// build a list with all values
+		List<TimedStatistics> switchStats = new ArrayList<TimedStatistics>();
+		for (Long timestamp : filteredMap.keySet()) {
+			switchStats.addAll(filteredMap.get(timestamp).get(switchId));
+		}
+		
 		TimedPortStatistics stats = new TimedPortStatistics();
-		// defensive copy
-		stats.setStatisticsMap(new HashMap<String, List<TimedStatistics>>(filteredMap.get(switchId)));
+		stats.setStatistics(switchStats);
 		return stats;
 	}
 

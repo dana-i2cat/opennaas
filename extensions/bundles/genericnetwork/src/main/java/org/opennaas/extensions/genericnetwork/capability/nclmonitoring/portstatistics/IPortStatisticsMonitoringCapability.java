@@ -10,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedPortStatistics;
-import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedSwitchPortStatistics;
 
 /**
  * 
@@ -31,7 +30,7 @@ public interface IPortStatisticsMonitoringCapability extends ICapability {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public TimedSwitchPortStatistics getPortStatistics(TimePeriod period);
+	public TimedPortStatistics getPortStatistics(TimePeriod period);
 	
 	/**
 	 * Retrieves port statistics of given switch in given time period
