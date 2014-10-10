@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.gui.dolfin.bos.DolfinBO;
 import org.opennaas.gui.dolfin.entities.settings.Settings;
-import static org.opennaas.gui.dolfin.utils.Constants.OFERTIE_GUI_URL;
+import org.opennaas.gui.dolfin.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -44,8 +44,7 @@ public class SettingsController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/dolfin/home'>Home</a>");
-//		return "home";
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
         }
 
         if ((String) session.getAttribute("topologyName") != null) {
@@ -65,12 +64,14 @@ public class SettingsController {
             model.put("settings", (Settings) session.getAttribute("settings"));
             settings_ses = (Settings) session.getAttribute("settings");
         } else {
-            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+OFERTIE_GUI_URL+"/secure/dolfin/home'>Home</a>");
+            model.addAttribute("errorMsg", "Session time out. Return to <a href='"+Constants.HOME_URL+"'>Home</a>");
         }
         if ((String) session.getAttribute("topologyName") != null) {
             model.put("topologyName", (String) session.getAttribute("topologyName"));
         }
         model.addAttribute("settings", settings);
+        Constants.GENERICNETWORK_RESOURCE = settings.getGenNetResName();
+//        dolfinBO.setGenNetResource(settings.getGenNetResName());
         return "settings";
     }
 }
