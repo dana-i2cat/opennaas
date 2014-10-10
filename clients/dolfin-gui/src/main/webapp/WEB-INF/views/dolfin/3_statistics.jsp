@@ -12,10 +12,10 @@
     Show list of switches with a accordion menu, when click a switch the list of ports is expanded. Using JQuery UI
     <div id="accordion">
         <c:forEach items="${listSwitches}" var="item">
-            <h3>${item.dpid}</h3>
+            <h3><a href="#" onclick="javascript:getSwitchStatistic('${item.dpid}');return false;">${item.dpid}</a></h3>
             <div>
             <c:forEach items="${item.ports}" var="port">
-                <p>${port}</p>
+                <p><a href="#" onclick="javascript:getPortStatistic('${item.dpid}', '${port}');return false;">${port}</a></p>
             </c:forEach>
             </div>
         </c:forEach>
@@ -23,7 +23,10 @@
 </div>
 <div id="statistics">
     Show table of statistics. Is updated using AJAX each X seconds and change stadistics when a port of switch is clicked.
-    <table id="jsonStatisticTable" class="tablesorter"></table>
+    <br>
+    <a id="myLink" title="Call circuit statistics" href="#" onclick="javascript:getCircuitStatistic();return false;">Circuit statistics</a>
+    <table id="jsonStatisticTable" class="tablesorter" border="1"></table>
+    <table id="jsonCircuitStatisticTable" class="tablesorter" border="1"></table>
 </div>
 
 <script language="JavaScript" type="text/JavaScript">
@@ -48,9 +51,7 @@
     }
     
     setInterval(function(){
-        if(selectedCircuit !== null){
-            console.log("Int");
-        }
+        
 //        var jsonObject = getAllCircuits();
         console.log(jsonObject);
         document.getElementById("listRoutes").innerHTML = "";

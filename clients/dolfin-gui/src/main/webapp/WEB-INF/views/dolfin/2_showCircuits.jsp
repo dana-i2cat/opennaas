@@ -31,8 +31,8 @@
         <input style='margin-right: 11.5px' class='addRouteButton' onClick='allocateFlows("iperfReq")' type='button' value='Start congestion' name='insertDemo'/>
         <input style='margin-right: 11.5px' class='addRouteButton' onClick='allocateFlows("demoPath")' type='button' value='Insert Paths' name='insertDemo'/>
 </div>
-<script src="<c:url value="/resources/js/topology/base.js" />"></script>
-<script src="<c:url value="/resources/js/topology/showCircuits.js" />"></script>
+<script src="<c:url value="/resources/js/topology/0_base.js" />"></script>
+<script src="<c:url value="/resources/js/topology/2_showCircuits.js" />"></script>
 
 <script language="JavaScript" type="text/JavaScript">
 //    console.log(${xml});

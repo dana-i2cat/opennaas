@@ -22,8 +22,8 @@
         <p id="chart" ></p>
          </div>
 
-<script src="<c:url value="/resources/js/topology/base.js" />"></script>
-<script src="<c:url value="/resources/js/topology/showFlows.js" />"></script>
+<script src="<c:url value="/resources/js/topology/0_base.js" />"></script>
+<script src="<c:url value="/resources/js/topology/1_showFlows.js" />"></script>
 
 <script language="JavaScript" type="text/JavaScript">
     

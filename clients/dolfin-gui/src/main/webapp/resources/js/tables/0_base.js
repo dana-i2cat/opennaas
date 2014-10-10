@@ -37,3 +37,17 @@ function convertXml2JSon(xml) {
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 }
+function waiting(status) {
+    $body = $("body");
+    if (status)
+        $body.addClass("loading");
+    else
+        $body.removeClass("loading");
+}
+
+function showHidePreloader(show){
+     if(show)
+         document.getElementById('preloader').style.display='block';
+     else
+         document.getElementById('preloader').style.display='none';
+}

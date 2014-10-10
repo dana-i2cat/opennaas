@@ -20,7 +20,7 @@
 
 	<definition name="home" extends="base.definition">
 		<put-attribute name="title" value="Home" />
-		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/1_flowCircuits.jsp" />
 	</definition>
 
 	<definition name="denied" extends="base.definition">
@@ -30,22 +30,22 @@
         
         <definition name="showCircuits" extends="base.definition">
 		<put-attribute name="title" value="Provisioned Circuits" />
-		<put-attribute name="body" value="/WEB-INF/views/dolfin/showCircuits.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/2_showCircuits.jsp" />
 	</definition>
         
         <definition name="infoTopology" extends="base.definition">
 		<put-attribute name="title" value="Information about the topology" />
-		<put-attribute name="body" value="/WEB-INF/views/dolfin/home.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/1_flowCircuits.jsp" />
 	</definition>
         
         <definition name="settings" extends="base.definition">
 		<put-attribute name="title" value="Dolfin settings" />
-		<put-attribute name="body" value="/WEB-INF/views/dolfin/settings.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/4_settings.jsp" />
 	</definition>
         
         <definition name="statistics" extends="base.definition">
 		<put-attribute name="title" value="Statistics" />
-		<put-attribute name="body" value="/WEB-INF/views/dolfin/statistics.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dolfin/3_statistics.jsp" />
 	</definition>
 
 </tiles-definitions>

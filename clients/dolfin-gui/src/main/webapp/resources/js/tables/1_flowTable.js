@@ -77,21 +77,6 @@ setTimeout( 'waiting(false)', 1000);
     return null;
 }
 
-function showHidePreloader(show){
-     if(show)
-         document.getElementById('preloader').style.display='block';
-     else
-         document.getElementById('preloader').style.display='none';
-}
-
-function waiting(status){
-    $body = $("body");
-    if(status)
-        $body.addClass("loading");
-    else
-        $body.removeClass("loading");
-}
-
 function removeFlowAll(){
     var table = document.getElementById("jsonFlowTable");
     try{

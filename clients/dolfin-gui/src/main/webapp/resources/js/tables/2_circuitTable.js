@@ -260,14 +260,6 @@ function getCircuit(circuitId) {
     return eval("(" + json + ")");
 }
 
-function waiting(status) {
-    $body = $("body");
-    if (status)
-        $body.addClass("loading");
-    else
-        $body.removeClass("loading");
-}
-
 function portIdsMap(){
     var xml = "";
     $.ajax({
