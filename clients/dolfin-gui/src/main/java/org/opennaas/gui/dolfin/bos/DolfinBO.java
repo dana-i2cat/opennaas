@@ -56,4 +56,12 @@ public class DolfinBO {
         return dolfinService.deallocateFlow(key);
     }
 
+    public String getPortStatistics(String dpid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getPortStatistics() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

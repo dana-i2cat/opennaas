@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
+
 import org.opennaas.gui.dolfin.services.rest.GenericRestService;
 import org.opennaas.gui.dolfin.services.rest.RestServiceException;
 import org.opennaas.gui.dolfin.utils.Constants;
@@ -19,7 +20,6 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequ
 public class DolfinService extends GenericRestService {
 
     private static final Logger LOGGER = Logger.getLogger(DolfinService.class);
-    private static final String sdn = Constants.SDN_RESOURCE;
     private static final String genericNetwork = Constants.GENERICNETWORK_RESOURCE;
 
     /**
@@ -73,7 +73,6 @@ public class DolfinService extends GenericRestService {
      */
     public String getAllocatedFlows(String switchName) {
         String response = null;
-//        String resourceName = getSwitchResourceName(dpid);//request the resourceName
         try {
             LOGGER.info("Calling get Controller Status");
             LOGGER.error("Calling sw INFO");
@@ -90,41 +89,12 @@ public class DolfinService extends GenericRestService {
         return response;
     }
 
-    /**
-     * Given the DPID of switch, return the Resource name stored in OpenNaaS
-     * @param dpid
-     * @return
-     */
-    public String getSwitchResourceName(String dpid) {
-        String response = null;
-        try {
-            LOGGER.info("Calling get Controller Status");
-            String url = getURL("sdnnetwork/" + sdn + "/ofprovisionnet/getDeviceResourceName/" + dpid);
-            LOGGER.error(url);
-            Client client = Client.create();
-            addHTTPBasicAuthentication(client);
-            WebResource webResource = client.resource(url);
-            response = webResource.get(String.class);
-            LOGGER.info("Controller status: " + response);
-            LOGGER.error("Resource ID: "+response);
-        } catch (ClientHandlerException e) {
-            LOGGER.error(e.getMessage());
-            throw e;
-        } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
-            LOGGER.error("Unauthorized");
-            response = "s1";
-        }
-        return response;
-    }
-    
     public String allocateFlow(String flow) {
         ClientResponse response = null;
         String result = "";
         try {
             LOGGER.info("Calling get Controller Status");
             String url = getURL("ofertie/ncl/flows");
-//            url = "http://admin:123456@84.88.40.109:8888/opennaas/ofertie/ncl/flows";
-            LOGGER.error(url);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -153,7 +123,6 @@ public class DolfinService extends GenericRestService {
         try {
             LOGGER.info("Calling get Controller Status");
             String url = getURL("ofertie/ncl/flows");
-            LOGGER.error(url);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -174,7 +143,6 @@ public class DolfinService extends GenericRestService {
         try {
             LOGGER.info("Calling get Controller Status");
             String url = getURL("ofertie/ncl/flows/"+keyId);
-            LOGGER.error(url);
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(url);
@@ -190,4 +158,69 @@ public class DolfinService extends GenericRestService {
         }
         return response;
     }
+    
+    /*
+    public String getPortStatistics(TimePeriod period) {
+        String response = null;
+        try {
+            LOGGER.info("Calling get Controller Status");
+            String url = getURL("genericnetwork/"+genericNetwork+"/gnetstatistics");
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
+            LOGGER.info("Controller status: " + response);
+            LOGGER.error("Resource ID: "+response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
+            LOGGER.error("Unauthorized");
+            response = "s1";
+        }
+        return response;
+    }
+    
+    public String getPortStatistics(TimePeriod period, String switchId) {
+        String response = null;
+        try {
+            LOGGER.info("Calling get Controller Status");
+            String url = getURL("genericnetwork/"+genericNetwork+"/gnetstatistics/"+switchId);
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
+            LOGGER.info("Controller status: " + response);
+            LOGGER.error("Resource ID: "+response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
+            LOGGER.error("Unauthorized");
+            response = "s1";
+        }
+        return response;
+    }
+    
+    public String getCircuitStatistics(TimePeriod period) {
+        String response = null;
+        try {
+            LOGGER.info("Calling get Controller Status");
+            String url = getURL("genericnetwork/"+genericNetwork+"/circuitstatistics);
+            Client client = Client.create();
+            addHTTPBasicAuthentication(client);
+            WebResource webResource = client.resource(url);
+            response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+            LOGGER.info("Controller status: " + response);
+            LOGGER.error("Resource ID: "+response);
+        } catch (ClientHandlerException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
+            LOGGER.error("Unauthorized");
+            response = "s1";
+        }
+        return response;
+    }
+    */
 }
