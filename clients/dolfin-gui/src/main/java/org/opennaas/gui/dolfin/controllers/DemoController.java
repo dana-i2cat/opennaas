@@ -1,4 +1,3 @@
-
 package org.opennaas.gui.dolfin.controllers;
 
 import java.io.File;
@@ -29,12 +28,9 @@ public class DemoController {
     
     @RequestMapping(method = RequestMethod.GET, value = "/secure/dolfin/demo/insertDemoPath")
     public @ResponseBody  String createFlows(ModelMap model) {
-        String response = "";
-        
-        insertFlows("demoPath");
-        LOGGER.error(response);
+        String response = insertFlows("demoPath");
         if(response.equals("400") || response.equals("500")){
-            model.addAttribute("errorMsg", "500");
+            model.addAttribute("errorMsg", "Error inserting circuits.");
         }else{
             model.addAttribute("infoMsg", "Inserted circuits correctly.");
         }
@@ -43,10 +39,12 @@ public class DemoController {
     
     @RequestMapping(method = RequestMethod.GET, value = "/secure/dolfin/demo/insertIperfReq")
     public @ResponseBody String ipReq(ModelMap model) {
-        String response = "";
-
-        insertFlows("iperf");
-        model.addAttribute("infoMsg", "Inserted circuits correctly.");
+        String response = insertFlows("iperf");
+        if(response.equals("400") || response.equals("500")){
+            model.addAttribute("errorMsg", "Error inserting circuits.");
+        }else{
+            model.addAttribute("infoMsg", "Inserted circuits correctly.");
+        }
         return response;
     }
     
@@ -79,7 +77,6 @@ public class DemoController {
                 if(lines.get(i).equals("<?xml version=\"1.0\" encoding=\"utf-8\"?>")){
                     LOGGER.error("Insert: "+lines.get(i+1));
                     response = dolfinBO.allocateFlow(lines.get(i+1));
-//                    i++;
                 }
             }
         } catch (IOException ex) {
@@ -91,9 +88,6 @@ public class DemoController {
     
     public List<String> readFile(File newFile) throws IOException{
         List<String> lines = FileUtils.readLines(newFile);
-        for (String line : lines) {
-            LOGGER.error(line);  
-        }
         return lines;
     }
 }

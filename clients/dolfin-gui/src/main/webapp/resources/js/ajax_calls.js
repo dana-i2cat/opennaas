@@ -1,427 +1,67 @@
-/**
- *  Base file of d3js
- */
-if(sessvars.nodes){
-    nodes = sessvars.nodes;
-    links = sessvars.links;
-    controllers = sessvars.controllers;
-    controllersLinks = sessvars.controllersLinks;
-}
-var storedNodes = nodes;
-//if(undefined == linkColor || linkColor == null){
-//    linkColor = "black";
-//}
-var linkColor = "black";
-var auto = "Automatic";
-var man = "Manual";
-var ctrlKey = false;//ctrl key is pressed?
 
-/* Images size */
-var node_size_width = 50, node_size_height_sw = 50, node_size_height_h = 35;
-var node_size_width_big = node_size_width + 25, node_size_height_sw_big = node_size_height_sw+25, node_size_height_h_big = 35;
+//ajax calls
+var map = {};
+map["getCircuitSwitches"] = {"path": "getCircuitSwitches", "params": ""};
+map["getAllocatedFlows"] = {"path": "getAllocatedFlows", "params": ""};
+map["getStatistic"] = {"path": "getStatistic", "params": ""};
+map["getCircuits"] = {"path": "getCircuits", "params": ""};
 
-var switchImage = urlVar+"/topology/switch2.png";//urlVar obtained in header!
-var hostImage = urlVar+"/topology/laptop.png";
-var controllerImage = urlVar+"/topology/controller2.png";
-var packetImage = urlVar+"/topology/movie_tape.gif";
-var linkImage = urlVar+"/topology/link_green.png";
-var helpImage = urlVar+"/topology/helpImage.png";
-var cloudONImage = urlVar+"/topology/opennaas_cloud.png";
-
-// set up SVG for D3
-var width = 700,
-    height = 447,
-    colors = d3.scale.category10();
-
-// set up initial nodes and links
-//  - nodes are known by 'id', not by index in array.
-//  - reflexive edges are indicated on the node (as a bold black circle).
-//  - links are always source < target; edge directions are set by 'left' and 'right'.
-var svg = d3.select('#chart')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
-/*.on('click', cleanDrag());*/
-
-// init D3 force layout
-var force = d3.layout.force()
-    .nodes(nodes, controllers, cloud)
-    .links(links, controllersLinks, cloudLinks)
-    .size([width, height])
-    .linkDistance(350)
-    .charge(-500)
-    .on('tick', tick);
-
-/**
- * Drawing topology (nodes, links, controllers)
- */
-var drag_line = svg.append('svg:path')
-    .attr('class', 'dragline hidden')
-    .attr('d', 'M0,0L0,0');
-var link = svg.append("svg:g").selectAll("link.sw");
-var controllerLink =  svg.append("svg:g").selectAll("link.ctrl");
-var node = svg.append("svg:g").selectAll(".node");
-var help = svg.append("svg:g").selectAll(".help");
-var cloudON = svg.append("svg:g").selectAll(".cloudON");
-var cloudLink = svg.append("svg:g").selectAll(".link.cloud");
-
-d3.json("", function (error, json) {
-    force.start();
-    root = json;
-    update();
-});
-
-function update(){
-    /* Links between switches and hosts */
-    link = link.data(links);
-    link.classed('selected', function (d) {return d === selected_link;})
-        .style('marker-end', function (d) {return d.right ? 'url(#end-arrow)' : '';});
-    
-    link.enter().append("svg:line")
-        .attr('id', function (d) {return d.id;})
-        .attr('class', function (d) { return (d.type === "static") ? 'link' : 'link2';})
-        .classed('selected', function (d) {return d === selected_link;});
-    //remove selected/drawed links
-    d3.selectAll(".link2").remove();
-    
-    /* Links between switchs and controllers */
-    controllerLink = controllerLink.data(controllersLinks);
-    controllerLink.enter().append("svg:line")
-        .attr("class", "linkCtrl")
-        .attr("stroke", linkColor);
-    
-    link.attr("x1", function (d) {return d.source.x;})
-        .attr("y1", function (d) {return d.source.y;})
-        .attr("x2", function (d) {return d.target.x;})
-        .attr("y2", function (d) {return d.target.y;});
-    
-    controllerLink.attr("x1", function (d) {return d.source.x;})
-        .attr("y1", function (d) {return d.source.y;})
-        .attr("x2", function (d) {return d.target.x;})
-        .attr("y2", function (d) {return d.target.y;});
-
-    /* Drawing Controller nodes */
-    var controller = svg.selectAll(".nodeCtrl")
-        .data(controllers)
-        .enter().append("g")
-        .attr("class", "nodeCtrl");
-
-    controller.append("image")
-        .attr("x", function (d) {return d.x - 20;})
-        .attr("y", function (d) {return d.y - 10;})
-        .attr("width", 50)
-        .attr('height', 50)
-        .attr('xlink:href', function (d) {return controllerImage;});
-
-    /* Drawing nodes (switchs and hosts) */
-    var node_x = "-30", node_y = "-30";
-    var node_width = 50, node_height = 50, node_height_h = 35;
-    var node_width_big = node_width + 25, node_height_big = node_height;
-    var node_txt_x_sw = "-24", node_txt_y_sw = "-35";//9
-    var node_txt_x_h = "-10", node_txt_y_h = "25";
-    node = node.data(nodes);
-    node.enter().append("g")
-        .attr("class", "node")
-        .style("cursor", "pointer")
-        .call(d3.behavior.drag()
-            .on("dragstart", function(d){
-console.log("Dragstart");                
-                d3.event.sourceEvent.stopPropagation();
-                d3.select(this).classed("dragging", true);
-            })
-            .on("drag", function(d) {
-                if(ctrlKey){
-                    d.x = d3.event.x, d.y = d3.event.y;
-                    var t = d;
-                    nodes[d.id].x = d.x;
-                    nodes[d.id].px = d.x;
-                    nodes[d.id].py = d.y;
-                    node.filter(function(d) { return d.name === t.name; }).attr("transform", transform);
-//      	        d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", function(d) { return "translate(" + d.x + ", "+d.y+")"; });
-                    link.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
-                    link.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
-                    controllerLink.filter(function(l) { return l.source === d; }).attr("x1", d.x).attr("y1", d.y);
-                    controllerLink.filter(function(l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
-                    
-                }
-            })
-            .on("dragend", function(d){ 
-                updateTopology(storedNodes);
-                d3.select(this).classed("dragging", false);
-            })
-	);
-
-    node.append("image")
-        .attr('class', function (d) {return d.type;})
-        .attr('id', function (d) {return d.name;})
-        .attr("x", node_x)
-        .attr("y", node_y)
-        .attr("width", node_width)
-        .attr('height', function (d) { return (d.type === "switch") ? node_height : node_height_h;})
-        .attr('xlink:href', function (d) { return (d.type === "switch") ? switchImage : hostImage;})
-        .on('mouseup', function (d) {
-console.log("MOUSEUP");
-            d3.selectAll(".switch").attr("width", node_width); //image normal
-            d3.selectAll(".host").attr("width", node_width).attr("height", 45); //image normal
-            d3.selectAll(".id_txt_sw").attr("x", node_txt_x_sw).attr("y", node_txt_y_sw);
-            d3.selectAll(".id_txt_host").attr("x", node_txt_x_h).attr("y", node_txt_y_h);
-            d3.select(this).attr("width", node_width_big).attr("height", node_height_big); //image big
-
-            if (d.type === "switch")
-                d3.select("#" + d.name + "_text").attr("x", -15).attr("y", -40); //move text when big  12
-            else if (d.type === "host")
-                d3.select("#" + d.name + "_text").attr("x", -9).attr("y", 35); //move text when big
-            if (!mousedown_node) return;
-            if (d.type === "switch") {
-                d3.selectAll('.link2').attr('d', 'M0,0L0,0');
-                //show a warning message in order to inform that the connection to a destination switch is not allowed.
-                //http request to OpenNaaS
-                return;
-            }
-            selected_node = null;
-        });
-        
-    /* Drawing text of each node */
-    node.append("text")
-        .attr('id', function (d) { return d.name + "_text";})
-        .attr('class', function (d) { return (d.type === "switch") ? 'id_txt_sw' : "id_txt_host";})
-        .attr("dx", 12)
-        .attr("dy", function (d) { return (d.type === "switch") ? "1.10em" : ".30em";})
-        .attr('x',  function (d) { return (d.type === "switch") ? node_txt_x_sw : node_txt_x_h;})
-        .attr('y', function (d) { return (d.type === "switch") ? node_txt_y_sw :  node_txt_y_h;})
-        .text(function (d) { return d.name;});
-
-    node.attr("transform", function (d) {
-        new_x = d.x;
-        new_y = d.y;
-        if(d.x < 30) new_x = 40 + Math.floor((Math.random()*15)+1);
-        else if(d.x > 620) new_x = 580 - Math.floor((Math.random()*15)+1);
-        if(d.y < 30) new_y = 40 + Math.floor((Math.random()*15)+1);
-        else if(d.y > 390) new_y = 390 - Math.floor((Math.random()*15)+1);
-        return "translate(" + new_x + "," + new_y + ")";
-    });
-    
-    /** OpenNaaS cloud **/
-    cloudLink = cloudLink.data(cloudLinks);
-    cloudLink.enter().append("svg:line")
-        .attr("class", "linkCtrl");
-    
-    cloudLink.attr("x1", function (d) {return d.source.x;})
-        .attr("y1", function (d) {return d.source.y;})
-        .attr("x2", function (d) {return d.target.x;})
-        .attr("y2", function (d) {return d.target.y;});
-
-    cloudON = svg.selectAll(".cloudON")
-        .data(cloud)
-        .enter().append("g")
-        .attr("class", "cloudON");
-
-    cloudON.append("image")
-        .attr("x", function (d) {return d.x-30;})
-        .attr("y", function (d) {return d.y-35;})
-        .attr("width", 80)
-        .attr('height', 80)
-        .attr('xlink:href', function (d) {return cloudONImage;});
-    
-    help = help.data([0]);
-    help.enter().append("svg:image")
-        .attr('x', 20)
-        .attr('y', height - 50)
-        .attr("id", "helpImage")
-        .attr("width", 20)
-        .attr("height", 20)
-        .attr('xlink:href', helpImage)
-        .on('mouseover', mouseoverhelp);
-    
-    force.on("tick", function () {
-        runtime(node, links, controller);
-    });
-}
-
-/**
- * Redraw the links
- * @returns {undefined}
- */
-function updateLinks(){
-console.log("Update links");
-console.log(links);
-console.log(link);
-    link = link.data(links);
-    console.log(link);
-    link.enter().append("svg:line")
-        .attr('id', function (d) {console.log(d); return d.type;})
-        .attr('class', function (d) {return (d.type === "static") ? 'link' : 'new_link'+d.circuitId+' link2';});
-    
-    link.attr("x1", function (d) {return d.source.x;})
-        .attr("y1", function (d) {return d.source.y;})
-        .attr("x2", function (d) {return d.target.x;})
-        .attr("y2", function (d) {return d.target.y;});
-link.exit().remove();
-}
-
-/** End drawing topology **/
-
-// update force layout (called automatically each iteration)
-function tick() {
-console.log("tinck");
-
-}
-
-function keydown() {
-    if(!selected_node)return;
-    d3.event.preventDefault();
-
-    // ctrl
-    if (d3.event.keyCode === 17) {
-console.log(selected_node);
-d3.select(selected_node).attr("x", d3.event.x);
-//        dragmove(selected_node);
+function ajax_Request(objectRequest, method, others) {
+    var url = createUrl(objectRequest.path, objectRequest.params );
+    var response;
+    if(method === "GET"){
+        response = ajax_GET(url);
+    } else if(method === "POST"){
+        response = ajax_POST(url, others);
+    } else if(method === "PUT"){
+        response = ajax_PUT(url, others);
     }
+   return response;
 }
 
-d3.select(window)
-    .on('keydown', keydown);
-
-// mouse event vars
-var selected_node = null,
-    selected_link = null,
-    mousedown_link = null,
-    mousedown_node = null,
-    mouseup_node = null;
-
-function resetMouseVars() {
-    mousedown_node = null;
-    mouseup_node = null;
-    mousedown_link = null;
-}
-
-d3.select(window)
-    .on('keydown', keydown)
-    .on('keyup', keyup);
-
-function spliceLinksForNode(node) {
-    var toSplice = links.filter(function (l) {
-        return (l.source === node || l.target === node);
-    });
-    toSplice.map(function (l) {
-        links.splice(links.indexOf(l), 1);
-    });
-}
-
-function keydown() {
-  ctrlKey = d3.event.ctrlKey || d3.event.metaKey;
-}
-
-function keyup() {
-  ctrlKey = false;
-}
-
-function ip2long(ip){
-    var components;
-    var regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
-    if(components = ip.match(regex)){
-        var iplong = 0;
-        var power  = 1;
-        for(var i=4; i>=1; i-=1){
-            iplong += power * parseInt(components[i]);
-            power  *= 256;
-        }
-        return iplong;
-    }
-    else return -1;
-}
-
-/**
- * Sort returned Routes according to the topology drawed using d3js
- *
- * @param {type} routes
- * @returns {Array|sortReturnedRoutes.newRoute}
- */
-function sortReturnedRoutes(routes){
-    var newRoute = [];
-    var node = {};
-    var set = true;
-    newRoute.push({ip: routes[0]['ip']});
-
-    var nodeSrc = nodes.filter(function (n) {return n.ip === routes[0]['ip']; })[0];
-    var nodeDst;
-    var type;
-
-    for (var j = 1; j < routes.length; ++j) {//each node where the packet goes through
-        if ( routes[j]['dpid'] ){
-            nodeDst = nodes.filter(function (n) {return n.dpid === routes[j]['dpid'];})[0];
-            type = "dpid";
-        }else{
-            nodeDst = nodes.filter(function (n) {return n.ip === routes[j]['ip'];})[0];
-            type = "ip";
-        }
-        for ( var i = 0; i < links.length; i++){//find the dest node given a source node. Initial node is the source host
-            if( links[i].source == nodeSrc && links[i].target == nodeDst || 
-              links[i].target == nodeSrc && links[i].source == nodeDst ){//try to match with a link defined in the GUI
-                nodeSrc = nodeDst;
-                node = {};
-                node[type] = routes[j][type];
-                newRoute.push(node);
-                set = false;
-                break;
-            }else{//if not exists a match, move the dpid to the final of the array in order to analyze later
-                set = true;
-            }
-        }
-        //The follow defined node is not connected with the source node. Moving this node to the next position (j+1)
-        if ( set ) {
-            routes = arraymove(routes, j, routes.length);
-            set = false;
-            j--;
-        }
-    }
-//console.log(newRoute);
-    return newRoute;
-}
-
-/**
- * Move element of array from src to dst.
- * @param {type} arr
- * @param {type} fromIndex
- * @param {type} toIndex
- * @returns {Array|arraymove.arr}
- */
-function arraymove(arr, fromIndex, toIndex) {
-    var element = arr[fromIndex];
-    arr.splice(fromIndex, 1);
-    arr.splice(toIndex, 0, element);
-    return arr;
-}
-
-function dragmove(d) {
-    console.log(d);
-    d3.select(d)
-        .attr("x", d.x = d3.event.x)
-        .attr("y", d.y = d3.event.y);
-}
-
-function transform(d) {
-    return "translate(" + d.x + "," + d.y + ")";
-}
-
-function mouseoverhelp(){
-    $('#helpImage').tipsy({
-        live: true,
-        fade: true,
-        html: true, 
-        gravity: 'w', 
-        title: function() {
-            var d = this.__data__;
-            var info = "Press <b>control key</b> while you drag the nodes.";
-            return info;
+function ajax_GET(url){
+    var response;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: url,
+        success: function(data) {
+            response = data;
         }
     });
+    return response;
+}
+function ajax_POST(url, data){
+    var response;
+    $.ajax({
+        type: "POST",
+        async: false,
+        data: data,
+        url: url,
+        success: function(data) {
+            response = data;
+        }
+    });
+    return response;
+}
+function ajax_PUT(url, data){
+    var response;
+    $.ajax({
+        type: "PUT",
+        async: false,
+        data: data,
+        url: url,
+        success: function(data) {
+            response = data;
+        }
+    });
+    return response;
 }
 
-function updateTopology(storedNodes){
-    console.log("Updating Topology...");
-    	sessvars.nodes = storedNodes;
-        sessvars.links = links;                
-        sessvars.controllers = controllers;
-        sessvars.controllersLinks = controllersLinks;
+function createUrl(path, params){
+    var url = "ajax/"+path;
+    params.forEach(function(entry){
+        url = url + "/"+entry;
+    });
+    return url;
 }
