@@ -34,9 +34,10 @@
         <script src="<c:url value="/resources/js/xml2json.js"/>"></script>
         
         <!-- Javascript Tables -->
-        <script src="<c:url value="/resources/js/tables/base.js" />"></script>
-        <script src="<c:url value="/resources/js/tables/flowTable.js" />"></script>
-        <script src="<c:url value="/resources/js/tables/circuitTable.js" />"></script>
+        <script src="<c:url value="/resources/js/tables/0_base.js" />"></script>
+        <script src="<c:url value="/resources/js/tables/1_flowTable.js" />"></script>
+        <script src="<c:url value="/resources/js/tables/2_circuitTable.js" />"></script>
+        <script src="<c:url value="/resources/js/tables/3_statisticTable.js" />"></script>
         
         <!-- Javascript Topology. d3js scripts -->
         <script src="<c:url value="/resources/js/d3.v3.min.js"/>"></script>

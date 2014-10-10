@@ -9,7 +9,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div id="header_logo">
-    <img src="<c:url value="/resources/images/ofertie_logo.jpg" />" height= "99px" width= "250px" alt="OpenNaaS Logo">
+    <img src="<c:url value="/resources/images/dolfin_logo.jpg" />" height= "50px" width= "214px" alt="OpenNaaS Logo">
 </div>
 <script>
     var urlVar = "<c:url value="/resources/images" />";

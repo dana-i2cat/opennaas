@@ -26,7 +26,7 @@
 
 <div class="container">
 	<div id="login_logo">
-		<img src="<c:url value="/resources/images/login_logo_ofertie.png" />" height= "264px" width= "400px" alt="OpenNaaS Logo">
+		<img src="<c:url value="/resources/images/login_logo_dolfin.png" />" height= "264px" width= "400px" alt="dolfin Logo">
         </div>
 	<section id="content">	
 		<form action="../j_spring_security_check" method="post">
