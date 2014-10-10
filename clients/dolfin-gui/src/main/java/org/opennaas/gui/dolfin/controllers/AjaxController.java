@@ -1,10 +1,8 @@
 package org.opennaas.gui.dolfin.controllers;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
-import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
@@ -19,7 +17,6 @@ import org.opennaas.gui.dolfin.services.rest.RestServiceException;
 import org.opennaas.gui.dolfin.utils.model.DolfinBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,14 +40,11 @@ public class AjaxController {
      * Request the Flow Table of switch.
      *
      * @param dpid
-     * @param model
-     * @param locale
-     * @param session
      * @return Flow table in xml representation
      */
     @RequestMapping(method = RequestMethod.GET, value = "/switchInfo/{dpid}")
-    public @ResponseBody String getAllocatedFlows(@PathVariable("dpid") String dpid, Model model, Locale locale, HttpSession session) {
-        LOGGER.debug("Request switch information of switch with the following DPID: " + dpid);
+    public @ResponseBody String getAllocatedFlowsbyDPID(@PathVariable("dpid") String dpid) {
+        LOGGER.debug("Get allocated flows take into account the DPID: " + dpid);
         String response = "";
         try {
             response = dolfinBO.getAllocatedFlows(dpid);
@@ -67,20 +61,19 @@ public class AjaxController {
      * @return the information of the switch (IP:port)
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getAllocatedFlows/{switchName}")
-    public @ResponseBody String getAllocatedFlows(@PathVariable("switchName") String switchName) {
-        LOGGER.debug("Get Information about switch ------------------");
+    public @ResponseBody String getAllocatedFlowsbyName(@PathVariable("switchName") String switchName) {
+        LOGGER.debug("Get allocated flows take into account the switch Name: "+switchName);
         String response = dolfinBO.getAllocatedFlows(switchName);
         return response;
     }
 
     /**
-     * Return a json file that contains the Topology definiton
-     *
-     * @return
+     * Get topology
+     * @return a json file that contains the Topology definiton
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getTopology")
     public @ResponseBody Topology getTopology() {
-        LOGGER.error("Get ROUTE");
+        LOGGER.error("Get Topology");
         Topology response = null;
         try {
             response = dolfinBO.getTopology();
@@ -182,7 +175,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/test")
-    public @ResponseBody String test(ModelMap model) {
+    public @ResponseBody String test() {
         Map<String, String> map = new HashMap<String, String>();
         try {
             GuiTopology guiTop = DolfinBeanUtils.convertONTopologyToGuiTopology(dolfinBO.getTopology());
@@ -194,7 +187,7 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/portIdsMap")
-    public @ResponseBody Map<String, DevicePortId> portIdsMap(ModelMap mode) throws RestServiceException{
+    public @ResponseBody Map<String, DevicePortId> portIdsMap() throws RestServiceException{
         Topology top = dolfinBO.getTopology();
         Map<String, DevicePortId> possibleHosts;
         possibleHosts = top.getNetworkDevicePortIdsMap();
@@ -209,4 +202,91 @@ LOGGER.error("CIRCUIT ID: "+dolfinTopology.getSwitches().get(0).getDpid());
         
         return null;*/
     }
+    
+    
+    /**
+     * Request the statistics of port
+     *
+     * @return Flow table in xml representation
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/portStatistics")
+    public @ResponseBody String getPortStatistics() {
+        LOGGER.debug("Get port statistics");
+        String response = "";
+        try {
+            response = dolfinBO.getPortStatistics();
+        } catch (Exception e) {
+            return response;
+        }
+        return response;
+    }
+    
+    /**
+     * Request the statistics of port
+     *
+     * @param dpid
+     * @return Flow table in xml representation
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/portStatistics/{switchId}")
+    public @ResponseBody String getSwitchStatistics(@PathVariable("switchId") String dpid) {
+        LOGGER.debug("Get port statistics: " + dpid);
+        String response = "";
+        try {
+            response = dolfinBO.getPortStatistics(dpid);
+        } catch (Exception e) {
+            //return response;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+        sb.append("<TimedPortStatistics>");
+        sb.append("<TimedStatistics>");
+        sb.append("<timestamp>1000</timestamp>");
+        sb.append("<switchId>00:00:01</switchId>");
+        sb.append("<portId>p1</portId>");
+        sb.append("<throughput>1</throughput>");
+        sb.append("<packetLoss>1</packetLoss>");
+        sb.append("</TimedStatistics>");
+        sb.append("<TimedStatistics>");
+        sb.append("<timestamp>1000</timestamp>");
+        sb.append("<switchId>00:00:01</switchId>");
+        sb.append("<portId>p2</portId>");
+        sb.append("<throughput>2</throughput>");
+        sb.append("<packetLoss>1</packetLoss>");
+        sb.append("</TimedStatistics>");
+        sb.append("</TimedPortStatistics>");
+        response = sb.toString();
+        return response;
+    }
+    
+    /**
+     * Request circuit statistics
+     *
+     * @return Flow table in xml representation
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/circuitStatistics")
+    public @ResponseBody String getCircuitStatistics() {
+        LOGGER.debug("Get circuit statistics");
+        String response = "";
+        try {
+            //response = dolfinBO.getPortStatistics();
+            response = writeToCSV();
+        } catch (Exception e) {
+            return response;
+        }
+        return response;
+    }
+
+    private String writeToCSV() {
+
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("10000000").append(",").append("1").append(",").append("10").append(",")
+                .append("2").append(",").append("0").append(",")
+                .append("0").append(",").append("1234").append("\n");
+        
+        sb.append("20000000").append(",").append("2").append(",").append("20").append(",")
+                .append("1").append(",").append("4").append(",")
+                .append("5").append(",").append("1235");
+        return sb.toString();
+	}
 }
