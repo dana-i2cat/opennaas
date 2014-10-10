@@ -1,11 +1,11 @@
 package org.opennaas.gui.dolfin.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
-import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.gui.dolfin.bos.DolfinBO;
 import org.opennaas.gui.dolfin.entities.OfertieTopology;
 import org.opennaas.gui.dolfin.entities.Switch;
@@ -14,7 +14,6 @@ import org.opennaas.gui.dolfin.services.rest.RestServiceException;
 import static org.opennaas.gui.dolfin.utils.Constants.OFERTIE_GUI_URL;
 import org.opennaas.gui.dolfin.utils.model.DolfinBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +31,6 @@ public class DolfinController {
     private static final Logger LOGGER = Logger.getLogger(DolfinController.class);
     @Autowired
     protected DolfinBO dolfinBO;
-    @Autowired
-    protected ReloadableResourceBundleMessageSource messageSource;
     private OfertieTopology dolfinTopology;
     private CircuitCollection allocatedCircuits;
 
@@ -125,6 +122,15 @@ public class DolfinController {
                 model.addAttribute("errorMsg", "The topology can not be read or some errors reading circuits.");
             }
         }
+        
+        List<Switch> ls = new ArrayList<Switch>();
+        Switch s = new Switch();
+        s.setDpid("00:00:01");
+        List<String> p = new ArrayList<String>();
+        p.add("p1");p.add("p2");
+        s.setPorts(p);
+        ls.add(s);
+        model.addAttribute("listSwitches", ls);
         return "statistics";
     }
 
