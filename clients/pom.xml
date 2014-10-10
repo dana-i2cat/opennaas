@@ -14,5 +14,6 @@
 
 	<modules>
         <module>opennaas-gui-vcpe</module>
+        <module>dolfin-gui</module>
  	</modules>
 </project>
