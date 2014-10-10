@@ -78,13 +78,20 @@
 		</service-properties>
 	</service>
 	
-	<!--  Internal ActionSet  -->
-	<bean id="networkStatisticsInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.statistics.NetworkStatisticsInternalActionsetImplementation" />
-	<service ref="networkStatisticsInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+	<!-- ########################################
+	     Networks Port Statistics Capability 
+	     ########################################
+	 -->
+	<bean id="netkPortStatisticsCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.portstatistics.NetPortStatisticsCapabilityFactory">
+		<property name="type" value="gnetstatistics"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="netkPortStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
-			<entry key="actionset.name" value="internal"/>
-			<entry key="actionset.capability" value="gnetstatistics"/>
-			<entry key="actionset.version" value="1.0.0"/>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="gnetstatistics"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
 	
