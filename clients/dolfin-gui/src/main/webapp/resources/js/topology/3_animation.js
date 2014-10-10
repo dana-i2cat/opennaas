@@ -4,7 +4,7 @@
  */
 var file = 'animation';//this javascript file corresponds to a animation page
 document.getElementById("ui-id-3").className += " ui-state-highlight";
-var ipMininet = "84.88.40.153";
+
 var counterStream = 0;//counter used in the animation of video streaming
 // line displayed when dragging new nodes
 var drag_line = svg.append('svg:path')
@@ -74,15 +74,4 @@ function streamPacket(returnedRoutes){
             streamPacket(returnedRoutes);
         }
     }, 1000);  
-}
-
-/**
- * 
- * @param {type} nameHost
- * @returns {String}
- */
-function openHostShell(nameHost){
-    var url = "http://84.88.40.153:4200";
-    var uri = url + "/" + nameHost;
-    return uri;
 }

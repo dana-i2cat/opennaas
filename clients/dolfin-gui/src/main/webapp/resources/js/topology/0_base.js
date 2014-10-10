@@ -1,6 +1,11 @@
 /**
  *  Base file of d3js
  */
+
+// GENERIC VARIABLES
+var ipMininet = "84.88.40.153";
+
+
 if(sessvars.nodes){
     nodes = sessvars.nodes;
     links = sessvars.links;
@@ -424,4 +429,15 @@ function updateTopology(storedNodes){
         sessvars.links = links;                
         sessvars.controllers = controllers;
         sessvars.controllersLinks = controllersLinks;
+}
+
+/**
+ * 
+ * @param {type} nameHost
+ * @returns {String}
+ */
+function openHostShell(nameHost){
+    var url = "http://"+ipMininet+":4200";
+    var uri = url + "/" + nameHost;
+    return uri;
 }

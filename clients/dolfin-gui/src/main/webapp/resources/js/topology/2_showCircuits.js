@@ -4,7 +4,6 @@
  */
 var file = "config";
 document.getElementById("ui-id-1").className += " ui-state-highlight";
-var ipMininet = "84.88.40.109";
 var selectedCircuit = null;
 var portsIdMap = portIdsMap();
 
@@ -314,17 +313,6 @@ function mouseOverLink() {
             return info;
         }
     });
-}
-
-/**
- * 
- * @param {type} nameHost
- * @returns {String}
- */
-function openHostShell(nameHost){
-    var url = "http://"+ipMininet+":4200";
-    var uri = url + "/" + nameHost;
-    return uri;
 }
 
 function convertNameOfSwitch(returnedRoutes){
