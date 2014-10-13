@@ -56,7 +56,6 @@ public class FloodlightControllerInformationClientfactory {
 	}
 
 	public IFloodlightControllerInformationClient destroyClient() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

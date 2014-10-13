@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
-@XmlRootElement
+@XmlRootElement(namespace = "opennaas.api")
 @XmlEnum
 public enum HealthState {
 
