@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.29-SNAPSHOT</version>
+		<version>0.30-SNAPSHOT</version>
 	</parent>
 	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
@@ -40,6 +40,7 @@
 		<module>router.capability.l3vlan</module>		
 		<module>router.capability.linkaggregation</module>
 		<module>router.capability.vlanbridge</module>
+		<module>router.capability.topologydiscovery</module>
 		<module>router.capabilities.api</module>		
 		<module>router.model</module>
 		<module>router.features</module>
@@ -72,6 +73,7 @@
 		<module>network.capability.basic</module>
 		<module>network.capability.queue</module>
 		<module>network.capability.ospf</module>
+		<module>network.capability.topology</module>
 		<module>network.features</module>
 
 		<!-- BoD Resource -->

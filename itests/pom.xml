@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.29-SNAPSHOT</version>
+        <version>0.30-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -25,7 +25,7 @@
 		<module>openflowswitch</module>
 		<module>ofertie.ncl</module>
 		<module>openflowforwarding/floodlight</module>
-		<module>monitoring/floodlight</module>
+		<module>portstatistics/floodlight</module>
 		<module>ip/opener</module>
 		<module>sampleresource</module>
 		<module>vrrp/junos10</module>

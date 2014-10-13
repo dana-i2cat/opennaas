@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
-		<version>0.29-SNAPSHOT</version>
+		<version>0.30-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
 	<!-- Maven configuration -->
@@ -34,6 +34,15 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<!-- Required version is 3.0.1 or above as of http://jira.i2cat.net:8080/browse/OPENNAAS-1392-->
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<!-- CSV marshalling/unmarshalling -->
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
 		</dependency>
 	</dependencies>
 

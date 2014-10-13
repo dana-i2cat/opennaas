@@ -2,8 +2,10 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
@@ -21,10 +23,12 @@ import org.opennaas.extensions.genericnetwork.capability.statistics.INetworkStat
 import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedStatistics;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedSwitchPortStatistics;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
 import org.opennaas.extensions.genericnetwork.model.topology.Port;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
 /*
  * #%L
@@ -176,12 +180,10 @@ public class NCLMonitoring {
 								log.debug("Analizing switch statistics for switch " + switchName);
 								for (String portId : currentNetworkStatistics.getSwitchStatistics().get(switchName).getStatistics().keySet()) {
 									try {
-										long currentBytes = getPortReceivedBytes(currentNetworkStatistics, switchName, portId);
-										long previousBytes = getPortReceivedBytes(previousNetworkStatistics, switchName, portId);
-
+										
 										// calculate throughput
-										double throughput = calculateThroughput(previousBytes, currentBytes,
-												previousTimestamp, currentTimestamp);
+										double throughput = calculateThroughput(previousNetworkStatistics, currentNetworkStatistics, 
+												switchName, portId, previousTimestamp, currentTimestamp);
 
 										log.debug("\tPort " + portId + ", calculated throughput = " + DF.format(throughput) + " Gbits/s");
 
@@ -195,8 +197,32 @@ public class NCLMonitoring {
 											congestedPort.setId(portId);
 											newCongestedPorts.add(congestedPort);
 										}
+										
+										double packetLoss = calculatePacketLoss(previousNetworkStatistics, currentNetworkStatistics, 
+												switchName, portId, previousTimestamp, currentTimestamp);
+
+										log.debug("\tPort " + portId + ", calculated packetLoss = " + DF.format(packetLoss) + " %");
+										
+										TimedStatistics timedStats = new TimedStatistics();
+										timedStats.setTimestamp(currentTimestamp);
+										timedStats.setSwitchId(switchName);
+										timedStats.setPortId(portId);
+										timedStats.setThroughput(String.valueOf(throughput));
+										timedStats.setPacketLoss(String.valueOf(packetLoss));
+										
+										// store TimedStats in network model
+										TimedSwitchPortStatistics allStats = ((GenericNetworkModel)resource.getModel()).getTimedSwitchPortStatistics();
+										
+										if (! allStats.getStatisticsMap().containsKey(Long.valueOf(currentTimestamp))) {
+											allStats.getStatisticsMap().put(currentTimestamp, new HashMap<String, List<TimedStatistics>>());
+										}
+										if (! allStats.getStatisticsMap().get(currentTimestamp).containsKey(switchName)) {
+											allStats.getStatisticsMap().get(currentTimestamp).put(switchName, new ArrayList<TimedStatistics>());
+										}
+										allStats.getStatisticsMap().get(currentTimestamp).get(switchName).add(timedStats);
+										
 									} catch (Exception e) {
-										log.debug("Failed to calculate throughput for port " + portId + " in switch " + switchName);
+										log.debug("Failed to calculate throughput or packetloss for port " + portId + " in switch " + switchName + ": " + e.getMessage());
 									}
 								}
 							}
@@ -324,7 +350,88 @@ public class NCLMonitoring {
 			// convert kBytes/s to Gbits/s
 			return (kBytesPerSecond * 8) / (1000 * 1000);
 		}
+		
+		/**
+		 * 
+		 * @param previousStats
+		 * @param currentStats
+		 * @param switchName
+		 * @param portId
+		 * @param previousTimestamp
+		 * @param currentTimestamp
+		 * @return
+		 * @throws Exception if failed to get required data to calculate the throughput
+		 */
+		private double calculateThroughput(
+				NetworkStatistics previousStats, 
+				NetworkStatistics currentStats, 
+				String switchName, String portId, 
+				long previousTimestamp, long currentTimestamp) throws Exception {
+			
+			long currentBytes = getPortReceivedBytes(currentStats, switchName, portId);
+			long previousBytes = getPortReceivedBytes(previousStats, switchName, portId);
 
+			// calculate throughput
+			return calculateThroughput(previousBytes, currentBytes,
+					previousTimestamp, currentTimestamp);
+		}
+
+	}
+
+	public double calculatePacketLoss(
+			NetworkStatistics previousStats,
+			NetworkStatistics currentStats, 
+			String switchName, String portId, 
+			long previousTimestamp, long currentTimestamp) throws Exception {
+		
+		// pk_loss = (receiveDropped(t1) + receiveErrors(t1) + receiveFrameErrors(t1) + receiveOverrunErrors(t1) + receiveCRCErrors(t1) - 
+		// (receiveDropped(t0) + receiveErrors(t0) + receiveFrameErrors(t0) + receiveOverrunErrors(t0) + receiveCRCErrors(t0))) / 
+		// (receivePacket(t1) - receivePackets(t0))
+		
+		long currentReceiveErrors = getPortReceiveErrors(currentStats, switchName, portId);
+		long previousReceiveErrors = getPortReceiveErrors(previousStats, switchName, portId);
+		
+		long currentReceivedPackets = getPortReceivedPackets(currentStats, switchName, portId);
+		long previousReceivedPackets = getPortReceivedPackets(previousStats, switchName, portId);
+		
+		if (currentReceivedPackets == previousReceivedPackets)
+			return 0;
+		
+		return (currentReceiveErrors - previousReceiveErrors) / (currentReceivedPackets - previousReceivedPackets);
+	}
+
+	private long getPortReceivedPackets(NetworkStatistics statistics,
+			String switchName, String portId) throws Exception {
+		
+		if (statistics != null) {
+			SwitchPortStatistics switchPortStatistics = statistics.getSwitchPortStatistic(switchName);
+			if (switchPortStatistics != null) {
+				PortStatistics portStatistics = switchPortStatistics.getStatistics().get(portId);
+				if (portStatistics != null) {
+					return portStatistics.getReceivePackets();
+				}
+			}
+		}
+		throw new Exception("No statistics for switch " + switchName + " and port " + portId);
+	}
+
+	private long getPortReceiveErrors(NetworkStatistics statistics,
+			String switchName, String portId) throws Exception {
+		
+		if (statistics != null) {
+			SwitchPortStatistics switchPortStatistics = statistics.getSwitchPortStatistic(switchName);
+			if (switchPortStatistics != null) {
+				PortStatistics portStatistics = switchPortStatistics.getStatistics().get(portId);
+				if (portStatistics != null) {
+					return portStatistics.getReceiveCRCErrors() + 
+							portStatistics.getReceiveDropped() + 
+							portStatistics.getReceiveErrors() + 
+							portStatistics.getReceiveFrameErrors() +
+							portStatistics.getReceiveOverrunErrors();
+				}
+			}
+		}
+		throw new Exception("No statistics for switch " + switchName + " and port " + portId);
 	}
 
 }

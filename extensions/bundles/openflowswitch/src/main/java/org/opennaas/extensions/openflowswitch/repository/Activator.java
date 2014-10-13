@@ -72,18 +72,18 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		return createServiceFilter(IActionSet.class.getName(), properties);
 	}
 
-	public static IActionSet getMonitoringActionSetService(String name, String version) throws ActivatorException {
-		log.debug("Calling getMonitoringActionSetService");
+	public static IActionSet getPortStatisticsActionSetService(String name, String version) throws ActivatorException {
+		log.debug("Calling getPortStatisticsActionSetService");
 		try {
-			return (IActionSet) getServiceFromRegistry(context, createFilterMonitoringActionSet(name, version));
+			return (IActionSet) getServiceFromRegistry(context, createFilterPortStatisticsActionSet(name, version));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
 		}
 	}
 
-	private static Filter createFilterMonitoringActionSet(String name, String version) throws InvalidSyntaxException {
+	private static Filter createFilterPortStatisticsActionSet(String name, String version) throws InvalidSyntaxException {
 		Properties properties = new Properties();
-		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, "monitoring");
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, "portstatistics");
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);

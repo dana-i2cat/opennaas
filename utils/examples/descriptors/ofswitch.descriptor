@@ -9,7 +9,7 @@
     <capabilityDescriptors>
         <capabilityProperty name="actionset.name" value="floodlight" />
         <capabilityProperty name="actionset.version" value="0.90" />
-        <information><type>ofmonitoring</type></information>
+        <information><type>portstatistics</type></information>
     </capabilityDescriptors>
 
     <!-- Resource information. It specify type and name-->
