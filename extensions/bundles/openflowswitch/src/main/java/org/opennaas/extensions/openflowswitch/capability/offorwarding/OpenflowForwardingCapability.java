@@ -38,6 +38,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlowListWrapper;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
@@ -131,7 +132,19 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(getResourceModel());
 
 		log.info("End of getOpenflowForwardingRules call");
+
 		return forwardingRules;
+	}
+
+	@Override
+	public FloodlightOFFlowListWrapper getOpenflowForwardingRulesAPI() throws CapabilityException {
+
+		FloodlightOFFlowListWrapper wrapper = new FloodlightOFFlowListWrapper();
+
+		wrapper.setForwardingRules(getOpenflowForwardingRules());
+
+		return wrapper;
+
 	}
 
 	@Override

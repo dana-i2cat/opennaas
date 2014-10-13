@@ -22,15 +22,15 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test.staticrout
 
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRoute;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.CreateStaticRouteAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
@@ -48,7 +48,6 @@ public class CreateStaticRouteActionTest {
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 		action.setParams(helper.newParamsInterfaceEthernet());
-		helper = new ActionTestHelper();
 		protocolsessionmanager = helper.getProtocolSessionManager();
 	}
 
@@ -72,7 +71,7 @@ public class CreateStaticRouteActionTest {
 	@Test
 	public void executeActionTest() throws IOException {
 		action.setModelToUpdate(new ComputerSystem());
-		action.setParams(getParams());
+		action.setParams(getStaticRoute());
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 			Assert.assertTrue(response.getActionID()
@@ -95,29 +94,26 @@ public class CreateStaticRouteActionTest {
 	public void executeActionWrongParamsTest() throws ActionException {
 
 		action.setModelToUpdate(new ComputerSystem());
-		action.setParams(wrongParams());
+		action.setParams(getWrongStaticRoute());
 
-		ActionResponse response = action.execute(protocolsessionmanager);
+		action.execute(protocolsessionmanager);
 
 	}
 
-	/**
-	 * @return
-	 */
-	private String[] getParams() {
-		String[] params = new String[3];
-		params[0] = "0.0.0.0/0";
-		params[1] = "192.168.1.1";
-		params[2] = "false";
-		return params;
+	private StaticRoute getStaticRoute() {
+		StaticRoute staticRoute = new StaticRoute();
+		staticRoute.setNetIdIpAdress("0.0.0.0/0");
+		staticRoute.setNextHopIpAddress("192.168.1.1");
+		staticRoute.setDiscard(false);
+		return staticRoute;
 	}
 
-	private String[] wrongParams() {
-		String[] params = new String[3];
-		params[0] = "0.0.0.0/0";
-		params[1] = "FDEC:34:52::A6/64";
-		params[2] = "false";
-		return params;
+	private StaticRoute getWrongStaticRoute() {
+		StaticRoute staticRoute = new StaticRoute();
+		staticRoute.setNetIdIpAdress("0.0.0.0/0");
+		staticRoute.setNextHopIpAddress("FDEC:34:52::A6/64");
+		staticRoute.setDiscard(false);
+		return staticRoute;
 	}
 
 }

@@ -23,7 +23,7 @@ package org.opennaas.extensions.router.junos.actionssets.velocity.test;
 import java.io.IOException;
 import java.util.Map;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

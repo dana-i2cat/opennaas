@@ -28,7 +28,7 @@
 			<outputDirectory>system</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>target/dependency/${servicemix.path}</directory>
+			<directory>target/dependency/${karaf.path}</directory>
 			<outputDirectory/>
 			<excludes>
 				<exclude>bin/**</exclude>
@@ -38,7 +38,7 @@
 			</excludes>
 		</fileSet>
 		<fileSet>
-			<directory>target/dependency/${servicemix.path}/bin</directory>
+			<directory>target/dependency/${karaf.path}/bin</directory>
 			<outputDirectory>bin</outputDirectory>
 			<excludes>
 				<exclude>servicemix</exclude>

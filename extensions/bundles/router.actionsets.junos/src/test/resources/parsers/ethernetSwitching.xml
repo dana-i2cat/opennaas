@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<rpc-reply xmlns:junos="http://xml.juniper.net/junos/10.0R3/junos">
+	<configuration junos:changed-seconds="1310541978"
+		junos:changed-localtime="2011-07-13 07:26:18 UTC">
+		<interfaces>
+			<interface>
+				<name>fe-0/1/0</name>
+				<unit>
+					<name>100</name>
+					<family>
+						<ethernet-switching>
+						    <port-mode>trunk</port-mode>
+						    <native-vlan-id>100</native-vlan-id>
+						</ethernet-switching>
+					</family>
+				</unit>
+				<unit>
+					<name>200</name>
+					<family>
+						<ethernet-switching>
+						    <port-mode>access</port-mode>
+						    <native-vlan-id>200</native-vlan-id>
+						</ethernet-switching>
+					</family>
+				</unit>				
+			</interface>
+		</interfaces>
+	</configuration>
+</rpc-reply>

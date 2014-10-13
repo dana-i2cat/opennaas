@@ -46,7 +46,7 @@ import org.opennaas.extensions.openflowswitch.repository.Activator;
  */
 public class MonitoringCapability extends AbstractCapability implements IMonitoringCapability {
 
-	public static String	CAPABILITY_TYPE	= "monitoring";
+	public static String	CAPABILITY_TYPE	= "ofmonitoring";
 
 	private Log				log				= LogFactory.getLog(MonitoringCapability.class);
 

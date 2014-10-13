@@ -21,9 +21,7 @@ package org.opennaas.extensions.router.capability.linkaggregation;
  */
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,6 +35,10 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.model.chassis.InterfacesNamesList;
 import org.opennaas.extensions.router.capability.linkaggregation.api.AggregatedInterface;
+import org.opennaas.extensions.router.capability.linkaggregation.api.LinkAggregationAPIAdapter;
+import org.opennaas.extensions.router.model.AggregatedLogicalPort;
+import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class LinkAggregationCapability extends AbstractCapability implements ILinkAggregationCapability {
 
@@ -92,49 +94,43 @@ public class LinkAggregationCapability extends AbstractCapability implements ILi
 
 	@Override
 	public InterfacesNamesList getAggregatedInterfaces() throws CapabilityException {
-		// FIXME skeleton method with a dummy implementation
+
+		List<AggregatedLogicalPort> aggregators = ModelHelper.getAggregatedLogicalPorts((System) resource.getModel());
+
+		List<String> namesList = new ArrayList<String>(aggregators.size());
+		for (AggregatedLogicalPort aggregator : aggregators) {
+			namesList.add(aggregator.getElementName());
+		}
+
 		InterfacesNamesList interfacesNamesList = new InterfacesNamesList();
-
-		List<String> namesList = new ArrayList<String>();
-		namesList.add("ae0");
-		namesList.add("ae1");
-		namesList.add("ae2");
-
 		interfacesNamesList.setInterfaces(namesList);
-
 		return interfacesNamesList;
 	}
 
 	@Override
 	public AggregatedInterface getAggregatedInterface(String aggregatedInterfaceId) {
-		// FIXME skeleton method with a dummy implementation
-		AggregatedInterface aggregatedInterface = new AggregatedInterface();
 
-		aggregatedInterface.setId(aggregatedInterfaceId);
+		List<AggregatedLogicalPort> allAggregators = ModelHelper.getAggregatedLogicalPorts((System) resource.getModel());
+		AggregatedLogicalPort aggregator = (AggregatedLogicalPort) ModelHelper.getManagedElementByElementName(allAggregators, aggregatedInterfaceId);
 
-		List<String> interfacesNames = new ArrayList<String>();
-		interfacesNames.add("ge-0/0/0");
-		interfacesNames.add("ge-0/0/1");
-		interfacesNames.add("ge-0/0/2");
-		aggregatedInterface.setInterfacesNames(interfacesNames);
-
-		Map<String, String> aggregationOptions = new HashMap<String, String>();
-		aggregationOptions.put("minimum-links", "1");
-		aggregationOptions.put("link-speed", "1g");
-		aggregatedInterface.setAggregationOptions(aggregationOptions);
-
-		return aggregatedInterface;
+		return LinkAggregationAPIAdapter.model2Api(aggregator);
 	}
 
 	@Override
 	public void createAggregatedInterface(AggregatedInterface aggregatedInterface) throws CapabilityException {
-		// FIXME skeleton method with a dummy implementation
+
+		AggregatedLogicalPort aggregator = LinkAggregationAPIAdapter.api2Model(aggregatedInterface);
+
+		IAction action = createActionAndCheckParams(LinkAggregationActionSet.CREATE_AGGREGATED_INTERFACE, aggregator);
+		queueAction(action);
 
 	}
 
 	@Override
 	public void removeAggregatedInterface(String aggregatedInterfaceId) throws CapabilityException {
-		// FIXME skeleton method with a dummy implementation
+
+		IAction action = createActionAndCheckParams(LinkAggregationActionSet.REMOVE_AGGREGATED_INTERFACE, aggregatedInterfaceId);
+		queueAction(action);
 
 	}
 

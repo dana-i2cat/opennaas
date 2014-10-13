@@ -40,9 +40,12 @@ import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFinding
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.PathLoader;
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteSelectionInput;
 import org.opennaas.extensions.genericnetwork.driver.internal.actionsets.actions.pathfinding.model.RouteSelectionLogic;
+import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
 import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
+import org.opennaas.extensions.genericnetwork.model.topology.Port;
 
 /**
  * 
@@ -161,10 +164,13 @@ public class FindPathForRequestAction extends Action {
 			throw new ActionException("Invalid file for mapping");
 		}
 
+		if (possibleRouteIds.isEmpty())
+			throw new ActionException("Unable to find any route for given request");
+
 		possibleRouteIds = filterNotCongestedRoutes(possibleRouteIds);
 
 		if (possibleRouteIds.isEmpty())
-			throw new ActionException("Unable to find uncongested route for given request");
+			throw new ActionException("Unable to find any uncongested route for given request");
 
 		Route route = routes.get(possibleRouteIds.get(0));
 
@@ -207,9 +213,24 @@ public class FindPathForRequestAction extends Action {
 	private boolean isCongestedRoute(String routeId) {
 		Route route = routes.get(routeId);
 		for (NetworkConnection connection : route.getNetworkConnections())
-			if (connection.getSource().getState().isCongested() || connection.getDestination().getState().isCongested())
+			if (isCongestedPort(connection.getSource()) || isCongestedPort(connection.getDestination()))
 				return true;
 
 		return false;
 	}
+
+	private boolean isCongestedPort(Port port) {
+		if (((GenericNetworkModel) modelToUpdate).getTopology() != null) {
+			for (NetworkElement ne : ((GenericNetworkModel) modelToUpdate).getTopology().getNetworkElements()) {
+				for (Port aPort : ne.getPorts()) {
+					if (aPort.getId().equals(port.getId())) {
+						return aPort.getState().isCongested();
+					}
+				}
+			}
+		}
+		// if port is not in the model, it is considered not to be congested
+		return false;
+	}
+
 }

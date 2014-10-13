@@ -27,6 +27,8 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRoute;
+import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
@@ -36,6 +38,7 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
+ * @author Julio Carlos Barrera
  */
 public class CreateStaticRouteAction extends JunosAction {
 
@@ -93,6 +96,13 @@ public class CreateStaticRouteAction extends JunosAction {
 			extraParams.put("enableState", EnabledState.ENABLED.toString());
 			extraParams.put("elementName", elementName);
 
+			// set extra params to notice values set
+			StaticRoute staticRoute = (StaticRoute) params;
+			extraParams.put("nextHopSet", staticRoute.getNextHopIpAddress() != null && !staticRoute.getNextHopIpAddress().isEmpty());
+			extraParams.put("discardSet", staticRoute.isDiscard());
+			extraParams.put("preferenceSet",
+					staticRoute.getPreference() != null && staticRoute.getPreference() != StaticRouteCapability.PREFERENCE_DEFAULT_VALUE);
+
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
@@ -100,8 +110,8 @@ public class CreateStaticRouteAction extends JunosAction {
 	}
 
 	private void setTemplate() {
-		String[] aParams = (String[]) params;
-		if (IPUtilsHelper.isIPv4ValidAddress(aParams[0]))
+		StaticRoute staticRoute = (StaticRoute) params;
+		if (IPUtilsHelper.isIPv4ValidAddress(staticRoute.getNetIdIpAdress()))
 			this.template = VELOCITY_TEMPLATE_v4;
 		else
 			this.template = VELOCITY_TEMPLATE_v6;
@@ -121,35 +131,41 @@ public class CreateStaticRouteAction extends JunosAction {
 	}
 
 	/**
-	 * Params must be a String[]
+	 * Params must be an StaticRoute
 	 * 
 	 * @param params
-	 *            it should be a String[]
-	 * @return false if params is null, is not a String[], lenght != 3 or are not valid IP addresses or they are from different type.
+	 *            it should be a StaticRoute
+	 * @return false if params is null, is not an StaticRoute
+	 * @throws ActionException
 	 */
 	@Override
-	public boolean checkParams(Object params) {
-		boolean paramsOK = true;
+	public boolean checkParams(Object params) throws ActionException {
 		// First we check the params object
-		if (params == null || !(params instanceof String[])) {
-			paramsOK = false;
+		if (params == null || !(params instanceof StaticRoute)) {
+			throw new ActionException(this.actionID + ":  Invalid action, it should contain an object of instance StaticRoute");
 		} else {
-			String[] aParams = (String[]) params;
-			if (aParams.length != 3) {
-				paramsOK = false;
-			} else if (!IPUtilsHelper.isIPValidAddress(aParams[0])
-					||
-					(!aParams[1].equals("") && !(IPUtilsHelper.isIPWithoutMaskValidAddress(aParams[1])))) {
-				paramsOK = false;
-			} else if (IPUtilsHelper.isIPv4ValidAddress(aParams[0]) && (!aParams[1].equals("")) && (!IPUtilsHelper
-					.validateIpAddressPattern(aParams[1]))) {
-				paramsOK = false;
-			} else if (!IPUtilsHelper.isIPv4ValidAddress(aParams[0]) && (!aParams[1].equals("")) && (IPUtilsHelper
-					.validateIpAddressPattern(aParams[1]))) {
-				paramsOK = false;
+			StaticRoute staticRoute = (StaticRoute) params;
+
+			String netIdIpAdress = staticRoute.getNetIdIpAdress();
+			String nextHopIpAddress = staticRoute.getNextHopIpAddress();
+			Boolean discard = staticRoute.isDiscard();
+
+			if (netIdIpAdress == null || netIdIpAdress.isEmpty() || !IPUtilsHelper.isIPValidAddress(netIdIpAdress)) {
+				throw new ActionException(this.actionID + ":  Invalid StaticRoute instance, it should contain a valid NetIdIpAdress field (CIDR)");
+			} else if ((!validNextHopIpAddress(nextHopIpAddress) && !validDiscard(discard)) || (validNextHopIpAddress(nextHopIpAddress) && validDiscard(discard))) {
+				throw new ActionException(
+						this.actionID + ":  Invalid StaticRoute instance, it should contain either valid NextHopIpAddress (IP address) field or Discard flag set to true");
 			}
 		}
-		return paramsOK;
+		return true;
+	}
+
+	private boolean validNextHopIpAddress(String nextHopIpAddress) {
+		return (nextHopIpAddress != null && !nextHopIpAddress.isEmpty() && IPUtilsHelper.isIPWithoutMaskValidAddress(nextHopIpAddress));
+	}
+
+	private boolean validDiscard(Boolean discard) {
+		return (discard != null && discard);
 	}
 
 	/**

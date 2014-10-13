@@ -1,0 +1,47 @@
+###############################################################################
+#########             Add IP address to a Bridge Domain               #########
+###############################################################################
+
+<configuration>
+	#if(!$elementName.equals(""))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	
+	 <vlans>
+        <vlan>
+            <name>$param[0]</name>
+            <l3-interface operation="create">vlan.$unit</l3-interface>
+        </vlan>
+    </vlans>
+    
+     <interfaces>
+        <interface>
+            <name>vlan</name>
+            <unit operation="create">
+                <name>$unit</name>
+                <family>
+                	#if($isIPv6)
+						<inet6>
+					#else
+						<inet>
+					#end
+                        <address>
+                            <name>$param[1]</name>
+                        </address>
+                    #if($isIPv6)
+						</inet6>
+					#else
+						</inet>
+					#end
+                </family>
+            </unit>
+        </interface>
+    </interfaces>
+    
+
+	
+	#if(!$elementName.equals(""))
+		</logical-systems>
+	#end
+</configuration>

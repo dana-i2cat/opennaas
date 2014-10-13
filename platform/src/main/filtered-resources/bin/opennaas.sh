@@ -18,21 +18,35 @@
 # $Id: karaf 979 2005-11-30 22:50:55Z bsnyder $
 #
 
-DIRNAME=`dirname $0`
-PROGNAME=`basename $0`
+DIRNAME=`dirname "$0"`
+PROGNAME=`basename "$0"`
+
+#
+# Sourcing environment settings for karaf similar to tomcats setenv
+#
+KARAF_SCRIPT="karaf"
+export KARAF_SCRIPT
+if [ -f "$DIRNAME/setenv" ]; then
+  . "$DIRNAME/setenv"
+fi
 
 #
 # Check/Set up some easily accessible MIN/MAX params for JVM mem usage
 #
-
 if [ "x$JAVA_MIN_MEM" = "x" ]; then
     JAVA_MIN_MEM=128M
     export JAVA_MIN_MEM
 fi
-
 if [ "x$JAVA_MAX_MEM" = "x" ]; then
     JAVA_MAX_MEM=512M
     export JAVA_MAX_MEM
+fi
+
+#
+# Check the mode that initiated the script
+#
+if [ "x$1" != "x" ]; then
+    MODE=$1
 fi
 
 warn() {
@@ -111,11 +125,11 @@ locateHome() {
     if [ "x$KARAF_HOME" != "x" ]; then
         warn "Ignoring predefined value for KARAF_HOME"
     fi
-    
+
     # In POSIX shells, CDPATH may cause cd to write to stdout
     (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
-    KARAF_HOME=`cd $DIRNAME/..; pwd`
+    KARAF_HOME=`cd "$DIRNAME/.."; pwd`
     if [ ! -d "$KARAF_HOME" ]; then
         die "KARAF_HOME is not valid: $KARAF_HOME"
     fi
@@ -165,10 +179,10 @@ pathCanonical() {
             dst="`dirname "${dst}"`/$link"
         fi
     done
-	local bas=`basename "${dst}"`
-	local dir=`dirname "${dst}"`
+    local bas=`basename "${dst}"`
+    local dir=`dirname "${dst}"`
     if [ "$bas" != "$dir" ]; then
-		dst="`pathCanonical "$dir"`/$bas"
+      dst="`pathCanonical "$dir"`/$bas"
     fi
     echo "${dst}" | sed -e 's#//#/#g' -e 's#/./#/#g' -e 's#/[^/]*/../#/#g'
 }
@@ -181,7 +195,7 @@ locateJava() {
     fi
 
 	if [ "x$JAVA_HOME" = "x" ] && [ "$darwin" = "true" ]; then
-		JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+		JAVA_HOME="$(/usr/libexec/java_home)"
 	fi
     if [ "x$JAVA" = "x" ] && [ -r /etc/gentoo-release ] ; then
         JAVA_HOME=`java-config --jre-home`
@@ -229,6 +243,13 @@ setupDebugOptions() {
 
     # Set Debug options if enabled
     if [ "x$KARAF_DEBUG" != "x" ]; then
+        # Ignore DEBUG in case of stop or client mode
+        if [ "x$MODE" = "xstop" ]; then
+            return
+        fi
+        if [ "x$MODE" = "xclient" ]; then
+            return
+        fi
         # Use the defaults if JAVA_DEBUG_OPTS was not set
         if [ "x$JAVA_DEBUG_OPTS" = "x" ]; then
             JAVA_DEBUG_OPTS="$DEFAULT_JAVA_DEBUG_OPTS"
@@ -244,19 +265,28 @@ setupDefaults() {
 
     #Set the JVM_VENDOR specific JVM flags
     if [ "$JVM_VENDOR" = "SUN" ]; then
+        #
+        # Check some easily accessible MIN/MAX params for JVM mem usage
+        #
+        if [ "x$JAVA_PERM_MEM" != "x" ]; then
+            DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS -XX:PermSize=$JAVA_PERM_MEM"
+        fi
+        if [ "x$JAVA_MAX_PERM_MEM" != "x" ]; then
+            DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS -XX:MaxPermSize=$JAVA_MAX_PERM_MEM"
+        fi
         DEFAULT_JAVA_OPTS="-server $DEFAULT_JAVA_OPTS -Dcom.sun.management.jmxremote"
     elif [ "$JVM_VENDOR" = "IBM" ]; then
         if $os400; then
             DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS"
         elif $aix; then
-            DEFAULT_JAVA_OPTS="-Xverify:none -Xlp $DEFAULT_JAVA_OPTS"
+            DEFAULT_JAVA_OPTS="-Xverify:none -Xdump:heap -Xlp $DEFAULT_JAVA_OPTS"
         else
             DEFAULT_JAVA_OPTS="-Xverify:none $DEFAULT_JAVA_OPTS"
         fi
     fi
 
     # Add the jars in the lib dir
-    for file in $KARAF_HOME/lib/*.jar
+    for file in "$KARAF_HOME"/lib/karaf*.jar
     do
         if [ -z "$CLASSPATH" ]; then
             CLASSPATH="$file"
@@ -291,7 +321,7 @@ init() {
 
     # Locate the Karaf base directory
     locateBase
-    
+
     # Locate the Karaf data directory
     locateData
 
@@ -317,32 +347,57 @@ init() {
 run() {
     OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=true"
     MAIN=org.apache.karaf.main.Main
-    case "$1" in
-        'stop')
-            MAIN=org.apache.karaf.main.Stop
-            shift
-            ;;
-        'console')
-            shift
-            ;;
-        'server')
-            OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
-            shift
-            ;;
-        'client')
-            OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
-            shift
-            ;;
-    esac
+    while [ "$1" != "" ]; do
+        case $1 in
+            'clean')
+                rm -Rf "$KARAF_DATA"
+                shift
+                ;;
+            'debug')
+                if [ "x$JAVA_DEBUG_OPTS" = "x" ]; then
+                    JAVA_DEBUG_OPTS="$DEFAULT_JAVA_DEBUG_OPTS"
+                fi
+                JAVA_OPTS="$JAVA_DEBUG_OPTS $JAVA_OPTS"
+                shift
+                ;;
+            'stop')
+                MAIN=org.apache.karaf.main.Stop
+                shift
+                ;;
+            'status')
+                MAIN=org.apache.karaf.main.Status
+                shift
+                ;;
+            'console')
+                shift
+                ;;
+            'server')
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
+                shift
+                ;;
+            'client')
+                OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
 
+    JAVA_ENDORSED_DIRS="${JAVA_HOME}/jre/lib/endorsed:${JAVA_HOME}/lib/endorsed:${KARAF_HOME}/lib/endorsed"
+    JAVA_EXT_DIRS="${JAVA_HOME}/jre/lib/ext:${JAVA_HOME}/lib/ext:${KARAF_HOME}/lib/ext"
     if $cygwin; then
         KARAF_HOME=`cygpath --path --windows "$KARAF_HOME"`
         KARAF_BASE=`cygpath --path --windows "$KARAF_BASE"`
         KARAF_DATA=`cygpath --path --windows "$KARAF_DATA"`
         CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+        JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+        JAVA_ENDORSED_DIRS=`cygpath --path --windows "$JAVA_ENDORSED_DIRS"`
+        JAVA_EXT_DIRS=`cygpath --path --windows "$JAVA_EXT_DIRS"`
     fi
-    cd $KARAF_BASE
-    exec $JAVA $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_HOME}/jre/lib/endorsed:${JAVA_HOME}/lib/endorsed:${KARAF_HOME}/lib/endorsed" -Djava.ext.dirs="${JAVA_HOME}/jre/lib/ext:${JAVA_HOME}/lib/ext:${KARAF_HOME}/lib/ext" -Dkaraf.instances="${KARAF_HOME}/instances" -Dkaraf.home="$KARAF_HOME" -Dkaraf.base="$KARAF_BASE" -Dkaraf.data="$KARAF_DATA" -Djava.util.logging.config.file=$KARAF_BASE/etc/java.util.logging.properties $OPTS -classpath "$CLASSPATH" $MAIN "$@"
+    cd "$KARAF_BASE"
+    exec "$JAVA" $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_ENDORSED_DIRS}" -Djava.ext.dirs="${JAVA_EXT_DIRS}" -Dkaraf.instances="${KARAF_HOME}/instances" -Dkaraf.home="$KARAF_HOME" -Dkaraf.base="$KARAF_BASE" -Dkaraf.data="$KARAF_DATA" -Djava.io.tmpdir="$KARAF_DATA/tmp" -Djava.util.logging.config.file="$KARAF_BASE/etc/java.util.logging.properties" $KARAF_OPTS $OPTS -classpath "$CLASSPATH" $MAIN "$@"
 }
 
 main() {

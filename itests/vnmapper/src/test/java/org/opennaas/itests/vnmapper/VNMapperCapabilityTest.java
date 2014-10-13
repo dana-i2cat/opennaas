@@ -21,10 +21,6 @@ package org.opennaas.itests.vnmapper;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.BufferedReader;
@@ -74,9 +70,12 @@ import org.opennaas.extensions.vnmapper.VNState;
 import org.opennaas.extensions.vnmapper.VNTRequest;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMapperOutput;
 import org.opennaas.extensions.vnmapper.capability.vnmapping.VNMappingCapability;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.w3c.dom.Document;
@@ -90,7 +89,8 @@ import org.xml.sax.SAXException;
  *         virtual links, that must be linked with elements of the input physical network topology. Output schema is defined in output files.
  * 
  */
-@RunWith(JUnit4TestRunner.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class VNMapperCapabilityTest {
 
 	Log								log						= LogFactory.getLog(VNMapperCapabilityTest.class);
@@ -116,17 +116,19 @@ public class VNMapperCapabilityTest {
 	/**
 	 * Make sure blueprint for org.opennaas.extensions.vnmapper bundle has finished its initialization
 	 */
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.vnmapper)", timeout = 20000)
 	private BlueprintContainer		vnMapperBlueprintContainer;
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-vnmapper", "itests-helpers"),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-vnmapper", "itests-helpers"),
+				OpennaasExamOptions.noConsole(),
+				OpennaasExamOptions.doNotDelayShell(),
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	/**

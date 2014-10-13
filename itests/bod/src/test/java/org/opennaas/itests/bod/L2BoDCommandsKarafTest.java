@@ -20,10 +20,6 @@ package org.opennaas.itests.bod;
  * #L%
  */
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
@@ -53,8 +49,6 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
@@ -63,16 +57,17 @@ import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.itests.helpers.AbstractKarafCommandTest;
+import org.opennaas.itests.helpers.OpennaasExamOptions;
+import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-@RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+@RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 {
 	private static final String		ACTION_NAME				= "dummy";
@@ -94,17 +89,16 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 	@Filter("(type=bod)")
 	private IResourceRepository		repository;
 
+	@SuppressWarnings("unused")
 	@Inject
 	private IProtocolManager		protocolManager;
 
 	private ProtocolSessionManager	protocolSessionManager;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)", timeout = 20000)
 	private BlueprintContainer		bodCapabilityService;
 
-	@SuppressWarnings("unused")
 	@Inject
 	@Filter(value = "(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)", timeout = 20000)
 	private BlueprintContainer		bodRepositoryService;
@@ -117,10 +111,12 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-bod", "opennaas-bod-driver-dummy", "itests-helpers"),
-				noConsole(),
-				keepRuntimeFolder());
+		return options(
+				OpennaasExamOptions.opennaasDistributionConfiguration(),
+				OpennaasExamOptions.includeFeatures("opennaas-bod", "opennaas-bod-driver-dummy", "itests-helpers"),
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.keepLogConfiguration(),
+				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
 	@Before
@@ -251,28 +247,6 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 		Interface i = new Interface();
 		i.setName(name);
 		return i;
-	}
-
-	/**
-	 * Create the protocol to connect
-	 * 
-	 * @param resourceId
-	 * @throws ProtocolException
-	 */
-	private void createProtocolForResource(String resourceId) throws ProtocolException {
-
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
-
-		ProtocolSessionContext psContext = new ProtocolSessionContext();
-
-		psContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
-		psContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
-		psContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
-
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, psContext);
 	}
 
 }

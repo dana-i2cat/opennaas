@@ -47,7 +47,7 @@ public class StaticRouteModelSerializationTest {
 
 	private static final String	NET_ID_1		= "192.168.1.0/24";
 	private static final String	NEXT_HOP_1		= "10.10.10.11";
-	private static final String	PREFERENCE		= "12";
+	private static final int	PREFERENCE		= 12;
 
 	private static final String	NET_ID_2		= "192.168.2.0/24";
 
@@ -140,7 +140,7 @@ public class StaticRouteModelSerializationTest {
 	 * @param netId
 	 * @return
 	 */
-	private StaticRoute generateSampleRoute(String netId, String nextHopId, String preference) {
+	private StaticRoute generateSampleRoute(String netId, String nextHopId, int preference) {
 		StaticRoute staticRoute = new StaticRoute();
 
 		staticRoute.setDiscard(false);
