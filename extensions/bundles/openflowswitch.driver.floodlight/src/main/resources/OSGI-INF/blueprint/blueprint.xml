@@ -31,5 +31,16 @@
 			<entry key="actionset.version" value="0.90"/>
 		</service-properties>
 	</service>	
+
+	<!--  	controllerInformationActionSet  -->
+	<bean id="controllerInformationActionSet" class="org.opennaas.extensions.openflowswitch.driver.floodlight.controllerinformation.actionssets.ControllerInformationActionsetImplementation"/>
+	<service ref="controllerInformationActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the floodlight actionset -->
+			<entry key="actionset.name" value="floodlight"/>
+			<entry key="actionset.capability" value="controllerinformation"/>
+			<entry key="actionset.version" value="0.90"/>
+		</service-properties>
+	</service>	
 	
 </blueprint>
