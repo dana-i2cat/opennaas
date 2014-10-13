@@ -24,11 +24,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import junit.framework.Assert;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
@@ -48,8 +47,8 @@ public class SetIPv6ActionTest {
 	private static final String		IP_ADDRESS		= "4BF1:0::12";
 	private static short			PREFIX_LENGTH	= 32;
 
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
 		action = new SetIPv6Action();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();

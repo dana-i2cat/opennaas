@@ -24,7 +24,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang3.SerializationException;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
@@ -48,7 +49,7 @@ public class CalculateAggregatedCircuitsAction extends Action {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 
-		if (!(params instanceof Set<?>))
+		if (!(params instanceof Set))
 			throw new ActionException("Invalid parameters in action " + actionID + ". Expected: Set<Circuit>");
 
 		for (Object obj : (Set<?>) params) {
@@ -63,6 +64,9 @@ public class CalculateAggregatedCircuitsAction extends Action {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 
+		checkParams(params);
+		// Checked in checkParams that params is Set<? extends Circuit>
+		@SuppressWarnings("unchecked")
 		Set<Circuit> notAggregated = (Set<Circuit>) params;
 		Set<Circuit> aggregated = calculateAggregatedCircuits(notAggregated);
 
@@ -71,7 +75,7 @@ public class CalculateAggregatedCircuitsAction extends Action {
 		return response;
 	}
 
-	private Set<Circuit> calculateAggregatedCircuits(Set<Circuit> notAggregated) {
+	private Set<Circuit> calculateAggregatedCircuits(Set<Circuit> notAggregated) throws ActionException {
 		return doAggregationByIp24(notAggregated);
 	}
 
@@ -87,8 +91,9 @@ public class CalculateAggregatedCircuitsAction extends Action {
 	 * 
 	 * @param notAggregated
 	 * @return aggregated circuits
+	 * @throws ActionException
 	 */
-	private Set<Circuit> doAggregationByIp24(Set<Circuit> notAggregated) {
+	private Set<Circuit> doAggregationByIp24(Set<Circuit> notAggregated) throws ActionException {
 
 		Set<Circuit> aggregatedCircuits = new HashSet<Circuit>();
 		for (Circuit candidate : notAggregated) {
@@ -105,7 +110,7 @@ public class CalculateAggregatedCircuitsAction extends Action {
 		return aggregatedCircuits;
 	}
 
-	private Circuit computeAggregatedByIp24(Circuit candidate) {
+	private Circuit computeAggregatedByIp24(Circuit candidate) throws ActionException {
 
 		Circuit aggregated;
 		try {
@@ -113,8 +118,8 @@ public class CalculateAggregatedCircuitsAction extends Action {
 			aggregated.setCircuitId("TO_BE_DEFINED");
 			aggregated.getTrafficFilter().setSrcIp(getIP24WithShortMask(candidate.getTrafficFilter().getSrcIp()));
 			aggregated.getTrafficFilter().setDstIp(getIP24WithShortMask(candidate.getTrafficFilter().getDstIp()));
-		} catch (Exception e) {
-			aggregated = candidate;
+		} catch (SerializationException e) {
+			throw new ActionException("Failed to compute aggregated flow for circuit " + candidate.getCircuitId(), e);
 		}
 		return aggregated;
 	}

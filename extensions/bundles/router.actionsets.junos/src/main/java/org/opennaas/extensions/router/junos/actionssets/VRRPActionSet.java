@@ -20,6 +20,9 @@ package org.opennaas.extensions.router.junos.actionssets;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.ConfigureVRRPAction;
@@ -30,6 +33,7 @@ import org.opennaas.extensions.router.junos.actionssets.actions.vrrp.UpdateVRRPV
 
 /**
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello Rey (i2CAT)
  */
 public class VRRPActionSet extends ActionSet {
 
@@ -44,5 +48,19 @@ public class VRRPActionSet extends ActionSet {
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.GETCONFIG);
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
+	}
+
+	@Override
+	public List<String> getActionNames() {
+		List<String> actionNames = new ArrayList<String>();
+
+		actionNames.add(ActionConstants.GETCONFIG);
+		actionNames.add(ActionConstants.VRRP_CONFIGURE);
+		actionNames.add(ActionConstants.VRRP_UNCONFIGURE);
+		actionNames.add(ActionConstants.VRRP_UPDATE_IP_ADDRESS);
+		actionNames.add(ActionConstants.VRRP_UPDATE_PRIORITY);
+		actionNames.add(ActionConstants.VRRP_UPDATE_VIRTUAL_LINK_ADDRESS);
+
+		return actionNames;
 	}
 }

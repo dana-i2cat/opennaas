@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
-		<version>0.28-SNAPSHOT</version>
+		<version>0.30-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
 	<!-- Maven configuration -->
@@ -29,6 +29,16 @@
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<!-- Required version is 3.0.1 or above as of http://jira.i2cat.net:8080/browse/OPENNAAS-1392-->
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

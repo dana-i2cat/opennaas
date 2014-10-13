@@ -1,0 +1,3 @@
+<get-lldp-interface-neighbors-information>
+	<interface-name>$param</interface-name>
+</get-lldp-interface-neighbors-information>

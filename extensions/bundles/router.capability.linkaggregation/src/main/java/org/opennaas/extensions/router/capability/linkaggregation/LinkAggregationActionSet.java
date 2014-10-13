@@ -24,9 +24,25 @@ import org.opennaas.core.resources.action.IActionSetDefinition;
 
 /**
  * 
- * @author Julio Carlos Barrera
+ * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
 public class LinkAggregationActionSet implements IActionSetDefinition {
+
+	/**
+	 * Configures a new aggregated interface specified by given AggregatedLogicalPort.
+	 * 
+	 * @param AggregatedLogicalPort
+	 *            to be created
+	 */
+	public static final String	CREATE_AGGREGATED_INTERFACE	= "createAggregatedInterfaceAction";
+
+	/**
+	 * Removes an already configured aggregated interface, identified by given aggregatedInterfaceId.
+	 * 
+	 * @param aggregatedInterfaceId
+	 *            which is the elementName of the AggregatedLogicalPort to remove
+	 */
+	public static final String	REMOVE_AGGREGATED_INTERFACE	= "removeAggregatedInterfaceAction";
 
 }

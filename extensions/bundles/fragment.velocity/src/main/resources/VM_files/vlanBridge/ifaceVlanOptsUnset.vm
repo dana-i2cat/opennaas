@@ -1,0 +1,21 @@
+<configuration>
+	#if(!$elementName.equals("") )		
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	
+    <interfaces>
+    	<interface>
+    		<name>$param.getName()</name>
+    		<unit>
+    			<name>$param.getPortNumber()</name>
+    			<family>
+	    			<ethernet-switching operation="replace" />
+    			</family>
+    		</unit>
+    	</interface>
+    </interfaces>
+	#if(!$elementName.equals("") )		
+		</logical-systems>
+	#end
+</configuration>

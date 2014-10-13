@@ -30,22 +30,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * 
  * @author Adrian Rosello Rey (i2CAT)
+ * @author Julio Carlos Barrera
  * 
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StaticRoute implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long	serialVersionUID	= 7327859252040702917L;
 
+	@XmlElement(required = true)
 	private String				netIdIpAdress;
+
+	@XmlElement(required = false)
 	private String				nextHopIpAddress;
-	@XmlElement(name = "isDiscard")
-	private boolean				discard;
-	private String				preference;
+
+	@XmlElement(name = "isDiscard", required = false, defaultValue = "false")
+	private Boolean				discard;
+
+	@XmlElement(required = false, defaultValue = "-1")
+	private Integer				preference;
 
 	public String getNetIdIpAdress() {
 		return netIdIpAdress;
@@ -63,19 +67,19 @@ public class StaticRoute implements Serializable {
 		this.nextHopIpAddress = nextHopIpAddress;
 	}
 
-	public boolean isDiscard() {
+	public Boolean isDiscard() {
 		return discard;
 	}
 
-	public void setDiscard(boolean discard) {
+	public void setDiscard(Boolean discard) {
 		this.discard = discard;
 	}
 
-	public String getPreference() {
+	public Integer getPreference() {
 		return preference;
 	}
 
-	public void setPreference(String preference) {
+	public void setPreference(Integer preference) {
 		this.preference = preference;
 	}
 
@@ -83,7 +87,7 @@ public class StaticRoute implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (discard ? 1231 : 1237);
+		result = prime * result + ((discard == null) ? 0 : discard.hashCode());
 		result = prime * result + ((netIdIpAdress == null) ? 0 : netIdIpAdress.hashCode());
 		result = prime * result + ((nextHopIpAddress == null) ? 0 : nextHopIpAddress.hashCode());
 		result = prime * result + ((preference == null) ? 0 : preference.hashCode());
@@ -99,7 +103,10 @@ public class StaticRoute implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		StaticRoute other = (StaticRoute) obj;
-		if (discard != other.discard)
+		if (discard == null) {
+			if (other.discard != null)
+				return false;
+		} else if (!discard.equals(other.discard))
 			return false;
 		if (netIdIpAdress == null) {
 			if (other.netIdIpAdress != null)

@@ -1,0 +1,12 @@
+<configuration>
+	<vlans>
+		<vlan>
+			<name>vlan100</name>
+			<description>VLAN 100</description>
+			<vlan-id>100</vlan-id>
+			<interface operation="create">
+			    <name>fe-3/3/1.100</name>
+			</interface>
+		</vlan>
+	</vlans>
+</configuration>

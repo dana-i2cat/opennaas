@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.28-SNAPSHOT</version>
+        <version>0.30-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -33,6 +33,7 @@
 		<module>pathfinding/internal</module>
 		<module>nclmonitoring</module>
 		<module>circuitprovisioning/internal</module>
+		<module>circuitaggregation/internal</module>
 	</modules>
 
 	<dependencies>
@@ -41,8 +42,24 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ops4j.pax.swissbox</groupId>
-			<artifactId>pax-swissbox-framework</artifactId>
+			<groupId>org.ops4j.pax.exam</groupId>
+			<artifactId>pax-exam-container-karaf</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.exam</groupId>
+			<artifactId>pax-exam-junit4</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.ops4j.pax.exam</groupId>
+		    <artifactId>pax-exam</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.ops4j.pax.url</groupId>
+		    <artifactId>pax-url-aether</artifactId>
+		    <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>

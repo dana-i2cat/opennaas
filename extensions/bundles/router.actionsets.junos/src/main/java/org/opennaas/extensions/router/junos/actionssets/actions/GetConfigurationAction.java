@@ -22,6 +22,7 @@ package org.opennaas.extensions.router.junos.actionssets.actions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import net.i2cat.netconf.rpc.Reply;
 
@@ -38,6 +39,9 @@ import org.opennaas.extensions.router.junos.commandsets.digester.DigesterEngine;
 import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
 import org.opennaas.extensions.router.junos.commandsets.digester.RoutingOptionsParser;
+import org.opennaas.extensions.router.junos.commandsets.digester.VLANParser;
+import org.opennaas.extensions.router.model.AggregatedLogicalPort;
+import org.opennaas.extensions.router.model.BridgeDomain;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelService;
@@ -111,6 +115,8 @@ public class GetConfigurationAction extends JunosAction {
 				// Protocol parser creates classes in the model that require being updated by routing-options parser.
 				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
 				routerModel = parseRoutingOptions(routerModel, message);
+
+				routerModel = parseVlans(routerModel, message);
 			}
 		} catch (Exception e) {
 			throw new ActionException(e);
@@ -172,6 +178,7 @@ public class GetConfigurationAction extends JunosAction {
 		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
 		routerModel.removeAllHostedServicesByType(GREService.class);
 		routerModel.removeAllHostedServicesByType(VRRPGroup.class);
+		routerModel.removeAllLogicalDeviceByType(AggregatedLogicalPort.class);
 
 		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
 		ipInterfaceParser.init();
@@ -195,13 +202,30 @@ public class GetConfigurationAction extends JunosAction {
 	private System parseRoutingOptions(org.opennaas.extensions.router.model.System routerModel, String message)
 			throws IOException, SAXException {
 
-		// FIXME static routes have to be removed first!
+		// static routes have to be removed first
+		routerModel.removeAllNextHopRoutes();
+
 		RoutingOptionsParser routingOptionsParser = new RoutingOptionsParser(routerModel);
 		routingOptionsParser.init();
 		routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
 
 		routerModel = routingOptionsParser.getModel();
 		return routerModel;
+	}
+
+	private System parseVlans(System routerModel, String message) throws UnsupportedEncodingException, IOException, SAXException {
+
+		routerModel.removeAllHostedCollectionByType(BridgeDomain.class);
+
+		VLANParser vlanParser = new VLANParser(routerModel);
+
+		vlanParser.init();
+		vlanParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
+
+		routerModel = vlanParser.getModel();
+
+		return routerModel;
+
 	}
 
 	@Override

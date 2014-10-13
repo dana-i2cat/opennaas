@@ -4,7 +4,7 @@
 			on platform -->
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.28-SNAPSHOT</version>
+		<version>0.30-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -14,7 +14,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 
-		<dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
@@ -28,11 +28,25 @@
 			<artifactId>pax-exam-junit4</artifactId>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-			<artifactId>paxexam-karaf-container</artifactId>
+		    <groupId>org.ops4j.pax.exam</groupId>
+		    <artifactId>pax-exam-container-karaf</artifactId>
+		    <scope>compile</scope>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.ops4j.pax.exam</groupId>
+		    <artifactId>pax-exam</artifactId>
+		    <scope>compile</scope>
+		</dependency>			
+		
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		
 		<!-- Required for createRestClient -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -66,8 +80,13 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
-            
-            
+     
+   		<dependency>
+			<groupId>net.i2cat</groupId>
+			<artifactId>netconf-server</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+     
 	</dependencies>
 
 	<build>
@@ -91,6 +110,8 @@
 							org.slf4j,
 							org.osgi.framework,
 							org.apache.commons.lang;version="2.4",
+							org.ops4j.pax.exam,
+							!org.ops4j.pax.exam.karaf.options,
 							*
 						</Import-Package>
 						<!-- | assume public classes are in the top package, and private classes 

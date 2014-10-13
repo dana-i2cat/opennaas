@@ -83,7 +83,7 @@ public abstract class StaticRouteApiHelper {
 		sr.setNetIdIpAdress(destNet);
 
 		if (nextHopRoute.getRouteMetric() != DEFAULT_PREFERENCE_VALUE)
-			sr.setPreference(String.valueOf(nextHopRoute.getRouteMetric()));
+			sr.setPreference(nextHopRoute.getRouteMetric());
 
 		sr.setDiscard(nextHopRoute.getProtocolEndpoint() == null);
 

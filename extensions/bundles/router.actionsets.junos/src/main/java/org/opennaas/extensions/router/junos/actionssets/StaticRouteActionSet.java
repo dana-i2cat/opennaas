@@ -23,12 +23,17 @@ package org.opennaas.extensions.router.junos.actionssets;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.extensions.router.junos.actionssets.actions.GetConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.CreateStaticRouteAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.staticroute.DeleteStaticRouteAction;
 
 /**
  * @author Jordi
+ * @author Adrian Rosello Rey (i2CAT)
  */
 public class StaticRouteActionSet extends ActionSet {
 
@@ -37,5 +42,22 @@ public class StaticRouteActionSet extends ActionSet {
 
 		this.putAction(ActionConstants.STATIC_ROUTE_CREATE, CreateStaticRouteAction.class);
 		this.putAction(ActionConstants.STATIC_ROUTE_DELETE, DeleteStaticRouteAction.class);
+		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
+
+		this.refreshActions.add(ActionConstants.GETCONFIG);
+
+	}
+
+	@Override
+	public List<String> getActionNames() {
+
+		List<String> actionNames = new ArrayList<String>();
+
+		actionNames.add(ActionConstants.GETCONFIG);
+		actionNames.add(ActionConstants.STATIC_ROUTE_CREATE);
+		actionNames.add(ActionConstants.STATIC_ROUTE_DELETE);
+
+		return actionNames;
+
 	}
 }

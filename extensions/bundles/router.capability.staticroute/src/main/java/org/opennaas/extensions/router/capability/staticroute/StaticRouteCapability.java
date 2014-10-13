@@ -33,6 +33,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capabilities.api.helper.StaticRouteApiHelper;
+import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRoute;
 import org.opennaas.extensions.router.capabilities.api.model.staticroute.StaticRouteCollection;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.NextHopRoute;
@@ -123,19 +124,25 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 * IStaticRoute Implementation
 	 */
 
-	@Override
-	public void createStaticRoute(String netIdIpAdress, String nextHopIpAddress, String isDiscard, int preference) throws CapabilityException {
+	public void createStaticRoute(StaticRoute staticRoute) throws CapabilityException {
 		log.info("Start of createStaticRoute call");
-		String[] aParams = new String[3];
-		aParams[0] = netIdIpAdress;
-		aParams[1] = nextHopIpAddress;
-		aParams[2] = isDiscard;
 
-		// TODO add preference if it does not contain its default value
-
-		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
+		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, staticRoute);
 		queueAction(action);
+
 		log.info("End of createStaticRoute call");
+	}
+
+	@Override
+	public void createStaticRoute(String netIdIpAdress, String nextHopIpAddress, boolean isDiscard, int preference) throws CapabilityException {
+
+		StaticRoute staticRoute = new StaticRoute();
+		staticRoute.setNetIdIpAdress(netIdIpAdress);
+		staticRoute.setNextHopIpAddress(nextHopIpAddress);
+		staticRoute.setDiscard(isDiscard);
+		staticRoute.setPreference(preference);
+
+		createStaticRoute(staticRoute);
 	}
 
 	@Override
@@ -146,7 +153,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 			netIdIpAdress = netIdIpAdress + "/" + IPUtilsHelper.parseLongToShortIpv4NetMask(maskIpAdress);
 		else
 			netIdIpAdress = netIdIpAdress + "/" + maskIpAdress;
-		createStaticRoute(netIdIpAdress, nextHopIpAddress, isDiscard, PREFERENCE_DEFAULT_VALUE);
+		createStaticRoute(netIdIpAdress, nextHopIpAddress, Boolean.parseBoolean(isDiscard), PREFERENCE_DEFAULT_VALUE);
 
 	}
 

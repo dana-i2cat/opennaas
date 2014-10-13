@@ -28,9 +28,10 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.staticroute.IStaticRouteCapability;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 
-//
 /**
  * @author Jordi Puig
+ * @author Adrian Rosello Rey (i2CAT)
+ * @author Julio Carlos Barrera
  */
 @Command(scope = "staticroute", name = "create", description = "Create a static route in given device")
 public class CreateStaticRouteCommand extends GenericKarafCommand {
@@ -47,8 +48,8 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			false)
 	private String	nextHopIpAddress;
 
-	@Argument(index = 3, name = "isRejected", description = "Choose if is discard", required = false, multiValued = false)
-	private String	isDiscard;
+	@Argument(index = 3, name = "isDiscard", description = "Choose if is discard", required = false, multiValued = false)
+	private boolean	isDiscard	= false;
 
 	@Argument(index = 4, name = "preference", description = "Routing option preference.", required = false, multiValued = false)
 	private int		preference	= StaticRouteCapability.PREFERENCE_DEFAULT_VALUE;
@@ -57,7 +58,7 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		printInitCommand("Create Static Route");
 
-		// FIXME check either nextHopIpAddress or isRejected are set
+		// FIXME check either nextHopIpAddress or isDiscard are set
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 
