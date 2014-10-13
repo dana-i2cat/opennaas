@@ -166,7 +166,6 @@ public class NCLMonitoring {
 					// congested ports temp var
 					Set<Port> newCongestedPorts = new HashSet<Port>();
 
-					//FIXME use PortStatisticsCapability to get statistics
 					log.debug("Getting network statistics...");
 					NetworkStatistics currentNetworkStatistics = readCurrentNetworkStatistics(network);
 					long currentTimestamp = System.currentTimeMillis();
