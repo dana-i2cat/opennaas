@@ -38,6 +38,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.openflowswitch.capability.portstatistics.IPortStatisticsCapability;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
 import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsActionSet;
 import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
@@ -80,7 +81,7 @@ public class NetPortStatisticsCapability extends AbstractCapability implements I
 
 	@Override
 	public SwitchPortStatistics getPortStatistics() throws CapabilityException {
-		IAction action = createActionAndCheckParams(PortStatisticsActionSet.GET_PORT_STATISTICS, null);
+		IAction action = createActionAndCheckParams(PortStatisticsActionSet.GET_PORT_STATISTICS, this.resource);
 		ActionResponse response = executeAction(action);
 
 		Object responseObject = response.getResult();
@@ -88,8 +89,13 @@ public class NetPortStatisticsCapability extends AbstractCapability implements I
 			throw new CapabilityException("Unexpected action response object:" + responseObject.getClass());
 		}
 
-		// TODO
-		return null;
+		// assuming the action returns what it is meant to
+		Map<String, PortStatistics> portStatistics = (Map<String, PortStatistics>) responseObject;
+
+		SwitchPortStatistics statistics = new SwitchPortStatistics();
+		statistics.setStatistics(portStatistics);
+
+		return statistics;
 	}
 
 	@Override
