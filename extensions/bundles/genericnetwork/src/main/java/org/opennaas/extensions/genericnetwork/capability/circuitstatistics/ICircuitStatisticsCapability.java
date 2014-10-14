@@ -21,7 +21,7 @@ package org.opennaas.extensions.genericnetwork.capability.circuitstatistics;
  */
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -43,7 +43,8 @@ public interface ICircuitStatisticsCapability extends ICapability {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void reportStatistics(String csvStatistics) throws CapabilityException;
 
-	@GET
+	// FIXME this should be a GET, but jax-rs clients don't accept @Get with body.
+	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_XML)
 	public String getStatistics(TimePeriod timePeriod) throws CapabilityException;
