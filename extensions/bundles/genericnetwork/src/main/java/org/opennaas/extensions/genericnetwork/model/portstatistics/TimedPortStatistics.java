@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -38,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TimedPortStatistics {
 
-	@XmlElementWrapper
+	@XmlElementWrapper(name = "statistics")
+	@XmlElement(name = "statistic")
 	private List<TimedStatistics>	statistics;
 
 	/**
