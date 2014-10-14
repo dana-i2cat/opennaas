@@ -51,18 +51,18 @@ public class GetPortStatisticsActionTest {
 
 		SwitchPortStatistics switchPortStatistics = GetPortStatisticsAction.generateSwitchPortStatistics(switchesStatistics, networkDevicePortIdsMap);
 
-		Assert.assertEquals(10, switchPortStatistics.getStatistics().get("1").getCollisions());
-		Assert.assertEquals(20, switchPortStatistics.getStatistics().get("2").getCollisions());
-		Assert.assertEquals(3000, switchPortStatistics.getStatistics().get("3").getCollisions());
-		Assert.assertEquals(4000, switchPortStatistics.getStatistics().get("4").getCollisions());
+		Assert.assertEquals(10, switchPortStatistics.getStatistics().get(SW1 + "." + "1").getCollisions());
+		Assert.assertEquals(20, switchPortStatistics.getStatistics().get(SW1 + "." + "2").getCollisions());
+		Assert.assertEquals(3000, switchPortStatistics.getStatistics().get(NET1 + "." + "3").getCollisions());
+		Assert.assertEquals(4000, switchPortStatistics.getStatistics().get(NET1 + "." + "4").getCollisions());
 	}
 
 	private static Map<String, SwitchPortStatistics> generateSwitchesStatistics() {
 		Map<String, SwitchPortStatistics> switchesStatistics = new HashMap<String, SwitchPortStatistics>();
 
-		switchesStatistics.put(SW1, generateSwitchPortStatistics(SW1, 10));
-		switchesStatistics.put(SW2, generateSwitchPortStatistics(SW2, 100));
-		switchesStatistics.put(NET1, generateSwitchPortStatistics(NET1, 1000));
+		switchesStatistics.put("openflowswitch:" + SW1, generateSwitchPortStatistics(SW1, 10));
+		switchesStatistics.put("openflowswitch:" + SW2, generateSwitchPortStatistics(SW2, 100));
+		switchesStatistics.put("genericnetwork:" + NET1, generateSwitchPortStatistics(NET1, 1000));
 
 		return switchesStatistics;
 	}
@@ -70,10 +70,10 @@ public class GetPortStatisticsActionTest {
 	private static BiMap<String, DevicePortId> generateNetworkDevicePortIdsMap() {
 		BiMap<String, DevicePortId> networkDevicePortIdsMap = HashBiMap.<String, DevicePortId> create();
 
-		networkDevicePortIdsMap.put("1", generateDevicePortId(SW1, "1"));
-		networkDevicePortIdsMap.put("2", generateDevicePortId(SW1, "2"));
-		networkDevicePortIdsMap.put("3", generateDevicePortId(NET1, "3"));
-		networkDevicePortIdsMap.put("4", generateDevicePortId(NET1, "4"));
+		networkDevicePortIdsMap.put(SW1 + "." + "1", generateDevicePortId("openflowswitch:" + SW1, "1"));
+		networkDevicePortIdsMap.put(SW1 + "." + "2", generateDevicePortId("openflowswitch:" + SW1, "2"));
+		networkDevicePortIdsMap.put(NET1 + "." + "3", generateDevicePortId("genericnetwork:" + NET1, "3"));
+		networkDevicePortIdsMap.put(NET1 + "." + "4", generateDevicePortId("genericnetwork:" + NET1, "4"));
 
 		return networkDevicePortIdsMap;
 	}
@@ -94,7 +94,7 @@ public class GetPortStatisticsActionTest {
 			portStatistics.setPort(portId);
 			portStatistics.setCollisions(fakeIndex * portId);
 
-			statistics.put("" + portId, portStatistics);
+			statistics.put(deviceID + "." + portId, portStatistics);
 		}
 
 		SwitchPortStatistics switchPortStatistics = new SwitchPortStatistics();
