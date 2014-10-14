@@ -20,9 +20,11 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner.compone
  * #L%
  */
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.TimerTask;
 
+import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
@@ -31,6 +33,9 @@ import org.opennaas.extensions.genericnetwork.capability.circuitstatistics.ICirc
 import org.opennaas.extensions.genericnetwork.capability.nclmonitoring.portstatistics.IPortStatisticsMonitoringCapability;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
 import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedPortStatistics;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedStatistics;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 /**
  * 
@@ -61,6 +66,10 @@ public class NetworkStatisticsPoller extends TimerTask {
 		long currentTimestamp = System.currentTimeMillis();
 		TimePeriod timePeriod = new TimePeriod(previousTimestamp, currentTimestamp);
 
+		log.info("Reporting stadistics to SLA Manager");
+
+		log.debug("Getting stadistics for resource " + resource.getResourceDescriptor().getInformation().getName() + " during time period " + timePeriod);
+
 		try {
 			// report circuitsStatistics
 			ICircuitStatisticsCapability circuitStatisticsCapab = (ICircuitStatisticsCapability) resource
@@ -70,20 +79,44 @@ public class NetworkStatisticsPoller extends TimerTask {
 
 			String circuitStatisticsCSV = circuitStatisticsCapab.getStatistics(timePeriod);
 			slaManagerClient.sendCircuitStatistics(circuitStatisticsCSV);
+			log.debug("Circuit stadistics successfully reported.");
 
 			TimedPortStatistics portStatistics = portStatisticsCapab.getPortStatistics(timePeriod);
 
 			slaManagerClient.sendPortStatistics(parsePortStatistics(portStatistics));
+			log.debug("Port stadistics successfully reported.");
 
 		} catch (ResourceException e) {
 			log.warn("Could not report statistics for resource " + resource.getResourceDescriptor()
 					.getInformation().getName(), e);
+		} catch (IOException io) {
+			log.warn("Error reporting port statistics for resource " + resource.getResourceDescriptor().getInformation().getName(), io);
 		}
 
 	}
 
-	private String parsePortStatistics(TimedPortStatistics portStatistics) {
-		// TODO Auto-generated method stub
-		return null;
+	private String parsePortStatistics(TimedPortStatistics portStatistics) throws IOException {
+
+		log.debug("Parsing port statistics into CSV format.");
+
+		StringBuilder sb = new StringBuilder();
+		CSVWriter writer = new CSVWriter(new StringBuilderWriter(sb), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
+
+		try {
+			for (TimedStatistics statistic : portStatistics.getStatistics()) {
+				String[] csvStatistic = new String[5];
+				csvStatistic[0] = String.valueOf(statistic.getTimestamp());
+				csvStatistic[1] = statistic.getSwitchId();
+				csvStatistic[2] = statistic.getPortId();
+				csvStatistic[3] = statistic.getThroughput();
+				csvStatistic[4] = statistic.getPacketLoss();
+
+				writer.writeNext(csvStatistic);
+			}
+
+		} finally {
+			writer.close();
+		}
+		return sb.toString();
 	}
 }
