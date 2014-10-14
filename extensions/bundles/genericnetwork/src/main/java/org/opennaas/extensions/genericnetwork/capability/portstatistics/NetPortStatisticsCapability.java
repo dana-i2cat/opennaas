@@ -20,8 +20,6 @@ package org.opennaas.extensions.genericnetwork.capability.portstatistics;
  * #L%
  */
 
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -38,7 +36,6 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.genericnetwork.Activator;
 import org.opennaas.extensions.openflowswitch.capability.portstatistics.IPortStatisticsCapability;
-import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
 import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsActionSet;
 import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
@@ -50,7 +47,7 @@ import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPo
  */
 public class NetPortStatisticsCapability extends AbstractCapability implements IPortStatisticsCapability {
 
-	public static String	CAPABILITY_TYPE	= "portstatistics";
+	public static String	CAPABILITY_TYPE	= "gnetportstatistics";
 
 	private Log				log				= LogFactory.getLog(NetPortStatisticsCapability.class);
 
@@ -85,16 +82,12 @@ public class NetPortStatisticsCapability extends AbstractCapability implements I
 		ActionResponse response = executeAction(action);
 
 		Object responseObject = response.getResult();
-		if (!(responseObject instanceof Map<?, ?>)) {
+		if (!(responseObject instanceof SwitchPortStatistics)) {
 			throw new CapabilityException("Unexpected action response object:" + responseObject.getClass());
 		}
 
 		// assuming the action returns what it is meant to
-		Map<String, PortStatistics> portStatistics = (Map<String, PortStatistics>) responseObject;
-
-		SwitchPortStatistics statistics = new SwitchPortStatistics();
-		statistics.setStatistics(portStatistics);
-
+		SwitchPortStatistics statistics = (SwitchPortStatistics) responseObject;
 		return statistics;
 	}
 

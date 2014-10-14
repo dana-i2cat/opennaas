@@ -23,6 +23,7 @@ package org.opennaas.extensions.genericnetwork.actionsets.internal.portstatistic
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
@@ -102,13 +103,14 @@ public class GetPortStatisticsAction extends Action {
 
 			// check existence of statistics for element and port
 			if (!switchesStatistics.containsKey(networkElementId) || switchesStatistics.get(networkElementId).getStatistics() == null || !switchesStatistics
-					.get(networkElementId).getStatistics().containsKey(networkElementPortId)) {
+					.get(networkElementId).getStatistics().containsKey(networkElementId.split(Pattern.quote(":"))[1] + "." + networkElementPortId)) {
 				throw new Exception(
 						"Could not find statistics for network element with ID = " + networkElementId + " and port ID = " + networkElementPortId + "!");
 			}
 
 			// get PortStatistics and associate it to own network port ID
-			PortStatistics portStatistics = switchesStatistics.get(networkElementId).getStatistics().get(networkElementPortId);
+			PortStatistics portStatistics = switchesStatistics.get(networkElementId).getStatistics()
+					.get(networkElementId.split(Pattern.quote(":"))[1] + "." + networkElementPortId);
 			stats.put(entry.getKey(), portStatistics);
 		}
 
