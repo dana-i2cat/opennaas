@@ -1,7 +1,36 @@
 package org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components;
 
+/*
+ * #%L
+ * OpenNaaS :: Generic Network
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.net.URI;
 import java.util.TimerTask;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.genericnetwork.capability.circuitstatistics.ICircuitStatisticsCapability;
+import org.opennaas.extensions.genericnetwork.capability.nclmonitoring.portstatistics.IPortStatisticsMonitoringCapability;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
+import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedPortStatistics;
 
 /**
  * 
@@ -10,16 +39,51 @@ import java.util.TimerTask;
  */
 public class NetworkStatisticsPoller extends TimerTask {
 
-	private URI	slaManagerUri;
+	private Log							log	= LogFactory.getLog(NetworkStatisticsPoller.class);
 
-	public NetworkStatisticsPoller(URI slaManagerUri) {
+	private URI							slaManagerUri;
+	private IResource					resource;
+	private NetworkObservationsPusher	slaManagerClient;
+	private long						previousTimestamp;
+
+	public NetworkStatisticsPoller(URI slaManagerUri, IResource resource) {
 		this.slaManagerUri = slaManagerUri;
+		this.resource = resource;
+
+		slaManagerClient = new NetworkObservationsPusher(slaManagerUri);
+		previousTimestamp = System.currentTimeMillis();
+
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+
+		long currentTimestamp = System.currentTimeMillis();
+		TimePeriod timePeriod = new TimePeriod(previousTimestamp, currentTimestamp);
+
+		try {
+			// report circuitsStatistics
+			ICircuitStatisticsCapability circuitStatisticsCapab = (ICircuitStatisticsCapability) resource
+					.getCapabilityByInterface(ICircuitStatisticsCapability.class);
+			IPortStatisticsMonitoringCapability portStatisticsCapab = (IPortStatisticsMonitoringCapability) resource
+					.getCapabilityByInterface(IPortStatisticsMonitoringCapability.class);
+
+			String circuitStatisticsCSV = circuitStatisticsCapab.getStatistics(timePeriod);
+			slaManagerClient.sendCircuitStatistics(circuitStatisticsCSV);
+
+			TimedPortStatistics portStatistics = portStatisticsCapab.getPortStatistics(timePeriod);
+
+			slaManagerClient.sendPortStatistics(parsePortStatistics(portStatistics));
+
+		} catch (ResourceException e) {
+			log.warn("Could not report statistics for resource " + resource.getResourceDescriptor()
+					.getInformation().getName(), e);
+		}
 
 	}
 
+	private String parsePortStatistics(TimedPortStatistics portStatistics) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

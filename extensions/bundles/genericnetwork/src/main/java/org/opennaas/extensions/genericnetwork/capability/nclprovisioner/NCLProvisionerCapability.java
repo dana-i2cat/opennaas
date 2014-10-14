@@ -517,7 +517,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 		// initialize statistics poller
 		try {
-			NetworkStatisticsPoller statisticsPoller = new NetworkStatisticsPoller(new URI(slaManagerUri));
+			NetworkStatisticsPoller statisticsPoller = new NetworkStatisticsPoller(new URI(slaManagerUri), this.resource);
 			statisticsPollerTimer = new Timer("Generic Network " + this.resourceId + " statistics poller.", true);
 			statisticsPollerTimer.scheduleAtFixedRate(statisticsPoller, 0, Integer.valueOf(pollingInterval) * 1000);
 
