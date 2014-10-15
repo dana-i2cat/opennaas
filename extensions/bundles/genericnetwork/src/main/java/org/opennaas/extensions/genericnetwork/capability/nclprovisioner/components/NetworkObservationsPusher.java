@@ -30,23 +30,33 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.AMQP.Exchange;
+import com.rabbitmq.client.AMQP.Queue;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 /**
+ * <p>
+ * RabbitMQ client to push network statistics.
+ * </p>
+ * <p>
+ * This class offers methods to report both port statistics and circuit statistics to an SLA Manager using RabbitMQ. The client does not know which
+ * {@link Queue} the consumer(s) uses. Therefore, for each type of message, the client defines a {@link Exchange}, so the server would be able to
+ * dispatch this type of message to the queues consuming this exchange.
+ * </p>
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
 public class NetworkObservationsPusher {
 
-	private Log					log							= LogFactory.getLog(NetworkObservationsPusher.class);
+	private Log					log								= LogFactory.getLog(NetworkObservationsPusher.class);
 
-	public static final String	CIRCUIT_OBSERVATION_TOPIC	= "observations_NCL_qos_flow";
-	public static final String	SWITCH_OBSERVATION_TOPIC	= "observations_NCL_qos_switch";
-	public static final String	OBSERVATIONS_CONTENT_TYPE	= "text/csv";
-	public static final String	RABBIT_MQ_ROUTING_KEY		= "ofertie";
+	public static final String	CIRCUIT_OBSERVATION_EXCHANGE	= "observations_NCL_qos_flow";
+	public static final String	SWITCH_OBSERVATION_EXCHANGE		= "observations_NCL_qos_switch";
+	public static final String	OBSERVATIONS_CONTENT_TYPE		= "text/csv";
+	public static final String	RABBIT_MQ_ROUTING_KEY			= "ofertie";
 
 	private URI					slaManagerUri;
 
@@ -56,12 +66,12 @@ public class NetworkObservationsPusher {
 
 	public void sendCircuitStatistics(String circuitStatisticsCSV) throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException,
 			IOException {
-		sendStatistics(CIRCUIT_OBSERVATION_TOPIC, circuitStatisticsCSV);
+		sendStatistics(CIRCUIT_OBSERVATION_EXCHANGE, circuitStatisticsCSV);
 
 	}
 
 	public void sendPortStatistics(String portStatisticsCSV) throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException {
-		sendStatistics(SWITCH_OBSERVATION_TOPIC, portStatisticsCSV);
+		sendStatistics(SWITCH_OBSERVATION_EXCHANGE, portStatisticsCSV);
 
 	}
 

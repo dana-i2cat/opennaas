@@ -131,7 +131,7 @@ public class NetworkObservationPusherTest {
 			ShutdownSignalException,
 			ConsumerCancelledException, InterruptedException {
 
-		slaManagerServer = new NetworkOBservationConsumer(NetworkObservationsPusher.CIRCUIT_OBSERVATION_TOPIC);
+		slaManagerServer = new NetworkOBservationConsumer(NetworkObservationsPusher.CIRCUIT_OBSERVATION_EXCHANGE);
 
 		Thread thread = new Thread(slaManagerServer);
 		thread.start();
@@ -146,7 +146,7 @@ public class NetworkObservationPusherTest {
 	@Test
 	public void sendPortStatisticsTest() throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException,
 			InterruptedException {
-		slaManagerServer = new NetworkOBservationConsumer(NetworkObservationsPusher.SWITCH_OBSERVATION_TOPIC);
+		slaManagerServer = new NetworkOBservationConsumer(NetworkObservationsPusher.SWITCH_OBSERVATION_EXCHANGE);
 
 		Thread thread = new Thread(slaManagerServer);
 		thread.start();
