@@ -21,7 +21,7 @@ package org.opennaas.extensions.genericnetwork.capability.nclmonitoring.portstat
  */
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -38,20 +38,20 @@ import org.opennaas.extensions.genericnetwork.model.portstatistics.TimedPortStat
  */
 @Path("/")
 public interface IPortStatisticsMonitoringCapability extends ICapability {
-	
-	
+
 	/**
 	 * Retrieves port statistics in given time period
 	 * 
 	 * @param period
 	 * @return
 	 */
-	@GET
+	// FIXME this should be a GET, but jax-rs clients don't accept @Get with body.
+	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public TimedPortStatistics getPortStatistics(TimePeriod period);
-	
+
 	/**
 	 * Retrieves port statistics of given switch in given time period
 	 * 
@@ -59,12 +59,11 @@ public interface IPortStatisticsMonitoringCapability extends ICapability {
 	 * @param switchId
 	 * @return
 	 */
-	@GET
+	// FIXME this should be a GET, but jax-rs clients don't accept @Get with body.
+	@POST
 	@Path("/{switchId}")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public TimedPortStatistics getPortStatistics(TimePeriod period, @PathParam("switchId") String switchId);
-	
-	
 
 }

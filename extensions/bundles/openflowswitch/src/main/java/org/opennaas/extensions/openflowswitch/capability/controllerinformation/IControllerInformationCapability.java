@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.capability.circuitstatistics;
+package org.opennaas.extensions.openflowswitch.capability.controllerinformation;
 
 /*
  * #%L
- * OpenNaaS :: Generic Network
+ * OpenNaaS :: OpenFlow Switch
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -20,16 +20,15 @@ package org.opennaas.extensions.genericnetwork.capability.circuitstatistics;
  * #L%
  */
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.HealthState;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.MemoryUsage;
 
 /**
  * 
@@ -37,16 +36,16 @@ import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
  *
  */
 @Path("/")
-public interface ICircuitStatisticsCapability extends ICapability {
+public interface IControllerInformationCapability extends ICapability {
 
-	@PUT
-	@Consumes(MediaType.TEXT_PLAIN)
-	public void reportStatistics(String csvStatistics) throws CapabilityException;
+	@GET
+	@Path("/memoryUsage")
+	@Produces(MediaType.APPLICATION_XML)
+	public MemoryUsage getControllerMemoryUsage() throws CapabilityException;
 
-	// FIXME this should be a GET, but jax-rs clients don't accept @Get with body.
-	@POST
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_XML)
-	public String getStatistics(TimePeriod timePeriod) throws CapabilityException;
+	@GET
+	@Path("/healthState")
+	@Produces(MediaType.APPLICATION_XML)
+	public HealthState getHealthState() throws CapabilityException;
 
 }

@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.model.portstatistics;
+package org.opennaas.extensions.openflowswitch.capability.controllerinformation.model;
 
 /*
  * #%L
- * OpenNaaS :: Generic Network
+ * OpenNaaS :: OpenFlow Switch
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -20,59 +20,49 @@ package org.opennaas.extensions.genericnetwork.model.portstatistics;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Wrapper containing {@code List<TimedStatistics>}.
  * 
- * @author Isart Canyameres Gimenez (i2cat)
+ * @author Adrián Roselló Rey (i2CAT)
  *
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TimedPortStatistics {
+public class MemoryUsage {
 
-	@XmlElementWrapper(name = "statistics")
-	@XmlElement(name = "statistic")
-	private List<TimedStatistics>	statistics;
+	private long	total;
+	private long	free;
 
-	/**
-	 * Default constructor
-	 */
-	public TimedPortStatistics() {
-
+	public long getTotal() {
+		return total;
 	}
 
-	/**
-	 * Copy constructor
-	 * 
-	 * @param other
-	 */
-	public TimedPortStatistics(TimedPortStatistics other) {
-		this.statistics = new ArrayList<TimedStatistics>(other.statistics);
+	public void setTotal(long total) {
+		this.total = total;
 	}
 
-	public List<TimedStatistics> getStatistics() {
-		return statistics;
+	public long getFree() {
+		return free;
 	}
 
-	public void setStatistics(List<TimedStatistics> statistics) {
-		this.statistics = statistics;
+	public void setFree(long free) {
+		this.free = free;
+	}
+
+	@Override
+	public String toString() {
+		return "MemoryUsage [total=" + total + ", free=" + free + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((statistics == null) ? 0 : statistics.hashCode());
+		result = prime * result + (int) (free ^ (free >>> 32));
+		result = prime * result + (int) (total ^ (total >>> 32));
 		return result;
 	}
 
@@ -84,11 +74,10 @@ public class TimedPortStatistics {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TimedPortStatistics other = (TimedPortStatistics) obj;
-		if (statistics == null) {
-			if (other.statistics != null)
-				return false;
-		} else if (!statistics.equals(other.statistics))
+		MemoryUsage other = (MemoryUsage) obj;
+		if (free != other.free)
+			return false;
+		if (total != other.total)
 			return false;
 		return true;
 	}

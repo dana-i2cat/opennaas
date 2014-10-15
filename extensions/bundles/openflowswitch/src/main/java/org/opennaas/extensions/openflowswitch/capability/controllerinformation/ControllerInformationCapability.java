@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.capability.portstatistics;
+package org.opennaas.extensions.openflowswitch.capability.controllerinformation;
 
 /*
  * #%L
- * OpenNaaS :: Generic Network
+ * OpenNaaS :: OpenFlow Switch
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -34,61 +34,32 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.extensions.genericnetwork.Activator;
-import org.opennaas.extensions.openflowswitch.capability.portstatistics.IPortStatisticsCapability;
-import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatisticsActionSet;
-import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.HealthState;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.MemoryUsage;
+import org.opennaas.extensions.openflowswitch.repository.Activator;
 
 /**
- * {@link IPortStatisticsCapability} implementation for Generic Network
  * 
- * @author Julio Carlos Barrera
- * 
+ * @author Adrián Roselló Rey (i2CAT)
+ *
  */
-public class NetPortStatisticsCapability extends AbstractCapability implements IPortStatisticsCapability {
+public class ControllerInformationCapability extends AbstractCapability implements IControllerInformationCapability {
 
-	public static String	CAPABILITY_TYPE	= "gnetportstatistics";
+	public static String	CAPABILITY_TYPE	= "controllerinformation";
 
-	private Log				log				= LogFactory.getLog(NetPortStatisticsCapability.class);
+	private Log				log				= LogFactory.getLog(ControllerInformationCapability.class);
 
 	private String			resourceId		= "";
 
-	public NetPortStatisticsCapability(CapabilityDescriptor descriptor, String resourceId) {
+	public ControllerInformationCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
-		log.debug("Built new Port Statistics Capability");
-	}
-
-	@Override
-	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IPortStatisticsCapability.class.getName());
-		super.activate();
-	}
-
-	@Override
-	public void deactivate() throws CapabilityException {
-		unregisterService();
-		super.deactivate();
+		log.debug("Built new Controller Information Capability");
 	}
 
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_TYPE;
-	}
-
-	@Override
-	public SwitchPortStatistics getPortStatistics() throws CapabilityException {
-		IAction action = createActionAndCheckParams(PortStatisticsActionSet.GET_PORT_STATISTICS, this.resource);
-		ActionResponse response = executeAction(action);
-
-		Object responseObject = response.getResult();
-		if (!(responseObject instanceof SwitchPortStatistics)) {
-			throw new CapabilityException("Unexpected action response object:" + responseObject.getClass());
-		}
-
-		// assuming the action returns what it is meant to
-		SwitchPortStatistics statistics = (SwitchPortStatistics) responseObject;
-		return statistics;
+		return this.CAPABILITY_TYPE;
 	}
 
 	@Override
@@ -102,10 +73,60 @@ public class NetPortStatisticsCapability extends AbstractCapability implements I
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
-			return Activator.getActionSetService(NetPortStatisticsCapability.CAPABILITY_TYPE, name, version);
+			return Activator.getControllerInformationActionSetService(name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
+
 		}
+	}
+
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				IControllerInformationCapability.class.getName());
+		super.activate();
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		unregisterService();
+		super.deactivate();
+	}
+
+	// ###############################################
+	// ### IControllerInformationCapability methods ###
+	// ###############################################
+
+	@Override
+	public HealthState getHealthState() throws CapabilityException {
+		log.info("Getting Controller's Health State.");
+
+		IAction action = createActionAndCheckParams(ControllerInformationActionSet.GET_HEALTH_STATE, null);
+		ActionResponse response = executeAction(action);
+
+		Object result = response.getResult();
+		if (!(result instanceof HealthState)) {
+			throw new CapabilityException("Unexpected action response object:" + result.getClass().getName());
+		}
+
+		return (HealthState) result;
+
+	}
+
+	@Override
+	public MemoryUsage getControllerMemoryUsage() throws CapabilityException {
+
+		log.info("Getting Controller's Memory Usage.");
+
+		IAction action = createActionAndCheckParams(ControllerInformationActionSet.GET_MEMORY_USAGE, null);
+		ActionResponse response = executeAction(action);
+
+		Object result = response.getResult();
+		if (!(result instanceof MemoryUsage)) {
+			throw new CapabilityException("Unexpected action response object:" + result.getClass().getName());
+		}
+
+		return (MemoryUsage) result;
 	}
 
 	private ActionResponse executeAction(IAction action) throws CapabilityException {

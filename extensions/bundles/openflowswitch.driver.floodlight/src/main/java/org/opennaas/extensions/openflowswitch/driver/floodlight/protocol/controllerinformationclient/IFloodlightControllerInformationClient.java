@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.capability.circuitstatistics;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.controllerinformationclient;
 
 /*
  * #%L
- * OpenNaaS :: Generic Network
+ * OpenNaaS :: OpenFlow Switch :: Floodlight driver v0.90
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -20,33 +20,30 @@ package org.opennaas.extensions.genericnetwork.capability.circuitstatistics;
  * #L%
  */
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.extensions.genericnetwork.model.portstatistics.TimePeriod;
+import org.opennaas.extensions.openflowswitch.capability.controllerinformation.model.MemoryUsage;
+import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.controllerinformationclient.model.Healthy;
 
 /**
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
-@Path("/")
-public interface ICircuitStatisticsCapability extends ICapability {
+@Path("/wm/core/")
+public interface IFloodlightControllerInformationClient {
 
-	@PUT
-	@Consumes(MediaType.TEXT_PLAIN)
-	public void reportStatistics(String csvStatistics) throws CapabilityException;
+	@GET
+	@Path("/memory/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public MemoryUsage getMemoryUsage();
 
-	// FIXME this should be a GET, but jax-rs clients don't accept @Get with body.
-	@POST
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_XML)
-	public String getStatistics(TimePeriod timePeriod) throws CapabilityException;
+	@GET
+	@Path("/health/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Healthy getHealthState();
 
 }

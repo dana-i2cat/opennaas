@@ -1,8 +1,8 @@
-package org.opennaas.extensions.genericnetwork.model.portstatistics;
+package org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.controllerinformationclient.model;
 
 /*
  * #%L
- * OpenNaaS :: Generic Network
+ * OpenNaaS :: OpenFlow Switch :: Floodlight driver v0.90
  * %%
  * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
  * %%
@@ -20,59 +20,34 @@ package org.opennaas.extensions.genericnetwork.model.portstatistics;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Wrapper containing {@code List<TimedStatistics>}.
- * 
- * @author Isart Canyameres Gimenez (i2cat)
- *
- */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TimedPortStatistics {
+public class Healthy {
 
-	@XmlElementWrapper(name = "statistics")
-	@XmlElement(name = "statistic")
-	private List<TimedStatistics>	statistics;
+	private boolean	healthy;
 
-	/**
-	 * Default constructor
-	 */
-	public TimedPortStatistics() {
-
+	public boolean isHealthy() {
+		return healthy;
 	}
 
-	/**
-	 * Copy constructor
-	 * 
-	 * @param other
-	 */
-	public TimedPortStatistics(TimedPortStatistics other) {
-		this.statistics = new ArrayList<TimedStatistics>(other.statistics);
+	public void setHealthy(boolean healthy) {
+		this.healthy = healthy;
 	}
 
-	public List<TimedStatistics> getStatistics() {
-		return statistics;
-	}
-
-	public void setStatistics(List<TimedStatistics> statistics) {
-		this.statistics = statistics;
+	@Override
+	public String toString() {
+		return "Healthy [healthy=" + healthy + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((statistics == null) ? 0 : statistics.hashCode());
+		result = prime * result + (healthy ? 1231 : 1237);
 		return result;
 	}
 
@@ -84,12 +59,10 @@ public class TimedPortStatistics {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TimedPortStatistics other = (TimedPortStatistics) obj;
-		if (statistics == null) {
-			if (other.statistics != null)
-				return false;
-		} else if (!statistics.equals(other.statistics))
+		Healthy other = (Healthy) obj;
+		if (healthy != other.healthy)
 			return false;
 		return true;
 	}
+
 }
