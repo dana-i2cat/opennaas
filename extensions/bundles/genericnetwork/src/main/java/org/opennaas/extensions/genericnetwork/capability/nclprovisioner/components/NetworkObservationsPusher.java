@@ -20,7 +20,19 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner.compone
  * #L%
  */
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 
 /**
  * 
@@ -29,18 +41,64 @@ import java.net.URI;
  */
 public class NetworkObservationsPusher {
 
+	private Log					log							= LogFactory.getLog(NetworkObservationsPusher.class);
+
+	public static final String	CIRCUIT_OBSERVATION_TOPIC	= "observations_NCL_qos_flow";
+	public static final String	SWITCH_OBSERVATION_TOPIC	= "observations_NCL_qos_switch";
+	public static final String	OBSERVATIONS_CONTENT_TYPE	= "text/csv";
+	public static final String	RABBIT_MQ_ROUTING_KEY		= "ofertie";
+
+	private URI					slaManagerUri;
+
 	public NetworkObservationsPusher(URI slaManagerUri) {
-		// TODO Auto-generated constructor stub
+		this.slaManagerUri = slaManagerUri;
 	}
 
-	public void sendCircuitStatistics(String circuitStatisticsCSV) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void sendPortStatistics(String parsePortStatistics) {
-		// TODO Auto-generated method stub
+	public void sendCircuitStatistics(String circuitStatisticsCSV) throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException,
+			IOException {
+		sendStatistics(CIRCUIT_OBSERVATION_TOPIC, circuitStatisticsCSV);
 
 	}
 
+	public void sendPortStatistics(String portStatisticsCSV) throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException {
+		sendStatistics(SWITCH_OBSERVATION_TOPIC, portStatisticsCSV);
+
+	}
+
+	private void sendStatistics(String topicName, String csvMessage) throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException,
+			IOException {
+
+		Connection conn = null;
+		Channel channel = null;
+
+		try {
+
+			log.debug("Establishing RabbitMQ connection with sla manager with URI: " + slaManagerUri);
+
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost(slaManagerUri.getHost());
+
+			conn = factory.newConnection();
+			channel = conn.createChannel();
+
+			channel.exchangeDeclare(topicName, "direct");
+
+			log.debug("Publishing message in RabbitMQ channel.");
+
+			channel.basicPublish(topicName, RABBIT_MQ_ROUTING_KEY, new AMQP.BasicProperties.Builder()
+					.contentType(OBSERVATIONS_CONTENT_TYPE).build(), csvMessage.getBytes());
+
+			log.debug("Message successfully sent to SLA manager.");
+
+		} finally {
+			if (channel != null && channel.isOpen())
+				channel.close();
+			if (conn != null && conn.isOpen())
+				conn.close();
+
+			log.debug("Connection to RabbitMQ server closed.");
+
+		}
+
+	}
 }

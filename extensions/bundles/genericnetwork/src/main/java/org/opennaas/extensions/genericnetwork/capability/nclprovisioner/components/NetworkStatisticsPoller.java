@@ -46,13 +46,11 @@ public class NetworkStatisticsPoller extends TimerTask {
 
 	private Log							log	= LogFactory.getLog(NetworkStatisticsPoller.class);
 
-	private URI							slaManagerUri;
 	private IResource					resource;
 	private NetworkObservationsPusher	slaManagerClient;
 	private long						previousTimestamp;
 
 	public NetworkStatisticsPoller(URI slaManagerUri, IResource resource) {
-		this.slaManagerUri = slaManagerUri;
 		this.resource = resource;
 
 		slaManagerClient = new NetworkObservationsPusher(slaManagerUri);
@@ -71,7 +69,7 @@ public class NetworkStatisticsPoller extends TimerTask {
 		log.debug("Getting stadistics for resource " + resource.getResourceDescriptor().getInformation().getName() + " during time period " + timePeriod);
 
 		try {
-			// report circuitsStatistics
+			// report circuits statistics
 			ICircuitStatisticsCapability circuitStatisticsCapab = (ICircuitStatisticsCapability) resource
 					.getCapabilityByInterface(ICircuitStatisticsCapability.class);
 			IPortStatisticsMonitoringCapability portStatisticsCapab = (IPortStatisticsMonitoringCapability) resource
@@ -81,6 +79,7 @@ public class NetworkStatisticsPoller extends TimerTask {
 			slaManagerClient.sendCircuitStatistics(circuitStatisticsCSV);
 			log.debug("Circuit stadistics successfully reported.");
 
+			// report ports statistics
 			TimedPortStatistics portStatistics = portStatisticsCapab.getPortStatistics(timePeriod);
 
 			slaManagerClient.sendPortStatistics(parsePortStatistics(portStatistics));
@@ -89,8 +88,8 @@ public class NetworkStatisticsPoller extends TimerTask {
 		} catch (ResourceException e) {
 			log.warn("Could not report statistics for resource " + resource.getResourceDescriptor()
 					.getInformation().getName(), e);
-		} catch (IOException io) {
-			log.warn("Error reporting port statistics for resource " + resource.getResourceDescriptor().getInformation().getName(), io);
+		} catch (Exception e) {
+			log.warn("Error reporting statistics for resource " + resource.getResourceDescriptor().getInformation().getName(), e);
 		}
 
 	}

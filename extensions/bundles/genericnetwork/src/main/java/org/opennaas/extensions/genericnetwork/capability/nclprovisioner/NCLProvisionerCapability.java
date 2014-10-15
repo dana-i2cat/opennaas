@@ -506,6 +506,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	private void initializeStatisticsPusher() throws CapabilityException {
+		log.info("Initializing Network statistics pusher.");
+
 		String slaManagerUri = descriptor.getPropertyValue(SLA_MANAGER_URI);
 		String pollingInterval = descriptor.getPropertyValue(POLLING_INTERVAL_KEY);
 
@@ -525,5 +527,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			log.error("Invalid SLA URI.", e);
 			throw new CapabilityException(e);
 		}
+
+		log.debug("Network statistics pusher initialized.");
 	}
 }
