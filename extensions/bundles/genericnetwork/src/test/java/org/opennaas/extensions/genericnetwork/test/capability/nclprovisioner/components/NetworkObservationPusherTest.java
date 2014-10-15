@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.NetworkObservationsPusher;
 
@@ -41,6 +42,10 @@ import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
 /**
+ * <p>
+ * This class tests the {@link NetworkObservationsPusher} methods. All of the tests of this class are ignored, since they need an installed rabbitmq
+ * server.
+ * </p>
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
@@ -127,6 +132,7 @@ public class NetworkObservationPusherTest {
 	}
 
 	@Test
+	@Ignore
 	public void sendCicuitStatisticsTest() throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException,
 			ShutdownSignalException,
 			ConsumerCancelledException, InterruptedException {
@@ -144,6 +150,7 @@ public class NetworkObservationPusherTest {
 	}
 
 	@Test
+	@Ignore
 	public void sendPortStatisticsTest() throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException,
 			InterruptedException {
 		slaManagerServer = new NetworkOBservationConsumer(NetworkObservationsPusher.SWITCH_OBSERVATION_EXCHANGE);
