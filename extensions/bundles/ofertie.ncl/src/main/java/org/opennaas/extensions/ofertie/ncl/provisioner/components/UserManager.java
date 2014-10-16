@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components;
+package org.opennaas.extensions.ofertie.ncl.provisioner.components;
 
 /*
  * #%L
@@ -34,8 +34,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
-import org.opennaas.extensions.genericnetwork.model.users.User;
-import org.opennaas.extensions.genericnetwork.model.users.UserSet;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.User;
+import org.opennaas.extensions.ofertie.ncl.provisioner.model.UserSet;
 
 /**
  * 

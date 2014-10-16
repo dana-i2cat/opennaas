@@ -1,4 +1,4 @@
-package org.opennaas.extensions.genericnetwork.model.users;
+package org.opennaas.extensions.ofertie.ncl.provisioner.model;
 
 /*
  * #%L
@@ -20,54 +20,41 @@ package org.opennaas.extensions.genericnetwork.model.users;
  * #L%
  */
 
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * <p>
+ * Wrapper for the {@link User} class.
+ * </p>
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
 @XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class User {
+public class UserSet {
 
-	private String	username;
-	private String	password;
-	private String	sdnModuleUri;
+	@XmlElement(name = "user")
+	private Set<User>	users;
 
-	public String getUsername() {
-		return username;
+	public Set<User> getUsers() {
+		return users;
 	}
 
-	public void setUsername(String name) {
-		this.username = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getSdnModuleUri() {
-		return sdnModuleUri;
-	}
-
-	public void setSdnModuleUri(String sdnModuleUri) {
-		this.sdnModuleUri = sdnModuleUri;
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((sdnModuleUri == null) ? 0 : sdnModuleUri.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((users == null) ? 0 : users.hashCode());
 		return result;
 	}
 
@@ -79,28 +66,18 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
-		if (password == null) {
-			if (other.password != null)
+		UserSet other = (UserSet) obj;
+		if (users == null) {
+			if (other.users != null)
 				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (sdnModuleUri == null) {
-			if (other.sdnModuleUri != null)
-				return false;
-		} else if (!sdnModuleUri.equals(other.sdnModuleUri))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
+		} else if (!users.equals(other.users))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", sdnModuleUri=" + sdnModuleUri + "]";
+		return "UserSet [users=" + users + "]";
 	}
 
 }
