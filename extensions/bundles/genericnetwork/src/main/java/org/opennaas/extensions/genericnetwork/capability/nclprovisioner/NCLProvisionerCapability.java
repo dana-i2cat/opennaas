@@ -96,6 +96,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	public void activate() throws CapabilityException {
 		try {
 			registerAsCongestionEventListener();
+
 		} catch (IOException e) {
 			log.warn("Could not registrate NCLProvisionerCapability as listener for PortCongestion events.", e);
 		}
