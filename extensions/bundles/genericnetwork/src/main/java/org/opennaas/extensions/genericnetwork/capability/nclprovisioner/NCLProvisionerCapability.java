@@ -44,6 +44,7 @@ import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICi
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.UserManager;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
@@ -77,6 +78,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	private final static String	NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl";
 	private final static String	AUTOREROUTE_KEY	= "ncl.autoreroute";
+	private UserManager			userManager;
 
 	private final Object		lock			= new Object();
 
@@ -96,9 +98,12 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	public void activate() throws CapabilityException {
 		try {
 			registerAsCongestionEventListener();
+
 		} catch (IOException e) {
 			log.warn("Could not registrate NCLProvisionerCapability as listener for PortCongestion events.", e);
 		}
+
+		userManager = new UserManager();
 
 		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
 				INCLProvisionerCapability.class.getName());
