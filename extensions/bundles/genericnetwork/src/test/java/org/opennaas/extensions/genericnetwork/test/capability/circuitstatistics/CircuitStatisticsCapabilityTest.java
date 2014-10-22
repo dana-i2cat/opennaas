@@ -58,7 +58,7 @@ public class CircuitStatisticsCapabilityTest {
 	private static final String	FIRST_CIRCUIT_PACKET_LOSS	= "2";
 	private static final String	FIRST_CIRCUIT_DELAY			= "0";
 	private static final String	FIRST_CIRCUIT_JITTER		= "0";
-	private static final String	FIRST_CIRCUIT_FLOW_DATA		= "1234";
+	private static final String	FIRST_CIRCUIT_FLOW_DATA		= "192.168.1.2,192.168.1.3,4";
 
 	private static final String	SECOND_CIRCUIT_FLOW_ID		= "2";
 	private static final String	SECOND_CIRCUIT_THROUGHPUT	= "20";

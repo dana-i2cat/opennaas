@@ -74,6 +74,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	public NCLProvisioner() {
 		mutex = new Object();
 		clientManager = new ClientManager();
+
 	}
 
 	public NCLModel getModel() {
@@ -225,7 +226,8 @@ public class NCLProvisioner implements INCLProvisioner {
 			} catch (Exception e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
 				sdnClient.qosPolicyAllocationFailed("UNKNOWN", updatedQosPolicyRequest, e);
-				throw new ProvisionerException(e);
+				throw new FlowAllocationException(e);
+
 			}
 		}
 	}
