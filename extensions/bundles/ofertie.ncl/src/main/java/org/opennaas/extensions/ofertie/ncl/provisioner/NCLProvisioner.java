@@ -35,6 +35,8 @@ import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitExcep
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestWrapperParser;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
+import org.opennaas.extensions.ofertie.ncl.notification.INCLNotifierClient;
+import org.opennaas.extensions.ofertie.ncl.notification.NCLNotifierClient;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
@@ -62,6 +64,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	private IQoSPDP				qoSPDP;
 	private INetworkSelector	networkSelector;
 	private IResourceManager	resourceManager;
+	private INCLNotifierClient	sdnClient;
 
 	private NCLModel			model;
 
@@ -69,6 +72,7 @@ public class NCLProvisioner implements INCLProvisioner {
 
 	public NCLProvisioner() {
 		mutex = new Object();
+		sdnClient = new NCLNotifierClient();
 	}
 
 	public NCLModel getModel() {
@@ -149,12 +153,20 @@ public class NCLProvisioner implements INCLProvisioner {
 
 				getAllocatedRequests().put(circuitId, circuitRequest);
 
+				log.debug("Notifiying SDN Module flow " + circuitId + " has been allocated.");
+
+				sdnClient.qosPolicyAllocated(circuitId, qosPolicyRequest);
+
 				return circuitId;
 			} catch (FlowAllocationException fae) {
+				// FIXME for the moment we return "unknown" as circuit id, since the circuit id is not yet created when the allocation fails!
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", fae);
 				throw fae;
 			} catch (CapabilityException ce) {
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", ce);
 				throw new FlowAllocationException(ce);
 			} catch (Exception e) {
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", e);
 				throw new ProvisionerException(e);
 			}
 		}
@@ -179,14 +191,20 @@ public class NCLProvisioner implements INCLProvisioner {
 
 				getAllocatedRequests().put(flowId, circuitRequest);
 
+				sdnClient.qosPolicyAllocated(flowId, updatedQosPolicyRequest);
+
 				return flowId;
 			} catch (CircuitAllocationException e) {
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", e);
 				throw new FlowAllocationException(e);
 			} catch (NotExistingCircuitException e) {
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", e);
 				throw new FlowNotFoundException(e);
 			} catch (ResourceException e) {
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", e);
 				throw new ProvisionerException(e);
 			} catch (Exception e) {
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", e);
 				throw new ProvisionerException(e);
 			}
 		}
@@ -206,6 +224,10 @@ public class NCLProvisioner implements INCLProvisioner {
 				nclProvCapab.deallocateCircuit(flowId);
 
 				getAllocatedRequests().remove(flowId);
+
+				log.debug("Notifiying SDN Module flow " + flowId + " has been deallocated.");
+
+				sdnClient.flowDeleted(flowId);
 
 			} catch (NotExistingCircuitException e) {
 				throw new FlowNotFoundException(e);
