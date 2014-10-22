@@ -46,6 +46,7 @@ import com.rabbitmq.client.ConnectionFactory;
  * dispatch this type of message to the queues consuming this exchange.
  * </p>
  * 
+ * @author Isart Canyameres Gimenez (i2cat)
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
