@@ -182,8 +182,8 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 
 			for (String[] currentRecord : records) {
 
-				if (currentRecord.length != 7)
-					throw new IllegalArgumentException("Invalid record length: it should contain 7 fields.");
+				if (currentRecord.length < 7)
+					throw new IllegalArgumentException("Invalid record length: it should contain at least 7 fields.");
 
 				CircuitStatistics currentStatistics = new CircuitStatistics();
 
@@ -197,7 +197,13 @@ public class CircuitStatisticsCapability extends AbstractCapability implements I
 				currentStatistics.setPacketLoss(currentRecord[3].trim());
 				currentStatistics.setDelay(currentRecord[4].trim());
 				currentStatistics.setJitter(currentRecord[5].trim());
-				currentStatistics.setFlowData(currentRecord[6].trim());
+				StringBuilder sb = new StringBuilder();
+
+				for (int i = 6; i < currentRecord.length; i++)
+					sb.append(currentRecord[i]).append(",");
+				sb.setLength(sb.length() - 1); // remove last ","
+
+				currentStatistics.setFlowData(sb.toString().trim());
 
 				if (circuitsStatistics.containsKey(timestamp))
 					circuitsStatistics.get(timestamp).add(currentStatistics);
