@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
@@ -56,7 +57,10 @@
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
 		</dependency>
-				
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.security</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -78,7 +82,7 @@
 							*
 						</Import-Package>
 						<Export-Package>
-						    org.opennaas.extensions.ofertie.ncl.helpers,
+							org.opennaas.extensions.ofertie.ncl.helpers,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.model,
