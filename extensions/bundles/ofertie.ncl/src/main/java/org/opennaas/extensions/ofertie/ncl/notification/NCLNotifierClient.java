@@ -43,7 +43,7 @@ public class NCLNotifierClient implements INCLNotifierClient {
 	}
 
 	@Override
-	public void flowDeleted(String flowId, QosPolicyRequest request) {
+	public void qosPolicyDeallocated(String flowId, QosPolicyRequest request) {
 		nclNotificationAPI.flowRejected(flowId, request.getQosPolicy());
 	}
 
