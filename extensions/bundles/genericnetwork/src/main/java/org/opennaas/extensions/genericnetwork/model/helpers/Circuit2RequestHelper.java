@@ -30,8 +30,8 @@ import org.opennaas.extensions.genericnetwork.model.circuit.request.Destination;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.Source;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 
 import com.google.common.collect.BiMap;
 
@@ -95,20 +95,20 @@ public class Circuit2RequestHelper {
 	}
 
 	/**
-	 * Generates a new {@link FloodlightOFFlow} given {@link FloodlightOFMatch} and calculates Port ID values given NetworkDevicePortIdsMap and
-	 * current {@link NetworkConnection}
+	 * Generates a new {@link OFFlow} given {@link FloodlightOFMatch} and calculates Port ID values given NetworkDevicePortIdsMap and current
+	 * {@link NetworkConnection}
 	 * 
 	 * @param match
 	 * @param networkDevicePortIdsMap
 	 * @param networkConnection
 	 * @return
 	 */
-	public static FloodlightOFFlow generateFloodlightOFFlow(FloodlightOFMatch match, BiMap<String, DevicePortId> networkDevicePortIdsMap,
+	public static OFFlow generateSwitchOFFlow(FloodlightOFMatch match, BiMap<String, DevicePortId> networkDevicePortIdsMap,
 			NetworkConnection networkConnection) {
 		String internalSourcePortId = generateInternalPortId(networkConnection.getSource().getId(), networkDevicePortIdsMap);
 		String internalDestinationPortId = generateInternalPortId(networkConnection.getDestination().getId(), networkDevicePortIdsMap);
 
-		FloodlightOFFlow flow = new FloodlightOFFlow();
+		OFFlow flow = new OFFlow();
 		flow.setName(generateRandomFlowId());
 		flow.setActive(true);
 		FloodlightOFMatch newMatch = new FloodlightOFMatch(match);
