@@ -38,6 +38,7 @@
 		<feature version="${project.version}">opennaas-power</feature>
 		<feature version="${project.version}">opennaas-openflowswitch</feature>
 		<feature version="${project.version}">opennaas-openflowswitch-driver-floodlight</feature>
+		<feature version="${project.version}">opennaas-openflowswitch-driver-ryu</feature>
 		<feature version="${project.version}">opennaas-quantum</feature>
 		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
 		<feature version="${project.version}">opennaas-genericnetwork</feature>
