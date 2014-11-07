@@ -258,7 +258,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			log.info("PortCongestionEvent alarm received for port" + portId);
 			boolean autoReroute = readAutorerouteOption();
 			if (autoReroute) {
-				log.debug("Auto-reroute is activated. Launching auto-reroute");
+				log.debug("Auto-reroute is activated. Launching auto-reroute in network " + resource.getResourceDescriptor().getInformation()
+						.getName());
 				try {
 					launchRerouteMechanism(portId);
 				} catch (Exception e) {
@@ -378,6 +379,9 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 			CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(toReroute.getQos(), toReroute.getTrafficFilter(),
 					toReroute.getRoute());
+
+			log.debug("Built request in network " + resource.getResourceDescriptor().getInformation().getName() + " : " + circuitRequest.getSource() + ", " + circuitRequest
+					.getDestination());
 			Route route = pathFindingCapab.findPathForRequest(circuitRequest);
 
 			Circuit withNewRoute = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
