@@ -21,13 +21,17 @@ package org.opennaas.extensions.genericnetwork.capability.nclprovisioner;
  */
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Timer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ResourceException;
@@ -44,6 +48,7 @@ import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.ICi
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitCollection;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.api.CircuitId;
 import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.CircuitFactoryLogic;
+import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.components.NetworkStatisticsPoller;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.IPathFindingCapability;
 import org.opennaas.extensions.genericnetwork.events.PortCongestionEvent;
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
@@ -68,17 +73,20 @@ import org.osgi.service.event.EventHandler;
 
 public class NCLProvisionerCapability extends AbstractCapability implements INCLProvisionerCapability, EventHandler {
 
-	public static final String	CAPABILITY_TYPE	= "nclprovisioner";
-
-	private Log					log				= LogFactory.getLog(NCLProvisionerCapability.class);
-	private String				resourceId		= "";
+	public static final String	CAPABILITY_TYPE			= "nclprovisioner";
+	public static final String	POLLING_INTERVAL_KEY	= "polling.interval";
+	public static final String	SLA_MANAGER_URI			= "slamanager.uri";
+	private Log					log						= LogFactory.getLog(NCLProvisionerCapability.class);
+	private String				resourceId				= "";
 
 	private ServiceRegistration	eventListenerRegistration;
 
-	private final static String	NCL_CONFIG_FILE	= "org.opennaas.extensions.ofertie.ncl";
-	private final static String	AUTOREROUTE_KEY	= "ncl.autoreroute";
+	private final static String	NCL_CONFIG_FILE			= "org.opennaas.extensions.ofertie.ncl";
+	private final static String	AUTOREROUTE_KEY			= "ncl.autoreroute";
 
-	private final Object		lock			= new Object();
+	private final Object		lock					= new Object();
+
+	private Timer				statisticsPollerTimer;
 
 	public NCLProvisionerCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -96,6 +104,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	public void activate() throws CapabilityException {
 		try {
 			registerAsCongestionEventListener();
+			initializeStatisticsPusher();
+
 		} catch (IOException e) {
 			log.warn("Could not registrate NCLProvisionerCapability as listener for PortCongestion events.", e);
 		}
@@ -107,6 +117,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	@Override
 	public void deactivate() throws CapabilityException {
+		statisticsPollerTimer.cancel();
+		statisticsPollerTimer = null;
 		unregisterListener();
 		unregisterService();
 		super.deactivate();
@@ -495,5 +507,31 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		}
 
 		return circuitsIdsInPort;
+	}
+
+	private void initializeStatisticsPusher() throws CapabilityException {
+		log.info("Initializing Network statistics pusher.");
+
+		String slaManagerUri = descriptor.getPropertyValue(SLA_MANAGER_URI);
+		String pollingInterval = descriptor.getPropertyValue(POLLING_INTERVAL_KEY);
+
+		if (StringUtils.isEmpty(slaManagerUri) || StringUtils.isEmpty(pollingInterval))
+			throw new CapabilityException("SLAManager URI and Polling Interval should be indicated as capability property.");
+
+		if (!StringUtils.isNumeric(pollingInterval))
+			throw new CapabilityException("Invalid polling interval: value must be numeric.");
+
+		// initialize statistics poller
+		try {
+			NetworkStatisticsPoller statisticsPoller = new NetworkStatisticsPoller(new URI(slaManagerUri), this.resource);
+			statisticsPollerTimer = new Timer("Generic Network " + this.resourceId + " statistics poller.", true);
+			statisticsPollerTimer.scheduleAtFixedRate(statisticsPoller, 0, Integer.valueOf(pollingInterval) * 1000);
+
+		} catch (URISyntaxException e) {
+			log.error("Invalid SLA URI.", e);
+			throw new CapabilityException(e);
+		}
+
+		log.debug("Network statistics pusher initialized.");
 	}
 }
