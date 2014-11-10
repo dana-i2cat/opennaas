@@ -2,6 +2,7 @@ package org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionsse
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
@@ -45,7 +46,10 @@ public class RemoveOFForwardingAction extends RyuAction {
 			throw new ActionException(e);
 		}
 
-		return null;
+		ActionResponse response = new ActionResponse();
+		response.setStatus(STATUS.OK);
+
+		return response;
 	}
 
 	private RyuOFFlow getFlowByName(String flowName, String switchId, IRyuStatsClient client) throws ProtocolException, Exception {
