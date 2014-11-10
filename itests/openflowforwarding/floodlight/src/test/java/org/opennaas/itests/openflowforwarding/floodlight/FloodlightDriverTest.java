@@ -62,6 +62,7 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.Floodli
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.InitializerTestHelper;
@@ -132,6 +133,7 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-openflowswitch-driver-floodlight", "itests-helpers"),
 				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepLogConfiguration(),
+				// OpennaasExamOptions.openDebugSocket(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
 
@@ -169,7 +171,7 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 	public void createRuleTest() throws Exception {
 
 		IOpenflowForwardingCapability forwardingCapab = (IOpenflowForwardingCapability) getCapability(IOpenflowForwardingCapability.class);
-		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "32767", "1", "2");
+		OFFlow forwardingRule = FloodlightTestHelper.sampleOFFlow("flow-mod-1", "32767", "1", "2");
 		forwardingCapab.createOpenflowForwardingRule(forwardingRule);
 
 		OpenflowSwitchModel model = (OpenflowSwitchModel) ofSwitchResource.getModel();
@@ -180,11 +182,11 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 		Assert.assertNotNull(table.getOfForwardingRules());
 		Assert.assertEquals(1, table.getOfForwardingRules().size());
 
-		FloodlightOFFlow flow = table.getOfForwardingRules().get(0);
+		OFFlow flow = table.getOfForwardingRules().get(0);
 		Assert.assertNotNull(flow);
 		Assert.assertNotNull("Flow should contain as id \"flow-mod-1\".", flow.getName());
 		Assert.assertEquals("Flow priority should be " + FLOW_PRIORITY, FLOW_PRIORITY, flow.getPriority());
-		Assert.assertEquals("Switch id should be " + SWITCH_ID, SWITCH_ID, flow.getSwitchId());
+		Assert.assertEquals("Switch id should be " + SWITCH_ID, SWITCH_ID, model.getSwitchId());
 
 		Assert.assertNotNull("Flow should contain actions.", flow.getActions());
 		Assert.assertEquals("Flow should contain one action.", 1, flow.getActions().size());
@@ -209,20 +211,20 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 	@Test
 	public void createRuleWithIPWS() throws CapabilityException {
 
-		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "32767", "1", "2");
+		OFFlow forwardingRule = FloodlightTestHelper.sampleOFFlow("flow-mod-1", "32767", "1", "2");
 		forwardingRule.getMatch().setSrcIp("192.168.1.1");
 		forwardingRule.getMatch().setDstIp("192.168.1.2");
-		forwardingRule.setSwitchId(SWITCH_ID);
+		// forwardingRule.setSwitchId(SWITCH_ID);
 
 		IOpenflowForwardingCapability forwardingClient = InitializerTestHelper.createRestClient(WS_URI, IOpenflowForwardingCapability.class, null,
 				WS_USERNAME, WS_PASSWORD);
 		forwardingClient.createOpenflowForwardingRule(forwardingRule);
 
-		List<FloodlightOFFlow> forwardingRules = forwardingClient.getOpenflowForwardingRulesAPI().getForwardingRules();
+		List<OFFlow> forwardingRules = forwardingClient.getOpenflowForwardingRulesAPI().getForwardingRules();
 		Assert.assertNotNull(forwardingRules);
 		Assert.assertEquals(1, forwardingRules.size());
 
-		FloodlightOFFlow readedForwardingRule = forwardingRules.get(0);
+		OFFlow readedForwardingRule = forwardingRules.get(0);
 		Assert.assertEquals(forwardingRule, readedForwardingRule);
 
 	}
@@ -239,14 +241,14 @@ public class FloodlightDriverTest extends MockHTTPServerTest {
 	public void createAndDeleteRuleTest() throws ResourceException {
 
 		IOpenflowForwardingCapability forwardingCapab = (IOpenflowForwardingCapability) getCapability(IOpenflowForwardingCapability.class);
-		FloodlightOFFlow forwardingRule = FloodlightTestHelper.sampleFloodlightOFFlow("flow-mod-1", "1", "1", "2");
+		OFFlow forwardingRule = FloodlightTestHelper.sampleOFFlow("flow-mod-1", "1", "1", "2");
 		forwardingCapab.createOpenflowForwardingRule(forwardingRule);
 
 		OpenflowSwitchModel model = (OpenflowSwitchModel) ofSwitchResource.getModel();
 		OFFlowTable table = model.getOfTables().get(0);
 
 		Assert.assertEquals(1, table.getOfForwardingRules().size());
-		FloodlightOFFlow flow = table.getOfForwardingRules().get(0);
+		FloodlightOFFlow flow = (FloodlightOFFlow) table.getOfForwardingRules().get(0);
 		Assert.assertNotNull(flow);
 
 		forwardingCapab.removeOpenflowForwardingRule(flow.getName());
