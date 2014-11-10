@@ -1,5 +1,27 @@
 package org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions;
 
+/*
+ * #%L
+ * OpenNaaS :: OpenFlow Switch :: Ryu driver v3.14
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
@@ -12,8 +34,10 @@ import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionsset
 import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.RyuConstants;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.IRyuStatsClient;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.model.RyuOFFlow;
+import org.opennaas.extensions.openflowswitch.helpers.ForwardingRuleUtils;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
@@ -79,11 +103,29 @@ public class CreateOFForwardingAction extends RyuAction {
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
+
+		// FIXME we assume forwarding rules are set in table 0
+		OFFlowTable flowTable = ((OpenflowSwitchModel) getModelToUpdate()).getOfTables().get(0);
+		List<OFFlow> forwardingRules = flowTable.getOfForwardingRules();
+		for (OFFlow ofFlow : forwardingRules) {
+			compareForwardingRuleIsUnique(ofFlow, (RyuOFFlow) params);
+			if (ofFlow.getName().equals(((RyuOFFlow) params).getName())) {
+				log.debug("Removing existing flow with same id : " + ofFlow.getName());
+				RemoveOFForwardingAction action = new RemoveOFForwardingAction();
+				action.setParams(ofFlow);
+				action.execute(protocolSessionManager);
+			}
+
+		}
+
 		try {
+
 			// TODO we have to find another place where we could put switchId in model.
 			setSwitchIdInModel(protocolSessionManager);
 
 			IRyuStatsClient client = getRyuProtocolSession(protocolSessionManager).getRyuClientForUse();
+
+			log.debug("Sending forwarding rule to Ryu controller.");
 			client.addFlowEntry((RyuOFFlow) params);
 
 		} catch (Exception e) {
@@ -102,4 +144,10 @@ public class CreateOFForwardingAction extends RyuAction {
 		OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
 		model.setSwitchId(getSwitchIdFromSession(protocolSessionManager));
 	}
+
+	private void compareForwardingRuleIsUnique(OFFlow firstFlow, OFFlow secondFlow) throws ActionException {
+		if (ForwardingRuleUtils.areRulesEquals(firstFlow, secondFlow))
+			throw new ActionException("A forwarding rule with same information already exists in flow model.");
+	}
+
 }

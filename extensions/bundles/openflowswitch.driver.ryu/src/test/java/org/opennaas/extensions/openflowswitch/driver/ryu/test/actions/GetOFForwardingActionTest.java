@@ -1,9 +1,26 @@
 package org.opennaas.extensions.openflowswitch.driver.ryu.test.actions;
 
-import java.util.Arrays;
-import java.util.HashMap;
+/*
+ * #%L
+ * OpenNaaS :: OpenFlow Switch :: Ryu driver v3.14
+ * %%
+ * Copyright (C) 2007 - 2014 Fundació Privada i2CAT, Internet i Innovació a Catalunya
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,37 +28,29 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
 import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions.GetOFForwardingAction;
-import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.RyuProtocolSession;
-import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.IRyuStatsClient;
-import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.model.RyuOFFlow;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.wrappers.RyuOFFlowListWrapper;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
-import org.powermock.api.mockito.PowerMockito;
 
 /**
  * 
  * @author Adrián Roselló Rey (i2CAT)
  *
  */
-public class GetOFForwardingActionTest {
+public class GetOFForwardingActionTest extends AbstractRyuActionTest {
 
-	private static final String	SWITCH_ID	= "00:00:00:00:00:00:00:01";
-
-	GetOFForwardingAction		action;
-	RyuOFFlowListWrapper		serverResponse;
-
-	RyuOFFlow					ryuOFFlow;
+	GetOFForwardingAction	action;
+	RyuOFFlowListWrapper	serverResponse;
 
 	@Before
 	public void prepareTest() {
 		action = new GetOFForwardingAction();
-		serverResponse = generateRyuOFFLowListWrapper();
+		initializeRyuOFFlow();
+
+		serverResponse = new RyuOFFlowListWrapper();
+		serverResponse.add(ryuOFFlow);
+
 	}
 
 	@Test
@@ -62,22 +71,12 @@ public class GetOFForwardingActionTest {
 	public void executeActionTest() throws Exception {
 
 		// mock protocolsession and client
-		IProtocolSessionManager psm = PowerMockito.mock(IProtocolSessionManager.class);
-		RyuProtocolSession ps = PowerMockito.mock(RyuProtocolSession.class);
-		ProtocolSessionContext psc = PowerMockito.mock(ProtocolSessionContext.class);
-		IRyuStatsClient client = PowerMockito.mock(IRyuStatsClient.class);
-
-		Map<String, Object> sessionParameters = new HashMap<String, Object>();
-		sessionParameters.put(RyuProtocolSession.SWITCHID_CONTEXT_PARAM_NAME, SWITCH_ID);
-
-		Mockito.when(psm.obtainSessionByProtocol(RyuProtocolSession.RYU_PROTOCOL_TYPE, false)).thenReturn(ps);
-		Mockito.when(ps.getSessionContext()).thenReturn(psc);
-		Mockito.when(psc.getSessionParameters()).thenReturn(sessionParameters);
-		Mockito.when(ps.getRyuClientForUse()).thenReturn(client);
+		mockActionDependencies();
 		Mockito.when(client.getFlows(Mockito.eq(SWITCH_ID))).thenReturn(serverResponse);
 
 		// test
-		ActionResponse response = action.execute(psm);
+		ActionResponse response = action.execute(protocolSessionManager);
+
 		Assert.assertNotNull("Action response should not be null", response);
 		Assert.assertEquals("Action status should be " + ActionResponse.STATUS.OK, ActionResponse.STATUS.OK, response.getStatus());
 
@@ -92,32 +91,8 @@ public class GetOFForwardingActionTest {
 		Assert.assertEquals(ryuOFFlow.getActions(), flows.get(0).getActions());
 		Assert.assertEquals(ryuOFFlow.getPriority(), flows.get(0).getPriority());
 
+		Mockito.verify(client, Mockito.times(1)).getFlows(SWITCH_ID);
+
 	}
 
-	private RyuOFFlowListWrapper generateRyuOFFLowListWrapper() {
-
-		RyuOFFlowListWrapper wrapper = new RyuOFFlowListWrapper();
-
-		ryuOFFlow = new RyuOFFlow();
-		ryuOFFlow.setDpid("1");
-		ryuOFFlow.setCookie("10");
-		ryuOFFlow.setTableId("10");
-		ryuOFFlow.setPriority("10");
-		ryuOFFlow.setIdleTimeout("10");
-		ryuOFFlow.setHardTimeout("10");
-		ryuOFFlow.setFlags("10");
-
-		FloodlightOFMatch match = new FloodlightOFMatch();
-		match.setIngressPort("1");
-		ryuOFFlow.setMatch(match);
-
-		FloodlightOFAction action = new FloodlightOFAction();
-		action.setType(FloodlightOFAction.TYPE_OUTPUT);
-		action.setValue("2");
-
-		ryuOFFlow.setActions(Arrays.asList(action));
-		wrapper.add(ryuOFFlow);
-
-		return wrapper;
-	}
 }
