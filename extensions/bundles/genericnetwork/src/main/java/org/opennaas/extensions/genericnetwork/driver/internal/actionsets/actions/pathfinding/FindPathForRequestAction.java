@@ -174,6 +174,8 @@ public class FindPathForRequestAction extends Action {
 
 		Route route = routes.get(possibleRouteIds.get(0));
 
+		log.debug("Selected route : " + route.getId());
+
 		ActionResponse response = new ActionResponse();
 		response.setActionID(this.actionID);
 		response.setResult(route);

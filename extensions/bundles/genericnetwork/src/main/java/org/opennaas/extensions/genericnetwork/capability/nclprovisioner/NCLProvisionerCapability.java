@@ -270,7 +270,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			log.info("PortCongestionEvent alarm received for port" + portId);
 			boolean autoReroute = readAutorerouteOption();
 			if (autoReroute) {
-				log.debug("Auto-reroute is activated. Launching auto-reroute");
+				log.debug("Auto-reroute is activated. Launching auto-reroute in network " + resource.getResourceDescriptor().getInformation()
+						.getName());
 				try {
 					launchRerouteMechanism(portId);
 				} catch (Exception e) {
@@ -323,23 +324,20 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	}
 
 	private boolean readAutorerouteOption() {
-		boolean autoReroute = false;
 		try {
-			autoReroute = doReadAutorerouteOption();
+			return doReadAutorerouteOption();
 		} catch (IOException ioe) {
 			log.error("Failed to read auto-reroute option. ", ioe);
 			log.warn("Deactivating auto-reroute");
-			autoReroute = false;
+			return false;
 		}
-
-		return autoReroute;
 	}
 
 	private boolean doReadAutorerouteOption() throws IOException {
 
 		Properties properties = ConfigurationAdminUtil.getProperties(Activator.getContext(), NCL_CONFIG_FILE);
 		if (properties == null)
-			throw new IOException("Failed to determine auto-reroute option. " + "Unable to obtain configuration " + NCL_CONFIG_FILE);
+			throw new IOException("Failed to determine auto-reroute option. Unable to obtain configuration " + NCL_CONFIG_FILE);
 
 		String value = properties.getProperty(AUTOREROUTE_KEY);
 		if (value == null) {
@@ -360,7 +358,7 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 			log.debug("Rerouting circuit " + circuitId + " that passes through congested  port " + portId);
 			rerouteCircuit(circuitId);
 		} catch (Exception e) {
-			throw new Exception("Could not reallocate circuit " + circuitId + ": " + e.getMessage(), e);
+			throw new Exception("Could not reallocate circuit " + circuitId + ": " + e, e);
 		}
 
 	}
@@ -391,7 +389,11 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 			log.info("Rerouting circuit " + circuitId + " thas uses congested route " + toReroute.getRoute().getId());
 
-			CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(toReroute.getQos(), toReroute.getTrafficFilter());
+			CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(toReroute.getQos(), toReroute.getTrafficFilter(),
+					toReroute.getRoute());
+
+			log.debug("Built request in network " + resource.getResourceDescriptor().getInformation().getName() + " : " + circuitRequest.getSource() + ", " + circuitRequest
+					.getDestination());
 			Route route = pathFindingCapab.findPathForRequest(circuitRequest);
 
 			Circuit withNewRoute = CircuitFactoryLogic.generateCircuit(circuitRequest, route);
@@ -480,7 +482,8 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 		for (Circuit circuit : circuits) {
 			Route alternativeRoute = null;
 			try {
-				CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter());
+				CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter(),
+						circuit.getRoute());
 				alternativeRoute = pathFindingCapab.findPathForRequest(circuitRequest);
 			} catch (CapabilityException e) {
 				// ignored
