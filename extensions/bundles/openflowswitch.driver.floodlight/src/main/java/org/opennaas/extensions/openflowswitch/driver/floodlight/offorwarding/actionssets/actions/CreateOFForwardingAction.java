@@ -49,7 +49,14 @@ public class CreateOFForwardingAction extends FloodlightAction {
 			// TODO we have to find another place where we could put switchId in model.
 			setSwitchIdInModel(protocolSessionManager);
 
-			FloodlightOFFlow flow = new FloodlightOFFlow((OFFlow) params, ((OpenflowSwitchModel) getModelToUpdate()).getSwitchId());
+			FloodlightOFFlow flow;
+
+			if (params instanceof FloodlightOFFlow) {
+				flow = ((FloodlightOFFlow) params);
+				flow.setSwitchId(((OpenflowSwitchModel) getModelToUpdate()).getSwitchId());
+			}
+			else
+				flow = new FloodlightOFFlow((OFFlow) params, ((OpenflowSwitchModel) getModelToUpdate()).getSwitchId());
 
 			flow = updateFlowWithControllerRequiredValues(flow);
 

@@ -29,7 +29,6 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.FloodlightAction;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
-import org.opennaas.extensions.openflowswitch.model.OFFlow;
 
 /**
  * 
@@ -40,18 +39,12 @@ public class GetOFForwardingAction extends FloodlightAction {
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
-		List<OFFlow> flows = new ArrayList<OFFlow>();
-
+		List<FloodlightOFFlow> floodlightFlows = new ArrayList<FloodlightOFFlow>();
 		try {
 			// obtain the switch ID from the protocol session
 			String switchId = getSwitchIdFromSession(protocolSessionManager);
 			IFloodlightStaticFlowPusherClient client = getFloodlightProtocolSession(protocolSessionManager).getFloodlightClientForUse();
-			List<FloodlightOFFlow> floodlightFlows = client.getFlows(switchId);
-
-			for (FloodlightOFFlow floodlightOFFlow : floodlightFlows) {
-				OFFlow flow = new OFFlow(floodlightOFFlow);
-				flows.add(flow);
-			}
+			floodlightFlows = client.getFlows(switchId);
 
 		} catch (Exception e) {
 			throw new ActionException(e);
@@ -59,7 +52,7 @@ public class GetOFForwardingAction extends FloodlightAction {
 
 		ActionResponse response = new ActionResponse();
 		response.setStatus(ActionResponse.STATUS.OK);
-		response.setResult(flows);
+		response.setResult(floodlightFlows);
 
 		return response;
 	}
