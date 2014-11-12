@@ -20,6 +20,9 @@ package org.opennaas.extensions.openflowswitch.driver.ryu.test.actions;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +31,15 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
 import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions.RemoveOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.wrappers.RyuOFFlowListWrapper;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
+import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
+/**
+ * 
+ * @author Adrián Roselló Rey (i2CAT)
+ *
+ */
 public class RemoveOFForwardingActionTest extends AbstractRyuActionTest {
 
 	RemoveOFForwardingAction	action;
@@ -68,6 +79,14 @@ public class RemoveOFForwardingActionTest extends AbstractRyuActionTest {
 
 		mockActionDependencies();
 		Mockito.when(client.getFlows(Mockito.eq(SWITCH_ID))).thenReturn(serverResponse);
+
+		// initialize model
+		OpenflowSwitchModel model = new OpenflowSwitchModel();
+		OFFlowTable ofTable = new OFFlowTable();
+		ofTable.setOfForwardingRules(new ArrayList<OFFlow>());
+		ofTable.getOfForwardingRules().add(ryuOFFlow);
+		model.setOfTables(Arrays.asList(ofTable));
+		action.setModelToUpdate(model);
 
 		// execute action
 		action.setParams(FLOW_ID);

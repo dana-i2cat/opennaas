@@ -26,11 +26,13 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
 import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions.CreateOFForwardingAction;
+import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.model.RyuOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
@@ -71,7 +73,7 @@ public class CreateOFForwardingRuleTest extends AbstractRyuActionTest {
 	}
 
 	@Test
-	public void actionExecutionTest() throws Exception {
+	public void actionExecutionWithIpsTest() throws Exception {
 		// mock protocolsession and client
 		mockActionDependencies();
 
@@ -86,8 +88,28 @@ public class CreateOFForwardingRuleTest extends AbstractRyuActionTest {
 		action.setParams(ryuOFFlow);
 		action.execute(protocolSessionManager);
 
-		Mockito.verify(client, Mockito.times(1)).addFlowEntry(ryuOFFlow);
+		// we capture the flow sent to ryu
+		ArgumentCaptor<RyuOFFlow> flowCaptor = ArgumentCaptor.forClass(RyuOFFlow.class);
+		Mockito.verify(client, Mockito.times(1)).addFlowEntry(flowCaptor.capture());
 
+		RyuOFFlow clientFlow = flowCaptor.getValue();
+		Assert.assertEquals("Sent OFFlow should contain same dpid as action parameter.", ryuOFFlow.getDpid(), clientFlow.getDpid());
+		Assert.assertEquals("Sent OFFlow should contain same cookie as action parameter.", ryuOFFlow.getCookie(), clientFlow.getCookie());
+		Assert.assertEquals("Sent OFFlow should contain same tableId as action parameter.", ryuOFFlow.getTableId(), clientFlow.getTableId());
+		Assert.assertEquals("Sent OFFlow should contain same priority as action parameter.", ryuOFFlow.getPriority(), clientFlow.getPriority());
+		Assert.assertEquals("Sent OFFlow should contain same idle timeout as action parameter.", ryuOFFlow.getIdleTimeout(),
+				clientFlow.getIdleTimeout());
+		Assert.assertEquals("Sent OFFlow should contain same idle hard timeout as action parameter.", ryuOFFlow.getHardTimeout(),
+				clientFlow.getHardTimeout());
+
+		Assert.assertEquals("Sent OFFlow should contain same src ip as action parameter.", ryuOFFlow.getMatch().getSrcIp(), clientFlow.getMatch()
+				.getSrcIp());
+		Assert.assertEquals("Sent OFFlow should contain same dst ip as action parameter.", ryuOFFlow.getMatch().getDstIp(), clientFlow.getMatch()
+				.getDstIp());
+		Assert.assertEquals("Ether type shold be automatically set to 2048 when match contains ips.", "2048", clientFlow.getMatch().getEtherType());
+
+		Assert.assertTrue("Flow should have been inserted in resource model. ", model.getOfTables().get(0).getOfForwardingRules()
+				.contains(clientFlow));
 	}
 
 	/**
@@ -105,6 +127,7 @@ public class CreateOFForwardingRuleTest extends AbstractRyuActionTest {
 		// create same flow with different name
 		OFFlow repeatedFlow = new OFFlow(ryuOFFlow);
 		repeatedFlow.setName("flow2");
+		repeatedFlow.getMatch().setEtherType("2048");
 
 		// prepare model
 		OpenflowSwitchModel model = new OpenflowSwitchModel();

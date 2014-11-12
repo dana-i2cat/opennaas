@@ -36,9 +36,14 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.powermock.api.mockito.PowerMockito;
 
+/**
+ * 
+ * @author Adrián Roselló Rey (i2CAT)
+ *
+ */
 public abstract class AbstractRyuActionTest {
 
-	protected static final String		SWITCH_ID	= "00:00:00:00:00:00:00:01";
+	protected static final String		SWITCH_ID	= "1";
 	protected static final String		FLOW_ID		= "flow1";
 
 	protected RyuOFFlowListWrapper		serverResponse;
@@ -59,6 +64,8 @@ public abstract class AbstractRyuActionTest {
 
 		FloodlightOFMatch match = new FloodlightOFMatch();
 		match.setIngressPort("1");
+		match.setSrcIp("192.168.1.1");
+		match.setDstIp("192.168.1.2");
 		ryuOFFlow.setMatch(match);
 
 		FloodlightOFAction action = new FloodlightOFAction();

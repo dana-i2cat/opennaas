@@ -29,6 +29,8 @@ import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowFo
 import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.RyuAction;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.IRyuStatsClient;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.model.RyuOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
  * 
@@ -52,14 +54,14 @@ public class RemoveOFForwardingAction extends RyuAction {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		IRyuStatsClient client;
-		String switchId;
 		try {
 			client = getRyuProtocolSession(protocolSessionManager).getRyuClientForUse();
-			switchId = getSwitchIdFromSession(protocolSessionManager);
 
-			RyuOFFlow flow = getFlowByName((String) params, switchId, client);
+			RyuOFFlow flow = (RyuOFFlow) getFlowByName((String) params);
 
 			client.deleteFlowEntryStrictly(flow);
+
+			((OpenflowSwitchModel) getModel()).getOfTables().get(0).getOfForwardingRules().remove(flow);
 
 		} catch (Exception e) {
 			log.error("Error removing forwarding rule " + params, e);
@@ -72,13 +74,13 @@ public class RemoveOFForwardingAction extends RyuAction {
 		return response;
 	}
 
-	private RyuOFFlow getFlowByName(String flowName, String switchId, IRyuStatsClient client) throws ProtocolException, Exception {
+	private OFFlow getFlowByName(String flowName) throws ProtocolException, Exception {
 
-		for (RyuOFFlow flow : client.getFlows(switchId)) {
+		for (OFFlow flow : ((OpenflowSwitchModel) getModel()).getOfTables().get(0).getOfForwardingRules()) {
 			if (flow.getName().equals(flowName))
 				return flow;
 		}
 
-		throw new ActionException("There's no forwarding rule with id " + switchId);
+		throw new ActionException("There's no forwarding rule with id " + flowName);
 	}
 }

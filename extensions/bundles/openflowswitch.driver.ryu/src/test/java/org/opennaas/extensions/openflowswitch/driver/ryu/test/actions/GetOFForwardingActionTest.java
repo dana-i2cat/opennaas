@@ -20,6 +20,8 @@ package org.opennaas.extensions.openflowswitch.driver.ryu.test.actions;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -32,6 +34,8 @@ import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowFo
 import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions.GetOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.wrappers.RyuOFFlowListWrapper;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
+import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
  * 
@@ -74,6 +78,12 @@ public class GetOFForwardingActionTest extends AbstractRyuActionTest {
 		mockActionDependencies();
 		Mockito.when(client.getFlows(Mockito.eq(SWITCH_ID))).thenReturn(serverResponse);
 
+		OpenflowSwitchModel model = new OpenflowSwitchModel();
+		OFFlowTable ofTable = new OFFlowTable();
+		ofTable.setOfForwardingRules(new ArrayList<OFFlow>());
+		model.setOfTables(Arrays.asList(ofTable));
+		action.setModelToUpdate(model);
+
 		// test
 		ActionResponse response = action.execute(protocolSessionManager);
 
@@ -94,5 +104,4 @@ public class GetOFForwardingActionTest extends AbstractRyuActionTest {
 		Mockito.verify(client, Mockito.times(1)).getFlows(SWITCH_ID);
 
 	}
-
 }

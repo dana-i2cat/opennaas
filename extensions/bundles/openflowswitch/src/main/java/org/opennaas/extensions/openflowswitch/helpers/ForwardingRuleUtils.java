@@ -30,7 +30,7 @@ import org.opennaas.extensions.openflowswitch.model.OFFlow;
 public class ForwardingRuleUtils {
 
 	/**
-	 * Checks if both {@link OFFlow} have same values for all fields except the {@link OFFlow#getName()}
+	 * Checks if both {@link OFFlow} have same match.
 	 * 
 	 * @param firstFlow
 	 *            First element of the comparation.
@@ -38,28 +38,17 @@ public class ForwardingRuleUtils {
 	 *            Second element of the comparation.
 	 * @return <code>true</code> if both {@link OFFlow} contain same values for all attributes except the name.<code>false</code> otherwise.
 	 */
-	public static boolean areRulesEquals(OFFlow firstFlow, OFFlow secondFlow) {
+	public static boolean rulesWithSameMatch(OFFlow firstFlow, OFFlow secondFlow) {
 		if (firstFlow == secondFlow)
 			return true;
 		if (secondFlow == null || firstFlow == null)
-			return false;
-		if (firstFlow.getActions() == null) {
-			if (secondFlow.getActions() != null)
-				return false;
-		} else if (!firstFlow.getActions().equals(secondFlow.getActions()))
-			return false;
-		if (firstFlow.isActive() != secondFlow.isActive())
 			return false;
 		if (firstFlow.getMatch() == null) {
 			if (secondFlow.getMatch() != null)
 				return false;
 		} else if (!firstFlow.getMatch().equals(secondFlow.getMatch()))
 			return false;
-		if (firstFlow.getPriority() == null) {
-			if (secondFlow.getPriority() != null)
-				return false;
-		} else if (!firstFlow.getPriority().equals(secondFlow.getPriority()))
-			return false;
+
 		return true;
 	}
 

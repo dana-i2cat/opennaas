@@ -22,6 +22,7 @@ package org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionsse
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,7 +36,9 @@ import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionsset
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.IRyuStatsClient;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.model.RyuOFFlow;
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.wrappers.RyuOFFlowListWrapper;
+import org.opennaas.extensions.openflowswitch.helpers.ForwardingRuleUtils;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
+import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
  * 
@@ -68,8 +71,18 @@ public class GetOFForwardingAction extends RyuAction {
 			IRyuStatsClient client = getRyuProtocolSession(protocolSessionManager).getRyuClientForUse();
 			RyuOFFlowListWrapper ryuFlows = client.getFlows(switchId);
 
-			for (RyuOFFlow ryuOFFlow : ryuFlows)
-				flows.add(new OFFlow(ryuOFFlow));
+			for (RyuOFFlow ryuOFFlow : ryuFlows) {
+
+				OFFlow modelFlow = getForwardingRuleFromModel(ryuOFFlow);
+				if (modelFlow == null) {
+					ryuOFFlow.setName(UUID.randomUUID().toString());
+					ryuOFFlow.setDpid(switchId);
+					flows.add(ryuOFFlow);
+				} else {
+					flows.add(modelFlow);
+				}
+
+			}
 
 		} catch (ProtocolException e) {
 			log.error("Error obtaining Ryu protocol session.", e);
@@ -88,4 +101,11 @@ public class GetOFForwardingAction extends RyuAction {
 
 	}
 
+	private OFFlow getForwardingRuleFromModel(RyuOFFlow ryuOFFlow) {
+		for (OFFlow modelFlow : ((OpenflowSwitchModel) getModel()).getOfTables().get(0).getOfForwardingRules())
+			if (ForwardingRuleUtils.rulesWithSameMatch(ryuOFFlow, modelFlow))
+				return modelFlow;
+
+		return null;
+	}
 }

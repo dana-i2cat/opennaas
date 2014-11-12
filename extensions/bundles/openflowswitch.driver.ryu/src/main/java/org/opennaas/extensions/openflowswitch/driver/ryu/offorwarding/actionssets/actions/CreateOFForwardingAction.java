@@ -22,6 +22,7 @@ package org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionsse
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
@@ -36,6 +37,7 @@ import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.IRyuSta
 import org.opennaas.extensions.openflowswitch.driver.ryu.protocol.client.model.RyuOFFlow;
 import org.opennaas.extensions.openflowswitch.helpers.ForwardingRuleUtils;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
+import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
@@ -104,12 +106,14 @@ public class CreateOFForwardingAction extends RyuAction {
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 
+		updateFlowWithControllerRequiredValues((OFFlow) params);
+
 		// FIXME we assume forwarding rules are set in table 0
-		OFFlowTable flowTable = ((OpenflowSwitchModel) getModelToUpdate()).getOfTables().get(0);
+		OFFlowTable flowTable = ((OpenflowSwitchModel) getModel()).getOfTables().get(0);
 		List<OFFlow> forwardingRules = flowTable.getOfForwardingRules();
 		for (OFFlow ofFlow : forwardingRules) {
-			compareForwardingRuleIsUnique(ofFlow, (RyuOFFlow) params);
-			if (ofFlow.getName().equals(((RyuOFFlow) params).getName())) {
+			compareForwardingRuleIsUnique(ofFlow, (OFFlow) params);
+			if (ofFlow.getName().equals(((OFFlow) params).getName())) {
 				log.debug("Removing existing flow with same id : " + ofFlow.getName());
 				RemoveOFForwardingAction action = new RemoveOFForwardingAction();
 				action.setParams(ofFlow);
@@ -119,6 +123,14 @@ public class CreateOFForwardingAction extends RyuAction {
 		}
 
 		try {
+			RyuOFFlow flowToPush;
+
+			if (params instanceof RyuOFFlow) {
+				flowToPush = new RyuOFFlow((RyuOFFlow) params);
+				flowToPush.setDpid(getSwitchIdFromSession(protocolSessionManager));
+			}
+			else
+				flowToPush = new RyuOFFlow((OFFlow) params, getSwitchIdFromSession(protocolSessionManager));
 
 			// TODO we have to find another place where we could put switchId in model.
 			setSwitchIdInModel(protocolSessionManager);
@@ -126,10 +138,12 @@ public class CreateOFForwardingAction extends RyuAction {
 			IRyuStatsClient client = getRyuProtocolSession(protocolSessionManager).getRyuClientForUse();
 
 			log.debug("Sending forwarding rule to Ryu controller.");
-			client.addFlowEntry((RyuOFFlow) params);
+			client.addFlowEntry(flowToPush);
+
+			((OpenflowSwitchModel) getModel()).getOfTables().get(0).getOfForwardingRules().add(flowToPush);
 
 		} catch (Exception e) {
-			log.error("Error pushig forwarding rule to Ryu. ", e);
+			log.error("Error pushing forwarding rule to Ryu. ", e);
 			throw new ActionException(e);
 
 		}
@@ -140,13 +154,21 @@ public class CreateOFForwardingAction extends RyuAction {
 		return response;
 	}
 
+	private void updateFlowWithControllerRequiredValues(OFFlow flowToPush) {
+		FloodlightOFMatch match = flowToPush.getMatch();
+		if (match != null)
+			if (!StringUtils.isEmpty(match.getSrcIp()) || !StringUtils.isEmpty(match.getDstIp()) || !StringUtils.isEmpty(match.getTosBits()))
+				match.setEtherType("2048");
+
+	}
+
 	private void setSwitchIdInModel(IProtocolSessionManager protocolSessionManager) throws ProtocolException {
-		OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
+		OpenflowSwitchModel model = (OpenflowSwitchModel) getModel();
 		model.setSwitchId(getSwitchIdFromSession(protocolSessionManager));
 	}
 
 	private void compareForwardingRuleIsUnique(OFFlow firstFlow, OFFlow secondFlow) throws ActionException {
-		if (ForwardingRuleUtils.areRulesEquals(firstFlow, secondFlow))
+		if (ForwardingRuleUtils.rulesWithSameMatch(firstFlow, secondFlow))
 			throw new ActionException("A forwarding rule with same information already exists in flow model.");
 	}
 
