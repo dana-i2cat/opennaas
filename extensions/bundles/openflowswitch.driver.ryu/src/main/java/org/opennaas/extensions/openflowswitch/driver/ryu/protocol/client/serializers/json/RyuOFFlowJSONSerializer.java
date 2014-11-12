@@ -104,31 +104,31 @@ public class RyuOFFlowJSONSerializer extends JsonSerializer<RyuOFFlow> {
 			jGen.writeNumberField("in_port", Integer.parseInt(match.getIngressPort()));
 
 		if (match.getSrcMac() != null && !match.getSrcMac().isEmpty())
-			jGen.writeStringField("eth_src", match.getSrcMac());
+			jGen.writeStringField("dl_src", match.getSrcMac());
 
 		if (match.getDstMac() != null && !match.getDstMac().isEmpty())
-			jGen.writeStringField("eth_dst", match.getDstMac());
+			jGen.writeStringField("dl_dst", match.getDstMac());
 
 		if (match.getVlanId() != null && !match.getVlanId().isEmpty())
-			jGen.writeStringField("vlan_vid", match.getVlanId());
+			jGen.writeStringField("dl_vlan", match.getVlanId());
 
 		if (match.getVlanPriority() != null && !match.getVlanPriority().isEmpty())
-			jGen.writeStringField("vlan_pcp", match.getVlanPriority());
+			jGen.writeStringField("dl_vlan_pcp", match.getVlanPriority());
 
 		if (match.getEtherType() != null && !match.getEtherType().isEmpty())
-			jGen.writeStringField("eth_type", match.getEtherType());
+			jGen.writeStringField("dl_type", match.getEtherType());
 
 		if (match.getTosBits() != null && !match.getTosBits().isEmpty())
-			jGen.writeStringField("ip_dscp", match.getTosBits());
+			jGen.writeStringField("nw_tos", match.getTosBits());
 
 		if (match.getProtocol() != null && !match.getProtocol().isEmpty())
-			jGen.writeStringField("ip_proto", match.getProtocol());
+			jGen.writeStringField("nw_proto", match.getProtocol());
 
 		if (match.getSrcIp() != null && !match.getSrcIp().isEmpty())
-			jGen.writeStringField("ipv4_src", match.getSrcIp());
+			jGen.writeStringField("nw_src", match.getSrcIp());
 
 		if (match.getDstIp() != null && !match.getDstIp().isEmpty())
-			jGen.writeStringField("ipv4_dst", match.getDstIp());
+			jGen.writeStringField("nw_dst", match.getDstIp());
 
 		if (match.getSrcPort() != null && !match.getSrcPort().isEmpty())
 			jGen.writeStringField("tcp_src", match.getSrcPort());
