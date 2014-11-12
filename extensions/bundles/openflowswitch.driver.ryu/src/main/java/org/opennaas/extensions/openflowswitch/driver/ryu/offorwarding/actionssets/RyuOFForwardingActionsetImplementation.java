@@ -25,7 +25,9 @@ import java.util.List;
 
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingActionSet;
+import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions.CreateOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions.GetOFForwardingAction;
+import org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.actions.RemoveOFForwardingAction;
 
 /**
  * 
@@ -40,6 +42,8 @@ public class RyuOFForwardingActionsetImplementation extends ActionSet {
 		super.setActionSetId(ACTIONSET_ID);
 
 		this.putAction(OpenflowForwardingActionSet.GETFLOWS, GetOFForwardingAction.class);
+		this.putAction(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, CreateOFForwardingAction.class);
+		this.putAction(OpenflowForwardingActionSet.REMOVEOFFORWARDINGRULE, RemoveOFForwardingAction.class);
 
 	}
 
