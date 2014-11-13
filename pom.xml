@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.30</version>
+	<version>0.31-SNAPSHOT</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -132,7 +132,7 @@
 		<xml.resolver.version>1.2_1</xml.resolver.version>
 		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
-		<opennaas.gim.version>0.30</opennaas.gim.version>
+		<opennaas.gim.version>0.31-SNAPSHOT</opennaas.gim.version>
 		<!-- Maven license plugin version -->
 		<license.plugin.version>1.6</license.plugin.version>
 		
@@ -1609,7 +1609,7 @@
         <connection>scm:git:git://github.com/dana-i2cat/opennaas.git</connection>
         <developerConnection>scm:git:git@github.com:dana-i2cat/opennaas.git</developerConnection>
         <url>http://github.com/dana-i2cat/opennaas</url>
-	  <tag>v0.30</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<distributionManagement>
