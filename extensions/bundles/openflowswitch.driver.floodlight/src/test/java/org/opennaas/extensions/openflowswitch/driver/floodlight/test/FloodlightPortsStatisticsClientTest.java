@@ -31,7 +31,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSessionFactory;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.countersclient.FloodlightCountersClientFactory;

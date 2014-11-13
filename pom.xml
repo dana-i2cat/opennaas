@@ -86,6 +86,7 @@
 		<neethi.version>3.0.0</neethi.version>
 		<netconf4j.version>0.0.9</netconf4j.version>
 		<nmr.version>1.6.1</nmr.version>
+		<opencsv.version>2.3</opencsv.version>
 		<openjpa.version>2.2.0</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
 		<opensaml.version>2.4.1_1</opensaml.version>
@@ -1203,13 +1204,17 @@
 				<artifactId>jetty-http</artifactId>
 	           <version>${jetty.version}</version>				
 			</dependency>
-			
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${commons.io.version}</version>
 			</dependency>
-
+			<!-- CSV parsing -->
+			<dependency>
+				<groupId>net.sf.opencsv</groupId>
+				<artifactId>opencsv</artifactId>
+				<version>${opencsv.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
