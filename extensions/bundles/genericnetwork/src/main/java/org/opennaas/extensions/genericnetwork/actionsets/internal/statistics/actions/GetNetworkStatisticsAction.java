@@ -37,9 +37,9 @@ import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.helpers.TopologyHelper;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.IMonitoringCapability;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.IPortStatisticsCapability;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
 /**
  * 
@@ -96,9 +96,9 @@ public class GetNetworkStatisticsAction extends Action {
 			throw new Exception("Failed to obtain mapping resource for network element " + networkElement.getId(), e);
 		}
 
-		IMonitoringCapability monitorCapab;
+		IPortStatisticsCapability monitorCapab;
 		try {
-			monitorCapab = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
+			monitorCapab = (IPortStatisticsCapability) resource.getCapabilityByInterface(IPortStatisticsCapability.class);
 		} catch (ResourceException e) {
 			throw new Exception("Failed to obtain IMonitorCapability of mapping resource for network element " + networkElement.getId(), e);
 		}

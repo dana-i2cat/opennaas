@@ -9,7 +9,7 @@
 		<feature version="${project.version}">opennaas-genericnetwork</feature>
 				
 		<bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
-		
+		<bundle dependency="true">mvn:com.rabbitmq/amqp-client/${rabbitmq.version}</bundle>		
 		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ofertie.ncl/${project.version}</bundle>
 		
