@@ -25,14 +25,14 @@ import java.util.List;
 
 import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.actionssets.actions.CreateOFForwardingAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 
 public abstract class FloodlightTestHelper {
 
-	public static FloodlightOFFlow sampleFloodlightOFFlow(String name, String priority, String inputPort, String outputPort) {
+	public static OFFlow sampleOFFlow(String name, String priority, String inputPort, String outputPort) {
 
-		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
+		OFFlow forwardingRule = new OFFlow();
 		forwardingRule.setName(name);
 		forwardingRule.setPriority(priority);
 		forwardingRule.setActive(true);

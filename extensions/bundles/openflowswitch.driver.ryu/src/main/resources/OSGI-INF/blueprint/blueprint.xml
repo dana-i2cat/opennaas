@@ -10,16 +10,16 @@
 	</service>
 
 
-	<!-- ofForwardingActionSet
-	<bean id="ofForwardingActionset" class="org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.OFForwardingActionsetImplementation" />
+	<!-- ofForwardingActionSet  -->
+	<bean id="ofForwardingActionset" class="org.opennaas.extensions.openflowswitch.driver.ryu.offorwarding.actionssets.RyuOFForwardingActionsetImplementation" />
 	<service ref="ofForwardingActionset" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
-			<! identify the ryu actionset 
+			<!--  identify the ryu actionset  --> 
 			<entry key="actionset.name" value="ryu" />
 			<entry key="actionset.capability" value="offorwarding" />
 			<entry key="actionset.version" value="3.14" />
 		</service-properties>
 	</service>
--->
+
 
 </blueprint>

@@ -5,7 +5,6 @@
     <artifactId>org.opennaas.itests</artifactId>
     <version>0.30-SNAPSHOT</version>
   </parent>
-  <groupId>org.opennaas.itests.openflowswitch</groupId>
   <artifactId>org.opennaas.itests.openflowswitch</artifactId>
   <name>OpenNaaS :: iTests :: Openflow Switch</name>
   <packaging>jar</packaging>  

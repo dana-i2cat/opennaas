@@ -53,8 +53,8 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.Floodli
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.InitializerTestHelper;
@@ -188,7 +188,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-		FloodlightOFFlow forwardingRule = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
+		OFFlow forwardingRule = generateSampleOFFlow("flow1", "1", "dstPort=12");
 
 		capability.createOpenflowForwardingRule(forwardingRule);
 
@@ -205,7 +205,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		Assert.assertEquals("Model forwarding rule should be the one created for the action.", forwardingRule,
 				ofNewTable.getOfForwardingRules().get(0));
 
-		FloodlightOFFlow newForwardingRule = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
+		OFFlow newForwardingRule = generateSampleOFFlow("flow1", "1", "dstPort=12");
 
 		capability.createOpenflowForwardingRule(newForwardingRule);
 
@@ -236,7 +236,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
+		OFFlow forwardingRule = new OFFlow();
 		forwardingRule.setName("flow1");
 		forwardingRule.setPriority("1");
 
@@ -259,11 +259,9 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
-		forwardingRule1.setSwitchId(SWITCH_ID);
+		OFFlow forwardingRule1 = generateSampleOFFlow("flow1", "1", "dstPort=12");
 
-		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
-		forwardingRule2.setSwitchId(SWITCH_ID);
+		OFFlow forwardingRule2 = generateSampleOFFlow("flow2", "2", "dstPort=12");
 
 		Assert.assertTrue("No rules in a freshly created switch", capability.getOpenflowForwardingRules().isEmpty());
 
@@ -292,11 +290,9 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capabilityWSClient = InitializerTestHelper.createRestClient(WS_URI, IOpenflowForwardingCapability.class, null,
 				WS_USERNAME, WS_PASSWORD);
 
-		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
-		forwardingRule1.setSwitchId(SWITCH_ID);
+		OFFlow forwardingRule1 = generateSampleOFFlow("flow1", "1", "dstPort=12");
 
-		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
-		forwardingRule2.setSwitchId(SWITCH_ID);
+		OFFlow forwardingRule2 = generateSampleOFFlow("flow2", "2", "dstPort=12");
 
 		Assert.assertTrue("No rules in a freshly created switch", capabilityWSClient.getOpenflowForwardingRulesAPI().getForwardingRules().isEmpty());
 
@@ -366,9 +362,9 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 
 	}
 
-	private static FloodlightOFFlow generateSampleFloodlightOFFlow(String name, String inputPort, String outputPort) {
+	private static OFFlow generateSampleOFFlow(String name, String inputPort, String outputPort) {
 
-		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
+		OFFlow forwardingRule = new OFFlow();
 		forwardingRule.setName(name);
 		forwardingRule.setPriority("1");
 

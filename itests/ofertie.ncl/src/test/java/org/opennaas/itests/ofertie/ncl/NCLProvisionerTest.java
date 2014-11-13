@@ -76,7 +76,7 @@ import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowFo
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.mockup.FloodlightMockClientFactory;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.OpennaasExamOptions;
 import org.ops4j.pax.exam.Configuration;
@@ -218,7 +218,7 @@ public class NCLProvisionerTest {
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork",
 						"opennaas-openflowswitch-driver-floodlight", "opennaas-ofertie-ncl", "itests-helpers"),
-				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
@@ -316,14 +316,14 @@ public class NCLProvisionerTest {
 			IResource switchResource = getSwitchResourceFromName(netConnImpl.getDeviceId().split(":")[1]);
 			IOpenflowForwardingCapability ofCapab =
 					(IOpenflowForwardingCapability) switchResource.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-			List<FloodlightOFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
+			List<OFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
 
 			// Get flow in switches s5
 			if (netConnImpl.getDeviceId().equals(OFSWITCH_RESOURCE_TYPE + ":" + SWITCH_5_NAME)) {
 				Assert.assertNotNull("Switch s5 should contain forwarding rules.", switchFlows);
 				Assert.assertEquals("Switch s5 should contain a forwarding rule.", 1, switchFlows.size());
 
-				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				OFFlow switchFlow = switchFlows.get(0);
 				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
 				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
 				Assert.assertEquals("2", switchFlow.getActions().get(0).getValue());
@@ -333,7 +333,7 @@ public class NCLProvisionerTest {
 				Assert.assertNotNull("Switch s4 should contain forwarding rules.", switchFlows);
 				Assert.assertEquals("Switch s4 should contain a forwarding rule.", 1, switchFlows.size());
 
-				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				OFFlow switchFlow = switchFlows.get(0);
 				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
 				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
 				Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
@@ -343,7 +343,7 @@ public class NCLProvisionerTest {
 				Assert.assertNotNull("Switch s1 should contain forwarding rules.", switchFlows);
 				Assert.assertEquals("Switch s1 should contain a forwarding rule.", 1, switchFlows.size());
 
-				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				OFFlow switchFlow = switchFlows.get(0);
 				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
 				Assert.assertEquals("3", switchFlow.getMatch().getIngressPort());
 				Assert.assertEquals("1", switchFlow.getActions().get(0).getValue());
@@ -354,7 +354,7 @@ public class NCLProvisionerTest {
 				Assert.assertNotNull("Switch s2 should contain forwarding rules.", switchFlows);
 				Assert.assertEquals("Switch s2 should contain a forwarding rule.", 1, switchFlows.size());
 
-				FloodlightOFFlow switchFlow = switchFlows.get(0);
+				OFFlow switchFlow = switchFlows.get(0);
 				Assert.assertEquals(SRC_IP_ADDRESS, switchFlow.getMatch().getSrcIp());
 				Assert.assertEquals("1", switchFlow.getMatch().getIngressPort());
 				Assert.assertEquals("3", switchFlow.getActions().get(0).getValue());
@@ -379,7 +379,7 @@ public class NCLProvisionerTest {
 		IResource switchResource = getSwitchResourceFromName(SWITCH_5_NAME);
 		IOpenflowForwardingCapability ofCapab = (IOpenflowForwardingCapability) switchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
-		List<FloodlightOFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
+		List<OFFlow> switchFlows = ofCapab.getOpenflowForwardingRules();
 		Assert.assertEquals("Switch s5 should not contain forwarding rules.", 0, switchFlows.size());
 
 		switchResource = getSwitchResourceFromName(SWITCH_4_NAME);

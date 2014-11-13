@@ -72,8 +72,8 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.InitializerTestHelper;
@@ -198,7 +198,7 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork",
 						"opennaas-openflowswitch-driver-floodlight", "opennaas-ofertie-ncl", "itests-helpers"),
-				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
@@ -336,10 +336,10 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 		Assert.assertNotNull(tableSwitch4);
 		Assert.assertNotNull(tableSwitch5);
 
-		List<FloodlightOFFlow> rulesSwitch1 = tableSwitch1.getOfForwardingRules();
-		List<FloodlightOFFlow> rulesSwitch2 = tableSwitch2.getOfForwardingRules();
-		List<FloodlightOFFlow> rulesSwitch4 = tableSwitch4.getOfForwardingRules();
-		List<FloodlightOFFlow> rulesSwitch5 = tableSwitch5.getOfForwardingRules();
+		List<OFFlow> rulesSwitch1 = tableSwitch1.getOfForwardingRules();
+		List<OFFlow> rulesSwitch2 = tableSwitch2.getOfForwardingRules();
+		List<OFFlow> rulesSwitch4 = tableSwitch4.getOfForwardingRules();
+		List<OFFlow> rulesSwitch5 = tableSwitch5.getOfForwardingRules();
 
 		Assert.assertEquals(1, rulesSwitch1.size());
 		Assert.assertEquals(1, rulesSwitch2.size());
@@ -347,10 +347,10 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 		Assert.assertEquals(1, rulesSwitch5.size());
 
 		// Forwarding rule switch 1
-		FloodlightOFFlow flowSwitch1 = rulesSwitch1.get(0);
+		OFFlow flowSwitch1 = rulesSwitch1.get(0);
 		Assert.assertNotNull(flowSwitch1);
 		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch1.getPriority());
-		Assert.assertEquals(SWITCH_1_ID, flowSwitch1.getSwitchId());
+		Assert.assertEquals(SWITCH_1_ID, switch1Model.getSwitchId());
 
 		FloodlightOFMatch match1 = flowSwitch1.getMatch();
 		Assert.assertNotNull(match1);
@@ -369,10 +369,10 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 		Assert.assertEquals("1", actionsSwitch1.get(0).getValue());
 
 		// Forwarding rule switch 2
-		FloodlightOFFlow flowSwitch2 = rulesSwitch2.get(0);
+		OFFlow flowSwitch2 = rulesSwitch2.get(0);
 		Assert.assertNotNull(flowSwitch2);
 		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch2.getPriority());
-		Assert.assertEquals(SWITCH_2_ID, flowSwitch2.getSwitchId());
+		Assert.assertEquals(SWITCH_2_ID, switch2Model.getSwitchId());
 
 		FloodlightOFMatch match2 = flowSwitch2.getMatch();
 		Assert.assertNotNull(match2);
@@ -391,10 +391,10 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 		Assert.assertEquals("3", actionsSwitch2.get(0).getValue());
 
 		// Forwarding rule switch 4
-		FloodlightOFFlow flowSwitch4 = rulesSwitch4.get(0);
+		OFFlow flowSwitch4 = rulesSwitch4.get(0);
 		Assert.assertNotNull(flowSwitch4);
 		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch4.getPriority());
-		Assert.assertEquals(SWITCH_4_ID, flowSwitch4.getSwitchId());
+		Assert.assertEquals(SWITCH_4_ID, switch4Model.getSwitchId());
 
 		FloodlightOFMatch match4 = flowSwitch4.getMatch();
 		Assert.assertNotNull(match4);
@@ -413,10 +413,10 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 		Assert.assertEquals("1", actionsSwitch4.get(0).getValue());
 
 		// Forwarding rule switch 5
-		FloodlightOFFlow flowSwitch5 = rulesSwitch5.get(0);
+		OFFlow flowSwitch5 = rulesSwitch5.get(0);
 		Assert.assertNotNull(flowSwitch5);
 		Assert.assertEquals(DEFAULT_FLOW_PRIORITY, flowSwitch5.getPriority());
-		Assert.assertEquals(SWITCH_4_ID, flowSwitch5.getSwitchId());
+		Assert.assertEquals(SWITCH_5_ID, switch5Model.getSwitchId());
 
 		FloodlightOFMatch match5 = flowSwitch5.getMatch();
 		Assert.assertNotNull(match5);

@@ -45,7 +45,7 @@ import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
 import org.opennaas.extensions.genericnetwork.model.topology.Switch;
 import org.opennaas.extensions.genericnetwork.model.topology.Topology;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 
 /**
  * Allocate Circuit Action for Domains or Switches
@@ -102,7 +102,7 @@ public class AllocateCircuitAction extends Action {
 							.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
 					// generate new FloodlightFlow and allocate it
-					FloodlightOFFlow flow = Circuit2RequestHelper.generateFloodlightOFFlow(circuit.getTrafficFilter(),
+					OFFlow flow = Circuit2RequestHelper.generateSwitchOFFlow(circuit.getTrafficFilter(),
 							topology.getNetworkDevicePortIdsMap(), networkConnection);
 					ofForwardingCapability.createOpenflowForwardingRule(flow);
 
