@@ -258,16 +258,18 @@ public class NCLMonitoring {
 		 * @param congestedPorts
 		 */
 		private void resetCongestedPorts(Set<Port> congestedPorts) {
-			if (((GenericNetworkModel) resource.getModel()).getTopology() != null) {
-				for (NetworkElement ne : ((GenericNetworkModel) resource.getModel()).getTopology().getNetworkElements()) {
-					for (Port port : ne.getPorts()) {
-						boolean isCongested = false;
-						for (Port congestedPort : congestedPorts) {
-							if (port.getId().equals(congestedPort.getId())) {
-								isCongested = true;
+			if (resource.getModel() != null) {
+				if (((GenericNetworkModel) resource.getModel()).getTopology() != null) {
+					for (NetworkElement ne : ((GenericNetworkModel) resource.getModel()).getTopology().getNetworkElements()) {
+						for (Port port : ne.getPorts()) {
+							boolean isCongested = false;
+							for (Port congestedPort : congestedPorts) {
+								if (port.getId().equals(congestedPort.getId())) {
+									isCongested = true;
+								}
 							}
+							port.getState().setCongested(isCongested);
 						}
-						port.getState().setCongested(isCongested);
 					}
 				}
 			}
