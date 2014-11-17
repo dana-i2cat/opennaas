@@ -64,10 +64,14 @@ public class GetNetworkStatisticsAction extends Action {
 				for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
 					try {
 						SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
-						netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);
+						netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);		
 					} catch (Exception e) {
 						log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
 					}
+				}
+				
+				if (netStats.getSwitchStatistics().isEmpty()) {
+					log.error("No matching port statistics");
 				}
 			}
 		}
@@ -131,8 +135,13 @@ public class GetNetworkStatisticsAction extends Action {
 			if (netPortId == null) {
 				log.warn("Cannot find mapping network port for device " + deviceId + " and port " + portId + ". Skipping it.");
 			} else {
+				log.debug("Getting statistics for network port " + netPortId);
 				netSwitchStatistics.getStatistics().put(netPortId, switchStatistics.getStatistics().get(portId));
 			}
+		}
+		
+		if (netSwitchStatistics.getStatistics().isEmpty()) {
+			log.warn("Cannot find ANY mapping network port for device " + deviceId);
 		}
 
 		return netSwitchStatistics;
