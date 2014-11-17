@@ -45,6 +45,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.Provisione
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
@@ -182,7 +183,7 @@ public class NCLProvisioner implements INCLProvisioner {
 	}
 
 	@Override
-	public String updateFlow(String flowId, QosPolicyRequest updatedQosPolicyRequest) throws FlowAllocationException, FlowNotFoundException,
+	public String updateFlow(String flowId, QosPolicy updatedQosPolicy) throws FlowAllocationException, FlowNotFoundException,
 			ProvisionerException {
 		synchronized (mutex) {
 
@@ -194,13 +195,16 @@ public class NCLProvisioner implements INCLProvisioner {
 
 			try {
 
+				QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+				qosPolicyRequest.setQosPolicy(updatedQosPolicy);
+
 				String netId = getNetworkSelector().getNetwork();
 
 				IResource networkResource = getResource(netId);
 				INCLProvisionerCapability nclProvCapab = (INCLProvisionerCapability) networkResource
 						.getCapabilityByInterface(INCLProvisionerCapability.class);
 
-				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(updatedQosPolicyRequest);
+				CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosPolicyRequest);
 
 				nclProvCapab.updateCircuit(flowId, circuitRequest);
 
@@ -320,7 +324,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setLatency(latency);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
@@ -329,7 +333,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setLatency(null);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
@@ -346,7 +350,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setJitter(jitter);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
@@ -355,7 +359,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setJitter(null);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
@@ -372,7 +376,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setThroughput(throughput);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
@@ -381,7 +385,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setThroughput(null);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
@@ -398,7 +402,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setPacketLoss(packetLoss);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
@@ -407,7 +411,7 @@ public class NCLProvisioner implements INCLProvisioner {
 		synchronized (mutex) {
 			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
 			qosPolicyRequest.getQosPolicy().setPacketLoss(null);
-			updateFlow(flowId, qosPolicyRequest);
+			updateFlow(flowId, qosPolicyRequest.getQosPolicy());
 		}
 	}
 
