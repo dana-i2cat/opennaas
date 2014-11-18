@@ -88,7 +88,9 @@
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.model,
 							org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper,
 							org.opennaas.extensions.ofertie.ncl.controller.api,
-							org.opennaas.extensions.ofertie.ncl.monitoring.api.model
+							org.opennaas.extensions.ofertie.ncl.monitoring.api.model,
+							org.opennaas.extensions.ofertie.ncl.provisioner.components,
+							org.opennaas.extensions.ofertie.ncl.notification
 						</Export-Package>
 					</instructions>
 				</configuration>
