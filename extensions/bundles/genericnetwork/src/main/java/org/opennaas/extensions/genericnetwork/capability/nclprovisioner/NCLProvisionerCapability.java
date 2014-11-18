@@ -104,10 +104,16 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 	public void activate() throws CapabilityException {
 		try {
 			registerAsCongestionEventListener();
-			initializeStatisticsPusher();
-
 		} catch (IOException e) {
 			log.warn("Could not registrate NCLProvisionerCapability as listener for PortCongestion events.", e);
+			eventListenerRegistration = null;
+		}
+
+		try {
+			initializeStatisticsPusher();
+		} catch (CapabilityException c) {
+			log.warn("Could not initialize Statistics Pusher for SLA Manager. Statistics will not be reported.");
+			statisticsPollerTimer = null;
 		}
 
 		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
@@ -117,9 +123,12 @@ public class NCLProvisionerCapability extends AbstractCapability implements INCL
 
 	@Override
 	public void deactivate() throws CapabilityException {
-		statisticsPollerTimer.cancel();
-		statisticsPollerTimer = null;
-		unregisterListener();
+		if (statisticsPollerTimer != null) {
+			statisticsPollerTimer.cancel();
+			statisticsPollerTimer = null;
+		}
+		if (eventListenerRegistration != null)
+			unregisterListener();
 		unregisterService();
 		super.deactivate();
 	}

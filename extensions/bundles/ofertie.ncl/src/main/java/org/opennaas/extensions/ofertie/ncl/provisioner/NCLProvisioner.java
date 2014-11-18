@@ -256,11 +256,13 @@ public class NCLProvisioner implements INCLProvisioner {
 
 				nclProvCapab.deallocateCircuit(flowId);
 
+				QosPolicyRequest requestRemoved = QosPolicyRequestParser.fromCircuitRequest((getAllocatedRequests().get(flowId)));
+
 				getAllocatedRequests().remove(flowId);
 
 				log.debug("Notifiying SDN Module flow " + flowId + " has been deallocated.");
 
-				sdnClient.qosPolicyDeallocated(flowId, QosPolicyRequestParser.fromCircuitRequest((getAllocatedRequests().get(flowId))));
+				sdnClient.qosPolicyDeallocated(flowId, requestRemoved);
 
 			} catch (NotExistingCircuitException e) {
 				throw new FlowNotFoundException(e);
