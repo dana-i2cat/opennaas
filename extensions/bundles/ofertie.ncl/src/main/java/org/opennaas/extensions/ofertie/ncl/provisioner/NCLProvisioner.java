@@ -34,6 +34,7 @@ import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.INCLProv
 import org.opennaas.extensions.genericnetwork.exceptions.CircuitAllocationException;
 import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
+import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestHelper;
 import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestWrapperParser;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
 import org.opennaas.extensions.ofertie.ncl.notification.INCLNotifierClient;
@@ -193,9 +194,11 @@ public class NCLProvisioner implements INCLProvisioner {
 
 			INCLNotifierClient sdnClient = clientManager.getClient(username);
 
+			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+
 			try {
 
-				QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+				QosPolicyRequest oldQosPolicyRequest = QoSPolicyRequestHelper.cloneQosPolicyRequest(qosPolicyRequest);
 				qosPolicyRequest.setQosPolicy(updatedQosPolicy);
 
 				String netId = getNetworkSelector().getNetwork();
@@ -213,27 +216,26 @@ public class NCLProvisioner implements INCLProvisioner {
 				log.debug("Notifiying SDN Module that flow " + flowId + " has been allocated.");
 
 				// first we notify remove of the old qosPolicyRequest
-				sdnClient.qosPolicyDeallocated(flowId, QoSPolicyRequestWrapperParser.fromCircuitRequests(getAllocatedRequests())
-						.getQoSPolicyRequests().get(flowId));
+				sdnClient.qosPolicyDeallocated(flowId, oldQosPolicyRequest);
 				// notify the allocation of the new qosPolicyRequest with same flow id.
-				sdnClient.qosPolicyAllocated(flowId, updatedQosPolicyRequest);
+				sdnClient.qosPolicyAllocated(flowId, qosPolicyRequest);
 
 				return flowId;
 			} catch (CircuitAllocationException e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", updatedQosPolicyRequest, e);
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
 				throw new FlowAllocationException(e);
 			} catch (NotExistingCircuitException e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", updatedQosPolicyRequest, e);
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
 				throw new FlowNotFoundException(e);
 			} catch (ResourceException e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", updatedQosPolicyRequest, e);
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
 				throw new ProvisionerException(e);
 			} catch (Exception e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", updatedQosPolicyRequest, e);
+				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
 				throw new FlowAllocationException(e);
 
 			}
