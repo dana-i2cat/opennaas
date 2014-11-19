@@ -43,27 +43,29 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
  */
 public abstract class QoSPolicyRequestHelper {
 
-	public static final String	SRC_IP			= "192.168.1.14";
-	public static final String	DST_IP			= "192.168.1.13";
+	public static final String	SRC_IP					= "192.168.1.14";
+	public static final String	DST_IP					= "192.168.1.13";
 
-	public static final String	SRC_PORT		= "0";
-	public static final String	DST_PORT		= "1";
+	public static final String	SRC_PORT				= "0";
+	public static final String	DST_PORT				= "1";
 
-	private static final String	PORT_1_1_ID		= "port.1.1";
-	private static final String	PORT_1_2_ID		= "port.1.2";
-	private static final String	PORT_2_1_ID		= "port.2.1";
-	private static final String	PORT_2_2_ID		= "port.2.2";
+	private static final String	PORT_1_1_ID				= "port.1.1";
+	private static final String	PORT_1_2_ID				= "port.1.2";
+	private static final String	PORT_2_1_ID				= "port.2.1";
+	private static final String	PORT_2_2_ID				= "port.2.2";
 
-	public static final String	TOS				= "16";
+	public static final String	TOS						= "16";
 
-	public static final String	LATENCY_MIN		= "5";
-	public static final String	LATENCY_MAX		= "12";
-	public static final String	JITTER_MIN		= "2";
-	public static final String	JITTER_MAX		= "5";
-	public static final String	THROUGHTPUT_MIN	= "10";
-	public static final String	THROUGHTPUT_MAX	= "100";
-	public static final String	PACKETLOSS_MIN	= "0";
-	public static final String	PACKETLOSS_MAX	= "100";
+	public static final String	LATENCY_MIN				= "5";
+	public static final String	LATENCY_MAX				= "12";
+	public static final String	JITTER_MIN				= "2";
+	public static final String	JITTER_MAX				= "5";
+	public static final String	THROUGHTPUT_MIN			= "10";
+	public static final String	THROUGHTPUT_MAX			= "100";
+	public static final String	PACKETLOSS_MIN			= "0";
+	public static final String	PACKETLOSS_MAX			= "100";
+
+	public static final String	DEFAULT_VALUE_FOR_TEST	= "0";
 
 	public static QosPolicyRequest cloneQosPolicyRequest(QosPolicyRequest originalQosRequest) {
 
@@ -96,31 +98,72 @@ public abstract class QoSPolicyRequestHelper {
 
 		req.setLabel(TOS);
 
-		QosPolicy qosPolicy = new QosPolicy();
-
-		Latency latency = new Latency();
-		latency.setMin(LATENCY_MIN);
-		latency.setMax(LATENCY_MAX);
-		qosPolicy.setLatency(latency);
-
-		Jitter jitter = new Jitter();
-		jitter.setMin(JITTER_MIN);
-		jitter.setMax(JITTER_MAX);
-		qosPolicy.setJitter(jitter);
-
-		Throughput throughput = new Throughput();
-		throughput.setMin(THROUGHTPUT_MIN);
-		throughput.setMax(THROUGHTPUT_MAX);
-		qosPolicy.setThroughput(throughput);
-
-		PacketLoss packetLoss = new PacketLoss();
-		packetLoss.setMin(PACKETLOSS_MIN);
-		packetLoss.setMax(PACKETLOSS_MAX);
-		qosPolicy.setPacketLoss(packetLoss);
+		QosPolicy qosPolicy = generateSampleQosPolicy();
 
 		req.setQosPolicy(qosPolicy);
 
 		return req;
+	}
+
+	public static QosPolicy generateSampleQosPolicy() {
+
+		QosPolicy qosPolicy = new QosPolicy();
+
+		qosPolicy.setLatency(generateSampleLatency());
+		qosPolicy.setJitter(generateSampleJitter());
+		qosPolicy.setPacketLoss(generateSamplePacketLoss());
+		qosPolicy.setThroughput(generateSampleThroughput());
+
+		return qosPolicy;
+	}
+
+	public static PacketLoss generateSamplePacketLoss() {
+		PacketLoss packetLoss = new PacketLoss();
+
+		packetLoss.setMin(PACKETLOSS_MIN);
+		packetLoss.setMax(PACKETLOSS_MAX);
+		packetLoss.setPriority(DEFAULT_VALUE_FOR_TEST);
+		packetLoss.setDelay(DEFAULT_VALUE_FOR_TEST);
+		packetLoss.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return packetLoss;
+	}
+
+	public static Throughput generateSampleThroughput() {
+		Throughput throughput = new Throughput();
+
+		throughput.setMin(THROUGHTPUT_MIN);
+		throughput.setMax(THROUGHTPUT_MAX);
+		throughput.setDelay(DEFAULT_VALUE_FOR_TEST);
+		throughput.setPriority(DEFAULT_VALUE_FOR_TEST);
+		throughput.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return throughput;
+	}
+
+	public static Jitter generateSampleJitter() {
+		Jitter jitter = new Jitter();
+
+		jitter.setMin(JITTER_MIN);
+		jitter.setMax(JITTER_MAX);
+		jitter.setDelay(DEFAULT_VALUE_FOR_TEST);
+		jitter.setPriority(DEFAULT_VALUE_FOR_TEST);
+		jitter.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return jitter;
+	}
+
+	public static Latency generateSampleLatency() {
+
+		Latency latency = new Latency();
+		latency.setMin(LATENCY_MIN);
+		latency.setMax(LATENCY_MAX);
+		latency.setDelay(DEFAULT_VALUE_FOR_TEST);
+		latency.setPriority(DEFAULT_VALUE_FOR_TEST);
+		latency.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return latency;
+
 	}
 
 	public static Route generateSampleRoute() {
