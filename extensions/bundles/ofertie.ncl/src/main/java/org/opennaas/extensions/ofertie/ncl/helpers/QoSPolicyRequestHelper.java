@@ -171,4 +171,125 @@ public abstract class QoSPolicyRequestHelper {
 
 	}
 
+	/**
+	 * Creates a new {@link QosPolicy} by merging the values of the given ones.
+	 * 
+	 * @param originalQosPolicy
+	 * @param updatedQosPolicy
+	 * @return
+	 */
+	public static QosPolicy mergeQosPolicies(QosPolicy originalQosPolicy, QosPolicy updatedQosPolicy) {
+
+		// new request did not update any qos value
+		if (updatedQosPolicy == null)
+			return originalQosPolicy;
+
+		// old request did not contain any qos value
+		if (originalQosPolicy == null)
+			return updatedQosPolicy;
+
+		QosPolicy qosPolicy = new QosPolicy();
+
+		Jitter mergedJitter = mergeJitter(originalQosPolicy.getJitter(), updatedQosPolicy.getJitter());
+		Throughput mergedThrougput = mergeThroughput(originalQosPolicy.getThroughput(), updatedQosPolicy.getThroughput());
+		Latency mergedLatency = mergeLatency(originalQosPolicy.getLatency(), updatedQosPolicy.getLatency());
+		PacketLoss mergedPacketloss = mergePacketLoss(originalQosPolicy.getPacketLoss(), updatedQosPolicy.getPacketLoss());
+
+		qosPolicy.setJitter(mergedJitter);
+		qosPolicy.setLatency(mergedLatency);
+		qosPolicy.setPacketLoss(mergedPacketloss);
+		qosPolicy.setThroughput(mergedThrougput);
+
+		return qosPolicy;
+	}
+
+	public static Jitter mergeJitter(Jitter originalJitter, Jitter updatedJitter) {
+
+		if (originalJitter == null)
+			return updatedJitter;
+
+		if (updatedJitter == null)
+			return originalJitter;
+
+		Jitter jitter = new Jitter();
+
+		jitter.setDelay((originalJitter.getDelay() != updatedJitter.getDelay()) ? updatedJitter.getDelay() : originalJitter.getDelay());
+		jitter.setMax(((originalJitter.getMax() != updatedJitter.getMax()) ? updatedJitter.getMax() : originalJitter.getMax()));
+		jitter.setMin(((originalJitter.getMin() != updatedJitter.getMin()) ? updatedJitter.getMin() : originalJitter.getMin()));
+		jitter.setTimeout(((originalJitter.getTimeout() != updatedJitter.getTimeout()) ? updatedJitter.getTimeout() : originalJitter.getTimeout()));
+		jitter.setPriority(((originalJitter.getPriority() != updatedJitter.getPriority()) ? updatedJitter.getPriority() : originalJitter
+				.getPriority()));
+
+		return jitter;
+	}
+
+	public static Throughput mergeThroughput(Throughput originalThroughput, Throughput updatedThroughput) {
+
+		if (originalThroughput == null)
+			return updatedThroughput;
+
+		if (updatedThroughput == null)
+			return originalThroughput;
+
+		Throughput throughput = new Throughput();
+		throughput.setDelay((originalThroughput.getDelay() != updatedThroughput.getDelay()) ? updatedThroughput.getDelay() : originalThroughput
+				.getDelay());
+
+		throughput.setMax(((originalThroughput.getMax() != updatedThroughput.getMax()) ? updatedThroughput.getMax() : originalThroughput.getMax()));
+		throughput.setMin(((originalThroughput.getMin() != updatedThroughput.getMin()) ? updatedThroughput.getMin() : originalThroughput.getMin()));
+		throughput
+				.setTimeout(((originalThroughput.getTimeout() != updatedThroughput.getTimeout()) ? updatedThroughput.getTimeout() : originalThroughput
+						.getTimeout()));
+		throughput
+				.setPriority(((originalThroughput.getPriority() != updatedThroughput.getPriority()) ? updatedThroughput.getPriority() : originalThroughput
+						.getPriority()));
+
+		return throughput;
+	}
+
+	public static Latency mergeLatency(Latency originalLatency, Latency updatedLatency) {
+		if (originalLatency == null)
+			return updatedLatency;
+
+		if (updatedLatency == null)
+			return originalLatency;
+
+		Latency latency = new Latency();
+
+		latency.setDelay((originalLatency.getDelay() != updatedLatency.getDelay()) ? updatedLatency.getDelay() : originalLatency.getDelay());
+		latency.setMax(((originalLatency.getMax() != updatedLatency.getMax()) ? updatedLatency.getMax() : originalLatency.getMax()));
+		latency.setMin(((originalLatency.getMin() != updatedLatency.getMin()) ? updatedLatency.getMin() : originalLatency.getMin()));
+		latency.setTimeout(((originalLatency.getTimeout() != updatedLatency.getTimeout()) ? updatedLatency.getTimeout() : originalLatency
+				.getTimeout()));
+		latency.setPriority(((originalLatency.getPriority() != updatedLatency.getPriority()) ? updatedLatency.getPriority() : originalLatency
+				.getPriority()));
+
+		return latency;
+	}
+
+	public static PacketLoss mergePacketLoss(PacketLoss originalPacketLoss, PacketLoss updatedPacketLoss) {
+
+		if (originalPacketLoss == null)
+			return updatedPacketLoss;
+
+		if (updatedPacketLoss == null)
+			return originalPacketLoss;
+
+		PacketLoss packetLoss = new PacketLoss();
+
+		packetLoss.setDelay((originalPacketLoss.getDelay() != updatedPacketLoss.getDelay()) ? updatedPacketLoss.getDelay() : originalPacketLoss
+				.getDelay());
+		packetLoss.setMax(((originalPacketLoss.getMax() != updatedPacketLoss.getMax()) ? updatedPacketLoss.getMax() : originalPacketLoss.getMax()));
+		packetLoss.setMin(((originalPacketLoss.getMin() != updatedPacketLoss.getMin()) ? updatedPacketLoss.getMin() : originalPacketLoss.getMin()));
+		packetLoss
+				.setTimeout(((originalPacketLoss.getTimeout() != updatedPacketLoss.getTimeout()) ? updatedPacketLoss.getTimeout() : originalPacketLoss
+						.getTimeout()));
+		packetLoss
+				.setPriority(((originalPacketLoss.getPriority() != updatedPacketLoss.getPriority()) ? updatedPacketLoss.getPriority() : originalPacketLoss
+						.getPriority()));
+
+		return packetLoss;
+
+	}
+
 }
