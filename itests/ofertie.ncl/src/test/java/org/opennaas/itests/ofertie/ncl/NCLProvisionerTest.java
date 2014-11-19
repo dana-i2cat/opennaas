@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -62,6 +64,7 @@ import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
 import org.opennaas.extensions.genericnetwork.model.driver.NetworkConnectionImplementationId;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
+import org.opennaas.extensions.ofertie.ncl.notification.INCLNotifierClient;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
@@ -71,6 +74,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.ClientManager;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
@@ -87,6 +91,7 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
+import org.powermock.api.mockito.PowerMockito;
 
 /**
  * 
@@ -187,6 +192,10 @@ public class NCLProvisionerTest {
 	private static final String			SWITCH4_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_4_NAME + "/offorwarding";
 	private static final String			SWITCH5_FORWARDING_CONTEXT			= "/opennaas/" + OFSWITCH_RESOURCE_TYPE + "/" + SWITCH_5_NAME + "/offorwarding";
 
+	// mock sdn notifications
+	ClientManager						mockClientManager;
+	INCLNotifierClient					mockSdnClient;
+
 	/**
 	 * Make sure blueprint for specified bundle has finished its initialization
 	 */
@@ -218,7 +227,7 @@ public class NCLProvisionerTest {
 				OpennaasExamOptions.opennaasDistributionConfiguration(),
 				OpennaasExamOptions.includeFeatures("opennaas-openflowswitch", "opennaas-genericnetwork",
 						"opennaas-openflowswitch-driver-floodlight", "opennaas-ofertie-ncl", "itests-helpers"),
-				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(), 
+				OpennaasExamOptions.noConsole(), OpennaasExamOptions.doNotDelayShell(),
 				OpennaasExamOptions.keepLogConfiguration(),
 				OpennaasExamOptions.keepRuntimeFolder());
 	}
@@ -228,6 +237,16 @@ public class NCLProvisionerTest {
 		createSwitches();
 		createSDNNetwork();
 		qosPolicyRequest = generateSampleFlowRequest();
+
+		// mock and inject clientManager returning mocked sdnClient
+		mockSdnClient = PowerMockito.mock(INCLNotifierClient.class);
+		mockClientManager = PowerMockito.mock(ClientManager.class);
+		Field f = provisioner.getClass().getDeclaredField("clientManager");
+		f.setAccessible(true);
+		f.set(provisioner, mockClientManager);
+
+		PowerMockito.when(mockClientManager.getClient(Mockito.anyString())).thenReturn(mockSdnClient);
+
 	}
 
 	@After

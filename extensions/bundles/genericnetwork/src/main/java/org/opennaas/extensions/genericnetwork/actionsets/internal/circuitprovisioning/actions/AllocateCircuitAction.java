@@ -72,50 +72,60 @@ public class AllocateCircuitAction extends Action {
 		List<NetworkConnectionImplementationId> circuitImplementationsIds = new ArrayList<NetworkConnectionImplementationId>();
 
 		try {
-			// create the NetworkElement - NetworkConnection map and iterate over it, allocating
-			Map<NetworkElement, NetworkConnection> networkConnectionsMap = CircuitTopologyHelper.networkElementNetworkConnectionMap(route, topology);
+			
+			for (NetworkConnection networkConnection : route.getNetworkConnections()) {
+				NetworkElement networkElement = CircuitTopologyHelper.getNetworkElementWithPorts(topology.getNetworkElements(), 
+						networkConnection.getSource(), networkConnection.getDestination());
+				
+				if (networkElement != null) {
+					// There is a network element having both ports in the network connection
+					// Must configure the network connection there
+					log.debug("Allocating network connection " + networkConnection.getName() + " in element " + networkElement.getId());
+					
+					if (networkElement instanceof Domain) {
+						// domain Id must be the same than the Generic Network ID that represents
+						IResource domainResource = TopologyHelper.getResourceFromNetworkElementId(networkElement.getId(),
+								Activator.getResourceManagerService());
+						INCLProvisionerCapability nclProvisionerCapability = (INCLProvisionerCapability) domainResource
+								.getCapabilityByInterface(INCLProvisionerCapability.class);
 
-			for (NetworkElement networkElement : networkConnectionsMap.keySet()) {
-				NetworkConnection networkConnection = networkConnectionsMap.get(networkElement);
-				if (networkElement instanceof Domain) {
-					// domain Id must be the same than the Generic Network ID that represents
-					IResource domainResource = TopologyHelper.getResourceFromNetworkElementId(networkElement.getId(),
-							Activator.getResourceManagerService());
-					INCLProvisionerCapability nclProvisionerCapability = (INCLProvisionerCapability) domainResource
-							.getCapabilityByInterface(INCLProvisionerCapability.class);
+						// generate new CircuitRequest and allocate it
+						CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter(),
+								topology.getNetworkDevicePortIdsMap(), networkConnection);
+						String driverId = nclProvisionerCapability.allocateCircuit(circuitRequest);
 
-					// generate new CircuitRequest and allocate it
-					CircuitRequest circuitRequest = Circuit2RequestHelper.generateCircuitRequest(circuit.getQos(), circuit.getTrafficFilter(),
-							topology.getNetworkDevicePortIdsMap(), networkConnection);
-					String driverId = nclProvisionerCapability.allocateCircuit(circuitRequest);
+						// store connection in the implementation list
+						NetworkConnectionImplementationId networkConnectionImplementationId = new NetworkConnectionImplementationId();
+						networkConnectionImplementationId.setCircuitId(driverId);
+						networkConnectionImplementationId.setDeviceId(networkElement.getId());
+						circuitImplementationsIds.add(networkConnectionImplementationId);
+					} else if (networkElement instanceof Switch) {
+						// switch Id must be the same than the Openflow Switch ID that represents
+						IResource switchResource = TopologyHelper.getResourceFromNetworkElementId(networkElement.getId(),
+								Activator.getResourceManagerService());
+						IOpenflowForwardingCapability ofForwardingCapability = (IOpenflowForwardingCapability) switchResource
+								.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-					// store connection in the implementation list
-					NetworkConnectionImplementationId networkConnectionImplementationId = new NetworkConnectionImplementationId();
-					networkConnectionImplementationId.setCircuitId(driverId);
-					networkConnectionImplementationId.setDeviceId(networkElement.getId());
-					circuitImplementationsIds.add(networkConnectionImplementationId);
-				} else if (networkElement instanceof Switch) {
-					// switch Id must be the same than the Openflow Switch ID that represents
-					IResource switchResource = TopologyHelper.getResourceFromNetworkElementId(networkElement.getId(),
-							Activator.getResourceManagerService());
-					IOpenflowForwardingCapability ofForwardingCapability = (IOpenflowForwardingCapability) switchResource
-							.getCapabilityByInterface(IOpenflowForwardingCapability.class);
+						// generate new FloodlightFlow and allocate it
+						FloodlightOFFlow flow = Circuit2RequestHelper.generateFloodlightOFFlow(circuit.getTrafficFilter(),
+								topology.getNetworkDevicePortIdsMap(), networkConnection);
+						ofForwardingCapability.createOpenflowForwardingRule(flow);
 
-					// generate new FloodlightFlow and allocate it
-					FloodlightOFFlow flow = Circuit2RequestHelper.generateFloodlightOFFlow(circuit.getTrafficFilter(),
-							topology.getNetworkDevicePortIdsMap(), networkConnection);
-					ofForwardingCapability.createOpenflowForwardingRule(flow);
-
-					// store connection in the implementation list
-					NetworkConnectionImplementationId networkConnectionImplementationId = new NetworkConnectionImplementationId();
-					networkConnectionImplementationId.setCircuitId(flow.getName());
-					networkConnectionImplementationId.setDeviceId(networkElement.getId());
-					circuitImplementationsIds.add(networkConnectionImplementationId);
+						// store connection in the implementation list
+						NetworkConnectionImplementationId networkConnectionImplementationId = new NetworkConnectionImplementationId();
+						networkConnectionImplementationId.setCircuitId(flow.getName());
+						networkConnectionImplementationId.setDeviceId(networkElement.getId());
+						circuitImplementationsIds.add(networkConnectionImplementationId);
+					} else {
+						throw new ActionException("This generic network can only manage Domains and Switches. It contains " + networkElement.getClass()
+								.getSimpleName() + " with ID = " + networkElement.getId());
+					}
+					
 				} else {
-					throw new ActionException("This generic network can only manage Domains and Switches. It contains " + networkElement.getClass()
-							.getSimpleName() + " with ID = " + networkElement.getId());
+					log.debug("Assuming there's nothing to configure for network connection " + networkConnection.getName());
 				}
 			}
+			
 			// add implementations list to the map
 			circuitImplementationMap.put(circuit.getCircuitId(), circuitImplementationsIds);
 
