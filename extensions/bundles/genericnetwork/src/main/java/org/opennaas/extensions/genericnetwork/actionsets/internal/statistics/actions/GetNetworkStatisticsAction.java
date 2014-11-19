@@ -37,9 +37,9 @@ import org.opennaas.extensions.genericnetwork.model.NetworkStatistics;
 import org.opennaas.extensions.genericnetwork.model.driver.DevicePortId;
 import org.opennaas.extensions.genericnetwork.model.helpers.TopologyHelper;
 import org.opennaas.extensions.genericnetwork.model.topology.NetworkElement;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.IMonitoringCapability;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.PortStatistics;
-import org.opennaas.extensions.openflowswitch.capability.monitoring.SwitchPortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.IPortStatisticsCapability;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.PortStatistics;
+import org.opennaas.extensions.openflowswitch.capability.portstatistics.SwitchPortStatistics;
 
 /**
  * 
@@ -55,15 +55,23 @@ public class GetNetworkStatisticsAction extends Action {
 		GenericNetworkModel networkModel = (GenericNetworkModel) getModelToUpdate();
 
 		NetworkStatistics netStats = new NetworkStatistics();
-		if (networkModel.getTopology() == null) {
-			log.warn("Failed to obtain network statistics. Topology is not loaded yet.");
+		if (networkModel == null){
+			log.warn("Failed to obtain network statistics. Model is not loaded yet.");
 		} else {
-			for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
-				try {
-					SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
-					netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);
-				} catch (Exception e) {
-					log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
+			if (networkModel.getTopology() == null) {
+				log.warn("Failed to obtain network statistics. Topology is not loaded yet.");
+			} else {
+				for (NetworkElement ne : networkModel.getTopology().getNetworkElements()) {
+					try {
+						SwitchPortStatistics switchPortStatistics = getSwitchPortStatisticsForNetworkElement(ne, networkModel);
+						netStats.addPortSwitchStatistic(ne.getId(), switchPortStatistics);		
+					} catch (Exception e) {
+						log.warn("Failed to obtain port statistics for network element" + ne.getId() + ". Skipping it.", e);
+					}
+				}
+				
+				if (netStats.getSwitchStatistics().isEmpty()) {
+					log.error("No matching port statistics");
 				}
 			}
 		}
@@ -96,9 +104,9 @@ public class GetNetworkStatisticsAction extends Action {
 			throw new Exception("Failed to obtain mapping resource for network element " + networkElement.getId(), e);
 		}
 
-		IMonitoringCapability monitorCapab;
+		IPortStatisticsCapability monitorCapab;
 		try {
-			monitorCapab = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
+			monitorCapab = (IPortStatisticsCapability) resource.getCapabilityByInterface(IPortStatisticsCapability.class);
 		} catch (ResourceException e) {
 			throw new Exception("Failed to obtain IMonitorCapability of mapping resource for network element " + networkElement.getId(), e);
 		}
@@ -127,8 +135,13 @@ public class GetNetworkStatisticsAction extends Action {
 			if (netPortId == null) {
 				log.warn("Cannot find mapping network port for device " + deviceId + " and port " + portId + ". Skipping it.");
 			} else {
+				log.debug("Getting statistics for network port " + netPortId);
 				netSwitchStatistics.getStatistics().put(netPortId, switchStatistics.getStatistics().get(portId));
 			}
+		}
+		
+		if (netSwitchStatistics.getStatistics().isEmpty()) {
+			log.warn("Cannot find ANY mapping network port for device " + deviceId);
 		}
 
 		return netSwitchStatistics;

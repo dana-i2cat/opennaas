@@ -45,6 +45,7 @@ import org.opennaas.extensions.genericnetwork.capability.circuitprovisioning.api
 import org.opennaas.extensions.genericnetwork.exceptions.NotExistingCircuitException;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
 import org.opennaas.extensions.genericnetwork.model.circuit.Circuit;
+import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
 
 /**
  * Circuit Provisioning Capability implementation
@@ -108,6 +109,23 @@ public class CircuitProvisioningCapability extends AbstractCapability implements
 		for (Circuit oldCircuit : oldCircuits) {
 			if (!commonCircuits.contains(oldCircuit)) {
 				toDeallocate.add(oldCircuit.getCircuitId());
+			}
+		}
+		
+		if (log.isDebugEnabled()) {
+			log.debug("Will deallocate circuits:");
+			for (String c : toDeallocate) {
+				log.debug(c);
+			}
+			log.debug("Will allocate circuits:");
+			for (Circuit c : toAllocate) {
+				log.debug(c.getCircuitId() + " with route " + c.getRoute().getId());
+				StringBuilder sb = new StringBuilder();
+				for (NetworkConnection x : c.getRoute().getNetworkConnections()) {
+					sb.append(x.getName());
+					sb.append(", ");
+				}
+				log.debug("Route details: " + sb.toString());
 			}
 		}
 

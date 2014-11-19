@@ -20,8 +20,9 @@ package org.opennaas.extensions.ofertie.ncl.test;
  * #L%
  */
 
-import junit.framework.Assert;
+import java.lang.reflect.Field;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,11 +36,13 @@ import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvi
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.ofertie.ncl.helpers.QoSPolicyRequestHelper;
 import org.opennaas.extensions.ofertie.ncl.helpers.QosPolicyRequestParser;
+import org.opennaas.extensions.ofertie.ncl.notification.INCLNotifierClient;
 import org.opennaas.extensions.ofertie.ncl.provisioner.NCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationRejectedException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.ClientManager;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.INetworkSelector;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.IQoSPDP;
 import org.opennaas.extensions.ofertie.ncl.provisioner.components.mockup.NetworkSelectorMockup;
@@ -67,7 +70,8 @@ public class ProvisionerLogicTest {
 	IResourceManager			resourceManager;
 	Resource					resource;
 	NCLProvisionerCapability	provisionerCapab;
-
+	ClientManager				mockClientManager;
+	INCLNotifierClient			mockSdnClient;
 	NCLModel					model;
 
 	QosPolicyRequest			qosRequest;
@@ -92,6 +96,16 @@ public class ProvisionerLogicTest {
 		provisioner.setQoSPDP(qosPDP);
 		provisioner.setNetworkSelector(networkSelector);
 		provisioner.setResourceManager(resourceManager);
+
+		// mock and inject clientManager returning mocked sdnClient
+		mockSdnClient = PowerMockito.mock(INCLNotifierClient.class);
+		mockClientManager = PowerMockito.mock(ClientManager.class);
+		Field f = provisioner.getClass().getDeclaredField("clientManager");
+		f.setAccessible(true);
+		f.set(provisioner, mockClientManager);
+
+		PowerMockito.when(mockClientManager.getClient(Mockito.anyString())).thenReturn(mockSdnClient);
+
 	}
 
 	/**
@@ -106,11 +120,10 @@ public class ProvisionerLogicTest {
 
 		CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosRequest);
 
-		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(true);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(null, qosRequest)).thenReturn(true);
 		PowerMockito.when(networkSelector.getNetwork()).thenReturn(netId);
 		PowerMockito.doReturn(resource).when(resourceManager).getResourceById(netId);
 		PowerMockito.doReturn(flowId).when(nclProvCapab).allocateCircuit(Mockito.any(CircuitRequest.class));
-
 		String generatedFlow = provisioner.allocateFlow(qosRequest);
 
 		Assert.assertEquals("Flow returned by the mock NCLProvisionerCapability should be the one given to PowerMockito", flowId, generatedFlow);
@@ -126,7 +139,7 @@ public class ProvisionerLogicTest {
 	@Test(expected = FlowAllocationRejectedException.class)
 	public void allocateFlowQoSDeniedTest() throws Exception {
 
-		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(false);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(null, qosRequest)).thenReturn(false);
 		provisioner.allocateFlow(qosRequest);
 
 	}
@@ -136,7 +149,7 @@ public class ProvisionerLogicTest {
 
 		CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosRequest);
 
-		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(true);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(null, qosRequest)).thenReturn(true);
 		PowerMockito.when(networkSelector.getNetwork()).thenThrow(new Exception());
 
 		provisioner.allocateFlow(qosRequest);
@@ -148,7 +161,7 @@ public class ProvisionerLogicTest {
 
 		CircuitRequest circuitRequest = QosPolicyRequestParser.toCircuitRequest(qosRequest);
 
-		PowerMockito.when(qosPDP.shouldAcceptRequest(userId, qosRequest)).thenReturn(true);
+		PowerMockito.when(qosPDP.shouldAcceptRequest(null, qosRequest)).thenReturn(true);
 		PowerMockito.when(networkSelector.getNetwork()).thenReturn(netId);
 		PowerMockito.doReturn(resource).when(resourceManager).getResourceById(netId);
 		PowerMockito.when(nclProvCapab.allocateCircuit(circuitRequest)).thenThrow(CapabilityException.class);

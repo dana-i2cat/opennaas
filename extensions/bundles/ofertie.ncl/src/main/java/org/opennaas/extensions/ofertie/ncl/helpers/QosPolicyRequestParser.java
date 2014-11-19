@@ -161,6 +161,9 @@ public class QosPolicyRequestParser {
 
 	public static org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source fromCircuitRequestSource(Source circuitSource) {
 
+		if (circuitSource == null)
+			return null;
+
 		org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source source = new org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source();
 
 		source.setAddress(circuitSource.getAddress());
@@ -170,6 +173,9 @@ public class QosPolicyRequestParser {
 	}
 
 	public static org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination fromCircuitRequestDestination(Destination circuitDestination) {
+
+		if (circuitDestination == null)
+			return null;
 
 		org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination destination = new org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination();
 

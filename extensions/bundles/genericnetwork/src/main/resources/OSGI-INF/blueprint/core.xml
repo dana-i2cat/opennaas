@@ -88,6 +88,35 @@
 		</service-properties>
 	</service>
 	
+	
+	<!-- ########################################
+	     Networks Port Statistics Capability 
+	     ########################################
+	 -->
+	<bean id="netPortStatisticsCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.portstatistics.NetPortStatisticsCapabilityFactory">
+		<property name="type" value="gnetportstatistics"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="netPortStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="gnetportstatistics"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	<!--  Internal ActionSet  -->
+	<bean id="netPortStatisticsInternalActionset" class="org.opennaas.extensions.genericnetwork.actionsets.internal.portstatistics.NetPortStatisticsInternalActionsetImplementation" />
+	<service ref="netPortStatisticsInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="gnetportstatistics"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>	
+	
+	
+	
 	<!-- ########################################
 	     Circuit provisioning Capability 
 	     ########################################
@@ -229,6 +258,22 @@
 			<entry key="actionset.capability" value="circuitaggregation"/>
 			<entry key="actionset.name" value="internal"/>
 			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     CircuitStatistics Capability 
+	     ########################################
+	 -->
+	<bean id="circuitStatisticsCapabilityFactory" class="org.opennaas.extensions.genericnetwork.capability.circuitstatistics.CircuitStatisticsCapabilityFactory">
+		<property name="type" value="circuitstatistics"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="circuitStatisticsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="circuitstatistics"/>
+			<entry key="capability.model" value="genericnetwork"/>
+			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
 	

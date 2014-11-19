@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import org.opennaas.extensions.genericnetwork.model.circuit.NetworkConnection;
 import org.opennaas.extensions.genericnetwork.model.circuit.QoSPolicy;
+import org.opennaas.extensions.genericnetwork.model.circuit.Route;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.CircuitRequest;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.Destination;
 import org.opennaas.extensions.genericnetwork.model.circuit.request.Source;
@@ -50,13 +51,24 @@ public class Circuit2RequestHelper {
 	 * 
 	 * @param qosPolicy
 	 * @param match
+	 * @param route
 	 * @return
 	 */
-	public static CircuitRequest generateCircuitRequest(QoSPolicy qosPolicy, FloodlightOFMatch match) {
+	public static CircuitRequest generateCircuitRequest(QoSPolicy qosPolicy, FloodlightOFMatch match, Route route) {
 		CircuitRequest circuitRequest = new CircuitRequest();
 
-		circuitRequest.setSource(generateSource(match, null));
-		circuitRequest.setDestination(generateDestination(match, null));
+		String srcPort = null;
+		String dstPort = null;
+
+		if (route != null) {
+			if (route.getNetworkConnections() != null && !(route.getNetworkConnections().isEmpty())) {
+				srcPort = route.getNetworkConnections().get(0).getSource().getId();
+				dstPort = route.getNetworkConnections().get(route.getNetworkConnections().size() - 1).getDestination().getId();
+			}
+		}
+
+		circuitRequest.setSource(generateSource(match, srcPort));
+		circuitRequest.setDestination(generateDestination(match, dstPort));
 
 		// regenarate Label using ToS bits plus two 0 bits
 		circuitRequest.setLabel(String.valueOf(Integer.parseInt(match.getTosBits()) * 4));
