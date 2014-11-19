@@ -208,7 +208,10 @@ public class NCLProvisioner implements INCLProvisioner {
 			try {
 
 				QosPolicyRequest oldQosPolicyRequest = QoSPolicyRequestHelper.cloneQosPolicyRequest(qosPolicyRequest);
-				qosPolicyRequest.setQosPolicy(updatedQosPolicy);
+
+				QosPolicy mergedQos = QoSPolicyRequestHelper.mergeQosPolicies(qosPolicyRequest.getQosPolicy(), updatedQosPolicy);
+
+				qosPolicyRequest.setQosPolicy(mergedQos);
 
 				String netId = getNetworkSelector().getNetwork();
 

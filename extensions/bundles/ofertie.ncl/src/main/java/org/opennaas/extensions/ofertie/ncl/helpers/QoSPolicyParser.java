@@ -42,6 +42,9 @@ public abstract class QoSPolicyParser {
 	 */
 	public static QosPolicy fromGenericNetworkQoS(QoSPolicy genericNetQos) {
 
+		if (genericNetQos == null)
+			return null;
+
 		QosPolicy qos = new QosPolicy();
 
 		qos.setLatency(parseLatency(genericNetQos));
