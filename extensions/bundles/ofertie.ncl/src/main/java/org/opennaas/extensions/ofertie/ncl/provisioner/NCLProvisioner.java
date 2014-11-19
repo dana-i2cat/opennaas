@@ -194,7 +194,16 @@ public class NCLProvisioner implements INCLProvisioner {
 
 			INCLNotifierClient sdnClient = clientManager.getClient(username);
 
-			QosPolicyRequest qosPolicyRequest = getFlow(flowId);
+			QosPolicyRequest qosPolicyRequest = null;
+			try {
+
+				qosPolicyRequest = getFlow(flowId);
+
+			} catch (FlowNotFoundException e) {
+				log.debug("Notifiying SDN Module that flow could not be allocated.");
+				sdnClient.qosPolicyAllocationFailed(flowId, qosPolicyRequest, e);
+				throw new FlowNotFoundException(e);
+			}
 
 			try {
 
@@ -223,19 +232,16 @@ public class NCLProvisioner implements INCLProvisioner {
 				return flowId;
 			} catch (CircuitAllocationException e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
+				sdnClient.qosPolicyAllocationFailed(flowId, qosPolicyRequest, e);
 				throw new FlowAllocationException(e);
-			} catch (NotExistingCircuitException e) {
-				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
-				throw new FlowNotFoundException(e);
+
 			} catch (ResourceException e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
+				sdnClient.qosPolicyAllocationFailed(flowId, qosPolicyRequest, e);
 				throw new ProvisionerException(e);
 			} catch (Exception e) {
 				log.debug("Notifiying SDN Module that flow could not be allocated.");
-				sdnClient.qosPolicyAllocationFailed("UNKNOWN", qosPolicyRequest, e);
+				sdnClient.qosPolicyAllocationFailed(flowId, qosPolicyRequest, e);
 				throw new FlowAllocationException(e);
 
 			}
