@@ -65,6 +65,21 @@ public abstract class QoSPolicyRequestHelper {
 	public static final String	PACKETLOSS_MIN	= "0";
 	public static final String	PACKETLOSS_MAX	= "100";
 
+	public static QosPolicyRequest cloneQosPolicyRequest(QosPolicyRequest originalQosRequest) {
+
+		if (originalQosRequest == null)
+			throw new IllegalArgumentException("QosPolicyRequest to be cloned can not be null.");
+
+		QosPolicyRequest clonedQosRequest = new QosPolicyRequest();
+		clonedQosRequest.setAtomic(originalQosRequest.getAtomic());
+		clonedQosRequest.setDestination(originalQosRequest.getDestination());
+		clonedQosRequest.setLabel(originalQosRequest.getLabel());
+		clonedQosRequest.setQosPolicy(originalQosRequest.getQosPolicy());
+		clonedQosRequest.setSource(originalQosRequest.getSource());
+
+		return clonedQosRequest;
+	}
+
 	public static QosPolicyRequest generateSampleQosPolicyRequest() {
 
 		QosPolicyRequest req = new QosPolicyRequest();
