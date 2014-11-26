@@ -5,6 +5,11 @@
 		mvn:org.opennaas/org.opennaas.extensions.openflowswitch.features/${opennaas.version}/xml/features
 	</repository>
 
+    <feature name="opennaas-openflowswitch-driver-all" version="${project.version}"> 
+    	<feature version="${opennaas.version}">opennaas-openflowswitch-driver-floodlight</feature>
+     	<feature version="${opennaas.version}">opennaas-openflow-switch-driver-opendaylight</feature>
+    </feature>
+
 	<feature name="opennaas-openflowswitch-driver-floodlight" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-openflowswitch</feature>
 		
