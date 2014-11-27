@@ -141,6 +141,9 @@
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
+		
+		<!-- XIFI -->
+		<module>abno</module>
 
 	</modules>
 </project>
