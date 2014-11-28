@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="abnoBootstrapperFactory" class="org.opennaas.extensions.abno.repository.ABNOBootstrapperFactory" />
+	
+	<!-- Workaround for https://issues.apache.org/jira/browse/ARIES-796: Resolve 
+		and inject entityManagerFactory and get the entityManager using code in ResourceDescriptorRepository. 
+		Obtained entityManager is not container managed, then. Given unit MUST already 
+		be registered as an OSGi service for this to work. -->
+	<reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory"	filter="(osgi.unit.name=ResourceCore)" />
+	<bean id="resourceDescriptorRepository"	class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+		init-method="initializeEntityManager" destroy-method="close">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="abnoRepository" class="org.opennaas.extensions.abno.repository.ABNORepository" init-method="init">
+		<argument value="abno" />
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository" />
+		<property name="resourceBootstrapperFactory" ref="abnoBootstrapperFactory" />
+	</bean>
+
+	<service ref="abnoRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="abno" />
+			<entry key="version" value="1.0.0" />
+		</service-properties>
+	</service>
+</blueprint>
