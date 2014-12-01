@@ -26,4 +26,22 @@
 			<entry key="version" value="1.0.0" />
 		</service-properties>
 	</service>
+	
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="abnoRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+
+	<!-- Link Provisioning Capability -->
+	<bean id="linkProvisioningCapabilityFactory" class="org.opennaas.extensions.abno.capability.linkprovisioning.LinkProvisioningCapabilityFactory">
+		<property name="type" value="linkprovisioning" />
+	</bean>
+	<service ref="linkProvisioningCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="linkprovisioning" />
+			<entry key="capability.model" value="abno" />
+			<entry key="capability.version" value="1.0.0" />
+		</service-properties>
+	</service>
+
 </blueprint>

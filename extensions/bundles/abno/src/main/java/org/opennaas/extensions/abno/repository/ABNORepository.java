@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceRepository;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
 
 /**
  * 
@@ -45,6 +46,18 @@ public class ABNORepository extends ResourceRepository {
 	protected void checkResourceCanBeStarted(IResource resource)
 			throws ResourceException {
 		super.checkResourceCanBeStarted(resource);
+	}
+
+	public void capabilityFactoryAdded(ICapabilityFactory capabilityFactory) {
+		log.info("Adding factory: " + capabilityFactory.getType());
+		this.capabilityFactories.put(capabilityFactory.getType(), capabilityFactory);
+	}
+
+	public void capabilityFactoryDeleted(ICapabilityFactory capabilityFactory) {
+		if (capabilityFactory != null) {
+			log.info("Deleting factory: " + capabilityFactory.getType());
+			this.capabilityFactories.remove(capabilityFactory.getType());
+		}
 	}
 
 }
