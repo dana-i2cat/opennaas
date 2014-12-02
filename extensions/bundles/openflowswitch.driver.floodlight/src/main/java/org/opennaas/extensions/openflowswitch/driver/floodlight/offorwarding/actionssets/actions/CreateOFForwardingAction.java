@@ -30,6 +30,7 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.act
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
@@ -48,9 +49,16 @@ public class CreateOFForwardingAction extends FloodlightAction {
 			// TODO we have to find another place where we could put switchId in model.
 			setSwitchIdInModel(protocolSessionManager);
 
-			setSwitchIdToFlow();
+			FloodlightOFFlow flow;
 
-			FloodlightOFFlow flow = (FloodlightOFFlow) params;
+			String switchId = ((OpenflowSwitchModel) getModelToUpdate()).getSwitchId();
+
+			if (params instanceof FloodlightOFFlow) {
+				flow = (FloodlightOFFlow) params;
+				flow.setSwitchId(switchId);
+			}
+			else
+				flow = new FloodlightOFFlow((OFFlow) params, switchId);
 
 			flow = updateFlowWithControllerRequiredValues(flow);
 
@@ -70,13 +78,18 @@ public class CreateOFForwardingAction extends FloodlightAction {
 		}
 
 		if (flow.getMatch() != null) {
-//			if (flow.getMatch().getSrcIp() != null || flow.getMatch().getDstIp() != null || flow.getMatch().getTosBits() != null) {
-if ((!flow.getMatch().getEtherType().equals("2054")) && (flow.getMatch().getSrcIp() != null || flow.getMatch().getDstIp() != null || flow.getMatch().getTosBits() != null)) {
+			// if (flow.getMatch().getSrcIp() != null || flow.getMatch().getDstIp() != null || flow.getMatch().getTosBits() != null) {
+			if ((flow.getMatch().getEtherType() != null) && (!flow.getMatch().getEtherType().equals("2054")) && (flow.getMatch().getSrcIp() != null || flow
+					.getMatch().getDstIp() != null || flow.getMatch().getTosBits() != null)) {
 				// To avoid following message in floodlight controller:
 				// Warning! Pushing a static flow entry that matches IP fields without matching for IP payload (ether-type 2048)
 				// will cause the switch to wildcard higher level fields.
 				flow.getMatch().setEtherType("2048");
 			}
+			else if ((flow.getMatch().getEtherType() == null) && (flow.getMatch().getSrcIp() != null || flow.getMatch().getDstIp() != null || flow
+					.getMatch().getTosBits() != null))
+				flow.getMatch().setEtherType("2048");
+
 		}
 
 		return flow;
@@ -85,10 +98,10 @@ if ((!flow.getMatch().getEtherType().equals("2054")) && (flow.getMatch().getSrcI
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 
-		if (params == null || !(params instanceof FloodlightOFFlow))
+		if (params == null || !(params instanceof OFFlow))
 			throw new ActionException("Invalid parameters for action " + this.actionID);
 
-		FloodlightOFFlow flowRule = (FloodlightOFFlow) params;
+		OFFlow flowRule = (OFFlow) params;
 
 		if (flowRule.getName() == null || flowRule.getName().isEmpty())
 			throw new ActionException("No flow id given to params in action " + this.actionID);
