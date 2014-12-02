@@ -28,6 +28,7 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.extensions.abno.Activator;
+import org.opennaas.extensions.abno.capability.linkprovisioning.api.ProvisionLinkRequest;
 
 /**
  * ABNO {@link ILinkProvisioningCapability} implementation
@@ -44,12 +45,11 @@ public class LinkProvisioningCapability extends AbstractCapability implements IL
 	public LinkProvisioningCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
-		log.debug("Built new Port Statistics Capability");
+		log.debug("Built new Link Provisioning Capability");
 	}
 
 	@Override
-	public void provisionLink(String srcRegion, String dstRegion, String srcMACAddress, String dstMACAddress, String srcInterface,
-			String dstInterface, OperationType operationType) {
+	public void provisionLink(ProvisionLinkRequest provisionLinkRequest) throws CapabilityException {
 		// TODO Auto-generated method stub
 
 	}

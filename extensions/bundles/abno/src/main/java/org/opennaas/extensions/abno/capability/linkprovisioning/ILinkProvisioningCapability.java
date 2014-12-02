@@ -1,5 +1,13 @@
 package org.opennaas.extensions.abno.capability.linkprovisioning;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.abno.capability.linkprovisioning.api.ProvisionLinkRequest;
+
 /*
  * #%L
  * OpenNaaS :: XIFI ABNO
@@ -30,10 +38,9 @@ public interface ILinkProvisioningCapability {
 
 	public static final String	CAPABILITY_TYPE	= "linkprovisioning";
 
-	public static enum OperationType {
-		XifiWF
-	}
+	@POST
+	@Path("/provisionLink")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void provisionLink(ProvisionLinkRequest provisionLinkRequest) throws CapabilityException;
 
-	public void provisionLink(String srcRegion, String dstRegion, String srcMACAddress, String dstMACAddress, String srcInterface,
-			String dstInterface, OperationType operationType);
 }
