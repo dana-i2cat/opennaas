@@ -22,6 +22,7 @@ package org.opennaas.extensions.openflowswitch.capability.offorwarding;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -41,7 +42,6 @@ import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlowListWrapper;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
-import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
 import org.opennaas.extensions.openflowswitch.utils.Utils;
@@ -94,21 +94,6 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public void createOpenflowForwardingRule(FloodlightOFFlow forwardingRule) throws CapabilityException {
-
-		log.info("Start of createOpenflowForwardingRule call");
-		log.info("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
-
-		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
-
-		ActionResponse response = executeAction(action);
-
-		refreshModelFlows();
-
-		log.info("End of createOpenflowForwardingRule call");
-	}
-
-	@Override
 	public void removeOpenflowForwardingRule(String flowId) throws CapabilityException {
 
 		log.info("Start of removeOpenflowForwardingRule call");
@@ -135,11 +120,11 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(getResourceModel());
 
 		log.info("End of getOpenflowForwardingRules call");
-                
-                List<FloodlightOFFlow> FdlForwardingRules = new ArrayList<FloodlightOFFlow>();
-                for(OFFlow fl : forwardingRules){
-                    FdlForwardingRules.add(Utils.OFFlowToFLD(fl));
-                }
+
+		List<FloodlightOFFlow> FdlForwardingRules = new ArrayList<FloodlightOFFlow>();
+		for (OFFlow fl : forwardingRules) {
+			FdlForwardingRules.add(Utils.OFFlowToFLD(fl));
+		}
 
 		return FdlForwardingRules;
 	}
@@ -234,15 +219,16 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		return response;
 	}
 
-        @Override
-        public void createOpenflowForwardingRule(OpenDaylightOFFlow forwardingRule) throws CapabilityException {
-            log.info("Start of createOpenflowForwardingRule call");
-            
-            IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
-            ActionResponse response = executeAction(action);
+	@Override
+	public void createOpenflowForwardingRule(OFFlow forwardingRule) throws CapabilityException {
+		log.info("Start of createOpenflowForwardingRule call");
+		log.info("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
 
-            refreshModelFlows();
-            log.info("End of createOpenflowForwardingRule call");
-        }
+		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.CREATEOFFORWARDINGRULE, forwardingRule);
+		ActionResponse response = executeAction(action);
+
+		refreshModelFlows();
+		log.info("End of createOpenflowForwardingRule call");
+	}
 
 }

@@ -1,4 +1,3 @@
-
 package org.opennaas.extensions.openflowswitch.capability.offorwarding;
 
 /*
@@ -36,7 +35,6 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlowListWrapper;
-import org.opennaas.extensions.openflowswitch.model.OpenDaylightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlow;
 
 /**
@@ -46,11 +44,6 @@ import org.opennaas.extensions.openflowswitch.model.OFFlow;
  */
 @Path("/")
 public interface IOpenflowForwardingCapability extends ICapability {
-
-	@POST
-	@Path("/createOFFForwardingRule")
-	@Consumes(MediaType.APPLICATION_XML)
-	public void createOpenflowForwardingRule(FloodlightOFFlow forwardingRule) throws CapabilityException;
 
 	@DELETE
 	@Path("/removeOFForwardingRule/{flowId}")
@@ -64,9 +57,8 @@ public interface IOpenflowForwardingCapability extends ICapability {
 	@Produces(MediaType.APPLICATION_XML)
 	public FloodlightOFFlowListWrapper getOpenflowForwardingRulesAPI() throws CapabilityException;
 
-        @POST
-        @Path("/createOFFForwardingRule")
-        @Consumes(MediaType.APPLICATION_XML)
-        public void createOpenflowForwardingRule(OpenDaylightOFFlow forwardingRule) throws CapabilityException;
-        
+	@POST
+	@Path("/createOFFForwardingRule")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void createOpenflowForwardingRule(OFFlow flow) throws CapabilityException;
 }
