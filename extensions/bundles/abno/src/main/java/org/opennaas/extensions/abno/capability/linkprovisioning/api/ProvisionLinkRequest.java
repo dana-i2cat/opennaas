@@ -36,6 +36,10 @@ import org.opennaas.extensions.abno.capability.linkprovisioning.ILinkProvisionin
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProvisionLinkRequest {
 
+	public static enum Operation {
+		WLAN_PATH_PROVISIONING
+	}
+
 	public static enum OperationType {
 		XifiWF
 	}
@@ -46,6 +50,7 @@ public class ProvisionLinkRequest {
 	private String			dstMACAddress;
 	private String			srcInterface;
 	private String			dstInterface;
+	private Operation		operation;
 	private OperationType	operationType;
 
 	public String getSrcRegion() {
@@ -96,6 +101,14 @@ public class ProvisionLinkRequest {
 		this.dstInterface = dstInterface;
 	}
 
+	public Operation getOperation() {
+		return operation;
+	}
+
+	public void setOperation(Operation operation) {
+		this.operation = operation;
+	}
+
 	public OperationType getOperationType() {
 		return operationType;
 	}
@@ -111,6 +124,7 @@ public class ProvisionLinkRequest {
 		result = prime * result + ((dstInterface == null) ? 0 : dstInterface.hashCode());
 		result = prime * result + ((dstMACAddress == null) ? 0 : dstMACAddress.hashCode());
 		result = prime * result + ((dstRegion == null) ? 0 : dstRegion.hashCode());
+		result = prime * result + ((operation == null) ? 0 : operation.hashCode());
 		result = prime * result + ((operationType == null) ? 0 : operationType.hashCode());
 		result = prime * result + ((srcInterface == null) ? 0 : srcInterface.hashCode());
 		result = prime * result + ((srcMACAddress == null) ? 0 : srcMACAddress.hashCode());
@@ -142,6 +156,8 @@ public class ProvisionLinkRequest {
 				return false;
 		} else if (!dstRegion.equals(other.dstRegion))
 			return false;
+		if (operation != other.operation)
+			return false;
 		if (operationType != other.operationType)
 			return false;
 		if (srcInterface == null) {
@@ -166,7 +182,7 @@ public class ProvisionLinkRequest {
 	public String toString() {
 		return "ProvisionLinkRequest [srcRegion=" + srcRegion + ", dstRegion=" + dstRegion + ", srcMACAddress=" + srcMACAddress
 				+ ", dstMACAddress=" + dstMACAddress + ", srcInterface=" + srcInterface + ", dstInterface=" + dstInterface
-				+ ", operationType=" + operationType + "]";
+				+ ", operation=" + operation + ", operationType=" + operationType + "]";
 	}
 
 }

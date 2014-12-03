@@ -32,7 +32,20 @@
 		<reference-listener ref="abnoRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
 	</reference-list>
 
-	<!-- Link Provisioning Capability -->
+	<!-- ########################################
+	     Link Provisioning Capability
+	     ########################################
+	 -->
+	<!-- Protocol Session Factory -->
+	<bean id="abnoProtocolSessionFactory" class="org.opennaas.extensions.abno.capability.linkprovisioning.protocol.ABNOProtocolSessionFactory"/>
+	<service ref="abnoProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="http"/>
+			<entry key="protocol.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- Link Provisioning Capability Factory -->
 	<bean id="linkProvisioningCapabilityFactory" class="org.opennaas.extensions.abno.capability.linkprovisioning.LinkProvisioningCapabilityFactory">
 		<property name="type" value="linkprovisioning" />
 	</bean>
@@ -41,6 +54,16 @@
 			<entry key="capability" value="linkprovisioning" />
 			<entry key="capability.model" value="abno" />
 			<entry key="capability.version" value="1.0.0" />
+		</service-properties>
+	</service>
+	
+	<!-- Link Provisioning Internal ActionSet  -->
+	<bean id="linkProvisioningInternalActionset" class="org.opennaas.extensions.abno.capability.linkprovisioning.actionset.internal.LinkProvisioningActionsetImplementation" />
+	<service ref="linkProvisioningInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="linkprovisioning"/>
+			<entry key="actionset.version" value="1.0.0"/>
 		</service-properties>
 	</service>
 

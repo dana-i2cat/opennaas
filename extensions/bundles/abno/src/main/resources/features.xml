@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
 
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+
 	<feature name="opennaas-abno" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+		<feature version="${opennaas.version}">opennaas-resources</feature>
+		<feature version="${opennaas.version}">opennaas-ws-rest</feature>
+		
 		<bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
 	</feature>
 

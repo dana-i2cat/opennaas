@@ -22,11 +22,18 @@ package org.opennaas.extensions.abno.capability.linkprovisioning;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.abno.Activator;
 import org.opennaas.extensions.abno.capability.linkprovisioning.api.ProvisionLinkRequest;
 
@@ -50,8 +57,13 @@ public class LinkProvisioningCapability extends AbstractCapability implements IL
 
 	@Override
 	public void provisionLink(ProvisionLinkRequest provisionLinkRequest) throws CapabilityException {
-		// TODO Auto-generated method stub
+		IAction action = createActionAndCheckParams(LinkProvisioningActionSet.PROVISION_LINK, provisionLinkRequest);
 
+		ActionResponse response = executeAction(action);
+
+		if (!response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			throw new ActionException(response.toString());
+		}
 	}
 
 	@Override
@@ -78,7 +90,34 @@ public class LinkProvisioningCapability extends AbstractCapability implements IL
 
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
-		throw new UnsupportedOperationException("Not Implemented. This capability does not have ActionSet.");
+		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
+		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
+
+		try {
+			return Activator.getActionSetService(ILinkProvisioningCapability.CAPABILITY_TYPE, name, version);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
+	private ActionResponse executeAction(IAction action) throws ActionException {
+		log.debug("Executing action...");
+
+		try {
+			IProtocolManager protocolManager = getProtocolManagerService();
+			IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(this.resourceId);
+
+			// skip the queue and execute directly
+			return action.execute(protocolSessionManager);
+		} catch (ActivatorException e) {
+			throw new ActionException("Error getting Protocol Manager service.", e);
+		} catch (ProtocolException e) {
+			throw new ActionException("Error getting Protocol Session Manager.", e);
+		}
+	}
+
+	private IProtocolManager getProtocolManagerService() throws ActivatorException {
+		return Activator.getProtocolManagerService();
 	}
 
 }
