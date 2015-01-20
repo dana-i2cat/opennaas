@@ -43,27 +43,44 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
  */
 public abstract class QoSPolicyRequestHelper {
 
-	public static final String	SRC_IP			= "192.168.1.14";
-	public static final String	DST_IP			= "192.168.1.13";
+	public static final String	SRC_IP					= "192.168.1.14";
+	public static final String	DST_IP					= "192.168.1.13";
 
-	public static final String	SRC_PORT		= "0";
-	public static final String	DST_PORT		= "1";
+	public static final String	SRC_PORT				= "0";
+	public static final String	DST_PORT				= "1";
 
-	private static final String	PORT_1_1_ID		= "port.1.1";
-	private static final String	PORT_1_2_ID		= "port.1.2";
-	private static final String	PORT_2_1_ID		= "port.2.1";
-	private static final String	PORT_2_2_ID		= "port.2.2";
+	private static final String	PORT_1_1_ID				= "port.1.1";
+	private static final String	PORT_1_2_ID				= "port.1.2";
+	private static final String	PORT_2_1_ID				= "port.2.1";
+	private static final String	PORT_2_2_ID				= "port.2.2";
 
-	public static final String	TOS				= "16";
+	public static final String	TOS						= "16";
 
-	public static final String	LATENCY_MIN		= "5";
-	public static final String	LATENCY_MAX		= "12";
-	public static final String	JITTER_MIN		= "2";
-	public static final String	JITTER_MAX		= "5";
-	public static final String	THROUGHTPUT_MIN	= "10";
-	public static final String	THROUGHTPUT_MAX	= "100";
-	public static final String	PACKETLOSS_MIN	= "0";
-	public static final String	PACKETLOSS_MAX	= "100";
+	public static final String	LATENCY_MIN				= "5";
+	public static final String	LATENCY_MAX				= "12";
+	public static final String	JITTER_MIN				= "2";
+	public static final String	JITTER_MAX				= "5";
+	public static final String	THROUGHTPUT_MIN			= "10";
+	public static final String	THROUGHTPUT_MAX			= "100";
+	public static final String	PACKETLOSS_MIN			= "0";
+	public static final String	PACKETLOSS_MAX			= "100";
+
+	public static final String	DEFAULT_VALUE_FOR_TEST	= "0";
+
+	public static QosPolicyRequest cloneQosPolicyRequest(QosPolicyRequest originalQosRequest) {
+
+		if (originalQosRequest == null)
+			throw new IllegalArgumentException("QosPolicyRequest to be cloned can not be null.");
+
+		QosPolicyRequest clonedQosRequest = new QosPolicyRequest();
+		clonedQosRequest.setAtomic(originalQosRequest.getAtomic());
+		clonedQosRequest.setDestination(originalQosRequest.getDestination());
+		clonedQosRequest.setLabel(originalQosRequest.getLabel());
+		clonedQosRequest.setQosPolicy(originalQosRequest.getQosPolicy());
+		clonedQosRequest.setSource(originalQosRequest.getSource());
+
+		return clonedQosRequest;
+	}
 
 	public static QosPolicyRequest generateSampleQosPolicyRequest() {
 
@@ -81,31 +98,72 @@ public abstract class QoSPolicyRequestHelper {
 
 		req.setLabel(TOS);
 
-		QosPolicy qosPolicy = new QosPolicy();
-
-		Latency latency = new Latency();
-		latency.setMin(LATENCY_MIN);
-		latency.setMax(LATENCY_MAX);
-		qosPolicy.setLatency(latency);
-
-		Jitter jitter = new Jitter();
-		jitter.setMin(JITTER_MIN);
-		jitter.setMax(JITTER_MAX);
-		qosPolicy.setJitter(jitter);
-
-		Throughput throughput = new Throughput();
-		throughput.setMin(THROUGHTPUT_MIN);
-		throughput.setMax(THROUGHTPUT_MAX);
-		qosPolicy.setThroughput(throughput);
-
-		PacketLoss packetLoss = new PacketLoss();
-		packetLoss.setMin(PACKETLOSS_MIN);
-		packetLoss.setMax(PACKETLOSS_MAX);
-		qosPolicy.setPacketLoss(packetLoss);
+		QosPolicy qosPolicy = generateSampleQosPolicy();
 
 		req.setQosPolicy(qosPolicy);
 
 		return req;
+	}
+
+	public static QosPolicy generateSampleQosPolicy() {
+
+		QosPolicy qosPolicy = new QosPolicy();
+
+		qosPolicy.setLatency(generateSampleLatency());
+		qosPolicy.setJitter(generateSampleJitter());
+		qosPolicy.setPacketLoss(generateSamplePacketLoss());
+		qosPolicy.setThroughput(generateSampleThroughput());
+
+		return qosPolicy;
+	}
+
+	public static PacketLoss generateSamplePacketLoss() {
+		PacketLoss packetLoss = new PacketLoss();
+
+		packetLoss.setMin(PACKETLOSS_MIN);
+		packetLoss.setMax(PACKETLOSS_MAX);
+		packetLoss.setPriority(DEFAULT_VALUE_FOR_TEST);
+		packetLoss.setDelay(DEFAULT_VALUE_FOR_TEST);
+		packetLoss.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return packetLoss;
+	}
+
+	public static Throughput generateSampleThroughput() {
+		Throughput throughput = new Throughput();
+
+		throughput.setMin(THROUGHTPUT_MIN);
+		throughput.setMax(THROUGHTPUT_MAX);
+		throughput.setDelay(DEFAULT_VALUE_FOR_TEST);
+		throughput.setPriority(DEFAULT_VALUE_FOR_TEST);
+		throughput.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return throughput;
+	}
+
+	public static Jitter generateSampleJitter() {
+		Jitter jitter = new Jitter();
+
+		jitter.setMin(JITTER_MIN);
+		jitter.setMax(JITTER_MAX);
+		jitter.setDelay(DEFAULT_VALUE_FOR_TEST);
+		jitter.setPriority(DEFAULT_VALUE_FOR_TEST);
+		jitter.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return jitter;
+	}
+
+	public static Latency generateSampleLatency() {
+
+		Latency latency = new Latency();
+		latency.setMin(LATENCY_MIN);
+		latency.setMax(LATENCY_MAX);
+		latency.setDelay(DEFAULT_VALUE_FOR_TEST);
+		latency.setPriority(DEFAULT_VALUE_FOR_TEST);
+		latency.setTimeout(DEFAULT_VALUE_FOR_TEST);
+
+		return latency;
+
 	}
 
 	public static Route generateSampleRoute() {
@@ -153,6 +211,127 @@ public abstract class QoSPolicyRequestHelper {
 		port.setState(state);
 
 		return port;
+
+	}
+
+	/**
+	 * Creates a new {@link QosPolicy} by merging the values of the given ones.
+	 * 
+	 * @param originalQosPolicy
+	 * @param updatedQosPolicy
+	 * @return
+	 */
+	public static QosPolicy mergeQosPolicies(QosPolicy originalQosPolicy, QosPolicy updatedQosPolicy) {
+
+		// new request did not update any qos value
+		if (updatedQosPolicy == null)
+			return originalQosPolicy;
+
+		// old request did not contain any qos value
+		if (originalQosPolicy == null)
+			return updatedQosPolicy;
+
+		QosPolicy qosPolicy = new QosPolicy();
+
+		Jitter mergedJitter = mergeJitter(originalQosPolicy.getJitter(), updatedQosPolicy.getJitter());
+		Throughput mergedThrougput = mergeThroughput(originalQosPolicy.getThroughput(), updatedQosPolicy.getThroughput());
+		Latency mergedLatency = mergeLatency(originalQosPolicy.getLatency(), updatedQosPolicy.getLatency());
+		PacketLoss mergedPacketloss = mergePacketLoss(originalQosPolicy.getPacketLoss(), updatedQosPolicy.getPacketLoss());
+
+		qosPolicy.setJitter(mergedJitter);
+		qosPolicy.setLatency(mergedLatency);
+		qosPolicy.setPacketLoss(mergedPacketloss);
+		qosPolicy.setThroughput(mergedThrougput);
+
+		return qosPolicy;
+	}
+
+	public static Jitter mergeJitter(Jitter originalJitter, Jitter updatedJitter) {
+
+		if (originalJitter == null)
+			return updatedJitter;
+
+		if (updatedJitter == null)
+			return originalJitter;
+
+		Jitter jitter = new Jitter();
+
+		jitter.setDelay((originalJitter.getDelay() != updatedJitter.getDelay()) ? updatedJitter.getDelay() : originalJitter.getDelay());
+		jitter.setMax(((originalJitter.getMax() != updatedJitter.getMax()) ? updatedJitter.getMax() : originalJitter.getMax()));
+		jitter.setMin(((originalJitter.getMin() != updatedJitter.getMin()) ? updatedJitter.getMin() : originalJitter.getMin()));
+		jitter.setTimeout(((originalJitter.getTimeout() != updatedJitter.getTimeout()) ? updatedJitter.getTimeout() : originalJitter.getTimeout()));
+		jitter.setPriority(((originalJitter.getPriority() != updatedJitter.getPriority()) ? updatedJitter.getPriority() : originalJitter
+				.getPriority()));
+
+		return jitter;
+	}
+
+	public static Throughput mergeThroughput(Throughput originalThroughput, Throughput updatedThroughput) {
+
+		if (originalThroughput == null)
+			return updatedThroughput;
+
+		if (updatedThroughput == null)
+			return originalThroughput;
+
+		Throughput throughput = new Throughput();
+		throughput.setDelay((originalThroughput.getDelay() != updatedThroughput.getDelay()) ? updatedThroughput.getDelay() : originalThroughput
+				.getDelay());
+
+		throughput.setMax(((originalThroughput.getMax() != updatedThroughput.getMax()) ? updatedThroughput.getMax() : originalThroughput.getMax()));
+		throughput.setMin(((originalThroughput.getMin() != updatedThroughput.getMin()) ? updatedThroughput.getMin() : originalThroughput.getMin()));
+		throughput
+				.setTimeout(((originalThroughput.getTimeout() != updatedThroughput.getTimeout()) ? updatedThroughput.getTimeout() : originalThroughput
+						.getTimeout()));
+		throughput
+				.setPriority(((originalThroughput.getPriority() != updatedThroughput.getPriority()) ? updatedThroughput.getPriority() : originalThroughput
+						.getPriority()));
+
+		return throughput;
+	}
+
+	public static Latency mergeLatency(Latency originalLatency, Latency updatedLatency) {
+		if (originalLatency == null)
+			return updatedLatency;
+
+		if (updatedLatency == null)
+			return originalLatency;
+
+		Latency latency = new Latency();
+
+		latency.setDelay((originalLatency.getDelay() != updatedLatency.getDelay()) ? updatedLatency.getDelay() : originalLatency.getDelay());
+		latency.setMax(((originalLatency.getMax() != updatedLatency.getMax()) ? updatedLatency.getMax() : originalLatency.getMax()));
+		latency.setMin(((originalLatency.getMin() != updatedLatency.getMin()) ? updatedLatency.getMin() : originalLatency.getMin()));
+		latency.setTimeout(((originalLatency.getTimeout() != updatedLatency.getTimeout()) ? updatedLatency.getTimeout() : originalLatency
+				.getTimeout()));
+		latency.setPriority(((originalLatency.getPriority() != updatedLatency.getPriority()) ? updatedLatency.getPriority() : originalLatency
+				.getPriority()));
+
+		return latency;
+	}
+
+	public static PacketLoss mergePacketLoss(PacketLoss originalPacketLoss, PacketLoss updatedPacketLoss) {
+
+		if (originalPacketLoss == null)
+			return updatedPacketLoss;
+
+		if (updatedPacketLoss == null)
+			return originalPacketLoss;
+
+		PacketLoss packetLoss = new PacketLoss();
+
+		packetLoss.setDelay((originalPacketLoss.getDelay() != updatedPacketLoss.getDelay()) ? updatedPacketLoss.getDelay() : originalPacketLoss
+				.getDelay());
+		packetLoss.setMax(((originalPacketLoss.getMax() != updatedPacketLoss.getMax()) ? updatedPacketLoss.getMax() : originalPacketLoss.getMax()));
+		packetLoss.setMin(((originalPacketLoss.getMin() != updatedPacketLoss.getMin()) ? updatedPacketLoss.getMin() : originalPacketLoss.getMin()));
+		packetLoss
+				.setTimeout(((originalPacketLoss.getTimeout() != updatedPacketLoss.getTimeout()) ? updatedPacketLoss.getTimeout() : originalPacketLoss
+						.getTimeout()));
+		packetLoss
+				.setPriority(((originalPacketLoss.getPriority() != updatedPacketLoss.getPriority()) ? updatedPacketLoss.getPriority() : originalPacketLoss
+						.getPriority()));
+
+		return packetLoss;
 
 	}
 

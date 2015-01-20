@@ -36,6 +36,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.Provisione
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Jitter;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Latency;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.PacketLoss;
+import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicy;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Throughput;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequestsWrapper;
@@ -44,6 +45,7 @@ import org.opennaas.extensions.ofertie.ncl.provisioner.api.wrapper.QoSPolicyRequ
  * 
  * @author Isart Canyameres Gimenez (i2cat)
  * @author Julio Carlos Barrera
+ * @author Adrian Rosello Rey (i2CAT)
  * 
  */
 @Path("/flows")
@@ -68,7 +70,7 @@ public interface INCLProvisioner {
 	 * 
 	 * @param flowId
 	 *            of flow to update
-	 * @param updatedQosPolicyRequest
+	 * @param updatedQosPolicy
 	 * @return flowId of allocated flow
 	 * @throws AllocationException
 	 * @throws FlowNotFoundException
@@ -78,7 +80,7 @@ public interface INCLProvisioner {
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public String updateFlow(@PathParam("id") String flowId, QosPolicyRequest updatedQosPolicyRequest) throws FlowAllocationException,
+	public String updateFlow(@PathParam("id") String flowId, QosPolicy updatedQosPolicy) throws FlowAllocationException,
 			FlowNotFoundException,
 			ProvisionerException;
 
