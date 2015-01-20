@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.opennaas.core.endpoints.WSEndpointListenerHandler;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -63,12 +65,14 @@ import org.opennaas.extensions.genericnetwork.capability.nclprovisioner.NCLProvi
 import org.opennaas.extensions.genericnetwork.capability.nettopology.NetTopologyCapability;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingCapability;
 import org.opennaas.extensions.genericnetwork.capability.pathfinding.PathFindingParamsMapping;
+import org.opennaas.extensions.ofertie.ncl.notification.INCLNotifierClient;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.INCLProvisioner;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.FlowAllocationException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.exceptions.ProvisionerException;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Destination;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.QosPolicyRequest;
 import org.opennaas.extensions.ofertie.ncl.provisioner.api.model.Source;
+import org.opennaas.extensions.ofertie.ncl.provisioner.components.ClientManager;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
@@ -88,6 +92,7 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
+import org.powermock.api.mockito.PowerMockito;
 
 /**
  * 
@@ -180,6 +185,11 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 	private static final String			IP_ETHER_TYPE						= "0x0800";
 	private static final String			SRC_IP								= "192.168.10.10";
 	private static final String			DST_IP								= "192.168.10.11";
+
+	// mock sdn notifications
+	ClientManager						mockClientManager;
+	INCLNotifierClient					mockSdnClient;
+
 	@Inject
 	private IResourceManager			resourceManager;
 
@@ -213,6 +223,15 @@ public class NCLWithMockServerTest extends MockHTTPServerTest {
 
 		createSDNNetwork();
 		createSwitches();
+
+		// mock and inject clientManager returning mocked sdnClient
+		mockSdnClient = PowerMockito.mock(INCLNotifierClient.class);
+		mockClientManager = PowerMockito.mock(ClientManager.class);
+		Field f = provisioner.getClass().getDeclaredField("clientManager");
+		f.setAccessible(true);
+		f.set(provisioner, mockClientManager);
+
+		PowerMockito.when(mockClientManager.getClient(Mockito.anyString())).thenReturn(mockSdnClient);
 
 		log.info("Test initialized.");
 	}

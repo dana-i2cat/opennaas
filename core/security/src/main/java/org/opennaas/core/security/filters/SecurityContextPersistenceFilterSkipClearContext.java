@@ -34,6 +34,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -52,13 +53,15 @@ import org.springframework.web.filter.GenericFilterBean;
  */
 public class SecurityContextPersistenceFilterSkipClearContext extends GenericFilterBean {
 
-	static final String					FILTER_APPLIED				= "__spring_security_scpf_applied";
+	private static final ThreadLocal<String>	userThreadLocal				= new ThreadLocal<String>();
 
-	private SecurityContextRepository	repo						= new HttpSessionSecurityContextRepository();
+	static final String							FILTER_APPLIED				= "__spring_security_scpf_applied";
 
-	private boolean						forceEagerSessionCreation	= false;
+	private SecurityContextRepository			repo						= new HttpSessionSecurityContextRepository();
 
-	private boolean						skipClearContext			= false;
+	private boolean								forceEagerSessionCreation	= false;
+
+	private boolean								skipClearContext			= false;
 
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
@@ -97,6 +100,9 @@ public class SecurityContextPersistenceFilterSkipClearContext extends GenericFil
 				// Crucial removal of SecurityContextHolder contents - do this before anything else.
 				SecurityContextHolder.clearContext();
 			}
+
+			userThreadLocal.set(((UserDetails) contextAfterChainExecution.getAuthentication().getPrincipal()).getUsername());
+
 			repo.saveContext(contextAfterChainExecution, holder.getRequest(), holder.getResponse());
 			request.removeAttribute(FILTER_APPLIED);
 
@@ -121,5 +127,13 @@ public class SecurityContextPersistenceFilterSkipClearContext extends GenericFil
 	 */
 	public void setSkipClearContext(boolean skipClearContext) {
 		this.skipClearContext = skipClearContext;
+	}
+
+	public static void unset() {
+		userThreadLocal.remove();
+	}
+
+	public static String get() {
+		return userThreadLocal.get();
 	}
 }
