@@ -22,13 +22,12 @@ package org.opennaas.extensions.openflowswitch.model.test;
 
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 public class OpenflowSwitchModelTest {
@@ -38,18 +37,18 @@ public class OpenflowSwitchModelTest {
 
 		OpenflowSwitchModel model = OpenflowSwitchModelHelper.generateSampleModel();
 
-		List<FloodlightOFFlow> originalRules = model.getOfTables().get(0).getOfForwardingRules();
+		List<OFFlow> originalRules = model.getOfTables().get(0).getOfForwardingRules();
 
-		FloodlightOFFlow originalRule1 = originalRules.get(0);
-		FloodlightOFFlow originalRule2 = originalRules.get(1);
+		OFFlow originalRule1 = originalRules.get(0);
+		OFFlow originalRule2 = originalRules.get(1);
 
-		List<FloodlightOFFlow> forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
+		List<OFFlow> forwardingRules = OpenflowSwitchModelHelper.getSwitchForwardingRules(model);
 
 		Assert.assertEquals(2, forwardingRules.size());
 		Assert.assertEquals(originalRules.size(), forwardingRules.size());
 
-		FloodlightOFFlow rule1 = forwardingRules.get(0);
-		FloodlightOFFlow rule2 = forwardingRules.get(1);
+		OFFlow rule1 = forwardingRules.get(0);
+		OFFlow rule2 = forwardingRules.get(1);
 
 		Assert.assertEquals("1", rule1.getName());
 		Assert.assertEquals(originalRule1, rule1);
@@ -73,6 +72,8 @@ public class OpenflowSwitchModelTest {
 
 		OpenflowSwitchModel originalModel = OpenflowSwitchModelHelper.generateSampleModel();
 		String xmlModel = originalModel.toXml();
+
+		System.out.println(xmlModel);
 
 		OpenflowSwitchModel loadedModel = (OpenflowSwitchModel) ObjectSerializer.fromXml(xmlModel, OpenflowSwitchModel.class);
 		String xmlLoadedModel = loadedModel.toXml();

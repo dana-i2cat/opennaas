@@ -134,7 +134,8 @@
 	
 		<!-- Openflow Switch Drivers -->
 		<module>openflowswitch.driver.floodlight</module>
-		<module>openflowswitch.driver.features</module>	
+		<module>openflowswitch.driver.ryu</module>
+		<module>openflowswitch.driver.features</module>
 		
 		<!-- GenericNetwork -->
 		<module>genericnetwork</module>

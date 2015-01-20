@@ -50,7 +50,7 @@ public class NetOFFlow extends OFFlow {
 	/**
 	 * Copy constructor
 	 * 
-	 * @param floodlightOFFlow
+	 * @param ofFlow
 	 */
 	public NetOFFlow(NetOFFlow flow) {
 		super(flow);
