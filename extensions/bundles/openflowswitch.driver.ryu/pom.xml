@@ -21,7 +21,7 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.openflowswitch</artifactId>
 		</dependency>
-		<!-- Required in TyuProtocolSession to implement a Ryu client -->
+		<!-- Required in RyuProtocolSession to implement a Ryu client -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
