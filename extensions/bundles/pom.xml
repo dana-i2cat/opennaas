@@ -143,5 +143,7 @@
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
 
+		<!-- RYU -->
+		<module>ryu</module>
 	</modules>
 </project>
