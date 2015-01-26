@@ -2,12 +2,10 @@
 <features>	
 	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
     
-    
 	<feature name="opennaas-ryu" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-core</feature>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ryu/${project.version}</bundle>
-
 
 	</feature>
 </features>
