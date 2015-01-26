@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">	
+	<feature name="opennaas-openstack" version="${project.version}">
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.openstack/${project.version}</bundle>
+	</feature>
+</features>
