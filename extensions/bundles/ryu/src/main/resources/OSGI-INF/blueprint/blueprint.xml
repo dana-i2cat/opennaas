@@ -43,5 +43,22 @@
 	</service>
 
 
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="ryuResourceRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+
+	<!-- Factory that creates protocol capabilities -->
+	<bean id="monitoringModuleCapabilityFactory" class="org.opennaas.extensions.ryu.capability.MonitoringModuleCapabilityFactory">
+		<property name="type" value="monitoringModule"/>
+	</bean>
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="monitoringModuleCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="monitoringModule"/>
+			<entry key="capability.model" value="ryu"/>
+			<entry key="capability.version" value="1.0"/>
+		</service-properties>
+	</service>
 
 </blueprint>
