@@ -9,6 +9,7 @@
 		<feature version="${project.version}">opennaas-protocol-tl1</feature>
 		<feature version="${project.version}">opennaas-protocol-cli</feature>		
 		<feature version="${project.version}">opennaas-protocol-wonesys</feature>
+		<feature version="${project.version}">opennaas-protocol-http</feature>		
 	</feature>
 
 
@@ -42,4 +43,10 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.netconf/${project.version}</bundle>
 	</feature>
 
+
+	<feature name="opennaas-protocol-http" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.http/${project.version}</bundle>
+	</feature>
 </features>

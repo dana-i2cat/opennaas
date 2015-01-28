@@ -96,7 +96,8 @@
 		<module>protocols.netconf</module>
 		<module>protocols.cli</module>
 		<module>protocols.tl1</module>
-		<module>roadm.protocols.wonesys</module>	
+		<module>roadm.protocols.wonesys</module>
+		<module>protocols.http</module>
 		<module>protocols.features</module>		
 		
 		<!-- MacBridge Resource -->
