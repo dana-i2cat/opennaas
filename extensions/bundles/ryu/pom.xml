@@ -15,12 +15,17 @@
 	<description>Ryu resource and capabilities</description>
 
 	<dependencies>
-	
+ 
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.protocols.http</artifactId>
+		</dependency>
+
 		<!-- JSON Serialization/Deserialization -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -30,20 +35,39 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-xc</artifactId>
 		</dependency>
-	
+
+		<!-- Guava for IP validation -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+
 		<!-- Commons IO to read files -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 
+
+		<!-- JSONAssert - to compare JSONs -->
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
+			<scope>test</scope>
 		</dependency>
-		
-
+    	 	
+		<!-- Powermock -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 
@@ -62,9 +86,18 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.extensions.ryu.Activator</Bundle-Activator>
+					<!-- Following instruction is commented. It was required to create a CXF server. 	
+						<Import-Package>
+							org.apache.cxf.transport.http_jetty,
+							org.apache.cxf.transport.http,							
+							*
+						</Import-Package> -->
 						<Export-Package>
 							org.opennaas.extensions.ryu,
-							org.opennaas.extensions.ryu.repository
+							org.opennaas.extensions.ryu.alarm,							
+							org.opennaas.extensions.ryu.repository,
+							org.opennaas.extensions.ryu.capability.monitoringmodule,
+							org.opennaas.extensions.ryu.client.monitoringmodule
 						</Export-Package>
 					</instructions>
 				</configuration>
