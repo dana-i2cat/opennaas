@@ -60,8 +60,6 @@ public class HttpProtocolSession implements IProtocolSession {
 		this.protocolListeners = new HashMap<String, IProtocolSessionListener>();
 		this.protocolMessageFilters = new HashMap<String, IProtocolMessageFilter>();
 
-		// this.clientFactory = new RyuClientFactory();
-
 		this.status = Status.DISCONNECTED_BY_USER;
 
 		checkProtocolSessionContext(protocolSessionContext);
