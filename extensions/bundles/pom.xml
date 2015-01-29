@@ -142,6 +142,9 @@
 		
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
+		
+		<!-- Openstack -->
+		<module>openstack</module>
 
 	</modules>
 </project>
