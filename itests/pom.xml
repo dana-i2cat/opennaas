@@ -34,6 +34,7 @@
 		<module>nclmonitoring</module>
 		<module>circuitprovisioning/internal</module>
 		<module>circuitaggregation/internal</module>
+		<module>ryu</module>
 	</modules>
 
 	<dependencies>
