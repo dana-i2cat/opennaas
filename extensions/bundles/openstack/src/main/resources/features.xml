@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">	
+
+	<repository>mvn:org.apache.jclouds.karaf/jclouds-karaf/${jclouds.version}/xml/features</repository>	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.protocols.features/${project.version}/xml/features</repository>	
+
+
 	<feature name="opennaas-openstack" version="${project.version}">
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.openstack/${project.version}</bundle>
+		<feature version="${project.version}">opennaas-protocol-http</feature>		
+	
+		<feature version="${jclouds.version}">jclouds</feature>
+		<feature version="${jclouds.version}">jclouds-api-openstack-keystone</feature>		
+		<feature version="${jclouds.version}">jclouds-api-openstack-nova</feature>
+
+		<bundle dependency="true">wrap:mvn:org.apache.jclouds.labs/openstack-neutron/${jclouds.version}$overwrite=merge&amp;Import-Package=com.google.common.base;version=&quot;[17.0,18)&quot;,com.google.common.cache;version=&quot;[17.0,18)&quot;,com.google.common.collect;version=&quot;[17.0,18)&quot;,com.google.gson.annotations;version=&quot;[2.2,3)&quot;,com.google.inject;version=&quot;[1.3,2)&quot;,com.google.inject.binder;version=&quot;[1.3,2)&quot;,javax.inject,javax.ws.rs;version=&quot;[1.1,2)&quot;,org.jclouds;version=&quot;${jclouds.version}&quot;,org.jclouds.apis;version=&quot;${jclouds.version}&quot;,org.jclouds.apis.internal;version=&quot;${jclouds.version}&quot;,org.jclouds.collect;version=&quot;${jclouds.version}&quot;,org.jclouds.collect.internal;version=&quot;${jclouds.version}&quot;,org.jclouds.http;version=&quot;${jclouds.version}&quot;,org.jclouds.http.annotation;version=&quot;${jclouds.version}&quot;,org.jclouds.http.functions;version=&quot;${jclouds.version}&quot;,org.jclouds.io;version=&quot;${jclouds.version}&quot;,org.jclouds.javax.annotation;version=&quot;${jclouds.version}&quot;,org.jclouds.json;version=&quot;${jclouds.version}&quot;,org.jclouds.json.config;version=&quot;${jclouds.version}&quot;,org.jclouds.location;version=&quot;${jclouds.version}&quot;,org.jclouds.location.functions;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.keystone.v2_0;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.keystone.v2_0.config;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.keystone.v2_0.filters;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.v2_0.domain;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.v2_0.features;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.v2_0.functions;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.v2_0.options;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.v2_0.services;version=&quot;${jclouds.version}&quot;,org.jclouds.rest;version=&quot;${jclouds.version}&quot;,org.jclouds.rest.annotations;version=&quot;${jclouds.version}&quot;,org.jclouds.rest.binders;version=&quot;${jclouds.version}&quot;,org.jclouds.rest.config;version=&quot;${jclouds.version}&quot;,org.jclouds.rest.functions;version=&quot;${jclouds.version}&quot;,org.jclouds.rest.internal;version=&quot;${jclouds.version}&quot;,org.jclouds.util;version=&quot;${jclouds.version}&quot;&amp;Export-Package=org.jclouds.openstack.neutron.v2;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.neutron.v2.domain;version=&quot;${jclouds.version}&quot;,org.jclouds.openstack.neutron.v2.features;version=&quot;${jclouds.version}&quot;</bundle>
+	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.openstack/${project.version}</bundle>  
 	</feature>
 </features>
