@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 
 /**
@@ -37,10 +38,10 @@ public interface IOpenstackAdapterCapability extends ICapability {
 
 	@Path("/instance")
 	@GET
-    String getInstanceId(@QueryParam("name") String instanceName);
-	
+	String getInstanceId(@QueryParam("name") String instanceName, @QueryParam("tenantName") String tenantName) throws CapabilityException;
+
 	@Path("/instance/{instanceId}/port")
 	@GET
-    String getPortId(@PathParam("instanceId") String instanceId);
+	String getPortId(@PathParam("instanceId") String instanceId, @QueryParam("tenantName") String tenantName) throws CapabilityException;
 
 }
