@@ -16,6 +16,18 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.jclouds</groupId>
+			<artifactId>jclouds-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jclouds.labs</groupId>
+			<artifactId>openstack-neutron</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.protocols.http</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
