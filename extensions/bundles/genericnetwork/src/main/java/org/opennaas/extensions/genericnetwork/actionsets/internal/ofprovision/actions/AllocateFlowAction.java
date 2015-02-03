@@ -32,10 +32,10 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.extensions.genericnetwork.Activator;
-import org.opennaas.extensions.genericnetwork.model.NetOFFlow;
 import org.opennaas.extensions.genericnetwork.model.GenericNetworkModel;
+import org.opennaas.extensions.genericnetwork.model.NetOFFlow;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 
 /**
  * 
@@ -49,8 +49,8 @@ public class AllocateFlowAction extends Action {
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		NetOFFlow netFlow = (NetOFFlow) params;
 
-		// transform NetOFFlow to FloodlightOFFlow
-		FloodlightOFFlow flow = new FloodlightOFFlow(netFlow, null);
+		// transform NetOFFlow to OFFlow
+		OFFlow flow = new OFFlow(netFlow);
 
 		try {
 			String resourceName = netFlow.getResourceId();

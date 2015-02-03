@@ -143,4 +143,9 @@ public class FloodlightOFAction {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "FloodlightOFAction [type=" + type + ", value=" + value + "]";
+	}
+
 }

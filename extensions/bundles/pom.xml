@@ -96,7 +96,8 @@
 		<module>protocols.netconf</module>
 		<module>protocols.cli</module>
 		<module>protocols.tl1</module>
-		<module>roadm.protocols.wonesys</module>	
+		<module>roadm.protocols.wonesys</module>
+		<module>protocols.http</module>
 		<module>protocols.features</module>		
 		
 		<!-- MacBridge Resource -->
@@ -134,7 +135,8 @@
 	
 		<!-- Openflow Switch Drivers -->
 		<module>openflowswitch.driver.floodlight</module>
-		<module>openflowswitch.driver.features</module>	
+		<module>openflowswitch.driver.ryu</module>
+		<module>openflowswitch.driver.features</module>
 		
 		<!-- GenericNetwork -->
 		<module>genericnetwork</module>
@@ -144,6 +146,11 @@
 		
 		<!-- XIFI -->
 		<module>abno</module>
+		
+		<!-- Openstack -->
+		<module>openstack</module>
 
+		<!-- RYU -->
+		<module>ryu</module>
 	</modules>
 </project>

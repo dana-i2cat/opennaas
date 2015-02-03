@@ -153,6 +153,7 @@
 		<feature version="${opennaas.version}">opennaas-core</feature>
 		<feature version="${opennaas.version}">cxf-minimal</feature>
 		<feature version="${project.version}">opennaas-powermockito</feature>
+		<feature version="${project.version}">opennaas-wiremock</feature>
 		
 		<feature version="${netconf-server.version}">netconf-server</feature>
 		
@@ -190,6 +191,31 @@
 		<bundle dependency="true">wrap:mvn:org.powermock/powermock-api-support/${powermock.version}</bundle>
 	
 	</feature>
+	
+	<feature name="opennaas-wiremock" version="${project.version}">
+	
+		<feature version="${project.version}">opennaas-powermockito</feature>
+	
+		<bundle dependency="true">wrap:mvn:org.skyscreamer/jsonassert/1.2.3</bundle>
+		
+		<bundle dependency="true">mvn:com.fasterxml.jackson.core/jackson-annotations/2.4.4</bundle>
+		<bundle dependency="true">mvn:com.fasterxml.jackson.core/jackson-databind/2.4.4</bundle>
+		<bundle dependency="true">mvn:com.fasterxml.jackson.core/jackson-core/2.4.4</bundle>
+		
+		<bundle dependency="true">wrap:mvn:org.json/json/20131018</bundle>
+		
+		<bundle dependency="true">wrap:mvn:xmlunit/xmlunit/1.4</bundle>
+		
+		<bundle dependency="true">mvn:org.mortbay.jetty/jetty-util/6.1.26</bundle>
+		<bundle dependency="true">mvn:org.mortbay.jetty/jetty/6.1.26</bundle>
+		
+		<bundle dependency="true">wrap:mvn:org.apache.httpcomponents/httpcore/4.3.2</bundle>
+		<bundle dependency="true">wrap:mvn:org.apache.httpcomponents/httpclient/4.3.5</bundle>
+		
+		<bundle dependency="true">wrap:mvn:com.github.tomakehurst/wiremock/1.51</bundle>
+	
+	</feature>
+	
 	
 </features>
 

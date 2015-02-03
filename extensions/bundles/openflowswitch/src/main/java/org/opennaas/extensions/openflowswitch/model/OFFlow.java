@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Isart Canyameres Gimenez (i2cat)
  * 
  */
-@XmlRootElement
+@XmlRootElement(namespace = "opennaas.api")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OFFlow {
 
@@ -71,7 +71,8 @@ public class OFFlow {
 			this.actions.add(new FloodlightOFAction(floodlightOFAction));
 		}
 
-		this.match = new FloodlightOFMatch(ofFlow.match);
+		if (ofFlow.match != null)
+			this.match = new FloodlightOFMatch(ofFlow.match);
 	}
 
 	/**

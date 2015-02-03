@@ -27,9 +27,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceRepository;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 /**
  * 
@@ -77,12 +75,6 @@ public class OpenflowSwitchRepository extends ResourceRepository {
 			if (sessionManager.getRegisteredContexts().isEmpty())
 				throw new ResourceException(
 						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
-
-			IProtocolSession session = sessionManager.obtainSessionByProtocol("floodlight", false);
-			ProtocolSessionContext sessionContext = session.getSessionContext();
-
-			if (!(sessionContext.getSessionParameters().containsKey("protocol.floodlight.switchid")))
-				throw new ResourceException("There is no switch id in resource " + resourceId + " session context.");
 
 		} catch (ResourceException e) {
 			throw e;

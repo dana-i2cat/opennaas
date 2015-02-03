@@ -30,6 +30,7 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.offorwarding.act
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.IFloodlightStaticFlowPusherClient;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 
 /**
@@ -48,9 +49,14 @@ public class CreateOFForwardingAction extends FloodlightAction {
 			// TODO we have to find another place where we could put switchId in model.
 			setSwitchIdInModel(protocolSessionManager);
 
-			setSwitchIdToFlow();
+			FloodlightOFFlow flow;
 
-			FloodlightOFFlow flow = (FloodlightOFFlow) params;
+			if (params instanceof FloodlightOFFlow) {
+				flow = ((FloodlightOFFlow) params);
+				flow.setSwitchId(((OpenflowSwitchModel) getModelToUpdate()).getSwitchId());
+			}
+			else
+				flow = new FloodlightOFFlow((OFFlow) params, ((OpenflowSwitchModel) getModelToUpdate()).getSwitchId());
 
 			flow = updateFlowWithControllerRequiredValues(flow);
 
@@ -84,10 +90,10 @@ public class CreateOFForwardingAction extends FloodlightAction {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 
-		if (params == null || !(params instanceof FloodlightOFFlow))
+		if (params == null || !(params instanceof OFFlow))
 			throw new ActionException("Invalid parameters for action " + this.actionID);
 
-		FloodlightOFFlow flowRule = (FloodlightOFFlow) params;
+		OFFlow flowRule = (OFFlow) params;
 
 		if (flowRule.getName() == null || flowRule.getName().isEmpty())
 			throw new ActionException("No flow id given to params in action " + this.actionID);
@@ -127,14 +133,6 @@ public class CreateOFForwardingAction extends FloodlightAction {
 
 		return true;
 
-	}
-
-	private void setSwitchIdToFlow() {
-
-		OpenflowSwitchModel model = (OpenflowSwitchModel) getModelToUpdate();
-		FloodlightOFFlow flowRule = (FloodlightOFFlow) params;
-
-		flowRule.setSwitchId(model.getSwitchId());
 	}
 
 	private void setSwitchIdInModel(IProtocolSessionManager protocolSessionManager) throws ProtocolException {

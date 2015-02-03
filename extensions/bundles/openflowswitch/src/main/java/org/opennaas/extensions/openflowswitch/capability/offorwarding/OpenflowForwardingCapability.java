@@ -37,8 +37,8 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.openflowswitch.helpers.OpenflowSwitchModelHelper;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlowListWrapper;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.extensions.openflowswitch.repository.Activator;
@@ -91,7 +91,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public void createOpenflowForwardingRule(FloodlightOFFlow forwardingRule) throws CapabilityException {
+	public void createOpenflowForwardingRule(OFFlow forwardingRule) throws CapabilityException {
 
 		log.info("Start of createOpenflowForwardingRule call");
 		log.info("Creating forwarding rule " + forwardingRule.getName() + " in resource " + resource.getResourceIdentifier().getId());
@@ -121,10 +121,10 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	}
 
 	@Override
-	public List<FloodlightOFFlow> getOpenflowForwardingRules() throws CapabilityException {
+	public List<OFFlow> getOpenflowForwardingRules() throws CapabilityException {
 		log.info("Start of getOpenflowForwardingRules call");
 
-		List<FloodlightOFFlow> forwardingRules;
+		List<OFFlow> forwardingRules;
 
 		refreshModelFlows();
 
@@ -172,7 +172,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 	 * @return retrieved flows
 	 * @throws CapabilityException
 	 */
-	private List<FloodlightOFFlow> refreshModelFlows() throws CapabilityException {
+	private List<OFFlow> refreshModelFlows() throws CapabilityException {
 		log.info("Start of refreshModelFlows call");
 
 		IAction action = createActionAndCheckParams(OpenflowForwardingActionSet.GETFLOWS, null);
@@ -180,7 +180,7 @@ public class OpenflowForwardingCapability extends AbstractCapability implements 
 		ActionResponse response = executeAction(action);
 
 		// assuming the action returns what it is meant to
-		List<FloodlightOFFlow> currentFlows = (List<FloodlightOFFlow>) response.getResult();
+		List<OFFlow> currentFlows = (List<OFFlow>) response.getResult();
 
 		// assuming only one table may exist in switch model
 		// thats true with OpenFlow version 1.0

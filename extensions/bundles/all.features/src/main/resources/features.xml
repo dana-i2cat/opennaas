@@ -20,8 +20,10 @@
 	<repository>mvn:org.opennaas/org.opennaas.extensions.transports.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.vcpe.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.vnmapper.features/${opennaas.version}/xml/features</repository>
-	<repository>mvn:org.opennaas/org.opennaas.extensions.abno/${opennaas.version}/xml/features</repository>
-	
+	<repository>mvn:org.opennaas/org.opennaas.extensions.ryu/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.openstack/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.abno/${opennaas.version}/xml/features</repository>	
+
 	<feature name="opennaas-extensions-all" version="${project.version}">
 		<feature version="${project.version}">opennaas-protocols-all</feature>
 		<feature version="${project.version}">opennaas-transport-all</feature>
@@ -39,10 +41,11 @@
 		<feature version="${project.version}">opennaas-power</feature>
 		<feature version="${project.version}">opennaas-openflowswitch</feature>
 		<feature version="${project.version}">opennaas-openflowswitch-driver-floodlight</feature>
+		<feature version="${project.version}">opennaas-openflowswitch-driver-ryu</feature>
 		<feature version="${project.version}">opennaas-quantum</feature>
 		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
 		<feature version="${project.version}">opennaas-genericnetwork</feature>
-		<feature version="${project.version}">opennaas-abno</feature>
+		<feature version="${project.version}">opennaas-ryu</feature>
 	</feature>
 	
 </features>
