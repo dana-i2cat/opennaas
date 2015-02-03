@@ -21,6 +21,7 @@
 	<repository>mvn:org.opennaas/org.opennaas.extensions.vcpe.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.vnmapper.features/${opennaas.version}/xml/features</repository>
 	<repository>mvn:org.opennaas/org.opennaas.extensions.ryu/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.openstack/${opennaas.version}/xml/features</repository>	
 
 	<feature name="opennaas-extensions-all" version="${project.version}">
 		<feature version="${project.version}">opennaas-protocols-all</feature>
@@ -44,6 +45,7 @@
 		<feature version="${project.version}">opennaas-ofertie-ncl</feature>
 		<feature version="${project.version}">opennaas-genericnetwork</feature>
 		<feature version="${project.version}">opennaas-ryu</feature>
+		<feature version="${project.version}">opennaas-openstack</feature>		
 	</feature>
 	
 </features>
