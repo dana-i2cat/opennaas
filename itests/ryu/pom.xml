@@ -8,6 +8,8 @@
   
   <artifactId>org.opennaas.itests.ryu</artifactId>
   
+  <name>OpenNaaS :: iTests :: Ryu </name>
+  
   <dependencies>
   
   		<dependency>

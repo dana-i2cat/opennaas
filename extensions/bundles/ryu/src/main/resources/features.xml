@@ -16,6 +16,8 @@
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
 		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>
 		
+		<bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>		
+		
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ryu/${project.version}</bundle>
 
 	</feature>
