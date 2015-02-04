@@ -85,7 +85,7 @@
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
-		<netconf4j.version>0.0.10-SNAPSHOT</netconf4j.version>
+		<netconf4j.version>0.0.9b</netconf4j.version>
 		<nmr.version>1.6.1</nmr.version>
 		<opencsv.version>2.3</opencsv.version>
 		<openjpa.version>2.2.0</openjpa.version>
@@ -143,7 +143,7 @@
 		<project.name>OpenNaaS</project.name>
 		
 		<!-- Netconf server for itests -->
-		<netconf-server.version>0.0.4-SNAPSHOT</netconf-server.version>
+		<netconf-server.version>0.0.3b</netconf-server.version>
 	</properties>
 
 	<dependencyManagement>
