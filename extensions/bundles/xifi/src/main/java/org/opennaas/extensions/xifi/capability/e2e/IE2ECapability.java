@@ -26,15 +26,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.xifi.capability.e2e.api.ConnectEndsRequest;
 
 /**
- * XIFI E2E Capability
+ * XIFI E2E {@link ICapability}
  * 
  * @author Julio Carlos Barrera
  *
  */
-public interface IE2ECapability {
+public interface IE2ECapability extends ICapability {
 
 	public static final String	CAPABILITY_TYPE	= "e2e";
 

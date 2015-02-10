@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.abno.capability.linkprovisioning.api.ProvisionLinkRequest;
 
 /*
@@ -29,12 +30,12 @@ import org.opennaas.extensions.abno.capability.linkprovisioning.api.ProvisionLin
  */
 
 /**
- * ABNO Link Provisioning Capability
+ * ABNO Link Provisioning {@link ICapability}
  * 
  * @author Julio Carlos Barrera
  *
  */
-public interface ILinkProvisioningCapability {
+public interface ILinkProvisioningCapability extends ICapability {
 
 	public static final String	CAPABILITY_TYPE	= "linkprovisioning";
 
