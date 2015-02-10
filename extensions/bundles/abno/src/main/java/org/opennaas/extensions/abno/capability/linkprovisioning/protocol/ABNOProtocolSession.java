@@ -142,7 +142,7 @@ public class ABNOProtocolSession implements IProtocolSession {
 	/**
 	 * This method should NOT be used in Actions to retrieve the client. In Actions use {@link #getABNOClient()} instead.
 	 * 
-	 * @return floodlightStaticFlowPusherClient
+	 * @return abnoClient
 	 * @see #getABNOClientForUse()
 	 */
 	public IABNOClient getABNOClient() {
