@@ -144,6 +144,9 @@
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
 		
+		<!-- XIFI -->
+		<module>abno</module>
+		
 		<!-- Openstack -->
 		<module>openstack</module>
 
