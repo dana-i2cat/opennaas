@@ -144,7 +144,7 @@
 		<!-- OFERTIE -->
 		<module>ofertie.ncl</module>
 		
-		<!-- XIFI -->
+		<!-- ABNO -->
 		<module>abno</module>
 		
 		<!-- Openstack -->
@@ -152,5 +152,8 @@
 
 		<!-- RYU -->
 		<module>ryu</module>
+		
+		<!-- XIFI -->
+		<module>xifi</module>
 	</modules>
 </project>
