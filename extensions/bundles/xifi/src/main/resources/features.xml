@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+
+	<repository>mvn:org.opennaas/org.opennaas.extensions.ryu/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.openstack/${opennaas.version}/xml/features</repository>
+	<repository>mvn:org.opennaas/org.opennaas.extensions.abno/${opennaas.version}/xml/features</repository>
+
+	<feature name="opennaas-xifi-e2e" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-abno</feature>
+		<feature version="${opennaas.version}">opennaas-ryu</feature>
+		<feature version="${opennaas.version}">opennaas-openstack</feature>
+
+		<bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+	</feature>
+
+</features>

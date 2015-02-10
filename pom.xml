@@ -455,10 +455,32 @@
 				<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
+			<!-- ABNO -->
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.abno</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		
+			<!-- OpenStack client -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openstack</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		
+			<!-- Ryu Monitoring Module -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.ryu</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<!-- XIFI -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.xifi</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
