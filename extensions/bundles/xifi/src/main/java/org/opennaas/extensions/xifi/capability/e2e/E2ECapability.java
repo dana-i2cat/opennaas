@@ -55,6 +55,9 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 	private static final String	REGION					= "region";
 	private static final String	REGION_RYU				= ".ryu";
 	private static final String	REGION_OPENSTACK		= ".openstack";
+	private static final String	REGION_OPENSTACK_USER	= REGION_OPENSTACK + ".user";
+	private static final String	REGION_OPENSTACK_PWD	= REGION_OPENSTACK + ".password";
+	private static final String	REGION_OPENSTACK_TENANT	= REGION_OPENSTACK + ".tenant";
 	private static final String	REGION_AUTOBAHN_IFACE	= ".autobahn.iface";
 
 	private XIFIConfiguration	xifiConfiguration;
@@ -137,8 +140,16 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 					// fill fields
 					String ryuEndpoint = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_RYU);
 					region.setRyuEndpoint(ryuEndpoint);
+
 					String openStackEndpoint = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_OPENSTACK);
 					region.setOpenstackEndpoint(openStackEndpoint);
+					String openStackUser = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_OPENSTACK_USER);
+					region.setOpenstackUser(openStackUser);
+					String openStackPassword = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_OPENSTACK_PWD);
+					region.setOpenstackPassword(openStackPassword);
+					String openStackTenant = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_OPENSTACK_TENANT);
+					region.setOpenstackTenant(openStackTenant);
+
 					String autobahnIface = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_AUTOBAHN_IFACE);
 					region.setAutoBAHNInterface(autobahnIface);
 
@@ -161,9 +172,10 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 			if (region.getName() == null)
 				throw new Exception("Region name not set!");
 			if (region.getRyuEndpoint() == null)
-				throw new Exception("Ryu endpoint for region " + region.getName() + " not set!");
-			if (region.getOpenstackEndpoint() == null)
-				throw new Exception("OpenStack endpoint for region " + region.getName() + " not set!");
+				throw new Exception("Ryu endpoint for region " + region.getName() + " not properly set!");
+			if (region.getOpenstackEndpoint() == null || region.getOpenstackUser() == null || region.getOpenstackPassword() == null || region
+					.getOpenstackTenant() == null)
+				throw new Exception("OpenStack endpoint for region " + region.getName() + " not properly set!");
 		}
 
 		log.info("XIFI configuration checked.");

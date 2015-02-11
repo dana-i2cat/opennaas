@@ -31,7 +31,10 @@ public class Region {
 	private String	name;
 	private String	ryuEndpoint;
 	private String	openstackEndpoint;
-	private String	autobahnInterface;
+	private String	openstackUser;
+	private String	openstackPassword;
+	private String	openstackTenant;
+	private String	autoBAHNInterface;
 
 	public String getName() {
 		return name;
@@ -57,21 +60,48 @@ public class Region {
 		this.openstackEndpoint = openstackEndpoint;
 	}
 
-	public String getAutobahnInterface() {
-		return autobahnInterface;
+	public String getOpenstackUser() {
+		return openstackUser;
 	}
 
-	public void setAutoBAHNInterface(String autobahnInterface) {
-		this.autobahnInterface = autobahnInterface;
+	public void setOpenstackUser(String openstackUser) {
+		this.openstackUser = openstackUser;
+	}
+
+	public String getOpenstackPassword() {
+		return openstackPassword;
+	}
+
+	public void setOpenstackPassword(String openstackPassword) {
+		this.openstackPassword = openstackPassword;
+	}
+
+	public String getOpenstackTenant() {
+		return openstackTenant;
+	}
+
+	public void setOpenstackTenant(String openstackTenant) {
+		this.openstackTenant = openstackTenant;
+	}
+
+	public String getAutoBAHNInterface() {
+		return autoBAHNInterface;
+	}
+
+	public void setAutoBAHNInterface(String autoBAHNInterface) {
+		this.autoBAHNInterface = autoBAHNInterface;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((autobahnInterface == null) ? 0 : autobahnInterface.hashCode());
+		result = prime * result + ((autoBAHNInterface == null) ? 0 : autoBAHNInterface.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((openstackEndpoint == null) ? 0 : openstackEndpoint.hashCode());
+		result = prime * result + ((openstackPassword == null) ? 0 : openstackPassword.hashCode());
+		result = prime * result + ((openstackTenant == null) ? 0 : openstackTenant.hashCode());
+		result = prime * result + ((openstackUser == null) ? 0 : openstackUser.hashCode());
 		result = prime * result + ((ryuEndpoint == null) ? 0 : ryuEndpoint.hashCode());
 		return result;
 	}
@@ -85,10 +115,10 @@ public class Region {
 		if (getClass() != obj.getClass())
 			return false;
 		Region other = (Region) obj;
-		if (autobahnInterface == null) {
-			if (other.autobahnInterface != null)
+		if (autoBAHNInterface == null) {
+			if (other.autoBAHNInterface != null)
 				return false;
-		} else if (!autobahnInterface.equals(other.autobahnInterface))
+		} else if (!autoBAHNInterface.equals(other.autoBAHNInterface))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -100,6 +130,21 @@ public class Region {
 				return false;
 		} else if (!openstackEndpoint.equals(other.openstackEndpoint))
 			return false;
+		if (openstackPassword == null) {
+			if (other.openstackPassword != null)
+				return false;
+		} else if (!openstackPassword.equals(other.openstackPassword))
+			return false;
+		if (openstackTenant == null) {
+			if (other.openstackTenant != null)
+				return false;
+		} else if (!openstackTenant.equals(other.openstackTenant))
+			return false;
+		if (openstackUser == null) {
+			if (other.openstackUser != null)
+				return false;
+		} else if (!openstackUser.equals(other.openstackUser))
+			return false;
 		if (ryuEndpoint == null) {
 			if (other.ryuEndpoint != null)
 				return false;
@@ -110,7 +155,9 @@ public class Region {
 
 	@Override
 	public String toString() {
-		return "Region [name=" + name + ", ryuEndpoint=" + ryuEndpoint + ", openstackEndpoint=" + openstackEndpoint + ", autobahnInterface=" + autobahnInterface + "]";
+		return "Region [name=" + name + ", ryuEndpoint=" + ryuEndpoint + ", openstackEndpoint=" + openstackEndpoint
+				+ ", openstackUser=" + openstackUser + ", openstackPassword=" + openstackPassword
+				+ ", openstackTenant=" + openstackTenant + ", autoBAHNInterface=" + autoBAHNInterface + "]";
 	}
 
 }
