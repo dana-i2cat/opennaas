@@ -40,7 +40,7 @@
 	<bean id="abnoProtocolSessionFactory" class="org.opennaas.extensions.abno.capability.linkprovisioning.protocol.ABNOProtocolSessionFactory"/>
 	<service ref="abnoProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
 		<service-properties>
-			<entry key="protocol" value="http"/>
+			<entry key="protocol" value="abno"/>
 			<entry key="protocol.version" value="1.0.0"/>
 		</service-properties>
 	</service>

@@ -41,7 +41,7 @@ import org.opennaas.extensions.abno.client.IABNOClient;
  */
 public class ABNOProtocolSession implements IProtocolSession {
 
-	public static final String						HTTP_PROTOCOL_TYPE		= "http";
+	public static final String						ABNO_PROTOCOL_TYPE		= "abno";
 
 	private ProtocolSessionContext					sessionContext			= null;
 	private String									sessionId				= null;
@@ -179,9 +179,9 @@ public class ABNOProtocolSession implements IProtocolSession {
 	private void checkProtocolSessionContext(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 
 		String protocol = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
-		if ((protocol == null) || (protocol.length() == 0) || !protocol.equals(HTTP_PROTOCOL_TYPE)) {
+		if ((protocol == null) || (protocol.length() == 0) || !protocol.equals(ABNO_PROTOCOL_TYPE)) {
 			throw new ProtocolException(
-					"Protocols ABNO: Invalid protocol type: " + protocol + ". Protocol type must be " + HTTP_PROTOCOL_TYPE);
+					"Protocols ABNO: Invalid protocol type: " + protocol + ". Protocol type must be " + ABNO_PROTOCOL_TYPE);
 		}
 
 		String uri = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
