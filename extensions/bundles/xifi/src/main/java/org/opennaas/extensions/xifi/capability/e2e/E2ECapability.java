@@ -164,7 +164,7 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 		abno = resourceManager.createResource(resourceDescriptor);
 
 		ProtocolSessionContext psc = new ProtocolSessionContext();
-		psc.addParameter(ProtocolSessionContext.AUTH_TYPE, "noatuh");
+		psc.addParameter(ProtocolSessionContext.AUTH_TYPE, "noauth");
 		psc.addParameter(ProtocolSessionContext.PROTOCOL, ABNOProtocolSession.ABNO_PROTOCOL_TYPE);
 		psc.addParameter(ProtocolSessionContext.PROTOCOL_URI, xifiConfiguration.getAbnoEndpoint());
 		protocolManager.getProtocolSessionManager(abno.getResourceIdentifier().getId()).registerContext(psc);
