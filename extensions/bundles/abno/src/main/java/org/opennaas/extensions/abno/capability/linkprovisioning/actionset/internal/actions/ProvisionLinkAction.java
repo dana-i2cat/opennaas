@@ -68,7 +68,7 @@ public class ProvisionLinkAction extends Action {
 		// obtain client
 		IABNOClient client;
 		try {
-			client = ((ABNOProtocolSession) protocolSessionManager.obtainSessionByProtocol(ABNOProtocolSession.HTTP_PROTOCOL_TYPE, false))
+			client = ((ABNOProtocolSession) protocolSessionManager.obtainSessionByProtocol(ABNOProtocolSession.ABNO_PROTOCOL_TYPE, false))
 					.getABNOClientForUse();
 		} catch (ProtocolException e) {
 			String msg = "Unable to extract ANBOClient from ABNOProtocolSession";
