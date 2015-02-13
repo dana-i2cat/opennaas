@@ -21,17 +21,37 @@ package org.opennaas.extensions.xifi.capability.e2e;
  */
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.configurationadmin.ConfigurationAdminUtil;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.abno.capability.linkprovisioning.protocol.ABNOProtocolSession;
+import org.opennaas.extensions.abno.repository.ABNORepository;
+import org.opennaas.extensions.openstack.capability.openstackadapter.OpenstackAdaperCapability;
+import org.opennaas.extensions.openstack.repository.OpenstackRepository;
+import org.opennaas.extensions.protocols.http.HttpProtocolSession;
+import org.opennaas.extensions.ryu.capability.monitoringmodule.MonitoringModuleCapability;
 import org.opennaas.extensions.xifi.Activator;
 import org.opennaas.extensions.xifi.capability.e2e.api.ConnectEndsRequest;
 import org.opennaas.extensions.xifi.capability.e2e.model.Region;
@@ -45,22 +65,27 @@ import org.opennaas.extensions.xifi.capability.e2e.model.XIFIConfiguration;
  */
 public class E2ECapability extends AbstractCapability implements IE2ECapability {
 
-	private static final Log	log						= LogFactory.getLog(E2ECapability.class);
+	private static final Log		log						= LogFactory.getLog(E2ECapability.class);
 
-	private String				resourceId				= "";
+	private String					resourceId				= "";
 
 	// configuration file and properties
-	private static final String	XIFI_FILE				= "xifi.regions";
-	private static final String	ABNO_ENDPOINT			= "abno.endpoint";
-	private static final String	REGION					= "region";
-	private static final String	REGION_RYU				= ".ryu";
-	private static final String	REGION_OPENSTACK		= ".openstack";
-	private static final String	REGION_OPENSTACK_USER	= REGION_OPENSTACK + ".user";
-	private static final String	REGION_OPENSTACK_PWD	= REGION_OPENSTACK + ".password";
-	private static final String	REGION_OPENSTACK_TENANT	= REGION_OPENSTACK + ".tenant";
-	private static final String	REGION_AUTOBAHN_IFACE	= ".autobahn.iface";
+	private static final String		XIFI_FILE				= "xifi.regions";
+	private static final String		ABNO_ENDPOINT			= "abno.endpoint";
+	private static final String		REGION					= "region";
+	private static final String		REGION_RYU				= ".ryu";
+	private static final String		REGION_OPENSTACK		= ".openstack";
+	private static final String		REGION_OPENSTACK_USER	= REGION_OPENSTACK + ".user";
+	private static final String		REGION_OPENSTACK_PWD	= REGION_OPENSTACK + ".password";
+	private static final String		REGION_OPENSTACK_TENANT	= REGION_OPENSTACK + ".tenant";
+	private static final String		REGION_AUTOBAHN_IFACE	= ".autobahn.iface";
 
-	private XIFIConfiguration	xifiConfiguration;
+	private XIFIConfiguration		xifiConfiguration;
+
+	// resources
+	private IResource				abno;
+	private Map<Region, IResource>	ryuResourcesMap			= new HashMap<Region, IResource>();
+	private Map<Region, IResource>	openStackResourcesMap	= new HashMap<Region, IResource>();
 
 	public E2ECapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -87,6 +112,16 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 			throw new CapabilityException(e);
 		}
 		log.info("XIFI configuration read:\n" + xifiConfiguration);
+
+		// initialize resources
+		try {
+			log.info("Initializing XIFI resources...");
+			initializeResources();
+		} catch (Exception e) {
+			log.error("Error initializing XIFI resources.", e);
+			throw new CapabilityException(e);
+		}
+		log.info("XIFI resources initilized.");
 	}
 
 	@Override
@@ -108,6 +143,82 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		throw new UnsupportedOperationException("This capability does not contain actionset.");
+	}
+
+	private void initializeResources() throws ActivatorException, ResourceException, ProtocolException {
+		IResourceManager resourceManager = Activator.getResourceManagerService();
+		IProtocolManager protocolManager = Activator.getProtocolManagerService();
+
+		// ABNO resource
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor("internal", "1.0.0", "linkprovisioning", null));
+		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
+		Information information = new Information();
+		information.setType(ABNORepository.ABNO_RESOURCE_TYPE);
+		information.setName("abno1");
+		resourceDescriptor.setInformation(information);
+
+		abno = resourceManager.createResource(resourceDescriptor);
+
+		ProtocolSessionContext psc = new ProtocolSessionContext();
+		psc.addParameter(ProtocolSessionContext.AUTH_TYPE, "noatuh");
+		psc.addParameter(ProtocolSessionContext.PROTOCOL, ABNOProtocolSession.ABNO_PROTOCOL_TYPE);
+		psc.addParameter(ProtocolSessionContext.PROTOCOL_URI, xifiConfiguration.getAbnoEndpoint());
+		protocolManager.getProtocolSessionManager(abno.getResourceIdentifier().getId()).registerContext(psc);
+
+		resourceManager.startResource(abno.getResourceIdentifier());
+
+		// Ryu and OpenStack per region
+		for (Region region : xifiConfiguration.getRegions()) {
+			// Ryu resource
+			resourceDescriptor = new ResourceDescriptor();
+
+			capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+			capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptorWithoutActionset(MonitoringModuleCapability.CAPABILITY_TYPE));
+			resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
+			information = new Information();
+			information.setType("ryu");
+			information.setName("ryu-" + region.getName());
+			resourceDescriptor.setInformation(information);
+
+			ryuResourcesMap.put(region, resourceManager.createResource(resourceDescriptor));
+
+			psc = new ProtocolSessionContext();
+			psc.addParameter(ProtocolSessionContext.AUTH_TYPE, "noauth");
+			psc.addParameter(ProtocolSessionContext.PROTOCOL, HttpProtocolSession.HTTP_PROTOCOL_TYPE);
+			psc.addParameter(ProtocolSessionContext.PROTOCOL_URI, region.getRyuEndpoint());
+			protocolManager.getProtocolSessionManager(ryuResourcesMap.get(region).getResourceIdentifier().getId()).registerContext(psc);
+
+			resourceManager.startResource(ryuResourcesMap.get(region).getResourceIdentifier());
+
+			// OpenStack resource
+			resourceDescriptor = new ResourceDescriptor();
+
+			capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+			capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptorWithoutActionset(OpenstackAdaperCapability.CAPABILITY_TYPE));
+			resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
+			information = new Information();
+			information.setType(OpenstackRepository.OPENSTACK_RESOURCE_TYPE);
+			information.setName(OpenstackRepository.OPENSTACK_RESOURCE_TYPE + "-" + region.getName());
+			resourceDescriptor.setInformation(information);
+
+			openStackResourcesMap.put(region, resourceManager.createResource(resourceDescriptor));
+
+			psc = new ProtocolSessionContext();
+			psc.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
+			psc.addParameter(ProtocolSessionContext.PROTOCOL, HttpProtocolSession.HTTP_PROTOCOL_TYPE);
+			psc.addParameter(ProtocolSessionContext.PROTOCOL_URI, region.getOpenstackEndpoint());
+			psc.addParameter(ProtocolSessionContext.USERNAME, region.getOpenstackUser());
+			psc.addParameter(ProtocolSessionContext.PASSWORD, region.getOpenstackPassword());
+			protocolManager.getProtocolSessionManager(openStackResourcesMap.get(region).getResourceIdentifier().getId()).registerContext(psc);
+
+			resourceManager.startResource(openStackResourcesMap.get(region).getResourceIdentifier());
+		}
 	}
 
 	private void readAndCheckConfiguration() throws Exception {
