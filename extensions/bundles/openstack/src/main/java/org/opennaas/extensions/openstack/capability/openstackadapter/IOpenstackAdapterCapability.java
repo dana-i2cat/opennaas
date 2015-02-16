@@ -31,6 +31,7 @@ import org.opennaas.core.resources.capability.ICapability;
 /**
  * 
  * @author Isart Canyameres Gimenez (i2cat)
+ * @author Julio Carlos Barrera
  * 
  */
 @Path("/")
@@ -44,4 +45,7 @@ public interface IOpenstackAdapterCapability extends ICapability {
 	@GET
 	String getPortId(@PathParam("instanceId") String instanceId, @QueryParam("tenantName") String tenantName) throws CapabilityException;
 
+	@Path("/port/{portId}/macAddress")
+	@GET
+	String getMACAddress(@PathParam("portId") String portId, @QueryParam("tenantName") String tenantName) throws CapabilityException;
 }
