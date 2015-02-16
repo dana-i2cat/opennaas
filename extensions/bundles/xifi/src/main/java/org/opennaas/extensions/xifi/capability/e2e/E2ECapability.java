@@ -46,6 +46,7 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.abno.capability.linkprovisioning.LinkProvisioningCapability;
 import org.opennaas.extensions.abno.capability.linkprovisioning.protocol.ABNOProtocolSession;
 import org.opennaas.extensions.abno.repository.ABNORepository;
 import org.opennaas.extensions.openstack.capability.openstackadapter.OpenstackAdaperCapability;
@@ -74,6 +75,7 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 	private static final String		ABNO_ENDPOINT			= "abno.endpoint";
 	private static final String		REGION					= "region";
 	private static final String		REGION_RYU				= ".ryu";
+	private static final String		REGION_RYU_SWITCH_DPID	= REGION_RYU + ".switch";
 	private static final String		REGION_OPENSTACK		= ".openstack";
 	private static final String		REGION_OPENSTACK_USER	= REGION_OPENSTACK + ".user";
 	private static final String		REGION_OPENSTACK_PWD	= REGION_OPENSTACK + ".password";
@@ -96,7 +98,6 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 	@Override
 	public void connectEnds(ConnectEndsRequest connectEndsRequest) throws CapabilityException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -153,7 +154,7 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor("internal", "1.0.0", "linkprovisioning", null));
+		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor("internal", "1.0.0", LinkProvisioningCapability.CAPABILITY_TYPE, null));
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
 		Information information = new Information();
@@ -251,6 +252,8 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 					// fill fields
 					String ryuEndpoint = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_RYU);
 					region.setRyuEndpoint(ryuEndpoint);
+					String ryuSwitchDPID = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_RYU_SWITCH_DPID);
+					region.setRyuSwitchDPID(ryuSwitchDPID);
 
 					String openStackEndpoint = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_OPENSTACK);
 					region.setOpenstackEndpoint(openStackEndpoint);
@@ -282,8 +285,8 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 		for (Region region : xifiConfiguration.getRegions()) {
 			if (region.getName() == null)
 				throw new Exception("Region name not set!");
-			if (region.getRyuEndpoint() == null)
-				throw new Exception("Ryu endpoint for region " + region.getName() + " not properly set!");
+			if (region.getRyuEndpoint() == null || region.getRyuSwitchDPID() == null)
+				throw new Exception("Ryu endpoint or switch DPID for region " + region.getName() + " not properly set!");
 			if (region.getOpenstackEndpoint() == null || region.getOpenstackUser() == null || region.getOpenstackPassword() == null || region
 					.getOpenstackTenant() == null)
 				throw new Exception("OpenStack endpoint for region " + region.getName() + " not properly set!");
