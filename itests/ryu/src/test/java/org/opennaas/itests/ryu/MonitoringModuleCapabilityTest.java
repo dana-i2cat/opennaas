@@ -33,6 +33,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.cxf.common.util.ProxyClassLoader;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -80,6 +82,9 @@ public class MonitoringModuleCapabilityTest {
 
 	private static final String	REQUEST_FILE		= "/request.json";
 
+	private static final String	URL_PREFFIX_KEY		= "url_prefix";
+	private static final String	URL_PREFFIX_VALUE	= "/xifi/raise_alarm/";
+
 	private IResource			ryuResource;
 
 	@Inject
@@ -103,7 +108,7 @@ public class MonitoringModuleCapabilityTest {
 	}
 
 	@Before
-	public void prepareTest() throws ResourceException, ProtocolException, IOException {
+	public void prepareTest() throws ResourceException, ProtocolException, IOException, JSONException {
 		startResource();
 
 		mockServer();
@@ -203,15 +208,17 @@ public class MonitoringModuleCapabilityTest {
 		}
 	}
 
-	private void mockServer() throws IOException {
+	private void mockServer() throws IOException, JSONException {
 
 		String expectedJson = IOUtils.toString(this.getClass().getResourceAsStream(REQUEST_FILE));
+		JSONObject json = new JSONObject(expectedJson);
+		json.put(URL_PREFFIX_KEY, URL_PREFFIX_VALUE + ryuResource.getResourceIdentifier().getId());
 
 		WireMock.stubFor(
 				WireMock.post(
 						WireMock.urlEqualTo(CLIENT_POST_URL))
 						.withHeader("Content-Type", WireMock.equalTo(MediaType.APPLICATION_JSON))
-						.withRequestBody(WireMock.equalToJson(expectedJson))
+						.withRequestBody(WireMock.equalToJson(json.toString()))
 						.willReturn(WireMock.aResponse()
 								.withStatus(HttpStatus.SC_OK)
 						)
@@ -225,5 +232,4 @@ public class MonitoringModuleCapabilityTest {
 						)
 				);
 	}
-
 }
