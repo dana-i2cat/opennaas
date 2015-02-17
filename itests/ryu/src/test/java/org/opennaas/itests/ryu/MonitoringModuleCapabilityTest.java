@@ -134,7 +134,7 @@ public class MonitoringModuleCapabilityTest {
 		monitoringModuleCapab.registerAlarmObservation(ALARM_DPID, ALARM_PORT, ALARM_THRESHOLD, alarmObserver);
 		Assert.assertFalse("Sample alarm observer should have not been notified yet.", ((SampleAlarmObserver) alarmObserver).wasNotified());
 
-		IMonitoringModuleCallbackAPI alarmCallbackClient = createAlarmCallbackClient();
+		IMonitoringModuleCallbackAPI alarmCallbackClient = createAlarmCallbackClient((MonitoringModuleCapability) monitoringModuleCapab);
 		alarmCallbackClient.alarmReceived(ALARM_DPID, ALARM_PORT);
 
 		Assert.assertTrue("Sample alarm observer should have been notified.", ((SampleAlarmObserver) alarmObserver).wasNotified());
@@ -174,14 +174,14 @@ public class MonitoringModuleCapabilityTest {
 
 	}
 
-	private IMonitoringModuleCallbackAPI createAlarmCallbackClient() {
+	private IMonitoringModuleCallbackAPI createAlarmCallbackClient(MonitoringModuleCapability capability) {
 
 		ProxyClassLoader classLoader = new ProxyClassLoader();
 		classLoader.addLoader(JAXRSClientFactoryBean.class.getClassLoader());
 		classLoader.addLoader(IMonitoringModuleCallbackAPI.class.getClassLoader());
 
 		JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
-		bean.setAddress("http://localhost:8888" + MonitoringModuleCapability.URL_PREFIX);
+		bean.setAddress("http://localhost:8888" + capability.URL_WITH_RESOURCE);
 
 		bean.setResourceClass(IMonitoringModuleCallbackAPI.class);
 		bean.setClassLoader(classLoader);
