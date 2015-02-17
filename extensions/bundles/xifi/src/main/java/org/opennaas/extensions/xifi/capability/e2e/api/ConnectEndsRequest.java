@@ -40,6 +40,7 @@ public class ConnectEndsRequest {
 	private String	sourceRegion;
 	private String	destinationInstance;
 	private String	destinationRegion;
+	private String	bandwidthThreshold;
 
 	public String getSourceInstance() {
 		return sourceInstance;
@@ -73,10 +74,19 @@ public class ConnectEndsRequest {
 		this.destinationRegion = destinationRegion;
 	}
 
+	public String getBandwidthThreshold() {
+		return bandwidthThreshold;
+	}
+
+	public void setBandwidthThreshold(String bandwidthThreshold) {
+		this.bandwidthThreshold = bandwidthThreshold;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((bandwidthThreshold == null) ? 0 : bandwidthThreshold.hashCode());
 		result = prime * result + ((destinationInstance == null) ? 0 : destinationInstance.hashCode());
 		result = prime * result + ((destinationRegion == null) ? 0 : destinationRegion.hashCode());
 		result = prime * result + ((sourceInstance == null) ? 0 : sourceInstance.hashCode());
@@ -93,6 +103,11 @@ public class ConnectEndsRequest {
 		if (getClass() != obj.getClass())
 			return false;
 		ConnectEndsRequest other = (ConnectEndsRequest) obj;
+		if (bandwidthThreshold == null) {
+			if (other.bandwidthThreshold != null)
+				return false;
+		} else if (!bandwidthThreshold.equals(other.bandwidthThreshold))
+			return false;
 		if (destinationInstance == null) {
 			if (other.destinationInstance != null)
 				return false;
@@ -118,7 +133,8 @@ public class ConnectEndsRequest {
 
 	@Override
 	public String toString() {
-		return "ConnectEndsRequest [sourceInstance=" + sourceInstance + ", sourceRegion=" + sourceRegion + ", destinationInstance=" + destinationInstance + ", destinationRegion=" + destinationRegion + "]";
+		return "ConnectEndsRequest [sourceInstance=" + sourceInstance + ", sourceRegion=" + sourceRegion + ", destinationInstance=" + destinationInstance
+				+ ", destinationRegion=" + destinationRegion + ", bandwidthThreshold=" + bandwidthThreshold + "]";
 	}
 
 }
