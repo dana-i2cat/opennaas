@@ -53,6 +53,19 @@ public class ProvisionLinkRequest {
 	private Operation		operation;
 	private OperationType	operationType;
 
+	public ProvisionLinkRequest(String srcRegion, String dstRegion, String srcMACAddress, String dstMACAddress, String srcInterface,
+			String dstInterface, Operation operation, OperationType operationType) {
+		super();
+		this.srcRegion = srcRegion;
+		this.dstRegion = dstRegion;
+		this.srcMACAddress = srcMACAddress;
+		this.dstMACAddress = dstMACAddress;
+		this.srcInterface = srcInterface;
+		this.dstInterface = dstInterface;
+		this.operation = operation;
+		this.operationType = operationType;
+	}
+
 	public String getSrcRegion() {
 		return srcRegion;
 	}

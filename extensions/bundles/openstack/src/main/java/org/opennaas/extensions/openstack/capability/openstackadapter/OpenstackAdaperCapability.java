@@ -154,6 +154,33 @@ public class OpenstackAdaperCapability extends AbstractCapability implements IOp
 
 	}
 
+	public String getMACAddress(String portId, String tenantName) throws CapabilityException {
+
+		if (StringUtils.isEmpty(portId) || StringUtils.isEmpty(tenantName))
+			throw new NullPointerException("PortId and tenantName parameters are required.");
+
+		String username = (String) protocolSession.getSessionContext().getSessionParameters().get(ProtocolSessionContext.USERNAME);
+		String password = (String) protocolSession.getSessionContext().getSessionParameters().get(ProtocolSessionContext.PASSWORD);
+		String uri = (String) protocolSession.getSessionContext().getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
+
+		String identity = new StringBuilder().append(tenantName).append(":").append(username).toString();
+
+		neutronClient = ContextBuilder.newBuilder(NEUTRON_PROVIDER_ID).endpoint(uri).credentials(identity, password)
+				.buildApi(NeutronApi.class);
+
+		Set<String> zones = neutronClient.getConfiguredRegions();
+		for (String zone : zones) {
+			PortApi portApi = neutronClient.getPortApi(zone);
+			for (Port port : portApi.list().concat()) {
+				if (StringUtils.equals(port.getId(), portId))
+					return port.getMacAddress();
+			}
+		}
+
+		throw new CapabilityException("There's no port with ID: " + portId);
+
+	}
+
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		throw new UnsupportedOperationException("Not implemented");

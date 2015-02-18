@@ -30,6 +30,7 @@ public class Region {
 
 	private String	name;
 	private String	ryuEndpoint;
+	private String	ryuSwitchDPID;
 	private String	openstackEndpoint;
 	private String	openstackUser;
 	private String	openstackPassword;
@@ -50,6 +51,14 @@ public class Region {
 
 	public void setRyuEndpoint(String ryuEndpoint) {
 		this.ryuEndpoint = ryuEndpoint;
+	}
+
+	public String getRyuSwitchDPID() {
+		return ryuSwitchDPID;
+	}
+
+	public void setRyuSwitchDPID(String ryuSwitchDPID) {
+		this.ryuSwitchDPID = ryuSwitchDPID;
 	}
 
 	public String getOpenstackEndpoint() {
@@ -103,6 +112,7 @@ public class Region {
 		result = prime * result + ((openstackTenant == null) ? 0 : openstackTenant.hashCode());
 		result = prime * result + ((openstackUser == null) ? 0 : openstackUser.hashCode());
 		result = prime * result + ((ryuEndpoint == null) ? 0 : ryuEndpoint.hashCode());
+		result = prime * result + ((ryuSwitchDPID == null) ? 0 : ryuSwitchDPID.hashCode());
 		return result;
 	}
 
@@ -150,13 +160,18 @@ public class Region {
 				return false;
 		} else if (!ryuEndpoint.equals(other.ryuEndpoint))
 			return false;
+		if (ryuSwitchDPID == null) {
+			if (other.ryuSwitchDPID != null)
+				return false;
+		} else if (!ryuSwitchDPID.equals(other.ryuSwitchDPID))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Region [name=" + name + ", ryuEndpoint=" + ryuEndpoint + ", openstackEndpoint=" + openstackEndpoint
-				+ ", openstackUser=" + openstackUser + ", openstackPassword=" + openstackPassword
+		return "Region [name=" + name + ", ryuEndpoint=" + ryuEndpoint + ", ryuSwitchDPID=" + ryuSwitchDPID
+				+ ", openstackEndpoint=" + openstackEndpoint + ", openstackUser=" + openstackUser + ", openstackPassword=[HIDDEN]"
 				+ ", openstackTenant=" + openstackTenant + ", autoBAHNInterface=" + autoBAHNInterface + "]";
 	}
 

@@ -66,7 +66,9 @@ public class MonitoringModuleCapability extends AbstractCapability implements IM
 	private static final String				HOST_INFO_URL	= "org.ops4j.pax.web";
 
 	public final static String				CAPABILITY_TYPE	= "monitoringmodule";
-	public final static String				URL_PREFIX		= "/xifi/raise_alarm";
+	private final static String				URL_PREFIX		= "/xifi/raise_alarm";
+
+	public final String						URL_WITH_RESOURCE;
 
 	Log										log				= LogFactory.getLog(MonitoringModuleCapability.class);
 
@@ -113,6 +115,9 @@ public class MonitoringModuleCapability extends AbstractCapability implements IM
 			throw new CapabilityException(e);
 		}
 
+		// initialize URL_WITH_RESOURCE
+		this.URL_WITH_RESOURCE = URL_PREFIX + "/" + this.resourceId;
+
 		log.debug("Built new MonitoringModule Capability");
 	}
 
@@ -121,7 +126,7 @@ public class MonitoringModuleCapability extends AbstractCapability implements IM
 		log.info("Registering alarm: [dpid=" + dpid + ",port=" + port + ",threshold=" + threshold + "]");
 
 		// register alarm
-		AlarmInformation alarmInformation = new AlarmInformation(threshold, this.host, this.port, URL_PREFIX);
+		AlarmInformation alarmInformation = new AlarmInformation(threshold, this.host, this.port, URL_WITH_RESOURCE);
 
 		monitoringModuleAlarmHandler.addAlarmObserver(dpid, Integer.valueOf(port), alarmObserver);
 
@@ -203,7 +208,7 @@ public class MonitoringModuleCapability extends AbstractCapability implements IM
 		props.put("service.exported.interfaces", "*");
 		props.put("service.exported.configs", "org.apache.cxf.rs");
 		props.put("service.exported.intents", "HTTP");
-		props.put("org.apache.cxf.rs.httpservice.context", URL_PREFIX);
+		props.put("org.apache.cxf.rs.httpservice.context", URL_WITH_RESOURCE);
 		props.put("org.apache.cxf.rs.address", "/");
 
 		log.info("Registering ws: \n " +

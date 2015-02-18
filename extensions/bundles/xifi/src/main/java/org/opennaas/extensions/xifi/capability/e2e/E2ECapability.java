@@ -46,11 +46,17 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.abno.capability.linkprovisioning.ILinkProvisioningCapability;
+import org.opennaas.extensions.abno.capability.linkprovisioning.LinkProvisioningCapability;
+import org.opennaas.extensions.abno.capability.linkprovisioning.api.ProvisionLinkRequest;
 import org.opennaas.extensions.abno.capability.linkprovisioning.protocol.ABNOProtocolSession;
 import org.opennaas.extensions.abno.repository.ABNORepository;
+import org.opennaas.extensions.openstack.capability.openstackadapter.IOpenstackAdapterCapability;
 import org.opennaas.extensions.openstack.capability.openstackadapter.OpenstackAdaperCapability;
 import org.opennaas.extensions.openstack.repository.OpenstackRepository;
 import org.opennaas.extensions.protocols.http.HttpProtocolSession;
+import org.opennaas.extensions.ryu.alarm.IAlarmObserver;
+import org.opennaas.extensions.ryu.capability.monitoringmodule.IMonitoringModuleCapability;
 import org.opennaas.extensions.ryu.capability.monitoringmodule.MonitoringModuleCapability;
 import org.opennaas.extensions.xifi.Activator;
 import org.opennaas.extensions.xifi.capability.e2e.api.ConnectEndsRequest;
@@ -74,6 +80,7 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 	private static final String		ABNO_ENDPOINT			= "abno.endpoint";
 	private static final String		REGION					= "region";
 	private static final String		REGION_RYU				= ".ryu";
+	private static final String		REGION_RYU_SWITCH_DPID	= REGION_RYU + ".switch";
 	private static final String		REGION_OPENSTACK		= ".openstack";
 	private static final String		REGION_OPENSTACK_USER	= REGION_OPENSTACK + ".user";
 	private static final String		REGION_OPENSTACK_PWD	= REGION_OPENSTACK + ".password";
@@ -95,7 +102,104 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 
 	@Override
 	public void connectEnds(ConnectEndsRequest connectEndsRequest) throws CapabilityException {
-		// TODO Auto-generated method stub
+		// get configured regions from input parameters
+		Region srcRegion = getConfiguredRegionFromName(connectEndsRequest.getSourceRegion());
+		Region dstRegion = getConfiguredRegionFromName(connectEndsRequest.getDestinationRegion());
+
+		if (srcRegion == null || dstRegion == null) {
+			throw new CapabilityException("Source or destination region not found in configuration.");
+		}
+
+		// get source and destination MAC addresses and interfaces from OpenStack
+		IOpenstackAdapterCapability srcOpenStackCapability;
+		IOpenstackAdapterCapability dstOpenStackCapability;
+		try {
+			srcOpenStackCapability = (IOpenstackAdapterCapability) openStackResourcesMap.get(srcRegion).getCapabilityByInterface(
+					IOpenstackAdapterCapability.class);
+			dstOpenStackCapability = (IOpenstackAdapterCapability) openStackResourcesMap.get(dstRegion).getCapabilityByInterface(
+					IOpenstackAdapterCapability.class);
+		} catch (ResourceException e) {
+			throw new CapabilityException("Error getting IOpenstackAdapterCapability from resources.", e);
+		}
+
+		String srcPortId;
+		String dstPortId;
+
+		String srcMACAddress;
+		String dstMACAddress;
+		try {
+			String srcInstanceId = srcOpenStackCapability.getInstanceId(connectEndsRequest.getSourceInstance(), srcRegion.getOpenstackTenant());
+			String dstInstanceId = dstOpenStackCapability.getInstanceId(connectEndsRequest.getDestinationInstance(), dstRegion.getOpenstackTenant());
+
+			srcPortId = srcOpenStackCapability.getPortId(srcInstanceId, srcRegion.getOpenstackTenant());
+			dstPortId = dstOpenStackCapability.getPortId(dstInstanceId, dstRegion.getOpenstackTenant());
+
+			srcMACAddress = srcOpenStackCapability.getMACAddress(srcPortId, srcRegion.getOpenstackTenant());
+			dstMACAddress = dstOpenStackCapability.getMACAddress(dstPortId, dstRegion.getOpenstackTenant());
+		} catch (CapabilityException e) {
+			throw new CapabilityException("Error getting data form OpenStack instances.", e);
+		}
+
+		// call ABNO
+		ILinkProvisioningCapability linkProvisioningCapability;
+		try {
+			linkProvisioningCapability = (ILinkProvisioningCapability) abno.getCapabilityByInterface(ILinkProvisioningCapability.class);
+		} catch (ResourceException e) {
+			throw new CapabilityException("Error getting ILinkProvisioningCapability from ABNO resource.", e);
+		}
+		ProvisionLinkRequest request = new ProvisionLinkRequest(srcRegion.getName(), dstRegion.getName(), srcMACAddress, dstMACAddress, srcPortId,
+				dstPortId, ProvisionLinkRequest.Operation.WLAN_PATH_PROVISIONING, ProvisionLinkRequest.OperationType.XifiWF);
+		linkProvisioningCapability.provisionLink(request);
+
+		// register alarm (with callback)
+		IMonitoringModuleCapability srcMonitoringModuleCapability;
+		try {
+			srcMonitoringModuleCapability = (IMonitoringModuleCapability) ryuResourcesMap.get(srcRegion).getCapabilityByInterface(
+					IMonitoringModuleCapability.class);
+		} catch (ResourceException e) {
+			throw new CapabilityException("Error getting IMonitoringModuleCapability from source Ryu resource.", e);
+		}
+
+		AutoBAHNAlarmObserver alarmObserver = new AutoBAHNAlarmObserver(linkProvisioningCapability, request, srcRegion.getAutoBAHNInterface());
+		srcMonitoringModuleCapability.registerAlarmObservation(srcRegion.getRyuSwitchDPID(), srcPortId, connectEndsRequest.getBandwidthThreshold(),
+				alarmObserver);
+
+	}
+
+	private Region getConfiguredRegionFromName(String regionName) {
+		for (Region region : xifiConfiguration.getRegions()) {
+			if (region.getName().equals(regionName))
+				return region;
+		}
+		return null;
+	}
+
+	private class AutoBAHNAlarmObserver implements IAlarmObserver {
+
+		private ILinkProvisioningCapability	linkProvisioningCapability;
+		private ProvisionLinkRequest		originalRequest;
+		private String						srcAutoBAHNInterface;
+
+		public AutoBAHNAlarmObserver(ILinkProvisioningCapability linkProvisioningCapability, ProvisionLinkRequest originalRequest,
+				String srcAutoBAHNInterface) {
+			this.linkProvisioningCapability = linkProvisioningCapability;
+			this.originalRequest = originalRequest;
+			this.srcAutoBAHNInterface = srcAutoBAHNInterface;
+		}
+
+		@Override
+		public void alarmReceived() {
+			log.info("Alarm received from Ryu Monitoring Module. Re-provsioning link with ABNO resource...");
+			// modify request with AUTOBHAN interface
+			originalRequest.setSrcInterface(srcAutoBAHNInterface);
+			try {
+				linkProvisioningCapability.provisionLink(originalRequest);
+			} catch (CapabilityException e) {
+				log.error("Error re-provisioning link with ABNO resource!", e);
+				return;
+			}
+			log.info("Link re-provsioned with ABNO resource.");
+		}
 
 	}
 
@@ -153,7 +257,7 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor("internal", "1.0.0", "linkprovisioning", null));
+		capabilityDescriptors.add(ResourceHelper.newCapabilityDescriptor("internal", "1.0.0", LinkProvisioningCapability.CAPABILITY_TYPE, null));
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
 		Information information = new Information();
@@ -251,6 +355,8 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 					// fill fields
 					String ryuEndpoint = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_RYU);
 					region.setRyuEndpoint(ryuEndpoint);
+					String ryuSwitchDPID = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_RYU_SWITCH_DPID);
+					region.setRyuSwitchDPID(ryuSwitchDPID);
 
 					String openStackEndpoint = configurationAdmin.getProperty(XIFI_FILE, REGION + "." + regionKey + REGION_OPENSTACK);
 					region.setOpenstackEndpoint(openStackEndpoint);
@@ -282,8 +388,8 @@ public class E2ECapability extends AbstractCapability implements IE2ECapability 
 		for (Region region : xifiConfiguration.getRegions()) {
 			if (region.getName() == null)
 				throw new Exception("Region name not set!");
-			if (region.getRyuEndpoint() == null)
-				throw new Exception("Ryu endpoint for region " + region.getName() + " not properly set!");
+			if (region.getRyuEndpoint() == null || region.getRyuSwitchDPID() == null)
+				throw new Exception("Ryu endpoint or switch DPID for region " + region.getName() + " not properly set!");
 			if (region.getOpenstackEndpoint() == null || region.getOpenstackUser() == null || region.getOpenstackPassword() == null || region
 					.getOpenstackTenant() == null)
 				throw new Exception("OpenStack endpoint for region " + region.getName() + " not properly set!");
