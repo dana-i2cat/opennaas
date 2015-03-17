@@ -73,12 +73,20 @@ public class CreateAggregatedInterfaceAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-
-		if (!(params instanceof AggregatedLogicalPort)) {
+		
+		Object[] paramsArray = (Object[]) params;
+		if (paramsArray.length != 2)
+			throw new ActionException("Invalid parameter in action " + actionID + ". Two parameters expected");
+		
+		if (!(paramsArray[0] instanceof AggregatedLogicalPort)) {
 			throw new ActionException("Invalid parameter in action " + actionID + ". Expected AggregatedLogicalPort.");
 		}
+		
+		if (!(paramsArray[1] instanceof Boolean)) {
+			throw new ActionException("Invalid parameter in action " + actionID + ". Expected Boolean.");
+		}
 
-		AggregatedLogicalPort aggregator = (AggregatedLogicalPort) params;
+		AggregatedLogicalPort aggregator = (AggregatedLogicalPort) paramsArray[0];
 		if (StringUtils.isEmpty(aggregator.getElementName()))
 			throw new ActionException("Invalid parameter in action " + actionID + "." +
 					" Missing AggregatedLogicalPort name.");
@@ -95,7 +103,9 @@ public class CreateAggregatedInterfaceAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 		checkParams(params);
-		this.aggregator = (AggregatedLogicalPort) params;
+		Object[] paramsArray = (Object[]) params;
+		this.aggregator = (AggregatedLogicalPort) paramsArray[0];
+		this.forceFlag = ((Boolean) paramsArray[1]).booleanValue();
 		// Nothing to prepare
 		// Messages are prepared in executeListCommand
 	}
