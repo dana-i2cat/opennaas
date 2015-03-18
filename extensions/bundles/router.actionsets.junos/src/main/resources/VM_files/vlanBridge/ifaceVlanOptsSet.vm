@@ -1,3 +1,14 @@
+#**
+@param param: NetworkPort with a single NetworkPortVLANSettingData
+@param elementName: logical system element name
+@param hasInputFilter: boolean telling whether filter input should be added or not
+@param inputFilter: String with input-filter name
+@param hasOutputFilter: boolean telling whether filter output should be added or not
+@param outputFilter: String with output-filter name
+@param hasVlan: boolean telling whether vlan should be added or not
+@param vlanAllMembers: boolean telling whether vlan members all should be added or not
+@param vlanMembers: String with vlan members name
+*#
 <configuration>
 	#if(!$elementName.equals("") )		
 		<logical-systems>
@@ -18,7 +29,28 @@
 	    				#end
 	    				#if ($param.getElementsSettingData().get(0).getNativeVlanId() > -1)
 	    					<native-vlan-id>$param.getElementsSettingData().get(0).getNativeVlanId()</native-vlan-id>
-	    				#end    				
+	    				#end
+	    				#if ($hasInputFilter || $hasOutputFilter)
+	    					<filter>
+	    						#if ($hasInputFilter)
+	    						<input>$inputFilter</input>
+	    						#end
+	    						#if ($hasOutputFilter)
+	    						<output>$outputFilter</output>
+	    						#end
+	    					</filter>
+	    				#end
+	    				#if ($hasVlan)
+	    					<vlan>
+	    						<members>
+	    						#if ($vlanAllMembers)
+	    							<all/>
+	    						#else
+	    							<name>$vlanMembers</name>
+	    						#end
+	    						</members>
+	    					</vlan>
+	    				#end
 	    			</ethernet-switching>
     			</family>
     		</unit>
