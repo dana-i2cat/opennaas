@@ -35,6 +35,11 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 
 	private int					nativeVlanId;
 	private String				portMode;
+	
+	private String				inputFilterName;
+	private String				outputFilterName;
+	private boolean				vlanMembersAll;
+	private String				vlanMembers;
 
 	public NetworkPortVLANSettingData() {
 		// FIXME if the NetworkPortVLANSettingData is created and the setNativeVlanId is never called, there's no way to distinguish
@@ -58,12 +63,53 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 		this.portMode = portMode;
 	}
 
+	public String getInputFilterName() {
+		return inputFilterName;
+	}
+
+	public void setInputFilterName(String inputFilterName) {
+		this.inputFilterName = inputFilterName;
+	}
+
+	public String getOutputFilterName() {
+		return outputFilterName;
+	}
+
+	public void setOutputFilterName(String outputFilterName) {
+		this.outputFilterName = outputFilterName;
+	}
+
+	public boolean isVlanMembersAll() {
+		return vlanMembersAll;
+	}
+
+	public void setVlanMembersAll(boolean vlanMembersAll) {
+		this.vlanMembersAll = vlanMembersAll;
+	}
+
+	public String getVlanMembers() {
+		return vlanMembers;
+	}
+
+	public void setVlanMembers(String vlanMembers) {
+		this.vlanMembers = vlanMembers;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((inputFilterName == null) ? 0 : inputFilterName.hashCode());
 		result = prime * result + nativeVlanId;
-		result = prime * result + ((portMode == null) ? 0 : portMode.hashCode());
+		result = prime
+				* result
+				+ ((outputFilterName == null) ? 0 : outputFilterName.hashCode());
+		result = prime * result
+				+ ((portMode == null) ? 0 : portMode.hashCode());
+		result = prime * result
+				+ ((vlanMembers == null) ? 0 : vlanMembers.hashCode());
+		result = prime * result + (vlanMembersAll ? 1231 : 1237);
 		return result;
 	}
 
@@ -76,19 +122,41 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 		if (getClass() != obj.getClass())
 			return false;
 		NetworkPortVLANSettingData other = (NetworkPortVLANSettingData) obj;
+		if (inputFilterName == null) {
+			if (other.inputFilterName != null)
+				return false;
+		} else if (!inputFilterName.equals(other.inputFilterName))
+			return false;
 		if (nativeVlanId != other.nativeVlanId)
+			return false;
+		if (outputFilterName == null) {
+			if (other.outputFilterName != null)
+				return false;
+		} else if (!outputFilterName.equals(other.outputFilterName))
 			return false;
 		if (portMode == null) {
 			if (other.portMode != null)
 				return false;
 		} else if (!portMode.equals(other.portMode))
 			return false;
+		if (vlanMembers == null) {
+			if (other.vlanMembers != null)
+				return false;
+		} else if (!vlanMembers.equals(other.vlanMembers))
+			return false;
+		if (vlanMembersAll != other.vlanMembersAll)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "NetworkPortVLANSettingData [nativeVlanId=" + nativeVlanId + ", portMode=" + portMode + "]";
+		return "NetworkPortVLANSettingData [nativeVlanId=" + nativeVlanId
+				+ ", portMode=" + portMode + ", inputFilterName="
+				+ inputFilterName + ", outputFilterName=" + outputFilterName
+				+ ", vlanMembersAll=" + vlanMembersAll + ", vlanMembers="
+				+ vlanMembers + "]";
 	}
-
+	
+	
 }
