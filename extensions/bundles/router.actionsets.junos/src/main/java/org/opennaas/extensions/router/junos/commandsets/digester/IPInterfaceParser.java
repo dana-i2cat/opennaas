@@ -169,6 +169,10 @@ public class IPInterfaceParser extends DigesterEngine {
 			// VLANBridge
 			addObjectCreate("*/interfaces/interface/unit/family/ethernet-switching", NetworkPortVLANSettingData.class);
 			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/port-mode", "setPortMode", 0);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/filter/input", "setInputFilterName", 0);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/filter/output", "setOutputFilterName", 0);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/vlan/members/name", "setVlanMembers", 0);
+			addMyRule("*/interfaces/interface/unit/family/ethernet-switching/vlan/members/all", "setVlanMembersAll", 0);
 			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/native-vlan-id", "setNativeVlanId", 0, new Class[] { Integer.TYPE });
 			addSetNext("*/interfaces/interface/unit/family/ethernet-switching", "addElementSettingData");
 
@@ -483,6 +487,16 @@ public class IPInterfaceParser extends DigesterEngine {
 				aggregator.getInterfaces().addAll(aggregationMap.get(aggregator.getElementName()));
 			}
 		}
+	}
+	
+	/**
+	 * Sets setVlanMembersAll to true, in the NetworkPortVLANSettingData that is at the top of the stack.
+	 */
+	public void setVlanMembersAll() {
+		Object obj = peek(0);
+		assert (obj instanceof NetworkPortVLANSettingData);
+		NetworkPortVLANSettingData settings = (NetworkPortVLANSettingData) obj;
+		settings.setVlanMembersAll(true);
 	}
 
 	@Deprecated
