@@ -45,6 +45,10 @@ public abstract class VLANBridgeApiHelper {
 
 	public static final String	PORT_MODE_KEY	= "port-mode";
 	public static final String	NATIVE_VLAN_KEY	= "native-vlan-id";
+	public static final String	FILTER_INPUT	= "filter-input";
+	public static final String	FILTER_OUTPUT	= "filter-output";
+	public static final String	VLAN_MEMBERS	= "vlan-members";
+	
 
 	public static BridgeDomains buildApiBridgeDomains(List<org.opennaas.extensions.router.model.BridgeDomain> modelBridgeDomains) {
 
@@ -97,7 +101,7 @@ public abstract class VLANBridgeApiHelper {
 		return modelBrDomain;
 	}
 
-	public static InterfaceVLANOptions buildApiIfaceVlanOptions(NetworkPortVLANSettingData networkPortVLANSettingData) {
+	public static InterfaceVLANOptions buildApiIfaceVlanOptions(final NetworkPortVLANSettingData networkPortVLANSettingData) {
 
 		InterfaceVLANOptions vlanOpts = new InterfaceVLANOptions();
 		Map<String, String> vlanOptions = new HashMap<String, String>();
@@ -107,31 +111,51 @@ public abstract class VLANBridgeApiHelper {
 
 		if (networkPortVLANSettingData.getNativeVlanId() != NetworkPortVLANSettingData.NATIVE_VLAN_DEFAULT_VALUE)
 			vlanOptions.put(NATIVE_VLAN_KEY, String.valueOf(networkPortVLANSettingData.getNativeVlanId()));
+		
+		if (!StringUtils.isEmpty(networkPortVLANSettingData.getInputFilterName()))
+			vlanOptions.put(FILTER_INPUT, networkPortVLANSettingData.getInputFilterName());
+		
+		if (!StringUtils.isEmpty(networkPortVLANSettingData.getOutputFilterName()))
+			vlanOptions.put(FILTER_OUTPUT, networkPortVLANSettingData.getOutputFilterName());
+		
+		if (networkPortVLANSettingData.isVlanMembersAll())
+			vlanOptions.put(VLAN_MEMBERS, "all");
+		else if (!StringUtils.isEmpty(networkPortVLANSettingData.getVlanMembers()))
+			vlanOptions.put(VLAN_MEMBERS, networkPortVLANSettingData.getVlanMembers());
 
 		vlanOpts.setVlanOptions(vlanOptions);
 
 		return vlanOpts;
 	}
 
-	public static NetworkPortVLANSettingData buildModelIfaceVlanOptions(InterfaceVLANOptions vlanOptions) {
+	public static NetworkPortVLANSettingData buildModelIfaceVlanOptions(final InterfaceVLANOptions vlanOptions) {
 		NetworkPortVLANSettingData modelVlanOpts = new NetworkPortVLANSettingData();
 
+		List<String> ignoredOptions = new ArrayList<String>();
 		if (vlanOptions.getVlanOptions() != null) {
-
-			if (vlanOptions.getVlanOptions().containsKey(PORT_MODE_KEY)) {
-				modelVlanOpts.setPortMode(vlanOptions.getVlanOptions().get(PORT_MODE_KEY));
-				vlanOptions.getVlanOptions().remove(PORT_MODE_KEY);
+			
+			for (String key : vlanOptions.getVlanOptions().keySet()) {
+				if (key.equals(PORT_MODE_KEY)) 
+					modelVlanOpts.setPortMode(vlanOptions.getVlanOptions().get(PORT_MODE_KEY));
+				else if (key.equals(NATIVE_VLAN_KEY)) 
+					modelVlanOpts.setNativeVlanId((Integer.valueOf(vlanOptions.getVlanOptions().get(NATIVE_VLAN_KEY))));
+				else if (key.equals(FILTER_INPUT))
+					modelVlanOpts.setInputFilterName(vlanOptions.getVlanOptions().get(FILTER_INPUT));
+				else if (key.equals(FILTER_OUTPUT))
+					modelVlanOpts.setOutputFilterName(vlanOptions.getVlanOptions().get(FILTER_OUTPUT));
+				else if (key.equals(VLAN_MEMBERS)) {
+					String vlanMembers = vlanOptions.getVlanOptions().get(VLAN_MEMBERS);
+					if ("all".equals(vlanMembers))
+						modelVlanOpts.setVlanMembersAll(true);
+					else
+						modelVlanOpts.setVlanMembers(vlanMembers);
+				} else {
+					ignoredOptions.add(key);
+				}
 			}
-
-			if (vlanOptions.getVlanOptions().containsKey(NATIVE_VLAN_KEY)) {
-				modelVlanOpts.setNativeVlanId((Integer.valueOf(vlanOptions.getVlanOptions().get(NATIVE_VLAN_KEY))));
-				vlanOptions.getVlanOptions().remove(NATIVE_VLAN_KEY);
-			}
-
-			if ((!vlanOptions.getVlanOptions().containsKey(NATIVE_VLAN_KEY)) && (!vlanOptions.getVlanOptions().containsKey(PORT_MODE_KEY)) && (!vlanOptions
-					.getVlanOptions().isEmpty()))
-
-				log.warn("Ignoring unknown interfaceVlanOptions values : " + vlanOptions.getVlanOptions().keySet());
+			
+			if (!ignoredOptions.isEmpty())
+				log.warn("Ignoring unknown interfaceVlanOptions values : " + ignoredOptions);
 		}
 
 		return modelVlanOpts;
