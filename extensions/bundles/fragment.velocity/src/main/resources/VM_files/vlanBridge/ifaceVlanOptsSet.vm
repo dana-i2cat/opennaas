@@ -6,7 +6,7 @@
 @param hasOutputFilter: boolean telling whether filter output should be added or not
 @param outputFilter: String with output-filter name
 @param hasVlan: boolean telling whether vlan should be added or not
-@param vlanMembers: String with vlan members name
+@param vlanMembers: List<String> with vlan members name
 *#
 <configuration>
 	#if(!$elementName.equals("") )		
@@ -40,8 +40,10 @@
 	    					</filter>
 	    				#end
 	    				#if ($hasVlan)
-	    					<vlan>
-	    						<members operation="replace">$vlanMembers</members>
+	    					<vlan operation="replace">
+	    					#foreach( $member in $vlanMembers)
+	    						<members>$member</members>
+	    					#end
 	    					</vlan>
 	    				#end
 	    			</ethernet-switching>

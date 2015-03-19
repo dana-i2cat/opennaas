@@ -117,7 +117,7 @@ public class SetInterfaceVlanOptionsAction extends JunosAction {
 			}
 			
 			
-			if (StringUtils.isEmpty(settings.getVlanMembers())) {
+			if (settings.getVlanMembers() == null || settings.getVlanMembers().isEmpty()) {
 				extraParams.put("hasVlan", false);
 			} else {
 				extraParams.put("hasVlan", true);

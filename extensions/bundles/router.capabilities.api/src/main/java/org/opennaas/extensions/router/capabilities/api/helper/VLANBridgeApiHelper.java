@@ -21,6 +21,7 @@ package org.opennaas.extensions.router.capabilities.api.helper;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,9 +119,15 @@ public abstract class VLANBridgeApiHelper {
 		if (!StringUtils.isEmpty(networkPortVLANSettingData.getOutputFilterName()))
 			vlanOptions.put(FILTER_OUTPUT, networkPortVLANSettingData.getOutputFilterName());
 		
-		if (!StringUtils.isEmpty(networkPortVLANSettingData.getVlanMembers()))
-			vlanOptions.put(VLAN_MEMBERS, networkPortVLANSettingData.getVlanMembers());
-
+		if (networkPortVLANSettingData.getVlanMembers() != null && !networkPortVLANSettingData.getVlanMembers().isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			for (String member : networkPortVLANSettingData.getVlanMembers()) {
+				sb.append(member);
+				sb.append(",");
+			}
+			// substring used to remove last ","
+			vlanOptions.put(VLAN_MEMBERS, sb.substring(0, sb.length()-1));
+		}
 		vlanOpts.setVlanOptions(vlanOptions);
 
 		return vlanOpts;
@@ -142,7 +149,9 @@ public abstract class VLANBridgeApiHelper {
 				else if (key.equals(FILTER_OUTPUT))
 					modelVlanOpts.setOutputFilterName(vlanOptions.getVlanOptions().get(FILTER_OUTPUT));
 				else if (key.equals(VLAN_MEMBERS)) {
-					modelVlanOpts.setVlanMembers(vlanOptions.getVlanOptions().get(VLAN_MEMBERS));
+					String[] allMembersArray = vlanOptions.getVlanOptions().get(VLAN_MEMBERS).split(",");
+					List<String> allMembers = new ArrayList<String>(Arrays.asList(allMembersArray));
+					modelVlanOpts.setVlanMembers(allMembers);
 				} else {
 					ignoredOptions.add(key);
 				}

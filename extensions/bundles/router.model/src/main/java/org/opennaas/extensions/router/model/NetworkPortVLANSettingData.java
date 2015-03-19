@@ -21,6 +21,8 @@ package org.opennaas.extensions.router.model;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -38,12 +40,14 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 	
 	private String				inputFilterName;
 	private String				outputFilterName;
-	private String				vlanMembers;
+	private List<String>		vlanMembers;
 
 	public NetworkPortVLANSettingData() {
 		// FIXME if the NetworkPortVLANSettingData is created and the setNativeVlanId is never called, there's no way to distinguish
 		// betweeen the default value of the int (0) and the vlanId 0.
 		nativeVlanId = NATIVE_VLAN_DEFAULT_VALUE;
+		
+		vlanMembers = new ArrayList<String>();
 	}
 
 	public int getNativeVlanId() {
@@ -78,12 +82,16 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 		this.outputFilterName = outputFilterName;
 	}
 
-	public String getVlanMembers() {
+	public List<String> getVlanMembers() {
 		return vlanMembers;
 	}
 
-	public void setVlanMembers(String vlanMembers) {
+	public void setVlanMembers(List<String> vlanMembers) {
 		this.vlanMembers = vlanMembers;
+	}
+	
+	public void addVlanMember(String vlanMember) {
+		this.vlanMembers.add(vlanMember);
 	}
 
 	@Override
@@ -144,6 +152,4 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 				+ inputFilterName + ", outputFilterName=" + outputFilterName
 				+ ", vlanMembers=" + vlanMembers + "]";
 	}
-	
-	
 }
