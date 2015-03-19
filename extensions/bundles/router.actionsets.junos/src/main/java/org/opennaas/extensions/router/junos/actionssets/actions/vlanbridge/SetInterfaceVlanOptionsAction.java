@@ -121,13 +121,7 @@ public class SetInterfaceVlanOptionsAction extends JunosAction {
 				extraParams.put("hasVlan", false);
 			} else {
 				extraParams.put("hasVlan", true);
-				
-				if (settings.isVlanMembersAll())
-					extraParams.put("vlanAllMembers", true);
-				else {
-					extraParams.put("vlanAllMembers", false);
-					extraParams.put("vlanMembers", settings.getVlanMembers());
-				}
+				extraParams.put("vlanMembers", settings.getVlanMembers());
 			}
 
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));

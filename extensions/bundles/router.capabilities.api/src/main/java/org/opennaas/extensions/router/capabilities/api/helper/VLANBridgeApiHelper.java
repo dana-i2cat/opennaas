@@ -118,9 +118,7 @@ public abstract class VLANBridgeApiHelper {
 		if (!StringUtils.isEmpty(networkPortVLANSettingData.getOutputFilterName()))
 			vlanOptions.put(FILTER_OUTPUT, networkPortVLANSettingData.getOutputFilterName());
 		
-		if (networkPortVLANSettingData.isVlanMembersAll())
-			vlanOptions.put(VLAN_MEMBERS, "all");
-		else if (!StringUtils.isEmpty(networkPortVLANSettingData.getVlanMembers()))
+		if (!StringUtils.isEmpty(networkPortVLANSettingData.getVlanMembers()))
 			vlanOptions.put(VLAN_MEMBERS, networkPortVLANSettingData.getVlanMembers());
 
 		vlanOpts.setVlanOptions(vlanOptions);
@@ -144,11 +142,7 @@ public abstract class VLANBridgeApiHelper {
 				else if (key.equals(FILTER_OUTPUT))
 					modelVlanOpts.setOutputFilterName(vlanOptions.getVlanOptions().get(FILTER_OUTPUT));
 				else if (key.equals(VLAN_MEMBERS)) {
-					String vlanMembers = vlanOptions.getVlanOptions().get(VLAN_MEMBERS);
-					if ("all".equals(vlanMembers))
-						modelVlanOpts.setVlanMembersAll(true);
-					else
-						modelVlanOpts.setVlanMembers(vlanMembers);
+					modelVlanOpts.setVlanMembers(vlanOptions.getVlanOptions().get(VLAN_MEMBERS));
 				} else {
 					ignoredOptions.add(key);
 				}

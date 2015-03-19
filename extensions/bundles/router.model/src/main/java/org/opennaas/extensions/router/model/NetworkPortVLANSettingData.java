@@ -38,7 +38,6 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 	
 	private String				inputFilterName;
 	private String				outputFilterName;
-	private boolean				vlanMembersAll;
 	private String				vlanMembers;
 
 	public NetworkPortVLANSettingData() {
@@ -79,14 +78,6 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 		this.outputFilterName = outputFilterName;
 	}
 
-	public boolean isVlanMembersAll() {
-		return vlanMembersAll;
-	}
-
-	public void setVlanMembersAll(boolean vlanMembersAll) {
-		this.vlanMembersAll = vlanMembersAll;
-	}
-
 	public String getVlanMembers() {
 		return vlanMembers;
 	}
@@ -109,7 +100,6 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 				+ ((portMode == null) ? 0 : portMode.hashCode());
 		result = prime * result
 				+ ((vlanMembers == null) ? 0 : vlanMembers.hashCode());
-		result = prime * result + (vlanMembersAll ? 1231 : 1237);
 		return result;
 	}
 
@@ -144,8 +134,6 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 				return false;
 		} else if (!vlanMembers.equals(other.vlanMembers))
 			return false;
-		if (vlanMembersAll != other.vlanMembersAll)
-			return false;
 		return true;
 	}
 
@@ -154,8 +142,7 @@ public class NetworkPortVLANSettingData extends SettingData implements Serializa
 		return "NetworkPortVLANSettingData [nativeVlanId=" + nativeVlanId
 				+ ", portMode=" + portMode + ", inputFilterName="
 				+ inputFilterName + ", outputFilterName=" + outputFilterName
-				+ ", vlanMembersAll=" + vlanMembersAll + ", vlanMembers="
-				+ vlanMembers + "]";
+				+ ", vlanMembers=" + vlanMembers + "]";
 	}
 	
 	
