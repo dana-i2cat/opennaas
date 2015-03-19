@@ -485,7 +485,7 @@ public class ManagedElement implements IModel, Serializable {
 
 		ArrayList<T> toReturn = new ArrayList<T>();
 		for (SettingData settingData : list) {
-			if (clazz.getClass().isInstance(settingData)) {
+			if (clazz.isInstance(settingData)) {
 				toReturn.add((T) settingData);
 			}
 		}
