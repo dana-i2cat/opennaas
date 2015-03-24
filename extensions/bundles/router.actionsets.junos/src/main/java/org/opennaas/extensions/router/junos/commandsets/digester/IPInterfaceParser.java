@@ -169,6 +169,9 @@ public class IPInterfaceParser extends DigesterEngine {
 			// VLANBridge
 			addObjectCreate("*/interfaces/interface/unit/family/ethernet-switching", NetworkPortVLANSettingData.class);
 			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/port-mode", "setPortMode", 0);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/filter/input", "setInputFilterName", 0);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/filter/output", "setOutputFilterName", 0);
+			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/vlan/members", "addVlanMember", 0);
 			addCallMethod("*/interfaces/interface/unit/family/ethernet-switching/native-vlan-id", "setNativeVlanId", 0, new Class[] { Integer.TYPE });
 			addSetNext("*/interfaces/interface/unit/family/ethernet-switching", "addElementSettingData");
 
