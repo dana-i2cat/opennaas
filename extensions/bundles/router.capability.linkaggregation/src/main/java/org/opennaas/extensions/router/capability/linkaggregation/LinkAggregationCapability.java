@@ -117,11 +117,15 @@ public class LinkAggregationCapability extends AbstractCapability implements ILi
 	}
 
 	@Override
-	public void createAggregatedInterface(AggregatedInterface aggregatedInterface) throws CapabilityException {
+	public void createAggregatedInterface(AggregatedInterface aggregatedInterface, boolean force) throws CapabilityException {
 
 		AggregatedLogicalPort aggregator = LinkAggregationAPIAdapter.api2Model(aggregatedInterface);
 
-		IAction action = createActionAndCheckParams(LinkAggregationActionSet.CREATE_AGGREGATED_INTERFACE, aggregator);
+		Object[] actionParams = new Object[2];
+		actionParams[0] = aggregator;
+		actionParams[1] = Boolean.valueOf(force);
+		
+		IAction action = createActionAndCheckParams(LinkAggregationActionSet.CREATE_AGGREGATED_INTERFACE, actionParams);
 		queueAction(action);
 
 	}

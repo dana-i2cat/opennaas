@@ -20,7 +20,9 @@ package org.opennaas.extensions.router.junos.actionssets.actions.linkaggregation
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,9 +33,12 @@ import org.opennaas.core.resources.helpers.XmlHelper;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.capability.linkaggregation.LinkAggregationActionSet;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
+import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.AggregatedLogicalPort;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * Implementation of LinkAggregationActionSet.CREATE_AGGRETATED_INTERFACE for junos 10.04 devices.
@@ -55,8 +60,10 @@ public class CreateAggregatedInterfaceAction extends JunosAction {
 
 	private static final String		CREATION_TEMPLATE					= "/VM_files/createAggregatedInterface.vm";
 	private static final String		ADD_TO_AGGREGATED_TEMPLATE			= "/VM_files/addInterfaceToAggregated.vm";
+	private static final String		REMOVE_UNIT_TEMPLATE				= "/VM_files/removeInterfaceUnit.vm";
 
 	private AggregatedLogicalPort	aggregator;
+	private boolean 				forceFlag 							= false;
 
 	public CreateAggregatedInterfaceAction() {
 		super();
@@ -66,12 +73,20 @@ public class CreateAggregatedInterfaceAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-
-		if (!(params instanceof AggregatedLogicalPort)) {
+		
+		Object[] paramsArray = (Object[]) params;
+		if (paramsArray.length != 2)
+			throw new ActionException("Invalid parameter in action " + actionID + ". Two parameters expected");
+		
+		if (!(paramsArray[0] instanceof AggregatedLogicalPort)) {
 			throw new ActionException("Invalid parameter in action " + actionID + ". Expected AggregatedLogicalPort.");
 		}
+		
+		if (!(paramsArray[1] instanceof Boolean)) {
+			throw new ActionException("Invalid parameter in action " + actionID + ". Expected Boolean.");
+		}
 
-		AggregatedLogicalPort aggregator = (AggregatedLogicalPort) params;
+		AggregatedLogicalPort aggregator = (AggregatedLogicalPort) paramsArray[0];
 		if (StringUtils.isEmpty(aggregator.getElementName()))
 			throw new ActionException("Invalid parameter in action " + actionID + "." +
 					" Missing AggregatedLogicalPort name.");
@@ -88,16 +103,24 @@ public class CreateAggregatedInterfaceAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 		checkParams(params);
-		this.aggregator = (AggregatedLogicalPort) params;
+		Object[] paramsArray = (Object[]) params;
+		this.aggregator = (AggregatedLogicalPort) paramsArray[0];
+		this.forceFlag = ((Boolean) paramsArray[1]).booleanValue();
 		// Nothing to prepare
 		// Messages are prepared in executeListCommand
 	}
 
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
-
+		
 		actionResponse.addResponse(execEditCommand(prepareCreateAggregatedInterfaceMessage(aggregator), protocol));
 		for (String interfaceName : aggregator.getInterfaces()) {
+			if (forceFlag) {
+				for (NetworkPort unitToClear : getInterfacesToRemove(interfaceName)) {
+					actionResponse.addResponse(execRemovingEditCommand(
+							prepareClearUnitMessage(interfaceName, unitToClear.getPortNumber()), protocol));
+				}
+			}
 			actionResponse.addResponse(execEditCommand(
 					prepareAddInterfaceToAggregatedMessage(interfaceName, aggregator.getElementName()), protocol));
 		}
@@ -142,6 +165,19 @@ public class CreateAggregatedInterfaceAction extends JunosAction {
 		try {
 			// FIXME passing unchecked values to junos (interfaceName and inside extraParams). May cause security issues.
 			return XmlHelper.formatXML(prepareVelocityCommand(interfaceName, ADD_TO_AGGREGATED_TEMPLATE, extraParams));
+		} catch (Exception e) {
+			throw new ActionException(e);
+		}
+	}
+	
+	private String prepareClearUnitMessage(String interfaceName, int portNumber) throws ActionException {
+		Map<String, Object> extraParams = prepareLRVelocityExtraParams();
+		extraParams.put("ifaceName", interfaceName);
+		extraParams.put("unitName", portNumber);
+		
+		try {
+			// FIXME passing unchecked values to junos (interfaceName and inside extraParams). May cause security issues.
+			return XmlHelper.formatXML(prepareVelocityCommand(interfaceName, REMOVE_UNIT_TEMPLATE, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
@@ -233,6 +269,28 @@ public class CreateAggregatedInterfaceAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
+	}
+	
+	private Response execRemovingEditCommand(String netconfMsg, IProtocolSession protocol) throws ActionException {
+		try {
+			// when removing tags, none operation should be used as default
+			EditNetconfCommand command = new EditNetconfCommand(netconfMsg, CommandNetconfConstants.NONE_OPERATION);
+			command.initialize();
+			return sendCommandToProtocol(command, protocol);
+		} catch (Exception e) {
+			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
+		}
+	}
+	
+	private List<NetworkPort> getInterfacesToRemove(String interfaceName) {
+		List<NetworkPort> allPorts = ModelHelper.getInterfaces((ComputerSystem) modelToUpdate);
+		List<NetworkPort> filtered = new ArrayList<NetworkPort>();
+		
+		for (NetworkPort port : allPorts) {
+			if (port.getName().equals(interfaceName))
+				filtered.add(port);
+		}
+		return filtered;
 	}
 
 }

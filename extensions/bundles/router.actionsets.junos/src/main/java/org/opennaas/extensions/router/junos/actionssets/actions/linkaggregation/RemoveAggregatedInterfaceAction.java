@@ -61,6 +61,7 @@ public class RemoveAggregatedInterfaceAction extends JunosAction {
 
 	private static final String		DELETION_TEMPLATE					= "/VM_files/deleteAggregatedInterface.vm";
 	private static final String		REMOVE_FROM_AGGREGATED_TEMPLATE		= "/VM_files/removeInterfaceFromAggregated.vm";
+	private static final String		CONFIG_UNIT0_TEMPLATE 				= "/VM_files/configureUnitWithDescription.vm";
 
 	private AggregatedLogicalPort	aggregator;
 
@@ -96,8 +97,11 @@ public class RemoveAggregatedInterfaceAction extends JunosAction {
 
 		actionResponse.addResponse(execRemovingEditCommand(prepareDeleteAggregatedInterfaceMessage(aggregator), protocol));
 		for (String interfaceName : aggregator.getInterfaces()) {
+			// remove ether-options 802.3ad 
 			actionResponse.addResponse(execRemovingEditCommand(
 					prepareRemoveInterfaceFromAggregatedMessage(interfaceName, aggregator.getElementName()), protocol));
+			// configure unit 0 with description FREE, to make interface available in opennaas
+			actionResponse.addResponse(execEditCommand(prepareAddUnit0Message(interfaceName), protocol));
 		}
 		validateAction(actionResponse);
 	}
@@ -167,6 +171,20 @@ public class RemoveAggregatedInterfaceAction extends JunosAction {
 
 		return extraParams;
 	}
+	
+	private String prepareAddUnit0Message(String interfaceName) throws ActionException {
+		
+		Map<String, Object> extraParams = prepareLRVelocityExtraParams();
+		extraParams.put("unitName", 0);
+		extraParams.put("description", "FREE");
+		try {
+			// FIXME passing unchecked values to junos (interfaceName inside extraParams). May cause security issues.
+			String xml = XmlHelper.formatXML(prepareVelocityCommand(interfaceName, CONFIG_UNIT0_TEMPLATE, extraParams));
+			return xml;
+		} catch (Exception e) {
+			throw new ActionException(e);
+		}
+	}
 
 	private Map<String, Object> prepareLRVelocityExtraParams() {
 		Map<String, Object> extraParams = new HashMap<String, Object>();
@@ -196,6 +214,16 @@ public class RemoveAggregatedInterfaceAction extends JunosAction {
 		try {
 			// when removing tags, none operation should be used as default
 			EditNetconfCommand command = new EditNetconfCommand(netconfMsg, CommandNetconfConstants.NONE_OPERATION);
+			command.initialize();
+			return sendCommandToProtocol(command, protocol);
+		} catch (Exception e) {
+			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
+		}
+	}
+	
+	private Response execEditCommand(String netconfMsg, IProtocolSession protocol) throws ActionException {
+		try {
+			EditNetconfCommand command = new EditNetconfCommand(netconfMsg);
 			command.initialize();
 			return sendCommandToProtocol(command, protocol);
 		} catch (Exception e) {
