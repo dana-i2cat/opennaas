@@ -34,12 +34,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OFFlowTable {
 
-	private String					tableId;
-	private List<FloodlightOFFlow>	ofForwardingRules;
+	private String			tableId;
+	private List<OFFlow>	ofForwardingRules;
 
 	public OFFlowTable() {
 		tableId = new String();
-		ofForwardingRules = new ArrayList<FloodlightOFFlow>();
+		ofForwardingRules = new ArrayList<OFFlow>();
 	}
 
 	public String getTableId() {
@@ -50,11 +50,11 @@ public class OFFlowTable {
 		this.tableId = tableId;
 	}
 
-	public List<FloodlightOFFlow> getOfForwardingRules() {
+	public List<OFFlow> getOfForwardingRules() {
 		return ofForwardingRules;
 	}
 
-	public void setOfForwardingRules(List<FloodlightOFFlow> ofForwardingRules) {
+	public void setOfForwardingRules(List<OFFlow> ofForwardingRules) {
 		this.ofForwardingRules = ofForwardingRules;
 	}
 

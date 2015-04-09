@@ -55,6 +55,7 @@ import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.client.
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFAction;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.model.OFFlowTable;
 import org.opennaas.extensions.openflowswitch.model.OpenflowSwitchModel;
 import org.opennaas.itests.helpers.InitializerTestHelper;
@@ -236,7 +237,7 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capability = (IOpenflowForwardingCapability) ofSwitchResource
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
-		FloodlightOFFlow forwardingRule = new FloodlightOFFlow();
+		OFFlow forwardingRule = new OFFlow();
 		forwardingRule.setName("flow1");
 		forwardingRule.setPriority("1");
 
@@ -260,10 +261,8 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 				.getCapabilityByInterface(IOpenflowForwardingCapability.class);
 
 		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
-		forwardingRule1.setSwitchId(SWITCH_ID);
 
 		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
-		forwardingRule2.setSwitchId(SWITCH_ID);
 
 		Assert.assertTrue("No rules in a freshly created switch", capability.getOpenflowForwardingRules().isEmpty());
 
@@ -292,11 +291,9 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IOpenflowForwardingCapability capabilityWSClient = InitializerTestHelper.createRestClient(WS_URI, IOpenflowForwardingCapability.class, null,
 				WS_USERNAME, WS_PASSWORD);
 
-		FloodlightOFFlow forwardingRule1 = generateSampleFloodlightOFFlow("flow1", "1", "dstPort=12");
-		forwardingRule1.setSwitchId(SWITCH_ID);
+		OFFlow forwardingRule1 = generateSampleOFFlow("flow1", "1", "dstPort=12");
 
-		FloodlightOFFlow forwardingRule2 = generateSampleFloodlightOFFlow("flow2", "2", "dstPort=12");
-		forwardingRule2.setSwitchId(SWITCH_ID);
+		OFFlow forwardingRule2 = generateSampleOFFlow("flow2", "2", "dstPort=12");
 
 		Assert.assertTrue("No rules in a freshly created switch", capabilityWSClient.getOpenflowForwardingRulesAPI().getForwardingRules().isEmpty());
 
@@ -364,6 +361,28 @@ public class OpenflowForwardingCapabilityIntegrationTest {
 		IFloodlightStaticFlowPusherClient client = session.getClientFactory().createClient(session.getSessionContext());
 		session.setFloodlightClient(client);
 
+	}
+
+	private static OFFlow generateSampleOFFlow(String name, String inputPort, String outputPort) {
+
+		OFFlow forwardingRule = new OFFlow();
+		forwardingRule.setName(name);
+		forwardingRule.setPriority("1");
+
+		FloodlightOFMatch match = new FloodlightOFMatch();
+		match.setIngressPort(inputPort);
+		forwardingRule.setMatch(match);
+
+		FloodlightOFAction floodlightAction = new FloodlightOFAction();
+		floodlightAction.setType("output");
+		floodlightAction.setValue(outputPort);
+
+		List<FloodlightOFAction> actions = new ArrayList<FloodlightOFAction>();
+		actions.add(floodlightAction);
+
+		forwardingRule.setActions(actions);
+
+		return forwardingRule;
 	}
 
 	private static FloodlightOFFlow generateSampleFloodlightOFFlow(String name, String inputPort, String outputPort) {

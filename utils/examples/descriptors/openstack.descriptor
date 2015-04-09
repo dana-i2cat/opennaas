@@ -1,0 +1,12 @@
+<resourceDescriptor>
+    <capabilityDescriptors>
+        <capabilityProperty value="1.0.0" name="actionset.version"/>
+        <information><type>openstackadapter</type></information>
+    </capabilityDescriptors>
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>openstack</type>
+        <name>myOpenstackInstance</name>
+    </information>
+    <properties/>
+</resourceDescriptor>

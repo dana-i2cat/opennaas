@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>	
+	<repository>mvn:org.opennaas/org.opennaas.core.features/${opennaas.version}/xml/features</repository>
+    <repository>mvn:org.opennaas/org.opennaas.extensions.protocols.features/${opennaas.version}/xml/features</repository>
+    
+    
+	<feature name="opennaas-ryu" version="${project.version}">
+		<feature version="${opennaas.version}">opennaas-core</feature>
+		<feature version="${opennaas.version}">opennaas-protocol-http</feature>
+
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http-jetty/${cxf.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-rt-transports-http/${cxf.version}</bundle>
+
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-core-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-xc/${jackson.version}</bundle>
+		<bundle dependency="true">mvn:org.codehaus.jackson/jackson-jaxrs/${jackson.version}</bundle>
+		
+		<bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>		
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ryu/${project.version}</bundle>
+
+	</feature>
+</features>

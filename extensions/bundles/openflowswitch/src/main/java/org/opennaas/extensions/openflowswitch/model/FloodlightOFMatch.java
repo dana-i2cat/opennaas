@@ -418,4 +418,11 @@ public class FloodlightOFMatch implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "FloodlightOFMatch [wildcards=" + wildcards + ", ingressPort=" + ingressPort + ", srcMac=" + srcMac + ", dstMac=" + dstMac
+				+ ", vlanId=" + vlanId + ", vlanPriority=" + vlanPriority + ", etherType=" + etherType + ", tosBits=" + tosBits
+				+ ", protocol=" + protocol + ", srcIp=" + srcIp + ", dstIp=" + dstIp + ", srcPort=" + srcPort + ", dstPort=" + dstPort + "]";
+	}
+
 }

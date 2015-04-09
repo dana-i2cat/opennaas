@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.30</version>
+	<version>0.31</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -59,7 +59,7 @@
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.3</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
-		<guava.version>16.0.1</guava.version>
+		<guava.version>17.0</guava.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate-validator>4.3.0.Final</hibernate-validator>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
@@ -69,7 +69,8 @@
 		<jackson.version>1.9.12</jackson.version>
 		<javamail.version>1.4.4</javamail.version>
 		<javax.ws.rs.version>2.0.0.m10</javax.ws.rs.version>
-		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
+		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>
+		<jclouds.version>1.8.1</jclouds.version>
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>
 		<jetty.version>7.5.4.v20111024</jetty.version>
@@ -84,7 +85,7 @@
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
-		<netconf4j.version>0.0.9</netconf4j.version>
+		<netconf4j.version>0.0.9b</netconf4j.version>
 		<nmr.version>1.6.1</nmr.version>
 		<opencsv.version>2.3</opencsv.version>
 		<openjpa.version>2.2.0</openjpa.version>
@@ -132,7 +133,7 @@
 		<xml.resolver.version>1.2_1</xml.resolver.version>
 		<xml.soap.api.version>1.3.7</xml.soap.api.version>
 		<!-- OpenNaaS extensions versions -->
-		<opennaas.gim.version>0.30</opennaas.gim.version>
+		<opennaas.gim.version>0.31</opennaas.gim.version>
 		<!-- Maven license plugin version -->
 		<license.plugin.version>1.6</license.plugin.version>
 		
@@ -142,7 +143,7 @@
 		<project.name>OpenNaaS</project.name>
 		
 		<!-- Netconf server for itests -->
-		<netconf-server.version>0.0.4</netconf-server.version>
+		<netconf-server.version>0.0.3b</netconf-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -219,6 +220,11 @@
 				<artifactId>org.opennaas.extensions.protocols.tl1</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.protocols.http</artifactId>
+				<version>${project.version}</version>
+			</dependency>			
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
@@ -447,6 +453,34 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.genericnetwork</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- ABNO -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.abno</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		
+			<!-- OpenStack client -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.openstack</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		
+			<!-- Ryu Monitoring Module -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.ryu</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<!-- XIFI -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.xifi</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
@@ -1006,6 +1040,11 @@
 				<version>${cxf.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.cxf.dosgi</groupId>
 				<artifactId>cxf-dosgi-ri-discovery-local</artifactId>
 				<version>${cxf.dosgi.version}</version>
@@ -1214,6 +1253,16 @@
 				<groupId>net.sf.opencsv</groupId>
 				<artifactId>opencsv</artifactId>
 				<version>${opencsv.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jclouds</groupId>
+				<artifactId>jclouds-all</artifactId>
+				<version>${jclouds.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jclouds.labs</groupId>
+				<artifactId>openstack-neutron</artifactId>
+				<version>${jclouds.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -1609,7 +1658,7 @@
         <connection>scm:git:git://github.com/dana-i2cat/opennaas.git</connection>
         <developerConnection>scm:git:git@github.com:dana-i2cat/opennaas.git</developerConnection>
         <url>http://github.com/dana-i2cat/opennaas</url>
-	  <tag>v0.30</tag>
+	  <tag>v0.31</tag>
   </scm>
 
 	<distributionManagement>

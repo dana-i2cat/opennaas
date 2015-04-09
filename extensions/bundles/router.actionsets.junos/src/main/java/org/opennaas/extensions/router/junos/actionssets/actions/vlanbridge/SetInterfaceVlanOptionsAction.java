@@ -104,8 +104,25 @@ public class SetInterfaceVlanOptionsAction extends JunosAction {
 				elementName = ((ComputerSystem) modelToUpdate).getElementName();
 			}
 			Map<String, Object> extraParams = new HashMap<String, Object>();
-
 			extraParams.put("elementName", elementName);
+			
+			NetworkPortVLANSettingData settings = (NetworkPortVLANSettingData)((NetworkPort) params).getElementsSettingData().get(0);
+			if (!StringUtils.isEmpty(settings.getInputFilterName())) {
+				extraParams.put("hasInputFilter", false);
+				extraParams.put("inputFilter", settings.getInputFilterName());
+			}
+			if (!StringUtils.isEmpty(settings.getOutputFilterName())) {
+				extraParams.put("hasOutputFilter", false);
+				extraParams.put("outputFilter", settings.getOutputFilterName());
+			}
+			
+			
+			if (settings.getVlanMembers() == null || settings.getVlanMembers().isEmpty()) {
+				extraParams.put("hasVlan", false);
+			} else {
+				extraParams.put("hasVlan", true);
+				extraParams.put("vlanMembers", settings.getVlanMembers());
+			}
 
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 

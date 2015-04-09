@@ -1,0 +1,24 @@
+#** 
+@param param: a String with the name of the interface to modify
+@param isLR: a boolean telling whether interface to modify is in a logical router or not
+@param lrName: a String with the logical router name (only set if isLR is true)
+@param ifaceName: a String with the name of the interface to modify
+@param unitName: an int with the unit number to be removed
+*#
+<configuration>
+	#if($isLR)
+		<logical-systems>
+			<name>$lrName</name>
+	#end
+	<interfaces>
+		<interface>
+			<name>$param</name>
+			<unit operation="delete">
+				<name>$unitName</name>
+			</unit>
+		</interface>
+	</interfaces>
+	#if($isLR)
+		</logical-systems>
+	#end
+</configuration>

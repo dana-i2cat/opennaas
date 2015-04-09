@@ -76,8 +76,8 @@ import org.opennaas.extensions.genericnetwork.repository.GenericNetworkRepositor
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.IOpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.capability.offorwarding.OpenflowForwardingCapability;
 import org.opennaas.extensions.openflowswitch.driver.floodlight.protocol.FloodlightProtocolSession;
-import org.opennaas.extensions.openflowswitch.model.FloodlightOFFlow;
 import org.opennaas.extensions.openflowswitch.model.FloodlightOFMatch;
+import org.opennaas.extensions.openflowswitch.model.OFFlow;
 import org.opennaas.extensions.openflowswitch.repository.OpenflowSwitchRepository;
 import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.helpers.OpennaasExamOptions;
@@ -324,16 +324,15 @@ public class CircuitProvisioningTest {
 		circuitProvisioningCapability.allocate(s0Circuit);
 
 		// capture FloodlightOFFlow
-		ArgumentCaptor<FloodlightOFFlow> capturedFloodlightOFFlow = ArgumentCaptor.forClass(FloodlightOFFlow.class);
+		ArgumentCaptor<OFFlow> capturedOFFlow = ArgumentCaptor.forClass(OFFlow.class);
 
-		// verifications and asserts of the captured FloodlightOFFlow
-		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(1)).createOpenflowForwardingRule(capturedFloodlightOFFlow.capture());
+		// verifications and asserts of the captured OFFlow
+		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(1)).createOpenflowForwardingRule(capturedOFFlow.capture());
 
-		FloodlightOFFlow receivedFloodlightOFFlow = capturedFloodlightOFFlow.getValue();
-		Assert.assertNotNull("FloodlightOFFlow must be set", receivedFloodlightOFFlow);
+		OFFlow receivedOFFlow = capturedOFFlow.getValue();
+		Assert.assertNotNull("OFFlow must be set", receivedOFFlow);
 
-		Assert.assertEquals("Generated FloodlightOFMatch must be the same", generateTrafficFilter(SRC_PORT_INTERNAL),
-				receivedFloodlightOFFlow.getMatch());
+		Assert.assertEquals("Generated FloodlightOFMatch must be the same", generateTrafficFilter(SRC_PORT_INTERNAL), receivedOFFlow.getMatch());
 
 		// asserts of the model
 		GenericNetworkModel model = ((GenericNetworkModel) genericNetwork.getModel());
@@ -362,25 +361,25 @@ public class CircuitProvisioningTest {
 
 		circuitProvisioningCapability.replace(Arrays.asList(s0Circuit), Arrays.asList(s1Circuit));
 
-		// capture FloodlightOFFlowId and FloodlightOFFlow
-		ArgumentCaptor<String> capturedFloodlightOFFlowId = ArgumentCaptor.forClass(String.class);
-		capturedFloodlightOFFlow = ArgumentCaptor.forClass(FloodlightOFFlow.class);
+		// capture OFFlowId and OFFlow
+		ArgumentCaptor<String> capturedOFFlowId = ArgumentCaptor.forClass(String.class);
+		capturedOFFlow = ArgumentCaptor.forClass(OFFlow.class);
 
 		// verifications and asserts of the captured CircuitRequest ad CircuitId
-		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(1)).removeOpenflowForwardingRule(capturedFloodlightOFFlowId.capture());
-		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(2)).createOpenflowForwardingRule(capturedFloodlightOFFlow.capture());
+		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(1)).removeOpenflowForwardingRule(capturedOFFlowId.capture());
+		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(2)).createOpenflowForwardingRule(capturedOFFlow.capture());
 
-		String receivedFloodlightOFFlowId = capturedFloodlightOFFlowId.getValue();
-		String previousFloodlightOFFlowId = receivedFloodlightOFFlow.getName();
+		String receivedOFFlowId = capturedOFFlowId.getValue();
+		String previousOFFlowId = receivedOFFlow.getName();
 
-		Assert.assertEquals("Generated floodlightOFFlowId must be previous created one", previousFloodlightOFFlowId, receivedFloodlightOFFlowId);
+		Assert.assertEquals("Generated ofFlowId must be previous created one", previousOFFlowId, receivedOFFlowId);
 
-		receivedFloodlightOFFlow = capturedFloodlightOFFlow.getValue();
-		Assert.assertNotNull("FloodlightOFFlow must be set", receivedFloodlightOFFlow);
+		receivedOFFlow = capturedOFFlow.getValue();
+		Assert.assertNotNull("OFFlow must be set", receivedOFFlow);
 
 		FloodlightOFMatch expectedTrafficFilter = generateTrafficFilter(SRC_PORT_INTERNAL);
 		expectedTrafficFilter.setTosBits(TOS_BIS);
-		Assert.assertEquals("Generated FloodlightOFMatch must be the same", expectedTrafficFilter, receivedFloodlightOFFlow.getMatch());
+		Assert.assertEquals("Generated FloodlightOFMatch must be the same", expectedTrafficFilter, receivedOFFlow.getMatch());
 
 		// asserts of the model
 		model = ((GenericNetworkModel) genericNetwork.getModel());
@@ -404,15 +403,15 @@ public class CircuitProvisioningTest {
 		circuitProvisioningCapability.deallocate(s1Circuit.getCircuitId());
 
 		// capture FloodlightOFFlowId
-		capturedFloodlightOFFlowId = ArgumentCaptor.forClass(String.class);
+		capturedOFFlowId = ArgumentCaptor.forClass(String.class);
 
 		// verifications and asserts of the captured FloodlightOFFlowId
-		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(2)).removeOpenflowForwardingRule(capturedFloodlightOFFlowId.capture());
+		Mockito.verify(mockedOpenflowForwardingCapability, Mockito.times(2)).removeOpenflowForwardingRule(capturedOFFlowId.capture());
 
-		receivedFloodlightOFFlowId = capturedFloodlightOFFlowId.getValue();
-		previousFloodlightOFFlowId = receivedFloodlightOFFlow.getName();
+		receivedOFFlowId = capturedOFFlowId.getValue();
+		previousOFFlowId = receivedOFFlow.getName();
 
-		Assert.assertEquals("Generated floodlightOFFlowId must be previous created one", previousFloodlightOFFlowId, receivedFloodlightOFFlowId);
+		Assert.assertEquals("Generated floodlightOFFlowId must be previous created one", previousOFFlowId, receivedOFFlowId);
 
 		// asserts of the model
 		Assert.assertEquals("Allocated circuit map must contain zero entries", 0, model.getAllocatedCircuits().size());

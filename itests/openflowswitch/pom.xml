@@ -3,9 +3,8 @@
   <parent>
     <groupId>org.opennaas</groupId>
     <artifactId>org.opennaas.itests</artifactId>
-    <version>0.30</version>
+    <version>0.31</version>
   </parent>
-  <groupId>org.opennaas.itests.openflowswitch</groupId>
   <artifactId>org.opennaas.itests.openflowswitch</artifactId>
   <name>OpenNaaS :: iTests :: Openflow Switch</name>
   <packaging>jar</packaging>  

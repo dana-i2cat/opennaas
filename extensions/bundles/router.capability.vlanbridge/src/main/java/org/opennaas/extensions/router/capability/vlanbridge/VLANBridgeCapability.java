@@ -207,6 +207,8 @@ public class VLANBridgeCapability extends AbstractCapability implements IVLANBri
 
 		ComputerSystem system = (ComputerSystem) this.resource.getModel();
 		NetworkPort netPort = ModelHelper.getNetworkPortFromName(ifaceName, system);
+		if (netPort == null)
+			throw new ModelElementNotFoundException("Unknown iface " + ifaceName);
 
 		List<NetworkPortVLANSettingData> modelVlanOpts = netPort.getAllElementSettingDataByType(NetworkPortVLANSettingData.class);
 

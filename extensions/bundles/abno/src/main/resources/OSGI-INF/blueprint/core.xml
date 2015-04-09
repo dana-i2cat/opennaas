@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="abnoBootstrapperFactory" class="org.opennaas.extensions.abno.repository.ABNOBootstrapperFactory" />
+	
+	<!-- Workaround for https://issues.apache.org/jira/browse/ARIES-796: Resolve 
+		and inject entityManagerFactory and get the entityManager using code in ResourceDescriptorRepository. 
+		Obtained entityManager is not container managed, then. Given unit MUST already 
+		be registered as an OSGi service for this to work. -->
+	<reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory"	filter="(osgi.unit.name=ResourceCore)" />
+	<bean id="resourceDescriptorRepository"	class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+		init-method="initializeEntityManager" destroy-method="close">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="abnoRepository" class="org.opennaas.extensions.abno.repository.ABNORepository" init-method="init">
+		<argument value="abno" />
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository" />
+		<property name="resourceBootstrapperFactory" ref="abnoBootstrapperFactory" />
+	</bean>
+
+	<service ref="abnoRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="abno" />
+			<entry key="version" value="1.0.0" />
+		</service-properties>
+	</service>
+	
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="abnoRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+
+	<!-- ########################################
+	     Link Provisioning Capability
+	     ########################################
+	 -->
+	<!-- Protocol Session Factory -->
+	<bean id="abnoProtocolSessionFactory" class="org.opennaas.extensions.abno.capability.linkprovisioning.protocol.ABNOProtocolSessionFactory"/>
+	<service ref="abnoProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="abno"/>
+			<entry key="protocol.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- Link Provisioning Capability Factory -->
+	<bean id="linkProvisioningCapabilityFactory" class="org.opennaas.extensions.abno.capability.linkprovisioning.LinkProvisioningCapabilityFactory">
+		<property name="type" value="linkprovisioning" />
+	</bean>
+	<service ref="linkProvisioningCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="linkprovisioning" />
+			<entry key="capability.model" value="abno" />
+			<entry key="capability.version" value="1.0.0" />
+		</service-properties>
+	</service>
+	
+	<!-- Link Provisioning Internal ActionSet  -->
+	<bean id="linkProvisioningInternalActionset" class="org.opennaas.extensions.abno.capability.linkprovisioning.actionset.internal.LinkProvisioningActionsetImplementation" />
+	<service ref="linkProvisioningInternalActionset" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="internal"/>
+			<entry key="actionset.capability" value="linkprovisioning"/>
+			<entry key="actionset.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+
+</blueprint>

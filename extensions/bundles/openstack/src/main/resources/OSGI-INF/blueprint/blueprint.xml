@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="bootstrapperFactory" class="org.opennaas.extensions.openstack.repository.OpenstackBootstrapperFactory"/>
+	<!-- Workaround for  https://issues.apache.org/jira/browse/ARIES-796:
+	Resolve and inject entityManagerFactory and get the entityManager using code in ResourceDescriptorRepository. 
+	Obtained entityManager is not container managed, then. 
+	Given unit MUST already be registered as an OSGi service for this to work. -->
+	<reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=ResourceCore)"/>
+	<bean id="resourceDescriptorRepository"
+	class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+	init-method="initializeEntityManager" destroy-method="close">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="openstackRepository" class="org.opennaas.extensions.openstack.repository.OpenstackRepository"
+          init-method="init">
+		<argument value="openstack"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
+		<property name="resourceBootstrapperFactory" ref="bootstrapperFactory"/>
+	</bean>
+	
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="openstackRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+	
+	<service ref="openstackRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="openstack"/>
+			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>
+	
+	<!-- ########################################
+	     OpenstackAdapter Capability 
+	     ########################################
+	 -->
+	<bean id="openstackAdapterCapabilityFactory" class="org.opennaas.extensions.openstack.capability.openstackadapter.OpenstackAdapterCapabilityFactory">
+		<property name="type" value="openstackadapter"/>
+	</bean>	
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="openstackAdapterCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="openstackadapter"/>
+			<entry key="capability.model" value="openstack"/>
+			<entry key="capability.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+</blueprint>

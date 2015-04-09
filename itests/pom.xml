@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.30</version>
+        <version>0.31</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -34,6 +34,7 @@
 		<module>nclmonitoring</module>
 		<module>circuitprovisioning/internal</module>
 		<module>circuitaggregation/internal</module>
+		<module>ryu</module>
 	</modules>
 
 	<dependencies>

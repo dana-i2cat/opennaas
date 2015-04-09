@@ -40,16 +40,16 @@ public class FloodlightOFFlowListWrapper implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long		serialVersionUID	= 6469082812844530401L;
+	private static final long	serialVersionUID	= 6469082812844530401L;
 
 	@XmlElementWrapper(name = "floodlightOFFlows")
-	private List<FloodlightOFFlow>	forwardingRules;
+	private List<OFFlow>		forwardingRules;
 
-	public List<FloodlightOFFlow> getForwardingRules() {
+	public List<OFFlow> getForwardingRules() {
 		return forwardingRules;
 	}
 
-	public void setForwardingRules(List<FloodlightOFFlow> forwardingRules) {
+	public void setForwardingRules(List<OFFlow> forwardingRules) {
 		this.forwardingRules = forwardingRules;
 	}
 

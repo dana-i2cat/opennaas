@@ -28,6 +28,11 @@
 					<link-speed>$param.getAggregatedOptions().getLinkSpeed()</link-speed>
 					#end
 				</aggregated-ether-options>
+## Unit 0 with description is created in order for opennaas being able to recognize the interface
+				<unit>
+					<name>0</name>
+					<description>$param.getElementName()</description>
+				</unit>
 		</interface>
 	</interfaces>
 	#if($isLR)

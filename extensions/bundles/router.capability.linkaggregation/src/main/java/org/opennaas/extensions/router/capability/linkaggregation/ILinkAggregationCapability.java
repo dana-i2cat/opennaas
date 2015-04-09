@@ -27,6 +27,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -64,11 +65,15 @@ public interface ILinkAggregationCapability extends ICapability {
 	/**
 	 * Creates an aggregated interface
 	 * 
+	 * 
+	 * @param aggregatedInterface Description of the interface to create
+	 * @param force when true this operation will erase any configuration subinterfaces may have.
+	 * @throws CapabilityException
 	 */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
-	public void createAggregatedInterface(AggregatedInterface aggregatedInterface) throws CapabilityException;
+	public void createAggregatedInterface(AggregatedInterface aggregatedInterface, @QueryParam("force") boolean force) throws CapabilityException;
 
 	/**
 	 * Removes an Aggregated Interface given the aggregatedInterfaceId
