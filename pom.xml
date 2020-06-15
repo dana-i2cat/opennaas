@@ -61,7 +61,7 @@
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
 		<guava.version>17.0</guava.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
-		<hibernate-validator>4.3.0.Final</hibernate-validator>
+		<hibernate-validator>5.3.5.Final</hibernate-validator>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<!-- Jackson (old version of Jackson, instead of 2.x, due to bug integrating with CXF DOSGi
