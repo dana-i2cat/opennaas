@@ -81,7 +81,7 @@
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<junit.version>4.11</junit.version>
-		<karaf.version>2.3.5</karaf.version>
+		<karaf.version>4.3.6</karaf.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<neethi.version>3.0.0</neethi.version>
