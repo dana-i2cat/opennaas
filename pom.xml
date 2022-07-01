@@ -97,7 +97,7 @@
 		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
-		<plexus.utils.version>2.0.5</plexus.utils.version>
+		<plexus.utils.version>3.0.16</plexus.utils.version>
 		<rabbitmq.version>3.2.4</rabbitmq.version>
 		<servicemix.version>5.0.0</servicemix.version>
 		<servicemix.specs.version>2.2.0</servicemix.specs.version>
