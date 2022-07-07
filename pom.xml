@@ -73,7 +73,7 @@
 		<jclouds.version>1.8.1</jclouds.version>
 		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
 		<jersey-core.version>1.12</jersey-core.version>
-		<jetty.version>7.5.4.v20111024</jetty.version>
+		<jetty.version>9.4.48.v20220622</jetty.version>
 		<jodatime.version>2.1</jodatime.version>
 		<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 		<jdom.version>1.1_4</jdom.version>
