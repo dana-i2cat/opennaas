@@ -88,7 +88,7 @@
 		<netconf4j.version>0.0.9b</netconf4j.version>
 		<nmr.version>1.6.1</nmr.version>
 		<opencsv.version>2.3</opencsv.version>
-		<openjpa.version>2.2.0</openjpa.version>
+		<openjpa.version>2.2.2</openjpa.version>
 		<opennaas.version>${project.version}</opennaas.version>
 		<opensaml.version>2.4.1_1</opensaml.version>
 		<oro.version>2.0.8_4</oro.version>
